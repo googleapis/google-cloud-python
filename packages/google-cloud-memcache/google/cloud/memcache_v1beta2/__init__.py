@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.memcache import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from .services.cloud_memcache import CloudMemcacheAsyncClient, CloudMemcacheClient
 from .types.cloud_memcache import (
@@ -25,11 +29,15 @@ from .types.cloud_memcache import (
     ListInstancesRequest,
     ListInstancesResponse,
     LocationMetadata,
+    MaintenancePolicy,
+    MaintenanceSchedule,
     MemcacheParameters,
     MemcacheVersion,
     OperationMetadata,
+    RescheduleMaintenanceRequest,
     UpdateInstanceRequest,
     UpdateParametersRequest,
+    WeeklyMaintenanceWindow,
     ZoneMetadata,
 )
 
@@ -45,10 +53,14 @@ __all__ = (
     "ListInstancesRequest",
     "ListInstancesResponse",
     "LocationMetadata",
+    "MaintenancePolicy",
+    "MaintenanceSchedule",
     "MemcacheParameters",
     "MemcacheVersion",
     "OperationMetadata",
+    "RescheduleMaintenanceRequest",
     "UpdateInstanceRequest",
     "UpdateParametersRequest",
+    "WeeklyMaintenanceWindow",
     "ZoneMetadata",
 )

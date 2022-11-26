@@ -35,6 +35,11 @@
                 "list_instances"
               ]
             },
+            "RescheduleMaintenance": {
+              "methods": [
+                "reschedule_maintenance"
+              ]
+            },
             "UpdateInstance": {
               "methods": [
                 "update_instance"
@@ -73,6 +78,11 @@
             "ListInstances": {
               "methods": [
                 "list_instances"
+              ]
+            },
+            "RescheduleMaintenance": {
+              "methods": [
+                "reschedule_maintenance"
               ]
             },
             "UpdateInstance": {

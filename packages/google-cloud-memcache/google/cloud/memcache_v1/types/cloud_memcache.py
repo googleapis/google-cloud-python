@@ -13,8 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import dayofweek_pb2  # type: ignore
+from google.type import timeofday_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -22,6 +27,10 @@ __protobuf__ = proto.module(
     manifest={
         "MemcacheVersion",
         "Instance",
+        "MaintenancePolicy",
+        "WeeklyMaintenanceWindow",
+        "MaintenanceSchedule",
+        "RescheduleMaintenanceRequest",
         "ListInstancesRequest",
         "ListInstancesResponse",
         "GetInstanceRequest",
@@ -32,6 +41,8 @@ __protobuf__ = proto.module(
         "UpdateParametersRequest",
         "MemcacheParameters",
         "OperationMetadata",
+        "LocationMetadata",
+        "ZoneMetadata",
     },
 )
 
@@ -43,7 +54,7 @@ class MemcacheVersion(proto.Enum):
 
 
 class Instance(proto.Message):
-    r"""
+    r"""A Memorystore for Memcached instance
 
     Attributes:
         name (str):
@@ -51,16 +62,17 @@ class Instance(proto.Message):
             including project and location using the form:
             ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
 
-            Note: Memcached instances are managed and addressed at
-            regional level so location_id here refers to a GCP region;
-            however, users may choose which zones Memcached nodes within
-            an instances should be provisioned in. Refer to [zones]
+            Note: Memcached instances are managed and addressed at the
+            regional level so ``location_id`` here refers to a Google
+            Cloud region; however, users may choose which zones
+            Memcached nodes should be provisioned in within an instance.
+            Refer to [zones][google.cloud.memcache.v1.Instance.zones]
             field for more details.
         display_name (str):
-            User provided name for the instance only used
-            for display purposes. Cannot be more than 80
-            characters.
-        labels (Mapping[str, str]):
+            User provided name for the instance, which is
+            only used for display purposes. Cannot be more
+            than 80 characters.
+        labels (MutableMapping[str, str]):
             Resource labels to represent user-provided
             metadata. Refer to cloud documentation on labels
             for more details.
@@ -70,9 +82,9 @@ class Instance(proto.Message):
             `network </compute/docs/networks-and-firewalls#networks>`__
             to which the instance is connected. If left unspecified, the
             ``default`` network will be used.
-        zones (Sequence[str]):
-            Zones where Memcached nodes should be
-            provisioned in. Memcached nodes will be equally
+        zones (MutableSequence[str]):
+            Zones in which Memcached nodes should be
+            provisioned. Memcached nodes will be equally
             distributed across these zones. If not provided,
             the service will by default create nodes in all
             zones in the region for the instance.
@@ -84,15 +96,16 @@ class Instance(proto.Message):
         memcache_version (google.cloud.memcache_v1.types.MemcacheVersion):
             The major version of Memcached software. If not provided,
             latest supported version will be used. Currently the latest
-            supported major version is MEMCACHE_1_5. The minor version
-            will be automatically determined by our system based on the
-            latest supported minor version.
+            supported major version is ``MEMCACHE_1_5``. The minor
+            version will be automatically determined by our system based
+            on the latest supported minor version.
         parameters (google.cloud.memcache_v1.types.MemcacheParameters):
-            Optional: User defined parameters to apply to
-            the memcached process on each node.
-        memcache_nodes (Sequence[google.cloud.memcache_v1.types.Instance.Node]):
-            Output only. List of Memcached nodes. Refer to [Node]
-            message for more details.
+            User defined parameters to apply to the
+            memcached process on each node.
+        memcache_nodes (MutableSequence[google.cloud.memcache_v1.types.Instance.Node]):
+            Output only. List of Memcached nodes. Refer to
+            [Node][google.cloud.memcache.v1.Instance.Node] message for
+            more details.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the instance was
             created.
@@ -110,11 +123,18 @@ class Instance(proto.Message):
             MemcacheVersion.
             The full version format will be
             "memcached-1.5.16".
-        instance_messages (Sequence[google.cloud.memcache_v1.types.Instance.InstanceMessage]):
-            List of messages that describe current
-            statuses of memcached instance.
+        instance_messages (MutableSequence[google.cloud.memcache_v1.types.Instance.InstanceMessage]):
+            List of messages that describe the current
+            state of the Memcached instance.
         discovery_endpoint (str):
-            Output only. Endpoint for Discovery API
+            Output only. Endpoint for the Discovery API.
+        maintenance_policy (google.cloud.memcache_v1.types.MaintenancePolicy):
+            The maintenance policy for the instance. If
+            not provided, the maintenance event will be
+            performed based on Memorystore internal rollout
+            schedule.
+        maintenance_schedule (google.cloud.memcache_v1.types.MaintenanceSchedule):
+            Output only. Published maintenance schedule.
     """
 
     class State(proto.Enum):
@@ -122,6 +142,7 @@ class Instance(proto.Message):
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
+        UPDATING = 3
         DELETING = 4
         PERFORMING_MAINTENANCE = 5
 
@@ -136,11 +157,11 @@ class Instance(proto.Message):
                 Memcached node.
         """
 
-        cpu_count = proto.Field(
+        cpu_count: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        memory_size_mb = proto.Field(
+        memory_size_mb: int = proto.Field(
             proto.INT32,
             number=2,
         )
@@ -179,28 +200,28 @@ class Instance(proto.Message):
             DELETING = 3
             UPDATING = 4
 
-        node_id = proto.Field(
+        node_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        zone = proto.Field(
+        zone: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        state = proto.Field(
+        state: "Instance.Node.State" = proto.Field(
             proto.ENUM,
             number=3,
             enum="Instance.Node.State",
         )
-        host = proto.Field(
+        host: str = proto.Field(
             proto.STRING,
             number=4,
         )
-        port = proto.Field(
+        port: int = proto.Field(
             proto.INT32,
             number=5,
         )
-        parameters = proto.Field(
+        parameters: "MemcacheParameters" = proto.Field(
             proto.MESSAGE,
             number=6,
             message="MemcacheParameters",
@@ -223,88 +244,246 @@ class Instance(proto.Message):
             CODE_UNSPECIFIED = 0
             ZONE_DISTRIBUTION_UNBALANCED = 1
 
-        code = proto.Field(
+        code: "Instance.InstanceMessage.Code" = proto.Field(
             proto.ENUM,
             number=1,
             enum="Instance.InstanceMessage.Code",
         )
-        message = proto.Field(
+        message: str = proto.Field(
             proto.STRING,
             number=2,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
     )
-    authorized_network = proto.Field(
+    authorized_network: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    zones = proto.RepeatedField(
+    zones: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    node_count = proto.Field(
+    node_count: int = proto.Field(
         proto.INT32,
         number=6,
     )
-    node_config = proto.Field(
+    node_config: NodeConfig = proto.Field(
         proto.MESSAGE,
         number=7,
         message=NodeConfig,
     )
-    memcache_version = proto.Field(
+    memcache_version: "MemcacheVersion" = proto.Field(
         proto.ENUM,
         number=9,
         enum="MemcacheVersion",
     )
-    parameters = proto.Field(
+    parameters: "MemcacheParameters" = proto.Field(
         proto.MESSAGE,
         number=11,
         message="MemcacheParameters",
     )
-    memcache_nodes = proto.RepeatedField(
+    memcache_nodes: MutableSequence[Node] = proto.RepeatedField(
         proto.MESSAGE,
         number=12,
         message=Node,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=13,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=14,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=15,
         enum=State,
     )
-    memcache_full_version = proto.Field(
+    memcache_full_version: str = proto.Field(
         proto.STRING,
         number=18,
     )
-    instance_messages = proto.RepeatedField(
+    instance_messages: MutableSequence[InstanceMessage] = proto.RepeatedField(
         proto.MESSAGE,
         number=19,
         message=InstanceMessage,
     )
-    discovery_endpoint = proto.Field(
+    discovery_endpoint: str = proto.Field(
         proto.STRING,
         number=20,
+    )
+    maintenance_policy: "MaintenancePolicy" = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message="MaintenancePolicy",
+    )
+    maintenance_schedule: "MaintenanceSchedule" = proto.Field(
+        proto.MESSAGE,
+        number=22,
+        message="MaintenanceSchedule",
+    )
+
+
+class MaintenancePolicy(proto.Message):
+    r"""Maintenance policy per instance.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time when the policy was
+            created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time when the policy was
+            updated.
+        description (str):
+            Description of what this policy is for. Create/Update
+            methods return INVALID_ARGUMENT if the length is greater
+            than 512.
+        weekly_maintenance_window (MutableSequence[google.cloud.memcache_v1.types.WeeklyMaintenanceWindow]):
+            Required. Maintenance window that is applied to resources
+            covered by this policy. Minimum 1. For the current version,
+            the maximum number of weekly_maintenance_windows is expected
+            to be one.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    weekly_maintenance_window: MutableSequence[
+        "WeeklyMaintenanceWindow"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="WeeklyMaintenanceWindow",
+    )
+
+
+class WeeklyMaintenanceWindow(proto.Message):
+    r"""Time window specified for weekly operations.
+
+    Attributes:
+        day (google.type.dayofweek_pb2.DayOfWeek):
+            Required. Allows to define schedule that runs
+            specified day of the week.
+        start_time (google.type.timeofday_pb2.TimeOfDay):
+            Required. Start time of the window in UTC.
+        duration (google.protobuf.duration_pb2.Duration):
+            Required. Duration of the time window.
+    """
+
+    day: dayofweek_pb2.DayOfWeek = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=dayofweek_pb2.DayOfWeek,
+    )
+    start_time: timeofday_pb2.TimeOfDay = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timeofday_pb2.TimeOfDay,
+    )
+    duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=duration_pb2.Duration,
+    )
+
+
+class MaintenanceSchedule(proto.Message):
+    r"""Upcoming maintenance schedule.
+
+    Attributes:
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The start time of any upcoming
+            scheduled maintenance for this instance.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The end time of any upcoming
+            scheduled maintenance for this instance.
+        schedule_deadline_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The deadline that the
+            maintenance schedule start time can not go
+            beyond, including reschedule.
+    """
+
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    schedule_deadline_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class RescheduleMaintenanceRequest(proto.Message):
+    r"""Request for
+    [RescheduleMaintenance][google.cloud.memcache.v1.CloudMemcache.RescheduleMaintenance].
+
+    Attributes:
+        instance (str):
+            Required. Memcache instance resource name using the form:
+            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
+            where ``location_id`` refers to a GCP region.
+        reschedule_type (google.cloud.memcache_v1.types.RescheduleMaintenanceRequest.RescheduleType):
+            Required. If reschedule type is SPECIFIC_TIME, must set up
+            schedule_time as well.
+        schedule_time (google.protobuf.timestamp_pb2.Timestamp):
+            Timestamp when the maintenance shall be rescheduled to if
+            reschedule_type=SPECIFIC_TIME, in RFC 3339 format, for
+            example ``2012-11-15T16:19:00.094Z``.
+    """
+
+    class RescheduleType(proto.Enum):
+        r"""Reschedule options."""
+        RESCHEDULE_TYPE_UNSPECIFIED = 0
+        IMMEDIATE = 1
+        NEXT_AVAILABLE_WINDOW = 2
+        SPECIFIC_TIME = 3
+
+    instance: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    reschedule_type: RescheduleType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=RescheduleType,
+    )
+    schedule_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -321,40 +500,40 @@ class ListInstancesRequest(proto.Message):
             The maximum number of items to return.
 
             If not specified, a default value of 1000 will be used by
-            the service. Regardless of the page_size value, the response
-            may include a partial list and a caller should only rely on
-            response's
-            [next_page_token][CloudMemcache.ListInstancesResponse.next_page_token]
+            the service. Regardless of the ``page_size`` value, the
+            response may include a partial list and a caller should only
+            rely on response's
+            [``next_page_token``][google.cloud.memcache.v1.ListInstancesResponse.next_page_token]
             to determine if there are more instances left to be queried.
         page_token (str):
-            The next_page_token value returned from a previous List
+            The ``next_page_token`` value returned from a previous List
             request, if any.
         filter (str):
-            List filter. For example, exclude all
-            Memcached instances with name as my-instance by
-            specifying "name != my-instance".
+            List filter. For example, exclude all Memcached instances
+            with name as my-instance by specifying
+            ``"name != my-instance"``.
         order_by (str):
             Sort results. Supported values are "name",
             "name desc" or "" (unsorted).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -365,7 +544,7 @@ class ListInstancesResponse(proto.Message):
     [ListInstances][google.cloud.memcache.v1.CloudMemcache.ListInstances].
 
     Attributes:
-        instances (Sequence[google.cloud.memcache_v1.types.Instance]):
+        instances (MutableSequence[google.cloud.memcache_v1.types.Instance]):
             A list of Memcached instances in the project in the
             specified location, or across all locations.
 
@@ -376,7 +555,7 @@ class ListInstancesResponse(proto.Message):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
             list.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -384,16 +563,16 @@ class ListInstancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instances = proto.RepeatedField(
+    instances: MutableSequence["Instance"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Instance",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -410,7 +589,7 @@ class GetInstanceRequest(proto.Message):
             where ``location_id`` refers to a GCP region
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -434,23 +613,23 @@ class CreateInstanceRequest(proto.Message):
             -  Must start with a letter.
             -  Must be between 1-40 characters.
             -  Must end with a number or a letter.
-            -  Must be unique within the user project / location
+            -  Must be unique within the user project / location.
 
-            If any of the above are not met, will raise an invalid
+            If any of the above are not met, the API raises an invalid
             argument error.
         instance (google.cloud.memcache_v1.types.Instance):
             Required. A Memcached Instance
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    instance_id = proto.Field(
+    instance_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    instance = proto.Field(
+    instance: "Instance" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Instance",
@@ -471,12 +650,12 @@ class UpdateInstanceRequest(proto.Message):
             update_mask are updated.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    instance = proto.Field(
+    instance: "Instance" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Instance",
@@ -494,7 +673,7 @@ class DeleteInstanceRequest(proto.Message):
             where ``location_id`` refers to a GCP region
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -509,26 +688,25 @@ class ApplyParametersRequest(proto.Message):
             Required. Resource name of the Memcached
             instance for which parameter group updates
             should be applied.
-        node_ids (Sequence[str]):
-            Nodes to which we should apply the
-            instance-level parameter group.
+        node_ids (MutableSequence[str]):
+            Nodes to which the instance-level parameter
+            group is applied.
         apply_all (bool):
-            Whether to apply instance-level parameter
-            group to all nodes. If set to true, will
-            explicitly restrict users from specifying any
-            nodes, and apply parameter group updates to all
-            nodes within the instance.
+            Whether to apply instance-level parameter group to all
+            nodes. If set to true, users are restricted from specifying
+            individual nodes, and ``ApplyParameters`` updates all nodes
+            within the instance.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    node_ids = proto.RepeatedField(
+    node_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    apply_all = proto.Field(
+    apply_all: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -549,16 +727,16 @@ class UpdateParametersRequest(proto.Message):
             The parameters to apply to the instance.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    parameters = proto.Field(
+    parameters: "MemcacheParameters" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="MemcacheParameters",
@@ -574,18 +752,19 @@ class MemcacheParameters(proto.Message):
             this set of parameters. Users can use this id to
             determine if the parameters associated with the
             instance differ from the parameters associated
-            with the nodes and any action needs to be taken
-            to apply parameters on nodes.
-        params (Mapping[str, str]):
+            with the nodes. A discrepancy between parameter
+            ids can inform users that they may need to take
+            action to apply parameters on nodes.
+        params (MutableMapping[str, str]):
             User defined set of parameters to use in the
             memcached process.
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    params = proto.MapField(
+    params: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
@@ -622,36 +801,60 @@ class OperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_detail = proto.Field(
+    status_detail: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    cancel_requested = proto.Field(
+    cancel_requested: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )
+
+
+class LocationMetadata(proto.Message):
+    r"""Metadata for the given
+    [google.cloud.location.Location][google.cloud.location.Location].
+
+    Attributes:
+        available_zones (MutableMapping[str, google.cloud.memcache_v1.types.ZoneMetadata]):
+            Output only. The set of available zones in the location. The
+            map is keyed by the lowercase ID of each zone, as defined by
+            GCE. These keys can be specified in the ``zones`` field when
+            creating a Memcached instance.
+    """
+
+    available_zones: MutableMapping[str, "ZoneMetadata"] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=1,
+        message="ZoneMetadata",
+    )
+
+
+class ZoneMetadata(proto.Message):
+    r""" """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

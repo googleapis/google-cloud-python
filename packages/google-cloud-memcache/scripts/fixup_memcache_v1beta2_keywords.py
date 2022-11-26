@@ -45,6 +45,7 @@ class memcacheCallTransformer(cst.CSTTransformer):
         'delete_instance': ('name', ),
         'get_instance': ('name', ),
         'list_instances': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'reschedule_maintenance': ('instance', 'reschedule_type', 'schedule_time', ),
         'update_instance': ('update_mask', 'resource', ),
         'update_parameters': ('name', 'update_mask', 'parameters', ),
     }
