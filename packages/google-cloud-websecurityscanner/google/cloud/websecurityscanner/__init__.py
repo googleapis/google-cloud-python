@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.websecurityscanner import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.websecurityscanner_v1.services.web_security_scanner.async_client import (
     WebSecurityScannerAsyncClient,

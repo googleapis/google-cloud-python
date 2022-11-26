@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.websecurityscanner_v1beta.types import (
@@ -58,17 +60,17 @@ class ScanRunErrorTrace(proto.Message):
         TOO_MANY_REDIRECTS = 5
         TOO_MANY_HTTP_ERRORS = 6
 
-    code = proto.Field(
+    code: Code = proto.Field(
         proto.ENUM,
         number=1,
         enum=Code,
     )
-    scan_config_error = proto.Field(
+    scan_config_error: gcw_scan_config_error.ScanConfigError = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcw_scan_config_error.ScanConfigError,
     )
-    most_common_http_error_code = proto.Field(
+    most_common_http_error_code: int = proto.Field(
         proto.INT32,
         number=3,
     )

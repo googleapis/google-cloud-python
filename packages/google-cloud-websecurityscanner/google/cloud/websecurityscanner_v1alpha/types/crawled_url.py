@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -40,15 +42,15 @@ class CrawledUrl(proto.Message):
             used to visit the URL.
     """
 
-    http_method = proto.Field(
+    http_method: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    url = proto.Field(
+    url: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    body = proto.Field(
+    body: str = proto.Field(
         proto.STRING,
         number=3,
     )

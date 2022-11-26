@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.websecurityscanner_v1.types import scan_run, scan_run_error_trace
@@ -52,37 +54,37 @@ class ScanRunLog(proto.Message):
 
     """
 
-    summary = proto.Field(
+    summary: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    execution_state = proto.Field(
+    execution_state: scan_run.ScanRun.ExecutionState = proto.Field(
         proto.ENUM,
         number=3,
         enum=scan_run.ScanRun.ExecutionState,
     )
-    result_state = proto.Field(
+    result_state: scan_run.ScanRun.ResultState = proto.Field(
         proto.ENUM,
         number=4,
         enum=scan_run.ScanRun.ResultState,
     )
-    urls_crawled_count = proto.Field(
+    urls_crawled_count: int = proto.Field(
         proto.INT64,
         number=5,
     )
-    urls_tested_count = proto.Field(
+    urls_tested_count: int = proto.Field(
         proto.INT64,
         number=6,
     )
-    has_findings = proto.Field(
+    has_findings: bool = proto.Field(
         proto.BOOL,
         number=7,
     )
-    error_trace = proto.Field(
+    error_trace: scan_run_error_trace.ScanRunErrorTrace = proto.Field(
         proto.MESSAGE,
         number=8,
         message=scan_run_error_trace.ScanRunErrorTrace,

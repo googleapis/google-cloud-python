@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.websecurityscanner_v1beta.types import finding_addon
@@ -88,72 +90,72 @@ class Finding(proto.Message):
             an XSS, if any.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    finding_type = proto.Field(
+    finding_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    http_method = proto.Field(
+    http_method: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    fuzzed_url = proto.Field(
+    fuzzed_url: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    body = proto.Field(
+    body: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    reproduction_url = proto.Field(
+    reproduction_url: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    frame_url = proto.Field(
+    frame_url: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    final_url = proto.Field(
+    final_url: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    tracking_id = proto.Field(
+    tracking_id: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    form = proto.Field(
+    form: finding_addon.Form = proto.Field(
         proto.MESSAGE,
         number=16,
         message=finding_addon.Form,
     )
-    outdated_library = proto.Field(
+    outdated_library: finding_addon.OutdatedLibrary = proto.Field(
         proto.MESSAGE,
         number=11,
         message=finding_addon.OutdatedLibrary,
     )
-    violating_resource = proto.Field(
+    violating_resource: finding_addon.ViolatingResource = proto.Field(
         proto.MESSAGE,
         number=12,
         message=finding_addon.ViolatingResource,
     )
-    vulnerable_headers = proto.Field(
+    vulnerable_headers: finding_addon.VulnerableHeaders = proto.Field(
         proto.MESSAGE,
         number=15,
         message=finding_addon.VulnerableHeaders,
     )
-    vulnerable_parameters = proto.Field(
+    vulnerable_parameters: finding_addon.VulnerableParameters = proto.Field(
         proto.MESSAGE,
         number=13,
         message=finding_addon.VulnerableParameters,
     )
-    xss = proto.Field(
+    xss: finding_addon.Xss = proto.Field(
         proto.MESSAGE,
         number=14,
         message=finding_addon.Xss,

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -76,7 +78,7 @@ class ScanRun(proto.Message):
             If result_state is an ERROR, this field provides the primary
             reason for scan's termination and more details, if such are
             available.
-        warning_traces (Sequence[google.cloud.websecurityscanner_v1beta.types.ScanRunWarningTrace]):
+        warning_traces (MutableSequence[google.cloud.websecurityscanner_v1beta.types.ScanRunWarningTrace]):
             A list of warnings, if such are encountered
             during this scan run.
     """
@@ -95,52 +97,54 @@ class ScanRun(proto.Message):
         ERROR = 2
         KILLED = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    execution_state = proto.Field(
+    execution_state: ExecutionState = proto.Field(
         proto.ENUM,
         number=2,
         enum=ExecutionState,
     )
-    result_state = proto.Field(
+    result_state: ResultState = proto.Field(
         proto.ENUM,
         number=3,
         enum=ResultState,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    urls_crawled_count = proto.Field(
+    urls_crawled_count: int = proto.Field(
         proto.INT64,
         number=6,
     )
-    urls_tested_count = proto.Field(
+    urls_tested_count: int = proto.Field(
         proto.INT64,
         number=7,
     )
-    has_vulnerabilities = proto.Field(
+    has_vulnerabilities: bool = proto.Field(
         proto.BOOL,
         number=8,
     )
-    progress_percent = proto.Field(
+    progress_percent: int = proto.Field(
         proto.INT32,
         number=9,
     )
-    error_trace = proto.Field(
+    error_trace: scan_run_error_trace.ScanRunErrorTrace = proto.Field(
         proto.MESSAGE,
         number=10,
         message=scan_run_error_trace.ScanRunErrorTrace,
     )
-    warning_traces = proto.RepeatedField(
+    warning_traces: MutableSequence[
+        scan_run_warning_trace.ScanRunWarningTrace
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message=scan_run_warning_trace.ScanRunWarningTrace,

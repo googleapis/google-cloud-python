@@ -2,12 +2,13 @@
   "clientLibrary": {
     "apis": [
       {
-        "id": "google.cloud.websecurityscanner.v1alpha",
-        "version": "v1alpha"
+        "id": "google.cloud.websecurityscanner.v1beta",
+        "version": "v1beta"
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-websecurityscanner"
+    "name": "google-cloud-websecurityscanner",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -15,14 +16,14 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient",
           "shortName": "WebSecurityScannerAsyncClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient.create_scan_config",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient.create_scan_config",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.CreateScanConfig",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.CreateScanConfig",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "CreateScanConfig"
@@ -30,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.CreateScanConfigRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.CreateScanConfigRequest"
           },
           {
             "name": "parent",
@@ -38,7 +39,7 @@
           },
           {
             "name": "scan_config",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.ScanConfig"
+            "type": "google.cloud.websecurityscanner_v1beta.types.ScanConfig"
           },
           {
             "name": "retry",
@@ -53,14 +54,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.types.ScanConfig",
+        "resultType": "google.cloud.websecurityscanner_v1beta.types.ScanConfig",
         "shortName": "create_scan_config"
       },
       "description": "Sample for CreateScanConfig",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_create_scan_config_async.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_create_scan_config_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_CreateScanConfig_async",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_CreateScanConfig_async",
       "segments": [
         {
           "end": 56,
@@ -93,20 +94,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_create_scan_config_async.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_create_scan_config_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient",
           "shortName": "WebSecurityScannerClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient.create_scan_config",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient.create_scan_config",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.CreateScanConfig",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.CreateScanConfig",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "CreateScanConfig"
@@ -114,7 +115,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.CreateScanConfigRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.CreateScanConfigRequest"
           },
           {
             "name": "parent",
@@ -122,7 +123,7 @@
           },
           {
             "name": "scan_config",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.ScanConfig"
+            "type": "google.cloud.websecurityscanner_v1beta.types.ScanConfig"
           },
           {
             "name": "retry",
@@ -137,14 +138,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.types.ScanConfig",
+        "resultType": "google.cloud.websecurityscanner_v1beta.types.ScanConfig",
         "shortName": "create_scan_config"
       },
       "description": "Sample for CreateScanConfig",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_create_scan_config_sync.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_create_scan_config_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_CreateScanConfig_sync",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_CreateScanConfig_sync",
       "segments": [
         {
           "end": 56,
@@ -177,21 +178,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_create_scan_config_sync.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_create_scan_config_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient",
           "shortName": "WebSecurityScannerAsyncClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient.delete_scan_config",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient.delete_scan_config",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.DeleteScanConfig",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.DeleteScanConfig",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "DeleteScanConfig"
@@ -199,7 +200,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.DeleteScanConfigRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.DeleteScanConfigRequest"
           },
           {
             "name": "name",
@@ -221,10 +222,10 @@
         "shortName": "delete_scan_config"
       },
       "description": "Sample for DeleteScanConfig",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_delete_scan_config_async.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_delete_scan_config_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_DeleteScanConfig_async",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_DeleteScanConfig_async",
       "segments": [
         {
           "end": 49,
@@ -255,20 +256,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_delete_scan_config_async.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_delete_scan_config_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient",
           "shortName": "WebSecurityScannerClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient.delete_scan_config",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient.delete_scan_config",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.DeleteScanConfig",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.DeleteScanConfig",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "DeleteScanConfig"
@@ -276,7 +277,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.DeleteScanConfigRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.DeleteScanConfigRequest"
           },
           {
             "name": "name",
@@ -298,10 +299,10 @@
         "shortName": "delete_scan_config"
       },
       "description": "Sample for DeleteScanConfig",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_delete_scan_config_sync.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_delete_scan_config_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_DeleteScanConfig_sync",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_DeleteScanConfig_sync",
       "segments": [
         {
           "end": 49,
@@ -332,21 +333,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_delete_scan_config_sync.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_delete_scan_config_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient",
           "shortName": "WebSecurityScannerAsyncClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient.get_finding",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient.get_finding",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.GetFinding",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.GetFinding",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "GetFinding"
@@ -354,7 +355,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.GetFindingRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.GetFindingRequest"
           },
           {
             "name": "name",
@@ -373,14 +374,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.types.Finding",
+        "resultType": "google.cloud.websecurityscanner_v1beta.types.Finding",
         "shortName": "get_finding"
       },
       "description": "Sample for GetFinding",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_get_finding_async.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_get_finding_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_GetFinding_async",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_GetFinding_async",
       "segments": [
         {
           "end": 51,
@@ -413,20 +414,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_get_finding_async.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_get_finding_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient",
           "shortName": "WebSecurityScannerClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient.get_finding",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient.get_finding",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.GetFinding",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.GetFinding",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "GetFinding"
@@ -434,7 +435,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.GetFindingRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.GetFindingRequest"
           },
           {
             "name": "name",
@@ -453,14 +454,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.types.Finding",
+        "resultType": "google.cloud.websecurityscanner_v1beta.types.Finding",
         "shortName": "get_finding"
       },
       "description": "Sample for GetFinding",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_get_finding_sync.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_get_finding_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_GetFinding_sync",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_GetFinding_sync",
       "segments": [
         {
           "end": 51,
@@ -493,21 +494,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_get_finding_sync.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_get_finding_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient",
           "shortName": "WebSecurityScannerAsyncClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient.get_scan_config",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient.get_scan_config",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.GetScanConfig",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.GetScanConfig",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "GetScanConfig"
@@ -515,7 +516,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.GetScanConfigRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.GetScanConfigRequest"
           },
           {
             "name": "name",
@@ -534,14 +535,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.types.ScanConfig",
+        "resultType": "google.cloud.websecurityscanner_v1beta.types.ScanConfig",
         "shortName": "get_scan_config"
       },
       "description": "Sample for GetScanConfig",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_get_scan_config_async.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_get_scan_config_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_GetScanConfig_async",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_GetScanConfig_async",
       "segments": [
         {
           "end": 51,
@@ -574,20 +575,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_get_scan_config_async.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_get_scan_config_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient",
           "shortName": "WebSecurityScannerClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient.get_scan_config",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient.get_scan_config",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.GetScanConfig",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.GetScanConfig",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "GetScanConfig"
@@ -595,7 +596,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.GetScanConfigRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.GetScanConfigRequest"
           },
           {
             "name": "name",
@@ -614,14 +615,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.types.ScanConfig",
+        "resultType": "google.cloud.websecurityscanner_v1beta.types.ScanConfig",
         "shortName": "get_scan_config"
       },
       "description": "Sample for GetScanConfig",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_get_scan_config_sync.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_get_scan_config_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_GetScanConfig_sync",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_GetScanConfig_sync",
       "segments": [
         {
           "end": 51,
@@ -654,21 +655,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_get_scan_config_sync.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_get_scan_config_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient",
           "shortName": "WebSecurityScannerAsyncClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient.get_scan_run",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient.get_scan_run",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.GetScanRun",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.GetScanRun",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "GetScanRun"
@@ -676,7 +677,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.GetScanRunRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.GetScanRunRequest"
           },
           {
             "name": "name",
@@ -695,14 +696,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.types.ScanRun",
+        "resultType": "google.cloud.websecurityscanner_v1beta.types.ScanRun",
         "shortName": "get_scan_run"
       },
       "description": "Sample for GetScanRun",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_get_scan_run_async.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_get_scan_run_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_GetScanRun_async",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_GetScanRun_async",
       "segments": [
         {
           "end": 51,
@@ -735,20 +736,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_get_scan_run_async.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_get_scan_run_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient",
           "shortName": "WebSecurityScannerClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient.get_scan_run",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient.get_scan_run",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.GetScanRun",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.GetScanRun",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "GetScanRun"
@@ -756,7 +757,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.GetScanRunRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.GetScanRunRequest"
           },
           {
             "name": "name",
@@ -775,14 +776,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.types.ScanRun",
+        "resultType": "google.cloud.websecurityscanner_v1beta.types.ScanRun",
         "shortName": "get_scan_run"
       },
       "description": "Sample for GetScanRun",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_get_scan_run_sync.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_get_scan_run_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_GetScanRun_sync",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_GetScanRun_sync",
       "segments": [
         {
           "end": 51,
@@ -815,21 +816,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_get_scan_run_sync.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_get_scan_run_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient",
           "shortName": "WebSecurityScannerAsyncClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient.list_crawled_urls",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient.list_crawled_urls",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.ListCrawledUrls",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.ListCrawledUrls",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "ListCrawledUrls"
@@ -837,7 +838,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.ListCrawledUrlsRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsRequest"
           },
           {
             "name": "parent",
@@ -856,14 +857,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.services.web_security_scanner.pagers.ListCrawledUrlsAsyncPager",
+        "resultType": "google.cloud.websecurityscanner_v1beta.services.web_security_scanner.pagers.ListCrawledUrlsAsyncPager",
         "shortName": "list_crawled_urls"
       },
       "description": "Sample for ListCrawledUrls",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_list_crawled_urls_async.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_list_crawled_urls_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_ListCrawledUrls_async",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_ListCrawledUrls_async",
       "segments": [
         {
           "end": 52,
@@ -896,20 +897,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_list_crawled_urls_async.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_list_crawled_urls_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient",
           "shortName": "WebSecurityScannerClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient.list_crawled_urls",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient.list_crawled_urls",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.ListCrawledUrls",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.ListCrawledUrls",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "ListCrawledUrls"
@@ -917,7 +918,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.ListCrawledUrlsRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsRequest"
           },
           {
             "name": "parent",
@@ -936,14 +937,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.services.web_security_scanner.pagers.ListCrawledUrlsPager",
+        "resultType": "google.cloud.websecurityscanner_v1beta.services.web_security_scanner.pagers.ListCrawledUrlsPager",
         "shortName": "list_crawled_urls"
       },
       "description": "Sample for ListCrawledUrls",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_list_crawled_urls_sync.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_list_crawled_urls_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_ListCrawledUrls_sync",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_ListCrawledUrls_sync",
       "segments": [
         {
           "end": 52,
@@ -976,21 +977,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_list_crawled_urls_sync.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_list_crawled_urls_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient",
           "shortName": "WebSecurityScannerAsyncClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient.list_finding_type_stats",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient.list_finding_type_stats",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.ListFindingTypeStats",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.ListFindingTypeStats",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "ListFindingTypeStats"
@@ -998,7 +999,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.ListFindingTypeStatsRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.ListFindingTypeStatsRequest"
           },
           {
             "name": "parent",
@@ -1017,14 +1018,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.types.ListFindingTypeStatsResponse",
+        "resultType": "google.cloud.websecurityscanner_v1beta.types.ListFindingTypeStatsResponse",
         "shortName": "list_finding_type_stats"
       },
       "description": "Sample for ListFindingTypeStats",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_list_finding_type_stats_async.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_list_finding_type_stats_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_ListFindingTypeStats_async",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_ListFindingTypeStats_async",
       "segments": [
         {
           "end": 51,
@@ -1057,20 +1058,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_list_finding_type_stats_async.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_list_finding_type_stats_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient",
           "shortName": "WebSecurityScannerClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient.list_finding_type_stats",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient.list_finding_type_stats",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.ListFindingTypeStats",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.ListFindingTypeStats",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "ListFindingTypeStats"
@@ -1078,7 +1079,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.ListFindingTypeStatsRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.ListFindingTypeStatsRequest"
           },
           {
             "name": "parent",
@@ -1097,14 +1098,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.types.ListFindingTypeStatsResponse",
+        "resultType": "google.cloud.websecurityscanner_v1beta.types.ListFindingTypeStatsResponse",
         "shortName": "list_finding_type_stats"
       },
       "description": "Sample for ListFindingTypeStats",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_list_finding_type_stats_sync.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_list_finding_type_stats_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_ListFindingTypeStats_sync",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_ListFindingTypeStats_sync",
       "segments": [
         {
           "end": 51,
@@ -1137,21 +1138,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_list_finding_type_stats_sync.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_list_finding_type_stats_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient",
           "shortName": "WebSecurityScannerAsyncClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient.list_findings",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient.list_findings",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.ListFindings",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.ListFindings",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "ListFindings"
@@ -1159,7 +1160,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.ListFindingsRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.ListFindingsRequest"
           },
           {
             "name": "parent",
@@ -1182,14 +1183,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.services.web_security_scanner.pagers.ListFindingsAsyncPager",
+        "resultType": "google.cloud.websecurityscanner_v1beta.services.web_security_scanner.pagers.ListFindingsAsyncPager",
         "shortName": "list_findings"
       },
       "description": "Sample for ListFindings",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_list_findings_async.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_list_findings_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_ListFindings_async",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_ListFindings_async",
       "segments": [
         {
           "end": 53,
@@ -1222,20 +1223,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_list_findings_async.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_list_findings_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient",
           "shortName": "WebSecurityScannerClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient.list_findings",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient.list_findings",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.ListFindings",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.ListFindings",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "ListFindings"
@@ -1243,7 +1244,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.ListFindingsRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.ListFindingsRequest"
           },
           {
             "name": "parent",
@@ -1266,14 +1267,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.services.web_security_scanner.pagers.ListFindingsPager",
+        "resultType": "google.cloud.websecurityscanner_v1beta.services.web_security_scanner.pagers.ListFindingsPager",
         "shortName": "list_findings"
       },
       "description": "Sample for ListFindings",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_list_findings_sync.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_list_findings_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_ListFindings_sync",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_ListFindings_sync",
       "segments": [
         {
           "end": 53,
@@ -1306,21 +1307,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_list_findings_sync.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_list_findings_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient",
           "shortName": "WebSecurityScannerAsyncClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient.list_scan_configs",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient.list_scan_configs",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.ListScanConfigs",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.ListScanConfigs",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "ListScanConfigs"
@@ -1328,7 +1329,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.ListScanConfigsRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.ListScanConfigsRequest"
           },
           {
             "name": "parent",
@@ -1347,14 +1348,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.services.web_security_scanner.pagers.ListScanConfigsAsyncPager",
+        "resultType": "google.cloud.websecurityscanner_v1beta.services.web_security_scanner.pagers.ListScanConfigsAsyncPager",
         "shortName": "list_scan_configs"
       },
       "description": "Sample for ListScanConfigs",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_list_scan_configs_async.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_list_scan_configs_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_ListScanConfigs_async",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_ListScanConfigs_async",
       "segments": [
         {
           "end": 52,
@@ -1387,20 +1388,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_list_scan_configs_async.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_list_scan_configs_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient",
           "shortName": "WebSecurityScannerClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient.list_scan_configs",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient.list_scan_configs",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.ListScanConfigs",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.ListScanConfigs",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "ListScanConfigs"
@@ -1408,7 +1409,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.ListScanConfigsRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.ListScanConfigsRequest"
           },
           {
             "name": "parent",
@@ -1427,14 +1428,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.services.web_security_scanner.pagers.ListScanConfigsPager",
+        "resultType": "google.cloud.websecurityscanner_v1beta.services.web_security_scanner.pagers.ListScanConfigsPager",
         "shortName": "list_scan_configs"
       },
       "description": "Sample for ListScanConfigs",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_list_scan_configs_sync.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_list_scan_configs_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_ListScanConfigs_sync",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_ListScanConfigs_sync",
       "segments": [
         {
           "end": 52,
@@ -1467,21 +1468,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_list_scan_configs_sync.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_list_scan_configs_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient",
           "shortName": "WebSecurityScannerAsyncClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient.list_scan_runs",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient.list_scan_runs",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.ListScanRuns",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.ListScanRuns",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "ListScanRuns"
@@ -1489,7 +1490,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.ListScanRunsRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.ListScanRunsRequest"
           },
           {
             "name": "parent",
@@ -1508,14 +1509,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.services.web_security_scanner.pagers.ListScanRunsAsyncPager",
+        "resultType": "google.cloud.websecurityscanner_v1beta.services.web_security_scanner.pagers.ListScanRunsAsyncPager",
         "shortName": "list_scan_runs"
       },
       "description": "Sample for ListScanRuns",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_list_scan_runs_async.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_list_scan_runs_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_ListScanRuns_async",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_ListScanRuns_async",
       "segments": [
         {
           "end": 52,
@@ -1548,20 +1549,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_list_scan_runs_async.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_list_scan_runs_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient",
           "shortName": "WebSecurityScannerClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient.list_scan_runs",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient.list_scan_runs",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.ListScanRuns",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.ListScanRuns",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "ListScanRuns"
@@ -1569,7 +1570,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.ListScanRunsRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.ListScanRunsRequest"
           },
           {
             "name": "parent",
@@ -1588,14 +1589,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.services.web_security_scanner.pagers.ListScanRunsPager",
+        "resultType": "google.cloud.websecurityscanner_v1beta.services.web_security_scanner.pagers.ListScanRunsPager",
         "shortName": "list_scan_runs"
       },
       "description": "Sample for ListScanRuns",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_list_scan_runs_sync.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_list_scan_runs_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_ListScanRuns_sync",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_ListScanRuns_sync",
       "segments": [
         {
           "end": 52,
@@ -1628,21 +1629,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_list_scan_runs_sync.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_list_scan_runs_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient",
           "shortName": "WebSecurityScannerAsyncClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient.start_scan_run",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient.start_scan_run",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.StartScanRun",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.StartScanRun",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "StartScanRun"
@@ -1650,7 +1651,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.StartScanRunRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.StartScanRunRequest"
           },
           {
             "name": "name",
@@ -1669,14 +1670,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.types.ScanRun",
+        "resultType": "google.cloud.websecurityscanner_v1beta.types.ScanRun",
         "shortName": "start_scan_run"
       },
       "description": "Sample for StartScanRun",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_start_scan_run_async.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_start_scan_run_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_StartScanRun_async",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_StartScanRun_async",
       "segments": [
         {
           "end": 51,
@@ -1709,20 +1710,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_start_scan_run_async.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_start_scan_run_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient",
           "shortName": "WebSecurityScannerClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient.start_scan_run",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient.start_scan_run",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.StartScanRun",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.StartScanRun",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "StartScanRun"
@@ -1730,7 +1731,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.StartScanRunRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.StartScanRunRequest"
           },
           {
             "name": "name",
@@ -1749,14 +1750,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.types.ScanRun",
+        "resultType": "google.cloud.websecurityscanner_v1beta.types.ScanRun",
         "shortName": "start_scan_run"
       },
       "description": "Sample for StartScanRun",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_start_scan_run_sync.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_start_scan_run_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_StartScanRun_sync",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_StartScanRun_sync",
       "segments": [
         {
           "end": 51,
@@ -1789,21 +1790,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_start_scan_run_sync.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_start_scan_run_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient",
           "shortName": "WebSecurityScannerAsyncClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient.stop_scan_run",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient.stop_scan_run",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.StopScanRun",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.StopScanRun",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "StopScanRun"
@@ -1811,7 +1812,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.StopScanRunRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.StopScanRunRequest"
           },
           {
             "name": "name",
@@ -1830,14 +1831,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.types.ScanRun",
+        "resultType": "google.cloud.websecurityscanner_v1beta.types.ScanRun",
         "shortName": "stop_scan_run"
       },
       "description": "Sample for StopScanRun",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_stop_scan_run_async.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_stop_scan_run_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_StopScanRun_async",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_StopScanRun_async",
       "segments": [
         {
           "end": 51,
@@ -1870,20 +1871,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_stop_scan_run_async.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_stop_scan_run_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient",
           "shortName": "WebSecurityScannerClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient.stop_scan_run",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient.stop_scan_run",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.StopScanRun",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.StopScanRun",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "StopScanRun"
@@ -1891,7 +1892,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.StopScanRunRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.StopScanRunRequest"
           },
           {
             "name": "name",
@@ -1910,14 +1911,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.types.ScanRun",
+        "resultType": "google.cloud.websecurityscanner_v1beta.types.ScanRun",
         "shortName": "stop_scan_run"
       },
       "description": "Sample for StopScanRun",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_stop_scan_run_sync.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_stop_scan_run_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_StopScanRun_sync",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_StopScanRun_sync",
       "segments": [
         {
           "end": 51,
@@ -1950,21 +1951,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_stop_scan_run_sync.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_stop_scan_run_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient",
           "shortName": "WebSecurityScannerAsyncClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerAsyncClient.update_scan_config",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient.update_scan_config",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.UpdateScanConfig",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.UpdateScanConfig",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "UpdateScanConfig"
@@ -1972,11 +1973,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.UpdateScanConfigRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.UpdateScanConfigRequest"
           },
           {
             "name": "scan_config",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.ScanConfig"
+            "type": "google.cloud.websecurityscanner_v1beta.types.ScanConfig"
           },
           {
             "name": "update_mask",
@@ -1995,14 +1996,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.types.ScanConfig",
+        "resultType": "google.cloud.websecurityscanner_v1beta.types.ScanConfig",
         "shortName": "update_scan_config"
       },
       "description": "Sample for UpdateScanConfig",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_update_scan_config_async.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_update_scan_config_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_UpdateScanConfig_async",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_UpdateScanConfig_async",
       "segments": [
         {
           "end": 55,
@@ -2035,20 +2036,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_update_scan_config_async.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_update_scan_config_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient",
+          "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient",
           "shortName": "WebSecurityScannerClient"
         },
-        "fullName": "google.cloud.websecurityscanner_v1alpha.WebSecurityScannerClient.update_scan_config",
+        "fullName": "google.cloud.websecurityscanner_v1beta.WebSecurityScannerClient.update_scan_config",
         "method": {
-          "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.UpdateScanConfig",
+          "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner.UpdateScanConfig",
           "service": {
-            "fullName": "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+            "fullName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
             "shortName": "WebSecurityScanner"
           },
           "shortName": "UpdateScanConfig"
@@ -2056,11 +2057,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.UpdateScanConfigRequest"
+            "type": "google.cloud.websecurityscanner_v1beta.types.UpdateScanConfigRequest"
           },
           {
             "name": "scan_config",
-            "type": "google.cloud.websecurityscanner_v1alpha.types.ScanConfig"
+            "type": "google.cloud.websecurityscanner_v1beta.types.ScanConfig"
           },
           {
             "name": "update_mask",
@@ -2079,14 +2080,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.websecurityscanner_v1alpha.types.ScanConfig",
+        "resultType": "google.cloud.websecurityscanner_v1beta.types.ScanConfig",
         "shortName": "update_scan_config"
       },
       "description": "Sample for UpdateScanConfig",
-      "file": "websecurityscanner_v1alpha_generated_web_security_scanner_update_scan_config_sync.py",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_update_scan_config_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "websecurityscanner_v1alpha_generated_WebSecurityScanner_UpdateScanConfig_sync",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_UpdateScanConfig_sync",
       "segments": [
         {
           "end": 55,
@@ -2119,7 +2120,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "websecurityscanner_v1alpha_generated_web_security_scanner_update_scan_config_sync.py"
+      "title": "websecurityscanner_v1beta_generated_web_security_scanner_update_scan_config_sync.py"
     }
   ]
 }

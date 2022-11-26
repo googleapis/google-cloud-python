@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.websecurityscanner_v1alpha.types import finding
@@ -37,12 +39,12 @@ class FindingTypeStats(proto.Message):
             finding type.
     """
 
-    finding_type = proto.Field(
+    finding_type: finding.Finding.FindingType = proto.Field(
         proto.ENUM,
         number=1,
         enum=finding.Finding.FindingType,
     )
-    finding_count = proto.Field(
+    finding_count: int = proto.Field(
         proto.INT32,
         number=2,
     )

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -35,11 +37,11 @@ class FindingTypeStats(proto.Message):
             finding type.
     """
 
-    finding_type = proto.Field(
+    finding_type: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    finding_count = proto.Field(
+    finding_count: int = proto.Field(
         proto.INT32,
         number=2,
     )

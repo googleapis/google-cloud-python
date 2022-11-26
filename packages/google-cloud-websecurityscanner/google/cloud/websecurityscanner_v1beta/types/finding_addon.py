@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -35,16 +37,16 @@ class Form(proto.Message):
         action_uri (str):
             ! The URI where to send the form when it's
             submitted.
-        fields (Sequence[str]):
+        fields (MutableSequence[str]):
             ! The names of form fields related to the
             vulnerability.
     """
 
-    action_uri = proto.Field(
+    action_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    fields = proto.RepeatedField(
+    fields: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -58,20 +60,20 @@ class OutdatedLibrary(proto.Message):
             The name of the outdated library.
         version (str):
             The version number.
-        learn_more_urls (Sequence[str]):
+        learn_more_urls (MutableSequence[str]):
             URLs to learn more information about the
             vulnerabilities in the library.
     """
 
-    library_name = proto.Field(
+    library_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    learn_more_urls = proto.RepeatedField(
+    learn_more_urls: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -88,11 +90,11 @@ class ViolatingResource(proto.Message):
             URL of this violating resource.
     """
 
-    content_type = proto.Field(
+    content_type: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    resource_url = proto.Field(
+    resource_url: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -102,11 +104,11 @@ class VulnerableParameters(proto.Message):
     r"""Information about vulnerable request parameters.
 
     Attributes:
-        parameter_names (Sequence[str]):
+        parameter_names (MutableSequence[str]):
             The vulnerable parameter names.
     """
 
-    parameter_names = proto.RepeatedField(
+    parameter_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -116,9 +118,9 @@ class VulnerableHeaders(proto.Message):
     r"""Information about vulnerable or missing HTTP Headers.
 
     Attributes:
-        headers (Sequence[google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders.Header]):
+        headers (MutableSequence[google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders.Header]):
             List of vulnerable headers.
-        missing_headers (Sequence[google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders.Header]):
+        missing_headers (MutableSequence[google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders.Header]):
             List of missing headers.
     """
 
@@ -132,21 +134,21 @@ class VulnerableHeaders(proto.Message):
                 Header value.
         """
 
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        value = proto.Field(
+        value: str = proto.Field(
             proto.STRING,
             number=2,
         )
 
-    headers = proto.RepeatedField(
+    headers: MutableSequence[Header] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=Header,
     )
-    missing_headers = proto.RepeatedField(
+    missing_headers: MutableSequence[Header] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=Header,
@@ -157,7 +159,7 @@ class Xss(proto.Message):
     r"""Information reported for an XSS.
 
     Attributes:
-        stack_traces (Sequence[str]):
+        stack_traces (MutableSequence[str]):
             Stack traces leading to the point where the
             XSS occurred.
         error_message (str):
@@ -165,11 +167,11 @@ class Xss(proto.Message):
             breakage.
     """
 
-    stack_traces = proto.RepeatedField(
+    stack_traces: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    error_message = proto.Field(
+    error_message: str = proto.Field(
         proto.STRING,
         number=2,
     )

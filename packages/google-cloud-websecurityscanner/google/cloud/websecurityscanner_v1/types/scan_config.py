@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -42,7 +44,7 @@ class ScanConfig(proto.Message):
             to 20 inclusively. If the field is unspecified or its value
             is set 0, server will default to 15. Other values outside of
             [5, 20] range will be rejected with INVALID_ARGUMENT error.
-        starting_urls (Sequence[str]):
+        starting_urls (MutableSequence[str]):
             Required. The starting URLs from which the
             scanner finds site pages.
         authentication (google.cloud.websecurityscanner_v1.types.ScanConfig.Authentication):
@@ -51,7 +53,7 @@ class ScanConfig(proto.Message):
             configuration during scanning.
         user_agent (google.cloud.websecurityscanner_v1.types.ScanConfig.UserAgent):
             The user agent used during scanning.
-        blacklist_patterns (Sequence[str]):
+        blacklist_patterns (MutableSequence[str]):
             The excluded URL patterns as described in
             https://cloud.google.com/security-command-center/docs/how-to-use-web-security-scanner#excluding_urls
         schedule (google.cloud.websecurityscanner_v1.types.ScanConfig.Schedule):
@@ -140,11 +142,11 @@ class ScanConfig(proto.Message):
                     included in audit logs.
             """
 
-            username = proto.Field(
+            username: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            password = proto.Field(
+            password: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
@@ -166,15 +168,15 @@ class ScanConfig(proto.Message):
                     Required. The login form URL of the website.
             """
 
-            username = proto.Field(
+            username: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            password = proto.Field(
+            password: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
-            login_url = proto.Field(
+            login_url: str = proto.Field(
                 proto.STRING,
                 number=3,
             )
@@ -207,31 +209,31 @@ class ScanConfig(proto.Message):
                         (IAP).
                 """
 
-                target_audience_client_id = proto.Field(
+                target_audience_client_id: str = proto.Field(
                     proto.STRING,
                     number=1,
                 )
 
-            iap_test_service_account_info = proto.Field(
+            iap_test_service_account_info: "ScanConfig.Authentication.IapCredential.IapTestServiceAccountInfo" = proto.Field(
                 proto.MESSAGE,
                 number=1,
                 oneof="iap_credentials",
                 message="ScanConfig.Authentication.IapCredential.IapTestServiceAccountInfo",
             )
 
-        google_account = proto.Field(
+        google_account: "ScanConfig.Authentication.GoogleAccount" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="authentication",
             message="ScanConfig.Authentication.GoogleAccount",
         )
-        custom_account = proto.Field(
+        custom_account: "ScanConfig.Authentication.CustomAccount" = proto.Field(
             proto.MESSAGE,
             number=2,
             oneof="authentication",
             message="ScanConfig.Authentication.CustomAccount",
         )
-        iap_credential = proto.Field(
+        iap_credential: "ScanConfig.Authentication.IapCredential" = proto.Field(
             proto.MESSAGE,
             number=4,
             oneof="authentication",
@@ -253,70 +255,70 @@ class ScanConfig(proto.Message):
                 executions in days.
         """
 
-        schedule_time = proto.Field(
+        schedule_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=1,
             message=timestamp_pb2.Timestamp,
         )
-        interval_duration_days = proto.Field(
+        interval_duration_days: int = proto.Field(
             proto.INT32,
             number=2,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    max_qps = proto.Field(
+    max_qps: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    starting_urls = proto.RepeatedField(
+    starting_urls: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    authentication = proto.Field(
+    authentication: Authentication = proto.Field(
         proto.MESSAGE,
         number=5,
         message=Authentication,
     )
-    user_agent = proto.Field(
+    user_agent: UserAgent = proto.Field(
         proto.ENUM,
         number=6,
         enum=UserAgent,
     )
-    blacklist_patterns = proto.RepeatedField(
+    blacklist_patterns: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
-    schedule = proto.Field(
+    schedule: Schedule = proto.Field(
         proto.MESSAGE,
         number=8,
         message=Schedule,
     )
-    export_to_security_command_center = proto.Field(
+    export_to_security_command_center: ExportToSecurityCommandCenter = proto.Field(
         proto.ENUM,
         number=10,
         enum=ExportToSecurityCommandCenter,
     )
-    risk_level = proto.Field(
+    risk_level: RiskLevel = proto.Field(
         proto.ENUM,
         number=12,
         enum=RiskLevel,
     )
-    managed_scan = proto.Field(
+    managed_scan: bool = proto.Field(
         proto.BOOL,
         number=13,
     )
-    static_ip_scan = proto.Field(
+    static_ip_scan: bool = proto.Field(
         proto.BOOL,
         number=14,
     )
-    ignore_http_status_errors = proto.Field(
+    ignore_http_status_errors: bool = proto.Field(
         proto.BOOL,
         number=15,
     )

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -46,7 +48,7 @@ class ScanRunWarningTrace(proto.Message):
         BLOCKED_BY_IAP = 4
         NO_STARTING_URL_FOUND_FOR_MANAGED_SCAN = 5
 
-    code = proto.Field(
+    code: Code = proto.Field(
         proto.ENUM,
         number=1,
         enum=Code,

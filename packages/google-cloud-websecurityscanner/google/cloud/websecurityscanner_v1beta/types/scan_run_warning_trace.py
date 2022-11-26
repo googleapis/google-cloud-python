@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -45,7 +47,7 @@ class ScanRunWarningTrace(proto.Message):
         TOO_MANY_FUZZ_TASKS = 3
         BLOCKED_BY_IAP = 4
 
-    code = proto.Field(
+    code: Code = proto.Field(
         proto.ENUM,
         number=1,
         enum=Code,

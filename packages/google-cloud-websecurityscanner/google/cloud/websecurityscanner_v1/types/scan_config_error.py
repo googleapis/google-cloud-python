@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -89,12 +91,12 @@ class ScanConfigError(proto.Message):
         UNSUPPORTED_FINDING_TYPE = 41
         UNSUPPORTED_URL_SCHEME = 42
 
-    code = proto.Field(
+    code: Code = proto.Field(
         proto.ENUM,
         number=1,
         enum=Code,
     )
-    field_name = proto.Field(
+    field_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
