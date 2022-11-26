@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
@@ -213,12 +215,12 @@ class TimestampRange(proto.Message):
             End of the period (exclusive).
     """
 
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
@@ -270,22 +272,22 @@ class Location(proto.Message):
         NEIGHBORHOOD = 9
         STREET_ADDRESS = 10
 
-    location_type = proto.Field(
+    location_type: LocationType = proto.Field(
         proto.ENUM,
         number=1,
         enum=LocationType,
     )
-    postal_address = proto.Field(
+    postal_address: postal_address_pb2.PostalAddress = proto.Field(
         proto.MESSAGE,
         number=2,
         message=postal_address_pb2.PostalAddress,
     )
-    lat_lng = proto.Field(
+    lat_lng: latlng_pb2.LatLng = proto.Field(
         proto.MESSAGE,
         number=3,
         message=latlng_pb2.LatLng,
     )
-    radius_miles = proto.Field(
+    radius_miles: float = proto.Field(
         proto.DOUBLE,
         number=4,
     )
@@ -365,23 +367,23 @@ class RequestMetadata(proto.Message):
             the time of the call to the service.
     """
 
-    domain = proto.Field(
+    domain: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    session_id = proto.Field(
+    session_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    user_id = proto.Field(
+    user_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    allow_missing_ids = proto.Field(
+    allow_missing_ids: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    device_info = proto.Field(
+    device_info: "DeviceInfo" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="DeviceInfo",
@@ -398,7 +400,7 @@ class ResponseMetadata(proto.Message):
             This id is logged for tracking purposes.
     """
 
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -431,12 +433,12 @@ class DeviceInfo(proto.Message):
         BOT = 5
         OTHER = 6
 
-    device_type = proto.Field(
+    device_type: DeviceType = proto.Field(
         proto.ENUM,
         number=1,
         enum=DeviceType,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -447,7 +449,7 @@ class CustomAttribute(proto.Message):
     non-filterable.
 
     Attributes:
-        string_values (Sequence[str]):
+        string_values (MutableSequence[str]):
             Exactly one of
             [string_values][google.cloud.talent.v4.CustomAttribute.string_values]
             or
@@ -463,7 +465,7 @@ class CustomAttribute(proto.Message):
             unfilterable ``string_values`` is 50KB.
 
             Empty string isn't allowed.
-        long_values (Sequence[int]):
+        long_values (MutableSequence[int]):
             Exactly one of
             [string_values][google.cloud.talent.v4.CustomAttribute.string_values]
             or
@@ -493,19 +495,19 @@ class CustomAttribute(proto.Message):
             Default is false.
     """
 
-    string_values = proto.RepeatedField(
+    string_values: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    long_values = proto.RepeatedField(
+    long_values: MutableSequence[int] = proto.RepeatedField(
         proto.INT64,
         number=2,
     )
-    filterable = proto.Field(
+    filterable: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    keyword_searchable = proto.Field(
+    keyword_searchable: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -532,15 +534,15 @@ class SpellingCorrection(proto.Message):
             "software <b><i>engineer</i></b>".
     """
 
-    corrected = proto.Field(
+    corrected: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    corrected_text = proto.Field(
+    corrected_text: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    corrected_html = proto.Field(
+    corrected_html: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -550,7 +552,7 @@ class CompensationInfo(proto.Message):
     r"""Job compensation details.
 
     Attributes:
-        entries (Sequence[google.cloud.talent_v4.types.CompensationInfo.CompensationEntry]):
+        entries (MutableSequence[google.cloud.talent_v4.types.CompensationInfo.CompensationEntry]):
             Job compensation information.
 
             At most one entry can be of type
@@ -693,33 +695,33 @@ class CompensationInfo(proto.Message):
                 -  ANNUAL: 1
         """
 
-        type_ = proto.Field(
+        type_: "CompensationInfo.CompensationType" = proto.Field(
             proto.ENUM,
             number=1,
             enum="CompensationInfo.CompensationType",
         )
-        unit = proto.Field(
+        unit: "CompensationInfo.CompensationUnit" = proto.Field(
             proto.ENUM,
             number=2,
             enum="CompensationInfo.CompensationUnit",
         )
-        amount = proto.Field(
+        amount: money_pb2.Money = proto.Field(
             proto.MESSAGE,
             number=3,
             oneof="compensation_amount",
             message=money_pb2.Money,
         )
-        range_ = proto.Field(
+        range_: "CompensationInfo.CompensationRange" = proto.Field(
             proto.MESSAGE,
             number=4,
             oneof="compensation_amount",
             message="CompensationInfo.CompensationRange",
         )
-        description = proto.Field(
+        description: str = proto.Field(
             proto.STRING,
             number=5,
         )
-        expected_units_per_year = proto.Field(
+        expected_units_per_year: wrappers_pb2.DoubleValue = proto.Field(
             proto.MESSAGE,
             number=6,
             message=wrappers_pb2.DoubleValue,
@@ -741,28 +743,28 @@ class CompensationInfo(proto.Message):
                 max_compensation.
         """
 
-        max_compensation = proto.Field(
+        max_compensation: money_pb2.Money = proto.Field(
             proto.MESSAGE,
             number=2,
             message=money_pb2.Money,
         )
-        min_compensation = proto.Field(
+        min_compensation: money_pb2.Money = proto.Field(
             proto.MESSAGE,
             number=1,
             message=money_pb2.Money,
         )
 
-    entries = proto.RepeatedField(
+    entries: MutableSequence[CompensationEntry] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=CompensationEntry,
     )
-    annualized_base_compensation_range = proto.Field(
+    annualized_base_compensation_range: CompensationRange = proto.Field(
         proto.MESSAGE,
         number=2,
         message=CompensationRange,
     )
-    annualized_total_compensation_range = proto.Field(
+    annualized_total_compensation_range: CompensationRange = proto.Field(
         proto.MESSAGE,
         number=3,
         message=CompensationRange,
@@ -810,38 +812,38 @@ class BatchOperationMetadata(proto.Message):
         CANCELLING = 5
         CANCELLED = 6
 
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
     )
-    state_description = proto.Field(
+    state_description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    success_count = proto.Field(
+    success_count: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    failure_count = proto.Field(
+    failure_count: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    total_count = proto.Field(
+    total_count: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -46,11 +48,11 @@ class CreateTenantRequest(proto.Message):
             Required. The tenant to be created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    tenant = proto.Field(
+    tenant: gct_tenant.Tenant = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gct_tenant.Tenant,
@@ -68,7 +70,7 @@ class GetTenantRequest(proto.Message):
             for example, "projects/foo/tenants/bar".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -95,12 +97,12 @@ class UpdateTenantRequest(proto.Message):
             [Tenant][google.cloud.talent.v4beta1.Tenant] are supported.
     """
 
-    tenant = proto.Field(
+    tenant: gct_tenant.Tenant = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gct_tenant.Tenant,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -118,7 +120,7 @@ class DeleteTenantRequest(proto.Message):
             for example, "projects/foo/tenants/bar".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -143,15 +145,15 @@ class ListTenantsRequest(proto.Message):
             number is provided.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -161,7 +163,7 @@ class ListTenantsResponse(proto.Message):
     r"""The List tenants response object.
 
     Attributes:
-        tenants (Sequence[google.cloud.talent_v4beta1.types.Tenant]):
+        tenants (MutableSequence[google.cloud.talent_v4beta1.types.Tenant]):
             Tenants for the current client.
         next_page_token (str):
             A token to retrieve the next page of results.
@@ -174,16 +176,16 @@ class ListTenantsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    tenants = proto.RepeatedField(
+    tenants: MutableSequence[gct_tenant.Tenant] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gct_tenant.Tenant,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    metadata = proto.Field(
+    metadata: common.ResponseMetadata = proto.Field(
         proto.MESSAGE,
         number=3,
         message=common.ResponseMetadata,

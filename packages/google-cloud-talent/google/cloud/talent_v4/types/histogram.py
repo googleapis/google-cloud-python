@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -37,7 +39,7 @@ class HistogramQuery(proto.Message):
             for details about syntax.
     """
 
-    histogram_query = proto.Field(
+    histogram_query: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -51,7 +53,7 @@ class HistogramQueryResult(proto.Message):
     Attributes:
         histogram_query (str):
             Requested histogram expression.
-        histogram (Mapping[str, int]):
+        histogram (MutableMapping[str, int]):
             A map from the values of the facet associated with distinct
             values to the number of matching entries with corresponding
             value.
@@ -67,11 +69,11 @@ class HistogramQueryResult(proto.Message):
                ``0-MAX``.
     """
 
-    histogram_query = proto.Field(
+    histogram_query: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    histogram = proto.MapField(
+    histogram: MutableMapping[str, int] = proto.MapField(
         proto.STRING,
         proto.INT64,
         number=2,

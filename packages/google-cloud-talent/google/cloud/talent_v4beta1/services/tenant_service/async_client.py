@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -165,9 +175,9 @@ class TenantServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, TenantServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the tenant service client.
@@ -211,12 +221,12 @@ class TenantServiceAsyncClient:
 
     async def create_tenant(
         self,
-        request: Union[tenant_service.CreateTenantRequest, dict] = None,
+        request: Optional[Union[tenant_service.CreateTenantRequest, dict]] = None,
         *,
-        parent: str = None,
-        tenant: gct_tenant.Tenant = None,
+        parent: Optional[str] = None,
+        tenant: Optional[gct_tenant.Tenant] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_tenant.Tenant:
         r"""Creates a new tenant entity.
@@ -252,7 +262,7 @@ class TenantServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.talent_v4beta1.types.CreateTenantRequest, dict]):
+            request (Optional[Union[google.cloud.talent_v4beta1.types.CreateTenantRequest, dict]]):
                 The request object. The Request of the CreateTenant
                 method.
             parent (:class:`str`):
@@ -333,11 +343,11 @@ class TenantServiceAsyncClient:
 
     async def get_tenant(
         self,
-        request: Union[tenant_service.GetTenantRequest, dict] = None,
+        request: Optional[Union[tenant_service.GetTenantRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tenant.Tenant:
         r"""Retrieves specified tenant.
@@ -369,7 +379,7 @@ class TenantServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.talent_v4beta1.types.GetTenantRequest, dict]):
+            request (Optional[Union[google.cloud.talent_v4beta1.types.GetTenantRequest, dict]]):
                 The request object. Request for getting a tenant by
                 name.
             name (:class:`str`):
@@ -454,11 +464,11 @@ class TenantServiceAsyncClient:
 
     async def update_tenant(
         self,
-        request: Union[tenant_service.UpdateTenantRequest, dict] = None,
+        request: Optional[Union[tenant_service.UpdateTenantRequest, dict]] = None,
         *,
-        tenant: gct_tenant.Tenant = None,
+        tenant: Optional[gct_tenant.Tenant] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_tenant.Tenant:
         r"""Updates specified tenant.
@@ -493,7 +503,7 @@ class TenantServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.talent_v4beta1.types.UpdateTenantRequest, dict]):
+            request (Optional[Union[google.cloud.talent_v4beta1.types.UpdateTenantRequest, dict]]):
                 The request object. Request for updating a specified
                 tenant.
             tenant (:class:`google.cloud.talent_v4beta1.types.Tenant`):
@@ -567,11 +577,11 @@ class TenantServiceAsyncClient:
 
     async def delete_tenant(
         self,
-        request: Union[tenant_service.DeleteTenantRequest, dict] = None,
+        request: Optional[Union[tenant_service.DeleteTenantRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes specified tenant.
@@ -600,7 +610,7 @@ class TenantServiceAsyncClient:
                 await client.delete_tenant(request=request)
 
         Args:
-            request (Union[google.cloud.talent_v4beta1.types.DeleteTenantRequest, dict]):
+            request (Optional[Union[google.cloud.talent_v4beta1.types.DeleteTenantRequest, dict]]):
                 The request object. Request to delete a tenant.
             name (:class:`str`):
                 Required. The resource name of the tenant to be deleted.
@@ -669,11 +679,11 @@ class TenantServiceAsyncClient:
 
     async def list_tenants(
         self,
-        request: Union[tenant_service.ListTenantsRequest, dict] = None,
+        request: Optional[Union[tenant_service.ListTenantsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTenantsAsyncPager:
         r"""Lists all tenants associated with the project.
@@ -706,7 +716,7 @@ class TenantServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.talent_v4beta1.types.ListTenantsRequest, dict]):
+            request (Optional[Union[google.cloud.talent_v4beta1.types.ListTenantsRequest, dict]]):
                 The request object. List tenants for which the client
                 has ACL visibility.
             parent (:class:`str`):
@@ -796,10 +806,10 @@ class TenantServiceAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.

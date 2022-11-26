@@ -2,12 +2,13 @@
   "clientLibrary": {
     "apis": [
       {
-        "id": "google.cloud.talent.v4beta1",
-        "version": "v4beta1"
+        "id": "google.cloud.talent.v4",
+        "version": "v4"
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-talent"
+    "name": "google-cloud-talent",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -15,14 +16,14 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.CompanyServiceAsyncClient",
+          "fullName": "google.cloud.talent_v4.CompanyServiceAsyncClient",
           "shortName": "CompanyServiceAsyncClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.CompanyServiceAsyncClient.create_company",
+        "fullName": "google.cloud.talent_v4.CompanyServiceAsyncClient.create_company",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.CompanyService.CreateCompany",
+          "fullName": "google.cloud.talent.v4.CompanyService.CreateCompany",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.CompanyService",
+            "fullName": "google.cloud.talent.v4.CompanyService",
             "shortName": "CompanyService"
           },
           "shortName": "CreateCompany"
@@ -30,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.CreateCompanyRequest"
+            "type": "google.cloud.talent_v4.types.CreateCompanyRequest"
           },
           {
             "name": "parent",
@@ -38,7 +39,7 @@
           },
           {
             "name": "company",
-            "type": "google.cloud.talent_v4beta1.types.Company"
+            "type": "google.cloud.talent_v4.types.Company"
           },
           {
             "name": "retry",
@@ -53,14 +54,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.types.Company",
+        "resultType": "google.cloud.talent_v4.types.Company",
         "shortName": "create_company"
       },
       "description": "Sample for CreateCompany",
-      "file": "jobs_v4beta1_generated_company_service_create_company_async.py",
+      "file": "jobs_v4_generated_company_service_create_company_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_CompanyService_CreateCompany_async",
+      "regionTag": "jobs_v4_generated_CompanyService_CreateCompany_async",
       "segments": [
         {
           "end": 56,
@@ -93,20 +94,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_company_service_create_company_async.py"
+      "title": "jobs_v4_generated_company_service_create_company_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.CompanyServiceClient",
+          "fullName": "google.cloud.talent_v4.CompanyServiceClient",
           "shortName": "CompanyServiceClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.CompanyServiceClient.create_company",
+        "fullName": "google.cloud.talent_v4.CompanyServiceClient.create_company",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.CompanyService.CreateCompany",
+          "fullName": "google.cloud.talent.v4.CompanyService.CreateCompany",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.CompanyService",
+            "fullName": "google.cloud.talent.v4.CompanyService",
             "shortName": "CompanyService"
           },
           "shortName": "CreateCompany"
@@ -114,7 +115,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.CreateCompanyRequest"
+            "type": "google.cloud.talent_v4.types.CreateCompanyRequest"
           },
           {
             "name": "parent",
@@ -122,7 +123,7 @@
           },
           {
             "name": "company",
-            "type": "google.cloud.talent_v4beta1.types.Company"
+            "type": "google.cloud.talent_v4.types.Company"
           },
           {
             "name": "retry",
@@ -137,14 +138,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.types.Company",
+        "resultType": "google.cloud.talent_v4.types.Company",
         "shortName": "create_company"
       },
       "description": "Sample for CreateCompany",
-      "file": "jobs_v4beta1_generated_company_service_create_company_sync.py",
+      "file": "jobs_v4_generated_company_service_create_company_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_CompanyService_CreateCompany_sync",
+      "regionTag": "jobs_v4_generated_CompanyService_CreateCompany_sync",
       "segments": [
         {
           "end": 56,
@@ -177,21 +178,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_company_service_create_company_sync.py"
+      "title": "jobs_v4_generated_company_service_create_company_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.CompanyServiceAsyncClient",
+          "fullName": "google.cloud.talent_v4.CompanyServiceAsyncClient",
           "shortName": "CompanyServiceAsyncClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.CompanyServiceAsyncClient.delete_company",
+        "fullName": "google.cloud.talent_v4.CompanyServiceAsyncClient.delete_company",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.CompanyService.DeleteCompany",
+          "fullName": "google.cloud.talent.v4.CompanyService.DeleteCompany",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.CompanyService",
+            "fullName": "google.cloud.talent.v4.CompanyService",
             "shortName": "CompanyService"
           },
           "shortName": "DeleteCompany"
@@ -199,7 +200,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.DeleteCompanyRequest"
+            "type": "google.cloud.talent_v4.types.DeleteCompanyRequest"
           },
           {
             "name": "name",
@@ -221,10 +222,10 @@
         "shortName": "delete_company"
       },
       "description": "Sample for DeleteCompany",
-      "file": "jobs_v4beta1_generated_company_service_delete_company_async.py",
+      "file": "jobs_v4_generated_company_service_delete_company_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_CompanyService_DeleteCompany_async",
+      "regionTag": "jobs_v4_generated_CompanyService_DeleteCompany_async",
       "segments": [
         {
           "end": 49,
@@ -255,20 +256,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_company_service_delete_company_async.py"
+      "title": "jobs_v4_generated_company_service_delete_company_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.CompanyServiceClient",
+          "fullName": "google.cloud.talent_v4.CompanyServiceClient",
           "shortName": "CompanyServiceClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.CompanyServiceClient.delete_company",
+        "fullName": "google.cloud.talent_v4.CompanyServiceClient.delete_company",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.CompanyService.DeleteCompany",
+          "fullName": "google.cloud.talent.v4.CompanyService.DeleteCompany",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.CompanyService",
+            "fullName": "google.cloud.talent.v4.CompanyService",
             "shortName": "CompanyService"
           },
           "shortName": "DeleteCompany"
@@ -276,7 +277,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.DeleteCompanyRequest"
+            "type": "google.cloud.talent_v4.types.DeleteCompanyRequest"
           },
           {
             "name": "name",
@@ -298,10 +299,10 @@
         "shortName": "delete_company"
       },
       "description": "Sample for DeleteCompany",
-      "file": "jobs_v4beta1_generated_company_service_delete_company_sync.py",
+      "file": "jobs_v4_generated_company_service_delete_company_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_CompanyService_DeleteCompany_sync",
+      "regionTag": "jobs_v4_generated_CompanyService_DeleteCompany_sync",
       "segments": [
         {
           "end": 49,
@@ -332,21 +333,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_company_service_delete_company_sync.py"
+      "title": "jobs_v4_generated_company_service_delete_company_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.CompanyServiceAsyncClient",
+          "fullName": "google.cloud.talent_v4.CompanyServiceAsyncClient",
           "shortName": "CompanyServiceAsyncClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.CompanyServiceAsyncClient.get_company",
+        "fullName": "google.cloud.talent_v4.CompanyServiceAsyncClient.get_company",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.CompanyService.GetCompany",
+          "fullName": "google.cloud.talent.v4.CompanyService.GetCompany",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.CompanyService",
+            "fullName": "google.cloud.talent.v4.CompanyService",
             "shortName": "CompanyService"
           },
           "shortName": "GetCompany"
@@ -354,7 +355,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.GetCompanyRequest"
+            "type": "google.cloud.talent_v4.types.GetCompanyRequest"
           },
           {
             "name": "name",
@@ -373,14 +374,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.types.Company",
+        "resultType": "google.cloud.talent_v4.types.Company",
         "shortName": "get_company"
       },
       "description": "Sample for GetCompany",
-      "file": "jobs_v4beta1_generated_company_service_get_company_async.py",
+      "file": "jobs_v4_generated_company_service_get_company_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_CompanyService_GetCompany_async",
+      "regionTag": "jobs_v4_generated_CompanyService_GetCompany_async",
       "segments": [
         {
           "end": 51,
@@ -413,20 +414,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_company_service_get_company_async.py"
+      "title": "jobs_v4_generated_company_service_get_company_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.CompanyServiceClient",
+          "fullName": "google.cloud.talent_v4.CompanyServiceClient",
           "shortName": "CompanyServiceClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.CompanyServiceClient.get_company",
+        "fullName": "google.cloud.talent_v4.CompanyServiceClient.get_company",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.CompanyService.GetCompany",
+          "fullName": "google.cloud.talent.v4.CompanyService.GetCompany",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.CompanyService",
+            "fullName": "google.cloud.talent.v4.CompanyService",
             "shortName": "CompanyService"
           },
           "shortName": "GetCompany"
@@ -434,7 +435,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.GetCompanyRequest"
+            "type": "google.cloud.talent_v4.types.GetCompanyRequest"
           },
           {
             "name": "name",
@@ -453,14 +454,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.types.Company",
+        "resultType": "google.cloud.talent_v4.types.Company",
         "shortName": "get_company"
       },
       "description": "Sample for GetCompany",
-      "file": "jobs_v4beta1_generated_company_service_get_company_sync.py",
+      "file": "jobs_v4_generated_company_service_get_company_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_CompanyService_GetCompany_sync",
+      "regionTag": "jobs_v4_generated_CompanyService_GetCompany_sync",
       "segments": [
         {
           "end": 51,
@@ -493,21 +494,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_company_service_get_company_sync.py"
+      "title": "jobs_v4_generated_company_service_get_company_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.CompanyServiceAsyncClient",
+          "fullName": "google.cloud.talent_v4.CompanyServiceAsyncClient",
           "shortName": "CompanyServiceAsyncClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.CompanyServiceAsyncClient.list_companies",
+        "fullName": "google.cloud.talent_v4.CompanyServiceAsyncClient.list_companies",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.CompanyService.ListCompanies",
+          "fullName": "google.cloud.talent.v4.CompanyService.ListCompanies",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.CompanyService",
+            "fullName": "google.cloud.talent.v4.CompanyService",
             "shortName": "CompanyService"
           },
           "shortName": "ListCompanies"
@@ -515,7 +516,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.ListCompaniesRequest"
+            "type": "google.cloud.talent_v4.types.ListCompaniesRequest"
           },
           {
             "name": "parent",
@@ -534,14 +535,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.services.company_service.pagers.ListCompaniesAsyncPager",
+        "resultType": "google.cloud.talent_v4.services.company_service.pagers.ListCompaniesAsyncPager",
         "shortName": "list_companies"
       },
       "description": "Sample for ListCompanies",
-      "file": "jobs_v4beta1_generated_company_service_list_companies_async.py",
+      "file": "jobs_v4_generated_company_service_list_companies_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_CompanyService_ListCompanies_async",
+      "regionTag": "jobs_v4_generated_CompanyService_ListCompanies_async",
       "segments": [
         {
           "end": 52,
@@ -574,20 +575,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_company_service_list_companies_async.py"
+      "title": "jobs_v4_generated_company_service_list_companies_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.CompanyServiceClient",
+          "fullName": "google.cloud.talent_v4.CompanyServiceClient",
           "shortName": "CompanyServiceClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.CompanyServiceClient.list_companies",
+        "fullName": "google.cloud.talent_v4.CompanyServiceClient.list_companies",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.CompanyService.ListCompanies",
+          "fullName": "google.cloud.talent.v4.CompanyService.ListCompanies",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.CompanyService",
+            "fullName": "google.cloud.talent.v4.CompanyService",
             "shortName": "CompanyService"
           },
           "shortName": "ListCompanies"
@@ -595,7 +596,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.ListCompaniesRequest"
+            "type": "google.cloud.talent_v4.types.ListCompaniesRequest"
           },
           {
             "name": "parent",
@@ -614,14 +615,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.services.company_service.pagers.ListCompaniesPager",
+        "resultType": "google.cloud.talent_v4.services.company_service.pagers.ListCompaniesPager",
         "shortName": "list_companies"
       },
       "description": "Sample for ListCompanies",
-      "file": "jobs_v4beta1_generated_company_service_list_companies_sync.py",
+      "file": "jobs_v4_generated_company_service_list_companies_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_CompanyService_ListCompanies_sync",
+      "regionTag": "jobs_v4_generated_CompanyService_ListCompanies_sync",
       "segments": [
         {
           "end": 52,
@@ -654,21 +655,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_company_service_list_companies_sync.py"
+      "title": "jobs_v4_generated_company_service_list_companies_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.CompanyServiceAsyncClient",
+          "fullName": "google.cloud.talent_v4.CompanyServiceAsyncClient",
           "shortName": "CompanyServiceAsyncClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.CompanyServiceAsyncClient.update_company",
+        "fullName": "google.cloud.talent_v4.CompanyServiceAsyncClient.update_company",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.CompanyService.UpdateCompany",
+          "fullName": "google.cloud.talent.v4.CompanyService.UpdateCompany",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.CompanyService",
+            "fullName": "google.cloud.talent.v4.CompanyService",
             "shortName": "CompanyService"
           },
           "shortName": "UpdateCompany"
@@ -676,11 +677,15 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.UpdateCompanyRequest"
+            "type": "google.cloud.talent_v4.types.UpdateCompanyRequest"
           },
           {
             "name": "company",
-            "type": "google.cloud.talent_v4beta1.types.Company"
+            "type": "google.cloud.talent_v4.types.Company"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
           },
           {
             "name": "retry",
@@ -695,14 +700,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.types.Company",
+        "resultType": "google.cloud.talent_v4.types.Company",
         "shortName": "update_company"
       },
       "description": "Sample for UpdateCompany",
-      "file": "jobs_v4beta1_generated_company_service_update_company_async.py",
+      "file": "jobs_v4_generated_company_service_update_company_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_CompanyService_UpdateCompany_async",
+      "regionTag": "jobs_v4_generated_CompanyService_UpdateCompany_async",
       "segments": [
         {
           "end": 55,
@@ -735,20 +740,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_company_service_update_company_async.py"
+      "title": "jobs_v4_generated_company_service_update_company_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.CompanyServiceClient",
+          "fullName": "google.cloud.talent_v4.CompanyServiceClient",
           "shortName": "CompanyServiceClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.CompanyServiceClient.update_company",
+        "fullName": "google.cloud.talent_v4.CompanyServiceClient.update_company",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.CompanyService.UpdateCompany",
+          "fullName": "google.cloud.talent.v4.CompanyService.UpdateCompany",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.CompanyService",
+            "fullName": "google.cloud.talent.v4.CompanyService",
             "shortName": "CompanyService"
           },
           "shortName": "UpdateCompany"
@@ -756,11 +761,15 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.UpdateCompanyRequest"
+            "type": "google.cloud.talent_v4.types.UpdateCompanyRequest"
           },
           {
             "name": "company",
-            "type": "google.cloud.talent_v4beta1.types.Company"
+            "type": "google.cloud.talent_v4.types.Company"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
           },
           {
             "name": "retry",
@@ -775,14 +784,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.types.Company",
+        "resultType": "google.cloud.talent_v4.types.Company",
         "shortName": "update_company"
       },
       "description": "Sample for UpdateCompany",
-      "file": "jobs_v4beta1_generated_company_service_update_company_sync.py",
+      "file": "jobs_v4_generated_company_service_update_company_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_CompanyService_UpdateCompany_sync",
+      "regionTag": "jobs_v4_generated_CompanyService_UpdateCompany_sync",
       "segments": [
         {
           "end": 55,
@@ -815,21 +824,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_company_service_update_company_sync.py"
+      "title": "jobs_v4_generated_company_service_update_company_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.CompletionAsyncClient",
+          "fullName": "google.cloud.talent_v4.CompletionAsyncClient",
           "shortName": "CompletionAsyncClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.CompletionAsyncClient.complete_query",
+        "fullName": "google.cloud.talent_v4.CompletionAsyncClient.complete_query",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.Completion.CompleteQuery",
+          "fullName": "google.cloud.talent.v4.Completion.CompleteQuery",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.Completion",
+            "fullName": "google.cloud.talent.v4.Completion",
             "shortName": "Completion"
           },
           "shortName": "CompleteQuery"
@@ -837,7 +846,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.CompleteQueryRequest"
+            "type": "google.cloud.talent_v4.types.CompleteQueryRequest"
           },
           {
             "name": "retry",
@@ -852,14 +861,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.types.CompleteQueryResponse",
+        "resultType": "google.cloud.talent_v4.types.CompleteQueryResponse",
         "shortName": "complete_query"
       },
       "description": "Sample for CompleteQuery",
-      "file": "jobs_v4beta1_generated_completion_complete_query_async.py",
+      "file": "jobs_v4_generated_completion_complete_query_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_Completion_CompleteQuery_async",
+      "regionTag": "jobs_v4_generated_Completion_CompleteQuery_async",
       "segments": [
         {
           "end": 53,
@@ -892,20 +901,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_completion_complete_query_async.py"
+      "title": "jobs_v4_generated_completion_complete_query_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.CompletionClient",
+          "fullName": "google.cloud.talent_v4.CompletionClient",
           "shortName": "CompletionClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.CompletionClient.complete_query",
+        "fullName": "google.cloud.talent_v4.CompletionClient.complete_query",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.Completion.CompleteQuery",
+          "fullName": "google.cloud.talent.v4.Completion.CompleteQuery",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.Completion",
+            "fullName": "google.cloud.talent.v4.Completion",
             "shortName": "Completion"
           },
           "shortName": "CompleteQuery"
@@ -913,7 +922,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.CompleteQueryRequest"
+            "type": "google.cloud.talent_v4.types.CompleteQueryRequest"
           },
           {
             "name": "retry",
@@ -928,14 +937,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.types.CompleteQueryResponse",
+        "resultType": "google.cloud.talent_v4.types.CompleteQueryResponse",
         "shortName": "complete_query"
       },
       "description": "Sample for CompleteQuery",
-      "file": "jobs_v4beta1_generated_completion_complete_query_sync.py",
+      "file": "jobs_v4_generated_completion_complete_query_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_Completion_CompleteQuery_sync",
+      "regionTag": "jobs_v4_generated_Completion_CompleteQuery_sync",
       "segments": [
         {
           "end": 53,
@@ -968,21 +977,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_completion_complete_query_sync.py"
+      "title": "jobs_v4_generated_completion_complete_query_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.EventServiceAsyncClient",
+          "fullName": "google.cloud.talent_v4.EventServiceAsyncClient",
           "shortName": "EventServiceAsyncClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.EventServiceAsyncClient.create_client_event",
+        "fullName": "google.cloud.talent_v4.EventServiceAsyncClient.create_client_event",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.EventService.CreateClientEvent",
+          "fullName": "google.cloud.talent.v4.EventService.CreateClientEvent",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.EventService",
+            "fullName": "google.cloud.talent.v4.EventService",
             "shortName": "EventService"
           },
           "shortName": "CreateClientEvent"
@@ -990,7 +999,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.CreateClientEventRequest"
+            "type": "google.cloud.talent_v4.types.CreateClientEventRequest"
           },
           {
             "name": "parent",
@@ -998,7 +1007,7 @@
           },
           {
             "name": "client_event",
-            "type": "google.cloud.talent_v4beta1.types.ClientEvent"
+            "type": "google.cloud.talent_v4.types.ClientEvent"
           },
           {
             "name": "retry",
@@ -1013,14 +1022,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.types.ClientEvent",
+        "resultType": "google.cloud.talent_v4.types.ClientEvent",
         "shortName": "create_client_event"
       },
       "description": "Sample for CreateClientEvent",
-      "file": "jobs_v4beta1_generated_event_service_create_client_event_async.py",
+      "file": "jobs_v4_generated_event_service_create_client_event_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_EventService_CreateClientEvent_async",
+      "regionTag": "jobs_v4_generated_EventService_CreateClientEvent_async",
       "segments": [
         {
           "end": 57,
@@ -1053,20 +1062,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_event_service_create_client_event_async.py"
+      "title": "jobs_v4_generated_event_service_create_client_event_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.EventServiceClient",
+          "fullName": "google.cloud.talent_v4.EventServiceClient",
           "shortName": "EventServiceClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.EventServiceClient.create_client_event",
+        "fullName": "google.cloud.talent_v4.EventServiceClient.create_client_event",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.EventService.CreateClientEvent",
+          "fullName": "google.cloud.talent.v4.EventService.CreateClientEvent",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.EventService",
+            "fullName": "google.cloud.talent.v4.EventService",
             "shortName": "EventService"
           },
           "shortName": "CreateClientEvent"
@@ -1074,7 +1083,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.CreateClientEventRequest"
+            "type": "google.cloud.talent_v4.types.CreateClientEventRequest"
           },
           {
             "name": "parent",
@@ -1082,7 +1091,7 @@
           },
           {
             "name": "client_event",
-            "type": "google.cloud.talent_v4beta1.types.ClientEvent"
+            "type": "google.cloud.talent_v4.types.ClientEvent"
           },
           {
             "name": "retry",
@@ -1097,14 +1106,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.types.ClientEvent",
+        "resultType": "google.cloud.talent_v4.types.ClientEvent",
         "shortName": "create_client_event"
       },
       "description": "Sample for CreateClientEvent",
-      "file": "jobs_v4beta1_generated_event_service_create_client_event_sync.py",
+      "file": "jobs_v4_generated_event_service_create_client_event_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_EventService_CreateClientEvent_sync",
+      "regionTag": "jobs_v4_generated_EventService_CreateClientEvent_sync",
       "segments": [
         {
           "end": 57,
@@ -1137,21 +1146,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_event_service_create_client_event_sync.py"
+      "title": "jobs_v4_generated_event_service_create_client_event_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.JobServiceAsyncClient",
+          "fullName": "google.cloud.talent_v4.JobServiceAsyncClient",
           "shortName": "JobServiceAsyncClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.JobServiceAsyncClient.batch_create_jobs",
+        "fullName": "google.cloud.talent_v4.JobServiceAsyncClient.batch_create_jobs",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.JobService.BatchCreateJobs",
+          "fullName": "google.cloud.talent.v4.JobService.BatchCreateJobs",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.JobService",
+            "fullName": "google.cloud.talent.v4.JobService",
             "shortName": "JobService"
           },
           "shortName": "BatchCreateJobs"
@@ -1159,7 +1168,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.BatchCreateJobsRequest"
+            "type": "google.cloud.talent_v4.types.BatchCreateJobsRequest"
           },
           {
             "name": "parent",
@@ -1167,7 +1176,7 @@
           },
           {
             "name": "jobs",
-            "type": "Sequence[google.cloud.talent_v4beta1.types.Job]"
+            "type": "MutableSequence[google.cloud.talent_v4.types.Job]"
           },
           {
             "name": "retry",
@@ -1186,10 +1195,10 @@
         "shortName": "batch_create_jobs"
       },
       "description": "Sample for BatchCreateJobs",
-      "file": "jobs_v4beta1_generated_job_service_batch_create_jobs_async.py",
+      "file": "jobs_v4_generated_job_service_batch_create_jobs_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_JobService_BatchCreateJobs_async",
+      "regionTag": "jobs_v4_generated_JobService_BatchCreateJobs_async",
       "segments": [
         {
           "end": 62,
@@ -1222,20 +1231,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_job_service_batch_create_jobs_async.py"
+      "title": "jobs_v4_generated_job_service_batch_create_jobs_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.JobServiceClient",
+          "fullName": "google.cloud.talent_v4.JobServiceClient",
           "shortName": "JobServiceClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.JobServiceClient.batch_create_jobs",
+        "fullName": "google.cloud.talent_v4.JobServiceClient.batch_create_jobs",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.JobService.BatchCreateJobs",
+          "fullName": "google.cloud.talent.v4.JobService.BatchCreateJobs",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.JobService",
+            "fullName": "google.cloud.talent.v4.JobService",
             "shortName": "JobService"
           },
           "shortName": "BatchCreateJobs"
@@ -1243,7 +1252,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.BatchCreateJobsRequest"
+            "type": "google.cloud.talent_v4.types.BatchCreateJobsRequest"
           },
           {
             "name": "parent",
@@ -1251,7 +1260,7 @@
           },
           {
             "name": "jobs",
-            "type": "Sequence[google.cloud.talent_v4beta1.types.Job]"
+            "type": "MutableSequence[google.cloud.talent_v4.types.Job]"
           },
           {
             "name": "retry",
@@ -1270,10 +1279,10 @@
         "shortName": "batch_create_jobs"
       },
       "description": "Sample for BatchCreateJobs",
-      "file": "jobs_v4beta1_generated_job_service_batch_create_jobs_sync.py",
+      "file": "jobs_v4_generated_job_service_batch_create_jobs_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_JobService_BatchCreateJobs_sync",
+      "regionTag": "jobs_v4_generated_JobService_BatchCreateJobs_sync",
       "segments": [
         {
           "end": 62,
@@ -1306,21 +1315,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_job_service_batch_create_jobs_sync.py"
+      "title": "jobs_v4_generated_job_service_batch_create_jobs_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.JobServiceAsyncClient",
+          "fullName": "google.cloud.talent_v4.JobServiceAsyncClient",
           "shortName": "JobServiceAsyncClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.JobServiceAsyncClient.batch_delete_jobs",
+        "fullName": "google.cloud.talent_v4.JobServiceAsyncClient.batch_delete_jobs",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.JobService.BatchDeleteJobs",
+          "fullName": "google.cloud.talent.v4.JobService.BatchDeleteJobs",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.JobService",
+            "fullName": "google.cloud.talent.v4.JobService",
             "shortName": "JobService"
           },
           "shortName": "BatchDeleteJobs"
@@ -1328,15 +1337,15 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.BatchDeleteJobsRequest"
+            "type": "google.cloud.talent_v4.types.BatchDeleteJobsRequest"
           },
           {
             "name": "parent",
             "type": "str"
           },
           {
-            "name": "filter",
-            "type": "str"
+            "name": "names",
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -1351,21 +1360,22 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
         "shortName": "batch_delete_jobs"
       },
       "description": "Sample for BatchDeleteJobs",
-      "file": "jobs_v4beta1_generated_job_service_batch_delete_jobs_async.py",
+      "file": "jobs_v4_generated_job_service_batch_delete_jobs_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_JobService_BatchDeleteJobs_async",
+      "regionTag": "jobs_v4_generated_JobService_BatchDeleteJobs_async",
       "segments": [
         {
-          "end": 50,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 50,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
@@ -1375,33 +1385,35 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 46,
+          "end": 45,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 47,
+          "end": 52,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 51,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_job_service_batch_delete_jobs_async.py"
+      "title": "jobs_v4_generated_job_service_batch_delete_jobs_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.JobServiceClient",
+          "fullName": "google.cloud.talent_v4.JobServiceClient",
           "shortName": "JobServiceClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.JobServiceClient.batch_delete_jobs",
+        "fullName": "google.cloud.talent_v4.JobServiceClient.batch_delete_jobs",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.JobService.BatchDeleteJobs",
+          "fullName": "google.cloud.talent.v4.JobService.BatchDeleteJobs",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.JobService",
+            "fullName": "google.cloud.talent.v4.JobService",
             "shortName": "JobService"
           },
           "shortName": "BatchDeleteJobs"
@@ -1409,15 +1421,15 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.BatchDeleteJobsRequest"
+            "type": "google.cloud.talent_v4.types.BatchDeleteJobsRequest"
           },
           {
             "name": "parent",
             "type": "str"
           },
           {
-            "name": "filter",
-            "type": "str"
+            "name": "names",
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -1432,21 +1444,22 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
+        "resultType": "google.api_core.operation.Operation",
         "shortName": "batch_delete_jobs"
       },
       "description": "Sample for BatchDeleteJobs",
-      "file": "jobs_v4beta1_generated_job_service_batch_delete_jobs_sync.py",
+      "file": "jobs_v4_generated_job_service_batch_delete_jobs_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_JobService_BatchDeleteJobs_sync",
+      "regionTag": "jobs_v4_generated_JobService_BatchDeleteJobs_sync",
       "segments": [
         {
-          "end": 50,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 50,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
@@ -1456,34 +1469,36 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 46,
+          "end": 45,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 47,
+          "end": 52,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 51,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_job_service_batch_delete_jobs_sync.py"
+      "title": "jobs_v4_generated_job_service_batch_delete_jobs_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.JobServiceAsyncClient",
+          "fullName": "google.cloud.talent_v4.JobServiceAsyncClient",
           "shortName": "JobServiceAsyncClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.JobServiceAsyncClient.batch_update_jobs",
+        "fullName": "google.cloud.talent_v4.JobServiceAsyncClient.batch_update_jobs",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.JobService.BatchUpdateJobs",
+          "fullName": "google.cloud.talent.v4.JobService.BatchUpdateJobs",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.JobService",
+            "fullName": "google.cloud.talent.v4.JobService",
             "shortName": "JobService"
           },
           "shortName": "BatchUpdateJobs"
@@ -1491,7 +1506,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.BatchUpdateJobsRequest"
+            "type": "google.cloud.talent_v4.types.BatchUpdateJobsRequest"
           },
           {
             "name": "parent",
@@ -1499,7 +1514,7 @@
           },
           {
             "name": "jobs",
-            "type": "Sequence[google.cloud.talent_v4beta1.types.Job]"
+            "type": "MutableSequence[google.cloud.talent_v4.types.Job]"
           },
           {
             "name": "retry",
@@ -1518,10 +1533,10 @@
         "shortName": "batch_update_jobs"
       },
       "description": "Sample for BatchUpdateJobs",
-      "file": "jobs_v4beta1_generated_job_service_batch_update_jobs_async.py",
+      "file": "jobs_v4_generated_job_service_batch_update_jobs_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_JobService_BatchUpdateJobs_async",
+      "regionTag": "jobs_v4_generated_JobService_BatchUpdateJobs_async",
       "segments": [
         {
           "end": 62,
@@ -1554,20 +1569,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_job_service_batch_update_jobs_async.py"
+      "title": "jobs_v4_generated_job_service_batch_update_jobs_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.JobServiceClient",
+          "fullName": "google.cloud.talent_v4.JobServiceClient",
           "shortName": "JobServiceClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.JobServiceClient.batch_update_jobs",
+        "fullName": "google.cloud.talent_v4.JobServiceClient.batch_update_jobs",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.JobService.BatchUpdateJobs",
+          "fullName": "google.cloud.talent.v4.JobService.BatchUpdateJobs",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.JobService",
+            "fullName": "google.cloud.talent.v4.JobService",
             "shortName": "JobService"
           },
           "shortName": "BatchUpdateJobs"
@@ -1575,7 +1590,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.BatchUpdateJobsRequest"
+            "type": "google.cloud.talent_v4.types.BatchUpdateJobsRequest"
           },
           {
             "name": "parent",
@@ -1583,7 +1598,7 @@
           },
           {
             "name": "jobs",
-            "type": "Sequence[google.cloud.talent_v4beta1.types.Job]"
+            "type": "MutableSequence[google.cloud.talent_v4.types.Job]"
           },
           {
             "name": "retry",
@@ -1602,10 +1617,10 @@
         "shortName": "batch_update_jobs"
       },
       "description": "Sample for BatchUpdateJobs",
-      "file": "jobs_v4beta1_generated_job_service_batch_update_jobs_sync.py",
+      "file": "jobs_v4_generated_job_service_batch_update_jobs_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_JobService_BatchUpdateJobs_sync",
+      "regionTag": "jobs_v4_generated_JobService_BatchUpdateJobs_sync",
       "segments": [
         {
           "end": 62,
@@ -1638,21 +1653,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_job_service_batch_update_jobs_sync.py"
+      "title": "jobs_v4_generated_job_service_batch_update_jobs_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.JobServiceAsyncClient",
+          "fullName": "google.cloud.talent_v4.JobServiceAsyncClient",
           "shortName": "JobServiceAsyncClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.JobServiceAsyncClient.create_job",
+        "fullName": "google.cloud.talent_v4.JobServiceAsyncClient.create_job",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.JobService.CreateJob",
+          "fullName": "google.cloud.talent.v4.JobService.CreateJob",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.JobService",
+            "fullName": "google.cloud.talent.v4.JobService",
             "shortName": "JobService"
           },
           "shortName": "CreateJob"
@@ -1660,7 +1675,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.CreateJobRequest"
+            "type": "google.cloud.talent_v4.types.CreateJobRequest"
           },
           {
             "name": "parent",
@@ -1668,7 +1683,7 @@
           },
           {
             "name": "job",
-            "type": "google.cloud.talent_v4beta1.types.Job"
+            "type": "google.cloud.talent_v4.types.Job"
           },
           {
             "name": "retry",
@@ -1683,14 +1698,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.types.Job",
+        "resultType": "google.cloud.talent_v4.types.Job",
         "shortName": "create_job"
       },
       "description": "Sample for CreateJob",
-      "file": "jobs_v4beta1_generated_job_service_create_job_async.py",
+      "file": "jobs_v4_generated_job_service_create_job_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_JobService_CreateJob_async",
+      "regionTag": "jobs_v4_generated_JobService_CreateJob_async",
       "segments": [
         {
           "end": 58,
@@ -1723,20 +1738,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_job_service_create_job_async.py"
+      "title": "jobs_v4_generated_job_service_create_job_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.JobServiceClient",
+          "fullName": "google.cloud.talent_v4.JobServiceClient",
           "shortName": "JobServiceClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.JobServiceClient.create_job",
+        "fullName": "google.cloud.talent_v4.JobServiceClient.create_job",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.JobService.CreateJob",
+          "fullName": "google.cloud.talent.v4.JobService.CreateJob",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.JobService",
+            "fullName": "google.cloud.talent.v4.JobService",
             "shortName": "JobService"
           },
           "shortName": "CreateJob"
@@ -1744,7 +1759,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.CreateJobRequest"
+            "type": "google.cloud.talent_v4.types.CreateJobRequest"
           },
           {
             "name": "parent",
@@ -1752,7 +1767,7 @@
           },
           {
             "name": "job",
-            "type": "google.cloud.talent_v4beta1.types.Job"
+            "type": "google.cloud.talent_v4.types.Job"
           },
           {
             "name": "retry",
@@ -1767,14 +1782,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.types.Job",
+        "resultType": "google.cloud.talent_v4.types.Job",
         "shortName": "create_job"
       },
       "description": "Sample for CreateJob",
-      "file": "jobs_v4beta1_generated_job_service_create_job_sync.py",
+      "file": "jobs_v4_generated_job_service_create_job_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_JobService_CreateJob_sync",
+      "regionTag": "jobs_v4_generated_JobService_CreateJob_sync",
       "segments": [
         {
           "end": 58,
@@ -1807,21 +1822,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_job_service_create_job_sync.py"
+      "title": "jobs_v4_generated_job_service_create_job_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.JobServiceAsyncClient",
+          "fullName": "google.cloud.talent_v4.JobServiceAsyncClient",
           "shortName": "JobServiceAsyncClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.JobServiceAsyncClient.delete_job",
+        "fullName": "google.cloud.talent_v4.JobServiceAsyncClient.delete_job",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.JobService.DeleteJob",
+          "fullName": "google.cloud.talent.v4.JobService.DeleteJob",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.JobService",
+            "fullName": "google.cloud.talent.v4.JobService",
             "shortName": "JobService"
           },
           "shortName": "DeleteJob"
@@ -1829,7 +1844,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.DeleteJobRequest"
+            "type": "google.cloud.talent_v4.types.DeleteJobRequest"
           },
           {
             "name": "name",
@@ -1851,10 +1866,10 @@
         "shortName": "delete_job"
       },
       "description": "Sample for DeleteJob",
-      "file": "jobs_v4beta1_generated_job_service_delete_job_async.py",
+      "file": "jobs_v4_generated_job_service_delete_job_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_JobService_DeleteJob_async",
+      "regionTag": "jobs_v4_generated_JobService_DeleteJob_async",
       "segments": [
         {
           "end": 49,
@@ -1885,20 +1900,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_job_service_delete_job_async.py"
+      "title": "jobs_v4_generated_job_service_delete_job_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.JobServiceClient",
+          "fullName": "google.cloud.talent_v4.JobServiceClient",
           "shortName": "JobServiceClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.JobServiceClient.delete_job",
+        "fullName": "google.cloud.talent_v4.JobServiceClient.delete_job",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.JobService.DeleteJob",
+          "fullName": "google.cloud.talent.v4.JobService.DeleteJob",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.JobService",
+            "fullName": "google.cloud.talent.v4.JobService",
             "shortName": "JobService"
           },
           "shortName": "DeleteJob"
@@ -1906,7 +1921,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.DeleteJobRequest"
+            "type": "google.cloud.talent_v4.types.DeleteJobRequest"
           },
           {
             "name": "name",
@@ -1928,10 +1943,10 @@
         "shortName": "delete_job"
       },
       "description": "Sample for DeleteJob",
-      "file": "jobs_v4beta1_generated_job_service_delete_job_sync.py",
+      "file": "jobs_v4_generated_job_service_delete_job_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_JobService_DeleteJob_sync",
+      "regionTag": "jobs_v4_generated_JobService_DeleteJob_sync",
       "segments": [
         {
           "end": 49,
@@ -1962,21 +1977,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_job_service_delete_job_sync.py"
+      "title": "jobs_v4_generated_job_service_delete_job_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.JobServiceAsyncClient",
+          "fullName": "google.cloud.talent_v4.JobServiceAsyncClient",
           "shortName": "JobServiceAsyncClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.JobServiceAsyncClient.get_job",
+        "fullName": "google.cloud.talent_v4.JobServiceAsyncClient.get_job",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.JobService.GetJob",
+          "fullName": "google.cloud.talent.v4.JobService.GetJob",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.JobService",
+            "fullName": "google.cloud.talent.v4.JobService",
             "shortName": "JobService"
           },
           "shortName": "GetJob"
@@ -1984,7 +1999,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.GetJobRequest"
+            "type": "google.cloud.talent_v4.types.GetJobRequest"
           },
           {
             "name": "name",
@@ -2003,14 +2018,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.types.Job",
+        "resultType": "google.cloud.talent_v4.types.Job",
         "shortName": "get_job"
       },
       "description": "Sample for GetJob",
-      "file": "jobs_v4beta1_generated_job_service_get_job_async.py",
+      "file": "jobs_v4_generated_job_service_get_job_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_JobService_GetJob_async",
+      "regionTag": "jobs_v4_generated_JobService_GetJob_async",
       "segments": [
         {
           "end": 51,
@@ -2043,20 +2058,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_job_service_get_job_async.py"
+      "title": "jobs_v4_generated_job_service_get_job_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.JobServiceClient",
+          "fullName": "google.cloud.talent_v4.JobServiceClient",
           "shortName": "JobServiceClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.JobServiceClient.get_job",
+        "fullName": "google.cloud.talent_v4.JobServiceClient.get_job",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.JobService.GetJob",
+          "fullName": "google.cloud.talent.v4.JobService.GetJob",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.JobService",
+            "fullName": "google.cloud.talent.v4.JobService",
             "shortName": "JobService"
           },
           "shortName": "GetJob"
@@ -2064,7 +2079,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.GetJobRequest"
+            "type": "google.cloud.talent_v4.types.GetJobRequest"
           },
           {
             "name": "name",
@@ -2083,14 +2098,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.types.Job",
+        "resultType": "google.cloud.talent_v4.types.Job",
         "shortName": "get_job"
       },
       "description": "Sample for GetJob",
-      "file": "jobs_v4beta1_generated_job_service_get_job_sync.py",
+      "file": "jobs_v4_generated_job_service_get_job_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_JobService_GetJob_sync",
+      "regionTag": "jobs_v4_generated_JobService_GetJob_sync",
       "segments": [
         {
           "end": 51,
@@ -2123,21 +2138,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_job_service_get_job_sync.py"
+      "title": "jobs_v4_generated_job_service_get_job_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.JobServiceAsyncClient",
+          "fullName": "google.cloud.talent_v4.JobServiceAsyncClient",
           "shortName": "JobServiceAsyncClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.JobServiceAsyncClient.list_jobs",
+        "fullName": "google.cloud.talent_v4.JobServiceAsyncClient.list_jobs",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.JobService.ListJobs",
+          "fullName": "google.cloud.talent.v4.JobService.ListJobs",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.JobService",
+            "fullName": "google.cloud.talent.v4.JobService",
             "shortName": "JobService"
           },
           "shortName": "ListJobs"
@@ -2145,7 +2160,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.ListJobsRequest"
+            "type": "google.cloud.talent_v4.types.ListJobsRequest"
           },
           {
             "name": "parent",
@@ -2168,14 +2183,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.services.job_service.pagers.ListJobsAsyncPager",
+        "resultType": "google.cloud.talent_v4.services.job_service.pagers.ListJobsAsyncPager",
         "shortName": "list_jobs"
       },
       "description": "Sample for ListJobs",
-      "file": "jobs_v4beta1_generated_job_service_list_jobs_async.py",
+      "file": "jobs_v4_generated_job_service_list_jobs_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_JobService_ListJobs_async",
+      "regionTag": "jobs_v4_generated_JobService_ListJobs_async",
       "segments": [
         {
           "end": 53,
@@ -2208,20 +2223,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_job_service_list_jobs_async.py"
+      "title": "jobs_v4_generated_job_service_list_jobs_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.JobServiceClient",
+          "fullName": "google.cloud.talent_v4.JobServiceClient",
           "shortName": "JobServiceClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.JobServiceClient.list_jobs",
+        "fullName": "google.cloud.talent_v4.JobServiceClient.list_jobs",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.JobService.ListJobs",
+          "fullName": "google.cloud.talent.v4.JobService.ListJobs",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.JobService",
+            "fullName": "google.cloud.talent.v4.JobService",
             "shortName": "JobService"
           },
           "shortName": "ListJobs"
@@ -2229,7 +2244,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.ListJobsRequest"
+            "type": "google.cloud.talent_v4.types.ListJobsRequest"
           },
           {
             "name": "parent",
@@ -2252,14 +2267,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.services.job_service.pagers.ListJobsPager",
+        "resultType": "google.cloud.talent_v4.services.job_service.pagers.ListJobsPager",
         "shortName": "list_jobs"
       },
       "description": "Sample for ListJobs",
-      "file": "jobs_v4beta1_generated_job_service_list_jobs_sync.py",
+      "file": "jobs_v4_generated_job_service_list_jobs_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_JobService_ListJobs_sync",
+      "regionTag": "jobs_v4_generated_JobService_ListJobs_sync",
       "segments": [
         {
           "end": 53,
@@ -2292,21 +2307,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_job_service_list_jobs_sync.py"
+      "title": "jobs_v4_generated_job_service_list_jobs_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.JobServiceAsyncClient",
+          "fullName": "google.cloud.talent_v4.JobServiceAsyncClient",
           "shortName": "JobServiceAsyncClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.JobServiceAsyncClient.search_jobs_for_alert",
+        "fullName": "google.cloud.talent_v4.JobServiceAsyncClient.search_jobs_for_alert",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.JobService.SearchJobsForAlert",
+          "fullName": "google.cloud.talent.v4.JobService.SearchJobsForAlert",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.JobService",
+            "fullName": "google.cloud.talent.v4.JobService",
             "shortName": "JobService"
           },
           "shortName": "SearchJobsForAlert"
@@ -2314,7 +2329,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.SearchJobsRequest"
+            "type": "google.cloud.talent_v4.types.SearchJobsRequest"
           },
           {
             "name": "retry",
@@ -2329,22 +2344,22 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.services.job_service.pagers.SearchJobsForAlertAsyncPager",
+        "resultType": "google.cloud.talent_v4.types.SearchJobsResponse",
         "shortName": "search_jobs_for_alert"
       },
       "description": "Sample for SearchJobsForAlert",
-      "file": "jobs_v4beta1_generated_job_service_search_jobs_for_alert_async.py",
+      "file": "jobs_v4_generated_job_service_search_jobs_for_alert_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_JobService_SearchJobsForAlert_async",
+      "regionTag": "jobs_v4_generated_JobService_SearchJobsForAlert_async",
       "segments": [
         {
-          "end": 52,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -2364,25 +2379,25 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 52,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_job_service_search_jobs_for_alert_async.py"
+      "title": "jobs_v4_generated_job_service_search_jobs_for_alert_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.JobServiceClient",
+          "fullName": "google.cloud.talent_v4.JobServiceClient",
           "shortName": "JobServiceClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.JobServiceClient.search_jobs_for_alert",
+        "fullName": "google.cloud.talent_v4.JobServiceClient.search_jobs_for_alert",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.JobService.SearchJobsForAlert",
+          "fullName": "google.cloud.talent.v4.JobService.SearchJobsForAlert",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.JobService",
+            "fullName": "google.cloud.talent.v4.JobService",
             "shortName": "JobService"
           },
           "shortName": "SearchJobsForAlert"
@@ -2390,7 +2405,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.SearchJobsRequest"
+            "type": "google.cloud.talent_v4.types.SearchJobsRequest"
           },
           {
             "name": "retry",
@@ -2405,22 +2420,22 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.services.job_service.pagers.SearchJobsForAlertPager",
+        "resultType": "google.cloud.talent_v4.types.SearchJobsResponse",
         "shortName": "search_jobs_for_alert"
       },
       "description": "Sample for SearchJobsForAlert",
-      "file": "jobs_v4beta1_generated_job_service_search_jobs_for_alert_sync.py",
+      "file": "jobs_v4_generated_job_service_search_jobs_for_alert_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_JobService_SearchJobsForAlert_sync",
+      "regionTag": "jobs_v4_generated_JobService_SearchJobsForAlert_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -2440,26 +2455,26 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 52,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_job_service_search_jobs_for_alert_sync.py"
+      "title": "jobs_v4_generated_job_service_search_jobs_for_alert_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.JobServiceAsyncClient",
+          "fullName": "google.cloud.talent_v4.JobServiceAsyncClient",
           "shortName": "JobServiceAsyncClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.JobServiceAsyncClient.search_jobs",
+        "fullName": "google.cloud.talent_v4.JobServiceAsyncClient.search_jobs",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.JobService.SearchJobs",
+          "fullName": "google.cloud.talent.v4.JobService.SearchJobs",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.JobService",
+            "fullName": "google.cloud.talent.v4.JobService",
             "shortName": "JobService"
           },
           "shortName": "SearchJobs"
@@ -2467,7 +2482,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.SearchJobsRequest"
+            "type": "google.cloud.talent_v4.types.SearchJobsRequest"
           },
           {
             "name": "retry",
@@ -2482,22 +2497,22 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.services.job_service.pagers.SearchJobsAsyncPager",
+        "resultType": "google.cloud.talent_v4.types.SearchJobsResponse",
         "shortName": "search_jobs"
       },
       "description": "Sample for SearchJobs",
-      "file": "jobs_v4beta1_generated_job_service_search_jobs_async.py",
+      "file": "jobs_v4_generated_job_service_search_jobs_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_JobService_SearchJobs_async",
+      "regionTag": "jobs_v4_generated_JobService_SearchJobs_async",
       "segments": [
         {
-          "end": 52,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -2517,25 +2532,25 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 52,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_job_service_search_jobs_async.py"
+      "title": "jobs_v4_generated_job_service_search_jobs_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.JobServiceClient",
+          "fullName": "google.cloud.talent_v4.JobServiceClient",
           "shortName": "JobServiceClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.JobServiceClient.search_jobs",
+        "fullName": "google.cloud.talent_v4.JobServiceClient.search_jobs",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.JobService.SearchJobs",
+          "fullName": "google.cloud.talent.v4.JobService.SearchJobs",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.JobService",
+            "fullName": "google.cloud.talent.v4.JobService",
             "shortName": "JobService"
           },
           "shortName": "SearchJobs"
@@ -2543,7 +2558,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.SearchJobsRequest"
+            "type": "google.cloud.talent_v4.types.SearchJobsRequest"
           },
           {
             "name": "retry",
@@ -2558,22 +2573,22 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.services.job_service.pagers.SearchJobsPager",
+        "resultType": "google.cloud.talent_v4.types.SearchJobsResponse",
         "shortName": "search_jobs"
       },
       "description": "Sample for SearchJobs",
-      "file": "jobs_v4beta1_generated_job_service_search_jobs_sync.py",
+      "file": "jobs_v4_generated_job_service_search_jobs_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_JobService_SearchJobs_sync",
+      "regionTag": "jobs_v4_generated_JobService_SearchJobs_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -2593,26 +2608,26 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 52,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_job_service_search_jobs_sync.py"
+      "title": "jobs_v4_generated_job_service_search_jobs_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.JobServiceAsyncClient",
+          "fullName": "google.cloud.talent_v4.JobServiceAsyncClient",
           "shortName": "JobServiceAsyncClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.JobServiceAsyncClient.update_job",
+        "fullName": "google.cloud.talent_v4.JobServiceAsyncClient.update_job",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.JobService.UpdateJob",
+          "fullName": "google.cloud.talent.v4.JobService.UpdateJob",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.JobService",
+            "fullName": "google.cloud.talent.v4.JobService",
             "shortName": "JobService"
           },
           "shortName": "UpdateJob"
@@ -2620,11 +2635,15 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.UpdateJobRequest"
+            "type": "google.cloud.talent_v4.types.UpdateJobRequest"
           },
           {
             "name": "job",
-            "type": "google.cloud.talent_v4beta1.types.Job"
+            "type": "google.cloud.talent_v4.types.Job"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
           },
           {
             "name": "retry",
@@ -2639,14 +2658,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.types.Job",
+        "resultType": "google.cloud.talent_v4.types.Job",
         "shortName": "update_job"
       },
       "description": "Sample for UpdateJob",
-      "file": "jobs_v4beta1_generated_job_service_update_job_async.py",
+      "file": "jobs_v4_generated_job_service_update_job_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_JobService_UpdateJob_async",
+      "regionTag": "jobs_v4_generated_JobService_UpdateJob_async",
       "segments": [
         {
           "end": 57,
@@ -2679,20 +2698,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_job_service_update_job_async.py"
+      "title": "jobs_v4_generated_job_service_update_job_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.JobServiceClient",
+          "fullName": "google.cloud.talent_v4.JobServiceClient",
           "shortName": "JobServiceClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.JobServiceClient.update_job",
+        "fullName": "google.cloud.talent_v4.JobServiceClient.update_job",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.JobService.UpdateJob",
+          "fullName": "google.cloud.talent.v4.JobService.UpdateJob",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.JobService",
+            "fullName": "google.cloud.talent.v4.JobService",
             "shortName": "JobService"
           },
           "shortName": "UpdateJob"
@@ -2700,11 +2719,15 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.UpdateJobRequest"
+            "type": "google.cloud.talent_v4.types.UpdateJobRequest"
           },
           {
             "name": "job",
-            "type": "google.cloud.talent_v4beta1.types.Job"
+            "type": "google.cloud.talent_v4.types.Job"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
           },
           {
             "name": "retry",
@@ -2719,14 +2742,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.types.Job",
+        "resultType": "google.cloud.talent_v4.types.Job",
         "shortName": "update_job"
       },
       "description": "Sample for UpdateJob",
-      "file": "jobs_v4beta1_generated_job_service_update_job_sync.py",
+      "file": "jobs_v4_generated_job_service_update_job_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_JobService_UpdateJob_sync",
+      "regionTag": "jobs_v4_generated_JobService_UpdateJob_sync",
       "segments": [
         {
           "end": 57,
@@ -2759,21 +2782,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_job_service_update_job_sync.py"
+      "title": "jobs_v4_generated_job_service_update_job_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.TenantServiceAsyncClient",
+          "fullName": "google.cloud.talent_v4.TenantServiceAsyncClient",
           "shortName": "TenantServiceAsyncClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.TenantServiceAsyncClient.create_tenant",
+        "fullName": "google.cloud.talent_v4.TenantServiceAsyncClient.create_tenant",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.TenantService.CreateTenant",
+          "fullName": "google.cloud.talent.v4.TenantService.CreateTenant",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.TenantService",
+            "fullName": "google.cloud.talent.v4.TenantService",
             "shortName": "TenantService"
           },
           "shortName": "CreateTenant"
@@ -2781,7 +2804,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.CreateTenantRequest"
+            "type": "google.cloud.talent_v4.types.CreateTenantRequest"
           },
           {
             "name": "parent",
@@ -2789,7 +2812,7 @@
           },
           {
             "name": "tenant",
-            "type": "google.cloud.talent_v4beta1.types.Tenant"
+            "type": "google.cloud.talent_v4.types.Tenant"
           },
           {
             "name": "retry",
@@ -2804,14 +2827,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.types.Tenant",
+        "resultType": "google.cloud.talent_v4.types.Tenant",
         "shortName": "create_tenant"
       },
       "description": "Sample for CreateTenant",
-      "file": "jobs_v4beta1_generated_tenant_service_create_tenant_async.py",
+      "file": "jobs_v4_generated_tenant_service_create_tenant_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_TenantService_CreateTenant_async",
+      "regionTag": "jobs_v4_generated_TenantService_CreateTenant_async",
       "segments": [
         {
           "end": 55,
@@ -2844,20 +2867,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_tenant_service_create_tenant_async.py"
+      "title": "jobs_v4_generated_tenant_service_create_tenant_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.TenantServiceClient",
+          "fullName": "google.cloud.talent_v4.TenantServiceClient",
           "shortName": "TenantServiceClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.TenantServiceClient.create_tenant",
+        "fullName": "google.cloud.talent_v4.TenantServiceClient.create_tenant",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.TenantService.CreateTenant",
+          "fullName": "google.cloud.talent.v4.TenantService.CreateTenant",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.TenantService",
+            "fullName": "google.cloud.talent.v4.TenantService",
             "shortName": "TenantService"
           },
           "shortName": "CreateTenant"
@@ -2865,7 +2888,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.CreateTenantRequest"
+            "type": "google.cloud.talent_v4.types.CreateTenantRequest"
           },
           {
             "name": "parent",
@@ -2873,7 +2896,7 @@
           },
           {
             "name": "tenant",
-            "type": "google.cloud.talent_v4beta1.types.Tenant"
+            "type": "google.cloud.talent_v4.types.Tenant"
           },
           {
             "name": "retry",
@@ -2888,14 +2911,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.types.Tenant",
+        "resultType": "google.cloud.talent_v4.types.Tenant",
         "shortName": "create_tenant"
       },
       "description": "Sample for CreateTenant",
-      "file": "jobs_v4beta1_generated_tenant_service_create_tenant_sync.py",
+      "file": "jobs_v4_generated_tenant_service_create_tenant_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_TenantService_CreateTenant_sync",
+      "regionTag": "jobs_v4_generated_TenantService_CreateTenant_sync",
       "segments": [
         {
           "end": 55,
@@ -2928,21 +2951,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_tenant_service_create_tenant_sync.py"
+      "title": "jobs_v4_generated_tenant_service_create_tenant_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.TenantServiceAsyncClient",
+          "fullName": "google.cloud.talent_v4.TenantServiceAsyncClient",
           "shortName": "TenantServiceAsyncClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.TenantServiceAsyncClient.delete_tenant",
+        "fullName": "google.cloud.talent_v4.TenantServiceAsyncClient.delete_tenant",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.TenantService.DeleteTenant",
+          "fullName": "google.cloud.talent.v4.TenantService.DeleteTenant",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.TenantService",
+            "fullName": "google.cloud.talent.v4.TenantService",
             "shortName": "TenantService"
           },
           "shortName": "DeleteTenant"
@@ -2950,7 +2973,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.DeleteTenantRequest"
+            "type": "google.cloud.talent_v4.types.DeleteTenantRequest"
           },
           {
             "name": "name",
@@ -2972,10 +2995,10 @@
         "shortName": "delete_tenant"
       },
       "description": "Sample for DeleteTenant",
-      "file": "jobs_v4beta1_generated_tenant_service_delete_tenant_async.py",
+      "file": "jobs_v4_generated_tenant_service_delete_tenant_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_TenantService_DeleteTenant_async",
+      "regionTag": "jobs_v4_generated_TenantService_DeleteTenant_async",
       "segments": [
         {
           "end": 49,
@@ -3006,20 +3029,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_tenant_service_delete_tenant_async.py"
+      "title": "jobs_v4_generated_tenant_service_delete_tenant_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.TenantServiceClient",
+          "fullName": "google.cloud.talent_v4.TenantServiceClient",
           "shortName": "TenantServiceClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.TenantServiceClient.delete_tenant",
+        "fullName": "google.cloud.talent_v4.TenantServiceClient.delete_tenant",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.TenantService.DeleteTenant",
+          "fullName": "google.cloud.talent.v4.TenantService.DeleteTenant",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.TenantService",
+            "fullName": "google.cloud.talent.v4.TenantService",
             "shortName": "TenantService"
           },
           "shortName": "DeleteTenant"
@@ -3027,7 +3050,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.DeleteTenantRequest"
+            "type": "google.cloud.talent_v4.types.DeleteTenantRequest"
           },
           {
             "name": "name",
@@ -3049,10 +3072,10 @@
         "shortName": "delete_tenant"
       },
       "description": "Sample for DeleteTenant",
-      "file": "jobs_v4beta1_generated_tenant_service_delete_tenant_sync.py",
+      "file": "jobs_v4_generated_tenant_service_delete_tenant_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_TenantService_DeleteTenant_sync",
+      "regionTag": "jobs_v4_generated_TenantService_DeleteTenant_sync",
       "segments": [
         {
           "end": 49,
@@ -3083,21 +3106,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_tenant_service_delete_tenant_sync.py"
+      "title": "jobs_v4_generated_tenant_service_delete_tenant_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.TenantServiceAsyncClient",
+          "fullName": "google.cloud.talent_v4.TenantServiceAsyncClient",
           "shortName": "TenantServiceAsyncClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.TenantServiceAsyncClient.get_tenant",
+        "fullName": "google.cloud.talent_v4.TenantServiceAsyncClient.get_tenant",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.TenantService.GetTenant",
+          "fullName": "google.cloud.talent.v4.TenantService.GetTenant",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.TenantService",
+            "fullName": "google.cloud.talent.v4.TenantService",
             "shortName": "TenantService"
           },
           "shortName": "GetTenant"
@@ -3105,7 +3128,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.GetTenantRequest"
+            "type": "google.cloud.talent_v4.types.GetTenantRequest"
           },
           {
             "name": "name",
@@ -3124,14 +3147,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.types.Tenant",
+        "resultType": "google.cloud.talent_v4.types.Tenant",
         "shortName": "get_tenant"
       },
       "description": "Sample for GetTenant",
-      "file": "jobs_v4beta1_generated_tenant_service_get_tenant_async.py",
+      "file": "jobs_v4_generated_tenant_service_get_tenant_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_TenantService_GetTenant_async",
+      "regionTag": "jobs_v4_generated_TenantService_GetTenant_async",
       "segments": [
         {
           "end": 51,
@@ -3164,20 +3187,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_tenant_service_get_tenant_async.py"
+      "title": "jobs_v4_generated_tenant_service_get_tenant_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.TenantServiceClient",
+          "fullName": "google.cloud.talent_v4.TenantServiceClient",
           "shortName": "TenantServiceClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.TenantServiceClient.get_tenant",
+        "fullName": "google.cloud.talent_v4.TenantServiceClient.get_tenant",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.TenantService.GetTenant",
+          "fullName": "google.cloud.talent.v4.TenantService.GetTenant",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.TenantService",
+            "fullName": "google.cloud.talent.v4.TenantService",
             "shortName": "TenantService"
           },
           "shortName": "GetTenant"
@@ -3185,7 +3208,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.GetTenantRequest"
+            "type": "google.cloud.talent_v4.types.GetTenantRequest"
           },
           {
             "name": "name",
@@ -3204,14 +3227,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.types.Tenant",
+        "resultType": "google.cloud.talent_v4.types.Tenant",
         "shortName": "get_tenant"
       },
       "description": "Sample for GetTenant",
-      "file": "jobs_v4beta1_generated_tenant_service_get_tenant_sync.py",
+      "file": "jobs_v4_generated_tenant_service_get_tenant_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_TenantService_GetTenant_sync",
+      "regionTag": "jobs_v4_generated_TenantService_GetTenant_sync",
       "segments": [
         {
           "end": 51,
@@ -3244,21 +3267,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_tenant_service_get_tenant_sync.py"
+      "title": "jobs_v4_generated_tenant_service_get_tenant_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.TenantServiceAsyncClient",
+          "fullName": "google.cloud.talent_v4.TenantServiceAsyncClient",
           "shortName": "TenantServiceAsyncClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.TenantServiceAsyncClient.list_tenants",
+        "fullName": "google.cloud.talent_v4.TenantServiceAsyncClient.list_tenants",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.TenantService.ListTenants",
+          "fullName": "google.cloud.talent.v4.TenantService.ListTenants",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.TenantService",
+            "fullName": "google.cloud.talent.v4.TenantService",
             "shortName": "TenantService"
           },
           "shortName": "ListTenants"
@@ -3266,7 +3289,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.ListTenantsRequest"
+            "type": "google.cloud.talent_v4.types.ListTenantsRequest"
           },
           {
             "name": "parent",
@@ -3285,14 +3308,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.services.tenant_service.pagers.ListTenantsAsyncPager",
+        "resultType": "google.cloud.talent_v4.services.tenant_service.pagers.ListTenantsAsyncPager",
         "shortName": "list_tenants"
       },
       "description": "Sample for ListTenants",
-      "file": "jobs_v4beta1_generated_tenant_service_list_tenants_async.py",
+      "file": "jobs_v4_generated_tenant_service_list_tenants_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_TenantService_ListTenants_async",
+      "regionTag": "jobs_v4_generated_TenantService_ListTenants_async",
       "segments": [
         {
           "end": 52,
@@ -3325,20 +3348,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_tenant_service_list_tenants_async.py"
+      "title": "jobs_v4_generated_tenant_service_list_tenants_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.TenantServiceClient",
+          "fullName": "google.cloud.talent_v4.TenantServiceClient",
           "shortName": "TenantServiceClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.TenantServiceClient.list_tenants",
+        "fullName": "google.cloud.talent_v4.TenantServiceClient.list_tenants",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.TenantService.ListTenants",
+          "fullName": "google.cloud.talent.v4.TenantService.ListTenants",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.TenantService",
+            "fullName": "google.cloud.talent.v4.TenantService",
             "shortName": "TenantService"
           },
           "shortName": "ListTenants"
@@ -3346,7 +3369,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.ListTenantsRequest"
+            "type": "google.cloud.talent_v4.types.ListTenantsRequest"
           },
           {
             "name": "parent",
@@ -3365,14 +3388,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.services.tenant_service.pagers.ListTenantsPager",
+        "resultType": "google.cloud.talent_v4.services.tenant_service.pagers.ListTenantsPager",
         "shortName": "list_tenants"
       },
       "description": "Sample for ListTenants",
-      "file": "jobs_v4beta1_generated_tenant_service_list_tenants_sync.py",
+      "file": "jobs_v4_generated_tenant_service_list_tenants_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_TenantService_ListTenants_sync",
+      "regionTag": "jobs_v4_generated_TenantService_ListTenants_sync",
       "segments": [
         {
           "end": 52,
@@ -3405,21 +3428,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_tenant_service_list_tenants_sync.py"
+      "title": "jobs_v4_generated_tenant_service_list_tenants_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.TenantServiceAsyncClient",
+          "fullName": "google.cloud.talent_v4.TenantServiceAsyncClient",
           "shortName": "TenantServiceAsyncClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.TenantServiceAsyncClient.update_tenant",
+        "fullName": "google.cloud.talent_v4.TenantServiceAsyncClient.update_tenant",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.TenantService.UpdateTenant",
+          "fullName": "google.cloud.talent.v4.TenantService.UpdateTenant",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.TenantService",
+            "fullName": "google.cloud.talent.v4.TenantService",
             "shortName": "TenantService"
           },
           "shortName": "UpdateTenant"
@@ -3427,11 +3450,15 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.UpdateTenantRequest"
+            "type": "google.cloud.talent_v4.types.UpdateTenantRequest"
           },
           {
             "name": "tenant",
-            "type": "google.cloud.talent_v4beta1.types.Tenant"
+            "type": "google.cloud.talent_v4.types.Tenant"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
           },
           {
             "name": "retry",
@@ -3446,14 +3473,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.types.Tenant",
+        "resultType": "google.cloud.talent_v4.types.Tenant",
         "shortName": "update_tenant"
       },
       "description": "Sample for UpdateTenant",
-      "file": "jobs_v4beta1_generated_tenant_service_update_tenant_async.py",
+      "file": "jobs_v4_generated_tenant_service_update_tenant_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_TenantService_UpdateTenant_async",
+      "regionTag": "jobs_v4_generated_TenantService_UpdateTenant_async",
       "segments": [
         {
           "end": 54,
@@ -3486,20 +3513,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_tenant_service_update_tenant_async.py"
+      "title": "jobs_v4_generated_tenant_service_update_tenant_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.talent_v4beta1.TenantServiceClient",
+          "fullName": "google.cloud.talent_v4.TenantServiceClient",
           "shortName": "TenantServiceClient"
         },
-        "fullName": "google.cloud.talent_v4beta1.TenantServiceClient.update_tenant",
+        "fullName": "google.cloud.talent_v4.TenantServiceClient.update_tenant",
         "method": {
-          "fullName": "google.cloud.talent.v4beta1.TenantService.UpdateTenant",
+          "fullName": "google.cloud.talent.v4.TenantService.UpdateTenant",
           "service": {
-            "fullName": "google.cloud.talent.v4beta1.TenantService",
+            "fullName": "google.cloud.talent.v4.TenantService",
             "shortName": "TenantService"
           },
           "shortName": "UpdateTenant"
@@ -3507,11 +3534,15 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.talent_v4beta1.types.UpdateTenantRequest"
+            "type": "google.cloud.talent_v4.types.UpdateTenantRequest"
           },
           {
             "name": "tenant",
-            "type": "google.cloud.talent_v4beta1.types.Tenant"
+            "type": "google.cloud.talent_v4.types.Tenant"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
           },
           {
             "name": "retry",
@@ -3526,14 +3557,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.talent_v4beta1.types.Tenant",
+        "resultType": "google.cloud.talent_v4.types.Tenant",
         "shortName": "update_tenant"
       },
       "description": "Sample for UpdateTenant",
-      "file": "jobs_v4beta1_generated_tenant_service_update_tenant_sync.py",
+      "file": "jobs_v4_generated_tenant_service_update_tenant_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "jobs_v4beta1_generated_TenantService_UpdateTenant_sync",
+      "regionTag": "jobs_v4_generated_TenantService_UpdateTenant_sync",
       "segments": [
         {
           "end": 54,
@@ -3566,7 +3597,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "jobs_v4beta1_generated_tenant_service_update_tenant_sync.py"
+      "title": "jobs_v4_generated_tenant_service_update_tenant_sync.py"
     }
   ]
 }

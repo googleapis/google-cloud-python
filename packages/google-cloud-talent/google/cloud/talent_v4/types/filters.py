@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
 from google.type import timeofday_pb2  # type: ignore
@@ -51,7 +53,7 @@ class JobQuery(proto.Message):
             Language code should be in BCP-47 format, such as "en-US" or
             "sr-Latn". For more information, see `Tags for Identifying
             Languages <https://tools.ietf.org/html/bcp47>`__.
-        companies (Sequence[str]):
+        companies (MutableSequence[str]):
             This filter specifies the company entities to search
             against.
 
@@ -66,7 +68,7 @@ class JobQuery(proto.Message):
             For example, "projects/foo/tenants/bar/companies/baz".
 
             At most 20 company filters are allowed.
-        location_filters (Sequence[google.cloud.talent_v4.types.LocationFilter]):
+        location_filters (MutableSequence[google.cloud.talent_v4.types.LocationFilter]):
             The location filter specifies geo-regions containing the
             jobs to search against. See
             [LocationFilter][google.cloud.talent.v4.LocationFilter] for
@@ -84,7 +86,7 @@ class JobQuery(proto.Message):
             locations.
 
             At most 5 location filters are allowed.
-        job_categories (Sequence[google.cloud.talent_v4.types.JobCategory]):
+        job_categories (MutableSequence[google.cloud.talent_v4.types.JobCategory]):
             The category filter specifies the categories of jobs to
             search against. See
             [JobCategory][google.cloud.talent.v4.JobCategory] for more
@@ -106,7 +108,7 @@ class JobQuery(proto.Message):
             is ignored.
 
             Currently we don't support sorting by commute time.
-        company_display_names (Sequence[str]):
+        company_display_names (MutableSequence[str]):
             This filter specifies the company
             [Company.display_name][google.cloud.talent.v4.Company.display_name]
             of the jobs to search against. The company name must match
@@ -174,7 +176,7 @@ class JobQuery(proto.Message):
             misspelled query, for example, "enginee" is
             corrected to "engineer".
             Defaults to false: a spell check is performed.
-        employment_types (Sequence[google.cloud.talent_v4.types.EmploymentType]):
+        employment_types (MutableSequence[google.cloud.talent_v4.types.EmploymentType]):
             The employment type filter specifies the employment type of
             jobs to search against, such as
             [EmploymentType.FULL_TIME][google.cloud.talent.v4.EmploymentType.FULL_TIME].
@@ -184,7 +186,7 @@ class JobQuery(proto.Message):
 
             If multiple values are specified, jobs in the search results
             include any of the specified employment types.
-        language_codes (Sequence[str]):
+        language_codes (MutableSequence[str]):
             This filter specifies the locale of jobs to search against,
             for example, "en-US".
 
@@ -200,71 +202,71 @@ class JobQuery(proto.Message):
         publish_time_range (google.cloud.talent_v4.types.TimestampRange):
             Jobs published within a range specified by
             this filter are searched against.
-        excluded_jobs (Sequence[str]):
+        excluded_jobs (MutableSequence[str]):
             This filter specifies a list of job names to
             be excluded during search.
             At most 400 excluded job names are allowed.
     """
 
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    query_language_code = proto.Field(
+    query_language_code: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    companies = proto.RepeatedField(
+    companies: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    location_filters = proto.RepeatedField(
+    location_filters: MutableSequence["LocationFilter"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="LocationFilter",
     )
-    job_categories = proto.RepeatedField(
+    job_categories: MutableSequence[common.JobCategory] = proto.RepeatedField(
         proto.ENUM,
         number=4,
         enum=common.JobCategory,
     )
-    commute_filter = proto.Field(
+    commute_filter: "CommuteFilter" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="CommuteFilter",
     )
-    company_display_names = proto.RepeatedField(
+    company_display_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    compensation_filter = proto.Field(
+    compensation_filter: "CompensationFilter" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="CompensationFilter",
     )
-    custom_attribute_filter = proto.Field(
+    custom_attribute_filter: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    disable_spell_check = proto.Field(
+    disable_spell_check: bool = proto.Field(
         proto.BOOL,
         number=9,
     )
-    employment_types = proto.RepeatedField(
+    employment_types: MutableSequence[common.EmploymentType] = proto.RepeatedField(
         proto.ENUM,
         number=10,
         enum=common.EmploymentType,
     )
-    language_codes = proto.RepeatedField(
+    language_codes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=11,
     )
-    publish_time_range = proto.Field(
+    publish_time_range: common.TimestampRange = proto.Field(
         proto.MESSAGE,
         number=12,
         message=common.TimestampRange,
     )
-    excluded_jobs = proto.RepeatedField(
+    excluded_jobs: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=13,
     )
@@ -346,24 +348,24 @@ class LocationFilter(proto.Message):
         TELECOMMUTE_ALLOWED = 2
         TELECOMMUTE_JOBS_EXCLUDED = 3
 
-    address = proto.Field(
+    address: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    region_code = proto.Field(
+    region_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    lat_lng = proto.Field(
+    lat_lng: latlng_pb2.LatLng = proto.Field(
         proto.MESSAGE,
         number=3,
         message=latlng_pb2.LatLng,
     )
-    distance_in_miles = proto.Field(
+    distance_in_miles: float = proto.Field(
         proto.DOUBLE,
         number=4,
     )
-    telecommute_preference = proto.Field(
+    telecommute_preference: TelecommutePreference = proto.Field(
         proto.ENUM,
         number=5,
         enum=TelecommutePreference,
@@ -376,7 +378,7 @@ class CompensationFilter(proto.Message):
     Attributes:
         type_ (google.cloud.talent_v4.types.CompensationFilter.FilterType):
             Required. Type of filter.
-        units (Sequence[google.cloud.talent_v4.types.CompensationInfo.CompensationUnit]):
+        units (MutableSequence[google.cloud.talent_v4.types.CompensationInfo.CompensationUnit]):
             Required. Specify desired ``base compensation entry's``
             [CompensationInfo.CompensationUnit][google.cloud.talent.v4.CompensationInfo.CompensationUnit].
         range_ (google.cloud.talent_v4.types.CompensationInfo.CompensationRange):
@@ -394,22 +396,24 @@ class CompensationFilter(proto.Message):
         ANNUALIZED_BASE_AMOUNT = 3
         ANNUALIZED_TOTAL_AMOUNT = 4
 
-    type_ = proto.Field(
+    type_: FilterType = proto.Field(
         proto.ENUM,
         number=1,
         enum=FilterType,
     )
-    units = proto.RepeatedField(
+    units: MutableSequence[
+        common.CompensationInfo.CompensationUnit
+    ] = proto.RepeatedField(
         proto.ENUM,
         number=2,
         enum=common.CompensationInfo.CompensationUnit,
     )
-    range_ = proto.Field(
+    range_: common.CompensationInfo.CompensationRange = proto.Field(
         proto.MESSAGE,
         number=3,
         message=common.CompensationInfo.CompensationRange,
     )
-    include_jobs_with_unspecified_compensation_range = proto.Field(
+    include_jobs_with_unspecified_compensation_range: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -465,32 +469,32 @@ class CommuteFilter(proto.Message):
         TRAFFIC_FREE = 1
         BUSY_HOUR = 2
 
-    commute_method = proto.Field(
+    commute_method: common.CommuteMethod = proto.Field(
         proto.ENUM,
         number=1,
         enum=common.CommuteMethod,
     )
-    start_coordinates = proto.Field(
+    start_coordinates: latlng_pb2.LatLng = proto.Field(
         proto.MESSAGE,
         number=2,
         message=latlng_pb2.LatLng,
     )
-    travel_duration = proto.Field(
+    travel_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=3,
         message=duration_pb2.Duration,
     )
-    allow_imprecise_addresses = proto.Field(
+    allow_imprecise_addresses: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    road_traffic = proto.Field(
+    road_traffic: RoadTraffic = proto.Field(
         proto.ENUM,
         number=5,
         oneof="traffic_option",
         enum=RoadTraffic,
     )
-    departure_time = proto.Field(
+    departure_time: timeofday_pb2.TimeOfDay = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="traffic_option",

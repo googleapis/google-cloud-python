@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -60,26 +62,26 @@ class ClientEvent(proto.Message):
             profile was bookmarked.
     """
 
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    event_id = proto.Field(
+    event_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    job_event = proto.Field(
+    job_event: "JobEvent" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="event",
         message="JobEvent",
     )
-    event_notes = proto.Field(
+    event_notes: str = proto.Field(
         proto.STRING,
         number=9,
     )
@@ -93,7 +95,7 @@ class JobEvent(proto.Message):
         type_ (google.cloud.talent_v4beta1.types.JobEvent.JobEventType):
             Required. The type of the event (see
             [JobEventType][google.cloud.talent.v4beta1.JobEvent.JobEventType]).
-        jobs (Sequence[str]):
+        jobs (MutableSequence[str]):
             Required. The [job
             name(s)][google.cloud.talent.v4beta1.Job.name] associated
             with this event. For example, if this is an
@@ -136,16 +138,16 @@ class JobEvent(proto.Message):
         SENT_CV = 14
         INTERVIEW_GRANTED = 15
 
-    type_ = proto.Field(
+    type_: JobEventType = proto.Field(
         proto.ENUM,
         number=1,
         enum=JobEventType,
     )
-    jobs = proto.RepeatedField(
+    jobs: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    profile = proto.Field(
+    profile: str = proto.Field(
         proto.STRING,
         number=3,
     )

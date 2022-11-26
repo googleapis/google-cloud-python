@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.talent_v4.types import common
@@ -40,7 +42,7 @@ class CompleteQueryRequest(proto.Message):
             Required. The query used to generate
             suggestions.
             The maximum number of allowed characters is 255.
-        language_codes (Sequence[str]):
+        language_codes (MutableSequence[str]):
             The list of languages of the query. This is the BCP-47
             language code, such as "en-US" or "sr-Latn". For more
             information, see `Tags for Identifying
@@ -77,32 +79,32 @@ class CompleteQueryRequest(proto.Message):
         COMPANY_NAME = 2
         COMBINED = 3
 
-    tenant = proto.Field(
+    tenant: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    language_codes = proto.RepeatedField(
+    language_codes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    company = proto.Field(
+    company: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    scope = proto.Field(
+    scope: CompletionScope = proto.Field(
         proto.ENUM,
         number=6,
         enum=CompletionScope,
     )
-    type_ = proto.Field(
+    type_: CompletionType = proto.Field(
         proto.ENUM,
         number=7,
         enum=CompletionType,
@@ -113,7 +115,7 @@ class CompleteQueryResponse(proto.Message):
     r"""Response of auto-complete query.
 
     Attributes:
-        completion_results (Sequence[google.cloud.talent_v4.types.CompleteQueryResponse.CompletionResult]):
+        completion_results (MutableSequence[google.cloud.talent_v4.types.CompleteQueryResponse.CompletionResult]):
             Results of the matching job/company
             candidates.
         metadata (google.cloud.talent_v4.types.ResponseMetadata):
@@ -134,26 +136,26 @@ class CompleteQueryResponse(proto.Message):
                 [COMPANY_NAME][google.cloud.talent.v4.CompleteQueryRequest.CompletionType.COMPANY_NAME].
         """
 
-        suggestion = proto.Field(
+        suggestion: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        type_ = proto.Field(
+        type_: "CompleteQueryRequest.CompletionType" = proto.Field(
             proto.ENUM,
             number=2,
             enum="CompleteQueryRequest.CompletionType",
         )
-        image_uri = proto.Field(
+        image_uri: str = proto.Field(
             proto.STRING,
             number=3,
         )
 
-    completion_results = proto.RepeatedField(
+    completion_results: MutableSequence[CompletionResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=CompletionResult,
     )
-    metadata = proto.Field(
+    metadata: common.ResponseMetadata = proto.Field(
         proto.MESSAGE,
         number=2,
         message=common.ResponseMetadata,

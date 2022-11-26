@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -71,11 +73,11 @@ class CreateJobRequest(proto.Message):
             Required. The Job to be created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    job = proto.Field(
+    job: gct_job.Job = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gct_job.Job,
@@ -97,7 +99,7 @@ class GetJobRequest(proto.Message):
             example, "projects/foo/jobs/bar".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -123,12 +125,12 @@ class UpdateJobRequest(proto.Message):
             are supported.
     """
 
-    job = proto.Field(
+    job: gct_job.Job = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gct_job.Job,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -150,7 +152,7 @@ class DeleteJobRequest(proto.Message):
             example, "projects/foo/jobs/bar".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -183,11 +185,11 @@ class BatchDeleteJobsRequest(proto.Message):
             requisitionId = "req-1".
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -251,23 +253,23 @@ class ListJobsRequest(proto.Message):
             if no value is specified.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    job_view = proto.Field(
+    job_view: "JobView" = proto.Field(
         proto.ENUM,
         number=5,
         enum="JobView",
@@ -278,7 +280,7 @@ class ListJobsResponse(proto.Message):
     r"""List jobs response.
 
     Attributes:
-        jobs (Sequence[google.cloud.talent_v4beta1.types.Job]):
+        jobs (MutableSequence[google.cloud.talent_v4beta1.types.Job]):
             The Jobs for a given company.
             The maximum number of items returned is based on
             the limit field provided in the request.
@@ -293,16 +295,16 @@ class ListJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    jobs = proto.RepeatedField(
+    jobs: MutableSequence[gct_job.Job] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gct_job.Job,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    metadata = proto.Field(
+    metadata: common.ResponseMetadata = proto.Field(
         proto.MESSAGE,
         number=3,
         message=common.ResponseMetadata,
@@ -342,7 +344,7 @@ class SearchJobsRequest(proto.Message):
             Defaults to false.
         require_precise_result_size (bool):
             This field is deprecated.
-        histogram_queries (Sequence[google.cloud.talent_v4beta1.types.HistogramQuery]):
+        histogram_queries (MutableSequence[google.cloud.talent_v4beta1.types.HistogramQuery]):
             An expression specifies a histogram request against matching
             jobs.
 
@@ -389,7 +391,7 @@ class SearchJobsRequest(proto.Message):
             -  employment_type: histogram by
                [Job.employment_types][google.cloud.talent.v4beta1.Job.employment_types],
                for example, "FULL_TIME", "PART_TIME".
-            -  company_size: histogram by
+            -  company_size (DEPRECATED): histogram by
                [CompanySize][google.cloud.talent.v4beta1.CompanySize],
                for example, "SMALL", "MEDIUM", "BIG".
             -  publish_time_in_day: histogram by the
@@ -710,84 +712,86 @@ class SearchJobsRequest(proto.Message):
             HIGH = 5
             EXTREME = 6
 
-        importance_level = proto.Field(
-            proto.ENUM,
-            number=1,
-            enum="SearchJobsRequest.CustomRankingInfo.ImportanceLevel",
+        importance_level: "SearchJobsRequest.CustomRankingInfo.ImportanceLevel" = (
+            proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="SearchJobsRequest.CustomRankingInfo.ImportanceLevel",
+            )
         )
-        ranking_expression = proto.Field(
+        ranking_expression: str = proto.Field(
             proto.STRING,
             number=2,
         )
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    search_mode = proto.Field(
+    search_mode: SearchMode = proto.Field(
         proto.ENUM,
         number=2,
         enum=SearchMode,
     )
-    request_metadata = proto.Field(
+    request_metadata: common.RequestMetadata = proto.Field(
         proto.MESSAGE,
         number=3,
         message=common.RequestMetadata,
     )
-    job_query = proto.Field(
+    job_query: filters.JobQuery = proto.Field(
         proto.MESSAGE,
         number=4,
         message=filters.JobQuery,
     )
-    enable_broadening = proto.Field(
+    enable_broadening: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    require_precise_result_size = proto.Field(
+    require_precise_result_size: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    histogram_queries = proto.RepeatedField(
+    histogram_queries: MutableSequence[histogram.HistogramQuery] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=histogram.HistogramQuery,
     )
-    job_view = proto.Field(
+    job_view: "JobView" = proto.Field(
         proto.ENUM,
         number=8,
         enum="JobView",
     )
-    offset = proto.Field(
+    offset: int = proto.Field(
         proto.INT32,
         number=9,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=10,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    diversification_level = proto.Field(
+    diversification_level: DiversificationLevel = proto.Field(
         proto.ENUM,
         number=13,
         enum=DiversificationLevel,
     )
-    custom_ranking_info = proto.Field(
+    custom_ranking_info: CustomRankingInfo = proto.Field(
         proto.MESSAGE,
         number=14,
         message=CustomRankingInfo,
     )
-    disable_keyword_match = proto.Field(
+    disable_keyword_match: bool = proto.Field(
         proto.BOOL,
         number=16,
     )
-    keyword_match_mode = proto.Field(
+    keyword_match_mode: KeywordMatchMode = proto.Field(
         proto.ENUM,
         number=18,
         enum=KeywordMatchMode,
@@ -798,17 +802,17 @@ class SearchJobsResponse(proto.Message):
     r"""Response for SearchJob method.
 
     Attributes:
-        matching_jobs (Sequence[google.cloud.talent_v4beta1.types.SearchJobsResponse.MatchingJob]):
+        matching_jobs (MutableSequence[google.cloud.talent_v4beta1.types.SearchJobsResponse.MatchingJob]):
             The Job entities that match the specified
             [SearchJobsRequest][google.cloud.talent.v4beta1.SearchJobsRequest].
-        histogram_query_results (Sequence[google.cloud.talent_v4beta1.types.HistogramQueryResult]):
+        histogram_query_results (MutableSequence[google.cloud.talent_v4beta1.types.HistogramQueryResult]):
             The histogram results that match with specified
             [SearchJobsRequest.histogram_queries][google.cloud.talent.v4beta1.SearchJobsRequest.histogram_queries].
         next_page_token (str):
             The token that specifies the starting
             position of the next page of results. This field
             is empty if there are no more results.
-        location_filters (Sequence[google.cloud.talent_v4beta1.types.Location]):
+        location_filters (MutableSequence[google.cloud.talent_v4beta1.types.Location]):
             The location filters that the service applied to the
             specified query. If any filters are lat-lng based, the
             [Location.location_type][google.cloud.talent.v4beta1.Location.location_type]
@@ -872,24 +876,24 @@ class SearchJobsResponse(proto.Message):
                 [CommuteFilter][google.cloud.talent.v4beta1.CommuteFilter].
         """
 
-        job = proto.Field(
+        job: gct_job.Job = proto.Field(
             proto.MESSAGE,
             number=1,
             message=gct_job.Job,
         )
-        job_summary = proto.Field(
+        job_summary: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        job_title_snippet = proto.Field(
+        job_title_snippet: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        search_text_snippet = proto.Field(
+        search_text_snippet: str = proto.Field(
             proto.STRING,
             number=4,
         )
-        commute_info = proto.Field(
+        commute_info: "SearchJobsResponse.CommuteInfo" = proto.Field(
             proto.MESSAGE,
             number=5,
             message="SearchJobsResponse.CommuteInfo",
@@ -910,12 +914,12 @@ class SearchJobsResponse(proto.Message):
                 but was returned as part of an expanded query.
         """
 
-        job_location = proto.Field(
+        job_location: common.Location = proto.Field(
             proto.MESSAGE,
             number=1,
             message=common.Location,
         )
-        travel_duration = proto.Field(
+        travel_duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=2,
             message=duration_pb2.Duration,
@@ -925,43 +929,45 @@ class SearchJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    matching_jobs = proto.RepeatedField(
+    matching_jobs: MutableSequence[MatchingJob] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=MatchingJob,
     )
-    histogram_query_results = proto.RepeatedField(
+    histogram_query_results: MutableSequence[
+        histogram.HistogramQueryResult
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=histogram.HistogramQueryResult,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    location_filters = proto.RepeatedField(
+    location_filters: MutableSequence[common.Location] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=common.Location,
     )
-    estimated_total_size = proto.Field(
+    estimated_total_size: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    total_size = proto.Field(
+    total_size: int = proto.Field(
         proto.INT32,
         number=6,
     )
-    metadata = proto.Field(
+    metadata: common.ResponseMetadata = proto.Field(
         proto.MESSAGE,
         number=7,
         message=common.ResponseMetadata,
     )
-    broadened_query_jobs_count = proto.Field(
+    broadened_query_jobs_count: int = proto.Field(
         proto.INT32,
         number=8,
     )
-    spell_correction = proto.Field(
+    spell_correction: common.SpellingCorrection = proto.Field(
         proto.MESSAGE,
         number=9,
         message=common.SpellingCorrection,
@@ -980,15 +986,15 @@ class BatchCreateJobsRequest(proto.Message):
             For example, "projects/foo/tenant/bar". If tenant id is
             unspecified, a default tenant is created. For example,
             "projects/foo".
-        jobs (Sequence[google.cloud.talent_v4beta1.types.Job]):
+        jobs (MutableSequence[google.cloud.talent_v4beta1.types.Job]):
             Required. The jobs to be created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    jobs = proto.RepeatedField(
+    jobs: MutableSequence[gct_job.Job] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=gct_job.Job,
@@ -1007,7 +1013,7 @@ class BatchUpdateJobsRequest(proto.Message):
             For example, "projects/foo/tenant/bar". If tenant id is
             unspecified, a default tenant is created. For example,
             "projects/foo".
-        jobs (Sequence[google.cloud.talent_v4beta1.types.Job]):
+        jobs (MutableSequence[google.cloud.talent_v4beta1.types.Job]):
             Required. The jobs to be updated.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Strongly recommended for the best service experience. Be
@@ -1035,16 +1041,16 @@ class BatchUpdateJobsRequest(proto.Message):
             response.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    jobs = proto.RepeatedField(
+    jobs: MutableSequence[gct_job.Job] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=gct_job.Job,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -1061,7 +1067,7 @@ class JobOperationResult(proto.Message):
     in case of success.
 
     Attributes:
-        job_results (Sequence[google.cloud.talent_v4beta1.types.JobOperationResult.JobResult]):
+        job_results (MutableSequence[google.cloud.talent_v4beta1.types.JobOperationResult.JobResult]):
             List of job mutation results from a batch
             mutate operation. It can change until operation
             status is FINISHED, FAILED or CANCELLED.
@@ -1088,18 +1094,18 @@ class JobOperationResult(proto.Message):
                 fails.
         """
 
-        job = proto.Field(
+        job: gct_job.Job = proto.Field(
             proto.MESSAGE,
             number=1,
             message=gct_job.Job,
         )
-        status = proto.Field(
+        status: status_pb2.Status = proto.Field(
             proto.MESSAGE,
             number=2,
             message=status_pb2.Status,
         )
 
-    job_results = proto.RepeatedField(
+    job_results: MutableSequence[JobResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=JobResult,

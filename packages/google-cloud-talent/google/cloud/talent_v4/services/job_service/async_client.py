@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -167,9 +177,9 @@ class JobServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, JobServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the job service client.
@@ -213,12 +223,12 @@ class JobServiceAsyncClient:
 
     async def create_job(
         self,
-        request: Union[job_service.CreateJobRequest, dict] = None,
+        request: Optional[Union[job_service.CreateJobRequest, dict]] = None,
         *,
-        parent: str = None,
-        job: gct_job.Job = None,
+        parent: Optional[str] = None,
+        job: Optional[gct_job.Job] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_job.Job:
         r"""Creates a new job.
@@ -259,7 +269,7 @@ class JobServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.talent_v4.types.CreateJobRequest, dict]):
+            request (Optional[Union[google.cloud.talent_v4.types.CreateJobRequest, dict]]):
                 The request object. Create job request.
             parent (:class:`str`):
                 Required. The resource name of the tenant under which
@@ -337,12 +347,12 @@ class JobServiceAsyncClient:
 
     async def batch_create_jobs(
         self,
-        request: Union[job_service.BatchCreateJobsRequest, dict] = None,
+        request: Optional[Union[job_service.BatchCreateJobsRequest, dict]] = None,
         *,
-        parent: str = None,
-        jobs: Sequence[job.Job] = None,
+        parent: Optional[str] = None,
+        jobs: Optional[MutableSequence[job.Job]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Begins executing a batch create jobs operation.
@@ -385,7 +395,7 @@ class JobServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.talent_v4.types.BatchCreateJobsRequest, dict]):
+            request (Optional[Union[google.cloud.talent_v4.types.BatchCreateJobsRequest, dict]]):
                 The request object. Request to create a batch of jobs.
             parent (:class:`str`):
                 Required. The resource name of the tenant under which
@@ -398,7 +408,7 @@ class JobServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            jobs (:class:`Sequence[google.cloud.talent_v4.types.Job]`):
+            jobs (:class:`MutableSequence[google.cloud.talent_v4.types.Job]`):
                 Required. The jobs to be created.
                 A maximum of 200 jobs can be created in
                 a batch.
@@ -476,11 +486,11 @@ class JobServiceAsyncClient:
 
     async def get_job(
         self,
-        request: Union[job_service.GetJobRequest, dict] = None,
+        request: Optional[Union[job_service.GetJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> job.Job:
         r"""Retrieves the specified job, whose status is OPEN or
@@ -513,7 +523,7 @@ class JobServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.talent_v4.types.GetJobRequest, dict]):
+            request (Optional[Union[google.cloud.talent_v4.types.GetJobRequest, dict]]):
                 The request object. Get job request.
             name (:class:`str`):
                 Required. The resource name of the job to retrieve.
@@ -593,12 +603,12 @@ class JobServiceAsyncClient:
 
     async def update_job(
         self,
-        request: Union[job_service.UpdateJobRequest, dict] = None,
+        request: Optional[Union[job_service.UpdateJobRequest, dict]] = None,
         *,
-        job: gct_job.Job = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        job: Optional[gct_job.Job] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_job.Job:
         r"""Updates specified job.
@@ -639,7 +649,7 @@ class JobServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.talent_v4.types.UpdateJobRequest, dict]):
+            request (Optional[Union[google.cloud.talent_v4.types.UpdateJobRequest, dict]]):
                 The request object. Update job request.
             job (:class:`google.cloud.talent_v4.types.Job`):
                 Required. The Job to be updated.
@@ -722,12 +732,12 @@ class JobServiceAsyncClient:
 
     async def batch_update_jobs(
         self,
-        request: Union[job_service.BatchUpdateJobsRequest, dict] = None,
+        request: Optional[Union[job_service.BatchUpdateJobsRequest, dict]] = None,
         *,
-        parent: str = None,
-        jobs: Sequence[job.Job] = None,
+        parent: Optional[str] = None,
+        jobs: Optional[MutableSequence[job.Job]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Begins executing a batch update jobs operation.
@@ -770,7 +780,7 @@ class JobServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.talent_v4.types.BatchUpdateJobsRequest, dict]):
+            request (Optional[Union[google.cloud.talent_v4.types.BatchUpdateJobsRequest, dict]]):
                 The request object. Request to update a batch of jobs.
             parent (:class:`str`):
                 Required. The resource name of the tenant under which
@@ -783,7 +793,7 @@ class JobServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            jobs (:class:`Sequence[google.cloud.talent_v4.types.Job]`):
+            jobs (:class:`MutableSequence[google.cloud.talent_v4.types.Job]`):
                 Required. The jobs to be updated.
                 A maximum of 200 jobs can be updated in
                 a batch.
@@ -861,11 +871,11 @@ class JobServiceAsyncClient:
 
     async def delete_job(
         self,
-        request: Union[job_service.DeleteJobRequest, dict] = None,
+        request: Optional[Union[job_service.DeleteJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified job.
@@ -896,7 +906,7 @@ class JobServiceAsyncClient:
                 await client.delete_job(request=request)
 
         Args:
-            request (Union[google.cloud.talent_v4.types.DeleteJobRequest, dict]):
+            request (Optional[Union[google.cloud.talent_v4.types.DeleteJobRequest, dict]]):
                 The request object. Delete job request.
             name (:class:`str`):
                 Required. The resource name of the job to be deleted.
@@ -965,12 +975,12 @@ class JobServiceAsyncClient:
 
     async def batch_delete_jobs(
         self,
-        request: Union[job_service.BatchDeleteJobsRequest, dict] = None,
+        request: Optional[Union[job_service.BatchDeleteJobsRequest, dict]] = None,
         *,
-        parent: str = None,
-        names: Sequence[str] = None,
+        parent: Optional[str] = None,
+        names: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Begins executing a batch delete jobs operation.
@@ -1006,7 +1016,7 @@ class JobServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.talent_v4.types.BatchDeleteJobsRequest, dict]):
+            request (Optional[Union[google.cloud.talent_v4.types.BatchDeleteJobsRequest, dict]]):
                 The request object. Request to delete a batch of jobs.
             parent (:class:`str`):
                 Required. The resource name of the tenant under which
@@ -1022,7 +1032,7 @@ class JobServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            names (:class:`Sequence[str]`):
+            names (:class:`MutableSequence[str]`):
                 The names of the jobs to delete.
 
                 The format is
@@ -1104,12 +1114,12 @@ class JobServiceAsyncClient:
 
     async def list_jobs(
         self,
-        request: Union[job_service.ListJobsRequest, dict] = None,
+        request: Optional[Union[job_service.ListJobsRequest, dict]] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobsAsyncPager:
         r"""Lists jobs by filter.
@@ -1143,7 +1153,7 @@ class JobServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.talent_v4.types.ListJobsRequest, dict]):
+            request (Optional[Union[google.cloud.talent_v4.types.ListJobsRequest, dict]]):
                 The request object. List jobs request.
             parent (:class:`str`):
                 Required. The resource name of the tenant under which
@@ -1267,10 +1277,10 @@ class JobServiceAsyncClient:
 
     async def search_jobs(
         self,
-        request: Union[job_service.SearchJobsRequest, dict] = None,
+        request: Optional[Union[job_service.SearchJobsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> job_service.SearchJobsResponse:
         r"""Searches for jobs using the provided
@@ -1308,7 +1318,7 @@ class JobServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.talent_v4.types.SearchJobsRequest, dict]):
+            request (Optional[Union[google.cloud.talent_v4.types.SearchJobsRequest, dict]]):
                 The request object. The Request body of the `SearchJobs`
                 call.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1351,10 +1361,10 @@ class JobServiceAsyncClient:
 
     async def search_jobs_for_alert(
         self,
-        request: Union[job_service.SearchJobsRequest, dict] = None,
+        request: Optional[Union[job_service.SearchJobsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> job_service.SearchJobsResponse:
         r"""Searches for jobs using the provided
@@ -1398,7 +1408,7 @@ class JobServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.talent_v4.types.SearchJobsRequest, dict]):
+            request (Optional[Union[google.cloud.talent_v4.types.SearchJobsRequest, dict]]):
                 The request object. The Request body of the `SearchJobs`
                 call.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

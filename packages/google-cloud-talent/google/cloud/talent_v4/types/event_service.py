@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.talent_v4.types import event
@@ -41,11 +43,11 @@ class CreateClientEventRequest(proto.Message):
             Cloud Talent Solution.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    client_event = proto.Field(
+    client_event: event.ClientEvent = proto.Field(
         proto.MESSAGE,
         number=2,
         message=event.ClientEvent,

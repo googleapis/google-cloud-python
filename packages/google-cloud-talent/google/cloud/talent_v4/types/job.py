@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -84,7 +86,7 @@ class Job(proto.Message):
             markup tags.
 
             The maximum number of allowed characters is 100,000.
-        addresses (Sequence[str]):
+        addresses (MutableSequence[str]):
             Strongly recommended for the best service experience.
 
             Location(s) where the employer is looking to hire for this
@@ -125,13 +127,13 @@ class Job(proto.Message):
             The maximum number of allowed characters is 500.
         application_info (google.cloud.talent_v4.types.Job.ApplicationInfo):
             Job application information.
-        job_benefits (Sequence[google.cloud.talent_v4.types.JobBenefit]):
+        job_benefits (MutableSequence[google.cloud.talent_v4.types.JobBenefit]):
             The benefits included with the job.
         compensation_info (google.cloud.talent_v4.types.CompensationInfo):
             Job compensation information (a.k.a. "pay
             rate") i.e., the compensation that will paid to
             the employee.
-        custom_attributes (Mapping[str, google.cloud.talent_v4.types.CustomAttribute]):
+        custom_attributes (MutableMapping[str, google.cloud.talent_v4.types.CustomAttribute]):
             A map of fields to hold both filterable and non-filterable
             custom job attributes that are not covered by the provided
             structured fields.
@@ -146,7 +148,7 @@ class Job(proto.Message):
             than 255 characters. For unfilterable ``string_values``, the
             maximum total size of ``string_values`` across all keys is
             50KB.
-        degree_types (Sequence[google.cloud.talent_v4.types.DegreeType]):
+        degree_types (MutableSequence[google.cloud.talent_v4.types.DegreeType]):
             The desired education degrees for the job,
             such as Bachelors, Masters.
         department (str):
@@ -154,7 +156,7 @@ class Job(proto.Message):
             company with the open position.
 
             The maximum number of allowed characters is 255.
-        employment_types (Sequence[google.cloud.talent_v4.types.EmploymentType]):
+        employment_types (MutableSequence[google.cloud.talent_v4.types.EmploymentType]):
             The employment type(s) of a job, for example, [full
             time][google.cloud.talent.v4.EmploymentType.FULL_TIME] or
             [part
@@ -327,7 +329,7 @@ class Job(proto.Message):
         r"""Application related details of a job posting.
 
         Attributes:
-            emails (Sequence[str]):
+            emails (MutableSequence[str]):
                 Use this field to specify email address(es)
                 to which resumes or applications can be sent.
                 The maximum number of allowed characters for
@@ -341,7 +343,7 @@ class Job(proto.Message):
                 unordered list markup tags.
                 The maximum number of allowed characters is
                 3,000.
-            uris (Sequence[str]):
+            uris (MutableSequence[str]):
                 Use this URI field to direct an applicant to
                 a website, for example to link to an online
                 application form.
@@ -349,15 +351,15 @@ class Job(proto.Message):
                 each entry is 2,000.
         """
 
-        emails = proto.RepeatedField(
+        emails: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        instruction = proto.Field(
+        instruction: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        uris = proto.RepeatedField(
+        uris: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=3,
         )
@@ -366,7 +368,7 @@ class Job(proto.Message):
         r"""Derived details about the job posting.
 
         Attributes:
-            locations (Sequence[google.cloud.talent_v4.types.Location]):
+            locations (MutableSequence[google.cloud.talent_v4.types.Location]):
                 Structured locations of the job, resolved from
                 [Job.addresses][google.cloud.talent.v4.Job.addresses].
 
@@ -374,18 +376,18 @@ class Job(proto.Message):
                 are exactly matched to
                 [Job.addresses][google.cloud.talent.v4.Job.addresses] in the
                 same order.
-            job_categories (Sequence[google.cloud.talent_v4.types.JobCategory]):
+            job_categories (MutableSequence[google.cloud.talent_v4.types.JobCategory]):
                 Job categories derived from
                 [Job.title][google.cloud.talent.v4.Job.title] and
                 [Job.description][google.cloud.talent.v4.Job.description].
         """
 
-        locations = proto.RepeatedField(
+        locations: MutableSequence[common.Location] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=common.Location,
         )
-        job_categories = proto.RepeatedField(
+        job_categories: MutableSequence[common.JobCategory] = proto.RepeatedField(
             proto.ENUM,
             number=3,
             enum=common.JobCategory,
@@ -415,150 +417,150 @@ class Job(proto.Message):
                 [HtmlSanitization.SIMPLE_FORMATTING_ONLY][google.cloud.talent.v4.HtmlSanitization.SIMPLE_FORMATTING_ONLY].
         """
 
-        disable_street_address_resolution = proto.Field(
+        disable_street_address_resolution: bool = proto.Field(
             proto.BOOL,
             number=1,
         )
-        html_sanitization = proto.Field(
+        html_sanitization: common.HtmlSanitization = proto.Field(
             proto.ENUM,
             number=2,
             enum=common.HtmlSanitization,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    company = proto.Field(
+    company: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    requisition_id = proto.Field(
+    requisition_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    title = proto.Field(
+    title: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    addresses = proto.RepeatedField(
+    addresses: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    application_info = proto.Field(
+    application_info: ApplicationInfo = proto.Field(
         proto.MESSAGE,
         number=7,
         message=ApplicationInfo,
     )
-    job_benefits = proto.RepeatedField(
+    job_benefits: MutableSequence[common.JobBenefit] = proto.RepeatedField(
         proto.ENUM,
         number=8,
         enum=common.JobBenefit,
     )
-    compensation_info = proto.Field(
+    compensation_info: common.CompensationInfo = proto.Field(
         proto.MESSAGE,
         number=9,
         message=common.CompensationInfo,
     )
-    custom_attributes = proto.MapField(
+    custom_attributes: MutableMapping[str, common.CustomAttribute] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=10,
         message=common.CustomAttribute,
     )
-    degree_types = proto.RepeatedField(
+    degree_types: MutableSequence[common.DegreeType] = proto.RepeatedField(
         proto.ENUM,
         number=11,
         enum=common.DegreeType,
     )
-    department = proto.Field(
+    department: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    employment_types = proto.RepeatedField(
+    employment_types: MutableSequence[common.EmploymentType] = proto.RepeatedField(
         proto.ENUM,
         number=13,
         enum=common.EmploymentType,
     )
-    incentives = proto.Field(
+    incentives: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=15,
     )
-    job_level = proto.Field(
+    job_level: common.JobLevel = proto.Field(
         proto.ENUM,
         number=16,
         enum=common.JobLevel,
     )
-    promotion_value = proto.Field(
+    promotion_value: int = proto.Field(
         proto.INT32,
         number=17,
     )
-    qualifications = proto.Field(
+    qualifications: str = proto.Field(
         proto.STRING,
         number=18,
     )
-    responsibilities = proto.Field(
+    responsibilities: str = proto.Field(
         proto.STRING,
         number=19,
     )
-    posting_region = proto.Field(
+    posting_region: common.PostingRegion = proto.Field(
         proto.ENUM,
         number=20,
         enum=common.PostingRegion,
     )
-    visibility = proto.Field(
+    visibility: common.Visibility = proto.Field(
         proto.ENUM,
         number=21,
         enum=common.Visibility,
     )
-    job_start_time = proto.Field(
+    job_start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=22,
         message=timestamp_pb2.Timestamp,
     )
-    job_end_time = proto.Field(
+    job_end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=23,
         message=timestamp_pb2.Timestamp,
     )
-    posting_publish_time = proto.Field(
+    posting_publish_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=24,
         message=timestamp_pb2.Timestamp,
     )
-    posting_expire_time = proto.Field(
+    posting_expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=25,
         message=timestamp_pb2.Timestamp,
     )
-    posting_create_time = proto.Field(
+    posting_create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=26,
         message=timestamp_pb2.Timestamp,
     )
-    posting_update_time = proto.Field(
+    posting_update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=27,
         message=timestamp_pb2.Timestamp,
     )
-    company_display_name = proto.Field(
+    company_display_name: str = proto.Field(
         proto.STRING,
         number=28,
     )
-    derived_info = proto.Field(
+    derived_info: DerivedInfo = proto.Field(
         proto.MESSAGE,
         number=29,
         message=DerivedInfo,
     )
-    processing_options = proto.Field(
+    processing_options: ProcessingOptions = proto.Field(
         proto.MESSAGE,
         number=30,
         message=ProcessingOptions,

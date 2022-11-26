@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -46,11 +48,11 @@ class CreateCompanyRequest(proto.Message):
             Required. The company to be created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    company = proto.Field(
+    company: gct_company.Company = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gct_company.Company,
@@ -70,7 +72,7 @@ class GetCompanyRequest(proto.Message):
             "projects/api-test-project/tenants/foo/companies/bar".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -97,12 +99,12 @@ class UpdateCompanyRequest(proto.Message):
             [Company][google.cloud.talent.v4.Company] are supported.
     """
 
-    company = proto.Field(
+    company: gct_company.Company = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gct_company.Company,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -121,7 +123,7 @@ class DeleteCompanyRequest(proto.Message):
             for example, "projects/foo/tenants/bar/companies/baz".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -155,19 +157,19 @@ class ListCompaniesRequest(proto.Message):
             jobs are returned.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    require_open_jobs = proto.Field(
+    require_open_jobs: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -177,7 +179,7 @@ class ListCompaniesResponse(proto.Message):
     r"""The List companies response object.
 
     Attributes:
-        companies (Sequence[google.cloud.talent_v4.types.Company]):
+        companies (MutableSequence[google.cloud.talent_v4.types.Company]):
             Companies for the current client.
         next_page_token (str):
             A token to retrieve the next page of results.
@@ -190,16 +192,16 @@ class ListCompaniesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    companies = proto.RepeatedField(
+    companies: MutableSequence[gct_company.Company] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gct_company.Company,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    metadata = proto.Field(
+    metadata: common.ResponseMetadata = proto.Field(
         proto.MESSAGE,
         number=3,
         message=common.ResponseMetadata,

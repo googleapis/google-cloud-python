@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.talent_v4.types import common
@@ -79,7 +81,12 @@ class Company(proto.Message):
             "https://careers.google.com".
         image_uri (str):
             A URI that hosts the employer's company logo.
-        keyword_searchable_job_custom_attributes (Sequence[str]):
+        keyword_searchable_job_custom_attributes (MutableSequence[str]):
+            This field is deprecated. Please set the searchability of
+            the custom attribute in the
+            [Job.custom_attributes][google.cloud.talent.v4.Job.custom_attributes]
+            going forward.
+
             A list of keys of filterable
             [Job.custom_attributes][google.cloud.talent.v4.Job.custom_attributes],
             whose corresponding ``string_values`` are used in keyword
@@ -109,63 +116,65 @@ class Company(proto.Message):
                 if provided.
         """
 
-        headquarters_location = proto.Field(
+        headquarters_location: common.Location = proto.Field(
             proto.MESSAGE,
             number=1,
             message=common.Location,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    external_id = proto.Field(
+    external_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    size = proto.Field(
+    size: common.CompanySize = proto.Field(
         proto.ENUM,
         number=4,
         enum=common.CompanySize,
     )
-    headquarters_address = proto.Field(
+    headquarters_address: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    hiring_agency = proto.Field(
+    hiring_agency: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    eeo_text = proto.Field(
+    eeo_text: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    website_uri = proto.Field(
+    website_uri: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    career_site_uri = proto.Field(
+    career_site_uri: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    image_uri = proto.Field(
+    image_uri: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    keyword_searchable_job_custom_attributes = proto.RepeatedField(
+    keyword_searchable_job_custom_attributes: MutableSequence[
+        str
+    ] = proto.RepeatedField(
         proto.STRING,
         number=11,
     )
-    derived_info = proto.Field(
+    derived_info: DerivedInfo = proto.Field(
         proto.MESSAGE,
         number=12,
         message=DerivedInfo,
     )
-    suspended = proto.Field(
+    suspended: bool = proto.Field(
         proto.BOOL,
         number=13,
     )

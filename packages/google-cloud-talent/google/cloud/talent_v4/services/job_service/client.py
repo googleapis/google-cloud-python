@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -64,7 +75,7 @@ class JobServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[JobServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -380,8 +391,8 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, JobServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, JobServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the job service client.
@@ -395,7 +406,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             transport (Union[str, JobServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -425,6 +436,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -477,12 +489,12 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
     def create_job(
         self,
-        request: Union[job_service.CreateJobRequest, dict] = None,
+        request: Optional[Union[job_service.CreateJobRequest, dict]] = None,
         *,
-        parent: str = None,
-        job: gct_job.Job = None,
+        parent: Optional[str] = None,
+        job: Optional[gct_job.Job] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_job.Job:
         r"""Creates a new job.
@@ -601,12 +613,12 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
     def batch_create_jobs(
         self,
-        request: Union[job_service.BatchCreateJobsRequest, dict] = None,
+        request: Optional[Union[job_service.BatchCreateJobsRequest, dict]] = None,
         *,
-        parent: str = None,
-        jobs: Sequence[job.Job] = None,
+        parent: Optional[str] = None,
+        jobs: Optional[MutableSequence[job.Job]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Begins executing a batch create jobs operation.
@@ -662,7 +674,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            jobs (Sequence[google.cloud.talent_v4.types.Job]):
+            jobs (MutableSequence[google.cloud.talent_v4.types.Job]):
                 Required. The jobs to be created.
                 A maximum of 200 jobs can be created in
                 a batch.
@@ -740,11 +752,11 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
     def get_job(
         self,
-        request: Union[job_service.GetJobRequest, dict] = None,
+        request: Optional[Union[job_service.GetJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> job.Job:
         r"""Retrieves the specified job, whose status is OPEN or
@@ -847,12 +859,12 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
     def update_job(
         self,
-        request: Union[job_service.UpdateJobRequest, dict] = None,
+        request: Optional[Union[job_service.UpdateJobRequest, dict]] = None,
         *,
-        job: gct_job.Job = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        job: Optional[gct_job.Job] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_job.Job:
         r"""Updates specified job.
@@ -976,12 +988,12 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
     def batch_update_jobs(
         self,
-        request: Union[job_service.BatchUpdateJobsRequest, dict] = None,
+        request: Optional[Union[job_service.BatchUpdateJobsRequest, dict]] = None,
         *,
-        parent: str = None,
-        jobs: Sequence[job.Job] = None,
+        parent: Optional[str] = None,
+        jobs: Optional[MutableSequence[job.Job]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Begins executing a batch update jobs operation.
@@ -1037,7 +1049,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            jobs (Sequence[google.cloud.talent_v4.types.Job]):
+            jobs (MutableSequence[google.cloud.talent_v4.types.Job]):
                 Required. The jobs to be updated.
                 A maximum of 200 jobs can be updated in
                 a batch.
@@ -1115,11 +1127,11 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
     def delete_job(
         self,
-        request: Union[job_service.DeleteJobRequest, dict] = None,
+        request: Optional[Union[job_service.DeleteJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified job.
@@ -1209,12 +1221,12 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
     def batch_delete_jobs(
         self,
-        request: Union[job_service.BatchDeleteJobsRequest, dict] = None,
+        request: Optional[Union[job_service.BatchDeleteJobsRequest, dict]] = None,
         *,
-        parent: str = None,
-        names: Sequence[str] = None,
+        parent: Optional[str] = None,
+        names: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Begins executing a batch delete jobs operation.
@@ -1266,7 +1278,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            names (Sequence[str]):
+            names (MutableSequence[str]):
                 The names of the jobs to delete.
 
                 The format is
@@ -1348,12 +1360,12 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
     def list_jobs(
         self,
-        request: Union[job_service.ListJobsRequest, dict] = None,
+        request: Optional[Union[job_service.ListJobsRequest, dict]] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobsPager:
         r"""Lists jobs by filter.
@@ -1501,10 +1513,10 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
     def search_jobs(
         self,
-        request: Union[job_service.SearchJobsRequest, dict] = None,
+        request: Optional[Union[job_service.SearchJobsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> job_service.SearchJobsResponse:
         r"""Searches for jobs using the provided
@@ -1586,10 +1598,10 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
     def search_jobs_for_alert(
         self,
-        request: Union[job_service.SearchJobsRequest, dict] = None,
+        request: Optional[Union[job_service.SearchJobsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> job_service.SearchJobsResponse:
         r"""Searches for jobs using the provided

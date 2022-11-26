@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -50,7 +52,7 @@ class Tenant(proto.Message):
             Defaults behavior is
             [DataUsageType.ISOLATED][google.cloud.talent.v4beta1.Tenant.DataUsageType.ISOLATED]
             if it's unset.
-        keyword_searchable_profile_custom_attributes (Sequence[str]):
+        keyword_searchable_profile_custom_attributes (MutableSequence[str]):
             A list of keys of filterable
             [Profile.custom_attributes][google.cloud.talent.v4beta1.Profile.custom_attributes],
             whose corresponding ``string_values`` are used in keyword
@@ -69,20 +71,22 @@ class Tenant(proto.Message):
         AGGREGATED = 1
         ISOLATED = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    external_id = proto.Field(
+    external_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    usage_type = proto.Field(
+    usage_type: DataUsageType = proto.Field(
         proto.ENUM,
         number=3,
         enum=DataUsageType,
     )
-    keyword_searchable_profile_custom_attributes = proto.RepeatedField(
+    keyword_searchable_profile_custom_attributes: MutableSequence[
+        str
+    ] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
