@@ -2,12 +2,13 @@
   "clientLibrary": {
     "apis": [
       {
-        "id": "google.cloud.scheduler.v1",
-        "version": "v1"
+        "id": "google.cloud.scheduler.v1beta1",
+        "version": "v1beta1"
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-scheduler"
+    "name": "google-cloud-scheduler",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -15,14 +16,14 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.scheduler_v1.CloudSchedulerAsyncClient",
+          "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerAsyncClient",
           "shortName": "CloudSchedulerAsyncClient"
         },
-        "fullName": "google.cloud.scheduler_v1.CloudSchedulerAsyncClient.create_job",
+        "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerAsyncClient.create_job",
         "method": {
-          "fullName": "google.cloud.scheduler.v1.CloudScheduler.CreateJob",
+          "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler.CreateJob",
           "service": {
-            "fullName": "google.cloud.scheduler.v1.CloudScheduler",
+            "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler",
             "shortName": "CloudScheduler"
           },
           "shortName": "CreateJob"
@@ -30,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.scheduler_v1.types.CreateJobRequest"
+            "type": "google.cloud.scheduler_v1beta1.types.CreateJobRequest"
           },
           {
             "name": "parent",
@@ -38,7 +39,7 @@
           },
           {
             "name": "job",
-            "type": "google.cloud.scheduler_v1.types.Job"
+            "type": "google.cloud.scheduler_v1beta1.types.Job"
           },
           {
             "name": "retry",
@@ -53,14 +54,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.scheduler_v1.types.Job",
+        "resultType": "google.cloud.scheduler_v1beta1.types.Job",
         "shortName": "create_job"
       },
       "description": "Sample for CreateJob",
-      "file": "cloudscheduler_v1_generated_cloud_scheduler_create_job_async.py",
+      "file": "cloudscheduler_v1beta1_generated_cloud_scheduler_create_job_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudscheduler_v1_generated_CloudScheduler_CreateJob_async",
+      "regionTag": "cloudscheduler_v1beta1_generated_CloudScheduler_CreateJob_async",
       "segments": [
         {
           "end": 51,
@@ -93,20 +94,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudscheduler_v1_generated_cloud_scheduler_create_job_async.py"
+      "title": "cloudscheduler_v1beta1_generated_cloud_scheduler_create_job_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.scheduler_v1.CloudSchedulerClient",
+          "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerClient",
           "shortName": "CloudSchedulerClient"
         },
-        "fullName": "google.cloud.scheduler_v1.CloudSchedulerClient.create_job",
+        "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerClient.create_job",
         "method": {
-          "fullName": "google.cloud.scheduler.v1.CloudScheduler.CreateJob",
+          "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler.CreateJob",
           "service": {
-            "fullName": "google.cloud.scheduler.v1.CloudScheduler",
+            "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler",
             "shortName": "CloudScheduler"
           },
           "shortName": "CreateJob"
@@ -114,7 +115,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.scheduler_v1.types.CreateJobRequest"
+            "type": "google.cloud.scheduler_v1beta1.types.CreateJobRequest"
           },
           {
             "name": "parent",
@@ -122,7 +123,7 @@
           },
           {
             "name": "job",
-            "type": "google.cloud.scheduler_v1.types.Job"
+            "type": "google.cloud.scheduler_v1beta1.types.Job"
           },
           {
             "name": "retry",
@@ -137,14 +138,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.scheduler_v1.types.Job",
+        "resultType": "google.cloud.scheduler_v1beta1.types.Job",
         "shortName": "create_job"
       },
       "description": "Sample for CreateJob",
-      "file": "cloudscheduler_v1_generated_cloud_scheduler_create_job_sync.py",
+      "file": "cloudscheduler_v1beta1_generated_cloud_scheduler_create_job_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudscheduler_v1_generated_CloudScheduler_CreateJob_sync",
+      "regionTag": "cloudscheduler_v1beta1_generated_CloudScheduler_CreateJob_sync",
       "segments": [
         {
           "end": 51,
@@ -177,21 +178,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudscheduler_v1_generated_cloud_scheduler_create_job_sync.py"
+      "title": "cloudscheduler_v1beta1_generated_cloud_scheduler_create_job_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.scheduler_v1.CloudSchedulerAsyncClient",
+          "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerAsyncClient",
           "shortName": "CloudSchedulerAsyncClient"
         },
-        "fullName": "google.cloud.scheduler_v1.CloudSchedulerAsyncClient.delete_job",
+        "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerAsyncClient.delete_job",
         "method": {
-          "fullName": "google.cloud.scheduler.v1.CloudScheduler.DeleteJob",
+          "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler.DeleteJob",
           "service": {
-            "fullName": "google.cloud.scheduler.v1.CloudScheduler",
+            "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler",
             "shortName": "CloudScheduler"
           },
           "shortName": "DeleteJob"
@@ -199,7 +200,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.scheduler_v1.types.DeleteJobRequest"
+            "type": "google.cloud.scheduler_v1beta1.types.DeleteJobRequest"
           },
           {
             "name": "name",
@@ -221,10 +222,10 @@
         "shortName": "delete_job"
       },
       "description": "Sample for DeleteJob",
-      "file": "cloudscheduler_v1_generated_cloud_scheduler_delete_job_async.py",
+      "file": "cloudscheduler_v1beta1_generated_cloud_scheduler_delete_job_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudscheduler_v1_generated_CloudScheduler_DeleteJob_async",
+      "regionTag": "cloudscheduler_v1beta1_generated_CloudScheduler_DeleteJob_async",
       "segments": [
         {
           "end": 49,
@@ -255,20 +256,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudscheduler_v1_generated_cloud_scheduler_delete_job_async.py"
+      "title": "cloudscheduler_v1beta1_generated_cloud_scheduler_delete_job_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.scheduler_v1.CloudSchedulerClient",
+          "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerClient",
           "shortName": "CloudSchedulerClient"
         },
-        "fullName": "google.cloud.scheduler_v1.CloudSchedulerClient.delete_job",
+        "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerClient.delete_job",
         "method": {
-          "fullName": "google.cloud.scheduler.v1.CloudScheduler.DeleteJob",
+          "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler.DeleteJob",
           "service": {
-            "fullName": "google.cloud.scheduler.v1.CloudScheduler",
+            "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler",
             "shortName": "CloudScheduler"
           },
           "shortName": "DeleteJob"
@@ -276,7 +277,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.scheduler_v1.types.DeleteJobRequest"
+            "type": "google.cloud.scheduler_v1beta1.types.DeleteJobRequest"
           },
           {
             "name": "name",
@@ -298,10 +299,10 @@
         "shortName": "delete_job"
       },
       "description": "Sample for DeleteJob",
-      "file": "cloudscheduler_v1_generated_cloud_scheduler_delete_job_sync.py",
+      "file": "cloudscheduler_v1beta1_generated_cloud_scheduler_delete_job_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudscheduler_v1_generated_CloudScheduler_DeleteJob_sync",
+      "regionTag": "cloudscheduler_v1beta1_generated_CloudScheduler_DeleteJob_sync",
       "segments": [
         {
           "end": 49,
@@ -332,21 +333,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudscheduler_v1_generated_cloud_scheduler_delete_job_sync.py"
+      "title": "cloudscheduler_v1beta1_generated_cloud_scheduler_delete_job_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.scheduler_v1.CloudSchedulerAsyncClient",
+          "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerAsyncClient",
           "shortName": "CloudSchedulerAsyncClient"
         },
-        "fullName": "google.cloud.scheduler_v1.CloudSchedulerAsyncClient.get_job",
+        "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerAsyncClient.get_job",
         "method": {
-          "fullName": "google.cloud.scheduler.v1.CloudScheduler.GetJob",
+          "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler.GetJob",
           "service": {
-            "fullName": "google.cloud.scheduler.v1.CloudScheduler",
+            "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler",
             "shortName": "CloudScheduler"
           },
           "shortName": "GetJob"
@@ -354,7 +355,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.scheduler_v1.types.GetJobRequest"
+            "type": "google.cloud.scheduler_v1beta1.types.GetJobRequest"
           },
           {
             "name": "name",
@@ -373,14 +374,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.scheduler_v1.types.Job",
+        "resultType": "google.cloud.scheduler_v1beta1.types.Job",
         "shortName": "get_job"
       },
       "description": "Sample for GetJob",
-      "file": "cloudscheduler_v1_generated_cloud_scheduler_get_job_async.py",
+      "file": "cloudscheduler_v1beta1_generated_cloud_scheduler_get_job_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudscheduler_v1_generated_CloudScheduler_GetJob_async",
+      "regionTag": "cloudscheduler_v1beta1_generated_CloudScheduler_GetJob_async",
       "segments": [
         {
           "end": 51,
@@ -413,20 +414,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudscheduler_v1_generated_cloud_scheduler_get_job_async.py"
+      "title": "cloudscheduler_v1beta1_generated_cloud_scheduler_get_job_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.scheduler_v1.CloudSchedulerClient",
+          "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerClient",
           "shortName": "CloudSchedulerClient"
         },
-        "fullName": "google.cloud.scheduler_v1.CloudSchedulerClient.get_job",
+        "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerClient.get_job",
         "method": {
-          "fullName": "google.cloud.scheduler.v1.CloudScheduler.GetJob",
+          "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler.GetJob",
           "service": {
-            "fullName": "google.cloud.scheduler.v1.CloudScheduler",
+            "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler",
             "shortName": "CloudScheduler"
           },
           "shortName": "GetJob"
@@ -434,7 +435,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.scheduler_v1.types.GetJobRequest"
+            "type": "google.cloud.scheduler_v1beta1.types.GetJobRequest"
           },
           {
             "name": "name",
@@ -453,14 +454,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.scheduler_v1.types.Job",
+        "resultType": "google.cloud.scheduler_v1beta1.types.Job",
         "shortName": "get_job"
       },
       "description": "Sample for GetJob",
-      "file": "cloudscheduler_v1_generated_cloud_scheduler_get_job_sync.py",
+      "file": "cloudscheduler_v1beta1_generated_cloud_scheduler_get_job_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudscheduler_v1_generated_CloudScheduler_GetJob_sync",
+      "regionTag": "cloudscheduler_v1beta1_generated_CloudScheduler_GetJob_sync",
       "segments": [
         {
           "end": 51,
@@ -493,21 +494,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudscheduler_v1_generated_cloud_scheduler_get_job_sync.py"
+      "title": "cloudscheduler_v1beta1_generated_cloud_scheduler_get_job_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.scheduler_v1.CloudSchedulerAsyncClient",
+          "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerAsyncClient",
           "shortName": "CloudSchedulerAsyncClient"
         },
-        "fullName": "google.cloud.scheduler_v1.CloudSchedulerAsyncClient.list_jobs",
+        "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerAsyncClient.list_jobs",
         "method": {
-          "fullName": "google.cloud.scheduler.v1.CloudScheduler.ListJobs",
+          "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler.ListJobs",
           "service": {
-            "fullName": "google.cloud.scheduler.v1.CloudScheduler",
+            "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler",
             "shortName": "CloudScheduler"
           },
           "shortName": "ListJobs"
@@ -515,7 +516,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.scheduler_v1.types.ListJobsRequest"
+            "type": "google.cloud.scheduler_v1beta1.types.ListJobsRequest"
           },
           {
             "name": "parent",
@@ -534,14 +535,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.scheduler_v1.services.cloud_scheduler.pagers.ListJobsAsyncPager",
+        "resultType": "google.cloud.scheduler_v1beta1.services.cloud_scheduler.pagers.ListJobsAsyncPager",
         "shortName": "list_jobs"
       },
       "description": "Sample for ListJobs",
-      "file": "cloudscheduler_v1_generated_cloud_scheduler_list_jobs_async.py",
+      "file": "cloudscheduler_v1beta1_generated_cloud_scheduler_list_jobs_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudscheduler_v1_generated_CloudScheduler_ListJobs_async",
+      "regionTag": "cloudscheduler_v1beta1_generated_CloudScheduler_ListJobs_async",
       "segments": [
         {
           "end": 52,
@@ -574,20 +575,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudscheduler_v1_generated_cloud_scheduler_list_jobs_async.py"
+      "title": "cloudscheduler_v1beta1_generated_cloud_scheduler_list_jobs_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.scheduler_v1.CloudSchedulerClient",
+          "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerClient",
           "shortName": "CloudSchedulerClient"
         },
-        "fullName": "google.cloud.scheduler_v1.CloudSchedulerClient.list_jobs",
+        "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerClient.list_jobs",
         "method": {
-          "fullName": "google.cloud.scheduler.v1.CloudScheduler.ListJobs",
+          "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler.ListJobs",
           "service": {
-            "fullName": "google.cloud.scheduler.v1.CloudScheduler",
+            "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler",
             "shortName": "CloudScheduler"
           },
           "shortName": "ListJobs"
@@ -595,7 +596,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.scheduler_v1.types.ListJobsRequest"
+            "type": "google.cloud.scheduler_v1beta1.types.ListJobsRequest"
           },
           {
             "name": "parent",
@@ -614,14 +615,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.scheduler_v1.services.cloud_scheduler.pagers.ListJobsPager",
+        "resultType": "google.cloud.scheduler_v1beta1.services.cloud_scheduler.pagers.ListJobsPager",
         "shortName": "list_jobs"
       },
       "description": "Sample for ListJobs",
-      "file": "cloudscheduler_v1_generated_cloud_scheduler_list_jobs_sync.py",
+      "file": "cloudscheduler_v1beta1_generated_cloud_scheduler_list_jobs_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudscheduler_v1_generated_CloudScheduler_ListJobs_sync",
+      "regionTag": "cloudscheduler_v1beta1_generated_CloudScheduler_ListJobs_sync",
       "segments": [
         {
           "end": 52,
@@ -654,21 +655,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudscheduler_v1_generated_cloud_scheduler_list_jobs_sync.py"
+      "title": "cloudscheduler_v1beta1_generated_cloud_scheduler_list_jobs_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.scheduler_v1.CloudSchedulerAsyncClient",
+          "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerAsyncClient",
           "shortName": "CloudSchedulerAsyncClient"
         },
-        "fullName": "google.cloud.scheduler_v1.CloudSchedulerAsyncClient.pause_job",
+        "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerAsyncClient.pause_job",
         "method": {
-          "fullName": "google.cloud.scheduler.v1.CloudScheduler.PauseJob",
+          "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler.PauseJob",
           "service": {
-            "fullName": "google.cloud.scheduler.v1.CloudScheduler",
+            "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler",
             "shortName": "CloudScheduler"
           },
           "shortName": "PauseJob"
@@ -676,7 +677,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.scheduler_v1.types.PauseJobRequest"
+            "type": "google.cloud.scheduler_v1beta1.types.PauseJobRequest"
           },
           {
             "name": "name",
@@ -695,14 +696,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.scheduler_v1.types.Job",
+        "resultType": "google.cloud.scheduler_v1beta1.types.Job",
         "shortName": "pause_job"
       },
       "description": "Sample for PauseJob",
-      "file": "cloudscheduler_v1_generated_cloud_scheduler_pause_job_async.py",
+      "file": "cloudscheduler_v1beta1_generated_cloud_scheduler_pause_job_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudscheduler_v1_generated_CloudScheduler_PauseJob_async",
+      "regionTag": "cloudscheduler_v1beta1_generated_CloudScheduler_PauseJob_async",
       "segments": [
         {
           "end": 51,
@@ -735,20 +736,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudscheduler_v1_generated_cloud_scheduler_pause_job_async.py"
+      "title": "cloudscheduler_v1beta1_generated_cloud_scheduler_pause_job_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.scheduler_v1.CloudSchedulerClient",
+          "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerClient",
           "shortName": "CloudSchedulerClient"
         },
-        "fullName": "google.cloud.scheduler_v1.CloudSchedulerClient.pause_job",
+        "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerClient.pause_job",
         "method": {
-          "fullName": "google.cloud.scheduler.v1.CloudScheduler.PauseJob",
+          "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler.PauseJob",
           "service": {
-            "fullName": "google.cloud.scheduler.v1.CloudScheduler",
+            "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler",
             "shortName": "CloudScheduler"
           },
           "shortName": "PauseJob"
@@ -756,7 +757,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.scheduler_v1.types.PauseJobRequest"
+            "type": "google.cloud.scheduler_v1beta1.types.PauseJobRequest"
           },
           {
             "name": "name",
@@ -775,14 +776,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.scheduler_v1.types.Job",
+        "resultType": "google.cloud.scheduler_v1beta1.types.Job",
         "shortName": "pause_job"
       },
       "description": "Sample for PauseJob",
-      "file": "cloudscheduler_v1_generated_cloud_scheduler_pause_job_sync.py",
+      "file": "cloudscheduler_v1beta1_generated_cloud_scheduler_pause_job_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudscheduler_v1_generated_CloudScheduler_PauseJob_sync",
+      "regionTag": "cloudscheduler_v1beta1_generated_CloudScheduler_PauseJob_sync",
       "segments": [
         {
           "end": 51,
@@ -815,21 +816,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudscheduler_v1_generated_cloud_scheduler_pause_job_sync.py"
+      "title": "cloudscheduler_v1beta1_generated_cloud_scheduler_pause_job_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.scheduler_v1.CloudSchedulerAsyncClient",
+          "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerAsyncClient",
           "shortName": "CloudSchedulerAsyncClient"
         },
-        "fullName": "google.cloud.scheduler_v1.CloudSchedulerAsyncClient.resume_job",
+        "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerAsyncClient.resume_job",
         "method": {
-          "fullName": "google.cloud.scheduler.v1.CloudScheduler.ResumeJob",
+          "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler.ResumeJob",
           "service": {
-            "fullName": "google.cloud.scheduler.v1.CloudScheduler",
+            "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler",
             "shortName": "CloudScheduler"
           },
           "shortName": "ResumeJob"
@@ -837,7 +838,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.scheduler_v1.types.ResumeJobRequest"
+            "type": "google.cloud.scheduler_v1beta1.types.ResumeJobRequest"
           },
           {
             "name": "name",
@@ -856,14 +857,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.scheduler_v1.types.Job",
+        "resultType": "google.cloud.scheduler_v1beta1.types.Job",
         "shortName": "resume_job"
       },
       "description": "Sample for ResumeJob",
-      "file": "cloudscheduler_v1_generated_cloud_scheduler_resume_job_async.py",
+      "file": "cloudscheduler_v1beta1_generated_cloud_scheduler_resume_job_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudscheduler_v1_generated_CloudScheduler_ResumeJob_async",
+      "regionTag": "cloudscheduler_v1beta1_generated_CloudScheduler_ResumeJob_async",
       "segments": [
         {
           "end": 51,
@@ -896,20 +897,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudscheduler_v1_generated_cloud_scheduler_resume_job_async.py"
+      "title": "cloudscheduler_v1beta1_generated_cloud_scheduler_resume_job_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.scheduler_v1.CloudSchedulerClient",
+          "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerClient",
           "shortName": "CloudSchedulerClient"
         },
-        "fullName": "google.cloud.scheduler_v1.CloudSchedulerClient.resume_job",
+        "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerClient.resume_job",
         "method": {
-          "fullName": "google.cloud.scheduler.v1.CloudScheduler.ResumeJob",
+          "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler.ResumeJob",
           "service": {
-            "fullName": "google.cloud.scheduler.v1.CloudScheduler",
+            "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler",
             "shortName": "CloudScheduler"
           },
           "shortName": "ResumeJob"
@@ -917,7 +918,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.scheduler_v1.types.ResumeJobRequest"
+            "type": "google.cloud.scheduler_v1beta1.types.ResumeJobRequest"
           },
           {
             "name": "name",
@@ -936,14 +937,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.scheduler_v1.types.Job",
+        "resultType": "google.cloud.scheduler_v1beta1.types.Job",
         "shortName": "resume_job"
       },
       "description": "Sample for ResumeJob",
-      "file": "cloudscheduler_v1_generated_cloud_scheduler_resume_job_sync.py",
+      "file": "cloudscheduler_v1beta1_generated_cloud_scheduler_resume_job_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudscheduler_v1_generated_CloudScheduler_ResumeJob_sync",
+      "regionTag": "cloudscheduler_v1beta1_generated_CloudScheduler_ResumeJob_sync",
       "segments": [
         {
           "end": 51,
@@ -976,21 +977,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudscheduler_v1_generated_cloud_scheduler_resume_job_sync.py"
+      "title": "cloudscheduler_v1beta1_generated_cloud_scheduler_resume_job_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.scheduler_v1.CloudSchedulerAsyncClient",
+          "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerAsyncClient",
           "shortName": "CloudSchedulerAsyncClient"
         },
-        "fullName": "google.cloud.scheduler_v1.CloudSchedulerAsyncClient.run_job",
+        "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerAsyncClient.run_job",
         "method": {
-          "fullName": "google.cloud.scheduler.v1.CloudScheduler.RunJob",
+          "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler.RunJob",
           "service": {
-            "fullName": "google.cloud.scheduler.v1.CloudScheduler",
+            "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler",
             "shortName": "CloudScheduler"
           },
           "shortName": "RunJob"
@@ -998,7 +999,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.scheduler_v1.types.RunJobRequest"
+            "type": "google.cloud.scheduler_v1beta1.types.RunJobRequest"
           },
           {
             "name": "name",
@@ -1017,14 +1018,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.scheduler_v1.types.Job",
+        "resultType": "google.cloud.scheduler_v1beta1.types.Job",
         "shortName": "run_job"
       },
       "description": "Sample for RunJob",
-      "file": "cloudscheduler_v1_generated_cloud_scheduler_run_job_async.py",
+      "file": "cloudscheduler_v1beta1_generated_cloud_scheduler_run_job_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudscheduler_v1_generated_CloudScheduler_RunJob_async",
+      "regionTag": "cloudscheduler_v1beta1_generated_CloudScheduler_RunJob_async",
       "segments": [
         {
           "end": 51,
@@ -1057,20 +1058,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudscheduler_v1_generated_cloud_scheduler_run_job_async.py"
+      "title": "cloudscheduler_v1beta1_generated_cloud_scheduler_run_job_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.scheduler_v1.CloudSchedulerClient",
+          "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerClient",
           "shortName": "CloudSchedulerClient"
         },
-        "fullName": "google.cloud.scheduler_v1.CloudSchedulerClient.run_job",
+        "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerClient.run_job",
         "method": {
-          "fullName": "google.cloud.scheduler.v1.CloudScheduler.RunJob",
+          "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler.RunJob",
           "service": {
-            "fullName": "google.cloud.scheduler.v1.CloudScheduler",
+            "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler",
             "shortName": "CloudScheduler"
           },
           "shortName": "RunJob"
@@ -1078,7 +1079,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.scheduler_v1.types.RunJobRequest"
+            "type": "google.cloud.scheduler_v1beta1.types.RunJobRequest"
           },
           {
             "name": "name",
@@ -1097,14 +1098,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.scheduler_v1.types.Job",
+        "resultType": "google.cloud.scheduler_v1beta1.types.Job",
         "shortName": "run_job"
       },
       "description": "Sample for RunJob",
-      "file": "cloudscheduler_v1_generated_cloud_scheduler_run_job_sync.py",
+      "file": "cloudscheduler_v1beta1_generated_cloud_scheduler_run_job_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudscheduler_v1_generated_CloudScheduler_RunJob_sync",
+      "regionTag": "cloudscheduler_v1beta1_generated_CloudScheduler_RunJob_sync",
       "segments": [
         {
           "end": 51,
@@ -1137,21 +1138,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudscheduler_v1_generated_cloud_scheduler_run_job_sync.py"
+      "title": "cloudscheduler_v1beta1_generated_cloud_scheduler_run_job_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.scheduler_v1.CloudSchedulerAsyncClient",
+          "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerAsyncClient",
           "shortName": "CloudSchedulerAsyncClient"
         },
-        "fullName": "google.cloud.scheduler_v1.CloudSchedulerAsyncClient.update_job",
+        "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerAsyncClient.update_job",
         "method": {
-          "fullName": "google.cloud.scheduler.v1.CloudScheduler.UpdateJob",
+          "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler.UpdateJob",
           "service": {
-            "fullName": "google.cloud.scheduler.v1.CloudScheduler",
+            "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler",
             "shortName": "CloudScheduler"
           },
           "shortName": "UpdateJob"
@@ -1159,11 +1160,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.scheduler_v1.types.UpdateJobRequest"
+            "type": "google.cloud.scheduler_v1beta1.types.UpdateJobRequest"
           },
           {
             "name": "job",
-            "type": "google.cloud.scheduler_v1.types.Job"
+            "type": "google.cloud.scheduler_v1beta1.types.Job"
           },
           {
             "name": "update_mask",
@@ -1182,14 +1183,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.scheduler_v1.types.Job",
+        "resultType": "google.cloud.scheduler_v1beta1.types.Job",
         "shortName": "update_job"
       },
       "description": "Sample for UpdateJob",
-      "file": "cloudscheduler_v1_generated_cloud_scheduler_update_job_async.py",
+      "file": "cloudscheduler_v1beta1_generated_cloud_scheduler_update_job_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudscheduler_v1_generated_CloudScheduler_UpdateJob_async",
+      "regionTag": "cloudscheduler_v1beta1_generated_CloudScheduler_UpdateJob_async",
       "segments": [
         {
           "end": 50,
@@ -1222,20 +1223,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudscheduler_v1_generated_cloud_scheduler_update_job_async.py"
+      "title": "cloudscheduler_v1beta1_generated_cloud_scheduler_update_job_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.scheduler_v1.CloudSchedulerClient",
+          "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerClient",
           "shortName": "CloudSchedulerClient"
         },
-        "fullName": "google.cloud.scheduler_v1.CloudSchedulerClient.update_job",
+        "fullName": "google.cloud.scheduler_v1beta1.CloudSchedulerClient.update_job",
         "method": {
-          "fullName": "google.cloud.scheduler.v1.CloudScheduler.UpdateJob",
+          "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler.UpdateJob",
           "service": {
-            "fullName": "google.cloud.scheduler.v1.CloudScheduler",
+            "fullName": "google.cloud.scheduler.v1beta1.CloudScheduler",
             "shortName": "CloudScheduler"
           },
           "shortName": "UpdateJob"
@@ -1243,11 +1244,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.scheduler_v1.types.UpdateJobRequest"
+            "type": "google.cloud.scheduler_v1beta1.types.UpdateJobRequest"
           },
           {
             "name": "job",
-            "type": "google.cloud.scheduler_v1.types.Job"
+            "type": "google.cloud.scheduler_v1beta1.types.Job"
           },
           {
             "name": "update_mask",
@@ -1266,14 +1267,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.scheduler_v1.types.Job",
+        "resultType": "google.cloud.scheduler_v1beta1.types.Job",
         "shortName": "update_job"
       },
       "description": "Sample for UpdateJob",
-      "file": "cloudscheduler_v1_generated_cloud_scheduler_update_job_sync.py",
+      "file": "cloudscheduler_v1beta1_generated_cloud_scheduler_update_job_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudscheduler_v1_generated_CloudScheduler_UpdateJob_sync",
+      "regionTag": "cloudscheduler_v1beta1_generated_CloudScheduler_UpdateJob_sync",
       "segments": [
         {
           "end": 50,
@@ -1306,7 +1307,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudscheduler_v1_generated_cloud_scheduler_update_job_sync.py"
+      "title": "cloudscheduler_v1beta1_generated_cloud_scheduler_update_job_sync.py"
     }
   ]
 }

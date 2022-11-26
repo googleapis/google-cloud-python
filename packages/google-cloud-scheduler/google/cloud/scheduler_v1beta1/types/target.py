@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -70,7 +72,7 @@ class HttpTarget(proto.Message):
             characters after encoding.
         http_method (google.cloud.scheduler_v1beta1.types.HttpMethod):
             Which HTTP method to use for the request.
-        headers (Mapping[str, str]):
+        headers (MutableMapping[str, str]):
             The user can specify HTTP request headers to send with the
             job's HTTP request. This map contains the header field names
             and values. Repeated headers are not supported, but a header
@@ -120,31 +122,31 @@ class HttpTarget(proto.Message):
             This field is a member of `oneof`_ ``authorization_header``.
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    http_method = proto.Field(
+    http_method: "HttpMethod" = proto.Field(
         proto.ENUM,
         number=2,
         enum="HttpMethod",
     )
-    headers = proto.MapField(
+    headers: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
     )
-    body = proto.Field(
+    body: bytes = proto.Field(
         proto.BYTES,
         number=4,
     )
-    oauth_token = proto.Field(
+    oauth_token: "OAuthToken" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="authorization_header",
         message="OAuthToken",
     )
-    oidc_token = proto.Field(
+    oidc_token: "OidcToken" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="authorization_header",
@@ -178,7 +180,7 @@ class AppEngineHttpTarget(proto.Message):
             arguments, and ``#`` fragments. If the relative URL is
             empty, then the root path "/" will be used. No spaces are
             allowed, and the maximum length allowed is 2083 characters.
-        headers (Mapping[str, str]):
+        headers (MutableMapping[str, str]):
             HTTP request headers.
 
             This map contains the header field names and values. Headers
@@ -225,26 +227,26 @@ class AppEngineHttpTarget(proto.Message):
             [HttpMethod][google.cloud.scheduler.v1beta1.HttpMethod].
     """
 
-    http_method = proto.Field(
+    http_method: "HttpMethod" = proto.Field(
         proto.ENUM,
         number=1,
         enum="HttpMethod",
     )
-    app_engine_routing = proto.Field(
+    app_engine_routing: "AppEngineRouting" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="AppEngineRouting",
     )
-    relative_uri = proto.Field(
+    relative_uri: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    headers = proto.MapField(
+    headers: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    body = proto.Field(
+    body: bytes = proto.Field(
         proto.BYTES,
         number=5,
     )
@@ -269,21 +271,21 @@ class PubsubTarget(proto.Message):
             The message payload for PubsubMessage.
             Pubsub message must contain either non-empty
             data, or at least one attribute.
-        attributes (Mapping[str, str]):
+        attributes (MutableMapping[str, str]):
             Attributes for PubsubMessage.
             Pubsub message must contain either non-empty
             data, or at least one attribute.
     """
 
-    topic_name = proto.Field(
+    topic_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    data = proto.Field(
+    data: bytes = proto.Field(
         proto.BYTES,
         number=3,
     )
-    attributes = proto.MapField(
+    attributes: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
@@ -405,19 +407,19 @@ class AppEngineRouting(proto.Message):
             of the default service when the job is attempted.
     """
 
-    service = proto.Field(
+    service: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    instance = proto.Field(
+    instance: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    host = proto.Field(
+    host: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -444,11 +446,11 @@ class OAuthToken(proto.Message):
             will be used.
     """
 
-    service_account_email = proto.Field(
+    service_account_email: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    scope = proto.Field(
+    scope: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -475,11 +477,11 @@ class OidcToken(proto.Message):
             target will be used.
     """
 
-    service_account_email = proto.Field(
+    service_account_email: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    audience = proto.Field(
+    audience: str = proto.Field(
         proto.STRING,
         number=2,
     )

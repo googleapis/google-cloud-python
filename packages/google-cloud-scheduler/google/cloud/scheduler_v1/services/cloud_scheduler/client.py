@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -66,7 +77,7 @@ class CloudSchedulerClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[CloudSchedulerTransport]:
         """Returns an appropriate transport class.
 
@@ -360,8 +371,8 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, CloudSchedulerTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, CloudSchedulerTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the cloud scheduler client.
@@ -375,7 +386,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
             transport (Union[str, CloudSchedulerTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -405,6 +416,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -457,11 +469,11 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
 
     def list_jobs(
         self,
-        request: Union[cloudscheduler.ListJobsRequest, dict] = None,
+        request: Optional[Union[cloudscheduler.ListJobsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobsPager:
         r"""Lists jobs.
@@ -573,11 +585,11 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
 
     def get_job(
         self,
-        request: Union[cloudscheduler.GetJobRequest, dict] = None,
+        request: Optional[Union[cloudscheduler.GetJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> job.Job:
         r"""Gets a job.
@@ -676,12 +688,12 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
 
     def create_job(
         self,
-        request: Union[cloudscheduler.CreateJobRequest, dict] = None,
+        request: Optional[Union[cloudscheduler.CreateJobRequest, dict]] = None,
         *,
-        parent: str = None,
-        job: gcs_job.Job = None,
+        parent: Optional[str] = None,
+        job: Optional[gcs_job.Job] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_job.Job:
         r"""Creates a job.
@@ -795,12 +807,12 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
 
     def update_job(
         self,
-        request: Union[cloudscheduler.UpdateJobRequest, dict] = None,
+        request: Optional[Union[cloudscheduler.UpdateJobRequest, dict]] = None,
         *,
-        job: gcs_job.Job = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        job: Optional[gcs_job.Job] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_job.Job:
         r"""Updates a job.
@@ -923,11 +935,11 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
 
     def delete_job(
         self,
-        request: Union[cloudscheduler.DeleteJobRequest, dict] = None,
+        request: Optional[Union[cloudscheduler.DeleteJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a job.
@@ -1014,11 +1026,11 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
 
     def pause_job(
         self,
-        request: Union[cloudscheduler.PauseJobRequest, dict] = None,
+        request: Optional[Union[cloudscheduler.PauseJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> job.Job:
         r"""Pauses a job.
@@ -1128,11 +1140,11 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
 
     def resume_job(
         self,
-        request: Union[cloudscheduler.ResumeJobRequest, dict] = None,
+        request: Optional[Union[cloudscheduler.ResumeJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> job.Job:
         r"""Resume a job.
@@ -1241,11 +1253,11 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
 
     def run_job(
         self,
-        request: Union[cloudscheduler.RunJobRequest, dict] = None,
+        request: Optional[Union[cloudscheduler.RunJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> job.Job:
         r"""Forces a job to run now.

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -64,15 +66,15 @@ class ListJobsRequest(proto.Message):
             while iterating through pages.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -83,7 +85,7 @@ class ListJobsResponse(proto.Message):
     [ListJobs][google.cloud.scheduler.v1beta1.CloudScheduler.ListJobs].
 
     Attributes:
-        jobs (Sequence[google.cloud.scheduler_v1beta1.types.Job]):
+        jobs (MutableSequence[google.cloud.scheduler_v1beta1.types.Job]):
             The list of jobs.
         next_page_token (str):
             A token to retrieve next page of results. Pass this value in
@@ -102,12 +104,12 @@ class ListJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    jobs = proto.RepeatedField(
+    jobs: MutableSequence[gcs_job.Job] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcs_job.Job,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -123,7 +125,7 @@ class GetJobRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -148,11 +150,11 @@ class CreateJobRequest(proto.Message):
             in the response.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    job = proto.Field(
+    job: gcs_job.Job = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcs_job.Job,
@@ -176,12 +178,12 @@ class UpdateJobRequest(proto.Message):
             job are being updated.
     """
 
-    job = proto.Field(
+    job: gcs_job.Job = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcs_job.Job,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -198,7 +200,7 @@ class DeleteJobRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -214,7 +216,7 @@ class PauseJobRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -230,7 +232,7 @@ class ResumeJobRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -246,7 +248,7 @@ class RunJobRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

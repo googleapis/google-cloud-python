@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -171,9 +181,9 @@ class CloudSchedulerAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, CloudSchedulerTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the cloud scheduler client.
@@ -217,11 +227,11 @@ class CloudSchedulerAsyncClient:
 
     async def list_jobs(
         self,
-        request: Union[cloudscheduler.ListJobsRequest, dict] = None,
+        request: Optional[Union[cloudscheduler.ListJobsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobsAsyncPager:
         r"""Lists jobs.
@@ -254,7 +264,7 @@ class CloudSchedulerAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.scheduler_v1beta1.types.ListJobsRequest, dict]):
+            request (Optional[Union[google.cloud.scheduler_v1beta1.types.ListJobsRequest, dict]]):
                 The request object. Request message for listing jobs
                 using
                 [ListJobs][google.cloud.scheduler.v1beta1.CloudScheduler.ListJobs].
@@ -343,11 +353,11 @@ class CloudSchedulerAsyncClient:
 
     async def get_job(
         self,
-        request: Union[cloudscheduler.GetJobRequest, dict] = None,
+        request: Optional[Union[cloudscheduler.GetJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> job.Job:
         r"""Gets a job.
@@ -379,7 +389,7 @@ class CloudSchedulerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.scheduler_v1beta1.types.GetJobRequest, dict]):
+            request (Optional[Union[google.cloud.scheduler_v1beta1.types.GetJobRequest, dict]]):
                 The request object. Request message for
                 [GetJob][google.cloud.scheduler.v1beta1.CloudScheduler.GetJob].
             name (:class:`str`):
@@ -456,12 +466,12 @@ class CloudSchedulerAsyncClient:
 
     async def create_job(
         self,
-        request: Union[cloudscheduler.CreateJobRequest, dict] = None,
+        request: Optional[Union[cloudscheduler.CreateJobRequest, dict]] = None,
         *,
-        parent: str = None,
-        job: gcs_job.Job = None,
+        parent: Optional[str] = None,
+        job: Optional[gcs_job.Job] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_job.Job:
         r"""Creates a job.
@@ -493,7 +503,7 @@ class CloudSchedulerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.scheduler_v1beta1.types.CreateJobRequest, dict]):
+            request (Optional[Union[google.cloud.scheduler_v1beta1.types.CreateJobRequest, dict]]):
                 The request object. Request message for
                 [CreateJob][google.cloud.scheduler.v1beta1.CloudScheduler.CreateJob].
             parent (:class:`str`):
@@ -576,12 +586,12 @@ class CloudSchedulerAsyncClient:
 
     async def update_job(
         self,
-        request: Union[cloudscheduler.UpdateJobRequest, dict] = None,
+        request: Optional[Union[cloudscheduler.UpdateJobRequest, dict]] = None,
         *,
-        job: gcs_job.Job = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        job: Optional[gcs_job.Job] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_job.Job:
         r"""Updates a job.
@@ -623,7 +633,7 @@ class CloudSchedulerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.scheduler_v1beta1.types.UpdateJobRequest, dict]):
+            request (Optional[Union[google.cloud.scheduler_v1beta1.types.UpdateJobRequest, dict]]):
                 The request object. Request message for
                 [UpdateJob][google.cloud.scheduler.v1beta1.CloudScheduler.UpdateJob].
             job (:class:`google.cloud.scheduler_v1beta1.types.Job`):
@@ -704,11 +714,11 @@ class CloudSchedulerAsyncClient:
 
     async def delete_job(
         self,
-        request: Union[cloudscheduler.DeleteJobRequest, dict] = None,
+        request: Optional[Union[cloudscheduler.DeleteJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a job.
@@ -737,7 +747,7 @@ class CloudSchedulerAsyncClient:
                 await client.delete_job(request=request)
 
         Args:
-            request (Union[google.cloud.scheduler_v1beta1.types.DeleteJobRequest, dict]):
+            request (Optional[Union[google.cloud.scheduler_v1beta1.types.DeleteJobRequest, dict]]):
                 The request object. Request message for deleting a job
                 using
                 [DeleteJob][google.cloud.scheduler.v1beta1.CloudScheduler.DeleteJob].
@@ -805,11 +815,11 @@ class CloudSchedulerAsyncClient:
 
     async def pause_job(
         self,
-        request: Union[cloudscheduler.PauseJobRequest, dict] = None,
+        request: Optional[Union[cloudscheduler.PauseJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> job.Job:
         r"""Pauses a job.
@@ -852,7 +862,7 @@ class CloudSchedulerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.scheduler_v1beta1.types.PauseJobRequest, dict]):
+            request (Optional[Union[google.cloud.scheduler_v1beta1.types.PauseJobRequest, dict]]):
                 The request object. Request message for
                 [PauseJob][google.cloud.scheduler.v1beta1.CloudScheduler.PauseJob].
             name (:class:`str`):
@@ -929,11 +939,11 @@ class CloudSchedulerAsyncClient:
 
     async def resume_job(
         self,
-        request: Union[cloudscheduler.ResumeJobRequest, dict] = None,
+        request: Optional[Union[cloudscheduler.ResumeJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> job.Job:
         r"""Resume a job.
@@ -975,7 +985,7 @@ class CloudSchedulerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.scheduler_v1beta1.types.ResumeJobRequest, dict]):
+            request (Optional[Union[google.cloud.scheduler_v1beta1.types.ResumeJobRequest, dict]]):
                 The request object. Request message for
                 [ResumeJob][google.cloud.scheduler.v1beta1.CloudScheduler.ResumeJob].
             name (:class:`str`):
@@ -1052,11 +1062,11 @@ class CloudSchedulerAsyncClient:
 
     async def run_job(
         self,
-        request: Union[cloudscheduler.RunJobRequest, dict] = None,
+        request: Optional[Union[cloudscheduler.RunJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> job.Job:
         r"""Forces a job to run now.
@@ -1090,7 +1100,7 @@ class CloudSchedulerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.scheduler_v1beta1.types.RunJobRequest, dict]):
+            request (Optional[Union[google.cloud.scheduler_v1beta1.types.RunJobRequest, dict]]):
                 The request object. Request message for forcing a job to
                 run now using
                 [RunJob][google.cloud.scheduler.v1beta1.CloudScheduler.RunJob].

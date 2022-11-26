@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -168,71 +170,71 @@ class Job(proto.Message):
         DISABLED = 3
         UPDATE_FAILED = 4
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    pubsub_target = proto.Field(
+    pubsub_target: target.PubsubTarget = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="target",
         message=target.PubsubTarget,
     )
-    app_engine_http_target = proto.Field(
+    app_engine_http_target: target.AppEngineHttpTarget = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="target",
         message=target.AppEngineHttpTarget,
     )
-    http_target = proto.Field(
+    http_target: target.HttpTarget = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="target",
         message=target.HttpTarget,
     )
-    schedule = proto.Field(
+    schedule: str = proto.Field(
         proto.STRING,
         number=20,
     )
-    time_zone = proto.Field(
+    time_zone: str = proto.Field(
         proto.STRING,
         number=21,
     )
-    user_update_time = proto.Field(
+    user_update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=10,
         enum=State,
     )
-    status = proto.Field(
+    status: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=11,
         message=status_pb2.Status,
     )
-    schedule_time = proto.Field(
+    schedule_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=17,
         message=timestamp_pb2.Timestamp,
     )
-    last_attempt_time = proto.Field(
+    last_attempt_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=18,
         message=timestamp_pb2.Timestamp,
     )
-    retry_config = proto.Field(
+    retry_config: "RetryConfig" = proto.Field(
         proto.MESSAGE,
         number=19,
         message="RetryConfig",
     )
-    attempt_deadline = proto.Field(
+    attempt_deadline: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=22,
         message=duration_pb2.Duration,
@@ -313,26 +315,26 @@ class RetryConfig(proto.Message):
             The default value of this field is 5.
     """
 
-    retry_count = proto.Field(
+    retry_count: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    max_retry_duration = proto.Field(
+    max_retry_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,
     )
-    min_backoff_duration = proto.Field(
+    min_backoff_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=3,
         message=duration_pb2.Duration,
     )
-    max_backoff_duration = proto.Field(
+    max_backoff_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=4,
         message=duration_pb2.Duration,
     )
-    max_doublings = proto.Field(
+    max_doublings: int = proto.Field(
         proto.INT32,
         number=5,
     )
