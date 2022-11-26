@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -66,19 +68,19 @@ class ListSecretsRequest(proto.Message):
             all secrets are listed.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -89,7 +91,7 @@ class ListSecretsResponse(proto.Message):
     [SecretManagerService.ListSecrets][google.cloud.secretmanager.v1.SecretManagerService.ListSecrets].
 
     Attributes:
-        secrets (Sequence[google.cloud.secretmanager_v1.types.Secret]):
+        secrets (MutableSequence[google.cloud.secretmanager_v1.types.Secret]):
             The list of [Secrets][google.cloud.secretmanager.v1.Secret]
             sorted in reverse by create_time (newest first).
         next_page_token (str):
@@ -106,16 +108,16 @@ class ListSecretsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    secrets = proto.RepeatedField(
+    secrets: MutableSequence[resources.Secret] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.Secret,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    total_size = proto.Field(
+    total_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -142,15 +144,15 @@ class CreateSecretRequest(proto.Message):
             with initial field values.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    secret_id = proto.Field(
+    secret_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    secret = proto.Field(
+    secret: resources.Secret = proto.Field(
         proto.MESSAGE,
         number=3,
         message=resources.Secret,
@@ -173,11 +175,11 @@ class AddSecretVersionRequest(proto.Message):
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    payload = proto.Field(
+    payload: resources.SecretPayload = proto.Field(
         proto.MESSAGE,
         number=2,
         message=resources.SecretPayload,
@@ -195,7 +197,7 @@ class GetSecretRequest(proto.Message):
             format ``projects/*/secrets/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -229,19 +231,19 @@ class ListSecretVersionsRequest(proto.Message):
             empty, all secret versions are listed.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -252,7 +254,7 @@ class ListSecretVersionsResponse(proto.Message):
     [SecretManagerService.ListSecretVersions][google.cloud.secretmanager.v1.SecretManagerService.ListSecretVersions].
 
     Attributes:
-        versions (Sequence[google.cloud.secretmanager_v1.types.SecretVersion]):
+        versions (MutableSequence[google.cloud.secretmanager_v1.types.SecretVersion]):
             The list of
             [SecretVersions][google.cloud.secretmanager.v1.SecretVersion]
             sorted in reverse by create_time (newest first).
@@ -270,16 +272,16 @@ class ListSecretVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    versions = proto.RepeatedField(
+    versions: MutableSequence[resources.SecretVersion] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.SecretVersion,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    total_size = proto.Field(
+    total_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -300,7 +302,7 @@ class GetSecretVersionRequest(proto.Message):
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -318,12 +320,12 @@ class UpdateSecretRequest(proto.Message):
             Required. Specifies the fields to be updated.
     """
 
-    secret = proto.Field(
+    secret: resources.Secret = proto.Field(
         proto.MESSAGE,
         number=1,
         message=resources.Secret,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -345,7 +347,7 @@ class AccessSecretVersionRequest(proto.Message):
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -364,11 +366,11 @@ class AccessSecretVersionResponse(proto.Message):
             Secret payload
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    payload = proto.Field(
+    payload: resources.SecretPayload = proto.Field(
         proto.MESSAGE,
         number=2,
         message=resources.SecretPayload,
@@ -391,11 +393,11 @@ class DeleteSecretRequest(proto.Message):
             secret object. If the etag is omitted, the request succeeds.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -419,11 +421,11 @@ class DisableSecretVersionRequest(proto.Message):
             request succeeds.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -446,11 +448,11 @@ class EnableSecretVersionRequest(proto.Message):
             request succeeds.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -474,11 +476,11 @@ class DestroySecretVersionRequest(proto.Message):
             request succeeds.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=2,
     )

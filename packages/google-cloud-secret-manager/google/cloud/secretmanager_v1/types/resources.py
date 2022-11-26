@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -64,7 +66,7 @@ class Secret(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the
             [Secret][google.cloud.secretmanager.v1.Secret] was created.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             The labels assigned to this Secret.
 
             Label keys must be between 1 and 63 characters long, have a
@@ -78,7 +80,7 @@ class Secret(proto.Message):
             ``[\p{Ll}\p{Lo}\p{N}_-]{0,63}``
 
             No more than 64 labels can be assigned to a given resource.
-        topics (Sequence[google.cloud.secretmanager_v1.types.Topic]):
+        topics (MutableSequence[google.cloud.secretmanager_v1.types.Topic]):
             Optional. A list of up to 10 Pub/Sub topics
             to which messages are published when control
             plane operations are called on the secret or its
@@ -102,7 +104,7 @@ class Secret(proto.Message):
             Optional. Rotation policy attached to the
             [Secret][google.cloud.secretmanager.v1.Secret]. May be
             excluded if there is no rotation policy.
-        version_aliases (Mapping[str, int]):
+        version_aliases (MutableMapping[str, int]):
             Optional. Mapping from version alias to version name.
 
             A version alias is a string with a maximum length of 63
@@ -118,52 +120,52 @@ class Secret(proto.Message):
             AccessSecretVersion.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    replication = proto.Field(
+    replication: "Replication" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Replication",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    topics = proto.RepeatedField(
+    topics: MutableSequence["Topic"] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="Topic",
     )
-    expire_time = proto.Field(
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="expiration",
         message=timestamp_pb2.Timestamp,
     )
-    ttl = proto.Field(
+    ttl: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="expiration",
         message=duration_pb2.Duration,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    rotation = proto.Field(
+    rotation: "Rotation" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="Rotation",
     )
-    version_aliases = proto.MapField(
+    version_aliases: MutableMapping[str, int] = proto.MapField(
         proto.STRING,
         proto.INT64,
         number=11,
@@ -222,35 +224,35 @@ class SecretVersion(proto.Message):
         DISABLED = 2
         DESTROYED = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    destroy_time = proto.Field(
+    destroy_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=4,
         enum=State,
     )
-    replication_status = proto.Field(
+    replication_status: "ReplicationStatus" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="ReplicationStatus",
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    client_specified_payload_checksum = proto.Field(
+    client_specified_payload_checksum: bool = proto.Field(
         proto.BOOL,
         number=7,
     )
@@ -301,7 +303,7 @@ class Replication(proto.Message):
                 [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
         """
 
-        customer_managed_encryption = proto.Field(
+        customer_managed_encryption: "CustomerManagedEncryption" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="CustomerManagedEncryption",
@@ -313,7 +315,7 @@ class Replication(proto.Message):
         locations specified in [Secret.replication.user_managed.replicas][]
 
         Attributes:
-            replicas (Sequence[google.cloud.secretmanager_v1.types.Replication.UserManaged.Replica]):
+            replicas (MutableSequence[google.cloud.secretmanager_v1.types.Replication.UserManaged.Replica]):
                 Required. The list of Replicas for this
                 [Secret][google.cloud.secretmanager.v1.Secret].
 
@@ -343,29 +345,31 @@ class Replication(proto.Message):
                     [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
             """
 
-            location = proto.Field(
+            location: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            customer_managed_encryption = proto.Field(
+            customer_managed_encryption: "CustomerManagedEncryption" = proto.Field(
                 proto.MESSAGE,
                 number=2,
                 message="CustomerManagedEncryption",
             )
 
-        replicas = proto.RepeatedField(
+        replicas: MutableSequence[
+            "Replication.UserManaged.Replica"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Replication.UserManaged.Replica",
         )
 
-    automatic = proto.Field(
+    automatic: Automatic = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="replication",
         message=Automatic,
     )
-    user_managed = proto.Field(
+    user_managed: UserManaged = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="replication",
@@ -397,7 +401,7 @@ class CustomerManagedEncryption(proto.Message):
             ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
     """
 
-    kms_key_name = proto.Field(
+    kms_key_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -453,7 +457,7 @@ class ReplicationStatus(proto.Message):
                 Only populated if customer-managed encryption is used.
         """
 
-        customer_managed_encryption = proto.Field(
+        customer_managed_encryption: "CustomerManagedEncryptionStatus" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="CustomerManagedEncryptionStatus",
@@ -469,7 +473,7 @@ class ReplicationStatus(proto.Message):
         replication policy.
 
         Attributes:
-            replicas (Sequence[google.cloud.secretmanager_v1.types.ReplicationStatus.UserManagedStatus.ReplicaStatus]):
+            replicas (MutableSequence[google.cloud.secretmanager_v1.types.ReplicationStatus.UserManagedStatus.ReplicaStatus]):
                 Output only. The list of replica statuses for the
                 [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
         """
@@ -488,29 +492,33 @@ class ReplicationStatus(proto.Message):
                     Only populated if customer-managed encryption is used.
             """
 
-            location = proto.Field(
+            location: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            customer_managed_encryption = proto.Field(
-                proto.MESSAGE,
-                number=2,
-                message="CustomerManagedEncryptionStatus",
+            customer_managed_encryption: "CustomerManagedEncryptionStatus" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=2,
+                    message="CustomerManagedEncryptionStatus",
+                )
             )
 
-        replicas = proto.RepeatedField(
+        replicas: MutableSequence[
+            "ReplicationStatus.UserManagedStatus.ReplicaStatus"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="ReplicationStatus.UserManagedStatus.ReplicaStatus",
         )
 
-    automatic = proto.Field(
+    automatic: AutomaticStatus = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="replication_status",
         message=AutomaticStatus,
     )
-    user_managed = proto.Field(
+    user_managed: UserManagedStatus = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="replication_status",
@@ -529,7 +537,7 @@ class CustomerManagedEncryptionStatus(proto.Message):
             ``projects/*/locations/*/keyRings/*/cryptoKeys/*/versions/*``.
     """
 
-    kms_key_version_name = proto.Field(
+    kms_key_version_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -548,7 +556,7 @@ class Topic(proto.Message):
             permissions on the topic.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -588,12 +596,12 @@ class Rotation(proto.Message):
             automatically sends rotation notifications.
     """
 
-    next_rotation_time = proto.Field(
+    next_rotation_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    rotation_period = proto.Field(
+    rotation_period: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,
@@ -632,11 +640,11 @@ class SecretPayload(proto.Message):
             This field is a member of `oneof`_ ``_data_crc32c``.
     """
 
-    data = proto.Field(
+    data: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    data_crc32c = proto.Field(
+    data_crc32c: int = proto.Field(
         proto.INT64,
         number=2,
         optional=True,
