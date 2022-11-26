@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -55,11 +57,11 @@ class SchedulingConfig(proto.Message):
             reservation.
     """
 
-    preemptible = proto.Field(
+    preemptible: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    reserved = proto.Field(
+    reserved: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -75,11 +77,11 @@ class NetworkEndpoint(proto.Message):
             The port of this network endpoint.
     """
 
-    ip_address = proto.Field(
+    ip_address: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    port = proto.Field(
+    port: int = proto.Field(
         proto.INT32,
         number=2,
     )
@@ -145,14 +147,14 @@ class Node(proto.Message):
             created.
         scheduling_config (google.cloud.tpu_v1.types.SchedulingConfig):
             The scheduling options for this node.
-        network_endpoints (Sequence[google.cloud.tpu_v1.types.NetworkEndpoint]):
+        network_endpoints (MutableSequence[google.cloud.tpu_v1.types.NetworkEndpoint]):
             Output only. The network endpoints where TPU
             workers can be accessed and sent work. It is
             recommended that Tensorflow clients of the node
             reach out to the 0th entry in this map first.
         health (google.cloud.tpu_v1.types.Node.Health):
             The health status of the TPU node.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Resource labels to represent user-provided
             metadata.
         use_service_networking (bool):
@@ -166,7 +168,7 @@ class Node(proto.Message):
         api_version (google.cloud.tpu_v1.types.Node.ApiVersion):
             Output only. The API version that created
             this Node.
-        symptoms (Sequence[google.cloud.tpu_v1.types.Symptom]):
+        symptoms (MutableSequence[google.cloud.tpu_v1.types.Symptom]):
             Output only. The Symptoms that have occurred
             to the TPU Node.
     """
@@ -209,86 +211,86 @@ class Node(proto.Message):
         V1 = 2
         V2_ALPHA1 = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    accelerator_type = proto.Field(
+    accelerator_type: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    ip_address = proto.Field(
+    ip_address: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    port = proto.Field(
+    port: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=9,
         enum=State,
     )
-    health_description = proto.Field(
+    health_description: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    tensorflow_version = proto.Field(
+    tensorflow_version: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    network = proto.Field(
+    network: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    cidr_block = proto.Field(
+    cidr_block: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    service_account = proto.Field(
+    service_account: str = proto.Field(
         proto.STRING,
         number=15,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=16,
         message=timestamp_pb2.Timestamp,
     )
-    scheduling_config = proto.Field(
+    scheduling_config: "SchedulingConfig" = proto.Field(
         proto.MESSAGE,
         number=17,
         message="SchedulingConfig",
     )
-    network_endpoints = proto.RepeatedField(
+    network_endpoints: MutableSequence["NetworkEndpoint"] = proto.RepeatedField(
         proto.MESSAGE,
         number=21,
         message="NetworkEndpoint",
     )
-    health = proto.Field(
+    health: Health = proto.Field(
         proto.ENUM,
         number=22,
         enum=Health,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=24,
     )
-    use_service_networking = proto.Field(
+    use_service_networking: bool = proto.Field(
         proto.BOOL,
         number=27,
     )
-    api_version = proto.Field(
+    api_version: ApiVersion = proto.Field(
         proto.ENUM,
         number=38,
         enum=ApiVersion,
     )
-    symptoms = proto.RepeatedField(
+    symptoms: MutableSequence["Symptom"] = proto.RepeatedField(
         proto.MESSAGE,
         number=39,
         message="Symptom",
@@ -308,15 +310,15 @@ class ListNodesRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -326,11 +328,11 @@ class ListNodesResponse(proto.Message):
     r"""Response for [ListNodes][google.cloud.tpu.v1.Tpu.ListNodes].
 
     Attributes:
-        nodes (Sequence[google.cloud.tpu_v1.types.Node]):
+        nodes (MutableSequence[google.cloud.tpu_v1.types.Node]):
             The listed nodes.
         next_page_token (str):
             The next page token or empty if none.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -338,16 +340,16 @@ class ListNodesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    nodes = proto.RepeatedField(
+    nodes: MutableSequence["Node"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Node",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -361,7 +363,7 @@ class GetNodeRequest(proto.Message):
             Required. The resource name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -379,15 +381,15 @@ class CreateNodeRequest(proto.Message):
             Required. The node.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    node_id = proto.Field(
+    node_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    node = proto.Field(
+    node: "Node" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Node",
@@ -402,7 +404,7 @@ class DeleteNodeRequest(proto.Message):
             Required. The resource name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -418,11 +420,11 @@ class ReimageNodeRequest(proto.Message):
             The version for reimage to create.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    tensorflow_version = proto.Field(
+    tensorflow_version: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -436,7 +438,7 @@ class StopNodeRequest(proto.Message):
             The resource name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -450,7 +452,7 @@ class StartNodeRequest(proto.Message):
             The resource name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -466,11 +468,11 @@ class TensorFlowVersion(proto.Message):
             the tensorflow version.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -485,7 +487,7 @@ class GetTensorFlowVersionRequest(proto.Message):
             Required. The resource name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -509,23 +511,23 @@ class ListTensorFlowVersionsRequest(proto.Message):
             Sort results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -536,11 +538,11 @@ class ListTensorFlowVersionsResponse(proto.Message):
     [ListTensorFlowVersions][google.cloud.tpu.v1.Tpu.ListTensorFlowVersions].
 
     Attributes:
-        tensorflow_versions (Sequence[google.cloud.tpu_v1.types.TensorFlowVersion]):
+        tensorflow_versions (MutableSequence[google.cloud.tpu_v1.types.TensorFlowVersion]):
             The listed nodes.
         next_page_token (str):
             The next page token or empty if none.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -548,16 +550,16 @@ class ListTensorFlowVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    tensorflow_versions = proto.RepeatedField(
+    tensorflow_versions: MutableSequence["TensorFlowVersion"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="TensorFlowVersion",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -573,11 +575,11 @@ class AcceleratorType(proto.Message):
             the accelerator type.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -592,7 +594,7 @@ class GetAcceleratorTypeRequest(proto.Message):
             Required. The resource name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -616,23 +618,23 @@ class ListAcceleratorTypesRequest(proto.Message):
             Sort results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -643,11 +645,11 @@ class ListAcceleratorTypesResponse(proto.Message):
     [ListAcceleratorTypes][google.cloud.tpu.v1.Tpu.ListAcceleratorTypes].
 
     Attributes:
-        accelerator_types (Sequence[google.cloud.tpu_v1.types.AcceleratorType]):
+        accelerator_types (MutableSequence[google.cloud.tpu_v1.types.AcceleratorType]):
             The listed nodes.
         next_page_token (str):
             The next page token or empty if none.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -655,16 +657,16 @@ class ListAcceleratorTypesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    accelerator_types = proto.RepeatedField(
+    accelerator_types: MutableSequence["AcceleratorType"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AcceleratorType",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -693,33 +695,33 @@ class OperationMetadata(proto.Message):
             API version.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_detail = proto.Field(
+    status_detail: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    cancel_requested = proto.Field(
+    cancel_requested: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -752,21 +754,21 @@ class Symptom(proto.Message):
         HBM_OUT_OF_MEMORY = 5
         PROJECT_ABUSE = 6
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    symptom_type = proto.Field(
+    symptom_type: SymptomType = proto.Field(
         proto.ENUM,
         number=2,
         enum=SymptomType,
     )
-    details = proto.Field(
+    details: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    worker_id = proto.Field(
+    worker_id: str = proto.Field(
         proto.STRING,
         number=4,
     )

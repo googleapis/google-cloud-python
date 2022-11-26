@@ -1,0 +1,28 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "packages": {
+    ".": {
+      "release-type": "python",
+      "extra-files": [
+        "google/cloud/tpu/gapic_version.py",
+        {
+          "type": "json",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.tpu.v2alpha1.json",
+          "jsonpath": "$.clientLibrary.version"
+        },
+        {
+          "type": "json",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.tpu.v1.json",
+          "jsonpath": "$.clientLibrary.version"
+        }
+      ]
+    }
+  },
+  "release-type": "python",
+  "plugins": [
+    {
+      "type": "sentence-case"
+    }
+  ],
+  "initial-version": "0.1.0"
+}

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -71,11 +73,11 @@ class GuestAttributes(proto.Message):
             The value of the requested queried path.
     """
 
-    query_path = proto.Field(
+    query_path: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    query_value = proto.Field(
+    query_value: "GuestAttributesValue" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="GuestAttributesValue",
@@ -86,11 +88,11 @@ class GuestAttributesValue(proto.Message):
     r"""Array of guest attribute namespace/key/value tuples.
 
     Attributes:
-        items (Sequence[google.cloud.tpu_v2alpha1.types.GuestAttributesEntry]):
+        items (MutableSequence[google.cloud.tpu_v2alpha1.types.GuestAttributesEntry]):
             The list of guest attributes entries.
     """
 
-    items = proto.RepeatedField(
+    items: MutableSequence["GuestAttributesEntry"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="GuestAttributesEntry",
@@ -109,15 +111,15 @@ class GuestAttributesEntry(proto.Message):
             Value for the guest attribute entry.
     """
 
-    namespace = proto.Field(
+    namespace: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    value = proto.Field(
+    value: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -143,11 +145,11 @@ class AttachedDisk(proto.Message):
         READ_WRITE = 1
         READ_ONLY = 2
 
-    source_disk = proto.Field(
+    source_disk: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    mode = proto.Field(
+    mode: DiskMode = proto.Field(
         proto.ENUM,
         number=4,
         enum=DiskMode,
@@ -165,11 +167,11 @@ class SchedulingConfig(proto.Message):
             reservation.
     """
 
-    preemptible = proto.Field(
+    preemptible: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    reserved = proto.Field(
+    reserved: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -188,15 +190,15 @@ class NetworkEndpoint(proto.Message):
             The access config for the TPU worker.
     """
 
-    ip_address = proto.Field(
+    ip_address: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    port = proto.Field(
+    port: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    access_config = proto.Field(
+    access_config: "AccessConfig" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="AccessConfig",
@@ -212,7 +214,7 @@ class AccessConfig(proto.Message):
             associated with the TPU worker.
     """
 
-    external_ip = proto.Field(
+    external_ip: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -239,15 +241,15 @@ class NetworkConfig(proto.Message):
             should have Private Google Access enabled.
     """
 
-    network = proto.Field(
+    network: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    subnetwork = proto.Field(
+    subnetwork: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    enable_external_ips = proto.Field(
+    enable_external_ips: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -261,17 +263,17 @@ class ServiceAccount(proto.Message):
             Email address of the service account. If
             empty, default Compute service account will be
             used.
-        scope (Sequence[str]):
+        scope (MutableSequence[str]):
             The list of scopes to be made available for
             this service account. If empty, access to all
             Cloud APIs will be allowed.
     """
 
-    email = proto.Field(
+    email: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    scope = proto.RepeatedField(
+    scope: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -323,32 +325,32 @@ class Node(proto.Message):
             created.
         scheduling_config (google.cloud.tpu_v2alpha1.types.SchedulingConfig):
             The scheduling options for this node.
-        network_endpoints (Sequence[google.cloud.tpu_v2alpha1.types.NetworkEndpoint]):
+        network_endpoints (MutableSequence[google.cloud.tpu_v2alpha1.types.NetworkEndpoint]):
             Output only. The network endpoints where TPU
             workers can be accessed and sent work. It is
             recommended that runtime clients of the node
             reach out to the 0th entry in this map first.
         health (google.cloud.tpu_v2alpha1.types.Node.Health):
             The health status of the TPU node.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Resource labels to represent user-provided
             metadata.
-        metadata (Mapping[str, str]):
+        metadata (MutableMapping[str, str]):
             Custom metadata to apply to the TPU Node.
             Can set startup-script and shutdown-script
-        tags (Sequence[str]):
+        tags (MutableSequence[str]):
             Tags to apply to the TPU Node. Tags are used
             to identify valid sources or targets for network
             firewalls.
         id (int):
             Output only. The unique identifier for the
             TPU Node.
-        data_disks (Sequence[google.cloud.tpu_v2alpha1.types.AttachedDisk]):
+        data_disks (MutableSequence[google.cloud.tpu_v2alpha1.types.AttachedDisk]):
             The additional data disks for the Node.
         api_version (google.cloud.tpu_v2alpha1.types.Node.ApiVersion):
             Output only. The API version that created
             this Node.
-        symptoms (Sequence[google.cloud.tpu_v2alpha1.types.Symptom]):
+        symptoms (MutableSequence[google.cloud.tpu_v2alpha1.types.Symptom]):
             Output only. The Symptoms that have occurred
             to the TPU Node.
         shielded_instance_config (google.cloud.tpu_v2alpha1.types.ShieldedInstanceConfig):
@@ -392,99 +394,99 @@ class Node(proto.Message):
         V1 = 2
         V2_ALPHA1 = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    accelerator_type = proto.Field(
+    accelerator_type: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=9,
         enum=State,
     )
-    health_description = proto.Field(
+    health_description: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    runtime_version = proto.Field(
+    runtime_version: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    network_config = proto.Field(
+    network_config: "NetworkConfig" = proto.Field(
         proto.MESSAGE,
         number=36,
         message="NetworkConfig",
     )
-    cidr_block = proto.Field(
+    cidr_block: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    service_account = proto.Field(
+    service_account: "ServiceAccount" = proto.Field(
         proto.MESSAGE,
         number=37,
         message="ServiceAccount",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=16,
         message=timestamp_pb2.Timestamp,
     )
-    scheduling_config = proto.Field(
+    scheduling_config: "SchedulingConfig" = proto.Field(
         proto.MESSAGE,
         number=17,
         message="SchedulingConfig",
     )
-    network_endpoints = proto.RepeatedField(
+    network_endpoints: MutableSequence["NetworkEndpoint"] = proto.RepeatedField(
         proto.MESSAGE,
         number=21,
         message="NetworkEndpoint",
     )
-    health = proto.Field(
+    health: Health = proto.Field(
         proto.ENUM,
         number=22,
         enum=Health,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=24,
     )
-    metadata = proto.MapField(
+    metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=34,
     )
-    tags = proto.RepeatedField(
+    tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=40,
     )
-    id = proto.Field(
+    id: int = proto.Field(
         proto.INT64,
         number=33,
     )
-    data_disks = proto.RepeatedField(
+    data_disks: MutableSequence["AttachedDisk"] = proto.RepeatedField(
         proto.MESSAGE,
         number=41,
         message="AttachedDisk",
     )
-    api_version = proto.Field(
+    api_version: ApiVersion = proto.Field(
         proto.ENUM,
         number=38,
         enum=ApiVersion,
     )
-    symptoms = proto.RepeatedField(
+    symptoms: MutableSequence["Symptom"] = proto.RepeatedField(
         proto.MESSAGE,
         number=39,
         message="Symptom",
     )
-    shielded_instance_config = proto.Field(
+    shielded_instance_config: "ShieldedInstanceConfig" = proto.Field(
         proto.MESSAGE,
         number=45,
         message="ShieldedInstanceConfig",
@@ -504,15 +506,15 @@ class ListNodesRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -522,11 +524,11 @@ class ListNodesResponse(proto.Message):
     r"""Response for [ListNodes][google.cloud.tpu.v2alpha1.Tpu.ListNodes].
 
     Attributes:
-        nodes (Sequence[google.cloud.tpu_v2alpha1.types.Node]):
+        nodes (MutableSequence[google.cloud.tpu_v2alpha1.types.Node]):
             The listed nodes.
         next_page_token (str):
             The next page token or empty if none.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -534,16 +536,16 @@ class ListNodesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    nodes = proto.RepeatedField(
+    nodes: MutableSequence["Node"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Node",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -557,7 +559,7 @@ class GetNodeRequest(proto.Message):
             Required. The resource name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -575,15 +577,15 @@ class CreateNodeRequest(proto.Message):
             Required. The node.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    node_id = proto.Field(
+    node_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    node = proto.Field(
+    node: "Node" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Node",
@@ -598,7 +600,7 @@ class DeleteNodeRequest(proto.Message):
             Required. The resource name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -612,7 +614,7 @@ class StopNodeRequest(proto.Message):
             The resource name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -626,7 +628,7 @@ class StartNodeRequest(proto.Message):
             The resource name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -644,12 +646,12 @@ class UpdateNodeRequest(proto.Message):
             updated.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    node = proto.Field(
+    node: "Node" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Node",
@@ -665,7 +667,7 @@ class ServiceIdentity(proto.Message):
             The email address of the service identity.
     """
 
-    email = proto.Field(
+    email: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -680,7 +682,7 @@ class GenerateServiceIdentityRequest(proto.Message):
             Required. The parent resource name.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -696,7 +698,7 @@ class GenerateServiceIdentityResponse(proto.Message):
             retrieved.
     """
 
-    identity = proto.Field(
+    identity: "ServiceIdentity" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ServiceIdentity",
@@ -713,11 +715,11 @@ class AcceleratorType(proto.Message):
             the accelerator type.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -732,7 +734,7 @@ class GetAcceleratorTypeRequest(proto.Message):
             Required. The resource name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -756,23 +758,23 @@ class ListAcceleratorTypesRequest(proto.Message):
             Sort results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -783,11 +785,11 @@ class ListAcceleratorTypesResponse(proto.Message):
     [ListAcceleratorTypes][google.cloud.tpu.v2alpha1.Tpu.ListAcceleratorTypes].
 
     Attributes:
-        accelerator_types (Sequence[google.cloud.tpu_v2alpha1.types.AcceleratorType]):
+        accelerator_types (MutableSequence[google.cloud.tpu_v2alpha1.types.AcceleratorType]):
             The listed nodes.
         next_page_token (str):
             The next page token or empty if none.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -795,16 +797,16 @@ class ListAcceleratorTypesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    accelerator_types = proto.RepeatedField(
+    accelerator_types: MutableSequence["AcceleratorType"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AcceleratorType",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -833,33 +835,33 @@ class OperationMetadata(proto.Message):
             API version.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_detail = proto.Field(
+    status_detail: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    cancel_requested = proto.Field(
+    cancel_requested: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -875,11 +877,11 @@ class RuntimeVersion(proto.Message):
             The runtime version.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -894,7 +896,7 @@ class GetRuntimeVersionRequest(proto.Message):
             Required. The resource name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -918,23 +920,23 @@ class ListRuntimeVersionsRequest(proto.Message):
             Sort results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -945,11 +947,11 @@ class ListRuntimeVersionsResponse(proto.Message):
     [ListRuntimeVersions][google.cloud.tpu.v2alpha1.Tpu.ListRuntimeVersions].
 
     Attributes:
-        runtime_versions (Sequence[google.cloud.tpu_v2alpha1.types.RuntimeVersion]):
+        runtime_versions (MutableSequence[google.cloud.tpu_v2alpha1.types.RuntimeVersion]):
             The listed nodes.
         next_page_token (str):
             The next page token or empty if none.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -957,16 +959,16 @@ class ListRuntimeVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    runtime_versions = proto.RepeatedField(
+    runtime_versions: MutableSequence["RuntimeVersion"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="RuntimeVersion",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -999,21 +1001,21 @@ class Symptom(proto.Message):
         HBM_OUT_OF_MEMORY = 5
         PROJECT_ABUSE = 6
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    symptom_type = proto.Field(
+    symptom_type: SymptomType = proto.Field(
         proto.ENUM,
         number=2,
         enum=SymptomType,
     )
-    details = proto.Field(
+    details: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    worker_id = proto.Field(
+    worker_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1028,20 +1030,20 @@ class GetGuestAttributesRequest(proto.Message):
             Required. The resource name.
         query_path (str):
             The guest attributes path to be queried.
-        worker_ids (Sequence[str]):
+        worker_ids (MutableSequence[str]):
             The 0-based worker ID. If it is empty, all
             workers' GuestAttributes will be returned.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    query_path = proto.Field(
+    query_path: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    worker_ids = proto.RepeatedField(
+    worker_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -1052,11 +1054,11 @@ class GetGuestAttributesResponse(proto.Message):
     [GetGuestAttributes][google.cloud.tpu.v2alpha1.Tpu.GetGuestAttributes].
 
     Attributes:
-        guest_attributes (Sequence[google.cloud.tpu_v2alpha1.types.GuestAttributes]):
+        guest_attributes (MutableSequence[google.cloud.tpu_v2alpha1.types.GuestAttributes]):
             The guest attributes for the TPU workers.
     """
 
-    guest_attributes = proto.RepeatedField(
+    guest_attributes: MutableSequence["GuestAttributes"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="GuestAttributes",
@@ -1072,7 +1074,7 @@ class ShieldedInstanceConfig(proto.Message):
             enabled.
     """
 
-    enable_secure_boot = proto.Field(
+    enable_secure_boot: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
