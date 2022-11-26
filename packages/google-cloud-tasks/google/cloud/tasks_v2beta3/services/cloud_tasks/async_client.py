@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -168,9 +178,9 @@ class CloudTasksAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, CloudTasksTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the cloud tasks client.
@@ -214,11 +224,11 @@ class CloudTasksAsyncClient:
 
     async def list_queues(
         self,
-        request: Union[cloudtasks.ListQueuesRequest, dict] = None,
+        request: Optional[Union[cloudtasks.ListQueuesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListQueuesAsyncPager:
         r"""Lists queues.
@@ -252,7 +262,7 @@ class CloudTasksAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.tasks_v2beta3.types.ListQueuesRequest, dict]):
+            request (Optional[Union[google.cloud.tasks_v2beta3.types.ListQueuesRequest, dict]]):
                 The request object. Request message for
                 [ListQueues][google.cloud.tasks.v2beta3.CloudTasks.ListQueues].
             parent (:class:`str`):
@@ -340,11 +350,11 @@ class CloudTasksAsyncClient:
 
     async def get_queue(
         self,
-        request: Union[cloudtasks.GetQueueRequest, dict] = None,
+        request: Optional[Union[cloudtasks.GetQueueRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> queue.Queue:
         r"""Gets a queue.
@@ -376,7 +386,7 @@ class CloudTasksAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.tasks_v2beta3.types.GetQueueRequest, dict]):
+            request (Optional[Union[google.cloud.tasks_v2beta3.types.GetQueueRequest, dict]]):
                 The request object. Request message for
                 [GetQueue][google.cloud.tasks.v2beta3.CloudTasks.GetQueue].
             name (:class:`str`):
@@ -456,12 +466,12 @@ class CloudTasksAsyncClient:
 
     async def create_queue(
         self,
-        request: Union[cloudtasks.CreateQueueRequest, dict] = None,
+        request: Optional[Union[cloudtasks.CreateQueueRequest, dict]] = None,
         *,
-        parent: str = None,
-        queue: gct_queue.Queue = None,
+        parent: Optional[str] = None,
+        queue: Optional[gct_queue.Queue] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_queue.Queue:
         r"""Creates a queue.
@@ -503,7 +513,7 @@ class CloudTasksAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.tasks_v2beta3.types.CreateQueueRequest, dict]):
+            request (Optional[Union[google.cloud.tasks_v2beta3.types.CreateQueueRequest, dict]]):
                 The request object. Request message for
                 [CreateQueue][google.cloud.tasks.v2beta3.CloudTasks.CreateQueue].
             parent (:class:`str`):
@@ -589,12 +599,12 @@ class CloudTasksAsyncClient:
 
     async def update_queue(
         self,
-        request: Union[cloudtasks.UpdateQueueRequest, dict] = None,
+        request: Optional[Union[cloudtasks.UpdateQueueRequest, dict]] = None,
         *,
-        queue: gct_queue.Queue = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        queue: Optional[gct_queue.Queue] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_queue.Queue:
         r"""Updates a queue.
@@ -638,7 +648,7 @@ class CloudTasksAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.tasks_v2beta3.types.UpdateQueueRequest, dict]):
+            request (Optional[Union[google.cloud.tasks_v2beta3.types.UpdateQueueRequest, dict]]):
                 The request object. Request message for
                 [UpdateQueue][google.cloud.tasks.v2beta3.CloudTasks.UpdateQueue].
             queue (:class:`google.cloud.tasks_v2beta3.types.Queue`):
@@ -730,11 +740,11 @@ class CloudTasksAsyncClient:
 
     async def delete_queue(
         self,
-        request: Union[cloudtasks.DeleteQueueRequest, dict] = None,
+        request: Optional[Union[cloudtasks.DeleteQueueRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a queue.
@@ -774,7 +784,7 @@ class CloudTasksAsyncClient:
                 await client.delete_queue(request=request)
 
         Args:
-            request (Union[google.cloud.tasks_v2beta3.types.DeleteQueueRequest, dict]):
+            request (Optional[Union[google.cloud.tasks_v2beta3.types.DeleteQueueRequest, dict]]):
                 The request object. Request message for
                 [DeleteQueue][google.cloud.tasks.v2beta3.CloudTasks.DeleteQueue].
             name (:class:`str`):
@@ -841,11 +851,11 @@ class CloudTasksAsyncClient:
 
     async def purge_queue(
         self,
-        request: Union[cloudtasks.PurgeQueueRequest, dict] = None,
+        request: Optional[Union[cloudtasks.PurgeQueueRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> queue.Queue:
         r"""Purges a queue by deleting all of its tasks.
@@ -882,7 +892,7 @@ class CloudTasksAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.tasks_v2beta3.types.PurgeQueueRequest, dict]):
+            request (Optional[Union[google.cloud.tasks_v2beta3.types.PurgeQueueRequest, dict]]):
                 The request object. Request message for
                 [PurgeQueue][google.cloud.tasks.v2beta3.CloudTasks.PurgeQueue].
             name (:class:`str`):
@@ -952,11 +962,11 @@ class CloudTasksAsyncClient:
 
     async def pause_queue(
         self,
-        request: Union[cloudtasks.PauseQueueRequest, dict] = None,
+        request: Optional[Union[cloudtasks.PauseQueueRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> queue.Queue:
         r"""Pauses the queue.
@@ -995,7 +1005,7 @@ class CloudTasksAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.tasks_v2beta3.types.PauseQueueRequest, dict]):
+            request (Optional[Union[google.cloud.tasks_v2beta3.types.PauseQueueRequest, dict]]):
                 The request object. Request message for
                 [PauseQueue][google.cloud.tasks.v2beta3.CloudTasks.PauseQueue].
             name (:class:`str`):
@@ -1065,11 +1075,11 @@ class CloudTasksAsyncClient:
 
     async def resume_queue(
         self,
-        request: Union[cloudtasks.ResumeQueueRequest, dict] = None,
+        request: Optional[Union[cloudtasks.ResumeQueueRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> queue.Queue:
         r"""Resume a queue.
@@ -1115,7 +1125,7 @@ class CloudTasksAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.tasks_v2beta3.types.ResumeQueueRequest, dict]):
+            request (Optional[Union[google.cloud.tasks_v2beta3.types.ResumeQueueRequest, dict]]):
                 The request object. Request message for
                 [ResumeQueue][google.cloud.tasks.v2beta3.CloudTasks.ResumeQueue].
             name (:class:`str`):
@@ -1185,11 +1195,11 @@ class CloudTasksAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the access control policy for a
@@ -1230,7 +1240,7 @@ class CloudTasksAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -1369,11 +1379,11 @@ class CloudTasksAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the access control policy for a
@@ -1418,7 +1428,7 @@ class CloudTasksAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -1547,12 +1557,12 @@ class CloudTasksAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
-        resource: str = None,
-        permissions: Sequence[str] = None,
+        resource: Optional[str] = None,
+        permissions: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns permissions that a caller has on a
@@ -1594,7 +1604,7 @@ class CloudTasksAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             resource (:class:`str`):
@@ -1606,7 +1616,7 @@ class CloudTasksAsyncClient:
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            permissions (:class:`Sequence[str]`):
+            permissions (:class:`MutableSequence[str]`):
                 The set of permissions to check for the ``resource``.
                 Permissions with wildcards (such as '*' or 'storage.*')
                 are not allowed. For more information see `IAM
@@ -1682,11 +1692,11 @@ class CloudTasksAsyncClient:
 
     async def list_tasks(
         self,
-        request: Union[cloudtasks.ListTasksRequest, dict] = None,
+        request: Optional[Union[cloudtasks.ListTasksRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTasksAsyncPager:
         r"""Lists the tasks in a queue.
@@ -1728,7 +1738,7 @@ class CloudTasksAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.tasks_v2beta3.types.ListTasksRequest, dict]):
+            request (Optional[Union[google.cloud.tasks_v2beta3.types.ListTasksRequest, dict]]):
                 The request object. Request message for listing tasks
                 using
                 [ListTasks][google.cloud.tasks.v2beta3.CloudTasks.ListTasks].
@@ -1817,11 +1827,11 @@ class CloudTasksAsyncClient:
 
     async def get_task(
         self,
-        request: Union[cloudtasks.GetTaskRequest, dict] = None,
+        request: Optional[Union[cloudtasks.GetTaskRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> task.Task:
         r"""Gets a task.
@@ -1853,7 +1863,7 @@ class CloudTasksAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.tasks_v2beta3.types.GetTaskRequest, dict]):
+            request (Optional[Union[google.cloud.tasks_v2beta3.types.GetTaskRequest, dict]]):
                 The request object. Request message for getting a task
                 using
                 [GetTask][google.cloud.tasks.v2beta3.CloudTasks.GetTask].
@@ -1928,12 +1938,12 @@ class CloudTasksAsyncClient:
 
     async def create_task(
         self,
-        request: Union[cloudtasks.CreateTaskRequest, dict] = None,
+        request: Optional[Union[cloudtasks.CreateTaskRequest, dict]] = None,
         *,
-        parent: str = None,
-        task: gct_task.Task = None,
+        parent: Optional[str] = None,
+        task: Optional[gct_task.Task] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_task.Task:
         r"""Creates a task and adds it to a queue.
@@ -1970,7 +1980,7 @@ class CloudTasksAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.tasks_v2beta3.types.CreateTaskRequest, dict]):
+            request (Optional[Union[google.cloud.tasks_v2beta3.types.CreateTaskRequest, dict]]):
                 The request object. Request message for
                 [CreateTask][google.cloud.tasks.v2beta3.CloudTasks.CreateTask].
             parent (:class:`str`):
@@ -2084,11 +2094,11 @@ class CloudTasksAsyncClient:
 
     async def delete_task(
         self,
-        request: Union[cloudtasks.DeleteTaskRequest, dict] = None,
+        request: Optional[Union[cloudtasks.DeleteTaskRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a task.
@@ -2120,7 +2130,7 @@ class CloudTasksAsyncClient:
                 await client.delete_task(request=request)
 
         Args:
-            request (Union[google.cloud.tasks_v2beta3.types.DeleteTaskRequest, dict]):
+            request (Optional[Union[google.cloud.tasks_v2beta3.types.DeleteTaskRequest, dict]]):
                 The request object. Request message for deleting a task
                 using
                 [DeleteTask][google.cloud.tasks.v2beta3.CloudTasks.DeleteTask].
@@ -2188,11 +2198,11 @@ class CloudTasksAsyncClient:
 
     async def run_task(
         self,
-        request: Union[cloudtasks.RunTaskRequest, dict] = None,
+        request: Optional[Union[cloudtasks.RunTaskRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> task.Task:
         r"""Forces a task to run now.
@@ -2251,7 +2261,7 @@ class CloudTasksAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.tasks_v2beta3.types.RunTaskRequest, dict]):
+            request (Optional[Union[google.cloud.tasks_v2beta3.types.RunTaskRequest, dict]]):
                 The request object. Request message for forcing a task
                 to run now using
                 [RunTask][google.cloud.tasks.v2beta3.CloudTasks.RunTask].

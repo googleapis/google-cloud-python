@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -79,11 +81,11 @@ class PullMessage(proto.Message):
             returned by Cloud Tasks.
     """
 
-    payload = proto.Field(
+    payload: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    tag = proto.Field(
+    tag: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -120,7 +122,7 @@ class AppEngineHttpTarget(proto.Message):
             app_engine_routing][google.cloud.tasks.v2beta2.AppEngineHttpRequest.app_engine_routing].
     """
 
-    app_engine_routing_override = proto.Field(
+    app_engine_routing_override: "AppEngineRouting" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="AppEngineRouting",
@@ -223,7 +225,7 @@ class AppEngineHttpRequest(proto.Message):
             is empty, then the root path "/" will be used.
             No spaces are allowed, and the maximum length
             allowed is 2083 characters.
-        headers (Mapping[str, str]):
+        headers (MutableMapping[str, str]):
             HTTP request headers.
 
             This map contains the header field names and values. Headers
@@ -284,26 +286,26 @@ class AppEngineHttpRequest(proto.Message):
             [HttpMethod][google.cloud.tasks.v2beta2.HttpMethod].
     """
 
-    http_method = proto.Field(
+    http_method: "HttpMethod" = proto.Field(
         proto.ENUM,
         number=1,
         enum="HttpMethod",
     )
-    app_engine_routing = proto.Field(
+    app_engine_routing: "AppEngineRouting" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="AppEngineRouting",
     )
-    relative_url = proto.Field(
+    relative_url: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    headers = proto.MapField(
+    headers: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    payload = proto.Field(
+    payload: bytes = proto.Field(
         proto.BYTES,
         number=5,
     )
@@ -465,19 +467,19 @@ class AppEngineRouting(proto.Message):
             version of the default service when the task is attempted.
     """
 
-    service = proto.Field(
+    service: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    instance = proto.Field(
+    instance: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    host = proto.Field(
+    host: str = proto.Field(
         proto.STRING,
         number=4,
     )

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -166,56 +168,56 @@ class Task(proto.Message):
         BASIC = 1
         FULL = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    app_engine_http_request = proto.Field(
+    app_engine_http_request: target.AppEngineHttpRequest = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="message_type",
         message=target.AppEngineHttpRequest,
     )
-    http_request = proto.Field(
+    http_request: target.HttpRequest = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="message_type",
         message=target.HttpRequest,
     )
-    schedule_time = proto.Field(
+    schedule_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    dispatch_deadline = proto.Field(
+    dispatch_deadline: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=6,
         message=duration_pb2.Duration,
     )
-    dispatch_count = proto.Field(
+    dispatch_count: int = proto.Field(
         proto.INT32,
         number=7,
     )
-    response_count = proto.Field(
+    response_count: int = proto.Field(
         proto.INT32,
         number=8,
     )
-    first_attempt = proto.Field(
+    first_attempt: "Attempt" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="Attempt",
     )
-    last_attempt = proto.Field(
+    last_attempt: "Attempt" = proto.Field(
         proto.MESSAGE,
         number=10,
         message="Attempt",
     )
-    view = proto.Field(
+    view: View = proto.Field(
         proto.ENUM,
         number=11,
         enum=View,
@@ -250,22 +252,22 @@ class Attempt(proto.Message):
             ``response_status`` field is meaningless.
     """
 
-    schedule_time = proto.Field(
+    schedule_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    dispatch_time = proto.Field(
+    dispatch_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    response_time = proto.Field(
+    response_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    response_status = proto.Field(
+    response_status: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=4,
         message=status_pb2.Status,

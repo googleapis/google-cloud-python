@@ -2,12 +2,13 @@
   "clientLibrary": {
     "apis": [
       {
-        "id": "google.cloud.tasks.v2beta2",
-        "version": "v2beta2"
+        "id": "google.cloud.tasks.v2",
+        "version": "v2"
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-tasks"
+    "name": "google-cloud-tasks",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -15,346 +16,14 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient",
           "shortName": "CloudTasksAsyncClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient.acknowledge_task",
+        "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient.create_queue",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.AcknowledgeTask",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.CreateQueue",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
-            "shortName": "CloudTasks"
-          },
-          "shortName": "AcknowledgeTask"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.AcknowledgeTaskRequest"
-          },
-          {
-            "name": "name",
-            "type": "str"
-          },
-          {
-            "name": "schedule_time",
-            "type": "google.protobuf.timestamp_pb2.Timestamp"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "shortName": "acknowledge_task"
-      },
-      "description": "Sample for AcknowledgeTask",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_acknowledge_task_async.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_AcknowledgeTask_async",
-      "segments": [
-        {
-          "end": 49,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 49,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 45,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 46,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 50,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_acknowledge_task_async.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient",
-          "shortName": "CloudTasksClient"
-        },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient.acknowledge_task",
-        "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.AcknowledgeTask",
-          "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
-            "shortName": "CloudTasks"
-          },
-          "shortName": "AcknowledgeTask"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.AcknowledgeTaskRequest"
-          },
-          {
-            "name": "name",
-            "type": "str"
-          },
-          {
-            "name": "schedule_time",
-            "type": "google.protobuf.timestamp_pb2.Timestamp"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "shortName": "acknowledge_task"
-      },
-      "description": "Sample for AcknowledgeTask",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_acknowledge_task_sync.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_AcknowledgeTask_sync",
-      "segments": [
-        {
-          "end": 49,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 49,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 45,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 46,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 50,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_acknowledge_task_sync.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "async": true,
-        "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient",
-          "shortName": "CloudTasksAsyncClient"
-        },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient.cancel_lease",
-        "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.CancelLease",
-          "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
-            "shortName": "CloudTasks"
-          },
-          "shortName": "CancelLease"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.CancelLeaseRequest"
-          },
-          {
-            "name": "name",
-            "type": "str"
-          },
-          {
-            "name": "schedule_time",
-            "type": "google.protobuf.timestamp_pb2.Timestamp"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.cloud.tasks_v2beta2.types.Task",
-        "shortName": "cancel_lease"
-      },
-      "description": "Sample for CancelLease",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_cancel_lease_async.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_CancelLease_async",
-      "segments": [
-        {
-          "end": 51,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 51,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 45,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 48,
-          "start": 46,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 52,
-          "start": 49,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_cancel_lease_async.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient",
-          "shortName": "CloudTasksClient"
-        },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient.cancel_lease",
-        "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.CancelLease",
-          "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
-            "shortName": "CloudTasks"
-          },
-          "shortName": "CancelLease"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.CancelLeaseRequest"
-          },
-          {
-            "name": "name",
-            "type": "str"
-          },
-          {
-            "name": "schedule_time",
-            "type": "google.protobuf.timestamp_pb2.Timestamp"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.cloud.tasks_v2beta2.types.Task",
-        "shortName": "cancel_lease"
-      },
-      "description": "Sample for CancelLease",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_cancel_lease_sync.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_CancelLease_sync",
-      "segments": [
-        {
-          "end": 51,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 51,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 45,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 48,
-          "start": 46,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 52,
-          "start": 49,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_cancel_lease_sync.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "async": true,
-        "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient",
-          "shortName": "CloudTasksAsyncClient"
-        },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient.create_queue",
-        "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.CreateQueue",
-          "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "CreateQueue"
@@ -362,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.CreateQueueRequest"
+            "type": "google.cloud.tasks_v2.types.CreateQueueRequest"
           },
           {
             "name": "parent",
@@ -370,7 +39,7 @@
           },
           {
             "name": "queue",
-            "type": "google.cloud.tasks_v2beta2.types.Queue"
+            "type": "google.cloud.tasks_v2.types.Queue"
           },
           {
             "name": "retry",
@@ -385,14 +54,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.tasks_v2beta2.types.Queue",
+        "resultType": "google.cloud.tasks_v2.types.Queue",
         "shortName": "create_queue"
       },
       "description": "Sample for CreateQueue",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_create_queue_async.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_create_queue_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_CreateQueue_async",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_CreateQueue_async",
       "segments": [
         {
           "end": 51,
@@ -425,20 +94,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_create_queue_async.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_create_queue_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksClient",
           "shortName": "CloudTasksClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient.create_queue",
+        "fullName": "google.cloud.tasks_v2.CloudTasksClient.create_queue",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.CreateQueue",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.CreateQueue",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "CreateQueue"
@@ -446,7 +115,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.CreateQueueRequest"
+            "type": "google.cloud.tasks_v2.types.CreateQueueRequest"
           },
           {
             "name": "parent",
@@ -454,7 +123,7 @@
           },
           {
             "name": "queue",
-            "type": "google.cloud.tasks_v2beta2.types.Queue"
+            "type": "google.cloud.tasks_v2.types.Queue"
           },
           {
             "name": "retry",
@@ -469,14 +138,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.tasks_v2beta2.types.Queue",
+        "resultType": "google.cloud.tasks_v2.types.Queue",
         "shortName": "create_queue"
       },
       "description": "Sample for CreateQueue",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_create_queue_sync.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_create_queue_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_CreateQueue_sync",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_CreateQueue_sync",
       "segments": [
         {
           "end": 51,
@@ -509,21 +178,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_create_queue_sync.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_create_queue_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient",
           "shortName": "CloudTasksAsyncClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient.create_task",
+        "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient.create_task",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.CreateTask",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.CreateTask",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "CreateTask"
@@ -531,7 +200,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.CreateTaskRequest"
+            "type": "google.cloud.tasks_v2.types.CreateTaskRequest"
           },
           {
             "name": "parent",
@@ -539,7 +208,7 @@
           },
           {
             "name": "task",
-            "type": "google.cloud.tasks_v2beta2.types.Task"
+            "type": "google.cloud.tasks_v2.types.Task"
           },
           {
             "name": "retry",
@@ -554,14 +223,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.tasks_v2beta2.types.Task",
+        "resultType": "google.cloud.tasks_v2.types.Task",
         "shortName": "create_task"
       },
       "description": "Sample for CreateTask",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_create_task_async.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_create_task_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_CreateTask_async",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_CreateTask_async",
       "segments": [
         {
           "end": 51,
@@ -594,20 +263,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_create_task_async.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_create_task_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksClient",
           "shortName": "CloudTasksClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient.create_task",
+        "fullName": "google.cloud.tasks_v2.CloudTasksClient.create_task",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.CreateTask",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.CreateTask",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "CreateTask"
@@ -615,7 +284,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.CreateTaskRequest"
+            "type": "google.cloud.tasks_v2.types.CreateTaskRequest"
           },
           {
             "name": "parent",
@@ -623,7 +292,7 @@
           },
           {
             "name": "task",
-            "type": "google.cloud.tasks_v2beta2.types.Task"
+            "type": "google.cloud.tasks_v2.types.Task"
           },
           {
             "name": "retry",
@@ -638,14 +307,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.tasks_v2beta2.types.Task",
+        "resultType": "google.cloud.tasks_v2.types.Task",
         "shortName": "create_task"
       },
       "description": "Sample for CreateTask",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_create_task_sync.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_create_task_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_CreateTask_sync",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_CreateTask_sync",
       "segments": [
         {
           "end": 51,
@@ -678,21 +347,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_create_task_sync.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_create_task_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient",
           "shortName": "CloudTasksAsyncClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient.delete_queue",
+        "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient.delete_queue",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.DeleteQueue",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.DeleteQueue",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "DeleteQueue"
@@ -700,7 +369,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.DeleteQueueRequest"
+            "type": "google.cloud.tasks_v2.types.DeleteQueueRequest"
           },
           {
             "name": "name",
@@ -722,10 +391,10 @@
         "shortName": "delete_queue"
       },
       "description": "Sample for DeleteQueue",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_delete_queue_async.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_delete_queue_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_DeleteQueue_async",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_DeleteQueue_async",
       "segments": [
         {
           "end": 49,
@@ -756,20 +425,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_delete_queue_async.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_delete_queue_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksClient",
           "shortName": "CloudTasksClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient.delete_queue",
+        "fullName": "google.cloud.tasks_v2.CloudTasksClient.delete_queue",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.DeleteQueue",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.DeleteQueue",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "DeleteQueue"
@@ -777,7 +446,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.DeleteQueueRequest"
+            "type": "google.cloud.tasks_v2.types.DeleteQueueRequest"
           },
           {
             "name": "name",
@@ -799,10 +468,10 @@
         "shortName": "delete_queue"
       },
       "description": "Sample for DeleteQueue",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_delete_queue_sync.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_delete_queue_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_DeleteQueue_sync",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_DeleteQueue_sync",
       "segments": [
         {
           "end": 49,
@@ -833,21 +502,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_delete_queue_sync.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_delete_queue_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient",
           "shortName": "CloudTasksAsyncClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient.delete_task",
+        "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient.delete_task",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.DeleteTask",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.DeleteTask",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "DeleteTask"
@@ -855,7 +524,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.DeleteTaskRequest"
+            "type": "google.cloud.tasks_v2.types.DeleteTaskRequest"
           },
           {
             "name": "name",
@@ -877,10 +546,10 @@
         "shortName": "delete_task"
       },
       "description": "Sample for DeleteTask",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_delete_task_async.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_delete_task_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_DeleteTask_async",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_DeleteTask_async",
       "segments": [
         {
           "end": 49,
@@ -911,20 +580,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_delete_task_async.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_delete_task_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksClient",
           "shortName": "CloudTasksClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient.delete_task",
+        "fullName": "google.cloud.tasks_v2.CloudTasksClient.delete_task",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.DeleteTask",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.DeleteTask",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "DeleteTask"
@@ -932,7 +601,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.DeleteTaskRequest"
+            "type": "google.cloud.tasks_v2.types.DeleteTaskRequest"
           },
           {
             "name": "name",
@@ -954,10 +623,10 @@
         "shortName": "delete_task"
       },
       "description": "Sample for DeleteTask",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_delete_task_sync.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_delete_task_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_DeleteTask_sync",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_DeleteTask_sync",
       "segments": [
         {
           "end": 49,
@@ -988,21 +657,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_delete_task_sync.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_delete_task_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient",
           "shortName": "CloudTasksAsyncClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient.get_iam_policy",
+        "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient.get_iam_policy",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.GetIamPolicy",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.GetIamPolicy",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "GetIamPolicy"
@@ -1033,10 +702,10 @@
         "shortName": "get_iam_policy"
       },
       "description": "Sample for GetIamPolicy",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_get_iam_policy_async.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_get_iam_policy_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_GetIamPolicy_async",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_GetIamPolicy_async",
       "segments": [
         {
           "end": 52,
@@ -1069,20 +738,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_get_iam_policy_async.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_get_iam_policy_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksClient",
           "shortName": "CloudTasksClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient.get_iam_policy",
+        "fullName": "google.cloud.tasks_v2.CloudTasksClient.get_iam_policy",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.GetIamPolicy",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.GetIamPolicy",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "GetIamPolicy"
@@ -1113,10 +782,10 @@
         "shortName": "get_iam_policy"
       },
       "description": "Sample for GetIamPolicy",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_get_iam_policy_sync.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_get_iam_policy_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_GetIamPolicy_sync",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_GetIamPolicy_sync",
       "segments": [
         {
           "end": 52,
@@ -1149,21 +818,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_get_iam_policy_sync.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_get_iam_policy_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient",
           "shortName": "CloudTasksAsyncClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient.get_queue",
+        "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient.get_queue",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.GetQueue",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.GetQueue",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "GetQueue"
@@ -1171,7 +840,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.GetQueueRequest"
+            "type": "google.cloud.tasks_v2.types.GetQueueRequest"
           },
           {
             "name": "name",
@@ -1190,14 +859,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.tasks_v2beta2.types.Queue",
+        "resultType": "google.cloud.tasks_v2.types.Queue",
         "shortName": "get_queue"
       },
       "description": "Sample for GetQueue",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_get_queue_async.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_get_queue_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_GetQueue_async",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_GetQueue_async",
       "segments": [
         {
           "end": 51,
@@ -1230,20 +899,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_get_queue_async.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_get_queue_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksClient",
           "shortName": "CloudTasksClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient.get_queue",
+        "fullName": "google.cloud.tasks_v2.CloudTasksClient.get_queue",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.GetQueue",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.GetQueue",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "GetQueue"
@@ -1251,7 +920,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.GetQueueRequest"
+            "type": "google.cloud.tasks_v2.types.GetQueueRequest"
           },
           {
             "name": "name",
@@ -1270,14 +939,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.tasks_v2beta2.types.Queue",
+        "resultType": "google.cloud.tasks_v2.types.Queue",
         "shortName": "get_queue"
       },
       "description": "Sample for GetQueue",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_get_queue_sync.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_get_queue_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_GetQueue_sync",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_GetQueue_sync",
       "segments": [
         {
           "end": 51,
@@ -1310,21 +979,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_get_queue_sync.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_get_queue_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient",
           "shortName": "CloudTasksAsyncClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient.get_task",
+        "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient.get_task",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.GetTask",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.GetTask",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "GetTask"
@@ -1332,7 +1001,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.GetTaskRequest"
+            "type": "google.cloud.tasks_v2.types.GetTaskRequest"
           },
           {
             "name": "name",
@@ -1351,14 +1020,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.tasks_v2beta2.types.Task",
+        "resultType": "google.cloud.tasks_v2.types.Task",
         "shortName": "get_task"
       },
       "description": "Sample for GetTask",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_get_task_async.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_get_task_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_GetTask_async",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_GetTask_async",
       "segments": [
         {
           "end": 51,
@@ -1391,20 +1060,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_get_task_async.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_get_task_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksClient",
           "shortName": "CloudTasksClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient.get_task",
+        "fullName": "google.cloud.tasks_v2.CloudTasksClient.get_task",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.GetTask",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.GetTask",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "GetTask"
@@ -1412,7 +1081,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.GetTaskRequest"
+            "type": "google.cloud.tasks_v2.types.GetTaskRequest"
           },
           {
             "name": "name",
@@ -1431,14 +1100,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.tasks_v2beta2.types.Task",
+        "resultType": "google.cloud.tasks_v2.types.Task",
         "shortName": "get_task"
       },
       "description": "Sample for GetTask",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_get_task_sync.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_get_task_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_GetTask_sync",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_GetTask_sync",
       "segments": [
         {
           "end": 51,
@@ -1471,190 +1140,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_get_task_sync.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_get_task_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient",
           "shortName": "CloudTasksAsyncClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient.lease_tasks",
+        "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient.list_queues",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.ListQueues",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
-            "shortName": "CloudTasks"
-          },
-          "shortName": "LeaseTasks"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.LeaseTasksRequest"
-          },
-          {
-            "name": "parent",
-            "type": "str"
-          },
-          {
-            "name": "lease_duration",
-            "type": "google.protobuf.duration_pb2.Duration"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.cloud.tasks_v2beta2.types.LeaseTasksResponse",
-        "shortName": "lease_tasks"
-      },
-      "description": "Sample for LeaseTasks",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_lease_tasks_async.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_LeaseTasks_async",
-      "segments": [
-        {
-          "end": 51,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 51,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 45,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 48,
-          "start": 46,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 52,
-          "start": 49,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_lease_tasks_async.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient",
-          "shortName": "CloudTasksClient"
-        },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient.lease_tasks",
-        "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks",
-          "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
-            "shortName": "CloudTasks"
-          },
-          "shortName": "LeaseTasks"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.LeaseTasksRequest"
-          },
-          {
-            "name": "parent",
-            "type": "str"
-          },
-          {
-            "name": "lease_duration",
-            "type": "google.protobuf.duration_pb2.Duration"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.cloud.tasks_v2beta2.types.LeaseTasksResponse",
-        "shortName": "lease_tasks"
-      },
-      "description": "Sample for LeaseTasks",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_lease_tasks_sync.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_LeaseTasks_sync",
-      "segments": [
-        {
-          "end": 51,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 51,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 45,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 48,
-          "start": 46,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 52,
-          "start": 49,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_lease_tasks_sync.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "async": true,
-        "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient",
-          "shortName": "CloudTasksAsyncClient"
-        },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient.list_queues",
-        "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.ListQueues",
-          "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "ListQueues"
@@ -1662,7 +1162,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.ListQueuesRequest"
+            "type": "google.cloud.tasks_v2.types.ListQueuesRequest"
           },
           {
             "name": "parent",
@@ -1681,14 +1181,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.tasks_v2beta2.services.cloud_tasks.pagers.ListQueuesAsyncPager",
+        "resultType": "google.cloud.tasks_v2.services.cloud_tasks.pagers.ListQueuesAsyncPager",
         "shortName": "list_queues"
       },
       "description": "Sample for ListQueues",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_list_queues_async.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_list_queues_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_ListQueues_async",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_ListQueues_async",
       "segments": [
         {
           "end": 52,
@@ -1721,20 +1221,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_list_queues_async.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_list_queues_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksClient",
           "shortName": "CloudTasksClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient.list_queues",
+        "fullName": "google.cloud.tasks_v2.CloudTasksClient.list_queues",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.ListQueues",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.ListQueues",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "ListQueues"
@@ -1742,7 +1242,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.ListQueuesRequest"
+            "type": "google.cloud.tasks_v2.types.ListQueuesRequest"
           },
           {
             "name": "parent",
@@ -1761,14 +1261,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.tasks_v2beta2.services.cloud_tasks.pagers.ListQueuesPager",
+        "resultType": "google.cloud.tasks_v2.services.cloud_tasks.pagers.ListQueuesPager",
         "shortName": "list_queues"
       },
       "description": "Sample for ListQueues",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_list_queues_sync.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_list_queues_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_ListQueues_sync",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_ListQueues_sync",
       "segments": [
         {
           "end": 52,
@@ -1801,21 +1301,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_list_queues_sync.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_list_queues_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient",
           "shortName": "CloudTasksAsyncClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient.list_tasks",
+        "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient.list_tasks",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.ListTasks",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.ListTasks",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "ListTasks"
@@ -1823,7 +1323,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.ListTasksRequest"
+            "type": "google.cloud.tasks_v2.types.ListTasksRequest"
           },
           {
             "name": "parent",
@@ -1842,14 +1342,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.tasks_v2beta2.services.cloud_tasks.pagers.ListTasksAsyncPager",
+        "resultType": "google.cloud.tasks_v2.services.cloud_tasks.pagers.ListTasksAsyncPager",
         "shortName": "list_tasks"
       },
       "description": "Sample for ListTasks",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_list_tasks_async.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_list_tasks_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_ListTasks_async",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_ListTasks_async",
       "segments": [
         {
           "end": 52,
@@ -1882,20 +1382,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_list_tasks_async.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_list_tasks_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksClient",
           "shortName": "CloudTasksClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient.list_tasks",
+        "fullName": "google.cloud.tasks_v2.CloudTasksClient.list_tasks",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.ListTasks",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.ListTasks",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "ListTasks"
@@ -1903,7 +1403,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.ListTasksRequest"
+            "type": "google.cloud.tasks_v2.types.ListTasksRequest"
           },
           {
             "name": "parent",
@@ -1922,14 +1422,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.tasks_v2beta2.services.cloud_tasks.pagers.ListTasksPager",
+        "resultType": "google.cloud.tasks_v2.services.cloud_tasks.pagers.ListTasksPager",
         "shortName": "list_tasks"
       },
       "description": "Sample for ListTasks",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_list_tasks_sync.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_list_tasks_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_ListTasks_sync",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_ListTasks_sync",
       "segments": [
         {
           "end": 52,
@@ -1962,21 +1462,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_list_tasks_sync.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_list_tasks_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient",
           "shortName": "CloudTasksAsyncClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient.pause_queue",
+        "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient.pause_queue",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.PauseQueue",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.PauseQueue",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "PauseQueue"
@@ -1984,7 +1484,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.PauseQueueRequest"
+            "type": "google.cloud.tasks_v2.types.PauseQueueRequest"
           },
           {
             "name": "name",
@@ -2003,14 +1503,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.tasks_v2beta2.types.Queue",
+        "resultType": "google.cloud.tasks_v2.types.Queue",
         "shortName": "pause_queue"
       },
       "description": "Sample for PauseQueue",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_pause_queue_async.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_pause_queue_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_PauseQueue_async",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_PauseQueue_async",
       "segments": [
         {
           "end": 51,
@@ -2043,20 +1543,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_pause_queue_async.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_pause_queue_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksClient",
           "shortName": "CloudTasksClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient.pause_queue",
+        "fullName": "google.cloud.tasks_v2.CloudTasksClient.pause_queue",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.PauseQueue",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.PauseQueue",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "PauseQueue"
@@ -2064,7 +1564,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.PauseQueueRequest"
+            "type": "google.cloud.tasks_v2.types.PauseQueueRequest"
           },
           {
             "name": "name",
@@ -2083,14 +1583,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.tasks_v2beta2.types.Queue",
+        "resultType": "google.cloud.tasks_v2.types.Queue",
         "shortName": "pause_queue"
       },
       "description": "Sample for PauseQueue",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_pause_queue_sync.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_pause_queue_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_PauseQueue_sync",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_PauseQueue_sync",
       "segments": [
         {
           "end": 51,
@@ -2123,21 +1623,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_pause_queue_sync.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_pause_queue_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient",
           "shortName": "CloudTasksAsyncClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient.purge_queue",
+        "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient.purge_queue",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.PurgeQueue",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.PurgeQueue",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "PurgeQueue"
@@ -2145,7 +1645,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.PurgeQueueRequest"
+            "type": "google.cloud.tasks_v2.types.PurgeQueueRequest"
           },
           {
             "name": "name",
@@ -2164,14 +1664,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.tasks_v2beta2.types.Queue",
+        "resultType": "google.cloud.tasks_v2.types.Queue",
         "shortName": "purge_queue"
       },
       "description": "Sample for PurgeQueue",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_purge_queue_async.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_purge_queue_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_PurgeQueue_async",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_PurgeQueue_async",
       "segments": [
         {
           "end": 51,
@@ -2204,20 +1704,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_purge_queue_async.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_purge_queue_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksClient",
           "shortName": "CloudTasksClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient.purge_queue",
+        "fullName": "google.cloud.tasks_v2.CloudTasksClient.purge_queue",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.PurgeQueue",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.PurgeQueue",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "PurgeQueue"
@@ -2225,7 +1725,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.PurgeQueueRequest"
+            "type": "google.cloud.tasks_v2.types.PurgeQueueRequest"
           },
           {
             "name": "name",
@@ -2244,14 +1744,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.tasks_v2beta2.types.Queue",
+        "resultType": "google.cloud.tasks_v2.types.Queue",
         "shortName": "purge_queue"
       },
       "description": "Sample for PurgeQueue",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_purge_queue_sync.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_purge_queue_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_PurgeQueue_sync",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_PurgeQueue_sync",
       "segments": [
         {
           "end": 51,
@@ -2284,198 +1784,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_purge_queue_sync.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_purge_queue_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient",
           "shortName": "CloudTasksAsyncClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient.renew_lease",
+        "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient.resume_queue",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.RenewLease",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.ResumeQueue",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
-            "shortName": "CloudTasks"
-          },
-          "shortName": "RenewLease"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.RenewLeaseRequest"
-          },
-          {
-            "name": "name",
-            "type": "str"
-          },
-          {
-            "name": "schedule_time",
-            "type": "google.protobuf.timestamp_pb2.Timestamp"
-          },
-          {
-            "name": "lease_duration",
-            "type": "google.protobuf.duration_pb2.Duration"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.cloud.tasks_v2beta2.types.Task",
-        "shortName": "renew_lease"
-      },
-      "description": "Sample for RenewLease",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_renew_lease_async.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_RenewLease_async",
-      "segments": [
-        {
-          "end": 51,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 51,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 45,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 48,
-          "start": 46,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 52,
-          "start": 49,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_renew_lease_async.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient",
-          "shortName": "CloudTasksClient"
-        },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient.renew_lease",
-        "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.RenewLease",
-          "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
-            "shortName": "CloudTasks"
-          },
-          "shortName": "RenewLease"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.RenewLeaseRequest"
-          },
-          {
-            "name": "name",
-            "type": "str"
-          },
-          {
-            "name": "schedule_time",
-            "type": "google.protobuf.timestamp_pb2.Timestamp"
-          },
-          {
-            "name": "lease_duration",
-            "type": "google.protobuf.duration_pb2.Duration"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.cloud.tasks_v2beta2.types.Task",
-        "shortName": "renew_lease"
-      },
-      "description": "Sample for RenewLease",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_renew_lease_sync.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_RenewLease_sync",
-      "segments": [
-        {
-          "end": 51,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 51,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 45,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 48,
-          "start": 46,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 52,
-          "start": 49,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_renew_lease_sync.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "async": true,
-        "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient",
-          "shortName": "CloudTasksAsyncClient"
-        },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient.resume_queue",
-        "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.ResumeQueue",
-          "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "ResumeQueue"
@@ -2483,7 +1806,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.ResumeQueueRequest"
+            "type": "google.cloud.tasks_v2.types.ResumeQueueRequest"
           },
           {
             "name": "name",
@@ -2502,14 +1825,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.tasks_v2beta2.types.Queue",
+        "resultType": "google.cloud.tasks_v2.types.Queue",
         "shortName": "resume_queue"
       },
       "description": "Sample for ResumeQueue",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_resume_queue_async.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_resume_queue_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_ResumeQueue_async",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_ResumeQueue_async",
       "segments": [
         {
           "end": 51,
@@ -2542,20 +1865,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_resume_queue_async.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_resume_queue_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksClient",
           "shortName": "CloudTasksClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient.resume_queue",
+        "fullName": "google.cloud.tasks_v2.CloudTasksClient.resume_queue",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.ResumeQueue",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.ResumeQueue",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "ResumeQueue"
@@ -2563,7 +1886,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.ResumeQueueRequest"
+            "type": "google.cloud.tasks_v2.types.ResumeQueueRequest"
           },
           {
             "name": "name",
@@ -2582,14 +1905,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.tasks_v2beta2.types.Queue",
+        "resultType": "google.cloud.tasks_v2.types.Queue",
         "shortName": "resume_queue"
       },
       "description": "Sample for ResumeQueue",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_resume_queue_sync.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_resume_queue_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_ResumeQueue_sync",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_ResumeQueue_sync",
       "segments": [
         {
           "end": 51,
@@ -2622,21 +1945,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_resume_queue_sync.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_resume_queue_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient",
           "shortName": "CloudTasksAsyncClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient.run_task",
+        "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient.run_task",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.RunTask",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.RunTask",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "RunTask"
@@ -2644,7 +1967,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.RunTaskRequest"
+            "type": "google.cloud.tasks_v2.types.RunTaskRequest"
           },
           {
             "name": "name",
@@ -2663,14 +1986,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.tasks_v2beta2.types.Task",
+        "resultType": "google.cloud.tasks_v2.types.Task",
         "shortName": "run_task"
       },
       "description": "Sample for RunTask",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_run_task_async.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_run_task_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_RunTask_async",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_RunTask_async",
       "segments": [
         {
           "end": 51,
@@ -2703,20 +2026,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_run_task_async.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_run_task_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksClient",
           "shortName": "CloudTasksClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient.run_task",
+        "fullName": "google.cloud.tasks_v2.CloudTasksClient.run_task",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.RunTask",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.RunTask",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "RunTask"
@@ -2724,7 +2047,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.RunTaskRequest"
+            "type": "google.cloud.tasks_v2.types.RunTaskRequest"
           },
           {
             "name": "name",
@@ -2743,14 +2066,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.tasks_v2beta2.types.Task",
+        "resultType": "google.cloud.tasks_v2.types.Task",
         "shortName": "run_task"
       },
       "description": "Sample for RunTask",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_run_task_sync.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_run_task_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_RunTask_sync",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_RunTask_sync",
       "segments": [
         {
           "end": 51,
@@ -2783,21 +2106,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_run_task_sync.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_run_task_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient",
           "shortName": "CloudTasksAsyncClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient.set_iam_policy",
+        "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient.set_iam_policy",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.SetIamPolicy",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.SetIamPolicy",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "SetIamPolicy"
@@ -2828,10 +2151,10 @@
         "shortName": "set_iam_policy"
       },
       "description": "Sample for SetIamPolicy",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_set_iam_policy_async.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_set_iam_policy_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_SetIamPolicy_async",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_SetIamPolicy_async",
       "segments": [
         {
           "end": 52,
@@ -2864,20 +2187,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_set_iam_policy_async.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_set_iam_policy_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksClient",
           "shortName": "CloudTasksClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient.set_iam_policy",
+        "fullName": "google.cloud.tasks_v2.CloudTasksClient.set_iam_policy",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.SetIamPolicy",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.SetIamPolicy",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "SetIamPolicy"
@@ -2908,10 +2231,10 @@
         "shortName": "set_iam_policy"
       },
       "description": "Sample for SetIamPolicy",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_set_iam_policy_sync.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_set_iam_policy_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_SetIamPolicy_sync",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_SetIamPolicy_sync",
       "segments": [
         {
           "end": 52,
@@ -2944,21 +2267,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_set_iam_policy_sync.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_set_iam_policy_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient",
           "shortName": "CloudTasksAsyncClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient.test_iam_permissions",
+        "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient.test_iam_permissions",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.TestIamPermissions",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.TestIamPermissions",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "TestIamPermissions"
@@ -2974,7 +2297,7 @@
           },
           {
             "name": "permissions",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -2993,10 +2316,10 @@
         "shortName": "test_iam_permissions"
       },
       "description": "Sample for TestIamPermissions",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_test_iam_permissions_async.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_test_iam_permissions_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_TestIamPermissions_async",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_TestIamPermissions_async",
       "segments": [
         {
           "end": 53,
@@ -3029,20 +2352,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_test_iam_permissions_async.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_test_iam_permissions_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksClient",
           "shortName": "CloudTasksClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient.test_iam_permissions",
+        "fullName": "google.cloud.tasks_v2.CloudTasksClient.test_iam_permissions",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.TestIamPermissions",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.TestIamPermissions",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "TestIamPermissions"
@@ -3058,7 +2381,7 @@
           },
           {
             "name": "permissions",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -3077,10 +2400,10 @@
         "shortName": "test_iam_permissions"
       },
       "description": "Sample for TestIamPermissions",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_test_iam_permissions_sync.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_test_iam_permissions_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_TestIamPermissions_sync",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_TestIamPermissions_sync",
       "segments": [
         {
           "end": 53,
@@ -3113,21 +2436,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_test_iam_permissions_sync.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_test_iam_permissions_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient",
           "shortName": "CloudTasksAsyncClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksAsyncClient.update_queue",
+        "fullName": "google.cloud.tasks_v2.CloudTasksAsyncClient.update_queue",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.UpdateQueue",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.UpdateQueue",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "UpdateQueue"
@@ -3135,11 +2458,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.UpdateQueueRequest"
+            "type": "google.cloud.tasks_v2.types.UpdateQueueRequest"
           },
           {
             "name": "queue",
-            "type": "google.cloud.tasks_v2beta2.types.Queue"
+            "type": "google.cloud.tasks_v2.types.Queue"
           },
           {
             "name": "update_mask",
@@ -3158,14 +2481,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.tasks_v2beta2.types.Queue",
+        "resultType": "google.cloud.tasks_v2.types.Queue",
         "shortName": "update_queue"
       },
       "description": "Sample for UpdateQueue",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_update_queue_async.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_update_queue_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_UpdateQueue_async",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_UpdateQueue_async",
       "segments": [
         {
           "end": 50,
@@ -3198,20 +2521,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_update_queue_async.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_update_queue_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient",
+          "fullName": "google.cloud.tasks_v2.CloudTasksClient",
           "shortName": "CloudTasksClient"
         },
-        "fullName": "google.cloud.tasks_v2beta2.CloudTasksClient.update_queue",
+        "fullName": "google.cloud.tasks_v2.CloudTasksClient.update_queue",
         "method": {
-          "fullName": "google.cloud.tasks.v2beta2.CloudTasks.UpdateQueue",
+          "fullName": "google.cloud.tasks.v2.CloudTasks.UpdateQueue",
           "service": {
-            "fullName": "google.cloud.tasks.v2beta2.CloudTasks",
+            "fullName": "google.cloud.tasks.v2.CloudTasks",
             "shortName": "CloudTasks"
           },
           "shortName": "UpdateQueue"
@@ -3219,11 +2542,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.tasks_v2beta2.types.UpdateQueueRequest"
+            "type": "google.cloud.tasks_v2.types.UpdateQueueRequest"
           },
           {
             "name": "queue",
-            "type": "google.cloud.tasks_v2beta2.types.Queue"
+            "type": "google.cloud.tasks_v2.types.Queue"
           },
           {
             "name": "update_mask",
@@ -3242,14 +2565,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.tasks_v2beta2.types.Queue",
+        "resultType": "google.cloud.tasks_v2.types.Queue",
         "shortName": "update_queue"
       },
       "description": "Sample for UpdateQueue",
-      "file": "cloudtasks_v2beta2_generated_cloud_tasks_update_queue_sync.py",
+      "file": "cloudtasks_v2_generated_cloud_tasks_update_queue_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "cloudtasks_v2beta2_generated_CloudTasks_UpdateQueue_sync",
+      "regionTag": "cloudtasks_v2_generated_CloudTasks_UpdateQueue_sync",
       "segments": [
         {
           "end": 50,
@@ -3282,7 +2605,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudtasks_v2beta2_generated_cloud_tasks_update_queue_sync.py"
+      "title": "cloudtasks_v2_generated_cloud_tasks_update_queue_sync.py"
     }
   ]
 }

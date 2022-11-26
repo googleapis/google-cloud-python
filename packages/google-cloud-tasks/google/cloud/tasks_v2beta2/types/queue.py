@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -179,53 +181,53 @@ class Queue(proto.Message):
         PAUSED = 2
         DISABLED = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    app_engine_http_target = proto.Field(
+    app_engine_http_target: target.AppEngineHttpTarget = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="target_type",
         message=target.AppEngineHttpTarget,
     )
-    pull_target = proto.Field(
+    pull_target: target.PullTarget = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="target_type",
         message=target.PullTarget,
     )
-    rate_limits = proto.Field(
+    rate_limits: "RateLimits" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="RateLimits",
     )
-    retry_config = proto.Field(
+    retry_config: "RetryConfig" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="RetryConfig",
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=7,
         enum=State,
     )
-    purge_time = proto.Field(
+    purge_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    task_ttl = proto.Field(
+    task_ttl: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=9,
         message=duration_pb2.Duration,
     )
-    tombstone_ttl = proto.Field(
+    tombstone_ttl: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=10,
         message=duration_pb2.Duration,
     )
-    stats = proto.Field(
+    stats: "QueueStats" = proto.Field(
         proto.MESSAGE,
         number=16,
         message="QueueStats",
@@ -323,15 +325,15 @@ class RateLimits(proto.Message):
             queue.yaml/xml <https://cloud.google.com/appengine/docs/standard/python/config/queueref#max_concurrent_requests>`__.
     """
 
-    max_tasks_dispatched_per_second = proto.Field(
+    max_tasks_dispatched_per_second: float = proto.Field(
         proto.DOUBLE,
         number=1,
     )
-    max_burst_size = proto.Field(
+    max_burst_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    max_concurrent_tasks = proto.Field(
+    max_concurrent_tasks: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -463,32 +465,32 @@ class RetryConfig(proto.Message):
             queue.yaml/xml <https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters>`__.
     """
 
-    max_attempts = proto.Field(
+    max_attempts: int = proto.Field(
         proto.INT32,
         number=1,
         oneof="num_attempts",
     )
-    unlimited_attempts = proto.Field(
+    unlimited_attempts: bool = proto.Field(
         proto.BOOL,
         number=2,
         oneof="num_attempts",
     )
-    max_retry_duration = proto.Field(
+    max_retry_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=3,
         message=duration_pb2.Duration,
     )
-    min_backoff = proto.Field(
+    min_backoff: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=4,
         message=duration_pb2.Duration,
     )
-    max_backoff = proto.Field(
+    max_backoff: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=5,
         message=duration_pb2.Duration,
     )
-    max_doublings = proto.Field(
+    max_doublings: int = proto.Field(
         proto.INT32,
         number=6,
     )
@@ -527,24 +529,24 @@ class QueueStats(proto.Message):
             tasks in the queue are targeting.
     """
 
-    tasks_count = proto.Field(
+    tasks_count: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    oldest_estimated_arrival_time = proto.Field(
+    oldest_estimated_arrival_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    executed_last_minute_count = proto.Field(
+    executed_last_minute_count: int = proto.Field(
         proto.INT64,
         number=3,
     )
-    concurrent_dispatches_count = proto.Field(
+    concurrent_dispatches_count: int = proto.Field(
         proto.INT64,
         number=4,
     )
-    effective_execution_rate = proto.Field(
+    effective_execution_rate: float = proto.Field(
         proto.DOUBLE,
         number=5,
     )

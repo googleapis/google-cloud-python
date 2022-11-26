@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -70,11 +72,11 @@ class PullMessage(proto.Message):
             returned by Cloud Tasks.
     """
 
-    payload = proto.Field(
+    payload: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    tag = proto.Field(
+    tag: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -140,7 +142,7 @@ class HttpRequest(proto.Message):
         http_method (google.cloud.tasks_v2beta3.types.HttpMethod):
             The HTTP method to use for the request. The
             default is POST.
-        headers (Mapping[str, str]):
+        headers (MutableMapping[str, str]):
             HTTP request headers.
 
             This map contains the header field names and values. Headers
@@ -204,31 +206,31 @@ class HttpRequest(proto.Message):
             This field is a member of `oneof`_ ``authorization_header``.
     """
 
-    url = proto.Field(
+    url: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    http_method = proto.Field(
+    http_method: "HttpMethod" = proto.Field(
         proto.ENUM,
         number=2,
         enum="HttpMethod",
     )
-    headers = proto.MapField(
+    headers: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
     )
-    body = proto.Field(
+    body: bytes = proto.Field(
         proto.BYTES,
         number=4,
     )
-    oauth_token = proto.Field(
+    oauth_token: "OAuthToken" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="authorization_header",
         message="OAuthToken",
     )
-    oidc_token = proto.Field(
+    oidc_token: "OidcToken" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="authorization_header",
@@ -267,7 +269,7 @@ class AppEngineHttpQueue(proto.Message):
             app_engine_routing][google.cloud.tasks.v2beta3.AppEngineHttpRequest.app_engine_routing].
     """
 
-    app_engine_routing_override = proto.Field(
+    app_engine_routing_override: "AppEngineRouting" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="AppEngineRouting",
@@ -366,7 +368,7 @@ class AppEngineHttpRequest(proto.Message):
             is empty, then the root path "/" will be used.
             No spaces are allowed, and the maximum length
             allowed is 2083 characters.
-        headers (Mapping[str, str]):
+        headers (MutableMapping[str, str]):
             HTTP request headers.
 
             This map contains the header field names and values. Headers
@@ -426,26 +428,26 @@ class AppEngineHttpRequest(proto.Message):
             [HttpMethod][google.cloud.tasks.v2beta3.HttpMethod].
     """
 
-    http_method = proto.Field(
+    http_method: "HttpMethod" = proto.Field(
         proto.ENUM,
         number=1,
         enum="HttpMethod",
     )
-    app_engine_routing = proto.Field(
+    app_engine_routing: "AppEngineRouting" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="AppEngineRouting",
     )
-    relative_uri = proto.Field(
+    relative_uri: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    headers = proto.MapField(
+    headers: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    body = proto.Field(
+    body: bytes = proto.Field(
         proto.BYTES,
         number=5,
     )
@@ -547,19 +549,19 @@ class AppEngineRouting(proto.Message):
             Routed <https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed>`__.
     """
 
-    service = proto.Field(
+    service: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    instance = proto.Field(
+    instance: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    host = proto.Field(
+    host: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -586,11 +588,11 @@ class OAuthToken(proto.Message):
             will be used.
     """
 
-    service_account_email = proto.Field(
+    service_account_email: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    scope = proto.Field(
+    scope: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -617,11 +619,11 @@ class OidcToken(proto.Message):
             target will be used.
     """
 
-    service_account_email = proto.Field(
+    service_account_email: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    audience = proto.Field(
+    audience: str = proto.Field(
         proto.STRING,
         number=2,
     )
