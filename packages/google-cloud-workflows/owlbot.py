@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,15 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""This script is used to synthesize generated parts of this library."""
-from pathlib import Path
+import json
 from typing import List, Optional
+from pathlib import Path
+import shutil
 
 import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-common = gcp.CommonTemplates()
+# ----------------------------------------------------------------------------
+# Copy the generated client from the owl-bot staging directory
+# ----------------------------------------------------------------------------
+
+clean_up_generated_samples = True
+
+# Load the default version defined in .repo-metadata.json.
+default_version = json.load(open(".repo-metadata.json", "rt")).get(
+    "default_version"
+)
 
 # This is a customized version of the s.get_staging_dirs() function from synthtool to
 # cater for copying 2 different folders from googleapis-gen
@@ -62,51 +72,36 @@ def get_staging_dirs(
     else:
         return []
 
-# This library ships clients for two different APIs,
-# Workflows and Workflows Executions
-workflows_default_version = "v1"
-workflows_executions_default_version = "v1"
 
-for library in get_staging_dirs(workflows_executions_default_version, "executions"):
+for library in get_staging_dirs(default_version, "executions"):
     # Make sure this library is named 'google-cloud-workflows'
     s.replace(
-        library / "google/**/*.py", "google-cloud-workflows-executions", "google-cloud-workflow"
+        library / "google/**/*.py", "google-cloud-workflows-executions", "google-cloud-workflows"
     )
-
-    s.move(
-        library,
-        excludes=[
-            "setup.py",
-            "README.rst",
-            "docs/index.rst",
-            f"scripts/fixup_executions_{library.name}_keywords.py",
-        ],
-    )
+    s.move([library], excludes=["**/gapic_version.py", "docs/index.rst"])
 
 # move workflows after executions, since we want to use "workflows" for the name
-for library in get_staging_dirs(workflows_default_version, "workflows"):
-    s.move(
-        library,
-        excludes=[
-            "setup.py",
-            "README.rst",
-            "docs/index.rst",
-            f"scripts/fixup_workflows_{library.name}_keywords.py",
-        ],
-    )
+for library in get_staging_dirs(default_version, "workflows"):
+    if clean_up_generated_samples:
+        shutil.rmtree("samples/generated_samples", ignore_errors=True)
+        clean_up_generated_samples = False
+    s.move([library], excludes=["**/gapic_version.py", "docs/index.rst"])
 
 s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=100, microgenerator=True)
 
-s.move(
-    templated_files, excludes=[".coveragerc"]
-)  # the microgenerator has a good coveragerc file
+templated_files = gcp.CommonTemplates().py_library(
+    cov_level=100,
+    microgenerator=True,
+    versions=gcp.common.detect_versions(path="./google", default_first=True),
+)
+s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml", "docs/index.rst"])
 
 python.py_samples(skip_readmes=True)
-python.configure_previous_major_version_branches()
 
-s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+# run format session for all directories which have a noxfile
+for noxfile in Path(".").glob("**/noxfile.py"):
+    s.shell.run(["nox", "-s", "format"], cwd=noxfile.parent, hide_output=False)

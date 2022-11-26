@@ -13,17 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.workflows.executions import gapic_version as package_version
 
-from .services.executions import ExecutionsClient
-from .services.executions import ExecutionsAsyncClient
+__version__ = package_version.__version__
 
-from .types.executions import CancelExecutionRequest
-from .types.executions import CreateExecutionRequest
-from .types.executions import Execution
-from .types.executions import GetExecutionRequest
-from .types.executions import ListExecutionsRequest
-from .types.executions import ListExecutionsResponse
-from .types.executions import ExecutionView
+
+from .services.executions import ExecutionsAsyncClient, ExecutionsClient
+from .types.executions import (
+    CancelExecutionRequest,
+    CreateExecutionRequest,
+    Execution,
+    ExecutionView,
+    GetExecutionRequest,
+    ListExecutionsRequest,
+    ListExecutionsResponse,
+)
 
 __all__ = (
     "ExecutionsAsyncClient",

@@ -20,7 +20,6 @@ from .base import WorkflowsTransport
 from .grpc import WorkflowsGrpcTransport
 from .grpc_asyncio import WorkflowsGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[WorkflowsTransport]]
 _transport_registry["grpc"] = WorkflowsGrpcTransport

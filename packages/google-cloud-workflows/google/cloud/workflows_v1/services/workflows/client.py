@@ -16,18 +16,29 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -36,12 +47,14 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.workflows_v1.services.workflows import pagers
-from google.cloud.workflows_v1.types import workflows
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import WorkflowsTransport, DEFAULT_CLIENT_INFO
+
+from google.cloud.workflows_v1.services.workflows import pagers
+from google.cloud.workflows_v1.types import workflows
+
+from .transports.base import DEFAULT_CLIENT_INFO, WorkflowsTransport
 from .transports.grpc import WorkflowsGrpcTransport
 from .transports.grpc_asyncio import WorkflowsGrpcAsyncIOTransport
 
@@ -60,7 +73,7 @@ class WorkflowsClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[WorkflowsTransport]:
         """Returns an appropriate transport class.
 
@@ -338,8 +351,8 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, WorkflowsTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, WorkflowsTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the workflows client.
@@ -353,7 +366,7 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
             transport (Union[str, WorkflowsTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -383,6 +396,7 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -435,11 +449,11 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
 
     def list_workflows(
         self,
-        request: Union[workflows.ListWorkflowsRequest, dict] = None,
+        request: Optional[Union[workflows.ListWorkflowsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListWorkflowsPager:
         r"""Lists Workflows in a given project and location.
@@ -555,11 +569,11 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
 
     def get_workflow(
         self,
-        request: Union[workflows.GetWorkflowRequest, dict] = None,
+        request: Optional[Union[workflows.GetWorkflowRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> workflows.Workflow:
         r"""Gets details of a single Workflow.
@@ -659,13 +673,13 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
 
     def create_workflow(
         self,
-        request: Union[workflows.CreateWorkflowRequest, dict] = None,
+        request: Optional[Union[workflows.CreateWorkflowRequest, dict]] = None,
         *,
-        parent: str = None,
-        workflow: workflows.Workflow = None,
-        workflow_id: str = None,
+        parent: Optional[str] = None,
+        workflow: Optional[workflows.Workflow] = None,
+        workflow_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new workflow. If a workflow with the specified name
@@ -813,11 +827,11 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
 
     def delete_workflow(
         self,
-        request: Union[workflows.DeleteWorkflowRequest, dict] = None,
+        request: Optional[Union[workflows.DeleteWorkflowRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a workflow with the specified name.
@@ -941,12 +955,12 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
 
     def update_workflow(
         self,
-        request: Union[workflows.UpdateWorkflowRequest, dict] = None,
+        request: Optional[Union[workflows.UpdateWorkflowRequest, dict]] = None,
         *,
-        workflow: workflows.Workflow = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        workflow: Optional[workflows.Workflow] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates an existing workflow.

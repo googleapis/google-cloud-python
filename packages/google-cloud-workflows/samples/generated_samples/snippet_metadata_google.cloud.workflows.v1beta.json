@@ -2,12 +2,13 @@
   "clientLibrary": {
     "apis": [
       {
-        "id": "google.cloud.workflows.v1",
-        "version": "v1"
+        "id": "google.cloud.workflows.v1beta",
+        "version": "v1beta"
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-workflows"
+    "name": "google-cloud-workflows",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -15,14 +16,14 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workflows_v1.WorkflowsAsyncClient",
+          "fullName": "google.cloud.workflows_v1beta.WorkflowsAsyncClient",
           "shortName": "WorkflowsAsyncClient"
         },
-        "fullName": "google.cloud.workflows_v1.WorkflowsAsyncClient.create_workflow",
+        "fullName": "google.cloud.workflows_v1beta.WorkflowsAsyncClient.create_workflow",
         "method": {
-          "fullName": "google.cloud.workflows.v1.Workflows.CreateWorkflow",
+          "fullName": "google.cloud.workflows.v1beta.Workflows.CreateWorkflow",
           "service": {
-            "fullName": "google.cloud.workflows.v1.Workflows",
+            "fullName": "google.cloud.workflows.v1beta.Workflows",
             "shortName": "Workflows"
           },
           "shortName": "CreateWorkflow"
@@ -30,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workflows_v1.types.CreateWorkflowRequest"
+            "type": "google.cloud.workflows_v1beta.types.CreateWorkflowRequest"
           },
           {
             "name": "parent",
@@ -38,7 +39,7 @@
           },
           {
             "name": "workflow",
-            "type": "google.cloud.workflows_v1.types.Workflow"
+            "type": "google.cloud.workflows_v1beta.types.Workflow"
           },
           {
             "name": "workflow_id",
@@ -61,10 +62,10 @@
         "shortName": "create_workflow"
       },
       "description": "Sample for CreateWorkflow",
-      "file": "workflows_v1_generated_workflows_create_workflow_async.py",
+      "file": "workflows_v1beta_generated_workflows_create_workflow_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workflows_v1_generated_Workflows_CreateWorkflow_async",
+      "regionTag": "workflows_v1beta_generated_Workflows_CreateWorkflow_async",
       "segments": [
         {
           "end": 60,
@@ -97,20 +98,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workflows_v1_generated_workflows_create_workflow_async.py"
+      "title": "workflows_v1beta_generated_workflows_create_workflow_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workflows_v1.WorkflowsClient",
+          "fullName": "google.cloud.workflows_v1beta.WorkflowsClient",
           "shortName": "WorkflowsClient"
         },
-        "fullName": "google.cloud.workflows_v1.WorkflowsClient.create_workflow",
+        "fullName": "google.cloud.workflows_v1beta.WorkflowsClient.create_workflow",
         "method": {
-          "fullName": "google.cloud.workflows.v1.Workflows.CreateWorkflow",
+          "fullName": "google.cloud.workflows.v1beta.Workflows.CreateWorkflow",
           "service": {
-            "fullName": "google.cloud.workflows.v1.Workflows",
+            "fullName": "google.cloud.workflows.v1beta.Workflows",
             "shortName": "Workflows"
           },
           "shortName": "CreateWorkflow"
@@ -118,7 +119,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workflows_v1.types.CreateWorkflowRequest"
+            "type": "google.cloud.workflows_v1beta.types.CreateWorkflowRequest"
           },
           {
             "name": "parent",
@@ -126,7 +127,7 @@
           },
           {
             "name": "workflow",
-            "type": "google.cloud.workflows_v1.types.Workflow"
+            "type": "google.cloud.workflows_v1beta.types.Workflow"
           },
           {
             "name": "workflow_id",
@@ -149,10 +150,10 @@
         "shortName": "create_workflow"
       },
       "description": "Sample for CreateWorkflow",
-      "file": "workflows_v1_generated_workflows_create_workflow_sync.py",
+      "file": "workflows_v1beta_generated_workflows_create_workflow_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workflows_v1_generated_Workflows_CreateWorkflow_sync",
+      "regionTag": "workflows_v1beta_generated_Workflows_CreateWorkflow_sync",
       "segments": [
         {
           "end": 60,
@@ -185,21 +186,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workflows_v1_generated_workflows_create_workflow_sync.py"
+      "title": "workflows_v1beta_generated_workflows_create_workflow_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workflows_v1.WorkflowsAsyncClient",
+          "fullName": "google.cloud.workflows_v1beta.WorkflowsAsyncClient",
           "shortName": "WorkflowsAsyncClient"
         },
-        "fullName": "google.cloud.workflows_v1.WorkflowsAsyncClient.delete_workflow",
+        "fullName": "google.cloud.workflows_v1beta.WorkflowsAsyncClient.delete_workflow",
         "method": {
-          "fullName": "google.cloud.workflows.v1.Workflows.DeleteWorkflow",
+          "fullName": "google.cloud.workflows.v1beta.Workflows.DeleteWorkflow",
           "service": {
-            "fullName": "google.cloud.workflows.v1.Workflows",
+            "fullName": "google.cloud.workflows.v1beta.Workflows",
             "shortName": "Workflows"
           },
           "shortName": "DeleteWorkflow"
@@ -207,7 +208,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workflows_v1.types.DeleteWorkflowRequest"
+            "type": "google.cloud.workflows_v1beta.types.DeleteWorkflowRequest"
           },
           {
             "name": "name",
@@ -230,10 +231,10 @@
         "shortName": "delete_workflow"
       },
       "description": "Sample for DeleteWorkflow",
-      "file": "workflows_v1_generated_workflows_delete_workflow_async.py",
+      "file": "workflows_v1beta_generated_workflows_delete_workflow_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workflows_v1_generated_Workflows_DeleteWorkflow_async",
+      "regionTag": "workflows_v1beta_generated_Workflows_DeleteWorkflow_async",
       "segments": [
         {
           "end": 55,
@@ -266,20 +267,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workflows_v1_generated_workflows_delete_workflow_async.py"
+      "title": "workflows_v1beta_generated_workflows_delete_workflow_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workflows_v1.WorkflowsClient",
+          "fullName": "google.cloud.workflows_v1beta.WorkflowsClient",
           "shortName": "WorkflowsClient"
         },
-        "fullName": "google.cloud.workflows_v1.WorkflowsClient.delete_workflow",
+        "fullName": "google.cloud.workflows_v1beta.WorkflowsClient.delete_workflow",
         "method": {
-          "fullName": "google.cloud.workflows.v1.Workflows.DeleteWorkflow",
+          "fullName": "google.cloud.workflows.v1beta.Workflows.DeleteWorkflow",
           "service": {
-            "fullName": "google.cloud.workflows.v1.Workflows",
+            "fullName": "google.cloud.workflows.v1beta.Workflows",
             "shortName": "Workflows"
           },
           "shortName": "DeleteWorkflow"
@@ -287,7 +288,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workflows_v1.types.DeleteWorkflowRequest"
+            "type": "google.cloud.workflows_v1beta.types.DeleteWorkflowRequest"
           },
           {
             "name": "name",
@@ -310,10 +311,10 @@
         "shortName": "delete_workflow"
       },
       "description": "Sample for DeleteWorkflow",
-      "file": "workflows_v1_generated_workflows_delete_workflow_sync.py",
+      "file": "workflows_v1beta_generated_workflows_delete_workflow_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workflows_v1_generated_Workflows_DeleteWorkflow_sync",
+      "regionTag": "workflows_v1beta_generated_Workflows_DeleteWorkflow_sync",
       "segments": [
         {
           "end": 55,
@@ -346,21 +347,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workflows_v1_generated_workflows_delete_workflow_sync.py"
+      "title": "workflows_v1beta_generated_workflows_delete_workflow_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workflows_v1.WorkflowsAsyncClient",
+          "fullName": "google.cloud.workflows_v1beta.WorkflowsAsyncClient",
           "shortName": "WorkflowsAsyncClient"
         },
-        "fullName": "google.cloud.workflows_v1.WorkflowsAsyncClient.get_workflow",
+        "fullName": "google.cloud.workflows_v1beta.WorkflowsAsyncClient.get_workflow",
         "method": {
-          "fullName": "google.cloud.workflows.v1.Workflows.GetWorkflow",
+          "fullName": "google.cloud.workflows.v1beta.Workflows.GetWorkflow",
           "service": {
-            "fullName": "google.cloud.workflows.v1.Workflows",
+            "fullName": "google.cloud.workflows.v1beta.Workflows",
             "shortName": "Workflows"
           },
           "shortName": "GetWorkflow"
@@ -368,7 +369,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workflows_v1.types.GetWorkflowRequest"
+            "type": "google.cloud.workflows_v1beta.types.GetWorkflowRequest"
           },
           {
             "name": "name",
@@ -387,14 +388,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.workflows_v1.types.Workflow",
+        "resultType": "google.cloud.workflows_v1beta.types.Workflow",
         "shortName": "get_workflow"
       },
       "description": "Sample for GetWorkflow",
-      "file": "workflows_v1_generated_workflows_get_workflow_async.py",
+      "file": "workflows_v1beta_generated_workflows_get_workflow_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workflows_v1_generated_Workflows_GetWorkflow_async",
+      "regionTag": "workflows_v1beta_generated_Workflows_GetWorkflow_async",
       "segments": [
         {
           "end": 51,
@@ -427,20 +428,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workflows_v1_generated_workflows_get_workflow_async.py"
+      "title": "workflows_v1beta_generated_workflows_get_workflow_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workflows_v1.WorkflowsClient",
+          "fullName": "google.cloud.workflows_v1beta.WorkflowsClient",
           "shortName": "WorkflowsClient"
         },
-        "fullName": "google.cloud.workflows_v1.WorkflowsClient.get_workflow",
+        "fullName": "google.cloud.workflows_v1beta.WorkflowsClient.get_workflow",
         "method": {
-          "fullName": "google.cloud.workflows.v1.Workflows.GetWorkflow",
+          "fullName": "google.cloud.workflows.v1beta.Workflows.GetWorkflow",
           "service": {
-            "fullName": "google.cloud.workflows.v1.Workflows",
+            "fullName": "google.cloud.workflows.v1beta.Workflows",
             "shortName": "Workflows"
           },
           "shortName": "GetWorkflow"
@@ -448,7 +449,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workflows_v1.types.GetWorkflowRequest"
+            "type": "google.cloud.workflows_v1beta.types.GetWorkflowRequest"
           },
           {
             "name": "name",
@@ -467,14 +468,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.workflows_v1.types.Workflow",
+        "resultType": "google.cloud.workflows_v1beta.types.Workflow",
         "shortName": "get_workflow"
       },
       "description": "Sample for GetWorkflow",
-      "file": "workflows_v1_generated_workflows_get_workflow_sync.py",
+      "file": "workflows_v1beta_generated_workflows_get_workflow_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workflows_v1_generated_Workflows_GetWorkflow_sync",
+      "regionTag": "workflows_v1beta_generated_Workflows_GetWorkflow_sync",
       "segments": [
         {
           "end": 51,
@@ -507,21 +508,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workflows_v1_generated_workflows_get_workflow_sync.py"
+      "title": "workflows_v1beta_generated_workflows_get_workflow_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workflows_v1.WorkflowsAsyncClient",
+          "fullName": "google.cloud.workflows_v1beta.WorkflowsAsyncClient",
           "shortName": "WorkflowsAsyncClient"
         },
-        "fullName": "google.cloud.workflows_v1.WorkflowsAsyncClient.list_workflows",
+        "fullName": "google.cloud.workflows_v1beta.WorkflowsAsyncClient.list_workflows",
         "method": {
-          "fullName": "google.cloud.workflows.v1.Workflows.ListWorkflows",
+          "fullName": "google.cloud.workflows.v1beta.Workflows.ListWorkflows",
           "service": {
-            "fullName": "google.cloud.workflows.v1.Workflows",
+            "fullName": "google.cloud.workflows.v1beta.Workflows",
             "shortName": "Workflows"
           },
           "shortName": "ListWorkflows"
@@ -529,7 +530,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workflows_v1.types.ListWorkflowsRequest"
+            "type": "google.cloud.workflows_v1beta.types.ListWorkflowsRequest"
           },
           {
             "name": "parent",
@@ -548,14 +549,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.workflows_v1.services.workflows.pagers.ListWorkflowsAsyncPager",
+        "resultType": "google.cloud.workflows_v1beta.services.workflows.pagers.ListWorkflowsAsyncPager",
         "shortName": "list_workflows"
       },
       "description": "Sample for ListWorkflows",
-      "file": "workflows_v1_generated_workflows_list_workflows_async.py",
+      "file": "workflows_v1beta_generated_workflows_list_workflows_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workflows_v1_generated_Workflows_ListWorkflows_async",
+      "regionTag": "workflows_v1beta_generated_Workflows_ListWorkflows_async",
       "segments": [
         {
           "end": 52,
@@ -588,20 +589,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workflows_v1_generated_workflows_list_workflows_async.py"
+      "title": "workflows_v1beta_generated_workflows_list_workflows_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workflows_v1.WorkflowsClient",
+          "fullName": "google.cloud.workflows_v1beta.WorkflowsClient",
           "shortName": "WorkflowsClient"
         },
-        "fullName": "google.cloud.workflows_v1.WorkflowsClient.list_workflows",
+        "fullName": "google.cloud.workflows_v1beta.WorkflowsClient.list_workflows",
         "method": {
-          "fullName": "google.cloud.workflows.v1.Workflows.ListWorkflows",
+          "fullName": "google.cloud.workflows.v1beta.Workflows.ListWorkflows",
           "service": {
-            "fullName": "google.cloud.workflows.v1.Workflows",
+            "fullName": "google.cloud.workflows.v1beta.Workflows",
             "shortName": "Workflows"
           },
           "shortName": "ListWorkflows"
@@ -609,7 +610,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workflows_v1.types.ListWorkflowsRequest"
+            "type": "google.cloud.workflows_v1beta.types.ListWorkflowsRequest"
           },
           {
             "name": "parent",
@@ -628,14 +629,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.workflows_v1.services.workflows.pagers.ListWorkflowsPager",
+        "resultType": "google.cloud.workflows_v1beta.services.workflows.pagers.ListWorkflowsPager",
         "shortName": "list_workflows"
       },
       "description": "Sample for ListWorkflows",
-      "file": "workflows_v1_generated_workflows_list_workflows_sync.py",
+      "file": "workflows_v1beta_generated_workflows_list_workflows_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workflows_v1_generated_Workflows_ListWorkflows_sync",
+      "regionTag": "workflows_v1beta_generated_Workflows_ListWorkflows_sync",
       "segments": [
         {
           "end": 52,
@@ -668,21 +669,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workflows_v1_generated_workflows_list_workflows_sync.py"
+      "title": "workflows_v1beta_generated_workflows_list_workflows_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workflows_v1.WorkflowsAsyncClient",
+          "fullName": "google.cloud.workflows_v1beta.WorkflowsAsyncClient",
           "shortName": "WorkflowsAsyncClient"
         },
-        "fullName": "google.cloud.workflows_v1.WorkflowsAsyncClient.update_workflow",
+        "fullName": "google.cloud.workflows_v1beta.WorkflowsAsyncClient.update_workflow",
         "method": {
-          "fullName": "google.cloud.workflows.v1.Workflows.UpdateWorkflow",
+          "fullName": "google.cloud.workflows.v1beta.Workflows.UpdateWorkflow",
           "service": {
-            "fullName": "google.cloud.workflows.v1.Workflows",
+            "fullName": "google.cloud.workflows.v1beta.Workflows",
             "shortName": "Workflows"
           },
           "shortName": "UpdateWorkflow"
@@ -690,11 +691,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workflows_v1.types.UpdateWorkflowRequest"
+            "type": "google.cloud.workflows_v1beta.types.UpdateWorkflowRequest"
           },
           {
             "name": "workflow",
-            "type": "google.cloud.workflows_v1.types.Workflow"
+            "type": "google.cloud.workflows_v1beta.types.Workflow"
           },
           {
             "name": "update_mask",
@@ -717,10 +718,10 @@
         "shortName": "update_workflow"
       },
       "description": "Sample for UpdateWorkflow",
-      "file": "workflows_v1_generated_workflows_update_workflow_async.py",
+      "file": "workflows_v1beta_generated_workflows_update_workflow_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workflows_v1_generated_Workflows_UpdateWorkflow_async",
+      "regionTag": "workflows_v1beta_generated_Workflows_UpdateWorkflow_async",
       "segments": [
         {
           "end": 58,
@@ -753,20 +754,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workflows_v1_generated_workflows_update_workflow_async.py"
+      "title": "workflows_v1beta_generated_workflows_update_workflow_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workflows_v1.WorkflowsClient",
+          "fullName": "google.cloud.workflows_v1beta.WorkflowsClient",
           "shortName": "WorkflowsClient"
         },
-        "fullName": "google.cloud.workflows_v1.WorkflowsClient.update_workflow",
+        "fullName": "google.cloud.workflows_v1beta.WorkflowsClient.update_workflow",
         "method": {
-          "fullName": "google.cloud.workflows.v1.Workflows.UpdateWorkflow",
+          "fullName": "google.cloud.workflows.v1beta.Workflows.UpdateWorkflow",
           "service": {
-            "fullName": "google.cloud.workflows.v1.Workflows",
+            "fullName": "google.cloud.workflows.v1beta.Workflows",
             "shortName": "Workflows"
           },
           "shortName": "UpdateWorkflow"
@@ -774,11 +775,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workflows_v1.types.UpdateWorkflowRequest"
+            "type": "google.cloud.workflows_v1beta.types.UpdateWorkflowRequest"
           },
           {
             "name": "workflow",
-            "type": "google.cloud.workflows_v1.types.Workflow"
+            "type": "google.cloud.workflows_v1beta.types.Workflow"
           },
           {
             "name": "update_mask",
@@ -801,10 +802,10 @@
         "shortName": "update_workflow"
       },
       "description": "Sample for UpdateWorkflow",
-      "file": "workflows_v1_generated_workflows_update_workflow_sync.py",
+      "file": "workflows_v1beta_generated_workflows_update_workflow_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workflows_v1_generated_Workflows_UpdateWorkflow_sync",
+      "regionTag": "workflows_v1beta_generated_Workflows_UpdateWorkflow_sync",
       "segments": [
         {
           "end": 58,
@@ -837,7 +838,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workflows_v1_generated_workflows_update_workflow_sync.py"
+      "title": "workflows_v1beta_generated_workflows_update_workflow_sync.py"
     }
   ]
 }

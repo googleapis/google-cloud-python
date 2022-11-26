@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.workflows.executions.v1",
@@ -128,28 +128,28 @@ class Execution(proto.Message):
                     this stack trace element.
             """
 
-            line = proto.Field(
+            line: int = proto.Field(
                 proto.INT64,
                 number=1,
             )
-            column = proto.Field(
+            column: int = proto.Field(
                 proto.INT64,
                 number=2,
             )
-            length = proto.Field(
+            length: int = proto.Field(
                 proto.INT64,
                 number=3,
             )
 
-        step = proto.Field(
+        step: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        routine = proto.Field(
+        routine: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        position = proto.Field(
+        position: "Execution.StackTraceElement.Position" = proto.Field(
             proto.MESSAGE,
             number=3,
             message="Execution.StackTraceElement.Position",
@@ -160,11 +160,11 @@ class Execution(proto.Message):
         occurred.
 
         Attributes:
-            elements (Sequence[google.cloud.workflows.executions_v1.types.Execution.StackTraceElement]):
+            elements (MutableSequence[google.cloud.workflows.executions_v1.types.Execution.StackTraceElement]):
                 An array of stack elements.
         """
 
-        elements = proto.RepeatedField(
+        elements: MutableSequence["Execution.StackTraceElement"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Execution.StackTraceElement",
@@ -184,57 +184,57 @@ class Execution(proto.Message):
                 where error was generated.
         """
 
-        payload = proto.Field(
+        payload: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        context = proto.Field(
+        context: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        stack_trace = proto.Field(
+        stack_trace: "Execution.StackTrace" = proto.Field(
             proto.MESSAGE,
             number=3,
             message="Execution.StackTrace",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=4,
         enum=State,
     )
-    argument = proto.Field(
+    argument: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    result = proto.Field(
+    result: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    error = proto.Field(
+    error: Error = proto.Field(
         proto.MESSAGE,
         number=7,
         message=Error,
     )
-    workflow_revision_id = proto.Field(
+    workflow_revision_id: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    call_log_level = proto.Field(
+    call_log_level: CallLogLevel = proto.Field(
         proto.ENUM,
         number=9,
         enum=CallLogLevel,
@@ -270,19 +270,19 @@ class ListExecutionsRequest(proto.Message):
             will default to the BASIC view.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    view = proto.Field(
+    view: "ExecutionView" = proto.Field(
         proto.ENUM,
         number=4,
         enum="ExecutionView",
@@ -295,7 +295,7 @@ class ListExecutionsResponse(proto.Message):
     method.
 
     Attributes:
-        executions (Sequence[google.cloud.workflows.executions_v1.types.Execution]):
+        executions (MutableSequence[google.cloud.workflows.executions_v1.types.Execution]):
             The executions which match the request.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -307,12 +307,12 @@ class ListExecutionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    executions = proto.RepeatedField(
+    executions: MutableSequence["Execution"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Execution",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -334,11 +334,11 @@ class CreateExecutionRequest(proto.Message):
             Required. Execution to be created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    execution = proto.Field(
+    execution: "Execution" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Execution",
@@ -361,11 +361,11 @@ class GetExecutionRequest(proto.Message):
             will default to the FULL view.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: "ExecutionView" = proto.Field(
         proto.ENUM,
         number=2,
         enum="ExecutionView",
@@ -384,7 +384,7 @@ class CancelExecutionRequest(proto.Message):
             projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

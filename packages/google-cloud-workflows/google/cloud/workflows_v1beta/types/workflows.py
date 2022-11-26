@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.workflows.v1beta",
@@ -70,7 +70,7 @@ class Workflow(proto.Message):
         revision_create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp that the latest
             revision of the workflow was created.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels associated with this workflow.
             Labels can contain at most 64 entries. Keys and
             values can be no longer than 63 characters and
@@ -107,48 +107,48 @@ class Workflow(proto.Message):
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=3,
         enum=State,
     )
-    revision_id = proto.Field(
+    revision_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    revision_create_time = proto.Field(
+    revision_create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=8,
     )
-    service_account = proto.Field(
+    service_account: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    source_contents = proto.Field(
+    source_contents: str = proto.Field(
         proto.STRING,
         number=10,
         oneof="source_code",
@@ -192,23 +192,23 @@ class ListWorkflowsRequest(proto.Message):
             in an unspecified order.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -220,13 +220,13 @@ class ListWorkflowsResponse(proto.Message):
     method.
 
     Attributes:
-        workflows (Sequence[google.cloud.workflows_v1beta.types.Workflow]):
+        workflows (MutableSequence[google.cloud.workflows_v1beta.types.Workflow]):
             The workflows which match the request.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Unreachable resources.
     """
 
@@ -234,16 +234,16 @@ class ListWorkflowsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    workflows = proto.RepeatedField(
+    workflows: MutableSequence["Workflow"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Workflow",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -261,7 +261,7 @@ class GetWorkflowRequest(proto.Message):
             projects/{project}/locations/{location}/workflows/{workflow}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -291,16 +291,16 @@ class CreateWorkflowRequest(proto.Message):
             -  Must be unique within the customer project and location.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    workflow = proto.Field(
+    workflow: "Workflow" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Workflow",
     )
-    workflow_id = proto.Field(
+    workflow_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -318,7 +318,7 @@ class DeleteWorkflowRequest(proto.Message):
             projects/{project}/locations/{location}/workflows/{workflow}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -337,12 +337,12 @@ class UpdateWorkflowRequest(proto.Message):
             the entire workflow will be updated.
     """
 
-    workflow = proto.Field(
+    workflow: "Workflow" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Workflow",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -366,25 +366,25 @@ class OperationMetadata(proto.Message):
             API version used to start the operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=5,
     )

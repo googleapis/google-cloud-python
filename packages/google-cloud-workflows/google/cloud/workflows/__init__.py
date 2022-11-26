@@ -13,20 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.workflows import gapic_version as package_version
 
-from google.cloud.workflows_v1.services.workflows.client import WorkflowsClient
+__version__ = package_version.__version__
+
+
 from google.cloud.workflows_v1.services.workflows.async_client import (
     WorkflowsAsyncClient,
 )
-
-from google.cloud.workflows_v1.types.workflows import CreateWorkflowRequest
-from google.cloud.workflows_v1.types.workflows import DeleteWorkflowRequest
-from google.cloud.workflows_v1.types.workflows import GetWorkflowRequest
-from google.cloud.workflows_v1.types.workflows import ListWorkflowsRequest
-from google.cloud.workflows_v1.types.workflows import ListWorkflowsResponse
-from google.cloud.workflows_v1.types.workflows import OperationMetadata
-from google.cloud.workflows_v1.types.workflows import UpdateWorkflowRequest
-from google.cloud.workflows_v1.types.workflows import Workflow
+from google.cloud.workflows_v1.services.workflows.client import WorkflowsClient
+from google.cloud.workflows_v1.types.workflows import (
+    CreateWorkflowRequest,
+    DeleteWorkflowRequest,
+    GetWorkflowRequest,
+    ListWorkflowsRequest,
+    ListWorkflowsResponse,
+    OperationMetadata,
+    UpdateWorkflowRequest,
+    Workflow,
+)
 
 __all__ = (
     "WorkflowsClient",

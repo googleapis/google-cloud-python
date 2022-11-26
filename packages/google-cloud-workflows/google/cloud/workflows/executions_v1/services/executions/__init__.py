@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import ExecutionsClient
 from .async_client import ExecutionsAsyncClient
+from .client import ExecutionsClient
 
 __all__ = (
     "ExecutionsClient",
