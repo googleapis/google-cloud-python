@@ -40,7 +40,7 @@ async def sample_search_hashes():
 
     # Initialize request argument(s)
     request = webrisk_v1beta1.SearchHashesRequest(
-        threat_types="UNWANTED_SOFTWARE",
+        threat_types=['UNWANTED_SOFTWARE'],
     )
 
     # Make the request

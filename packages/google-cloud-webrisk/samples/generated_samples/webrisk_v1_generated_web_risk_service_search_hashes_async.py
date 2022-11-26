@@ -40,7 +40,7 @@ async def sample_search_hashes():
 
     # Initialize request argument(s)
     request = webrisk_v1.SearchHashesRequest(
-        threat_types="SOCIAL_ENGINEERING_EXTENDED_COVERAGE",
+        threat_types=['SOCIAL_ENGINEERING_EXTENDED_COVERAGE'],
     )
 
     # Make the request

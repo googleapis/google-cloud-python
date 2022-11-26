@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -93,35 +95,37 @@ class ComputeThreatListDiffRequest(proto.Message):
                 willing to have in the local database. This should be a
                 power of 2 between 2\ **10 and 2**\ 20. If zero, no database
                 size limit is set.
-            supported_compressions (Sequence[google.cloud.webrisk_v1.types.CompressionType]):
+            supported_compressions (MutableSequence[google.cloud.webrisk_v1.types.CompressionType]):
                 The compression types supported by the
                 client.
         """
 
-        max_diff_entries = proto.Field(
+        max_diff_entries: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        max_database_entries = proto.Field(
+        max_database_entries: int = proto.Field(
             proto.INT32,
             number=2,
         )
-        supported_compressions = proto.RepeatedField(
+        supported_compressions: MutableSequence[
+            "CompressionType"
+        ] = proto.RepeatedField(
             proto.ENUM,
             number=3,
             enum="CompressionType",
         )
 
-    threat_type = proto.Field(
+    threat_type: "ThreatType" = proto.Field(
         proto.ENUM,
         number=1,
         enum="ThreatType",
     )
-    version_token = proto.Field(
+    version_token: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
-    constraints = proto.Field(
+    constraints: Constraints = proto.Field(
         proto.MESSAGE,
         number=3,
         message=Constraints,
@@ -179,36 +183,36 @@ class ComputeThreatListDiffResponse(proto.Message):
                 database.
         """
 
-        sha256 = proto.Field(
+        sha256: bytes = proto.Field(
             proto.BYTES,
             number=1,
         )
 
-    response_type = proto.Field(
+    response_type: ResponseType = proto.Field(
         proto.ENUM,
         number=4,
         enum=ResponseType,
     )
-    additions = proto.Field(
+    additions: "ThreatEntryAdditions" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="ThreatEntryAdditions",
     )
-    removals = proto.Field(
+    removals: "ThreatEntryRemovals" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="ThreatEntryRemovals",
     )
-    new_version_token = proto.Field(
+    new_version_token: bytes = proto.Field(
         proto.BYTES,
         number=7,
     )
-    checksum = proto.Field(
+    checksum: Checksum = proto.Field(
         proto.MESSAGE,
         number=8,
         message=Checksum,
     )
-    recommended_next_diff = proto.Field(
+    recommended_next_diff: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
@@ -221,16 +225,16 @@ class SearchUrisRequest(proto.Message):
     Attributes:
         uri (str):
             Required. The URI to be checked for matches.
-        threat_types (Sequence[google.cloud.webrisk_v1.types.ThreatType]):
+        threat_types (MutableSequence[google.cloud.webrisk_v1.types.ThreatType]):
             Required. The ThreatLists to search in.
             Multiple ThreatLists may be specified.
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    threat_types = proto.RepeatedField(
+    threat_types: MutableSequence["ThreatType"] = proto.RepeatedField(
         proto.ENUM,
         number=2,
         enum="ThreatType",
@@ -250,7 +254,7 @@ class SearchUrisResponse(proto.Message):
         r"""Contains threat information on a matching uri.
 
         Attributes:
-            threat_types (Sequence[google.cloud.webrisk_v1.types.ThreatType]):
+            threat_types (MutableSequence[google.cloud.webrisk_v1.types.ThreatType]):
                 The ThreatList this threat belongs to.
             expire_time (google.protobuf.timestamp_pb2.Timestamp):
                 The cache lifetime for the returned match.
@@ -258,18 +262,18 @@ class SearchUrisResponse(proto.Message):
                 timestamp to avoid false positives.
         """
 
-        threat_types = proto.RepeatedField(
+        threat_types: MutableSequence["ThreatType"] = proto.RepeatedField(
             proto.ENUM,
             number=1,
             enum="ThreatType",
         )
-        expire_time = proto.Field(
+        expire_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=2,
             message=timestamp_pb2.Timestamp,
         )
 
-    threat = proto.Field(
+    threat: ThreatUri = proto.Field(
         proto.MESSAGE,
         number=1,
         message=ThreatUri,
@@ -288,16 +292,16 @@ class SearchHashesRequest(proto.Message):
             Note that if this parameter is provided by a
             URI, it must be encoded using the web safe
             base64 variant (RFC 4648).
-        threat_types (Sequence[google.cloud.webrisk_v1.types.ThreatType]):
+        threat_types (MutableSequence[google.cloud.webrisk_v1.types.ThreatType]):
             Required. The ThreatLists to search in.
             Multiple ThreatLists may be specified.
     """
 
-    hash_prefix = proto.Field(
+    hash_prefix: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    threat_types = proto.RepeatedField(
+    threat_types: MutableSequence["ThreatType"] = proto.RepeatedField(
         proto.ENUM,
         number=2,
         enum="ThreatType",
@@ -308,7 +312,7 @@ class SearchHashesResponse(proto.Message):
     r"""
 
     Attributes:
-        threats (Sequence[google.cloud.webrisk_v1.types.SearchHashesResponse.ThreatHash]):
+        threats (MutableSequence[google.cloud.webrisk_v1.types.SearchHashesResponse.ThreatHash]):
             The full hashes that matched the requested
             prefixes. The hash will be populated in the key.
         negative_expire_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -321,7 +325,7 @@ class SearchHashesResponse(proto.Message):
         r"""Contains threat information on a matching hash.
 
         Attributes:
-            threat_types (Sequence[google.cloud.webrisk_v1.types.ThreatType]):
+            threat_types (MutableSequence[google.cloud.webrisk_v1.types.ThreatType]):
                 The ThreatList this threat belongs to.
                 This must contain at least one entry.
             hash_ (bytes):
@@ -334,27 +338,27 @@ class SearchHashesResponse(proto.Message):
                 timestamp to avoid false positives.
         """
 
-        threat_types = proto.RepeatedField(
+        threat_types: MutableSequence["ThreatType"] = proto.RepeatedField(
             proto.ENUM,
             number=1,
             enum="ThreatType",
         )
-        hash_ = proto.Field(
+        hash_: bytes = proto.Field(
             proto.BYTES,
             number=2,
         )
-        expire_time = proto.Field(
+        expire_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=3,
             message=timestamp_pb2.Timestamp,
         )
 
-    threats = proto.RepeatedField(
+    threats: MutableSequence[ThreatHash] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=ThreatHash,
     )
-    negative_expire_time = proto.Field(
+    negative_expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
@@ -367,7 +371,7 @@ class ThreatEntryAdditions(proto.Message):
     response.
 
     Attributes:
-        raw_hashes (Sequence[google.cloud.webrisk_v1.types.RawHashes]):
+        raw_hashes (MutableSequence[google.cloud.webrisk_v1.types.RawHashes]):
             The raw SHA256-formatted entries.
             Repeated to allow returning sets of hashes with
             different prefix sizes.
@@ -378,12 +382,12 @@ class ThreatEntryAdditions(proto.Message):
             stored as encoded_data.
     """
 
-    raw_hashes = proto.RepeatedField(
+    raw_hashes: MutableSequence["RawHashes"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="RawHashes",
     )
-    rice_hashes = proto.Field(
+    rice_hashes: "RiceDeltaEncoding" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="RiceDeltaEncoding",
@@ -404,12 +408,12 @@ class ThreatEntryRemovals(proto.Message):
             encoded_data.
     """
 
-    raw_indices = proto.Field(
+    raw_indices: "RawIndices" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="RawIndices",
     )
-    rice_indices = proto.Field(
+    rice_indices: "RiceDeltaEncoding" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="RiceDeltaEncoding",
@@ -420,12 +424,12 @@ class RawIndices(proto.Message):
     r"""A set of raw indices to remove from a local list.
 
     Attributes:
-        indices (Sequence[int]):
+        indices (MutableSequence[int]):
             The indices to remove from a
             lexicographically-sorted local list.
     """
 
-    indices = proto.RepeatedField(
+    indices: MutableSequence[int] = proto.RepeatedField(
         proto.INT32,
         number=1,
     )
@@ -455,11 +459,11 @@ class RawHashes(proto.Message):
             are base64-encoded.
     """
 
-    prefix_size = proto.Field(
+    prefix_size: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    raw_hashes = proto.Field(
+    raw_hashes: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
@@ -488,19 +492,19 @@ class RiceDeltaEncoding(proto.Message):
             Golomb-Rice coder.
     """
 
-    first_value = proto.Field(
+    first_value: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    rice_parameter = proto.Field(
+    rice_parameter: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    entry_count = proto.Field(
+    entry_count: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    encoded_data = proto.Field(
+    encoded_data: bytes = proto.Field(
         proto.BYTES,
         number=4,
     )
@@ -515,7 +519,7 @@ class Submission(proto.Message):
             malicious content to be analyzed.
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -534,11 +538,11 @@ class CreateSubmissionRequest(proto.Message):
             content of the phishing report.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    submission = proto.Field(
+    submission: "Submission" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Submission",

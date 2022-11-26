@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -163,9 +173,9 @@ class WebRiskServiceV1Beta1AsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, WebRiskServiceV1Beta1Transport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the web risk service v1 beta1 client.
@@ -209,13 +219,13 @@ class WebRiskServiceV1Beta1AsyncClient:
 
     async def compute_threat_list_diff(
         self,
-        request: Union[webrisk.ComputeThreatListDiffRequest, dict] = None,
+        request: Optional[Union[webrisk.ComputeThreatListDiffRequest, dict]] = None,
         *,
-        threat_type: webrisk.ThreatType = None,
-        version_token: bytes = None,
-        constraints: webrisk.ComputeThreatListDiffRequest.Constraints = None,
+        threat_type: Optional[webrisk.ThreatType] = None,
+        version_token: Optional[bytes] = None,
+        constraints: Optional[webrisk.ComputeThreatListDiffRequest.Constraints] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> webrisk.ComputeThreatListDiffResponse:
         r"""Gets the most recent threat list diffs.
@@ -247,7 +257,7 @@ class WebRiskServiceV1Beta1AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.webrisk_v1beta1.types.ComputeThreatListDiffRequest, dict]):
+            request (Optional[Union[google.cloud.webrisk_v1beta1.types.ComputeThreatListDiffRequest, dict]]):
                 The request object. Describes an API diff request.
             threat_type (:class:`google.cloud.webrisk_v1beta1.types.ThreatType`):
                 The ThreatList to update.
@@ -332,12 +342,12 @@ class WebRiskServiceV1Beta1AsyncClient:
 
     async def search_uris(
         self,
-        request: Union[webrisk.SearchUrisRequest, dict] = None,
+        request: Optional[Union[webrisk.SearchUrisRequest, dict]] = None,
         *,
-        uri: str = None,
-        threat_types: Sequence[webrisk.ThreatType] = None,
+        uri: Optional[str] = None,
+        threat_types: Optional[MutableSequence[webrisk.ThreatType]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> webrisk.SearchUrisResponse:
         r"""This method is used to check whether a URI is on a
@@ -361,7 +371,7 @@ class WebRiskServiceV1Beta1AsyncClient:
                 # Initialize request argument(s)
                 request = webrisk_v1beta1.SearchUrisRequest(
                     uri="uri_value",
-                    threat_types="UNWANTED_SOFTWARE",
+                    threat_types=['UNWANTED_SOFTWARE'],
                 )
 
                 # Make the request
@@ -371,7 +381,7 @@ class WebRiskServiceV1Beta1AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.webrisk_v1beta1.types.SearchUrisRequest, dict]):
+            request (Optional[Union[google.cloud.webrisk_v1beta1.types.SearchUrisRequest, dict]]):
                 The request object. Request to check URI entries against
                 threatLists.
             uri (:class:`str`):
@@ -381,7 +391,7 @@ class WebRiskServiceV1Beta1AsyncClient:
                 This corresponds to the ``uri`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            threat_types (:class:`Sequence[google.cloud.webrisk_v1beta1.types.ThreatType]`):
+            threat_types (:class:`MutableSequence[google.cloud.webrisk_v1beta1.types.ThreatType]`):
                 Required. The ThreatLists to search
                 in.
 
@@ -448,12 +458,12 @@ class WebRiskServiceV1Beta1AsyncClient:
 
     async def search_hashes(
         self,
-        request: Union[webrisk.SearchHashesRequest, dict] = None,
+        request: Optional[Union[webrisk.SearchHashesRequest, dict]] = None,
         *,
-        hash_prefix: bytes = None,
-        threat_types: Sequence[webrisk.ThreatType] = None,
+        hash_prefix: Optional[bytes] = None,
+        threat_types: Optional[MutableSequence[webrisk.ThreatType]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> webrisk.SearchHashesResponse:
         r"""Gets the full hashes that match the requested hash
@@ -480,7 +490,7 @@ class WebRiskServiceV1Beta1AsyncClient:
 
                 # Initialize request argument(s)
                 request = webrisk_v1beta1.SearchHashesRequest(
-                    threat_types="UNWANTED_SOFTWARE",
+                    threat_types=['UNWANTED_SOFTWARE'],
                 )
 
                 # Make the request
@@ -490,7 +500,7 @@ class WebRiskServiceV1Beta1AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.webrisk_v1beta1.types.SearchHashesRequest, dict]):
+            request (Optional[Union[google.cloud.webrisk_v1beta1.types.SearchHashesRequest, dict]]):
                 The request object. Request to return full hashes
                 matched by the provided hash prefixes.
             hash_prefix (:class:`bytes`):
@@ -502,7 +512,7 @@ class WebRiskServiceV1Beta1AsyncClient:
                 This corresponds to the ``hash_prefix`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            threat_types (:class:`Sequence[google.cloud.webrisk_v1beta1.types.ThreatType]`):
+            threat_types (:class:`MutableSequence[google.cloud.webrisk_v1beta1.types.ThreatType]`):
                 Required. The ThreatLists to search
                 in.
 

@@ -41,7 +41,7 @@ def sample_search_uris():
     # Initialize request argument(s)
     request = webrisk_v1beta1.SearchUrisRequest(
         uri="uri_value",
-        threat_types="UNWANTED_SOFTWARE",
+        threat_types=['UNWANTED_SOFTWARE'],
     )
 
     # Make the request

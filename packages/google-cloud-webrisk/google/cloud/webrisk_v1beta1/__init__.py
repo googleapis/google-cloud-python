@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.webrisk import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from .services.web_risk_service_v1_beta1 import (
     WebRiskServiceV1Beta1AsyncClient,

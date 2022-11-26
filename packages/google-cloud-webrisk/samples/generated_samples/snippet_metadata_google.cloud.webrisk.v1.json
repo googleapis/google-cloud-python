@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-webrisk"
+    "name": "google-cloud-webrisk",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -384,7 +385,7 @@
           },
           {
             "name": "threat_types",
-            "type": "Sequence[google.cloud.webrisk_v1.types.ThreatType]"
+            "type": "MutableSequence[google.cloud.webrisk_v1.types.ThreatType]"
           },
           {
             "name": "retry",
@@ -468,7 +469,7 @@
           },
           {
             "name": "threat_types",
-            "type": "Sequence[google.cloud.webrisk_v1.types.ThreatType]"
+            "type": "MutableSequence[google.cloud.webrisk_v1.types.ThreatType]"
           },
           {
             "name": "retry",
@@ -553,7 +554,7 @@
           },
           {
             "name": "threat_types",
-            "type": "Sequence[google.cloud.webrisk_v1.types.ThreatType]"
+            "type": "MutableSequence[google.cloud.webrisk_v1.types.ThreatType]"
           },
           {
             "name": "retry",
@@ -637,7 +638,7 @@
           },
           {
             "name": "threat_types",
-            "type": "Sequence[google.cloud.webrisk_v1.types.ThreatType]"
+            "type": "MutableSequence[google.cloud.webrisk_v1.types.ThreatType]"
           },
           {
             "name": "retry",
