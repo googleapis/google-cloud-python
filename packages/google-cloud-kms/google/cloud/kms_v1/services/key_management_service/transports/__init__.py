@@ -20,7 +20,6 @@ from .base import KeyManagementServiceTransport
 from .grpc import KeyManagementServiceGrpcTransport
 from .grpc_asyncio import KeyManagementServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

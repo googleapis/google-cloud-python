@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.kms_v1.types import resources
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.kms.v1",
@@ -98,23 +99,23 @@ class ListKeyRingsRequest(proto.Message):
             results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -156,28 +157,28 @@ class ListCryptoKeysRequest(proto.Message):
             results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    version_view = proto.Field(
+    version_view: resources.CryptoKeyVersion.CryptoKeyVersionView = proto.Field(
         proto.ENUM,
         number=4,
         enum=resources.CryptoKeyVersion.CryptoKeyVersionView,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -218,28 +219,28 @@ class ListCryptoKeyVersionsRequest(proto.Message):
             results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    view = proto.Field(
+    view: resources.CryptoKeyVersion.CryptoKeyVersionView = proto.Field(
         proto.ENUM,
         number=4,
         enum=resources.CryptoKeyVersion.CryptoKeyVersionView,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -278,23 +279,23 @@ class ListImportJobsRequest(proto.Message):
             results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -305,7 +306,7 @@ class ListKeyRingsResponse(proto.Message):
     [KeyManagementService.ListKeyRings][google.cloud.kms.v1.KeyManagementService.ListKeyRings].
 
     Attributes:
-        key_rings (Sequence[google.cloud.kms_v1.types.KeyRing]):
+        key_rings (MutableSequence[google.cloud.kms_v1.types.KeyRing]):
             The list of [KeyRings][google.cloud.kms.v1.KeyRing].
         next_page_token (str):
             A token to retrieve next page of results. Pass this value in
@@ -320,16 +321,16 @@ class ListKeyRingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    key_rings = proto.RepeatedField(
+    key_rings: MutableSequence[resources.KeyRing] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.KeyRing,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    total_size = proto.Field(
+    total_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -340,7 +341,7 @@ class ListCryptoKeysResponse(proto.Message):
     [KeyManagementService.ListCryptoKeys][google.cloud.kms.v1.KeyManagementService.ListCryptoKeys].
 
     Attributes:
-        crypto_keys (Sequence[google.cloud.kms_v1.types.CryptoKey]):
+        crypto_keys (MutableSequence[google.cloud.kms_v1.types.CryptoKey]):
             The list of [CryptoKeys][google.cloud.kms.v1.CryptoKey].
         next_page_token (str):
             A token to retrieve next page of results. Pass this value in
@@ -356,16 +357,16 @@ class ListCryptoKeysResponse(proto.Message):
     def raw_page(self):
         return self
 
-    crypto_keys = proto.RepeatedField(
+    crypto_keys: MutableSequence[resources.CryptoKey] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.CryptoKey,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    total_size = proto.Field(
+    total_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -376,7 +377,7 @@ class ListCryptoKeyVersionsResponse(proto.Message):
     [KeyManagementService.ListCryptoKeyVersions][google.cloud.kms.v1.KeyManagementService.ListCryptoKeyVersions].
 
     Attributes:
-        crypto_key_versions (Sequence[google.cloud.kms_v1.types.CryptoKeyVersion]):
+        crypto_key_versions (MutableSequence[google.cloud.kms_v1.types.CryptoKeyVersion]):
             The list of
             [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion].
         next_page_token (str):
@@ -393,16 +394,18 @@ class ListCryptoKeyVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    crypto_key_versions = proto.RepeatedField(
+    crypto_key_versions: MutableSequence[
+        resources.CryptoKeyVersion
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.CryptoKeyVersion,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    total_size = proto.Field(
+    total_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -413,7 +416,7 @@ class ListImportJobsResponse(proto.Message):
     [KeyManagementService.ListImportJobs][google.cloud.kms.v1.KeyManagementService.ListImportJobs].
 
     Attributes:
-        import_jobs (Sequence[google.cloud.kms_v1.types.ImportJob]):
+        import_jobs (MutableSequence[google.cloud.kms_v1.types.ImportJob]):
             The list of [ImportJobs][google.cloud.kms.v1.ImportJob].
         next_page_token (str):
             A token to retrieve next page of results. Pass this value in
@@ -429,16 +432,16 @@ class ListImportJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    import_jobs = proto.RepeatedField(
+    import_jobs: MutableSequence[resources.ImportJob] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.ImportJob,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    total_size = proto.Field(
+    total_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -454,7 +457,7 @@ class GetKeyRingRequest(proto.Message):
             the [KeyRing][google.cloud.kms.v1.KeyRing] to get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -470,7 +473,7 @@ class GetCryptoKeyRequest(proto.Message):
             the [CryptoKey][google.cloud.kms.v1.CryptoKey] to get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -488,7 +491,7 @@ class GetCryptoKeyVersionRequest(proto.Message):
             get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -506,7 +509,7 @@ class GetPublicKeyRequest(proto.Message):
             public key to get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -522,7 +525,7 @@ class GetImportJobRequest(proto.Message):
             the [ImportJob][google.cloud.kms.v1.ImportJob] to get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -545,15 +548,15 @@ class CreateKeyRingRequest(proto.Message):
             initial field values.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    key_ring_id = proto.Field(
+    key_ring_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    key_ring = proto.Field(
+    key_ring: resources.KeyRing = proto.Field(
         proto.MESSAGE,
         number=3,
         message=resources.KeyRing,
@@ -587,20 +590,20 @@ class CreateCryptoKeyRequest(proto.Message):
             [CryptoKey][google.cloud.kms.v1.CryptoKey].
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    crypto_key_id = proto.Field(
+    crypto_key_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    crypto_key = proto.Field(
+    crypto_key: resources.CryptoKey = proto.Field(
         proto.MESSAGE,
         number=3,
         message=resources.CryptoKey,
     )
-    skip_initial_version_creation = proto.Field(
+    skip_initial_version_creation: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -622,11 +625,11 @@ class CreateCryptoKeyVersionRequest(proto.Message):
             with initial field values.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    crypto_key_version = proto.Field(
+    crypto_key_version: resources.CryptoKeyVersion = proto.Field(
         proto.MESSAGE,
         number=2,
         message=resources.CryptoKeyVersion,
@@ -689,57 +692,83 @@ class ImportCryptoKeyVersionRequest(proto.Message):
             Required. The [name][google.cloud.kms.v1.ImportJob.name] of
             the [ImportJob][google.cloud.kms.v1.ImportJob] that was used
             to wrap this key material.
-        rsa_aes_wrapped_key (bytes):
-            Wrapped key material produced with
-            [RSA_OAEP_3072_SHA1_AES_256][google.cloud.kms.v1.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256]
-            or
-            [RSA_OAEP_4096_SHA1_AES_256][google.cloud.kms.v1.ImportJob.ImportMethod.RSA_OAEP_4096_SHA1_AES_256].
+        wrapped_key (bytes):
+            Optional. The wrapped key material to import.
 
-            This field contains the concatenation of two wrapped keys:
+            Before wrapping, key material must be formatted. If
+            importing symmetric key material, the expected key material
+            format is plain bytes. If importing asymmetric key material,
+            the expected key material format is PKCS#8-encoded DER (the
+            PrivateKeyInfo structure from RFC 5208).
+
+            When wrapping with import methods
+            ([RSA_OAEP_3072_SHA1_AES_256][google.cloud.kms.v1.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256]
+            or
+            [RSA_OAEP_4096_SHA1_AES_256][google.cloud.kms.v1.ImportJob.ImportMethod.RSA_OAEP_4096_SHA1_AES_256]
+            or
+            [RSA_OAEP_3072_SHA256_AES_256][google.cloud.kms.v1.ImportJob.ImportMethod.RSA_OAEP_3072_SHA256_AES_256]
+            or
+            [RSA_OAEP_4096_SHA256_AES_256][google.cloud.kms.v1.ImportJob.ImportMethod.RSA_OAEP_4096_SHA256_AES_256]),
+
+            this field must contain the concatenation of:
 
             .. raw:: html
 
                 <ol>
                   <li>An ephemeral AES-256 wrapping key wrapped with the
                       [public_key][google.cloud.kms.v1.ImportJob.public_key] using
-                      RSAES-OAEP with SHA-1/SHA-256, MGF1 with SHA-1/SHA-256, and an
-                      empty label.
+                      RSAES-OAEP with SHA-1/SHA-256, MGF1 with SHA-1/SHA-256, and an empty
+                      label.
                   </li>
-                  <li>The key to be imported, wrapped with the ephemeral AES-256 key
-                      using AES-KWP (RFC 5649).
+                  <li>The formatted key to be imported, wrapped with the ephemeral AES-256
+                      key using AES-KWP (RFC 5649).
                   </li>
                 </ol>
-
-            If importing symmetric key material, it is expected that the
-            unwrapped key contains plain bytes. If importing asymmetric
-            key material, it is expected that the unwrapped key is in
-            PKCS#8-encoded DER format (the PrivateKeyInfo structure from
-            RFC 5208).
 
             This format is the same as the format produced by PKCS#11
             mechanism CKM_RSA_AES_KEY_WRAP.
 
+            When wrapping with import methods
+            ([RSA_OAEP_3072_SHA256][google.cloud.kms.v1.ImportJob.ImportMethod.RSA_OAEP_3072_SHA256]
+            or
+            [RSA_OAEP_4096_SHA256][google.cloud.kms.v1.ImportJob.ImportMethod.RSA_OAEP_4096_SHA256]),
+
+            this field must contain the formatted key to be imported,
+            wrapped with the
+            [public_key][google.cloud.kms.v1.ImportJob.public_key] using
+            RSAES-OAEP with SHA-256, MGF1 with SHA-256, and an empty
+            label.
+        rsa_aes_wrapped_key (bytes):
+            Optional. This field has the same meaning as
+            [wrapped_key][google.cloud.kms.v1.ImportCryptoKeyVersionRequest.wrapped_key].
+            Prefer to use that field in new work. Either that field or
+            this field (but not both) must be specified.
+
             This field is a member of `oneof`_ ``wrapped_key_material``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    crypto_key_version = proto.Field(
+    crypto_key_version: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    algorithm = proto.Field(
+    algorithm: resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm = proto.Field(
         proto.ENUM,
         number=2,
         enum=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm,
     )
-    import_job = proto.Field(
+    import_job: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    rsa_aes_wrapped_key = proto.Field(
+    wrapped_key: bytes = proto.Field(
+        proto.BYTES,
+        number=8,
+    )
+    rsa_aes_wrapped_key: bytes = proto.Field(
         proto.BYTES,
         number=5,
         oneof="wrapped_key_material",
@@ -763,15 +792,15 @@ class CreateImportJobRequest(proto.Message):
             initial field values.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    import_job_id = proto.Field(
+    import_job_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    import_job = proto.Field(
+    import_job: resources.ImportJob = proto.Field(
         proto.MESSAGE,
         number=3,
         message=resources.ImportJob,
@@ -791,12 +820,12 @@ class UpdateCryptoKeyRequest(proto.Message):
             this request.
     """
 
-    crypto_key = proto.Field(
+    crypto_key: resources.CryptoKey = proto.Field(
         proto.MESSAGE,
         number=1,
         message=resources.CryptoKey,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -817,12 +846,12 @@ class UpdateCryptoKeyVersionRequest(proto.Message):
             this request.
     """
 
-    crypto_key_version = proto.Field(
+    crypto_key_version: resources.CryptoKeyVersion = proto.Field(
         proto.MESSAGE,
         number=1,
         message=resources.CryptoKeyVersion,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -843,11 +872,11 @@ class UpdateCryptoKeyPrimaryVersionRequest(proto.Message):
             use as primary.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    crypto_key_version_id = proto.Field(
+    crypto_key_version_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -864,7 +893,7 @@ class DestroyCryptoKeyVersionRequest(proto.Message):
             destroy.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -881,7 +910,7 @@ class RestoreCryptoKeyVersionRequest(proto.Message):
             restore.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -906,7 +935,11 @@ class EncryptRequest(proto.Message):
 
             The maximum size depends on the key version's
             [protection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level].
-            For [SOFTWARE][google.cloud.kms.v1.ProtectionLevel.SOFTWARE]
+            For
+            [SOFTWARE][google.cloud.kms.v1.ProtectionLevel.SOFTWARE],
+            [EXTERNAL][google.cloud.kms.v1.ProtectionLevel.EXTERNAL],
+            and
+            [EXTERNAL_VPC][google.cloud.kms.v1.ProtectionLevel.EXTERNAL_VPC]
             keys, the plaintext must be no larger than 64KiB. For
             [HSM][google.cloud.kms.v1.ProtectionLevel.HSM] keys, the
             combined length of the plaintext and
@@ -919,8 +952,12 @@ class EncryptRequest(proto.Message):
 
             The maximum size depends on the key version's
             [protection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level].
-            For [SOFTWARE][google.cloud.kms.v1.ProtectionLevel.SOFTWARE]
-            keys, the AAD must be no larger than 64KiB. For
+            For
+            [SOFTWARE][google.cloud.kms.v1.ProtectionLevel.SOFTWARE],
+            [EXTERNAL][google.cloud.kms.v1.ProtectionLevel.EXTERNAL],
+            and
+            [EXTERNAL_VPC][google.cloud.kms.v1.ProtectionLevel.EXTERNAL_VPC]
+            keys the AAD must be no larger than 64KiB. For
             [HSM][google.cloud.kms.v1.ProtectionLevel.HSM] keys, the
             combined length of the plaintext and
             additional_authenticated_data fields must be no larger than
@@ -969,24 +1006,24 @@ class EncryptRequest(proto.Message):
             languages that support this type.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    plaintext = proto.Field(
+    plaintext: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
-    additional_authenticated_data = proto.Field(
+    additional_authenticated_data: bytes = proto.Field(
         proto.BYTES,
         number=3,
     )
-    plaintext_crc32c = proto.Field(
+    plaintext_crc32c: wrappers_pb2.Int64Value = proto.Field(
         proto.MESSAGE,
         number=7,
         message=wrappers_pb2.Int64Value,
     )
-    additional_authenticated_data_crc32c = proto.Field(
+    additional_authenticated_data_crc32c: wrappers_pb2.Int64Value = proto.Field(
         proto.MESSAGE,
         number=8,
         message=wrappers_pb2.Int64Value,
@@ -1053,24 +1090,24 @@ class DecryptRequest(proto.Message):
             languages that support this type.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    ciphertext = proto.Field(
+    ciphertext: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
-    additional_authenticated_data = proto.Field(
+    additional_authenticated_data: bytes = proto.Field(
         proto.BYTES,
         number=3,
     )
-    ciphertext_crc32c = proto.Field(
+    ciphertext_crc32c: wrappers_pb2.Int64Value = proto.Field(
         proto.MESSAGE,
         number=5,
         message=wrappers_pb2.Int64Value,
     )
-    additional_authenticated_data_crc32c = proto.Field(
+    additional_authenticated_data_crc32c: wrappers_pb2.Int64Value = proto.Field(
         proto.MESSAGE,
         number=6,
         message=wrappers_pb2.Int64Value,
@@ -1143,25 +1180,25 @@ class AsymmetricSignRequest(proto.Message):
             languages that support this type.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    digest = proto.Field(
+    digest: "Digest" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Digest",
     )
-    digest_crc32c = proto.Field(
+    digest_crc32c: wrappers_pb2.Int64Value = proto.Field(
         proto.MESSAGE,
         number=4,
         message=wrappers_pb2.Int64Value,
     )
-    data = proto.Field(
+    data: bytes = proto.Field(
         proto.BYTES,
         number=6,
     )
-    data_crc32c = proto.Field(
+    data_crc32c: wrappers_pb2.Int64Value = proto.Field(
         proto.MESSAGE,
         number=7,
         message=wrappers_pb2.Int64Value,
@@ -1204,15 +1241,15 @@ class AsymmetricDecryptRequest(proto.Message):
             languages that support this type.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    ciphertext = proto.Field(
+    ciphertext: bytes = proto.Field(
         proto.BYTES,
         number=3,
     )
-    ciphertext_crc32c = proto.Field(
+    ciphertext_crc32c: wrappers_pb2.Int64Value = proto.Field(
         proto.MESSAGE,
         number=4,
         message=wrappers_pb2.Int64Value,
@@ -1255,15 +1292,15 @@ class MacSignRequest(proto.Message):
             languages that support this type.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    data = proto.Field(
+    data: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
-    data_crc32c = proto.Field(
+    data_crc32c: wrappers_pb2.Int64Value = proto.Field(
         proto.MESSAGE,
         number=3,
         message=wrappers_pb2.Int64Value,
@@ -1328,24 +1365,24 @@ class MacVerifyRequest(proto.Message):
             languages that support this type.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    data = proto.Field(
+    data: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
-    data_crc32c = proto.Field(
+    data_crc32c: wrappers_pb2.Int64Value = proto.Field(
         proto.MESSAGE,
         number=3,
         message=wrappers_pb2.Int64Value,
     )
-    mac = proto.Field(
+    mac: bytes = proto.Field(
         proto.BYTES,
         number=4,
     )
-    mac_crc32c = proto.Field(
+    mac_crc32c: wrappers_pb2.Int64Value = proto.Field(
         proto.MESSAGE,
         number=5,
         message=wrappers_pb2.Int64Value,
@@ -1372,15 +1409,15 @@ class GenerateRandomBytesRequest(proto.Message):
             level is supported.
     """
 
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    length_bytes = proto.Field(
+    length_bytes: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    protection_level = proto.Field(
+    protection_level: resources.ProtectionLevel = proto.Field(
         proto.ENUM,
         number=3,
         enum=resources.ProtectionLevel,
@@ -1453,28 +1490,28 @@ class EncryptResponse(proto.Message):
             used in encryption.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    ciphertext = proto.Field(
+    ciphertext: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
-    ciphertext_crc32c = proto.Field(
+    ciphertext_crc32c: wrappers_pb2.Int64Value = proto.Field(
         proto.MESSAGE,
         number=4,
         message=wrappers_pb2.Int64Value,
     )
-    verified_plaintext_crc32c = proto.Field(
+    verified_plaintext_crc32c: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    verified_additional_authenticated_data_crc32c = proto.Field(
+    verified_additional_authenticated_data_crc32c: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    protection_level = proto.Field(
+    protection_level: resources.ProtectionLevel = proto.Field(
         proto.ENUM,
         number=7,
         enum=resources.ProtectionLevel,
@@ -1521,20 +1558,20 @@ class DecryptResponse(proto.Message):
             used in decryption.
     """
 
-    plaintext = proto.Field(
+    plaintext: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    plaintext_crc32c = proto.Field(
+    plaintext_crc32c: wrappers_pb2.Int64Value = proto.Field(
         proto.MESSAGE,
         number=2,
         message=wrappers_pb2.Int64Value,
     )
-    used_primary = proto.Field(
+    used_primary: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    protection_level = proto.Field(
+    protection_level: resources.ProtectionLevel = proto.Field(
         proto.ENUM,
         number=4,
         enum=resources.ProtectionLevel,
@@ -1607,28 +1644,28 @@ class AsymmetricSignResponse(proto.Message):
             used for signing.
     """
 
-    signature = proto.Field(
+    signature: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    signature_crc32c = proto.Field(
+    signature_crc32c: wrappers_pb2.Int64Value = proto.Field(
         proto.MESSAGE,
         number=2,
         message=wrappers_pb2.Int64Value,
     )
-    verified_digest_crc32c = proto.Field(
+    verified_digest_crc32c: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    verified_data_crc32c = proto.Field(
+    verified_data_crc32c: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    protection_level = proto.Field(
+    protection_level: resources.ProtectionLevel = proto.Field(
         proto.ENUM,
         number=6,
         enum=resources.ProtectionLevel,
@@ -1682,20 +1719,20 @@ class AsymmetricDecryptResponse(proto.Message):
             used in decryption.
     """
 
-    plaintext = proto.Field(
+    plaintext: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    plaintext_crc32c = proto.Field(
+    plaintext_crc32c: wrappers_pb2.Int64Value = proto.Field(
         proto.MESSAGE,
         number=2,
         message=wrappers_pb2.Int64Value,
     )
-    verified_ciphertext_crc32c = proto.Field(
+    verified_ciphertext_crc32c: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    protection_level = proto.Field(
+    protection_level: resources.ProtectionLevel = proto.Field(
         proto.ENUM,
         number=4,
         enum=resources.ProtectionLevel,
@@ -1753,24 +1790,24 @@ class MacSignResponse(proto.Message):
             used for signing.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    mac = proto.Field(
+    mac: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
-    mac_crc32c = proto.Field(
+    mac_crc32c: wrappers_pb2.Int64Value = proto.Field(
         proto.MESSAGE,
         number=3,
         message=wrappers_pb2.Int64Value,
     )
-    verified_data_crc32c = proto.Field(
+    verified_data_crc32c: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    protection_level = proto.Field(
+    protection_level: resources.ProtectionLevel = proto.Field(
         proto.ENUM,
         number=5,
         enum=resources.ProtectionLevel,
@@ -1837,27 +1874,27 @@ class MacVerifyResponse(proto.Message):
             used for verification.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    success = proto.Field(
+    success: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    verified_data_crc32c = proto.Field(
+    verified_data_crc32c: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    verified_mac_crc32c = proto.Field(
+    verified_mac_crc32c: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    verified_success_integrity = proto.Field(
+    verified_success_integrity: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    protection_level = proto.Field(
+    protection_level: resources.ProtectionLevel = proto.Field(
         proto.ENUM,
         number=6,
         enum=resources.ProtectionLevel,
@@ -1890,11 +1927,11 @@ class GenerateRandomBytesResponse(proto.Message):
             support this type.
     """
 
-    data = proto.Field(
+    data: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    data_crc32c = proto.Field(
+    data_crc32c: wrappers_pb2.Int64Value = proto.Field(
         proto.MESSAGE,
         number=3,
         message=wrappers_pb2.Int64Value,
@@ -1930,17 +1967,17 @@ class Digest(proto.Message):
             This field is a member of `oneof`_ ``digest``.
     """
 
-    sha256 = proto.Field(
+    sha256: bytes = proto.Field(
         proto.BYTES,
         number=1,
         oneof="digest",
     )
-    sha384 = proto.Field(
+    sha384: bytes = proto.Field(
         proto.BYTES,
         number=2,
         oneof="digest",
     )
-    sha512 = proto.Field(
+    sha512: bytes = proto.Field(
         proto.BYTES,
         number=3,
         oneof="digest",
@@ -1966,11 +2003,11 @@ class LocationMetadata(proto.Message):
             be created in this location.
     """
 
-    hsm_available = proto.Field(
+    hsm_available: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    ekm_available = proto.Field(
+    ekm_available: bool = proto.Field(
         proto.BOOL,
         number=2,
     )

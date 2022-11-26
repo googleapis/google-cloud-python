@@ -13,67 +13,77 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.kms import gapic_version as package_version
 
-from .services.ekm_service import EkmServiceClient
-from .services.ekm_service import EkmServiceAsyncClient
-from .services.key_management_service import KeyManagementServiceClient
-from .services.key_management_service import KeyManagementServiceAsyncClient
+__version__ = package_version.__version__
 
-from .types.ekm_service import Certificate
-from .types.ekm_service import CreateEkmConnectionRequest
-from .types.ekm_service import EkmConnection
-from .types.ekm_service import GetEkmConnectionRequest
-from .types.ekm_service import ListEkmConnectionsRequest
-from .types.ekm_service import ListEkmConnectionsResponse
-from .types.ekm_service import UpdateEkmConnectionRequest
-from .types.resources import CryptoKey
-from .types.resources import CryptoKeyVersion
-from .types.resources import CryptoKeyVersionTemplate
-from .types.resources import ExternalProtectionLevelOptions
-from .types.resources import ImportJob
-from .types.resources import KeyOperationAttestation
-from .types.resources import KeyRing
-from .types.resources import PublicKey
-from .types.resources import ProtectionLevel
-from .types.service import AsymmetricDecryptRequest
-from .types.service import AsymmetricDecryptResponse
-from .types.service import AsymmetricSignRequest
-from .types.service import AsymmetricSignResponse
-from .types.service import CreateCryptoKeyRequest
-from .types.service import CreateCryptoKeyVersionRequest
-from .types.service import CreateImportJobRequest
-from .types.service import CreateKeyRingRequest
-from .types.service import DecryptRequest
-from .types.service import DecryptResponse
-from .types.service import DestroyCryptoKeyVersionRequest
-from .types.service import Digest
-from .types.service import EncryptRequest
-from .types.service import EncryptResponse
-from .types.service import GenerateRandomBytesRequest
-from .types.service import GenerateRandomBytesResponse
-from .types.service import GetCryptoKeyRequest
-from .types.service import GetCryptoKeyVersionRequest
-from .types.service import GetImportJobRequest
-from .types.service import GetKeyRingRequest
-from .types.service import GetPublicKeyRequest
-from .types.service import ImportCryptoKeyVersionRequest
-from .types.service import ListCryptoKeysRequest
-from .types.service import ListCryptoKeysResponse
-from .types.service import ListCryptoKeyVersionsRequest
-from .types.service import ListCryptoKeyVersionsResponse
-from .types.service import ListImportJobsRequest
-from .types.service import ListImportJobsResponse
-from .types.service import ListKeyRingsRequest
-from .types.service import ListKeyRingsResponse
-from .types.service import LocationMetadata
-from .types.service import MacSignRequest
-from .types.service import MacSignResponse
-from .types.service import MacVerifyRequest
-from .types.service import MacVerifyResponse
-from .types.service import RestoreCryptoKeyVersionRequest
-from .types.service import UpdateCryptoKeyPrimaryVersionRequest
-from .types.service import UpdateCryptoKeyRequest
-from .types.service import UpdateCryptoKeyVersionRequest
+
+from .services.ekm_service import EkmServiceAsyncClient, EkmServiceClient
+from .services.key_management_service import (
+    KeyManagementServiceAsyncClient,
+    KeyManagementServiceClient,
+)
+from .types.ekm_service import (
+    Certificate,
+    CreateEkmConnectionRequest,
+    EkmConnection,
+    GetEkmConnectionRequest,
+    ListEkmConnectionsRequest,
+    ListEkmConnectionsResponse,
+    UpdateEkmConnectionRequest,
+)
+from .types.resources import (
+    CryptoKey,
+    CryptoKeyVersion,
+    CryptoKeyVersionTemplate,
+    ExternalProtectionLevelOptions,
+    ImportJob,
+    KeyOperationAttestation,
+    KeyRing,
+    ProtectionLevel,
+    PublicKey,
+)
+from .types.service import (
+    AsymmetricDecryptRequest,
+    AsymmetricDecryptResponse,
+    AsymmetricSignRequest,
+    AsymmetricSignResponse,
+    CreateCryptoKeyRequest,
+    CreateCryptoKeyVersionRequest,
+    CreateImportJobRequest,
+    CreateKeyRingRequest,
+    DecryptRequest,
+    DecryptResponse,
+    DestroyCryptoKeyVersionRequest,
+    Digest,
+    EncryptRequest,
+    EncryptResponse,
+    GenerateRandomBytesRequest,
+    GenerateRandomBytesResponse,
+    GetCryptoKeyRequest,
+    GetCryptoKeyVersionRequest,
+    GetImportJobRequest,
+    GetKeyRingRequest,
+    GetPublicKeyRequest,
+    ImportCryptoKeyVersionRequest,
+    ListCryptoKeysRequest,
+    ListCryptoKeysResponse,
+    ListCryptoKeyVersionsRequest,
+    ListCryptoKeyVersionsResponse,
+    ListImportJobsRequest,
+    ListImportJobsResponse,
+    ListKeyRingsRequest,
+    ListKeyRingsResponse,
+    LocationMetadata,
+    MacSignRequest,
+    MacSignResponse,
+    MacVerifyRequest,
+    MacVerifyResponse,
+    RestoreCryptoKeyVersionRequest,
+    UpdateCryptoKeyPrimaryVersionRequest,
+    UpdateCryptoKeyRequest,
+    UpdateCryptoKeyVersionRequest,
+)
 
 __all__ = (
     "EkmServiceAsyncClient",

@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.kms.v1",
@@ -34,7 +34,8 @@ __protobuf__ = proto.module(
 
 
 class ListEkmConnectionsRequest(proto.Message):
-    r"""Request message for [KeyManagementService.ListEkmConnections][].
+    r"""Request message for
+    [EkmService.ListEkmConnections][google.cloud.kms.v1.EkmService.ListEkmConnections].
 
     Attributes:
         parent (str):
@@ -65,33 +66,34 @@ class ListEkmConnectionsRequest(proto.Message):
             results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
 
 
 class ListEkmConnectionsResponse(proto.Message):
-    r"""Response message for [KeyManagementService.ListEkmConnections][].
+    r"""Response message for
+    [EkmService.ListEkmConnections][google.cloud.kms.v1.EkmService.ListEkmConnections].
 
     Attributes:
-        ekm_connections (Sequence[google.cloud.kms_v1.types.EkmConnection]):
+        ekm_connections (MutableSequence[google.cloud.kms_v1.types.EkmConnection]):
             The list of
             [EkmConnections][google.cloud.kms.v1.EkmConnection].
         next_page_token (str):
@@ -108,23 +110,24 @@ class ListEkmConnectionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    ekm_connections = proto.RepeatedField(
+    ekm_connections: MutableSequence["EkmConnection"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="EkmConnection",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    total_size = proto.Field(
+    total_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
 
 
 class GetEkmConnectionRequest(proto.Message):
-    r"""Request message for [KeyManagementService.GetEkmConnection][].
+    r"""Request message for
+    [EkmService.GetEkmConnection][google.cloud.kms.v1.EkmService.GetEkmConnection].
 
     Attributes:
         name (str):
@@ -133,14 +136,15 @@ class GetEkmConnectionRequest(proto.Message):
             get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
 
 
 class CreateEkmConnectionRequest(proto.Message):
-    r"""Request message for [KeyManagementService.CreateEkmConnection][].
+    r"""Request message for
+    [EkmService.CreateEkmConnection][google.cloud.kms.v1.EkmService.CreateEkmConnection].
 
     Attributes:
         parent (str):
@@ -156,15 +160,15 @@ class CreateEkmConnectionRequest(proto.Message):
             initial field values.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    ekm_connection_id = proto.Field(
+    ekm_connection_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    ekm_connection = proto.Field(
+    ekm_connection: "EkmConnection" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="EkmConnection",
@@ -172,7 +176,8 @@ class CreateEkmConnectionRequest(proto.Message):
 
 
 class UpdateEkmConnectionRequest(proto.Message):
-    r"""Request message for [KeyManagementService.UpdateEkmConnection][].
+    r"""Request message for
+    [EkmService.UpdateEkmConnection][google.cloud.kms.v1.EkmService.UpdateEkmConnection].
 
     Attributes:
         ekm_connection (google.cloud.kms_v1.types.EkmConnection):
@@ -183,12 +188,12 @@ class UpdateEkmConnectionRequest(proto.Message):
             this request.
     """
 
-    ekm_connection = proto.Field(
+    ekm_connection: "EkmConnection" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="EkmConnection",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -214,7 +219,7 @@ class Certificate(proto.Message):
             Output only. The subject distinguished name in RFC 2253
             format. Only present if
             [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
-        subject_alternative_dns_names (Sequence[str]):
+        subject_alternative_dns_names (MutableSequence[str]):
             Output only. The subject Alternative DNS names. Only present
             if [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
         not_before_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -235,41 +240,41 @@ class Certificate(proto.Message):
             [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
     """
 
-    raw_der = proto.Field(
+    raw_der: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    parsed = proto.Field(
+    parsed: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    issuer = proto.Field(
+    issuer: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    subject = proto.Field(
+    subject: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    subject_alternative_dns_names = proto.RepeatedField(
+    subject_alternative_dns_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    not_before_time = proto.Field(
+    not_before_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    not_after_time = proto.Field(
+    not_after_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    serial_number = proto.Field(
+    serial_number: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    sha256_fingerprint = proto.Field(
+    sha256_fingerprint: str = proto.Field(
         proto.STRING,
         number=9,
     )
@@ -294,7 +299,7 @@ class EkmConnection(proto.Message):
             Output only. The time at which the
             [EkmConnection][google.cloud.kms.v1.EkmConnection] was
             created.
-        service_resolvers (Sequence[google.cloud.kms_v1.types.EkmConnection.ServiceResolver]):
+        service_resolvers (MutableSequence[google.cloud.kms_v1.types.EkmConnection.ServiceResolver]):
             A list of
             [ServiceResolvers][google.cloud.kms.v1.EkmConnection.ServiceResolver]
             where the EKM can be reached. There should be one
@@ -302,10 +307,8 @@ class EkmConnection(proto.Message):
             [ServiceResolver][google.cloud.kms.v1.EkmConnection.ServiceResolver]
             is supported.
         etag (str):
-            This checksum is computed by the server based
-            on the value of other fields, and may be sent on
-            update requests to ensure the client has an
-            up-to-date value before proceeding.
+            Optional. Etag of the currently stored
+            [EkmConnection][google.cloud.kms.v1.EkmConnection].
     """
 
     class ServiceResolver(proto.Message):
@@ -330,45 +333,46 @@ class EkmConnection(proto.Message):
             hostname (str):
                 Required. The hostname of the EKM replica
                 used at TLS and HTTP layers.
-            server_certificates (Sequence[google.cloud.kms_v1.types.Certificate]):
-                Required. A list of leaf server certificates
-                used to authenticate HTTPS connections to the
-                EKM replica.
+            server_certificates (MutableSequence[google.cloud.kms_v1.types.Certificate]):
+                Required. A list of leaf server certificates used to
+                authenticate HTTPS connections to the EKM replica.
+                Currently, a maximum of 10
+                [Certificate][google.cloud.kms.v1.Certificate] is supported.
         """
 
-        service_directory_service = proto.Field(
+        service_directory_service: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        endpoint_filter = proto.Field(
+        endpoint_filter: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        hostname = proto.Field(
+        hostname: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        server_certificates = proto.RepeatedField(
+        server_certificates: MutableSequence["Certificate"] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message="Certificate",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    service_resolvers = proto.RepeatedField(
+    service_resolvers: MutableSequence[ServiceResolver] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=ServiceResolver,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=5,
     )

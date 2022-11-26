@@ -22,33 +22,33 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-import grpc
-from grpc.experimental import aio
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-from proto.marshal.rules import wrappers
 
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import path_template
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.kms_v1.services.ekm_service import EkmServiceAsyncClient
-from google.cloud.kms_v1.services.ekm_service import EkmServiceClient
-from google.cloud.kms_v1.services.ekm_service import pagers
-from google.cloud.kms_v1.services.ekm_service import transports
-from google.cloud.kms_v1.types import ekm_service
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-import google.auth
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+from google.cloud.kms_v1.services.ekm_service import (
+    EkmServiceAsyncClient,
+    EkmServiceClient,
+    pagers,
+    transports,
+)
+from google.cloud.kms_v1.types import ekm_service
 
 
 def client_cert_source_callback():

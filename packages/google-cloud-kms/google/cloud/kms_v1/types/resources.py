@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.kms.v1",
@@ -63,11 +63,11 @@ class KeyRing(proto.Message):
             [KeyRing][google.cloud.kms.v1.KeyRing] was created.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
@@ -159,7 +159,7 @@ class CryptoKey(proto.Message):
             instances created by either
             [CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion]
             or auto-rotation are controlled by this template.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels with user-defined metadata. For more information, see
             `Labeling
             Keys <https://cloud.google.com/kms/docs/labeling-keys>`__.
@@ -207,56 +207,56 @@ class CryptoKey(proto.Message):
         ASYMMETRIC_DECRYPT = 6
         MAC = 9
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    primary = proto.Field(
+    primary: "CryptoKeyVersion" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="CryptoKeyVersion",
     )
-    purpose = proto.Field(
+    purpose: CryptoKeyPurpose = proto.Field(
         proto.ENUM,
         number=3,
         enum=CryptoKeyPurpose,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    next_rotation_time = proto.Field(
+    next_rotation_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    rotation_period = proto.Field(
+    rotation_period: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="rotation_schedule",
         message=duration_pb2.Duration,
     )
-    version_template = proto.Field(
+    version_template: "CryptoKeyVersionTemplate" = proto.Field(
         proto.MESSAGE,
         number=11,
         message="CryptoKeyVersionTemplate",
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=10,
     )
-    import_only = proto.Field(
+    import_only: bool = proto.Field(
         proto.BOOL,
         number=13,
     )
-    destroy_scheduled_duration = proto.Field(
+    destroy_scheduled_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=14,
         message=duration_pb2.Duration,
     )
-    crypto_key_backend = proto.Field(
+    crypto_key_backend: str = proto.Field(
         proto.STRING,
         number=15,
     )
@@ -292,12 +292,12 @@ class CryptoKeyVersionTemplate(proto.Message):
             [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
     """
 
-    protection_level = proto.Field(
+    protection_level: "ProtectionLevel" = proto.Field(
         proto.ENUM,
         number=1,
         enum="ProtectionLevel",
     )
-    algorithm = proto.Field(
+    algorithm: "CryptoKeyVersion.CryptoKeyVersionAlgorithm" = proto.Field(
         proto.ENUM,
         number=3,
         enum="CryptoKeyVersion.CryptoKeyVersionAlgorithm",
@@ -333,40 +333,40 @@ class KeyOperationAttestation(proto.Message):
         https://tools.ietf.org/html/rfc5246#section-7.4.2.
 
         Attributes:
-            cavium_certs (Sequence[str]):
+            cavium_certs (MutableSequence[str]):
                 Cavium certificate chain corresponding to the
                 attestation.
-            google_card_certs (Sequence[str]):
+            google_card_certs (MutableSequence[str]):
                 Google card certificate chain corresponding
                 to the attestation.
-            google_partition_certs (Sequence[str]):
+            google_partition_certs (MutableSequence[str]):
                 Google partition certificate chain
                 corresponding to the attestation.
         """
 
-        cavium_certs = proto.RepeatedField(
+        cavium_certs: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        google_card_certs = proto.RepeatedField(
+        google_card_certs: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
-        google_partition_certs = proto.RepeatedField(
+        google_partition_certs: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=3,
         )
 
-    format = proto.Field(
+    format: AttestationFormat = proto.Field(
         proto.ENUM,
         number=4,
         enum=AttestationFormat,
     )
-    content = proto.Field(
+    content: bytes = proto.Field(
         proto.BYTES,
         number=5,
     )
-    cert_chains = proto.Field(
+    cert_chains: CertificateChains = proto.Field(
         proto.MESSAGE,
         number=6,
         message=CertificateChains,
@@ -537,6 +537,10 @@ class CryptoKeyVersion(proto.Message):
         EC_SIGN_P384_SHA384 = 13
         EC_SIGN_SECP256K1_SHA256 = 31
         HMAC_SHA256 = 32
+        HMAC_SHA1 = 33
+        HMAC_SHA384 = 34
+        HMAC_SHA512 = 35
+        HMAC_SHA224 = 36
         EXTERNAL_SYMMETRIC_ENCRYPTION = 18
 
     class CryptoKeyVersionState(proto.Enum):
@@ -565,69 +569,69 @@ class CryptoKeyVersion(proto.Message):
         CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED = 0
         FULL = 1
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    state = proto.Field(
+    state: CryptoKeyVersionState = proto.Field(
         proto.ENUM,
         number=3,
         enum=CryptoKeyVersionState,
     )
-    protection_level = proto.Field(
+    protection_level: "ProtectionLevel" = proto.Field(
         proto.ENUM,
         number=7,
         enum="ProtectionLevel",
     )
-    algorithm = proto.Field(
+    algorithm: CryptoKeyVersionAlgorithm = proto.Field(
         proto.ENUM,
         number=10,
         enum=CryptoKeyVersionAlgorithm,
     )
-    attestation = proto.Field(
+    attestation: "KeyOperationAttestation" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="KeyOperationAttestation",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    generate_time = proto.Field(
+    generate_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=11,
         message=timestamp_pb2.Timestamp,
     )
-    destroy_time = proto.Field(
+    destroy_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    destroy_event_time = proto.Field(
+    destroy_event_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    import_job = proto.Field(
+    import_job: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    import_time = proto.Field(
+    import_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=15,
         message=timestamp_pb2.Timestamp,
     )
-    import_failure_reason = proto.Field(
+    import_failure_reason: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    external_protection_level_options = proto.Field(
+    external_protection_level_options: "ExternalProtectionLevelOptions" = proto.Field(
         proto.MESSAGE,
         number=17,
         message="ExternalProtectionLevelOptions",
     )
-    reimport_eligible = proto.Field(
+    reimport_eligible: bool = proto.Field(
         proto.BOOL,
         number=18,
     )
@@ -682,25 +686,25 @@ class PublicKey(proto.Message):
             public key.
     """
 
-    pem = proto.Field(
+    pem: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    algorithm = proto.Field(
+    algorithm: "CryptoKeyVersion.CryptoKeyVersionAlgorithm" = proto.Field(
         proto.ENUM,
         number=2,
         enum="CryptoKeyVersion.CryptoKeyVersionAlgorithm",
     )
-    pem_crc32c = proto.Field(
+    pem_crc32c: wrappers_pb2.Int64Value = proto.Field(
         proto.MESSAGE,
         number=3,
         message=wrappers_pb2.Int64Value,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    protection_level = proto.Field(
+    protection_level: "ProtectionLevel" = proto.Field(
         proto.ENUM,
         number=5,
         enum="ProtectionLevel",
@@ -804,6 +808,10 @@ class ImportJob(proto.Message):
         IMPORT_METHOD_UNSPECIFIED = 0
         RSA_OAEP_3072_SHA1_AES_256 = 1
         RSA_OAEP_4096_SHA1_AES_256 = 2
+        RSA_OAEP_3072_SHA256_AES_256 = 3
+        RSA_OAEP_4096_SHA256_AES_256 = 4
+        RSA_OAEP_3072_SHA256 = 5
+        RSA_OAEP_4096_SHA256 = 6
 
     class ImportJobState(proto.Enum):
         r"""The state of the [ImportJob][google.cloud.kms.v1.ImportJob],
@@ -829,56 +837,56 @@ class ImportJob(proto.Message):
                 (https://tools.ietf.org/html/rfc7468#section-13).
         """
 
-        pem = proto.Field(
+        pem: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    import_method = proto.Field(
+    import_method: ImportMethod = proto.Field(
         proto.ENUM,
         number=2,
         enum=ImportMethod,
     )
-    protection_level = proto.Field(
+    protection_level: "ProtectionLevel" = proto.Field(
         proto.ENUM,
         number=9,
         enum="ProtectionLevel",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    generate_time = proto.Field(
+    generate_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    expire_time = proto.Field(
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    expire_event_time = proto.Field(
+    expire_event_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: ImportJobState = proto.Field(
         proto.ENUM,
         number=6,
         enum=ImportJobState,
     )
-    public_key = proto.Field(
+    public_key: WrappingPublicKey = proto.Field(
         proto.MESSAGE,
         number=7,
         message=WrappingPublicKey,
     )
-    attestation = proto.Field(
+    attestation: "KeyOperationAttestation" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="KeyOperationAttestation",
@@ -907,11 +915,11 @@ class ExternalProtectionLevelOptions(proto.Message):
             using an [EkmConnection][google.cloud.kms.v1.EkmConnection].
     """
 
-    external_key_uri = proto.Field(
+    external_key_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    ekm_connection_key_path = proto.Field(
+    ekm_connection_key_path: str = proto.Field(
         proto.STRING,
         number=2,
     )

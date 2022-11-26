@@ -13,20 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from typing import Dict, Type
-
-from .base import EkmServiceTransport
-from .grpc import EkmServiceGrpcTransport
-from .grpc_asyncio import EkmServiceGrpcAsyncIOTransport
-
-# Compile a registry of transports.
-_transport_registry = OrderedDict()  # type: Dict[str, Type[EkmServiceTransport]]
-_transport_registry["grpc"] = EkmServiceGrpcTransport
-_transport_registry["grpc_asyncio"] = EkmServiceGrpcAsyncIOTransport
-
-__all__ = (
-    "EkmServiceTransport",
-    "EkmServiceGrpcTransport",
-    "EkmServiceGrpcAsyncIOTransport",
-)
+__version__ = "2.12.3"  # {x-release-please-version}

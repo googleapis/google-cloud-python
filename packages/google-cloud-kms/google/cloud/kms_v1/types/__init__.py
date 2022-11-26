@@ -30,8 +30,8 @@ from .resources import (
     ImportJob,
     KeyOperationAttestation,
     KeyRing,
-    PublicKey,
     ProtectionLevel,
+    PublicKey,
 )
 from .service import (
     AsymmetricDecryptRequest,

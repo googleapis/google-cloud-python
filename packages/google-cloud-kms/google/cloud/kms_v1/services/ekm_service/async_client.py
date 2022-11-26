@@ -16,30 +16,42 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.kms_v1.services.ekm_service import pagers
-from google.cloud.kms_v1.types import ekm_service
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import EkmServiceTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import EkmServiceGrpcAsyncIOTransport
+
+from google.cloud.kms_v1.services.ekm_service import pagers
+from google.cloud.kms_v1.types import ekm_service
+
 from .client import EkmServiceClient
+from .transports.base import DEFAULT_CLIENT_INFO, EkmServiceTransport
+from .transports.grpc_asyncio import EkmServiceGrpcAsyncIOTransport
 
 
 class EkmServiceAsyncClient:
@@ -164,9 +176,9 @@ class EkmServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, EkmServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the ekm service client.
@@ -210,11 +222,11 @@ class EkmServiceAsyncClient:
 
     async def list_ekm_connections(
         self,
-        request: Union[ekm_service.ListEkmConnectionsRequest, dict] = None,
+        request: Optional[Union[ekm_service.ListEkmConnectionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEkmConnectionsAsyncPager:
         r"""Lists [EkmConnections][google.cloud.kms.v1.EkmConnection].
@@ -247,9 +259,9 @@ class EkmServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.kms_v1.types.ListEkmConnectionsRequest, dict]):
+            request (Optional[Union[google.cloud.kms_v1.types.ListEkmConnectionsRequest, dict]]):
                 The request object. Request message for
-                [KeyManagementService.ListEkmConnections][].
+                [EkmService.ListEkmConnections][google.cloud.kms.v1.EkmService.ListEkmConnections].
             parent (:class:`str`):
                 Required. The resource name of the location associated
                 with the
@@ -268,7 +280,7 @@ class EkmServiceAsyncClient:
         Returns:
             google.cloud.kms_v1.services.ekm_service.pagers.ListEkmConnectionsAsyncPager:
                 Response message for
-                [KeyManagementService.ListEkmConnections][].
+                   [EkmService.ListEkmConnections][google.cloud.kms.v1.EkmService.ListEkmConnections].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -337,11 +349,11 @@ class EkmServiceAsyncClient:
 
     async def get_ekm_connection(
         self,
-        request: Union[ekm_service.GetEkmConnectionRequest, dict] = None,
+        request: Optional[Union[ekm_service.GetEkmConnectionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> ekm_service.EkmConnection:
         r"""Returns metadata for a given
@@ -374,9 +386,9 @@ class EkmServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.kms_v1.types.GetEkmConnectionRequest, dict]):
+            request (Optional[Union[google.cloud.kms_v1.types.GetEkmConnectionRequest, dict]]):
                 The request object. Request message for
-                [KeyManagementService.GetEkmConnection][].
+                [EkmService.GetEkmConnection][google.cloud.kms.v1.EkmService.GetEkmConnection].
             name (:class:`str`):
                 Required. The
                 [name][google.cloud.kms.v1.EkmConnection.name] of the
@@ -462,13 +474,13 @@ class EkmServiceAsyncClient:
 
     async def create_ekm_connection(
         self,
-        request: Union[ekm_service.CreateEkmConnectionRequest, dict] = None,
+        request: Optional[Union[ekm_service.CreateEkmConnectionRequest, dict]] = None,
         *,
-        parent: str = None,
-        ekm_connection_id: str = None,
-        ekm_connection: ekm_service.EkmConnection = None,
+        parent: Optional[str] = None,
+        ekm_connection_id: Optional[str] = None,
+        ekm_connection: Optional[ekm_service.EkmConnection] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> ekm_service.EkmConnection:
         r"""Creates a new [EkmConnection][google.cloud.kms.v1.EkmConnection]
@@ -502,9 +514,9 @@ class EkmServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.kms_v1.types.CreateEkmConnectionRequest, dict]):
+            request (Optional[Union[google.cloud.kms_v1.types.CreateEkmConnectionRequest, dict]]):
                 The request object. Request message for
-                [KeyManagementService.CreateEkmConnection][].
+                [EkmService.CreateEkmConnection][google.cloud.kms.v1.EkmService.CreateEkmConnection].
             parent (:class:`str`):
                 Required. The resource name of the location associated
                 with the
@@ -609,12 +621,12 @@ class EkmServiceAsyncClient:
 
     async def update_ekm_connection(
         self,
-        request: Union[ekm_service.UpdateEkmConnectionRequest, dict] = None,
+        request: Optional[Union[ekm_service.UpdateEkmConnectionRequest, dict]] = None,
         *,
-        ekm_connection: ekm_service.EkmConnection = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        ekm_connection: Optional[ekm_service.EkmConnection] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> ekm_service.EkmConnection:
         r"""Updates an [EkmConnection][google.cloud.kms.v1.EkmConnection]'s
@@ -646,9 +658,9 @@ class EkmServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.kms_v1.types.UpdateEkmConnectionRequest, dict]):
+            request (Optional[Union[google.cloud.kms_v1.types.UpdateEkmConnectionRequest, dict]]):
                 The request object. Request message for
-                [KeyManagementService.UpdateEkmConnection][].
+                [EkmService.UpdateEkmConnection][google.cloud.kms.v1.EkmService.UpdateEkmConnection].
             ekm_connection (:class:`google.cloud.kms_v1.types.EkmConnection`):
                 Required.
                 [EkmConnection][google.cloud.kms.v1.EkmConnection] with
@@ -744,10 +756,10 @@ class EkmServiceAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM access control policy on the specified function.
@@ -863,10 +875,10 @@ class EkmServiceAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.GetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM access control policy for a function.
@@ -984,10 +996,10 @@ class EkmServiceAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Optional[iam_policy_pb2.TestIamPermissionsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests the specified permissions against the IAM access control
