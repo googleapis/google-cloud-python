@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.videointelligence import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.videointelligence_v1.services.video_intelligence_service.async_client import (
     VideoIntelligenceServiceAsyncClient,

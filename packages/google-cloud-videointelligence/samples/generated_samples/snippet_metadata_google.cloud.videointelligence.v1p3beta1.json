@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-videointelligence"
+    "name": "google-cloud-videointelligence",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -191,7 +192,7 @@
           },
           {
             "name": "features",
-            "type": "Sequence[google.cloud.videointelligence_v1p3beta1.types.Feature]"
+            "type": "MutableSequence[google.cloud.videointelligence_v1p3beta1.types.Feature]"
           },
           {
             "name": "retry",
@@ -275,7 +276,7 @@
           },
           {
             "name": "features",
-            "type": "Sequence[google.cloud.videointelligence_v1p3beta1.types.Feature]"
+            "type": "MutableSequence[google.cloud.videointelligence_v1p3beta1.types.Feature]"
           },
           {
             "name": "retry",

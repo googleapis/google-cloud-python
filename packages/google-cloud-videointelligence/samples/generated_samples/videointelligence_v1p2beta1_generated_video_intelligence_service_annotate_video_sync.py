@@ -40,7 +40,7 @@ def sample_annotate_video():
 
     # Initialize request argument(s)
     request = videointelligence_v1p2beta1.AnnotateVideoRequest(
-        features="OBJECT_TRACKING",
+        features=['OBJECT_TRACKING'],
     )
 
     # Make the request

@@ -40,7 +40,7 @@ def sample_annotate_video():
 
     # Initialize request argument(s)
     request = videointelligence_v1beta2.AnnotateVideoRequest(
-        features="FACE_DETECTION",
+        features=['FACE_DETECTION'],
     )
 
     # Make the request
