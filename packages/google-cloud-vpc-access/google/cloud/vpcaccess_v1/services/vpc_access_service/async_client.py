@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -168,9 +178,9 @@ class VpcAccessServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, VpcAccessServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the vpc access service client.
@@ -214,13 +224,13 @@ class VpcAccessServiceAsyncClient:
 
     async def create_connector(
         self,
-        request: Union[vpc_access.CreateConnectorRequest, dict] = None,
+        request: Optional[Union[vpc_access.CreateConnectorRequest, dict]] = None,
         *,
-        parent: str = None,
-        connector_id: str = None,
-        connector: vpc_access.Connector = None,
+        parent: Optional[str] = None,
+        connector_id: Optional[str] = None,
+        connector: Optional[vpc_access.Connector] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a Serverless VPC Access connector, returns an
@@ -258,7 +268,7 @@ class VpcAccessServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vpcaccess_v1.types.CreateConnectorRequest, dict]):
+            request (Optional[Union[google.cloud.vpcaccess_v1.types.CreateConnectorRequest, dict]]):
                 The request object. Request for creating a Serverless
                 VPC Access connector.
             parent (:class:`str`):
@@ -352,11 +362,11 @@ class VpcAccessServiceAsyncClient:
 
     async def get_connector(
         self,
-        request: Union[vpc_access.GetConnectorRequest, dict] = None,
+        request: Optional[Union[vpc_access.GetConnectorRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vpc_access.Connector:
         r"""Gets a Serverless VPC Access connector. Returns NOT_FOUND if the
@@ -389,7 +399,7 @@ class VpcAccessServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vpcaccess_v1.types.GetConnectorRequest, dict]):
+            request (Optional[Union[google.cloud.vpcaccess_v1.types.GetConnectorRequest, dict]]):
                 The request object. Request for getting a Serverless VPC
                 Access connector.
             name (:class:`str`):
@@ -455,11 +465,11 @@ class VpcAccessServiceAsyncClient:
 
     async def list_connectors(
         self,
-        request: Union[vpc_access.ListConnectorsRequest, dict] = None,
+        request: Optional[Union[vpc_access.ListConnectorsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConnectorsAsyncPager:
         r"""Lists Serverless VPC Access connectors.
@@ -492,7 +502,7 @@ class VpcAccessServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.vpcaccess_v1.types.ListConnectorsRequest, dict]):
+            request (Optional[Union[google.cloud.vpcaccess_v1.types.ListConnectorsRequest, dict]]):
                 The request object. Request for listing Serverless VPC
                 Access connectors in a location.
             parent (:class:`str`):
@@ -570,11 +580,11 @@ class VpcAccessServiceAsyncClient:
 
     async def delete_connector(
         self,
-        request: Union[vpc_access.DeleteConnectorRequest, dict] = None,
+        request: Optional[Union[vpc_access.DeleteConnectorRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a Serverless VPC Access connector. Returns NOT_FOUND if
@@ -611,7 +621,7 @@ class VpcAccessServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vpcaccess_v1.types.DeleteConnectorRequest, dict]):
+            request (Optional[Union[google.cloud.vpcaccess_v1.types.DeleteConnectorRequest, dict]]):
                 The request object. Request for deleting a Serverless
                 VPC Access connector.
             name (:class:`str`):
@@ -695,10 +705,10 @@ class VpcAccessServiceAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -749,10 +759,10 @@ class VpcAccessServiceAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -803,10 +813,10 @@ class VpcAccessServiceAsyncClient:
 
     async def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -51,7 +53,7 @@ class Connector(proto.Message):
         max_throughput (int):
             Maximum throughput of the connector in Mbps.
             Default is 300, max is 1000.
-        connected_projects (Sequence[str]):
+        connected_projects (MutableSequence[str]):
             Output only. List of projects using the
             connector.
         subnet (google.cloud.vpcaccess_v1.types.Connector.Subnet):
@@ -94,58 +96,58 @@ class Connector(proto.Message):
                 was issued.
         """
 
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        project_id = proto.Field(
+        project_id: str = proto.Field(
             proto.STRING,
             number=2,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    network = proto.Field(
+    network: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    ip_cidr_range = proto.Field(
+    ip_cidr_range: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=4,
         enum=State,
     )
-    min_throughput = proto.Field(
+    min_throughput: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    max_throughput = proto.Field(
+    max_throughput: int = proto.Field(
         proto.INT32,
         number=6,
     )
-    connected_projects = proto.RepeatedField(
+    connected_projects: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
-    subnet = proto.Field(
+    subnet: Subnet = proto.Field(
         proto.MESSAGE,
         number=8,
         message=Subnet,
     )
-    machine_type = proto.Field(
+    machine_type: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    min_instances = proto.Field(
+    min_instances: int = proto.Field(
         proto.INT32,
         number=11,
     )
-    max_instances = proto.Field(
+    max_instances: int = proto.Field(
         proto.INT32,
         number=12,
     )
@@ -165,15 +167,15 @@ class CreateConnectorRequest(proto.Message):
             Required. Resource to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    connector_id = proto.Field(
+    connector_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    connector = proto.Field(
+    connector: "Connector" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Connector",
@@ -189,7 +191,7 @@ class GetConnectorRequest(proto.Message):
             connector to get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -210,15 +212,15 @@ class ListConnectorsRequest(proto.Message):
             Continuation token.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -228,7 +230,7 @@ class ListConnectorsResponse(proto.Message):
     r"""Response for listing Serverless VPC Access connectors.
 
     Attributes:
-        connectors (Sequence[google.cloud.vpcaccess_v1.types.Connector]):
+        connectors (MutableSequence[google.cloud.vpcaccess_v1.types.Connector]):
             List of Serverless VPC Access connectors.
         next_page_token (str):
             Continuation token.
@@ -238,12 +240,12 @@ class ListConnectorsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    connectors = proto.RepeatedField(
+    connectors: MutableSequence["Connector"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Connector",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -258,7 +260,7 @@ class DeleteConnectorRequest(proto.Message):
             connector to delete.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -284,21 +286,21 @@ class OperationMetadata(proto.Message):
             projects/my-project/locations/us-central1/connectors/v1.
     """
 
-    method = proto.Field(
+    method: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=5,
     )
