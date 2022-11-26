@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -64,7 +75,7 @@ class ManagedIdentitiesServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[ManagedIdentitiesServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -374,8 +385,8 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ManagedIdentitiesServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, ManagedIdentitiesServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the managed identities service client.
@@ -389,7 +400,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
             transport (Union[str, ManagedIdentitiesServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -419,6 +430,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -471,15 +483,15 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
 
     def create_microsoft_ad_domain(
         self,
-        request: Union[
-            managed_identities_service.CreateMicrosoftAdDomainRequest, dict
+        request: Optional[
+            Union[managed_identities_service.CreateMicrosoftAdDomainRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        domain_name: str = None,
-        domain: resource.Domain = None,
+        parent: Optional[str] = None,
+        domain_name: Optional[str] = None,
+        domain: Optional[resource.Domain] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a Microsoft AD domain.
@@ -633,13 +645,13 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
 
     def reset_admin_password(
         self,
-        request: Union[
-            managed_identities_service.ResetAdminPasswordRequest, dict
+        request: Optional[
+            Union[managed_identities_service.ResetAdminPasswordRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> managed_identities_service.ResetAdminPasswordResponse:
         r"""Resets a domain's administrator password.
@@ -739,11 +751,13 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
 
     def list_domains(
         self,
-        request: Union[managed_identities_service.ListDomainsRequest, dict] = None,
+        request: Optional[
+            Union[managed_identities_service.ListDomainsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDomainsPager:
         r"""Lists domains in a project.
@@ -854,11 +868,13 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
 
     def get_domain(
         self,
-        request: Union[managed_identities_service.GetDomainRequest, dict] = None,
+        request: Optional[
+            Union[managed_identities_service.GetDomainRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource.Domain:
         r"""Gets information about a domain.
@@ -956,12 +972,14 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
 
     def update_domain(
         self,
-        request: Union[managed_identities_service.UpdateDomainRequest, dict] = None,
+        request: Optional[
+            Union[managed_identities_service.UpdateDomainRequest, dict]
+        ] = None,
         *,
-        domain: resource.Domain = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        domain: Optional[resource.Domain] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the metadata and configuration of a domain.
@@ -1096,11 +1114,13 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
 
     def delete_domain(
         self,
-        request: Union[managed_identities_service.DeleteDomainRequest, dict] = None,
+        request: Optional[
+            Union[managed_identities_service.DeleteDomainRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a domain.
@@ -1220,12 +1240,14 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
 
     def attach_trust(
         self,
-        request: Union[managed_identities_service.AttachTrustRequest, dict] = None,
+        request: Optional[
+            Union[managed_identities_service.AttachTrustRequest, dict]
+        ] = None,
         *,
-        name: str = None,
-        trust: resource.Trust = None,
+        name: Optional[str] = None,
+        trust: Optional[resource.Trust] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Adds an AD trust to a domain.
@@ -1354,13 +1376,15 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
 
     def reconfigure_trust(
         self,
-        request: Union[managed_identities_service.ReconfigureTrustRequest, dict] = None,
+        request: Optional[
+            Union[managed_identities_service.ReconfigureTrustRequest, dict]
+        ] = None,
         *,
-        name: str = None,
-        target_domain_name: str = None,
-        target_dns_ip_addresses: Sequence[str] = None,
+        name: Optional[str] = None,
+        target_domain_name: Optional[str] = None,
+        target_dns_ip_addresses: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the DNS conditional forwarder.
@@ -1417,7 +1441,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
                 This corresponds to the ``target_domain_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            target_dns_ip_addresses (Sequence[str]):
+            target_dns_ip_addresses (MutableSequence[str]):
                 Required. The target DNS server IP
                 addresses to resolve the remote domain
                 involved in the trust.
@@ -1496,12 +1520,14 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
 
     def detach_trust(
         self,
-        request: Union[managed_identities_service.DetachTrustRequest, dict] = None,
+        request: Optional[
+            Union[managed_identities_service.DetachTrustRequest, dict]
+        ] = None,
         *,
-        name: str = None,
-        trust: resource.Trust = None,
+        name: Optional[str] = None,
+        trust: Optional[resource.Trust] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Removes an AD trust.
@@ -1632,12 +1658,14 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
 
     def validate_trust(
         self,
-        request: Union[managed_identities_service.ValidateTrustRequest, dict] = None,
+        request: Optional[
+            Union[managed_identities_service.ValidateTrustRequest, dict]
+        ] = None,
         *,
-        name: str = None,
-        trust: resource.Trust = None,
+        name: Optional[str] = None,
+        trust: Optional[resource.Trust] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Validates a trust state, that the target domain is

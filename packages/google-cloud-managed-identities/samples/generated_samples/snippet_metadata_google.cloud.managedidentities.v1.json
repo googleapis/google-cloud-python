@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-managed-identities"
+    "name": "google-cloud-managed-identities",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -1040,7 +1041,7 @@
           },
           {
             "name": "target_dns_ip_addresses",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -1128,7 +1129,7 @@
           },
           {
             "name": "target_dns_ip_addresses",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",

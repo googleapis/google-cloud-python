@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -66,29 +68,29 @@ class OpMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    requested_cancellation = proto.Field(
+    requested_cancellation: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -121,15 +123,15 @@ class CreateMicrosoftAdDomainRequest(proto.Message):
             Required. A Managed Identity domain resource.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    domain_name = proto.Field(
+    domain_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    domain = proto.Field(
+    domain: resource.Domain = proto.Field(
         proto.MESSAGE,
         number=3,
         message=resource.Domain,
@@ -146,7 +148,7 @@ class ResetAdminPasswordRequest(proto.Message):
             ``projects/{project_id}/locations/global/domains/{domain_name}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -163,7 +165,7 @@ class ResetAdminPasswordResponse(proto.Message):
             more information.
     """
 
-    password = proto.Field(
+    password: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -197,23 +199,23 @@ class ListDomainsRequest(proto.Message):
             for more information.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -224,14 +226,14 @@ class ListDomainsResponse(proto.Message):
     [ListDomains][google.cloud.managedidentities.v1.ListDomains]
 
     Attributes:
-        domains (Sequence[google.cloud.managedidentities_v1.types.Domain]):
+        domains (MutableSequence[google.cloud.managedidentities_v1.types.Domain]):
             A list of Managed Identities Service domains
             in the project.
         next_page_token (str):
             A token to retrieve the next page of results,
             or empty if there are no more results in the
             list.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             A list of locations that could not be
             reached.
     """
@@ -240,16 +242,16 @@ class ListDomainsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    domains = proto.RepeatedField(
+    domains: MutableSequence[resource.Domain] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resource.Domain,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -265,7 +267,7 @@ class GetDomainRequest(proto.Message):
             ``projects/{project_id}/locations/global/domains/{domain_name}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -290,12 +292,12 @@ class UpdateDomainRequest(proto.Message):
             fields specified in update_mask are updated.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    domain = proto.Field(
+    domain: resource.Domain = proto.Field(
         proto.MESSAGE,
         number=2,
         message=resource.Domain,
@@ -312,7 +314,7 @@ class DeleteDomainRequest(proto.Message):
             ``projects/{project_id}/locations/global/domains/{domain_name}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -331,11 +333,11 @@ class AttachTrustRequest(proto.Message):
             Required. The domain trust resource.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    trust = proto.Field(
+    trust: resource.Trust = proto.Field(
         proto.MESSAGE,
         number=2,
         message=resource.Trust,
@@ -354,21 +356,21 @@ class ReconfigureTrustRequest(proto.Message):
         target_domain_name (str):
             Required. The fully-qualified target domain
             name which will be in trust with current domain.
-        target_dns_ip_addresses (Sequence[str]):
+        target_dns_ip_addresses (MutableSequence[str]):
             Required. The target DNS server IP addresses
             to resolve the remote domain involved in the
             trust.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    target_domain_name = proto.Field(
+    target_domain_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    target_dns_ip_addresses = proto.RepeatedField(
+    target_dns_ip_addresses: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -388,11 +390,11 @@ class DetachTrustRequest(proto.Message):
             removed.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    trust = proto.Field(
+    trust: resource.Trust = proto.Field(
         proto.MESSAGE,
         number=2,
         message=resource.Trust,
@@ -413,11 +415,11 @@ class ValidateTrustRequest(proto.Message):
             state for.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    trust = proto.Field(
+    trust: resource.Trust = proto.Field(
         proto.MESSAGE,
         number=2,
         message=resource.Trust,

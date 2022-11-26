@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -32,10 +34,10 @@ class Domain(proto.Message):
         name (str):
             Required. The unique name of the domain using the form:
             ``projects/{project_id}/locations/global/domains/{domain_name}``.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. Resource labels that can contain
             user-provided metadata.
-        authorized_networks (Sequence[str]):
+        authorized_networks (MutableSequence[str]):
             Optional. The full names of the Google Compute Engine
             `networks </compute/docs/networks-and-firewalls#networks>`__
             the domain instance is connected to. Networks can be added
@@ -47,7 +49,7 @@ class Domain(proto.Message):
             reserved for this domain. Reserved networks must be /24 or
             larger. Ranges must be unique and non-overlapping with
             existing subnets in [Domain].[authorized_networks].
-        locations (Sequence[str]):
+        locations (MutableSequence[str]):
             Required. Locations where domain needs to be provisioned.
             [regions][compute/docs/regions-zones/] e.g. us-west1 or
             us-east4 Service supports up to 4 locations at once. Each
@@ -73,7 +75,7 @@ class Domain(proto.Message):
         status_message (str):
             Output only. Additional information about the
             current status of this domain, if available.
-        trusts (Sequence[google.cloud.managedidentities_v1.types.Trust]):
+        trusts (MutableSequence[google.cloud.managedidentities_v1.types.Trust]):
             Output only. The current trusts associated
             with the domain.
     """
@@ -89,55 +91,55 @@ class Domain(proto.Message):
         PERFORMING_MAINTENANCE = 6
         UNAVAILABLE = 7
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
     )
-    authorized_networks = proto.RepeatedField(
+    authorized_networks: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    reserved_ip_range = proto.Field(
+    reserved_ip_range: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    locations = proto.RepeatedField(
+    locations: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    admin = proto.Field(
+    admin: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    fqdn = proto.Field(
+    fqdn: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=11,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=12,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=13,
         enum=State,
     )
-    status_message = proto.Field(
+    status_message: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    trusts = proto.RepeatedField(
+    trusts: MutableSequence["Trust"] = proto.RepeatedField(
         proto.MESSAGE,
         number=15,
         message="Trust",
@@ -166,7 +168,7 @@ class Trust(proto.Message):
             which decides whether the trusted side has
             forest/domain wide access or selective access to
             an approved set of resources.
-        target_dns_ip_addresses (Sequence[str]):
+        target_dns_ip_addresses (MutableSequence[str]):
             Required. The target DNS server IP addresses
             which can resolve the remote domain involved in
             the trust.
@@ -214,52 +216,52 @@ class Trust(proto.Message):
         OUTBOUND = 2
         BIDIRECTIONAL = 3
 
-    target_domain_name = proto.Field(
+    target_domain_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    trust_type = proto.Field(
+    trust_type: TrustType = proto.Field(
         proto.ENUM,
         number=2,
         enum=TrustType,
     )
-    trust_direction = proto.Field(
+    trust_direction: TrustDirection = proto.Field(
         proto.ENUM,
         number=3,
         enum=TrustDirection,
     )
-    selective_authentication = proto.Field(
+    selective_authentication: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    target_dns_ip_addresses = proto.RepeatedField(
+    target_dns_ip_addresses: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    trust_handshake_secret = proto.Field(
+    trust_handshake_secret: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=9,
         enum=State,
     )
-    state_description = proto.Field(
+    state_description: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    last_trust_heartbeat_time = proto.Field(
+    last_trust_heartbeat_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=12,
         message=timestamp_pb2.Timestamp,
