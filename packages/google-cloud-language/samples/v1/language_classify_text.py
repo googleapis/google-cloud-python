@@ -25,7 +25,7 @@
 #   usage: python3 samples/v1/language_classify_text.py [--text_content "That actor on TV makes movies in Hollywood and also stars in a variety of popular new TV shows."]
 
 # [START language_classify_text]
-from google.cloud import language_v1
+from google.cloud import language_v1  # Requires `google-cloud-language>=2.6.0`
 
 def sample_classify_text(text_content):
     """
