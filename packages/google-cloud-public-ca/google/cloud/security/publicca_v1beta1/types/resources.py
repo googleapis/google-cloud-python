@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -44,15 +46,15 @@ class ExternalAccountKey(proto.Message):
             ExternalAccountKey is created
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    key_id = proto.Field(
+    key_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    b64_mac_key = proto.Field(
+    b64_mac_key: bytes = proto.Field(
         proto.BYTES,
         number=3,
     )

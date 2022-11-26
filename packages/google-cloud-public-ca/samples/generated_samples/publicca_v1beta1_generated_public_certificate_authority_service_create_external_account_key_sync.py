@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-public-ca
 
 
-# [START publicca_v1beta1_generated_PublicCertificateAuthorityService_CreateExternalAccountKey_sync_fa3353b1]
+# [START publicca_v1beta1_generated_PublicCertificateAuthorityService_CreateExternalAccountKey_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -49,4 +49,4 @@ def sample_create_external_account_key():
     # Handle the response
     print(response)
 
-# [END publicca_v1beta1_generated_PublicCertificateAuthorityService_CreateExternalAccountKey_sync_fa3353b1]
+# [END publicca_v1beta1_generated_PublicCertificateAuthorityService_CreateExternalAccountKey_sync]

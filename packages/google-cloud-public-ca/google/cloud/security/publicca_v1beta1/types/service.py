@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.security.publicca_v1beta1.types import resources
@@ -45,11 +47,11 @@ class CreateExternalAccountKeyRequest(proto.Message):
             set it to a default/empty value.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    external_account_key = proto.Field(
+    external_account_key: resources.ExternalAccountKey = proto.Field(
         proto.MESSAGE,
         number=2,
         message=resources.ExternalAccountKey,

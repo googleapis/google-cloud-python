@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -179,11 +189,11 @@ class PublicCertificateAuthorityServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[
             str, PublicCertificateAuthorityServiceTransport
         ] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the public certificate authority service client.
@@ -227,12 +237,12 @@ class PublicCertificateAuthorityServiceAsyncClient:
 
     async def create_external_account_key(
         self,
-        request: Union[service.CreateExternalAccountKeyRequest, dict] = None,
+        request: Optional[Union[service.CreateExternalAccountKeyRequest, dict]] = None,
         *,
-        parent: str = None,
-        external_account_key: resources.ExternalAccountKey = None,
+        parent: Optional[str] = None,
+        external_account_key: Optional[resources.ExternalAccountKey] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.ExternalAccountKey:
         r"""Creates a new
@@ -266,7 +276,7 @@ class PublicCertificateAuthorityServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.security.publicca_v1beta1.types.CreateExternalAccountKeyRequest, dict]):
+            request (Optional[Union[google.cloud.security.publicca_v1beta1.types.CreateExternalAccountKeyRequest, dict]]):
                 The request object. Creates a new
                 [ExternalAccountKey][google.cloud.security.publicca.v1beta1.ExternalAccountKey]
                 in a given project.
