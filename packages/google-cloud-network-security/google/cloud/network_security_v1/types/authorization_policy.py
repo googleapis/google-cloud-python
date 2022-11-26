@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -51,14 +53,14 @@ class AuthorizationPolicy(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the resource
             was updated.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. Set of label tags associated with
             the AuthorizationPolicy resource.
         action (google.cloud.network_security_v1.types.AuthorizationPolicy.Action):
             Required. The action to take when a rule
             match is found. Possible values are "ALLOW" or
             "DENY".
-        rules (Sequence[google.cloud.network_security_v1.types.AuthorizationPolicy.Rule]):
+        rules (MutableSequence[google.cloud.network_security_v1.types.AuthorizationPolicy.Rule]):
             Optional. List of rules to match. Note that at least one of
             the rules must match in order for the action specified in
             the 'action' field to be taken. A rule is a match if there
@@ -77,13 +79,13 @@ class AuthorizationPolicy(proto.Message):
         r"""Specification of rules.
 
         Attributes:
-            sources (Sequence[google.cloud.network_security_v1.types.AuthorizationPolicy.Rule.Source]):
+            sources (MutableSequence[google.cloud.network_security_v1.types.AuthorizationPolicy.Rule.Source]):
                 Optional. List of attributes for the traffic source. All of
                 the sources must match. A source is a match if both
                 principals and ip_blocks match. If not set, the action
                 specified in the 'action' field will be applied without any
                 rule checks for the source.
-            destinations (Sequence[google.cloud.network_security_v1.types.AuthorizationPolicy.Rule.Destination]):
+            destinations (MutableSequence[google.cloud.network_security_v1.types.AuthorizationPolicy.Rule.Destination]):
                 Optional. List of attributes for the traffic
                 destination. All of the destinations must match.
                 A destination is a match if a request matches
@@ -97,7 +99,7 @@ class AuthorizationPolicy(proto.Message):
             r"""Specification of traffic source attributes.
 
             Attributes:
-                principals (Sequence[str]):
+                principals (MutableSequence[str]):
                     Optional. List of peer identities to match for
                     authorization. At least one principal should match. Each
                     peer can be an exact match, or a prefix match (example,
@@ -106,7 +108,7 @@ class AuthorizationPolicy(proto.Message):
                     based on the principal name without certificate validation
                     (configured by ServerTlsPolicy resource) is considered
                     insecure.
-                ip_blocks (Sequence[str]):
+                ip_blocks (MutableSequence[str]):
                     Optional. List of CIDR ranges to match based
                     on source IP address. At least one IP block
                     should match. Single IP (e.g., "1.2.3.4") and
@@ -116,11 +118,11 @@ class AuthorizationPolicy(proto.Message):
                     or proxies should be considered untrusted.
             """
 
-            principals = proto.RepeatedField(
+            principals: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=1,
             )
-            ip_blocks = proto.RepeatedField(
+            ip_blocks: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=2,
             )
@@ -129,16 +131,16 @@ class AuthorizationPolicy(proto.Message):
             r"""Specification of traffic destination attributes.
 
             Attributes:
-                hosts (Sequence[str]):
+                hosts (MutableSequence[str]):
                     Required. List of host names to match. Matched against the
                     ":authority" header in http requests. At least one host
                     should match. Each host can be an exact match, or a prefix
                     match (example "mydomain.*") or a suffix match (example
                     "*.myorg.com") or a presence (any) match "*".
-                ports (Sequence[int]):
+                ports (MutableSequence[int]):
                     Required. List of destination ports to match.
                     At least one port should match.
-                methods (Sequence[str]):
+                methods (MutableSequence[str]):
                     Optional. A list of HTTP methods to match. At
                     least one method should match. Should not be set
                     for gRPC services.
@@ -178,74 +180,78 @@ class AuthorizationPolicy(proto.Message):
                         method, use the headerName ":method".
                 """
 
-                regex_match = proto.Field(
+                regex_match: str = proto.Field(
                     proto.STRING,
                     number=2,
                     oneof="type",
                 )
-                header_name = proto.Field(
+                header_name: str = proto.Field(
                     proto.STRING,
                     number=1,
                 )
 
-            hosts = proto.RepeatedField(
+            hosts: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=1,
             )
-            ports = proto.RepeatedField(
+            ports: MutableSequence[int] = proto.RepeatedField(
                 proto.UINT32,
                 number=2,
             )
-            methods = proto.RepeatedField(
+            methods: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=4,
             )
-            http_header_match = proto.Field(
+            http_header_match: "AuthorizationPolicy.Rule.Destination.HttpHeaderMatch" = proto.Field(
                 proto.MESSAGE,
                 number=5,
                 message="AuthorizationPolicy.Rule.Destination.HttpHeaderMatch",
             )
 
-        sources = proto.RepeatedField(
+        sources: MutableSequence[
+            "AuthorizationPolicy.Rule.Source"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="AuthorizationPolicy.Rule.Source",
         )
-        destinations = proto.RepeatedField(
+        destinations: MutableSequence[
+            "AuthorizationPolicy.Rule.Destination"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="AuthorizationPolicy.Rule.Destination",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
     )
-    action = proto.Field(
+    action: Action = proto.Field(
         proto.ENUM,
         number=6,
         enum=Action,
     )
-    rules = proto.RepeatedField(
+    rules: MutableSequence[Rule] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=Rule,
@@ -271,15 +277,15 @@ class ListAuthorizationPoliciesRequest(proto.Message):
             data.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -289,7 +295,7 @@ class ListAuthorizationPoliciesResponse(proto.Message):
     r"""Response returned by the ListAuthorizationPolicies method.
 
     Attributes:
-        authorization_policies (Sequence[google.cloud.network_security_v1.types.AuthorizationPolicy]):
+        authorization_policies (MutableSequence[google.cloud.network_security_v1.types.AuthorizationPolicy]):
             List of AuthorizationPolicies resources.
         next_page_token (str):
             If there might be more results than those appearing in this
@@ -302,12 +308,14 @@ class ListAuthorizationPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    authorization_policies = proto.RepeatedField(
+    authorization_policies: MutableSequence[
+        "AuthorizationPolicy"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AuthorizationPolicy",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -323,7 +331,7 @@ class GetAuthorizationPolicyRequest(proto.Message):
             ``projects/{project}/locations/{location}/authorizationPolicies/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -347,15 +355,15 @@ class CreateAuthorizationPolicyRequest(proto.Message):
             created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    authorization_policy_id = proto.Field(
+    authorization_policy_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    authorization_policy = proto.Field(
+    authorization_policy: "AuthorizationPolicy" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="AuthorizationPolicy",
@@ -378,12 +386,12 @@ class UpdateAuthorizationPolicyRequest(proto.Message):
             resource.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    authorization_policy = proto.Field(
+    authorization_policy: "AuthorizationPolicy" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="AuthorizationPolicy",
@@ -400,7 +408,7 @@ class DeleteAuthorizationPolicyRequest(proto.Message):
             ``projects/{project}/locations/{location}/authorizationPolicies/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

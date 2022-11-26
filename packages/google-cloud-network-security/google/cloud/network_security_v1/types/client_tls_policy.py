@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -53,7 +55,7 @@ class ClientTlsPolicy(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the resource
             was updated.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. Set of label tags associated with
             the resource.
         sni (str):
@@ -65,46 +67,46 @@ class ClientTlsPolicy(proto.Message):
             client identity (public and private keys) for
             peer to peer authentication. The presence of
             this dictates mTLS.
-        server_validation_ca (Sequence[google.cloud.network_security_v1.types.ValidationCA]):
+        server_validation_ca (MutableSequence[google.cloud.network_security_v1.types.ValidationCA]):
             Optional. Defines the mechanism to obtain the
             Certificate Authority certificate to validate
             the server certificate. If empty, client does
             not validate the server certificate.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
     )
-    sni = proto.Field(
+    sni: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    client_certificate = proto.Field(
+    client_certificate: tls.CertificateProvider = proto.Field(
         proto.MESSAGE,
         number=7,
         message=tls.CertificateProvider,
     )
-    server_validation_ca = proto.RepeatedField(
+    server_validation_ca: MutableSequence[tls.ValidationCA] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message=tls.ValidationCA,
@@ -129,15 +131,15 @@ class ListClientTlsPoliciesRequest(proto.Message):
             that the system should return the next page of data.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -147,7 +149,7 @@ class ListClientTlsPoliciesResponse(proto.Message):
     r"""Response returned by the ListClientTlsPolicies method.
 
     Attributes:
-        client_tls_policies (Sequence[google.cloud.network_security_v1.types.ClientTlsPolicy]):
+        client_tls_policies (MutableSequence[google.cloud.network_security_v1.types.ClientTlsPolicy]):
             List of ClientTlsPolicy resources.
         next_page_token (str):
             If there might be more results than those appearing in this
@@ -160,12 +162,12 @@ class ListClientTlsPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    client_tls_policies = proto.RepeatedField(
+    client_tls_policies: MutableSequence["ClientTlsPolicy"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ClientTlsPolicy",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -181,7 +183,7 @@ class GetClientTlsPolicyRequest(proto.Message):
             ``projects/*/locations/{location}/clientTlsPolicies/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -205,15 +207,15 @@ class CreateClientTlsPolicyRequest(proto.Message):
             created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    client_tls_policy_id = proto.Field(
+    client_tls_policy_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    client_tls_policy = proto.Field(
+    client_tls_policy: "ClientTlsPolicy" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="ClientTlsPolicy",
@@ -235,12 +237,12 @@ class UpdateClientTlsPolicyRequest(proto.Message):
             Required. Updated ClientTlsPolicy resource.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    client_tls_policy = proto.Field(
+    client_tls_policy: "ClientTlsPolicy" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ClientTlsPolicy",
@@ -257,7 +259,7 @@ class DeleteClientTlsPolicyRequest(proto.Message):
             ``projects/*/locations/{location}/clientTlsPolicies/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

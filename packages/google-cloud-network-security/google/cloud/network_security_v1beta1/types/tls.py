@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -36,7 +38,7 @@ class GrpcEndpoint(proto.Message):
             start with "unix:".
     """
 
-    target_uri = proto.Field(
+    target_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -69,13 +71,13 @@ class ValidationCA(proto.Message):
             This field is a member of `oneof`_ ``type``.
     """
 
-    grpc_endpoint = proto.Field(
+    grpc_endpoint: "GrpcEndpoint" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="type",
         message="GrpcEndpoint",
     )
-    certificate_provider_instance = proto.Field(
+    certificate_provider_instance: "CertificateProviderInstance" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="type",
@@ -99,7 +101,7 @@ class CertificateProviderInstance(proto.Message):
             Service certificate provider instance.
     """
 
-    plugin_instance = proto.Field(
+    plugin_instance: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -132,13 +134,13 @@ class CertificateProvider(proto.Message):
             This field is a member of `oneof`_ ``type``.
     """
 
-    grpc_endpoint = proto.Field(
+    grpc_endpoint: "GrpcEndpoint" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="type",
         message="GrpcEndpoint",
     )
-    certificate_provider_instance = proto.Field(
+    certificate_provider_instance: "CertificateProviderInstance" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="type",

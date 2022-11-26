@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -79,7 +90,7 @@ class NetworkSecurityClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[NetworkSecurityTransport]:
         """Returns an appropriate transport class.
 
@@ -401,8 +412,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, NetworkSecurityTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, NetworkSecurityTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the network security client.
@@ -419,7 +430,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -449,6 +460,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -501,13 +513,13 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
     def list_authorization_policies(
         self,
-        request: Union[
-            authorization_policy.ListAuthorizationPoliciesRequest, dict
+        request: Optional[
+            Union[authorization_policy.ListAuthorizationPoliciesRequest, dict]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAuthorizationPoliciesPager:
         r"""Lists AuthorizationPolicies in a given project and
@@ -624,11 +636,13 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
     def get_authorization_policy(
         self,
-        request: Union[authorization_policy.GetAuthorizationPolicyRequest, dict] = None,
+        request: Optional[
+            Union[authorization_policy.GetAuthorizationPolicyRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> authorization_policy.AuthorizationPolicy:
         r"""Gets details of a single AuthorizationPolicy.
@@ -732,15 +746,17 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
     def create_authorization_policy(
         self,
-        request: Union[
-            gcn_authorization_policy.CreateAuthorizationPolicyRequest, dict
+        request: Optional[
+            Union[gcn_authorization_policy.CreateAuthorizationPolicyRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        authorization_policy: gcn_authorization_policy.AuthorizationPolicy = None,
-        authorization_policy_id: str = None,
+        parent: Optional[str] = None,
+        authorization_policy: Optional[
+            gcn_authorization_policy.AuthorizationPolicy
+        ] = None,
+        authorization_policy_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new AuthorizationPolicy in a given project
@@ -890,14 +906,16 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
     def update_authorization_policy(
         self,
-        request: Union[
-            gcn_authorization_policy.UpdateAuthorizationPolicyRequest, dict
+        request: Optional[
+            Union[gcn_authorization_policy.UpdateAuthorizationPolicyRequest, dict]
         ] = None,
         *,
-        authorization_policy: gcn_authorization_policy.AuthorizationPolicy = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        authorization_policy: Optional[
+            gcn_authorization_policy.AuthorizationPolicy
+        ] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single
@@ -1037,13 +1055,13 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
     def delete_authorization_policy(
         self,
-        request: Union[
-            authorization_policy.DeleteAuthorizationPolicyRequest, dict
+        request: Optional[
+            Union[authorization_policy.DeleteAuthorizationPolicyRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single AuthorizationPolicy.
@@ -1168,11 +1186,13 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
     def list_server_tls_policies(
         self,
-        request: Union[server_tls_policy.ListServerTlsPoliciesRequest, dict] = None,
+        request: Optional[
+            Union[server_tls_policy.ListServerTlsPoliciesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServerTlsPoliciesPager:
         r"""Lists ServerTlsPolicies in a given project and
@@ -1285,11 +1305,13 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
     def get_server_tls_policy(
         self,
-        request: Union[server_tls_policy.GetServerTlsPolicyRequest, dict] = None,
+        request: Optional[
+            Union[server_tls_policy.GetServerTlsPolicyRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> server_tls_policy.ServerTlsPolicy:
         r"""Gets details of a single ServerTlsPolicy.
@@ -1393,13 +1415,15 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
     def create_server_tls_policy(
         self,
-        request: Union[gcn_server_tls_policy.CreateServerTlsPolicyRequest, dict] = None,
+        request: Optional[
+            Union[gcn_server_tls_policy.CreateServerTlsPolicyRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        server_tls_policy: gcn_server_tls_policy.ServerTlsPolicy = None,
-        server_tls_policy_id: str = None,
+        parent: Optional[str] = None,
+        server_tls_policy: Optional[gcn_server_tls_policy.ServerTlsPolicy] = None,
+        server_tls_policy_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new ServerTlsPolicy in a given project and
@@ -1542,12 +1566,14 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
     def update_server_tls_policy(
         self,
-        request: Union[gcn_server_tls_policy.UpdateServerTlsPolicyRequest, dict] = None,
+        request: Optional[
+            Union[gcn_server_tls_policy.UpdateServerTlsPolicyRequest, dict]
+        ] = None,
         *,
-        server_tls_policy: gcn_server_tls_policy.ServerTlsPolicy = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        server_tls_policy: Optional[gcn_server_tls_policy.ServerTlsPolicy] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single ServerTlsPolicy.
@@ -1681,11 +1707,13 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
     def delete_server_tls_policy(
         self,
-        request: Union[server_tls_policy.DeleteServerTlsPolicyRequest, dict] = None,
+        request: Optional[
+            Union[server_tls_policy.DeleteServerTlsPolicyRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single ServerTlsPolicy.
@@ -1806,11 +1834,13 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
     def list_client_tls_policies(
         self,
-        request: Union[client_tls_policy.ListClientTlsPoliciesRequest, dict] = None,
+        request: Optional[
+            Union[client_tls_policy.ListClientTlsPoliciesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListClientTlsPoliciesPager:
         r"""Lists ClientTlsPolicies in a given project and
@@ -1923,11 +1953,13 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
     def get_client_tls_policy(
         self,
-        request: Union[client_tls_policy.GetClientTlsPolicyRequest, dict] = None,
+        request: Optional[
+            Union[client_tls_policy.GetClientTlsPolicyRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> client_tls_policy.ClientTlsPolicy:
         r"""Gets details of a single ClientTlsPolicy.
@@ -2030,13 +2062,15 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
     def create_client_tls_policy(
         self,
-        request: Union[gcn_client_tls_policy.CreateClientTlsPolicyRequest, dict] = None,
+        request: Optional[
+            Union[gcn_client_tls_policy.CreateClientTlsPolicyRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        client_tls_policy: gcn_client_tls_policy.ClientTlsPolicy = None,
-        client_tls_policy_id: str = None,
+        parent: Optional[str] = None,
+        client_tls_policy: Optional[gcn_client_tls_policy.ClientTlsPolicy] = None,
+        client_tls_policy_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new ClientTlsPolicy in a given project and
@@ -2178,12 +2212,14 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
     def update_client_tls_policy(
         self,
-        request: Union[gcn_client_tls_policy.UpdateClientTlsPolicyRequest, dict] = None,
+        request: Optional[
+            Union[gcn_client_tls_policy.UpdateClientTlsPolicyRequest, dict]
+        ] = None,
         *,
-        client_tls_policy: gcn_client_tls_policy.ClientTlsPolicy = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        client_tls_policy: Optional[gcn_client_tls_policy.ClientTlsPolicy] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single ClientTlsPolicy.
@@ -2316,11 +2352,13 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
     def delete_client_tls_policy(
         self,
-        request: Union[client_tls_policy.DeleteClientTlsPolicyRequest, dict] = None,
+        request: Optional[
+            Union[client_tls_policy.DeleteClientTlsPolicyRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single ClientTlsPolicy.
