@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
@@ -36,15 +38,15 @@ class LiveAdTagDetail(proto.Message):
         name (str):
             The resource name in the form of
             ``projects/{project}/locations/{location}/liveSessions/{live_session}/liveAdTagDetails/{id}``.
-        ad_requests (Sequence[google.cloud.video.stitcher_v1.types.AdRequest]):
+        ad_requests (MutableSequence[google.cloud.video.stitcher_v1.types.AdRequest]):
             A list of ad requests.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    ad_requests = proto.RepeatedField(
+    ad_requests: MutableSequence["AdRequest"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="AdRequest",
@@ -59,15 +61,15 @@ class VodAdTagDetail(proto.Message):
             The name of the ad tag detail for the specified VOD session,
             in the form of
             ``projects/{project}/locations/{location}/vodSessions/{vod_session_id}/vodAdTagDetails/{id}``.
-        ad_requests (Sequence[google.cloud.video.stitcher_v1.types.AdRequest]):
+        ad_requests (MutableSequence[google.cloud.video.stitcher_v1.types.AdRequest]):
             A list of ad requests for one ad tag.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    ad_requests = proto.RepeatedField(
+    ad_requests: MutableSequence["AdRequest"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="AdRequest",
@@ -89,16 +91,16 @@ class AdRequest(proto.Message):
             request.
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_metadata = proto.Field(
+    request_metadata: "RequestMetadata" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="RequestMetadata",
     )
-    response_metadata = proto.Field(
+    response_metadata: "ResponseMetadata" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="ResponseMetadata",
@@ -113,7 +115,7 @@ class RequestMetadata(proto.Message):
             The HTTP headers of the ad request.
     """
 
-    headers = proto.Field(
+    headers: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=1,
         message=struct_pb2.Struct,
@@ -139,29 +141,29 @@ class ResponseMetadata(proto.Message):
             The body of the response.
     """
 
-    error = proto.Field(
+    error: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    headers = proto.Field(
+    headers: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=2,
         message=struct_pb2.Struct,
     )
-    status_code = proto.Field(
+    status_code: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    size_bytes = proto.Field(
+    size_bytes: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    duration = proto.Field(
+    duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=5,
         message=duration_pb2.Duration,
     )
-    body = proto.Field(
+    body: str = proto.Field(
         proto.STRING,
         number=6,
     )

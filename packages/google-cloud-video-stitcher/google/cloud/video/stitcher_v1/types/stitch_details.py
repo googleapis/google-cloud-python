@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
@@ -35,16 +37,16 @@ class VodStitchDetail(proto.Message):
             The name of the stitch detail in the specified VOD session,
             in the form of
             ``projects/{project}/locations/{location}/vodSessions/{vod_session_id}/vodStitchDetails/{id}``.
-        ad_stitch_details (Sequence[google.cloud.video.stitcher_v1.types.AdStitchDetail]):
+        ad_stitch_details (MutableSequence[google.cloud.video.stitcher_v1.types.AdStitchDetail]):
             A list of ad processing details for the
             fetched ad playlist.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    ad_stitch_details = proto.RepeatedField(
+    ad_stitch_details: MutableSequence["AdStitchDetail"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="AdStitchDetail",
@@ -66,29 +68,29 @@ class AdStitchDetail(proto.Message):
         skip_reason (str):
             Optional. Indicates the reason why the ad has
             been skipped.
-        media (Mapping[str, google.protobuf.struct_pb2.Value]):
+        media (MutableMapping[str, google.protobuf.struct_pb2.Value]):
             Optional. The metadata of the chosen media
             file for the ad.
     """
 
-    ad_break_id = proto.Field(
+    ad_break_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    ad_id = proto.Field(
+    ad_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    ad_time_offset = proto.Field(
+    ad_time_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=3,
         message=duration_pb2.Duration,
     )
-    skip_reason = proto.Field(
+    skip_reason: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    media = proto.MapField(
+    media: MutableMapping[str, struct_pb2.Value] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=5,

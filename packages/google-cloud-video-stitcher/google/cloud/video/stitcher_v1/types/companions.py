@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.video.stitcher_v1.types import events as gcvs_events
@@ -36,7 +38,7 @@ class CompanionAds(proto.Message):
         display_requirement (google.cloud.video.stitcher_v1.types.CompanionAds.DisplayRequirement):
             Indicates how many of the companions should
             be displayed with the ad.
-        companions (Sequence[google.cloud.video.stitcher_v1.types.Companion]):
+        companions (MutableSequence[google.cloud.video.stitcher_v1.types.Companion]):
             List of companion ads.
     """
 
@@ -49,12 +51,12 @@ class CompanionAds(proto.Message):
         ANY = 2
         NONE = 3
 
-    display_requirement = proto.Field(
+    display_requirement: DisplayRequirement = proto.Field(
         proto.ENUM,
         number=1,
         enum=DisplayRequirement,
     )
-    companions = proto.RepeatedField(
+    companions: MutableSequence["Companion"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="Companion",
@@ -110,62 +112,62 @@ class Companion(proto.Message):
             The ID used to identify the desired placement
             on a publisher's page. Values to be used should
             be discussed between publishers and advertisers.
-        events (Sequence[google.cloud.video.stitcher_v1.types.Event]):
+        events (MutableSequence[google.cloud.video.stitcher_v1.types.Event]):
             The list of tracking events for the
             companion.
     """
 
-    iframe_ad_resource = proto.Field(
+    iframe_ad_resource: "IframeAdResource" = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="ad_resource",
         message="IframeAdResource",
     )
-    static_ad_resource = proto.Field(
+    static_ad_resource: "StaticAdResource" = proto.Field(
         proto.MESSAGE,
         number=11,
         oneof="ad_resource",
         message="StaticAdResource",
     )
-    html_ad_resource = proto.Field(
+    html_ad_resource: "HtmlAdResource" = proto.Field(
         proto.MESSAGE,
         number=12,
         oneof="ad_resource",
         message="HtmlAdResource",
     )
-    api_framework = proto.Field(
+    api_framework: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    height_px = proto.Field(
+    height_px: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    width_px = proto.Field(
+    width_px: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    asset_height_px = proto.Field(
+    asset_height_px: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    expanded_height_px = proto.Field(
+    expanded_height_px: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    asset_width_px = proto.Field(
+    asset_width_px: int = proto.Field(
         proto.INT32,
         number=6,
     )
-    expanded_width_px = proto.Field(
+    expanded_width_px: int = proto.Field(
         proto.INT32,
         number=7,
     )
-    ad_slot_id = proto.Field(
+    ad_slot_id: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    events = proto.RepeatedField(
+    events: MutableSequence[gcvs_events.Event] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message=gcvs_events.Event,
@@ -180,7 +182,7 @@ class HtmlAdResource(proto.Message):
             The HTML to display for the ad resource.
     """
 
-    html_source = proto.Field(
+    html_source: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -195,7 +197,7 @@ class IframeAdResource(proto.Message):
             ad resource.
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -211,11 +213,11 @@ class StaticAdResource(proto.Message):
             Describes the MIME type of the ad resource.
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    creative_type = proto.Field(
+    creative_type: str = proto.Field(
         proto.STRING,
         number=2,
     )

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -51,7 +53,7 @@ class VodSession(proto.Message):
             Required. URI of the media to stitch.
         ad_tag_uri (str):
             Required. Ad tag URI.
-        ad_tag_macro_map (Mapping[str, str]):
+        ad_tag_macro_map (MutableMapping[str, str]):
             Key value pairs for ad tag macro replacement. If the
             specified ad tag URI has macros, this field provides the
             mapping to the value that will replace the macro in the ad
@@ -82,42 +84,42 @@ class VodSession(proto.Message):
             VodSession's source media.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    interstitials = proto.Field(
+    interstitials: "Interstitials" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Interstitials",
     )
-    play_uri = proto.Field(
+    play_uri: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    source_uri = proto.Field(
+    source_uri: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    ad_tag_uri = proto.Field(
+    ad_tag_uri: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    ad_tag_macro_map = proto.MapField(
+    ad_tag_macro_map: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=7,
     )
-    client_ad_tracking = proto.Field(
+    client_ad_tracking: bool = proto.Field(
         proto.BOOL,
         number=8,
     )
-    manifest_options = proto.Field(
+    manifest_options: "ManifestOptions" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="ManifestOptions",
     )
-    asset_id = proto.Field(
+    asset_id: str = proto.Field(
         proto.STRING,
         number=10,
     )
@@ -127,19 +129,19 @@ class Interstitials(proto.Message):
     r"""Describes what was stitched into a VOD session's manifest.
 
     Attributes:
-        ad_breaks (Sequence[google.cloud.video.stitcher_v1.types.VodSessionAdBreak]):
+        ad_breaks (MutableSequence[google.cloud.video.stitcher_v1.types.VodSessionAdBreak]):
             List of ad breaks ordered by time.
         session_content (google.cloud.video.stitcher_v1.types.VodSessionContent):
             Information related to the content of the VOD
             session.
     """
 
-    ad_breaks = proto.RepeatedField(
+    ad_breaks: MutableSequence["VodSessionAdBreak"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="VodSessionAdBreak",
     )
-    session_content = proto.Field(
+    session_content: "VodSessionContent" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="VodSessionContent",
@@ -155,7 +157,7 @@ class VodSessionAd(proto.Message):
         companion_ads (google.cloud.video.stitcher_v1.types.CompanionAds):
             Metadata of companion ads associated with the
             ad.
-        activity_events (Sequence[google.cloud.video.stitcher_v1.types.Event]):
+        activity_events (MutableSequence[google.cloud.video.stitcher_v1.types.Event]):
             The list of progress tracking events for the ad break. These
             can be of the following IAB types: ``MUTE``, ``UNMUTE``,
             ``PAUSE``, ``CLICK``, ``CLICK_THROUGH``, ``REWIND``,
@@ -164,17 +166,17 @@ class VodSessionAd(proto.Message):
             ``CLOSE_LINEAR``, ``SKIP``.
     """
 
-    duration = proto.Field(
+    duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=1,
         message=duration_pb2.Duration,
     )
-    companion_ads = proto.Field(
+    companion_ads: companions.CompanionAds = proto.Field(
         proto.MESSAGE,
         number=2,
         message=companions.CompanionAds,
     )
-    activity_events = proto.RepeatedField(
+    activity_events: MutableSequence[events.Event] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=events.Event,
@@ -190,7 +192,7 @@ class VodSessionContent(proto.Message):
             including the ads stitched in.
     """
 
-    duration = proto.Field(
+    duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=1,
         message=duration_pb2.Duration,
@@ -201,10 +203,10 @@ class VodSessionAdBreak(proto.Message):
     r"""Metadata for an inserted ad break.
 
     Attributes:
-        progress_events (Sequence[google.cloud.video.stitcher_v1.types.ProgressEvent]):
+        progress_events (MutableSequence[google.cloud.video.stitcher_v1.types.ProgressEvent]):
             List of events that are expected to be
             triggered, ordered by time.
-        ads (Sequence[google.cloud.video.stitcher_v1.types.VodSessionAd]):
+        ads (MutableSequence[google.cloud.video.stitcher_v1.types.VodSessionAd]):
             Ordered list of ads stitched into the ad
             break.
         end_time_offset (google.protobuf.duration_pb2.Duration):
@@ -215,22 +217,22 @@ class VodSessionAdBreak(proto.Message):
             the start of the VOD asset.
     """
 
-    progress_events = proto.RepeatedField(
+    progress_events: MutableSequence[events.ProgressEvent] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=events.ProgressEvent,
     )
-    ads = proto.RepeatedField(
+    ads: MutableSequence["VodSessionAd"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="VodSessionAd",
     )
-    end_time_offset = proto.Field(
+    end_time_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=3,
         message=duration_pb2.Duration,
     )
-    start_time_offset = proto.Field(
+    start_time_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=4,
         message=duration_pb2.Duration,
@@ -255,11 +257,11 @@ class LiveSession(proto.Message):
 
             default_ad_tag_id is necessary when ``adTagMap`` has more
             than one key. Its value must be present in the ``adTagMap``.
-        ad_tag_map (Mapping[str, google.cloud.video.stitcher_v1.types.AdTag]):
+        ad_tag_map (MutableMapping[str, google.cloud.video.stitcher_v1.types.AdTag]):
             Key value pairs for ad tags. Ads parsed from
             ad tags must be MP4 videos each with at least
             one audio track.
-        ad_tag_macros (Mapping[str, str]):
+        ad_tag_macros (MutableMapping[str, str]):
             Key value pairs for ad tag macro replacement. If the
             specified ad tag URI has macros, this field provides the
             mapping to the value that will replace the macro in the ad
@@ -308,52 +310,52 @@ class LiveSession(proto.Message):
         COMPLETE_AD = 1
         CUT_CURRENT = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    play_uri = proto.Field(
+    play_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    source_uri = proto.Field(
+    source_uri: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    default_ad_tag_id = proto.Field(
+    default_ad_tag_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    ad_tag_map = proto.MapField(
+    ad_tag_map: MutableMapping[str, "AdTag"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=5,
         message="AdTag",
     )
-    ad_tag_macros = proto.MapField(
+    ad_tag_macros: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=6,
     )
-    client_ad_tracking = proto.Field(
+    client_ad_tracking: bool = proto.Field(
         proto.BOOL,
         number=7,
     )
-    default_slate_id = proto.Field(
+    default_slate_id: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    stitching_policy = proto.Field(
+    stitching_policy: StitchingPolicy = proto.Field(
         proto.ENUM,
         number=9,
         enum=StitchingPolicy,
     )
-    manifest_options = proto.Field(
+    manifest_options: "ManifestOptions" = proto.Field(
         proto.MESSAGE,
         number=10,
         message="ManifestOptions",
     )
-    stream_id = proto.Field(
+    stream_id: str = proto.Field(
         proto.STRING,
         number=11,
     )
@@ -367,7 +369,7 @@ class AdTag(proto.Message):
             Ad tag URI template.
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -377,7 +379,7 @@ class ManifestOptions(proto.Message):
     r"""Options for manifest generation.
 
     Attributes:
-        include_renditions (Sequence[google.cloud.video.stitcher_v1.types.RenditionFilter]):
+        include_renditions (MutableSequence[google.cloud.video.stitcher_v1.types.RenditionFilter]):
             If specified, the output manifest will only
             return renditions matching the specified
             filters.
@@ -393,12 +395,12 @@ class ManifestOptions(proto.Message):
         ASCENDING = 1
         DESCENDING = 2
 
-    include_renditions = proto.RepeatedField(
+    include_renditions: MutableSequence["RenditionFilter"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="RenditionFilter",
     )
-    bitrate_order = proto.Field(
+    bitrate_order: OrderPolicy = proto.Field(
         proto.ENUM,
         number=2,
         enum=OrderPolicy,
@@ -418,11 +420,11 @@ class RenditionFilter(proto.Message):
             renditions with the exact value will match.
     """
 
-    bitrate_bps = proto.Field(
+    bitrate_bps: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    codecs = proto.Field(
+    codecs: str = proto.Field(
         proto.STRING,
         number=2,
     )

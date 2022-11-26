@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -67,20 +69,20 @@ class Event(proto.Message):
         SKIP = 26
         ACCEPT_INVITATION = 27
 
-    type_ = proto.Field(
+    type_: EventType = proto.Field(
         proto.ENUM,
         number=1,
         enum=EventType,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    offset = proto.Field(
+    offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=4,
         message=duration_pb2.Duration,
@@ -96,7 +98,7 @@ class ProgressEvent(proto.Message):
             The time when the following tracking events
             occurs. The time is in seconds relative to the
             start of the VOD asset.
-        events (Sequence[google.cloud.video.stitcher_v1.types.Event]):
+        events (MutableSequence[google.cloud.video.stitcher_v1.types.Event]):
             The list of progress tracking events for the ad break. These
             can be of the following IAB types: ``BREAK_START``,
             ``BREAK_END``, ``IMPRESSION``, ``CREATIVE_VIEW``, ``START``,
@@ -104,12 +106,12 @@ class ProgressEvent(proto.Message):
             ``COMPLETE``, ``PROGRESS``.
     """
 
-    time_offset = proto.Field(
+    time_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=1,
         message=duration_pb2.Duration,
     )
-    events = proto.RepeatedField(
+    events: MutableSequence["Event"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="Event",

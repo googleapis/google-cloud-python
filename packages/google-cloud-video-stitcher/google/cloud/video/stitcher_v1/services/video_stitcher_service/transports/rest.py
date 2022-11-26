@@ -686,10 +686,10 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
         self,
         *,
         host: str = "videostitcher.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Sequence[str] = None,
-        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
@@ -783,7 +783,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             request: video_stitcher_service.CreateCdnKeyRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> cdn_keys.CdnKey:
             r"""Call the create cdn key method over HTTP.
@@ -882,7 +882,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             request: video_stitcher_service.CreateLiveSessionRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> sessions.LiveSession:
             r"""Call the create live session method over HTTP.
@@ -981,7 +981,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             request: video_stitcher_service.CreateSlateRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> slates.Slate:
             r"""Call the create slate method over HTTP.
@@ -1076,7 +1076,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             request: video_stitcher_service.CreateVodSessionRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> sessions.VodSession:
             r"""Call the create vod session method over HTTP.
@@ -1173,7 +1173,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             request: video_stitcher_service.DeleteCdnKeyRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
             r"""Call the delete cdn key method over HTTP.
@@ -1247,7 +1247,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             request: video_stitcher_service.DeleteSlateRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
             r"""Call the delete slate method over HTTP.
@@ -1321,7 +1321,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             request: video_stitcher_service.GetCdnKeyRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> cdn_keys.CdnKey:
             r"""Call the get cdn key method over HTTP.
@@ -1411,7 +1411,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             request: video_stitcher_service.GetLiveAdTagDetailRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> ad_tag_details.LiveAdTagDetail:
             r"""Call the get live ad tag detail method over HTTP.
@@ -1501,7 +1501,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             request: video_stitcher_service.GetLiveSessionRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> sessions.LiveSession:
             r"""Call the get live session method over HTTP.
@@ -1589,7 +1589,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             request: video_stitcher_service.GetSlateRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> slates.Slate:
             r"""Call the get slate method over HTTP.
@@ -1675,7 +1675,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             request: video_stitcher_service.GetVodAdTagDetailRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> ad_tag_details.VodAdTagDetail:
             r"""Call the get vod ad tag detail method over HTTP.
@@ -1765,7 +1765,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             request: video_stitcher_service.GetVodSessionRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> sessions.VodSession:
             r"""Call the get vod session method over HTTP.
@@ -1851,7 +1851,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             request: video_stitcher_service.GetVodStitchDetailRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> stitch_details.VodStitchDetail:
             r"""Call the get vod stitch detail method over HTTP.
@@ -1941,7 +1941,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             request: video_stitcher_service.ListCdnKeysRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> video_stitcher_service.ListCdnKeysResponse:
             r"""Call the list cdn keys method over HTTP.
@@ -2029,7 +2029,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             request: video_stitcher_service.ListLiveAdTagDetailsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> video_stitcher_service.ListLiveAdTagDetailsResponse:
             r"""Call the list live ad tag details method over HTTP.
@@ -2119,7 +2119,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             request: video_stitcher_service.ListSlatesRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> video_stitcher_service.ListSlatesResponse:
             r"""Call the list slates method over HTTP.
@@ -2207,7 +2207,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             request: video_stitcher_service.ListVodAdTagDetailsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> video_stitcher_service.ListVodAdTagDetailsResponse:
             r"""Call the list vod ad tag details method over HTTP.
@@ -2297,7 +2297,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             request: video_stitcher_service.ListVodStitchDetailsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> video_stitcher_service.ListVodStitchDetailsResponse:
             r"""Call the list vod stitch details method over HTTP.
@@ -2389,7 +2389,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             request: video_stitcher_service.UpdateCdnKeyRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> cdn_keys.CdnKey:
             r"""Call the update cdn key method over HTTP.
@@ -2490,7 +2490,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             request: video_stitcher_service.UpdateSlateRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> slates.Slate:
             r"""Call the update slate method over HTTP.

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -59,29 +61,29 @@ class CdnKey(proto.Message):
             The hostname this key applies to.
     """
 
-    google_cdn_key = proto.Field(
+    google_cdn_key: "GoogleCdnKey" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="cdn_key_config",
         message="GoogleCdnKey",
     )
-    akamai_cdn_key = proto.Field(
+    akamai_cdn_key: "AkamaiCdnKey" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="cdn_key_config",
         message="AkamaiCdnKey",
     )
-    media_cdn_key = proto.Field(
+    media_cdn_key: "MediaCdnKey" = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="cdn_key_config",
         message="MediaCdnKey",
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    hostname = proto.Field(
+    hostname: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -98,11 +100,11 @@ class GoogleCdnKey(proto.Message):
             The public name of the Google Cloud CDN key.
     """
 
-    private_key = proto.Field(
+    private_key: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    key_name = proto.Field(
+    key_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -117,7 +119,7 @@ class AkamaiCdnKey(proto.Message):
             configuration.
     """
 
-    token_key = proto.Field(
+    token_key: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
@@ -134,11 +136,11 @@ class MediaCdnKey(proto.Message):
             The keyset name of the Media CDN key.
     """
 
-    private_key = proto.Field(
+    private_key: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    key_name = proto.Field(
+    key_name: str = proto.Field(
         proto.STRING,
         number=2,
     )

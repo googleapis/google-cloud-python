@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -202,9 +212,9 @@ class VideoStitcherServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, VideoStitcherServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the video stitcher service client.
@@ -248,13 +258,15 @@ class VideoStitcherServiceAsyncClient:
 
     async def create_cdn_key(
         self,
-        request: Union[video_stitcher_service.CreateCdnKeyRequest, dict] = None,
+        request: Optional[
+            Union[video_stitcher_service.CreateCdnKeyRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        cdn_key: cdn_keys.CdnKey = None,
-        cdn_key_id: str = None,
+        parent: Optional[str] = None,
+        cdn_key: Optional[cdn_keys.CdnKey] = None,
+        cdn_key_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cdn_keys.CdnKey:
         r"""Creates a new CDN key.
@@ -287,7 +299,7 @@ class VideoStitcherServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.stitcher_v1.types.CreateCdnKeyRequest, dict]):
+            request (Optional[Union[google.cloud.video.stitcher_v1.types.CreateCdnKeyRequest, dict]]):
                 The request object. Request message for
                 VideoStitcherService.createCdnKey.
             parent (:class:`str`):
@@ -381,11 +393,13 @@ class VideoStitcherServiceAsyncClient:
 
     async def list_cdn_keys(
         self,
-        request: Union[video_stitcher_service.ListCdnKeysRequest, dict] = None,
+        request: Optional[
+            Union[video_stitcher_service.ListCdnKeysRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCdnKeysAsyncPager:
         r"""Lists all CDN keys in the specified project and
@@ -419,7 +433,7 @@ class VideoStitcherServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.video.stitcher_v1.types.ListCdnKeysRequest, dict]):
+            request (Optional[Union[google.cloud.video.stitcher_v1.types.ListCdnKeysRequest, dict]]):
                 The request object. Request message for
                 VideoStitcherService.listCdnKeys.
             parent (:class:`str`):
@@ -498,11 +512,11 @@ class VideoStitcherServiceAsyncClient:
 
     async def get_cdn_key(
         self,
-        request: Union[video_stitcher_service.GetCdnKeyRequest, dict] = None,
+        request: Optional[Union[video_stitcher_service.GetCdnKeyRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cdn_keys.CdnKey:
         r"""Returns the specified CDN key.
@@ -534,7 +548,7 @@ class VideoStitcherServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.stitcher_v1.types.GetCdnKeyRequest, dict]):
+            request (Optional[Union[google.cloud.video.stitcher_v1.types.GetCdnKeyRequest, dict]]):
                 The request object. Request message for
                 VideoStitcherService.getCdnKey.
             name (:class:`str`):
@@ -603,11 +617,13 @@ class VideoStitcherServiceAsyncClient:
 
     async def delete_cdn_key(
         self,
-        request: Union[video_stitcher_service.DeleteCdnKeyRequest, dict] = None,
+        request: Optional[
+            Union[video_stitcher_service.DeleteCdnKeyRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified CDN key.
@@ -636,7 +652,7 @@ class VideoStitcherServiceAsyncClient:
                 await client.delete_cdn_key(request=request)
 
         Args:
-            request (Union[google.cloud.video.stitcher_v1.types.DeleteCdnKeyRequest, dict]):
+            request (Optional[Union[google.cloud.video.stitcher_v1.types.DeleteCdnKeyRequest, dict]]):
                 The request object. Request message for
                 VideoStitcherService.deleteCdnKey.
             name (:class:`str`):
@@ -694,12 +710,14 @@ class VideoStitcherServiceAsyncClient:
 
     async def update_cdn_key(
         self,
-        request: Union[video_stitcher_service.UpdateCdnKeyRequest, dict] = None,
+        request: Optional[
+            Union[video_stitcher_service.UpdateCdnKeyRequest, dict]
+        ] = None,
         *,
-        cdn_key: cdn_keys.CdnKey = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        cdn_key: Optional[cdn_keys.CdnKey] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cdn_keys.CdnKey:
         r"""Updates the specified CDN key. Only update fields
@@ -731,7 +749,7 @@ class VideoStitcherServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.stitcher_v1.types.UpdateCdnKeyRequest, dict]):
+            request (Optional[Union[google.cloud.video.stitcher_v1.types.UpdateCdnKeyRequest, dict]]):
                 The request object. Request message for
                 VideoStitcherService.updateCdnKey.
             cdn_key (:class:`google.cloud.video.stitcher_v1.types.CdnKey`):
@@ -811,12 +829,14 @@ class VideoStitcherServiceAsyncClient:
 
     async def create_vod_session(
         self,
-        request: Union[video_stitcher_service.CreateVodSessionRequest, dict] = None,
+        request: Optional[
+            Union[video_stitcher_service.CreateVodSessionRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        vod_session: sessions.VodSession = None,
+        parent: Optional[str] = None,
+        vod_session: Optional[sessions.VodSession] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> sessions.VodSession:
         r"""Creates a client side playback VOD session and
@@ -855,7 +875,7 @@ class VideoStitcherServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.stitcher_v1.types.CreateVodSessionRequest, dict]):
+            request (Optional[Union[google.cloud.video.stitcher_v1.types.CreateVodSessionRequest, dict]]):
                 The request object. Request message for
                 VideoStitcherService.createVodSession
             parent (:class:`str`):
@@ -929,11 +949,13 @@ class VideoStitcherServiceAsyncClient:
 
     async def get_vod_session(
         self,
-        request: Union[video_stitcher_service.GetVodSessionRequest, dict] = None,
+        request: Optional[
+            Union[video_stitcher_service.GetVodSessionRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> sessions.VodSession:
         r"""Returns the full tracking, playback metadata, and
@@ -966,7 +988,7 @@ class VideoStitcherServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.stitcher_v1.types.GetVodSessionRequest, dict]):
+            request (Optional[Union[google.cloud.video.stitcher_v1.types.GetVodSessionRequest, dict]]):
                 The request object. Request message for
                 VideoStitcherService.getVodSession
             name (:class:`str`):
@@ -1031,11 +1053,13 @@ class VideoStitcherServiceAsyncClient:
 
     async def list_vod_stitch_details(
         self,
-        request: Union[video_stitcher_service.ListVodStitchDetailsRequest, dict] = None,
+        request: Optional[
+            Union[video_stitcher_service.ListVodStitchDetailsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListVodStitchDetailsAsyncPager:
         r"""Returns a list of detailed stitching information of
@@ -1069,7 +1093,7 @@ class VideoStitcherServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.video.stitcher_v1.types.ListVodStitchDetailsRequest, dict]):
+            request (Optional[Union[google.cloud.video.stitcher_v1.types.ListVodStitchDetailsRequest, dict]]):
                 The request object. Request message for
                 VideoStitcherService.listVodStitchDetails.
             parent (:class:`str`):
@@ -1148,11 +1172,13 @@ class VideoStitcherServiceAsyncClient:
 
     async def get_vod_stitch_detail(
         self,
-        request: Union[video_stitcher_service.GetVodStitchDetailRequest, dict] = None,
+        request: Optional[
+            Union[video_stitcher_service.GetVodStitchDetailRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> stitch_details.VodStitchDetail:
         r"""Returns the specified stitching information for the
@@ -1185,7 +1211,7 @@ class VideoStitcherServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.stitcher_v1.types.GetVodStitchDetailRequest, dict]):
+            request (Optional[Union[google.cloud.video.stitcher_v1.types.GetVodStitchDetailRequest, dict]]):
                 The request object. Request message for
                 VideoStitcherService.getVodStitchDetail.
             name (:class:`str`):
@@ -1252,11 +1278,13 @@ class VideoStitcherServiceAsyncClient:
 
     async def list_vod_ad_tag_details(
         self,
-        request: Union[video_stitcher_service.ListVodAdTagDetailsRequest, dict] = None,
+        request: Optional[
+            Union[video_stitcher_service.ListVodAdTagDetailsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListVodAdTagDetailsAsyncPager:
         r"""Return the list of ad tag details for the specified
@@ -1290,7 +1318,7 @@ class VideoStitcherServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.video.stitcher_v1.types.ListVodAdTagDetailsRequest, dict]):
+            request (Optional[Union[google.cloud.video.stitcher_v1.types.ListVodAdTagDetailsRequest, dict]]):
                 The request object. Request message for
                 VideoStitcherService.listVodAdTagDetails.
             parent (:class:`str`):
@@ -1369,11 +1397,13 @@ class VideoStitcherServiceAsyncClient:
 
     async def get_vod_ad_tag_detail(
         self,
-        request: Union[video_stitcher_service.GetVodAdTagDetailRequest, dict] = None,
+        request: Optional[
+            Union[video_stitcher_service.GetVodAdTagDetailRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> ad_tag_details.VodAdTagDetail:
         r"""Returns the specified ad tag detail for the specified
@@ -1406,7 +1436,7 @@ class VideoStitcherServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.stitcher_v1.types.GetVodAdTagDetailRequest, dict]):
+            request (Optional[Union[google.cloud.video.stitcher_v1.types.GetVodAdTagDetailRequest, dict]]):
                 The request object. Request message for
                 VideoStitcherService.getVodAdTagDetail
             name (:class:`str`):
@@ -1473,11 +1503,13 @@ class VideoStitcherServiceAsyncClient:
 
     async def list_live_ad_tag_details(
         self,
-        request: Union[video_stitcher_service.ListLiveAdTagDetailsRequest, dict] = None,
+        request: Optional[
+            Union[video_stitcher_service.ListLiveAdTagDetailsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListLiveAdTagDetailsAsyncPager:
         r"""Return the list of ad tag details for the specified
@@ -1511,7 +1543,7 @@ class VideoStitcherServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.video.stitcher_v1.types.ListLiveAdTagDetailsRequest, dict]):
+            request (Optional[Union[google.cloud.video.stitcher_v1.types.ListLiveAdTagDetailsRequest, dict]]):
                 The request object. Request message for
                 VideoStitcherService.listLiveAdTagDetails.
             parent (:class:`str`):
@@ -1589,11 +1621,13 @@ class VideoStitcherServiceAsyncClient:
 
     async def get_live_ad_tag_detail(
         self,
-        request: Union[video_stitcher_service.GetLiveAdTagDetailRequest, dict] = None,
+        request: Optional[
+            Union[video_stitcher_service.GetLiveAdTagDetailRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> ad_tag_details.LiveAdTagDetail:
         r"""Returns the specified ad tag detail for the specified
@@ -1626,7 +1660,7 @@ class VideoStitcherServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.stitcher_v1.types.GetLiveAdTagDetailRequest, dict]):
+            request (Optional[Union[google.cloud.video.stitcher_v1.types.GetLiveAdTagDetailRequest, dict]]):
                 The request object. Request message for
                 VideoStitcherService.getLiveAdTagDetail
             name (:class:`str`):
@@ -1692,13 +1726,15 @@ class VideoStitcherServiceAsyncClient:
 
     async def create_slate(
         self,
-        request: Union[video_stitcher_service.CreateSlateRequest, dict] = None,
+        request: Optional[
+            Union[video_stitcher_service.CreateSlateRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        slate: slates.Slate = None,
-        slate_id: str = None,
+        parent: Optional[str] = None,
+        slate: Optional[slates.Slate] = None,
+        slate_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> slates.Slate:
         r"""Creates a slate.
@@ -1731,7 +1767,7 @@ class VideoStitcherServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.stitcher_v1.types.CreateSlateRequest, dict]):
+            request (Optional[Union[google.cloud.video.stitcher_v1.types.CreateSlateRequest, dict]]):
                 The request object. Request message for
                 VideoStitcherService.createSlate.
             parent (:class:`str`):
@@ -1816,11 +1852,11 @@ class VideoStitcherServiceAsyncClient:
 
     async def list_slates(
         self,
-        request: Union[video_stitcher_service.ListSlatesRequest, dict] = None,
+        request: Optional[Union[video_stitcher_service.ListSlatesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSlatesAsyncPager:
         r"""Lists all slates in the specified project and
@@ -1854,7 +1890,7 @@ class VideoStitcherServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.video.stitcher_v1.types.ListSlatesRequest, dict]):
+            request (Optional[Union[google.cloud.video.stitcher_v1.types.ListSlatesRequest, dict]]):
                 The request object. Request message for
                 VideoStitcherService.listSlates.
             parent (:class:`str`):
@@ -1932,11 +1968,11 @@ class VideoStitcherServiceAsyncClient:
 
     async def get_slate(
         self,
-        request: Union[video_stitcher_service.GetSlateRequest, dict] = None,
+        request: Optional[Union[video_stitcher_service.GetSlateRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> slates.Slate:
         r"""Returns the specified slate.
@@ -1968,7 +2004,7 @@ class VideoStitcherServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.stitcher_v1.types.GetSlateRequest, dict]):
+            request (Optional[Union[google.cloud.video.stitcher_v1.types.GetSlateRequest, dict]]):
                 The request object. Request message for
                 VideoStitcherService.getSlate.
             name (:class:`str`):
@@ -2033,12 +2069,14 @@ class VideoStitcherServiceAsyncClient:
 
     async def update_slate(
         self,
-        request: Union[video_stitcher_service.UpdateSlateRequest, dict] = None,
+        request: Optional[
+            Union[video_stitcher_service.UpdateSlateRequest, dict]
+        ] = None,
         *,
-        slate: slates.Slate = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        slate: Optional[slates.Slate] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> slates.Slate:
         r"""Updates the specified slate.
@@ -2069,7 +2107,7 @@ class VideoStitcherServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.stitcher_v1.types.UpdateSlateRequest, dict]):
+            request (Optional[Union[google.cloud.video.stitcher_v1.types.UpdateSlateRequest, dict]]):
                 The request object. Request message for
                 VideoStitcherService.updateSlate.
             slate (:class:`google.cloud.video.stitcher_v1.types.Slate`):
@@ -2145,11 +2183,13 @@ class VideoStitcherServiceAsyncClient:
 
     async def delete_slate(
         self,
-        request: Union[video_stitcher_service.DeleteSlateRequest, dict] = None,
+        request: Optional[
+            Union[video_stitcher_service.DeleteSlateRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified slate.
@@ -2178,7 +2218,7 @@ class VideoStitcherServiceAsyncClient:
                 await client.delete_slate(request=request)
 
         Args:
-            request (Union[google.cloud.video.stitcher_v1.types.DeleteSlateRequest, dict]):
+            request (Optional[Union[google.cloud.video.stitcher_v1.types.DeleteSlateRequest, dict]]):
                 The request object. Request message for
                 VideoStitcherService.deleteSlate.
             name (:class:`str`):
@@ -2236,12 +2276,14 @@ class VideoStitcherServiceAsyncClient:
 
     async def create_live_session(
         self,
-        request: Union[video_stitcher_service.CreateLiveSessionRequest, dict] = None,
+        request: Optional[
+            Union[video_stitcher_service.CreateLiveSessionRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        live_session: sessions.LiveSession = None,
+        parent: Optional[str] = None,
+        live_session: Optional[sessions.LiveSession] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> sessions.LiveSession:
         r"""Creates a new live session.
@@ -2273,7 +2315,7 @@ class VideoStitcherServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.stitcher_v1.types.CreateLiveSessionRequest, dict]):
+            request (Optional[Union[google.cloud.video.stitcher_v1.types.CreateLiveSessionRequest, dict]]):
                 The request object. Request message for
                 VideoStitcherService.createLiveSession.
             parent (:class:`str`):
@@ -2347,11 +2389,13 @@ class VideoStitcherServiceAsyncClient:
 
     async def get_live_session(
         self,
-        request: Union[video_stitcher_service.GetLiveSessionRequest, dict] = None,
+        request: Optional[
+            Union[video_stitcher_service.GetLiveSessionRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> sessions.LiveSession:
         r"""Returns the details for the specified live session.
@@ -2383,7 +2427,7 @@ class VideoStitcherServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.stitcher_v1.types.GetLiveSessionRequest, dict]):
+            request (Optional[Union[google.cloud.video.stitcher_v1.types.GetLiveSessionRequest, dict]]):
                 The request object. Request message for
                 VideoStitcherService.getSession.
             name (:class:`str`):

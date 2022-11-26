@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -75,16 +77,16 @@ class CreateCdnKeyRequest(proto.Message):
             maximum.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    cdn_key = proto.Field(
+    cdn_key: gcvs_cdn_keys.CdnKey = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcvs_cdn_keys.CdnKey,
     )
-    cdn_key_id = proto.Field(
+    cdn_key_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -111,23 +113,23 @@ class ListCdnKeysRequest(proto.Message):
             Hint for how to order the results
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -137,12 +139,12 @@ class ListCdnKeysResponse(proto.Message):
     r"""Response message for VideoStitcher.ListCdnKeys.
 
     Attributes:
-        cdn_keys (Sequence[google.cloud.video.stitcher_v1.types.CdnKey]):
+        cdn_keys (MutableSequence[google.cloud.video.stitcher_v1.types.CdnKey]):
             List of CDN keys.
         next_page_token (str):
             A token identifying a page of results the
             server should return.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -150,16 +152,16 @@ class ListCdnKeysResponse(proto.Message):
     def raw_page(self):
         return self
 
-    cdn_keys = proto.RepeatedField(
+    cdn_keys: MutableSequence[gcvs_cdn_keys.CdnKey] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcvs_cdn_keys.CdnKey,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -175,7 +177,7 @@ class GetCdnKeyRequest(proto.Message):
             ``projects/{project}/locations/{location}/cdnKeys/{id}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -191,7 +193,7 @@ class DeleteCdnKeyRequest(proto.Message):
             ``projects/{project_number}/locations/{location}/cdnKeys/{id}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -210,12 +212,12 @@ class UpdateCdnKeyRequest(proto.Message):
             https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
     """
 
-    cdn_key = proto.Field(
+    cdn_key: gcvs_cdn_keys.CdnKey = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcvs_cdn_keys.CdnKey,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -234,11 +236,11 @@ class CreateVodSessionRequest(proto.Message):
             Required. Parameters for creating a session.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    vod_session = proto.Field(
+    vod_session: sessions.VodSession = proto.Field(
         proto.MESSAGE,
         number=2,
         message=sessions.VodSession,
@@ -255,7 +257,7 @@ class GetVodSessionRequest(proto.Message):
             ``projects/{project_number}/locations/{location}/vodSessions/{id}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -277,15 +279,15 @@ class ListVodStitchDetailsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -296,7 +298,7 @@ class ListVodStitchDetailsResponse(proto.Message):
     VideoStitcherService.listVodStitchDetails.
 
     Attributes:
-        vod_stitch_details (Sequence[google.cloud.video.stitcher_v1.types.VodStitchDetail]):
+        vod_stitch_details (MutableSequence[google.cloud.video.stitcher_v1.types.VodStitchDetail]):
             A List of stitch Details.
         next_page_token (str):
             The pagination token.
@@ -306,12 +308,14 @@ class ListVodStitchDetailsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    vod_stitch_details = proto.RepeatedField(
+    vod_stitch_details: MutableSequence[
+        stitch_details.VodStitchDetail
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=stitch_details.VodStitchDetail,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -327,7 +331,7 @@ class GetVodStitchDetailRequest(proto.Message):
             ``projects/{project}/locations/{location}/vodSessions/{vod_session_id}/vodStitchDetails/{id}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -348,15 +352,15 @@ class ListVodAdTagDetailsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -367,7 +371,7 @@ class ListVodAdTagDetailsResponse(proto.Message):
     VideoStitcherService.listVodAdTagDetails.
 
     Attributes:
-        vod_ad_tag_details (Sequence[google.cloud.video.stitcher_v1.types.VodAdTagDetail]):
+        vod_ad_tag_details (MutableSequence[google.cloud.video.stitcher_v1.types.VodAdTagDetail]):
             A List of ad tag details.
         next_page_token (str):
             The pagination token.
@@ -377,12 +381,14 @@ class ListVodAdTagDetailsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    vod_ad_tag_details = proto.RepeatedField(
+    vod_ad_tag_details: MutableSequence[
+        ad_tag_details.VodAdTagDetail
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=ad_tag_details.VodAdTagDetail,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -398,7 +404,7 @@ class GetVodAdTagDetailRequest(proto.Message):
             ``projects/{project}/locations/{location}/vodSessions/{vod_session_id}/vodAdTagDetails/{vod_ad_tag_detail}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -419,15 +425,15 @@ class ListLiveAdTagDetailsRequest(proto.Message):
             List request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -438,7 +444,7 @@ class ListLiveAdTagDetailsResponse(proto.Message):
     VideoStitcherService.listLiveAdTagDetails.
 
     Attributes:
-        live_ad_tag_details (Sequence[google.cloud.video.stitcher_v1.types.LiveAdTagDetail]):
+        live_ad_tag_details (MutableSequence[google.cloud.video.stitcher_v1.types.LiveAdTagDetail]):
             A list of live session ad tag details.
         next_page_token (str):
             The pagination token.
@@ -448,12 +454,14 @@ class ListLiveAdTagDetailsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    live_ad_tag_details = proto.RepeatedField(
+    live_ad_tag_details: MutableSequence[
+        ad_tag_details.LiveAdTagDetail
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=ad_tag_details.LiveAdTagDetail,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -468,7 +476,7 @@ class GetLiveAdTagDetailRequest(proto.Message):
             ``projects/{project}/locations/{location}/liveSessions/{live_session}/liveAdTagDetails/{live_ad_tag_detail}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -492,15 +500,15 @@ class CreateSlateRequest(proto.Message):
             Required. The slate to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    slate_id = proto.Field(
+    slate_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    slate = proto.Field(
+    slate: gcvs_slates.Slate = proto.Field(
         proto.MESSAGE,
         number=3,
         message=gcvs_slates.Slate,
@@ -517,7 +525,7 @@ class GetSlateRequest(proto.Message):
             ``projects/{project_number}/locations/{location}/slates/{id}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -543,23 +551,23 @@ class ListSlatesRequest(proto.Message):
             Hint for how to order the results
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -569,12 +577,12 @@ class ListSlatesResponse(proto.Message):
     r"""Response message for VideoStitcherService.listSlates.
 
     Attributes:
-        slates (Sequence[google.cloud.video.stitcher_v1.types.Slate]):
+        slates (MutableSequence[google.cloud.video.stitcher_v1.types.Slate]):
             The list of slates
         next_page_token (str):
             A token identifying a page of results the
             server should return.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -582,16 +590,16 @@ class ListSlatesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    slates = proto.RepeatedField(
+    slates: MutableSequence[gcvs_slates.Slate] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcvs_slates.Slate,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -608,12 +616,12 @@ class UpdateSlateRequest(proto.Message):
             fields which should be updated.
     """
 
-    slate = proto.Field(
+    slate: gcvs_slates.Slate = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcvs_slates.Slate,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -630,7 +638,7 @@ class DeleteSlateRequest(proto.Message):
             ``projects/{project_number}/locations/{location}/slates/{id}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -649,11 +657,11 @@ class CreateLiveSessionRequest(proto.Message):
             session.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    live_session = proto.Field(
+    live_session: sessions.LiveSession = proto.Field(
         proto.MESSAGE,
         number=2,
         message=sessions.LiveSession,
@@ -669,7 +677,7 @@ class GetLiveSessionRequest(proto.Message):
             ``projects/{project_number}/locations/{location}/liveSessions/{id}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
