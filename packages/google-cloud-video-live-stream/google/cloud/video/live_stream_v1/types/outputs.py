@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -62,23 +64,23 @@ class ElementaryStream(proto.Message):
             This field is a member of `oneof`_ ``elementary_stream``.
     """
 
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    video_stream = proto.Field(
+    video_stream: "VideoStream" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="elementary_stream",
         message="VideoStream",
     )
-    audio_stream = proto.Field(
+    audio_stream: "AudioStream" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="elementary_stream",
         message="AudioStream",
     )
-    text_stream = proto.Field(
+    text_stream: "TextStream" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="elementary_stream",
@@ -99,7 +101,7 @@ class MuxStream(proto.Message):
 
             -  ``fmp4`` - the corresponding file extension is ``.m4s``
             -  ``ts`` - the corresponding file extension is ``.ts``
-        elementary_streams (Sequence[str]):
+        elementary_streams (MutableSequence[str]):
             List of ``ElementaryStream``
             [key][google.cloud.video.livestream.v1.ElementaryStream.key]s
             multiplexed in this stream.
@@ -112,19 +114,19 @@ class MuxStream(proto.Message):
             Segment settings for ``fmp4`` and ``ts``.
     """
 
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    container = proto.Field(
+    container: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    elementary_streams = proto.RepeatedField(
+    elementary_streams: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    segment_settings = proto.Field(
+    segment_settings: "SegmentSettings" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="SegmentSettings",
@@ -143,7 +145,7 @@ class Manifest(proto.Message):
             a unique file name.
         type_ (google.cloud.video.live_stream_v1.types.Manifest.ManifestType):
             Required. Type of the manifest, can be ``HLS`` or ``DASH``.
-        mux_streams (Sequence[str]):
+        mux_streams (MutableSequence[str]):
             Required. List of ``MuxStream``
             [key][google.cloud.video.livestream.v1.MuxStream.key]s that
             should appear in this manifest.
@@ -175,24 +177,24 @@ class Manifest(proto.Message):
         HLS = 1
         DASH = 2
 
-    file_name = proto.Field(
+    file_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    type_ = proto.Field(
+    type_: ManifestType = proto.Field(
         proto.ENUM,
         number=2,
         enum=ManifestType,
     )
-    mux_streams = proto.RepeatedField(
+    mux_streams: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    max_segment_count = proto.Field(
+    max_segment_count: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    segment_keep_duration = proto.Field(
+    segment_keep_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=5,
         message=duration_pb2.Duration,
@@ -241,36 +243,36 @@ class SpriteSheet(proto.Message):
             ratio.
     """
 
-    format_ = proto.Field(
+    format_: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    file_prefix = proto.Field(
+    file_prefix: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    sprite_width_pixels = proto.Field(
+    sprite_width_pixels: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    sprite_height_pixels = proto.Field(
+    sprite_height_pixels: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    column_count = proto.Field(
+    column_count: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    row_count = proto.Field(
+    row_count: int = proto.Field(
         proto.INT32,
         number=6,
     )
-    interval = proto.Field(
+    interval: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=7,
         message=duration_pb2.Duration,
     )
-    quality = proto.Field(
+    quality: int = proto.Field(
         proto.INT32,
         number=8,
     )
@@ -305,19 +307,19 @@ class PreprocessingConfig(proto.Message):
                 The default is 0.
         """
 
-        top_pixels = proto.Field(
+        top_pixels: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        bottom_pixels = proto.Field(
+        bottom_pixels: int = proto.Field(
             proto.INT32,
             number=2,
         )
-        left_pixels = proto.Field(
+        left_pixels: int = proto.Field(
             proto.INT32,
             number=3,
         )
-        right_pixels = proto.Field(
+        right_pixels: int = proto.Field(
             proto.INT32,
             number=4,
         )
@@ -342,29 +344,29 @@ class PreprocessingConfig(proto.Message):
                 default is 0.
         """
 
-        top_pixels = proto.Field(
+        top_pixels: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        bottom_pixels = proto.Field(
+        bottom_pixels: int = proto.Field(
             proto.INT32,
             number=2,
         )
-        left_pixels = proto.Field(
+        left_pixels: int = proto.Field(
             proto.INT32,
             number=3,
         )
-        right_pixels = proto.Field(
+        right_pixels: int = proto.Field(
             proto.INT32,
             number=4,
         )
 
-    crop = proto.Field(
+    crop: Crop = proto.Field(
         proto.MESSAGE,
         number=2,
         message=Crop,
     )
-    pad = proto.Field(
+    pad: Pad = proto.Field(
         proto.MESSAGE,
         number=3,
         message=Pad,
@@ -494,71 +496,71 @@ class VideoStream(proto.Message):
                 message.
         """
 
-        width_pixels = proto.Field(
+        width_pixels: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        height_pixels = proto.Field(
+        height_pixels: int = proto.Field(
             proto.INT32,
             number=2,
         )
-        frame_rate = proto.Field(
+        frame_rate: float = proto.Field(
             proto.DOUBLE,
             number=3,
         )
-        bitrate_bps = proto.Field(
+        bitrate_bps: int = proto.Field(
             proto.INT32,
             number=4,
         )
-        allow_open_gop = proto.Field(
+        allow_open_gop: bool = proto.Field(
             proto.BOOL,
             number=6,
         )
-        gop_frame_count = proto.Field(
+        gop_frame_count: int = proto.Field(
             proto.INT32,
             number=7,
             oneof="gop_mode",
         )
-        gop_duration = proto.Field(
+        gop_duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=8,
             oneof="gop_mode",
             message=duration_pb2.Duration,
         )
-        vbv_size_bits = proto.Field(
+        vbv_size_bits: int = proto.Field(
             proto.INT32,
             number=9,
         )
-        vbv_fullness_bits = proto.Field(
+        vbv_fullness_bits: int = proto.Field(
             proto.INT32,
             number=10,
         )
-        entropy_coder = proto.Field(
+        entropy_coder: str = proto.Field(
             proto.STRING,
             number=11,
         )
-        b_pyramid = proto.Field(
+        b_pyramid: bool = proto.Field(
             proto.BOOL,
             number=12,
         )
-        b_frame_count = proto.Field(
+        b_frame_count: int = proto.Field(
             proto.INT32,
             number=13,
         )
-        aq_strength = proto.Field(
+        aq_strength: float = proto.Field(
             proto.DOUBLE,
             number=14,
         )
-        profile = proto.Field(
+        profile: str = proto.Field(
             proto.STRING,
             number=15,
         )
-        tune = proto.Field(
+        tune: str = proto.Field(
             proto.STRING,
             number=16,
         )
 
-    h264 = proto.Field(
+    h264: H264CodecSettings = proto.Field(
         proto.MESSAGE,
         number=20,
         oneof="codec_settings",
@@ -586,7 +588,7 @@ class AudioStream(proto.Message):
         channel_count (int):
             Number of audio channels. Must be between 1
             and 6. The default is 2.
-        channel_layout (Sequence[str]):
+        channel_layout (MutableSequence[str]):
             A list of channel names specifying layout of the audio
             channels. This only affects the metadata embedded in the
             container headers, if supported by the specified format. The
@@ -600,7 +602,7 @@ class AudioStream(proto.Message):
             -  ``sr`` - Side right channel
             -  ``fc`` - Front center channel
             -  ``lfe`` - Low frequency
-        mapping_ (Sequence[google.cloud.video.live_stream_v1.types.AudioStream.AudioMapping]):
+        mapping_ (MutableSequence[google.cloud.video.live_stream_v1.types.AudioStream.AudioMapping]):
             The mapping for the input streams and audio
             channels.
         sample_rate_hertz (int):
@@ -634,49 +636,49 @@ class AudioStream(proto.Message):
                 [input_channel][google.cloud.video.livestream.v1.AudioStream.AudioMapping.input_channel].
         """
 
-        input_key = proto.Field(
+        input_key: str = proto.Field(
             proto.STRING,
             number=6,
         )
-        input_track = proto.Field(
+        input_track: int = proto.Field(
             proto.INT32,
             number=2,
         )
-        input_channel = proto.Field(
+        input_channel: int = proto.Field(
             proto.INT32,
             number=3,
         )
-        output_channel = proto.Field(
+        output_channel: int = proto.Field(
             proto.INT32,
             number=4,
         )
 
-    transmux = proto.Field(
+    transmux: bool = proto.Field(
         proto.BOOL,
         number=8,
     )
-    codec = proto.Field(
+    codec: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    bitrate_bps = proto.Field(
+    bitrate_bps: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    channel_count = proto.Field(
+    channel_count: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    channel_layout = proto.RepeatedField(
+    channel_layout: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    mapping_ = proto.RepeatedField(
+    mapping_: MutableSequence[AudioMapping] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=AudioMapping,
     )
-    sample_rate_hertz = proto.Field(
+    sample_rate_hertz: int = proto.Field(
         proto.INT32,
         number=6,
     )
@@ -696,7 +698,7 @@ class TextStream(proto.Message):
             -  ``cea708``
     """
 
-    codec = proto.Field(
+    codec: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -720,7 +722,7 @@ class SegmentSettings(proto.Message):
             in the same manifest must have the same segment duration.
     """
 
-    segment_duration = proto.Field(
+    segment_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=1,
         message=duration_pb2.Duration,

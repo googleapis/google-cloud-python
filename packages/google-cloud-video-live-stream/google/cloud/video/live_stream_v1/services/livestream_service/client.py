@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -65,7 +76,7 @@ class LivestreamServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[LivestreamServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -392,8 +403,8 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, LivestreamServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, LivestreamServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the livestream service client.
@@ -407,7 +418,7 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
             transport (Union[str, LivestreamServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -437,6 +448,7 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -489,13 +501,13 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
 
     def create_channel(
         self,
-        request: Union[service.CreateChannelRequest, dict] = None,
+        request: Optional[Union[service.CreateChannelRequest, dict]] = None,
         *,
-        parent: str = None,
-        channel: resources.Channel = None,
-        channel_id: str = None,
+        parent: Optional[str] = None,
+        channel: Optional[resources.Channel] = None,
+        channel_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a channel with the provided unique ID in the
@@ -632,11 +644,11 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
 
     def list_channels(
         self,
-        request: Union[service.ListChannelsRequest, dict] = None,
+        request: Optional[Union[service.ListChannelsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListChannelsPager:
         r"""Returns a list of all channels in the specified
@@ -748,11 +760,11 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
 
     def get_channel(
         self,
-        request: Union[service.GetChannelRequest, dict] = None,
+        request: Optional[Union[service.GetChannelRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Channel:
         r"""Returns the specified channel.
@@ -857,11 +869,11 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
 
     def delete_channel(
         self,
-        request: Union[service.DeleteChannelRequest, dict] = None,
+        request: Optional[Union[service.DeleteChannelRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes the specified channel.
@@ -982,12 +994,12 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
 
     def update_channel(
         self,
-        request: Union[service.UpdateChannelRequest, dict] = None,
+        request: Optional[Union[service.UpdateChannelRequest, dict]] = None,
         *,
-        channel: resources.Channel = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        channel: Optional[resources.Channel] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the specified channel.
@@ -1125,11 +1137,11 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
 
     def start_channel(
         self,
-        request: Union[service.StartChannelRequest, dict] = None,
+        request: Optional[Union[service.StartChannelRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Starts the specified channel. Part of the video
@@ -1246,11 +1258,11 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
 
     def stop_channel(
         self,
-        request: Union[service.StopChannelRequest, dict] = None,
+        request: Optional[Union[service.StopChannelRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Stops the specified channel. Part of the video
@@ -1367,13 +1379,13 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
 
     def create_input(
         self,
-        request: Union[service.CreateInputRequest, dict] = None,
+        request: Optional[Union[service.CreateInputRequest, dict]] = None,
         *,
-        parent: str = None,
-        input: resources.Input = None,
-        input_id: str = None,
+        parent: Optional[str] = None,
+        input: Optional[resources.Input] = None,
+        input_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates an input with the provided unique ID in the
@@ -1506,11 +1518,11 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
 
     def list_inputs(
         self,
-        request: Union[service.ListInputsRequest, dict] = None,
+        request: Optional[Union[service.ListInputsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInputsPager:
         r"""Returns a list of all inputs in the specified region.
@@ -1621,11 +1633,11 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
 
     def get_input(
         self,
-        request: Union[service.GetInputRequest, dict] = None,
+        request: Optional[Union[service.GetInputRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Input:
         r"""Returns the specified input.
@@ -1725,11 +1737,11 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
 
     def delete_input(
         self,
-        request: Union[service.DeleteInputRequest, dict] = None,
+        request: Optional[Union[service.DeleteInputRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes the specified input.
@@ -1850,12 +1862,12 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
 
     def update_input(
         self,
-        request: Union[service.UpdateInputRequest, dict] = None,
+        request: Optional[Union[service.UpdateInputRequest, dict]] = None,
         *,
-        input: resources.Input = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        input: Optional[resources.Input] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the specified input.
@@ -1985,13 +1997,13 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
 
     def create_event(
         self,
-        request: Union[service.CreateEventRequest, dict] = None,
+        request: Optional[Union[service.CreateEventRequest, dict]] = None,
         *,
-        parent: str = None,
-        event: resources.Event = None,
-        event_id: str = None,
+        parent: Optional[str] = None,
+        event: Optional[resources.Event] = None,
+        event_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Event:
         r"""Creates an event with the provided unique ID in the
@@ -2113,11 +2125,11 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
 
     def list_events(
         self,
-        request: Union[service.ListEventsRequest, dict] = None,
+        request: Optional[Union[service.ListEventsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEventsPager:
         r"""Returns a list of all events in the specified
@@ -2230,11 +2242,11 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
 
     def get_event(
         self,
-        request: Union[service.GetEventRequest, dict] = None,
+        request: Optional[Union[service.GetEventRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Event:
         r"""Returns the specified event.
@@ -2335,11 +2347,11 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
 
     def delete_event(
         self,
-        request: Union[service.DeleteEventRequest, dict] = None,
+        request: Optional[Union[service.DeleteEventRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified event.

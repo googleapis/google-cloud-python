@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -49,7 +51,7 @@ class Input(proto.Message):
             Output only. The creation time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The update time.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             User-defined key/value metadata.
         type_ (google.cloud.video.live_stream_v1.types.Input.Type):
             Source type.
@@ -96,62 +98,62 @@ class Input(proto.Message):
         satisfies all the fields, this input stream can be accepted.
 
         Attributes:
-            ip_ranges (Sequence[str]):
+            ip_ranges (MutableSequence[str]):
                 At least one ip range must match unless none specified. The
                 IP range is defined by CIDR block: for example,
                 ``192.0.1.0/24`` for a range and ``192.0.1.0/32`` for a
                 single IP address.
         """
 
-        ip_ranges = proto.RepeatedField(
+        ip_ranges: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    type_ = proto.Field(
+    type_: Type = proto.Field(
         proto.ENUM,
         number=5,
         enum=Type,
     )
-    tier = proto.Field(
+    tier: Tier = proto.Field(
         proto.ENUM,
         number=14,
         enum=Tier,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    preprocessing_config = proto.Field(
+    preprocessing_config: outputs.PreprocessingConfig = proto.Field(
         proto.MESSAGE,
         number=9,
         message=outputs.PreprocessingConfig,
     )
-    security_rules = proto.Field(
+    security_rules: SecurityRule = proto.Field(
         proto.MESSAGE,
         number=12,
         message=SecurityRule,
     )
-    input_stream_property = proto.Field(
+    input_stream_property: "InputStreamProperty" = proto.Field(
         proto.MESSAGE,
         number=15,
         message="InputStreamProperty",
@@ -173,9 +175,9 @@ class Channel(proto.Message):
             Output only. The creation time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The update time.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             User-defined key/value metadata.
-        input_attachments (Sequence[google.cloud.video.live_stream_v1.types.InputAttachment]):
+        input_attachments (MutableSequence[google.cloud.video.live_stream_v1.types.InputAttachment]):
             A list of input attachments that this channel
             uses. One channel can have multiple inputs as
             the input sources. Only one input can be
@@ -191,14 +193,14 @@ class Channel(proto.Message):
             Required. Information about the output (that
             is, the Cloud Storage bucket to store the
             generated live stream).
-        elementary_streams (Sequence[google.cloud.video.live_stream_v1.types.ElementaryStream]):
+        elementary_streams (MutableSequence[google.cloud.video.live_stream_v1.types.ElementaryStream]):
             List of elementary streams.
-        mux_streams (Sequence[google.cloud.video.live_stream_v1.types.MuxStream]):
+        mux_streams (MutableSequence[google.cloud.video.live_stream_v1.types.MuxStream]):
             List of multiplexing settings for output
             streams.
-        manifests (Sequence[google.cloud.video.live_stream_v1.types.Manifest]):
+        manifests (MutableSequence[google.cloud.video.live_stream_v1.types.Manifest]):
             List of output manifests.
-        sprite_sheets (Sequence[google.cloud.video.live_stream_v1.types.SpriteSheet]):
+        sprite_sheets (MutableSequence[google.cloud.video.live_stream_v1.types.SpriteSheet]):
             List of output sprite sheets.
         streaming_state (google.cloud.video.live_stream_v1.types.Channel.StreamingState):
             Output only. State of the streaming
@@ -234,75 +236,75 @@ class Channel(proto.Message):
                 ``gs://my-bucket/outputs/``.
         """
 
-        uri = proto.Field(
+        uri: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    input_attachments = proto.RepeatedField(
+    input_attachments: MutableSequence["InputAttachment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=16,
         message="InputAttachment",
     )
-    active_input = proto.Field(
+    active_input: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    output = proto.Field(
+    output: Output = proto.Field(
         proto.MESSAGE,
         number=9,
         message=Output,
     )
-    elementary_streams = proto.RepeatedField(
+    elementary_streams: MutableSequence[outputs.ElementaryStream] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message=outputs.ElementaryStream,
     )
-    mux_streams = proto.RepeatedField(
+    mux_streams: MutableSequence[outputs.MuxStream] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message=outputs.MuxStream,
     )
-    manifests = proto.RepeatedField(
+    manifests: MutableSequence[outputs.Manifest] = proto.RepeatedField(
         proto.MESSAGE,
         number=12,
         message=outputs.Manifest,
     )
-    sprite_sheets = proto.RepeatedField(
+    sprite_sheets: MutableSequence[outputs.SpriteSheet] = proto.RepeatedField(
         proto.MESSAGE,
         number=13,
         message=outputs.SpriteSheet,
     )
-    streaming_state = proto.Field(
+    streaming_state: StreamingState = proto.Field(
         proto.ENUM,
         number=14,
         enum=StreamingState,
     )
-    streaming_error = proto.Field(
+    streaming_error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=18,
         message=status_pb2.Status,
     )
-    log_config = proto.Field(
+    log_config: "LogConfig" = proto.Field(
         proto.MESSAGE,
         number=19,
         message="LogConfig",
@@ -337,7 +339,7 @@ class LogConfig(proto.Message):
         WARNING = 400
         ERROR = 500
 
-    log_severity = proto.Field(
+    log_severity: LogSeverity = proto.Field(
         proto.ENUM,
         number=1,
         enum=LogSeverity,
@@ -351,23 +353,23 @@ class InputStreamProperty(proto.Message):
         last_establish_time (google.protobuf.timestamp_pb2.Timestamp):
             The time that the current input stream is
             accepted and the connection is established.
-        video_streams (Sequence[google.cloud.video.live_stream_v1.types.VideoStreamProperty]):
+        video_streams (MutableSequence[google.cloud.video.live_stream_v1.types.VideoStreamProperty]):
             Properties of the video streams.
-        audio_streams (Sequence[google.cloud.video.live_stream_v1.types.AudioStreamProperty]):
+        audio_streams (MutableSequence[google.cloud.video.live_stream_v1.types.AudioStreamProperty]):
             Properties of the audio streams.
     """
 
-    last_establish_time = proto.Field(
+    last_establish_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    video_streams = proto.RepeatedField(
+    video_streams: MutableSequence["VideoStreamProperty"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="VideoStreamProperty",
     )
-    audio_streams = proto.RepeatedField(
+    audio_streams: MutableSequence["AudioStreamProperty"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="AudioStreamProperty",
@@ -384,11 +386,11 @@ class VideoStreamProperty(proto.Message):
             Properties of the video format.
     """
 
-    index = proto.Field(
+    index: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    video_format = proto.Field(
+    video_format: "VideoFormat" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="VideoFormat",
@@ -409,19 +411,19 @@ class VideoFormat(proto.Message):
             The frame rate of the input video stream.
     """
 
-    codec = proto.Field(
+    codec: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    width_pixels = proto.Field(
+    width_pixels: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    height_pixels = proto.Field(
+    height_pixels: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    frame_rate = proto.Field(
+    frame_rate: float = proto.Field(
         proto.DOUBLE,
         number=4,
     )
@@ -437,11 +439,11 @@ class AudioStreamProperty(proto.Message):
             Properties of the audio format.
     """
 
-    index = proto.Field(
+    index: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    audio_format = proto.Field(
+    audio_format: "AudioFormat" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="AudioFormat",
@@ -456,20 +458,20 @@ class AudioFormat(proto.Message):
             Audio codec used in this audio stream.
         channel_count (int):
             The number of audio channels.
-        channel_layout (Sequence[str]):
+        channel_layout (MutableSequence[str]):
             A list of channel names specifying the layout
             of the audio channels.
     """
 
-    codec = proto.Field(
+    codec: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    channel_count = proto.Field(
+    channel_count: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    channel_layout = proto.RepeatedField(
+    channel_layout: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -493,27 +495,27 @@ class InputAttachment(proto.Message):
         r"""Configurations to follow when automatic failover happens.
 
         Attributes:
-            input_keys (Sequence[str]):
+            input_keys (MutableSequence[str]):
                 The
                 [InputAttachment.key][google.cloud.video.livestream.v1.InputAttachment.key]s
                 of inputs to failover to when this input is disconnected.
                 Currently, only up to one backup input is supported.
         """
 
-        input_keys = proto.RepeatedField(
+        input_keys: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
 
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    input = proto.Field(
+    input: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    automatic_failover = proto.Field(
+    automatic_failover: AutomaticFailover = proto.Field(
         proto.MESSAGE,
         number=3,
         message=AutomaticFailover,
@@ -536,7 +538,7 @@ class Event(proto.Message):
             Output only. The creation time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The update time.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             User-defined key/value metadata.
         ad_break (google.cloud.video.live_stream_v1.types.Event.AdBreakTask):
             Required. Inserts a new ad opportunity.
@@ -582,52 +584,52 @@ class Event(proto.Message):
                 greater than 0.
         """
 
-        duration = proto.Field(
+        duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=1,
             message=duration_pb2.Duration,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    ad_break = proto.Field(
+    ad_break: AdBreakTask = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="task",
         message=AdBreakTask,
     )
-    execute_now = proto.Field(
+    execute_now: bool = proto.Field(
         proto.BOOL,
         number=9,
     )
-    execution_time = proto.Field(
+    execution_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=11,
         enum=State,
     )
-    error = proto.Field(
+    error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=12,
         message=status_pb2.Status,

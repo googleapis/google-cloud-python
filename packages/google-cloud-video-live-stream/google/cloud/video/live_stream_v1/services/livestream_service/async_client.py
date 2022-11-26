@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -176,9 +186,9 @@ class LivestreamServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, LivestreamServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the livestream service client.
@@ -222,13 +232,13 @@ class LivestreamServiceAsyncClient:
 
     async def create_channel(
         self,
-        request: Union[service.CreateChannelRequest, dict] = None,
+        request: Optional[Union[service.CreateChannelRequest, dict]] = None,
         *,
-        parent: str = None,
-        channel: resources.Channel = None,
-        channel_id: str = None,
+        parent: Optional[str] = None,
+        channel: Optional[resources.Channel] = None,
+        channel_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a channel with the provided unique ID in the
@@ -266,7 +276,7 @@ class LivestreamServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.live_stream_v1.types.CreateChannelRequest, dict]):
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.CreateChannelRequest, dict]]):
                 The request object. Request message for
                 "LivestreamService.CreateChannel".
             parent (:class:`str`):
@@ -365,11 +375,11 @@ class LivestreamServiceAsyncClient:
 
     async def list_channels(
         self,
-        request: Union[service.ListChannelsRequest, dict] = None,
+        request: Optional[Union[service.ListChannelsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListChannelsAsyncPager:
         r"""Returns a list of all channels in the specified
@@ -403,7 +413,7 @@ class LivestreamServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.video.live_stream_v1.types.ListChannelsRequest, dict]):
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.ListChannelsRequest, dict]]):
                 The request object. Request message for
                 "LivestreamService.ListChannels".
             parent (:class:`str`):
@@ -490,11 +500,11 @@ class LivestreamServiceAsyncClient:
 
     async def get_channel(
         self,
-        request: Union[service.GetChannelRequest, dict] = None,
+        request: Optional[Union[service.GetChannelRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Channel:
         r"""Returns the specified channel.
@@ -526,7 +536,7 @@ class LivestreamServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.live_stream_v1.types.GetChannelRequest, dict]):
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.GetChannelRequest, dict]]):
                 The request object. Request message for
                 "LivestreamService.GetChannel".
             name (:class:`str`):
@@ -608,11 +618,11 @@ class LivestreamServiceAsyncClient:
 
     async def delete_channel(
         self,
-        request: Union[service.DeleteChannelRequest, dict] = None,
+        request: Optional[Union[service.DeleteChannelRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes the specified channel.
@@ -648,7 +658,7 @@ class LivestreamServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.live_stream_v1.types.DeleteChannelRequest, dict]):
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.DeleteChannelRequest, dict]]):
                 The request object. Request message for
                 "LivestreamService.DeleteChannel".
             name (:class:`str`):
@@ -733,12 +743,12 @@ class LivestreamServiceAsyncClient:
 
     async def update_channel(
         self,
-        request: Union[service.UpdateChannelRequest, dict] = None,
+        request: Optional[Union[service.UpdateChannelRequest, dict]] = None,
         *,
-        channel: resources.Channel = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        channel: Optional[resources.Channel] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the specified channel.
@@ -773,7 +783,7 @@ class LivestreamServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.live_stream_v1.types.UpdateChannelRequest, dict]):
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.UpdateChannelRequest, dict]]):
                 The request object. Request message for
                 "LivestreamService.UpdateChannel".
             channel (:class:`google.cloud.video.live_stream_v1.types.Channel`):
@@ -876,11 +886,11 @@ class LivestreamServiceAsyncClient:
 
     async def start_channel(
         self,
-        request: Union[service.StartChannelRequest, dict] = None,
+        request: Optional[Union[service.StartChannelRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Starts the specified channel. Part of the video
@@ -918,7 +928,7 @@ class LivestreamServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.live_stream_v1.types.StartChannelRequest, dict]):
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.StartChannelRequest, dict]]):
                 The request object. Request message for
                 "LivestreamService.StartChannel".
             name (:class:`str`):
@@ -997,11 +1007,11 @@ class LivestreamServiceAsyncClient:
 
     async def stop_channel(
         self,
-        request: Union[service.StopChannelRequest, dict] = None,
+        request: Optional[Union[service.StopChannelRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Stops the specified channel. Part of the video
@@ -1039,7 +1049,7 @@ class LivestreamServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.live_stream_v1.types.StopChannelRequest, dict]):
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.StopChannelRequest, dict]]):
                 The request object. Request message for
                 "LivestreamService.StopChannel".
             name (:class:`str`):
@@ -1118,13 +1128,13 @@ class LivestreamServiceAsyncClient:
 
     async def create_input(
         self,
-        request: Union[service.CreateInputRequest, dict] = None,
+        request: Optional[Union[service.CreateInputRequest, dict]] = None,
         *,
-        parent: str = None,
-        input: resources.Input = None,
-        input_id: str = None,
+        parent: Optional[str] = None,
+        input: Optional[resources.Input] = None,
+        input_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates an input with the provided unique ID in the
@@ -1162,7 +1172,7 @@ class LivestreamServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.live_stream_v1.types.CreateInputRequest, dict]):
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.CreateInputRequest, dict]]):
                 The request object. Request message for
                 "LivestreamService.CreateInput".
             parent (:class:`str`):
@@ -1257,11 +1267,11 @@ class LivestreamServiceAsyncClient:
 
     async def list_inputs(
         self,
-        request: Union[service.ListInputsRequest, dict] = None,
+        request: Optional[Union[service.ListInputsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInputsAsyncPager:
         r"""Returns a list of all inputs in the specified region.
@@ -1294,7 +1304,7 @@ class LivestreamServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.video.live_stream_v1.types.ListInputsRequest, dict]):
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.ListInputsRequest, dict]]):
                 The request object. Request message for
                 "LivestreamService.ListInputs".
             parent (:class:`str`):
@@ -1381,11 +1391,11 @@ class LivestreamServiceAsyncClient:
 
     async def get_input(
         self,
-        request: Union[service.GetInputRequest, dict] = None,
+        request: Optional[Union[service.GetInputRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Input:
         r"""Returns the specified input.
@@ -1417,7 +1427,7 @@ class LivestreamServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.live_stream_v1.types.GetInputRequest, dict]):
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.GetInputRequest, dict]]):
                 The request object. Request message for
                 "LivestreamService.GetInput".
             name (:class:`str`):
@@ -1494,11 +1504,11 @@ class LivestreamServiceAsyncClient:
 
     async def delete_input(
         self,
-        request: Union[service.DeleteInputRequest, dict] = None,
+        request: Optional[Union[service.DeleteInputRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes the specified input.
@@ -1534,7 +1544,7 @@ class LivestreamServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.live_stream_v1.types.DeleteInputRequest, dict]):
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.DeleteInputRequest, dict]]):
                 The request object. Request message for
                 "LivestreamService.DeleteInput".
             name (:class:`str`):
@@ -1619,12 +1629,12 @@ class LivestreamServiceAsyncClient:
 
     async def update_input(
         self,
-        request: Union[service.UpdateInputRequest, dict] = None,
+        request: Optional[Union[service.UpdateInputRequest, dict]] = None,
         *,
-        input: resources.Input = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        input: Optional[resources.Input] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the specified input.
@@ -1659,7 +1669,7 @@ class LivestreamServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.live_stream_v1.types.UpdateInputRequest, dict]):
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.UpdateInputRequest, dict]]):
                 The request object. Request message for
                 "LivestreamService.UpdateInput".
             input (:class:`google.cloud.video.live_stream_v1.types.Input`):
@@ -1754,13 +1764,13 @@ class LivestreamServiceAsyncClient:
 
     async def create_event(
         self,
-        request: Union[service.CreateEventRequest, dict] = None,
+        request: Optional[Union[service.CreateEventRequest, dict]] = None,
         *,
-        parent: str = None,
-        event: resources.Event = None,
-        event_id: str = None,
+        parent: Optional[str] = None,
+        event: Optional[resources.Event] = None,
+        event_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Event:
         r"""Creates an event with the provided unique ID in the
@@ -1794,7 +1804,7 @@ class LivestreamServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.live_stream_v1.types.CreateEventRequest, dict]):
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.CreateEventRequest, dict]]):
                 The request object. Request message for
                 "LivestreamService.CreateEvent".
             parent (:class:`str`):
@@ -1882,11 +1892,11 @@ class LivestreamServiceAsyncClient:
 
     async def list_events(
         self,
-        request: Union[service.ListEventsRequest, dict] = None,
+        request: Optional[Union[service.ListEventsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEventsAsyncPager:
         r"""Returns a list of all events in the specified
@@ -1920,7 +1930,7 @@ class LivestreamServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.video.live_stream_v1.types.ListEventsRequest, dict]):
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.ListEventsRequest, dict]]):
                 The request object. Request message for
                 "LivestreamService.ListEvents".
             parent (:class:`str`):
@@ -2008,11 +2018,11 @@ class LivestreamServiceAsyncClient:
 
     async def get_event(
         self,
-        request: Union[service.GetEventRequest, dict] = None,
+        request: Optional[Union[service.GetEventRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Event:
         r"""Returns the specified event.
@@ -2044,7 +2054,7 @@ class LivestreamServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.live_stream_v1.types.GetEventRequest, dict]):
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.GetEventRequest, dict]]):
                 The request object. Request message for
                 "LivestreamService.GetEvent".
             name (:class:`str`):
@@ -2122,11 +2132,11 @@ class LivestreamServiceAsyncClient:
 
     async def delete_event(
         self,
-        request: Union[service.DeleteEventRequest, dict] = None,
+        request: Optional[Union[service.DeleteEventRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified event.
@@ -2155,7 +2165,7 @@ class LivestreamServiceAsyncClient:
                 await client.delete_event(request=request)
 
         Args:
-            request (Union[google.cloud.video.live_stream_v1.types.DeleteEventRequest, dict]):
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.DeleteEventRequest, dict]]):
                 The request object. Request message for
                 "LivestreamService.DeleteEvent".
             name (:class:`str`):

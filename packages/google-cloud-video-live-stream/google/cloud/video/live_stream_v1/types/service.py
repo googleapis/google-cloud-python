@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -79,20 +81,20 @@ class CreateChannelRequest(proto.Message):
             ``(00000000-0000-0000-0000-000000000000)``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    channel = proto.Field(
+    channel: resources.Channel = proto.Field(
         proto.MESSAGE,
         number=2,
         message=resources.Channel,
     )
-    channel_id = proto.Field(
+    channel_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -122,23 +124,23 @@ class ListChannelsRequest(proto.Message):
             https://cloud.google.com/apis/design/design_patterns#sorting_order.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -148,13 +150,13 @@ class ListChannelsResponse(proto.Message):
     r"""Response message for "LivestreamService.ListChannels".
 
     Attributes:
-        channels (Sequence[google.cloud.video.live_stream_v1.types.Channel]):
+        channels (MutableSequence[google.cloud.video.live_stream_v1.types.Channel]):
             A list of channels.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
             list.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -162,16 +164,16 @@ class ListChannelsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    channels = proto.RepeatedField(
+    channels: MutableSequence[resources.Channel] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.Channel,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -186,7 +188,7 @@ class GetChannelRequest(proto.Message):
             ``projects/{project}/locations/{location}/channels/{channelId}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -224,15 +226,15 @@ class DeleteChannelRequest(proto.Message):
             associated channel events.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -278,17 +280,17 @@ class UpdateChannelRequest(proto.Message):
             ``(00000000-0000-0000-0000-000000000000)``.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    channel = proto.Field(
+    channel: resources.Channel = proto.Field(
         proto.MESSAGE,
         number=2,
         message=resources.Channel,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -320,11 +322,11 @@ class StartChannelRequest(proto.Message):
             ``(00000000-0000-0000-0000-000000000000)``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -356,11 +358,11 @@ class StopChannelRequest(proto.Message):
             ``(00000000-0000-0000-0000-000000000000)``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -398,20 +400,20 @@ class CreateInputRequest(proto.Message):
             ``(00000000-0000-0000-0000-000000000000)``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    input = proto.Field(
+    input: resources.Input = proto.Field(
         proto.MESSAGE,
         number=2,
         message=resources.Input,
     )
-    input_id = proto.Field(
+    input_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -442,23 +444,23 @@ class ListInputsRequest(proto.Message):
             Order <https://cloud.google.com/apis/design/design_patterns#sorting_order>`__.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -468,13 +470,13 @@ class ListInputsResponse(proto.Message):
     r"""Response message for "LivestreamService.ListInputs".
 
     Attributes:
-        inputs (Sequence[google.cloud.video.live_stream_v1.types.Input]):
+        inputs (MutableSequence[google.cloud.video.live_stream_v1.types.Input]):
             A list of inputs.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
             list.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -482,16 +484,16 @@ class ListInputsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    inputs = proto.RepeatedField(
+    inputs: MutableSequence[resources.Input] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.Input,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -506,7 +508,7 @@ class GetInputRequest(proto.Message):
             ``projects/{project}/locations/{location}/inputs/{inputId}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -538,11 +540,11 @@ class DeleteInputRequest(proto.Message):
             ``(00000000-0000-0000-0000-000000000000)``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -584,17 +586,17 @@ class UpdateInputRequest(proto.Message):
             ``(00000000-0000-0000-0000-000000000000)``.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    input = proto.Field(
+    input: resources.Input = proto.Field(
         proto.MESSAGE,
         number=2,
         message=resources.Input,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -633,20 +635,20 @@ class CreateEventRequest(proto.Message):
             ``(00000000-0000-0000-0000-000000000000)``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    event = proto.Field(
+    event: resources.Event = proto.Field(
         proto.MESSAGE,
         number=2,
         message=resources.Event,
     )
-    event_id = proto.Field(
+    event_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -677,23 +679,23 @@ class ListEventsRequest(proto.Message):
             https://cloud.google.com/apis/design/design_patterns#sorting_order.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -703,13 +705,13 @@ class ListEventsResponse(proto.Message):
     r"""Response message for "LivestreamService.ListEvents".
 
     Attributes:
-        events (Sequence[google.cloud.video.live_stream_v1.types.Event]):
+        events (MutableSequence[google.cloud.video.live_stream_v1.types.Event]):
             A list of events.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
             list.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -717,16 +719,16 @@ class ListEventsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    events = proto.RepeatedField(
+    events: MutableSequence[resources.Event] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.Event,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -741,7 +743,7 @@ class GetEventRequest(proto.Message):
             ``projects/{project}/locations/{location}/channels/{channelId}/events/{eventId}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -773,11 +775,11 @@ class DeleteEventRequest(proto.Message):
             ``(00000000-0000-0000-0000-000000000000)``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -817,29 +819,29 @@ class OperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    requested_cancellation = proto.Field(
+    requested_cancellation: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=6,
     )
