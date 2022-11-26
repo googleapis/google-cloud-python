@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -41,7 +43,7 @@ class Endpoint(proto.Message):
             Output only. The create time timestamp.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The update time timestamp.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             The labels of the endpoint.
         network (str):
             Required. The fully qualified URL of the
@@ -80,52 +82,52 @@ class Endpoint(proto.Message):
         READY = 2
         DELETING = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    network = proto.Field(
+    network: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    endpoint_forwarding_rule = proto.Field(
+    endpoint_forwarding_rule: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    endpoint_ip = proto.Field(
+    endpoint_ip: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    severity = proto.Field(
+    severity: Severity = proto.Field(
         proto.ENUM,
         number=9,
         enum=Severity,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=12,
         enum=State,
     )
-    traffic_logs = proto.Field(
+    traffic_logs: bool = proto.Field(
         proto.BOOL,
         number=13,
     )
@@ -160,23 +162,23 @@ class ListEndpointsRequest(proto.Message):
             https://google.aip.dev/132#ordering.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -186,13 +188,13 @@ class ListEndpointsResponse(proto.Message):
     r"""
 
     Attributes:
-        endpoints (Sequence[google.cloud.ids_v1.types.Endpoint]):
+        endpoints (MutableSequence[google.cloud.ids_v1.types.Endpoint]):
             The list of endpoints response.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -200,16 +202,16 @@ class ListEndpointsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    endpoints = proto.RepeatedField(
+    endpoints: MutableSequence["Endpoint"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Endpoint",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -224,7 +226,7 @@ class GetEndpointRequest(proto.Message):
             ``projects/{project}/locations/{location}/endpoints/{endpoint}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -265,20 +267,20 @@ class CreateEndpointRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    endpoint_id = proto.Field(
+    endpoint_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    endpoint = proto.Field(
+    endpoint: "Endpoint" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Endpoint",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -310,11 +312,11 @@ class DeleteEndpointRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -350,33 +352,33 @@ class OperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_message = proto.Field(
+    status_message: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    requested_cancellation = proto.Field(
+    requested_cancellation: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )

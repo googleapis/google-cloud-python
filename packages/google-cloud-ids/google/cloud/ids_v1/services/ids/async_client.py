@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -154,9 +164,9 @@ class IDSAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, IDSTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the ids client.
@@ -200,11 +210,11 @@ class IDSAsyncClient:
 
     async def list_endpoints(
         self,
-        request: Union[ids.ListEndpointsRequest, dict] = None,
+        request: Optional[Union[ids.ListEndpointsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEndpointsAsyncPager:
         r"""Lists Endpoints in a given project and location.
@@ -237,7 +247,7 @@ class IDSAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.ids_v1.types.ListEndpointsRequest, dict]):
+            request (Optional[Union[google.cloud.ids_v1.types.ListEndpointsRequest, dict]]):
                 The request object.
             parent (:class:`str`):
                 Required. The parent, which owns this
@@ -321,11 +331,11 @@ class IDSAsyncClient:
 
     async def get_endpoint(
         self,
-        request: Union[ids.GetEndpointRequest, dict] = None,
+        request: Optional[Union[ids.GetEndpointRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> ids.Endpoint:
         r"""Gets details of a single Endpoint.
@@ -357,7 +367,7 @@ class IDSAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.ids_v1.types.GetEndpointRequest, dict]):
+            request (Optional[Union[google.cloud.ids_v1.types.GetEndpointRequest, dict]]):
                 The request object.
             name (:class:`str`):
                 Required. The name of the endpoint to retrieve. Format:
@@ -433,13 +443,13 @@ class IDSAsyncClient:
 
     async def create_endpoint(
         self,
-        request: Union[ids.CreateEndpointRequest, dict] = None,
+        request: Optional[Union[ids.CreateEndpointRequest, dict]] = None,
         *,
-        parent: str = None,
-        endpoint: ids.Endpoint = None,
-        endpoint_id: str = None,
+        parent: Optional[str] = None,
+        endpoint: Optional[ids.Endpoint] = None,
+        endpoint_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Endpoint in a given project and
@@ -482,7 +492,7 @@ class IDSAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.ids_v1.types.CreateEndpointRequest, dict]):
+            request (Optional[Union[google.cloud.ids_v1.types.CreateEndpointRequest, dict]]):
                 The request object.
             parent (:class:`str`):
                 Required. The endpoint's parent.
@@ -575,11 +585,11 @@ class IDSAsyncClient:
 
     async def delete_endpoint(
         self,
-        request: Union[ids.DeleteEndpointRequest, dict] = None,
+        request: Optional[Union[ids.DeleteEndpointRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Endpoint.
@@ -615,7 +625,7 @@ class IDSAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.ids_v1.types.DeleteEndpointRequest, dict]):
+            request (Optional[Union[google.cloud.ids_v1.types.DeleteEndpointRequest, dict]]):
                 The request object.
             name (:class:`str`):
                 Required. The name of the endpoint to

@@ -13,30 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.ids import gapic_version as package_version
-
-__version__ = package_version.__version__
-
-
-from .services.ids import IDSAsyncClient, IDSClient
-from .types.ids import (
-    CreateEndpointRequest,
-    DeleteEndpointRequest,
-    Endpoint,
-    GetEndpointRequest,
-    ListEndpointsRequest,
-    ListEndpointsResponse,
-    OperationMetadata,
-)
-
-__all__ = (
-    "IDSAsyncClient",
-    "CreateEndpointRequest",
-    "DeleteEndpointRequest",
-    "Endpoint",
-    "GetEndpointRequest",
-    "IDSClient",
-    "ListEndpointsRequest",
-    "ListEndpointsResponse",
-    "OperationMetadata",
-)
+__version__ = "1.2.4"  # {x-release-please-version}
