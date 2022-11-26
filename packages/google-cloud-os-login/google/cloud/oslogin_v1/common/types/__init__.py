@@ -13,11 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .common import (
-    PosixAccount,
-    SshPublicKey,
-    OperatingSystemType,
-)
+from .common import OperatingSystemType, PosixAccount, SshPublicKey
 
 __all__ = (
     "PosixAccount",

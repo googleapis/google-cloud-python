@@ -20,7 +20,7 @@
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-oslogin
+#   python3 -m pip install google-cloud-os-login
 
 
 # [START oslogin_v1_generated_OsLoginService_DeleteSshPublicKey_async]

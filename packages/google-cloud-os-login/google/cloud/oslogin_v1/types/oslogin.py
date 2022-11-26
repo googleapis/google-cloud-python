@@ -13,16 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.oslogin_v1 import common  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.oslogin.v1",
     manifest={
         "LoginProfile",
+        "CreateSshPublicKeyRequest",
         "DeletePosixAccountRequest",
         "DeleteSshPublicKeyRequest",
         "GetLoginProfileRequest",
@@ -41,27 +43,50 @@ class LoginProfile(proto.Message):
     Attributes:
         name (str):
             Required. A unique user ID.
-        posix_accounts (Sequence[google.cloud.oslogin.v1.common.PosixAccount]):
+        posix_accounts (MutableSequence[google.cloud.oslogin_v1.common.PosixAccount]):
             The list of POSIX accounts associated with
             the user.
-        ssh_public_keys (Mapping[str, google.cloud.oslogin.v1.common.SshPublicKey]):
+        ssh_public_keys (MutableMapping[str, google.cloud.oslogin_v1.common.SshPublicKey]):
             A map from SSH public key fingerprint to the
             associated key object.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    posix_accounts = proto.RepeatedField(
+    posix_accounts: MutableSequence[common.PosixAccount] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=common.PosixAccount,
     )
-    ssh_public_keys = proto.MapField(
+    ssh_public_keys: MutableMapping[str, common.SshPublicKey] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=3,
+        message=common.SshPublicKey,
+    )
+
+
+class CreateSshPublicKeyRequest(proto.Message):
+    r"""A request message for creating an SSH public key.
+
+    Attributes:
+        parent (str):
+            Required. The unique ID for the user in format
+            ``users/{user}``.
+        ssh_public_key (google.cloud.oslogin_v1.common.SshPublicKey):
+            Required. The SSH public key and expiration
+            time.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ssh_public_key: common.SshPublicKey = proto.Field(
+        proto.MESSAGE,
+        number=2,
         message=common.SshPublicKey,
     )
 
@@ -77,7 +102,7 @@ class DeletePosixAccountRequest(proto.Message):
             format ``users/{user}/projects/{project}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -94,7 +119,7 @@ class DeleteSshPublicKeyRequest(proto.Message):
             ``users/{user}/sshPublicKeys/{fingerprint}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -116,15 +141,15 @@ class GetLoginProfileRequest(proto.Message):
             request.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    system_id = proto.Field(
+    system_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -141,7 +166,7 @@ class GetSshPublicKeyRequest(proto.Message):
             ``users/{user}/sshPublicKeys/{fingerprint}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -154,7 +179,7 @@ class ImportSshPublicKeyRequest(proto.Message):
         parent (str):
             Required. The unique ID for the user in format
             ``users/{user}``.
-        ssh_public_key (google.cloud.oslogin.v1.common.SshPublicKey):
+        ssh_public_key (google.cloud.oslogin_v1.common.SshPublicKey):
             Optional. The SSH public key and expiration
             time.
         project_id (str):
@@ -162,16 +187,16 @@ class ImportSshPublicKeyRequest(proto.Message):
             project.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    ssh_public_key = proto.Field(
+    ssh_public_key: common.SshPublicKey = proto.Field(
         proto.MESSAGE,
         number=2,
         message=common.SshPublicKey,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -183,12 +208,18 @@ class ImportSshPublicKeyResponse(proto.Message):
     Attributes:
         login_profile (google.cloud.oslogin_v1.types.LoginProfile):
             The login profile information for the user.
+        details (str):
+            Detailed information about import results.
     """
 
-    login_profile = proto.Field(
+    login_profile: "LoginProfile" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="LoginProfile",
+    )
+    details: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -201,7 +232,7 @@ class UpdateSshPublicKeyRequest(proto.Message):
             Public keys are identified by their SHA-256 fingerprint. The
             fingerprint of the public key is in format
             ``users/{user}/sshPublicKeys/{fingerprint}``.
-        ssh_public_key (google.cloud.oslogin.v1.common.SshPublicKey):
+        ssh_public_key (google.cloud.oslogin_v1.common.SshPublicKey):
             Required. The SSH public key and expiration
             time.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
@@ -209,16 +240,16 @@ class UpdateSshPublicKeyRequest(proto.Message):
             Updates all if not present.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    ssh_public_key = proto.Field(
+    ssh_public_key: common.SshPublicKey = proto.Field(
         proto.MESSAGE,
         number=2,
         message=common.SshPublicKey,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,

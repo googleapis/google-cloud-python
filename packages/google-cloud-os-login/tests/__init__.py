@@ -13,26 +13,3 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .oslogin import (
-    CreateSshPublicKeyRequest,
-    DeletePosixAccountRequest,
-    DeleteSshPublicKeyRequest,
-    GetLoginProfileRequest,
-    GetSshPublicKeyRequest,
-    ImportSshPublicKeyRequest,
-    ImportSshPublicKeyResponse,
-    LoginProfile,
-    UpdateSshPublicKeyRequest,
-)
-
-__all__ = (
-    "CreateSshPublicKeyRequest",
-    "DeletePosixAccountRequest",
-    "DeleteSshPublicKeyRequest",
-    "GetLoginProfileRequest",
-    "GetSshPublicKeyRequest",
-    "ImportSshPublicKeyRequest",
-    "ImportSshPublicKeyResponse",
-    "LoginProfile",
-    "UpdateSshPublicKeyRequest",
-)

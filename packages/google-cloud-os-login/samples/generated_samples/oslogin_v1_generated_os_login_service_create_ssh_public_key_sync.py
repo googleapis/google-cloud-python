@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteSshPublicKey
+# Snippet for CreateSshPublicKey
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-os-login
 
 
-# [START oslogin_v1_generated_OsLoginService_DeleteSshPublicKey_sync]
+# [START oslogin_v1_generated_OsLoginService_CreateSshPublicKey_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,17 +34,19 @@
 from google.cloud import oslogin_v1
 
 
-def sample_delete_ssh_public_key():
+def sample_create_ssh_public_key():
     # Create a client
     client = oslogin_v1.OsLoginServiceClient()
 
     # Initialize request argument(s)
-    request = oslogin_v1.DeleteSshPublicKeyRequest(
-        name="name_value",
+    request = oslogin_v1.CreateSshPublicKeyRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    client.delete_ssh_public_key(request=request)
+    response = client.create_ssh_public_key(request=request)
 
+    # Handle the response
+    print(response)
 
-# [END oslogin_v1_generated_OsLoginService_DeleteSshPublicKey_sync]
+# [END oslogin_v1_generated_OsLoginService_CreateSshPublicKey_sync]

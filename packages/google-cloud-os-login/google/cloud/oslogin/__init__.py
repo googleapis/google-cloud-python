@@ -13,26 +13,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.oslogin import gapic_version as package_version
 
-from google.cloud.oslogin_v1.services.os_login_service.client import (
-    OsLoginServiceClient,
-)
+__version__ = package_version.__version__
+
+
 from google.cloud.oslogin_v1.services.os_login_service.async_client import (
     OsLoginServiceAsyncClient,
 )
-
-from google.cloud.oslogin_v1.types.oslogin import DeletePosixAccountRequest
-from google.cloud.oslogin_v1.types.oslogin import DeleteSshPublicKeyRequest
-from google.cloud.oslogin_v1.types.oslogin import GetLoginProfileRequest
-from google.cloud.oslogin_v1.types.oslogin import GetSshPublicKeyRequest
-from google.cloud.oslogin_v1.types.oslogin import ImportSshPublicKeyRequest
-from google.cloud.oslogin_v1.types.oslogin import ImportSshPublicKeyResponse
-from google.cloud.oslogin_v1.types.oslogin import LoginProfile
-from google.cloud.oslogin_v1.types.oslogin import UpdateSshPublicKeyRequest
+from google.cloud.oslogin_v1.services.os_login_service.client import (
+    OsLoginServiceClient,
+)
+from google.cloud.oslogin_v1.types.oslogin import (
+    CreateSshPublicKeyRequest,
+    DeletePosixAccountRequest,
+    DeleteSshPublicKeyRequest,
+    GetLoginProfileRequest,
+    GetSshPublicKeyRequest,
+    ImportSshPublicKeyRequest,
+    ImportSshPublicKeyResponse,
+    LoginProfile,
+    UpdateSshPublicKeyRequest,
+)
 
 __all__ = (
     "OsLoginServiceClient",
     "OsLoginServiceAsyncClient",
+    "CreateSshPublicKeyRequest",
     "DeletePosixAccountRequest",
     "DeleteSshPublicKeyRequest",
     "GetLoginProfileRequest",

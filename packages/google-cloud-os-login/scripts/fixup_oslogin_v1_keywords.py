@@ -39,6 +39,7 @@ def partition(
 class osloginCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'create_ssh_public_key': ('parent', 'ssh_public_key', ),
         'delete_posix_account': ('name', ),
         'delete_ssh_public_key': ('name', ),
         'get_login_profile': ('name', 'project_id', 'system_id', ),

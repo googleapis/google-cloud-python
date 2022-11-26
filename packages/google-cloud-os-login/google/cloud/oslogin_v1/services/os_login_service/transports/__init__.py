@@ -20,7 +20,6 @@ from .base import OsLoginServiceTransport
 from .grpc import OsLoginServiceGrpcTransport
 from .grpc_asyncio import OsLoginServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[OsLoginServiceTransport]]
 _transport_registry["grpc"] = OsLoginServiceGrpcTransport

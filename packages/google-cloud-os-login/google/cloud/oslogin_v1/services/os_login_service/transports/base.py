@@ -15,19 +15,19 @@
 #
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
-import pkg_resources
 
-import google.auth  # type: ignore
 import google.api_core
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
+import pkg_resources
 
 from google.cloud.oslogin_v1 import common  # type: ignore
 from google.cloud.oslogin_v1.types import oslogin
-from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -44,7 +44,9 @@ class OsLoginServiceTransport(abc.ABC):
 
     AUTH_SCOPES = (
         "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/cloud-platform.read-only",
         "https://www.googleapis.com/auth/compute",
+        "https://www.googleapis.com/auth/compute.readonly",
     )
 
     DEFAULT_HOST: str = "oslogin.googleapis.com"
@@ -53,7 +55,7 @@ class OsLoginServiceTransport(abc.ABC):
         self,
         *,
         host: str = DEFAULT_HOST,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -132,6 +134,11 @@ class OsLoginServiceTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
+            self.create_ssh_public_key: gapic_v1.method.wrap_method(
+                self.create_ssh_public_key,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_posix_account: gapic_v1.method.wrap_method(
                 self.delete_posix_account,
                 default_retry=retries.Retry(
@@ -231,6 +238,15 @@ class OsLoginServiceTransport(abc.ABC):
              Only call this method if the transport is NOT shared
              with other clients - this may cause errors in other clients!
         """
+        raise NotImplementedError()
+
+    @property
+    def create_ssh_public_key(
+        self,
+    ) -> Callable[
+        [oslogin.CreateSshPublicKeyRequest],
+        Union[common.SshPublicKey, Awaitable[common.SshPublicKey]],
+    ]:
         raise NotImplementedError()
 
     @property

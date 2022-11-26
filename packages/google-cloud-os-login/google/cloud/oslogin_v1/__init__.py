@@ -13,21 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.oslogin import gapic_version as package_version
 
-from .services.os_login_service import OsLoginServiceClient
-from .services.os_login_service import OsLoginServiceAsyncClient
+__version__ = package_version.__version__
 
-from .types.oslogin import DeletePosixAccountRequest
-from .types.oslogin import DeleteSshPublicKeyRequest
-from .types.oslogin import GetLoginProfileRequest
-from .types.oslogin import GetSshPublicKeyRequest
-from .types.oslogin import ImportSshPublicKeyRequest
-from .types.oslogin import ImportSshPublicKeyResponse
-from .types.oslogin import LoginProfile
-from .types.oslogin import UpdateSshPublicKeyRequest
+
+from .services.os_login_service import OsLoginServiceAsyncClient, OsLoginServiceClient
+from .types.oslogin import (
+    CreateSshPublicKeyRequest,
+    DeletePosixAccountRequest,
+    DeleteSshPublicKeyRequest,
+    GetLoginProfileRequest,
+    GetSshPublicKeyRequest,
+    ImportSshPublicKeyRequest,
+    ImportSshPublicKeyResponse,
+    LoginProfile,
+    UpdateSshPublicKeyRequest,
+)
 
 __all__ = (
     "OsLoginServiceAsyncClient",
+    "CreateSshPublicKeyRequest",
     "DeletePosixAccountRequest",
     "DeleteSshPublicKeyRequest",
     "GetLoginProfileRequest",

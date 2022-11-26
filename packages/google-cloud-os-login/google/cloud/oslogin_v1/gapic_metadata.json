@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "OsLoginServiceClient",
           "rpcs": {
+            "CreateSshPublicKey": {
+              "methods": [
+                "create_ssh_public_key"
+              ]
+            },
             "DeletePosixAccount": {
               "methods": [
                 "delete_posix_account"
@@ -45,6 +50,11 @@
         "grpc-async": {
           "libraryClient": "OsLoginServiceAsyncClient",
           "rpcs": {
+            "CreateSshPublicKey": {
+              "methods": [
+                "create_ssh_public_key"
+              ]
+            },
             "DeletePosixAccount": {
               "methods": [
                 "delete_posix_account"

@@ -22,29 +22,29 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-import grpc
-from grpc.experimental import aio
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-from proto.marshal.rules import wrappers
 
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import path_template
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.oslogin_v1 import common  # type: ignore
-from google.cloud.oslogin_v1.services.os_login_service import OsLoginServiceAsyncClient
-from google.cloud.oslogin_v1.services.os_login_service import OsLoginServiceClient
-from google.cloud.oslogin_v1.services.os_login_service import transports
-from google.cloud.oslogin_v1.types import oslogin
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
-import google.auth
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+from google.cloud.oslogin_v1 import common  # type: ignore
+from google.cloud.oslogin_v1.services.os_login_service import (
+    OsLoginServiceAsyncClient,
+    OsLoginServiceClient,
+    transports,
+)
+from google.cloud.oslogin_v1.types import oslogin
 
 
 def client_cert_source_callback():
@@ -676,7 +676,9 @@ def test_os_login_service_client_create_channel_credentials_file(
             quota_project_id=None,
             default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
                 "https://www.googleapis.com/auth/compute",
+                "https://www.googleapis.com/auth/compute.readonly",
             ),
             scopes=None,
             default_host="oslogin.googleapis.com",
@@ -685,6 +687,270 @@ def test_os_login_service_client_create_channel_credentials_file(
                 ("grpc.max_send_message_length", -1),
                 ("grpc.max_receive_message_length", -1),
             ],
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oslogin.CreateSshPublicKeyRequest,
+        dict,
+    ],
+)
+def test_create_ssh_public_key(request_type, transport: str = "grpc"):
+    client = OsLoginServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_ssh_public_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = common.SshPublicKey(
+            key="key_value",
+            expiration_time_usec=2144,
+            fingerprint="fingerprint_value",
+            name="name_value",
+        )
+        response = client.create_ssh_public_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == oslogin.CreateSshPublicKeyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common.SshPublicKey)
+    assert response.key == "key_value"
+    assert response.expiration_time_usec == 2144
+    assert response.fingerprint == "fingerprint_value"
+    assert response.name == "name_value"
+
+
+def test_create_ssh_public_key_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsLoginServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_ssh_public_key), "__call__"
+    ) as call:
+        client.create_ssh_public_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == oslogin.CreateSshPublicKeyRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_ssh_public_key_async(
+    transport: str = "grpc_asyncio", request_type=oslogin.CreateSshPublicKeyRequest
+):
+    client = OsLoginServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_ssh_public_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            common.SshPublicKey(
+                key="key_value",
+                expiration_time_usec=2144,
+                fingerprint="fingerprint_value",
+                name="name_value",
+            )
+        )
+        response = await client.create_ssh_public_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == oslogin.CreateSshPublicKeyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common.SshPublicKey)
+    assert response.key == "key_value"
+    assert response.expiration_time_usec == 2144
+    assert response.fingerprint == "fingerprint_value"
+    assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_create_ssh_public_key_async_from_dict():
+    await test_create_ssh_public_key_async(request_type=dict)
+
+
+def test_create_ssh_public_key_field_headers():
+    client = OsLoginServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = oslogin.CreateSshPublicKeyRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_ssh_public_key), "__call__"
+    ) as call:
+        call.return_value = common.SshPublicKey()
+        client.create_ssh_public_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_ssh_public_key_field_headers_async():
+    client = OsLoginServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = oslogin.CreateSshPublicKeyRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_ssh_public_key), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.SshPublicKey())
+        await client.create_ssh_public_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_ssh_public_key_flattened():
+    client = OsLoginServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_ssh_public_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = common.SshPublicKey()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_ssh_public_key(
+            parent="parent_value",
+            ssh_public_key=common.SshPublicKey(key="key_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].ssh_public_key
+        mock_val = common.SshPublicKey(key="key_value")
+        assert arg == mock_val
+
+
+def test_create_ssh_public_key_flattened_error():
+    client = OsLoginServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_ssh_public_key(
+            oslogin.CreateSshPublicKeyRequest(),
+            parent="parent_value",
+            ssh_public_key=common.SshPublicKey(key="key_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_ssh_public_key_flattened_async():
+    client = OsLoginServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_ssh_public_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = common.SshPublicKey()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.SshPublicKey())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_ssh_public_key(
+            parent="parent_value",
+            ssh_public_key=common.SshPublicKey(key="key_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].ssh_public_key
+        mock_val = common.SshPublicKey(key="key_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_ssh_public_key_flattened_error_async():
+    client = OsLoginServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_ssh_public_key(
+            oslogin.CreateSshPublicKeyRequest(),
+            parent="parent_value",
+            ssh_public_key=common.SshPublicKey(key="key_value"),
         )
 
 
@@ -1678,7 +1944,9 @@ def test_import_ssh_public_key(request_type, transport: str = "grpc"):
         type(client.transport.import_ssh_public_key), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = oslogin.ImportSshPublicKeyResponse()
+        call.return_value = oslogin.ImportSshPublicKeyResponse(
+            details="details_value",
+        )
         response = client.import_ssh_public_key(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1688,6 +1956,7 @@ def test_import_ssh_public_key(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, oslogin.ImportSshPublicKeyResponse)
+    assert response.details == "details_value"
 
 
 def test_import_ssh_public_key_empty_call():
@@ -1727,7 +1996,9 @@ async def test_import_ssh_public_key_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            oslogin.ImportSshPublicKeyResponse()
+            oslogin.ImportSshPublicKeyResponse(
+                details="details_value",
+            )
         )
         response = await client.import_ssh_public_key(request)
 
@@ -1738,6 +2009,7 @@ async def test_import_ssh_public_key_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, oslogin.ImportSshPublicKeyResponse)
+    assert response.details == "details_value"
 
 
 @pytest.mark.asyncio
@@ -2327,6 +2599,7 @@ def test_os_login_service_base_transport():
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
+        "create_ssh_public_key",
         "delete_posix_account",
         "delete_ssh_public_key",
         "get_login_profile",
@@ -2368,7 +2641,9 @@ def test_os_login_service_base_transport_with_credentials_file():
             scopes=None,
             default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
                 "https://www.googleapis.com/auth/compute",
+                "https://www.googleapis.com/auth/compute.readonly",
             ),
             quota_project_id="octopus",
         )
@@ -2394,7 +2669,9 @@ def test_os_login_service_auth_adc():
             scopes=None,
             default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
                 "https://www.googleapis.com/auth/compute",
+                "https://www.googleapis.com/auth/compute.readonly",
             ),
             quota_project_id=None,
         )
@@ -2417,7 +2694,9 @@ def test_os_login_service_transport_auth_adc(transport_class):
             scopes=["1", "2"],
             default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
                 "https://www.googleapis.com/auth/compute",
+                "https://www.googleapis.com/auth/compute.readonly",
             ),
             quota_project_id="octopus",
         )
@@ -2471,7 +2750,9 @@ def test_os_login_service_transport_create_channel(transport_class, grpc_helpers
             quota_project_id="octopus",
             default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
                 "https://www.googleapis.com/auth/compute",
+                "https://www.googleapis.com/auth/compute.readonly",
             ),
             scopes=["1", "2"],
             default_host="oslogin.googleapis.com",

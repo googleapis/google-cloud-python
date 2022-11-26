@@ -13,21 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
 
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers_async
+from google.api_core import gapic_v1, grpc_helpers_async
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-
+from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.oslogin_v1 import common  # type: ignore
 from google.cloud.oslogin_v1.types import oslogin
-from google.protobuf import empty_pb2  # type: ignore
-from .base import OsLoginServiceTransport, DEFAULT_CLIENT_INFO
+
+from .base import DEFAULT_CLIENT_INFO, OsLoginServiceTransport
 from .grpc import OsLoginServiceGrpcTransport
 
 
@@ -54,7 +53,7 @@ class OsLoginServiceGrpcAsyncIOTransport(OsLoginServiceTransport):
     def create_channel(
         cls,
         host: str = "oslogin.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -97,15 +96,15 @@ class OsLoginServiceGrpcAsyncIOTransport(OsLoginServiceTransport):
         self,
         *,
         host: str = "oslogin.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: aio.Channel = None,
-        api_mtls_endpoint: str = None,
-        client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
-        ssl_channel_credentials: grpc.ChannelCredentials = None,
-        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
-        quota_project_id=None,
+        channel: Optional[aio.Channel] = None,
+        api_mtls_endpoint: Optional[str] = None,
+        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         api_audience: Optional[str] = None,
@@ -236,6 +235,32 @@ class OsLoginServiceGrpcAsyncIOTransport(OsLoginServiceTransport):
         """
         # Return the channel from cache.
         return self._grpc_channel
+
+    @property
+    def create_ssh_public_key(
+        self,
+    ) -> Callable[[oslogin.CreateSshPublicKeyRequest], Awaitable[common.SshPublicKey]]:
+        r"""Return a callable for the create ssh public key method over gRPC.
+
+        Create an SSH public key
+
+        Returns:
+            Callable[[~.CreateSshPublicKeyRequest],
+                    Awaitable[~.SshPublicKey]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_ssh_public_key" not in self._stubs:
+            self._stubs["create_ssh_public_key"] = self.grpc_channel.unary_unary(
+                "/google.cloud.oslogin.v1.OsLoginService/CreateSshPublicKey",
+                request_serializer=oslogin.CreateSshPublicKeyRequest.serialize,
+                response_deserializer=common.SshPublicKey.deserialize,
+            )
+        return self._stubs["create_ssh_public_key"]
 
     @property
     def delete_posix_account(

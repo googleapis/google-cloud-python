@@ -16,27 +16,39 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.protobuf import field_mask_pb2  # type: ignore
+
 from google.cloud.oslogin_v1 import common  # type: ignore
 from google.cloud.oslogin_v1.types import oslogin
-from google.protobuf import field_mask_pb2  # type: ignore
-from .transports.base import OsLoginServiceTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import OsLoginServiceGrpcAsyncIOTransport
+
 from .client import OsLoginServiceClient
+from .transports.base import DEFAULT_CLIENT_INFO, OsLoginServiceTransport
+from .transports.grpc_asyncio import OsLoginServiceGrpcAsyncIOTransport
 
 
 class OsLoginServiceAsyncClient:
@@ -169,9 +181,9 @@ class OsLoginServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, OsLoginServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the os login service client.
@@ -213,13 +225,125 @@ class OsLoginServiceAsyncClient:
             client_info=client_info,
         )
 
+    async def create_ssh_public_key(
+        self,
+        request: Optional[Union[oslogin.CreateSshPublicKeyRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        ssh_public_key: Optional[common.SshPublicKey] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> common.SshPublicKey:
+        r"""Create an SSH public key
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oslogin_v1
+
+            async def sample_create_ssh_public_key():
+                # Create a client
+                client = oslogin_v1.OsLoginServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = oslogin_v1.CreateSshPublicKeyRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.create_ssh_public_key(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.oslogin_v1.types.CreateSshPublicKeyRequest, dict]]):
+                The request object. A request message for creating an
+                SSH public key.
+            parent (:class:`str`):
+                Required. The unique ID for the user in format
+                ``users/{user}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            ssh_public_key (:class:`google.cloud.oslogin_v1.common.SshPublicKey`):
+                Required. The SSH public key and
+                expiration time.
+
+                This corresponds to the ``ssh_public_key`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.oslogin_v1.common.SshPublicKey:
+                The SSH public key information
+                associated with a Google account.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, ssh_public_key])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = oslogin.CreateSshPublicKeyRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if ssh_public_key is not None:
+            request.ssh_public_key = ssh_public_key
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_ssh_public_key,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def delete_posix_account(
         self,
-        request: Union[oslogin.DeletePosixAccountRequest, dict] = None,
+        request: Optional[Union[oslogin.DeletePosixAccountRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a POSIX account.
@@ -248,7 +372,7 @@ class OsLoginServiceAsyncClient:
                 await client.delete_posix_account(request=request)
 
         Args:
-            request (Union[google.cloud.oslogin_v1.types.DeletePosixAccountRequest, dict]):
+            request (Optional[Union[google.cloud.oslogin_v1.types.DeletePosixAccountRequest, dict]]):
                 The request object. A request message for deleting a
                 POSIX account entry.
             name (:class:`str`):
@@ -317,11 +441,11 @@ class OsLoginServiceAsyncClient:
 
     async def delete_ssh_public_key(
         self,
-        request: Union[oslogin.DeleteSshPublicKeyRequest, dict] = None,
+        request: Optional[Union[oslogin.DeleteSshPublicKeyRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an SSH public key.
@@ -350,7 +474,7 @@ class OsLoginServiceAsyncClient:
                 await client.delete_ssh_public_key(request=request)
 
         Args:
-            request (Union[google.cloud.oslogin_v1.types.DeleteSshPublicKeyRequest, dict]):
+            request (Optional[Union[google.cloud.oslogin_v1.types.DeleteSshPublicKeyRequest, dict]]):
                 The request object. A request message for deleting an
                 SSH public key.
             name (:class:`str`):
@@ -419,11 +543,11 @@ class OsLoginServiceAsyncClient:
 
     async def get_login_profile(
         self,
-        request: Union[oslogin.GetLoginProfileRequest, dict] = None,
+        request: Optional[Union[oslogin.GetLoginProfileRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> oslogin.LoginProfile:
         r"""Retrieves the profile information used for logging in
@@ -456,7 +580,7 @@ class OsLoginServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.oslogin_v1.types.GetLoginProfileRequest, dict]):
+            request (Optional[Union[google.cloud.oslogin_v1.types.GetLoginProfileRequest, dict]]):
                 The request object. A request message for retrieving the
                 login profile information for a user.
             name (:class:`str`):
@@ -533,11 +657,11 @@ class OsLoginServiceAsyncClient:
 
     async def get_ssh_public_key(
         self,
-        request: Union[oslogin.GetSshPublicKeyRequest, dict] = None,
+        request: Optional[Union[oslogin.GetSshPublicKeyRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.SshPublicKey:
         r"""Retrieves an SSH public key.
@@ -569,7 +693,7 @@ class OsLoginServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.oslogin_v1.types.GetSshPublicKeyRequest, dict]):
+            request (Optional[Union[google.cloud.oslogin_v1.types.GetSshPublicKeyRequest, dict]]):
                 The request object. A request message for retrieving an
                 SSH public key.
             name (:class:`str`):
@@ -588,7 +712,7 @@ class OsLoginServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.oslogin.v1.common.SshPublicKey:
+            google.cloud.oslogin_v1.common.SshPublicKey:
                 The SSH public key information
                 associated with a Google account.
 
@@ -647,13 +771,13 @@ class OsLoginServiceAsyncClient:
 
     async def import_ssh_public_key(
         self,
-        request: Union[oslogin.ImportSshPublicKeyRequest, dict] = None,
+        request: Optional[Union[oslogin.ImportSshPublicKeyRequest, dict]] = None,
         *,
-        parent: str = None,
-        ssh_public_key: common.SshPublicKey = None,
-        project_id: str = None,
+        parent: Optional[str] = None,
+        ssh_public_key: Optional[common.SshPublicKey] = None,
+        project_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> oslogin.ImportSshPublicKeyResponse:
         r"""Adds an SSH public key and returns the profile
@@ -688,7 +812,7 @@ class OsLoginServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.oslogin_v1.types.ImportSshPublicKeyRequest, dict]):
+            request (Optional[Union[google.cloud.oslogin_v1.types.ImportSshPublicKeyRequest, dict]]):
                 The request object. A request message for importing an
                 SSH public key.
             parent (:class:`str`):
@@ -698,7 +822,7 @@ class OsLoginServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            ssh_public_key (:class:`google.cloud.oslogin.v1.common.SshPublicKey`):
+            ssh_public_key (:class:`google.cloud.oslogin_v1.common.SshPublicKey`):
                 Optional. The SSH public key and
                 expiration time.
 
@@ -782,13 +906,13 @@ class OsLoginServiceAsyncClient:
 
     async def update_ssh_public_key(
         self,
-        request: Union[oslogin.UpdateSshPublicKeyRequest, dict] = None,
+        request: Optional[Union[oslogin.UpdateSshPublicKeyRequest, dict]] = None,
         *,
-        name: str = None,
-        ssh_public_key: common.SshPublicKey = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        name: Optional[str] = None,
+        ssh_public_key: Optional[common.SshPublicKey] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.SshPublicKey:
         r"""Updates an SSH public key and returns the profile
@@ -821,7 +945,7 @@ class OsLoginServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.oslogin_v1.types.UpdateSshPublicKeyRequest, dict]):
+            request (Optional[Union[google.cloud.oslogin_v1.types.UpdateSshPublicKeyRequest, dict]]):
                 The request object. A request message for updating an
                 SSH public key.
             name (:class:`str`):
@@ -833,7 +957,7 @@ class OsLoginServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            ssh_public_key (:class:`google.cloud.oslogin.v1.common.SshPublicKey`):
+            ssh_public_key (:class:`google.cloud.oslogin_v1.common.SshPublicKey`):
                 Required. The SSH public key and
                 expiration time.
 
@@ -854,7 +978,7 @@ class OsLoginServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.oslogin.v1.common.SshPublicKey:
+            google.cloud.oslogin_v1.common.SshPublicKey:
                 The SSH public key information
                 associated with a Google account.
 
