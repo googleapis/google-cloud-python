@@ -16,30 +16,42 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.trace_v2.types import trace
-from google.cloud.trace_v2.types import tracing
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
-from .transports.base import TraceServiceTransport, DEFAULT_CLIENT_INFO
+
+from google.cloud.trace_v2.types import trace, tracing
+
+from .transports.base import DEFAULT_CLIENT_INFO, TraceServiceTransport
 from .transports.grpc import TraceServiceGrpcTransport
 from .transports.grpc_asyncio import TraceServiceGrpcAsyncIOTransport
 
@@ -58,7 +70,7 @@ class TraceServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[TraceServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -339,8 +351,8 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, TraceServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, TraceServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the trace service client.
@@ -354,7 +366,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
             transport (Union[str, TraceServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -384,6 +396,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -436,12 +449,12 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
 
     def batch_write_spans(
         self,
-        request: Union[tracing.BatchWriteSpansRequest, dict] = None,
+        request: Optional[Union[tracing.BatchWriteSpansRequest, dict]] = None,
         *,
-        name: str = None,
-        spans: Sequence[trace.Span] = None,
+        name: Optional[str] = None,
+        spans: Optional[MutableSequence[trace.Span]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Sends new spans to new or existing traces. You cannot
@@ -486,7 +499,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            spans (Sequence[google.cloud.trace_v2.types.Span]):
+            spans (MutableSequence[google.cloud.trace_v2.types.Span]):
                 Required. A list of new spans. The
                 span names must not match existing
                 spans, or the results are undefined.
@@ -543,10 +556,10 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
 
     def create_span(
         self,
-        request: Union[trace.Span, dict] = None,
+        request: Optional[Union[trace.Span, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> trace.Span:
         r"""Creates a new span.

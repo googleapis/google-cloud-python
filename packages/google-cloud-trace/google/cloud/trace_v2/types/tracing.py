@@ -13,10 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.trace_v2.types import trace
-
 
 __protobuf__ = proto.module(
     package="google.devtools.cloudtrace.v2",
@@ -33,17 +34,17 @@ class BatchWriteSpansRequest(proto.Message):
         name (str):
             Required. The name of the project where the spans belong.
             The format is ``projects/[PROJECT_ID]``.
-        spans (Sequence[google.cloud.trace_v2.types.Span]):
+        spans (MutableSequence[google.cloud.trace_v2.types.Span]):
             Required. A list of new spans. The span names
             must not match existing spans, or the results
             are undefined.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    spans = proto.RepeatedField(
+    spans: MutableSequence[trace.Span] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=trace.Span,

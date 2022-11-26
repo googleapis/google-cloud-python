@@ -16,15 +16,25 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -33,9 +43,10 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.trace_v1.services.trace_service import pagers
 from google.cloud.trace_v1.types import trace
-from .transports.base import TraceServiceTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import TraceServiceGrpcAsyncIOTransport
+
 from .client import TraceServiceClient
+from .transports.base import DEFAULT_CLIENT_INFO, TraceServiceTransport
+from .transports.grpc_asyncio import TraceServiceGrpcAsyncIOTransport
 
 
 class TraceServiceAsyncClient:
@@ -158,9 +169,9 @@ class TraceServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, TraceServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the trace service client.
@@ -204,11 +215,11 @@ class TraceServiceAsyncClient:
 
     async def list_traces(
         self,
-        request: Union[trace.ListTracesRequest, dict] = None,
+        request: Optional[Union[trace.ListTracesRequest, dict]] = None,
         *,
-        project_id: str = None,
+        project_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTracesAsyncPager:
         r"""Returns of a list of traces that match the specified
@@ -242,7 +253,7 @@ class TraceServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.trace_v1.types.ListTracesRequest, dict]):
+            request (Optional[Union[google.cloud.trace_v1.types.ListTracesRequest, dict]]):
                 The request object. The request message for the
                 `ListTraces` method. All fields are required unless
                 specified.
@@ -332,12 +343,12 @@ class TraceServiceAsyncClient:
 
     async def get_trace(
         self,
-        request: Union[trace.GetTraceRequest, dict] = None,
+        request: Optional[Union[trace.GetTraceRequest, dict]] = None,
         *,
-        project_id: str = None,
-        trace_id: str = None,
+        project_id: Optional[str] = None,
+        trace_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> trace.Trace:
         r"""Gets a single trace by its ID.
@@ -370,7 +381,7 @@ class TraceServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.trace_v1.types.GetTraceRequest, dict]):
+            request (Optional[Union[google.cloud.trace_v1.types.GetTraceRequest, dict]]):
                 The request object. The request message for the
                 `GetTrace` method.
             project_id (:class:`str`):
@@ -461,12 +472,12 @@ class TraceServiceAsyncClient:
 
     async def patch_traces(
         self,
-        request: Union[trace.PatchTracesRequest, dict] = None,
+        request: Optional[Union[trace.PatchTracesRequest, dict]] = None,
         *,
-        project_id: str = None,
-        traces: trace.Traces = None,
+        project_id: Optional[str] = None,
+        traces: Optional[trace.Traces] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Sends new traces to Stackdriver Trace or updates
@@ -501,7 +512,7 @@ class TraceServiceAsyncClient:
                 await client.patch_traces(request=request)
 
         Args:
-            request (Union[google.cloud.trace_v1.types.PatchTracesRequest, dict]):
+            request (Optional[Union[google.cloud.trace_v1.types.PatchTracesRequest, dict]]):
                 The request object. The request message for the
                 `PatchTraces` method.
             project_id (:class:`str`):

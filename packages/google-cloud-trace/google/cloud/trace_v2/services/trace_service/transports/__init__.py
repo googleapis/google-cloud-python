@@ -20,7 +20,6 @@ from .base import TraceServiceTransport
 from .grpc import TraceServiceGrpcTransport
 from .grpc_asyncio import TraceServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[TraceServiceTransport]]
 _transport_registry["grpc"] = TraceServiceGrpcTransport

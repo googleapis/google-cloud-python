@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import TraceServiceClient
 from .async_client import TraceServiceAsyncClient
+from .client import TraceServiceClient
 
 __all__ = (
     "TraceServiceClient",

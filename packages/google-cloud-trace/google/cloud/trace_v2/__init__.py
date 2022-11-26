@@ -13,15 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.trace import gapic_version as package_version
 
-from .services.trace_service import TraceServiceClient
-from .services.trace_service import TraceServiceAsyncClient
+__version__ = package_version.__version__
 
-from .types.trace import AttributeValue
-from .types.trace import Module
-from .types.trace import Span
-from .types.trace import StackTrace
-from .types.trace import TruncatableString
+
+from .services.trace_service import TraceServiceAsyncClient, TraceServiceClient
+from .types.trace import AttributeValue, Module, Span, StackTrace, TruncatableString
 from .types.tracing import BatchWriteSpansRequest
 
 __all__ = (

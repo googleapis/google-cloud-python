@@ -13,10 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import TraceServiceAsyncClient
-from .client import TraceServiceClient
-
-__all__ = (
-    "TraceServiceClient",
-    "TraceServiceAsyncClient",
-)
+__version__ = "1.7.3"  # {x-release-please-version}

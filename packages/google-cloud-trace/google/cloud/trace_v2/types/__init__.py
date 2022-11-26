@@ -13,16 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .trace import (
-    AttributeValue,
-    Module,
-    Span,
-    StackTrace,
-    TruncatableString,
-)
-from .tracing import (
-    BatchWriteSpansRequest,
-)
+from .trace import AttributeValue, Module, Span, StackTrace, TruncatableString
+from .tracing import BatchWriteSpansRequest
 
 __all__ = (
     "AttributeValue",
