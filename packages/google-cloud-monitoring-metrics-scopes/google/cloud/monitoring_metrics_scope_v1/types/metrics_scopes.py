@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -41,7 +43,7 @@ class GetMetricsScopeRequest(proto.Message):
             ``locations/global/metricsScopes/{SCOPING_PROJECT_ID_OR_NUMBER}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -57,7 +59,7 @@ class ListMetricsScopesByMonitoredProjectRequest(proto.Message):
             ``projects/{MONITORED_PROJECT_ID_OR_NUMBER}``
     """
 
-    monitored_resource_container = proto.Field(
+    monitored_resource_container: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -67,12 +69,12 @@ class ListMetricsScopesByMonitoredProjectResponse(proto.Message):
     r"""Response for the ``ListMetricsScopesByMonitoredProject`` method.
 
     Attributes:
-        metrics_scopes (Sequence[google.cloud.monitoring_metrics_scope_v1.types.MetricsScope]):
+        metrics_scopes (MutableSequence[google.cloud.monitoring_metrics_scope_v1.types.MetricsScope]):
             A set of all metrics scopes that the
             specified monitored project has been added to.
     """
 
-    metrics_scopes = proto.RepeatedField(
+    metrics_scopes: MutableSequence[metrics_scope.MetricsScope] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=metrics_scope.MetricsScope,
@@ -95,11 +97,11 @@ class CreateMonitoredProjectRequest(proto.Message):
             ``locations/global/metricsScopes/{SCOPING_PROJECT_ID_OR_NUMBER}/projects/{MONITORED_PROJECT_ID_OR_NUMBER}``
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    monitored_project = proto.Field(
+    monitored_project: metrics_scope.MonitoredProject = proto.Field(
         proto.MESSAGE,
         number=2,
         message=metrics_scope.MonitoredProject,
@@ -121,7 +123,7 @@ class DeleteMonitoredProjectRequest(proto.Message):
             ``monitoring.metricsScopes.link``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -149,17 +151,17 @@ class OperationMetadata(proto.Message):
         DONE = 3
         CANCELLED = 4
 
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,

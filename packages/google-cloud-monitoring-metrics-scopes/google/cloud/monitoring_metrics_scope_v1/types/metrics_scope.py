@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -44,26 +46,26 @@ class MetricsScope(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when this ``Metrics Scope`` record was
             last updated.
-        monitored_projects (Sequence[google.cloud.monitoring_metrics_scope_v1.types.MonitoredProject]):
+        monitored_projects (MutableSequence[google.cloud.monitoring_metrics_scope_v1.types.MonitoredProject]):
             Output only. The list of projects monitored by this
             ``Metrics Scope``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    monitored_projects = proto.RepeatedField(
+    monitored_projects: MutableSequence["MonitoredProject"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="MonitoredProject",
@@ -87,11 +89,11 @@ class MonitoredProject(proto.Message):
             created.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,

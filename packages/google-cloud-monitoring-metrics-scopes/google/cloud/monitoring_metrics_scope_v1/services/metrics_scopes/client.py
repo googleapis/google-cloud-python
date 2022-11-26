@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -60,7 +71,7 @@ class MetricsScopesClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[MetricsScopesTransport]:
         """Returns an appropriate transport class.
 
@@ -352,8 +363,8 @@ class MetricsScopesClient(metaclass=MetricsScopesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, MetricsScopesTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, MetricsScopesTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the metrics scopes client.
@@ -367,7 +378,7 @@ class MetricsScopesClient(metaclass=MetricsScopesClientMeta):
             transport (Union[str, MetricsScopesTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -397,6 +408,7 @@ class MetricsScopesClient(metaclass=MetricsScopesClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -449,11 +461,11 @@ class MetricsScopesClient(metaclass=MetricsScopesClientMeta):
 
     def get_metrics_scope(
         self,
-        request: Union[metrics_scopes.GetMetricsScopeRequest, dict] = None,
+        request: Optional[Union[metrics_scopes.GetMetricsScopeRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metrics_scope.MetricsScope:
         r"""Returns a specific ``Metrics Scope``.
@@ -555,12 +567,12 @@ class MetricsScopesClient(metaclass=MetricsScopesClientMeta):
 
     def list_metrics_scopes_by_monitored_project(
         self,
-        request: Union[
-            metrics_scopes.ListMetricsScopesByMonitoredProjectRequest, dict
+        request: Optional[
+            Union[metrics_scopes.ListMetricsScopesByMonitoredProjectRequest, dict]
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metrics_scopes.ListMetricsScopesByMonitoredProjectResponse:
         r"""Returns a list of every ``Metrics Scope`` that a specific
@@ -639,12 +651,14 @@ class MetricsScopesClient(metaclass=MetricsScopesClientMeta):
 
     def create_monitored_project(
         self,
-        request: Union[metrics_scopes.CreateMonitoredProjectRequest, dict] = None,
+        request: Optional[
+            Union[metrics_scopes.CreateMonitoredProjectRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        monitored_project: metrics_scope.MonitoredProject = None,
+        parent: Optional[str] = None,
+        monitored_project: Optional[metrics_scope.MonitoredProject] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Adds a ``MonitoredProject`` with the given project ID to the
@@ -773,11 +787,13 @@ class MetricsScopesClient(metaclass=MetricsScopesClientMeta):
 
     def delete_monitored_project(
         self,
-        request: Union[metrics_scopes.DeleteMonitoredProjectRequest, dict] = None,
+        request: Optional[
+            Union[metrics_scopes.DeleteMonitoredProjectRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a ``MonitoredProject`` from the specified
@@ -919,7 +935,7 @@ class MetricsScopesClient(metaclass=MetricsScopesClientMeta):
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
-            "google-cloud-monitoring-metrics-scope",
+            "google-cloud-monitoring-metrics-scopes",
         ).version,
     )
 except pkg_resources.DistributionNotFound:
