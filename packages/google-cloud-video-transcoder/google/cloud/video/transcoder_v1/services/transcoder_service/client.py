@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -61,7 +72,7 @@ class TranscoderServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[TranscoderServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -365,8 +376,8 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, TranscoderServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, TranscoderServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the transcoder service client.
@@ -380,7 +391,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
             transport (Union[str, TranscoderServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -410,6 +421,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -462,12 +474,12 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
 
     def create_job(
         self,
-        request: Union[services.CreateJobRequest, dict] = None,
+        request: Optional[Union[services.CreateJobRequest, dict]] = None,
         *,
-        parent: str = None,
-        job: resources.Job = None,
+        parent: Optional[str] = None,
+        job: Optional[resources.Job] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Job:
         r"""Creates a job in the specified region.
@@ -576,11 +588,11 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
 
     def list_jobs(
         self,
-        request: Union[services.ListJobsRequest, dict] = None,
+        request: Optional[Union[services.ListJobsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobsPager:
         r"""Lists jobs in the specified region.
@@ -691,11 +703,11 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
 
     def get_job(
         self,
-        request: Union[services.GetJobRequest, dict] = None,
+        request: Optional[Union[services.GetJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Job:
         r"""Returns the job data.
@@ -791,11 +803,11 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
 
     def delete_job(
         self,
-        request: Union[services.DeleteJobRequest, dict] = None,
+        request: Optional[Union[services.DeleteJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a job.
@@ -881,13 +893,13 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
 
     def create_job_template(
         self,
-        request: Union[services.CreateJobTemplateRequest, dict] = None,
+        request: Optional[Union[services.CreateJobTemplateRequest, dict]] = None,
         *,
-        parent: str = None,
-        job_template: resources.JobTemplate = None,
-        job_template_id: str = None,
+        parent: Optional[str] = None,
+        job_template: Optional[resources.JobTemplate] = None,
+        job_template_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.JobTemplate:
         r"""Creates a job template in the specified region.
@@ -1008,11 +1020,11 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
 
     def list_job_templates(
         self,
-        request: Union[services.ListJobTemplatesRequest, dict] = None,
+        request: Optional[Union[services.ListJobTemplatesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobTemplatesPager:
         r"""Lists job templates in the specified region.
@@ -1123,11 +1135,11 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
 
     def get_job_template(
         self,
-        request: Union[services.GetJobTemplateRequest, dict] = None,
+        request: Optional[Union[services.GetJobTemplateRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.JobTemplate:
         r"""Returns the job template data.
@@ -1224,11 +1236,11 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
 
     def delete_job_template(
         self,
-        request: Union[services.DeleteJobTemplateRequest, dict] = None,
+        request: Optional[Union[services.DeleteJobTemplateRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a job template.

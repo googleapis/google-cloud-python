@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.video.transcoder_v1.types import resources
@@ -46,11 +48,11 @@ class CreateJobRequest(proto.Message):
             job.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    job = proto.Field(
+    job: resources.Job = proto.Field(
         proto.MESSAGE,
         number=2,
         message=resources.Job,
@@ -79,23 +81,23 @@ class ListJobsRequest(proto.Message):
             https://google.aip.dev/132#ordering.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -110,7 +112,7 @@ class GetJobRequest(proto.Message):
             ``projects/{project}/locations/{location}/jobs/{job}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -129,11 +131,11 @@ class DeleteJobRequest(proto.Message):
             on the server.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -143,11 +145,11 @@ class ListJobsResponse(proto.Message):
     r"""Response message for ``TranscoderService.ListJobs``.
 
     Attributes:
-        jobs (Sequence[google.cloud.video.transcoder_v1.types.Job]):
+        jobs (MutableSequence[google.cloud.video.transcoder_v1.types.Job]):
             List of jobs in the specified region.
         next_page_token (str):
             The pagination token.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             List of regions that could not be reached.
     """
 
@@ -155,16 +157,16 @@ class ListJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    jobs = proto.RepeatedField(
+    jobs: MutableSequence[resources.Job] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.Job,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -190,16 +192,16 @@ class CreateJobTemplateRequest(proto.Message):
             ``[a-zA-Z][a-zA-Z0-9_-]*``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    job_template = proto.Field(
+    job_template: resources.JobTemplate = proto.Field(
         proto.MESSAGE,
         number=2,
         message=resources.JobTemplate,
     )
-    job_template_id = proto.Field(
+    job_template_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -227,23 +229,23 @@ class ListJobTemplatesRequest(proto.Message):
             https://google.aip.dev/132#ordering.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -258,7 +260,7 @@ class GetJobTemplateRequest(proto.Message):
             ``projects/{project}/locations/{location}/jobTemplates/{job_template}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -277,11 +279,11 @@ class DeleteJobTemplateRequest(proto.Message):
             will be taken on the server.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -291,12 +293,12 @@ class ListJobTemplatesResponse(proto.Message):
     r"""Response message for ``TranscoderService.ListJobTemplates``.
 
     Attributes:
-        job_templates (Sequence[google.cloud.video.transcoder_v1.types.JobTemplate]):
+        job_templates (MutableSequence[google.cloud.video.transcoder_v1.types.JobTemplate]):
             List of job templates in the specified
             region.
         next_page_token (str):
             The pagination token.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             List of regions that could not be reached.
     """
 
@@ -304,16 +306,16 @@ class ListJobTemplatesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    job_templates = proto.RepeatedField(
+    job_templates: MutableSequence[resources.JobTemplate] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.JobTemplate,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )

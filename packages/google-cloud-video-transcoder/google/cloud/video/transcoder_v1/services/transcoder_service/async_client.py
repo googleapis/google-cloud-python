@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -173,9 +183,9 @@ class TranscoderServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, TranscoderServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the transcoder service client.
@@ -219,12 +229,12 @@ class TranscoderServiceAsyncClient:
 
     async def create_job(
         self,
-        request: Union[services.CreateJobRequest, dict] = None,
+        request: Optional[Union[services.CreateJobRequest, dict]] = None,
         *,
-        parent: str = None,
-        job: resources.Job = None,
+        parent: Optional[str] = None,
+        job: Optional[resources.Job] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Job:
         r"""Creates a job in the specified region.
@@ -260,7 +270,7 @@ class TranscoderServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.transcoder_v1.types.CreateJobRequest, dict]):
+            request (Optional[Union[google.cloud.video.transcoder_v1.types.CreateJobRequest, dict]]):
                 The request object. Request message for
                 `TranscoderService.CreateJob`.
             parent (:class:`str`):
@@ -333,11 +343,11 @@ class TranscoderServiceAsyncClient:
 
     async def list_jobs(
         self,
-        request: Union[services.ListJobsRequest, dict] = None,
+        request: Optional[Union[services.ListJobsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobsAsyncPager:
         r"""Lists jobs in the specified region.
@@ -370,7 +380,7 @@ class TranscoderServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.video.transcoder_v1.types.ListJobsRequest, dict]):
+            request (Optional[Union[google.cloud.video.transcoder_v1.types.ListJobsRequest, dict]]):
                 The request object. Request message for
                 `TranscoderService.ListJobs`. The parent location from
                 which to retrieve the collection of jobs.
@@ -448,11 +458,11 @@ class TranscoderServiceAsyncClient:
 
     async def get_job(
         self,
-        request: Union[services.GetJobRequest, dict] = None,
+        request: Optional[Union[services.GetJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Job:
         r"""Returns the job data.
@@ -484,7 +494,7 @@ class TranscoderServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.transcoder_v1.types.GetJobRequest, dict]):
+            request (Optional[Union[google.cloud.video.transcoder_v1.types.GetJobRequest, dict]]):
                 The request object. Request message for
                 `TranscoderService.GetJob`.
             name (:class:`str`):
@@ -548,11 +558,11 @@ class TranscoderServiceAsyncClient:
 
     async def delete_job(
         self,
-        request: Union[services.DeleteJobRequest, dict] = None,
+        request: Optional[Union[services.DeleteJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a job.
@@ -581,7 +591,7 @@ class TranscoderServiceAsyncClient:
                 await client.delete_job(request=request)
 
         Args:
-            request (Union[google.cloud.video.transcoder_v1.types.DeleteJobRequest, dict]):
+            request (Optional[Union[google.cloud.video.transcoder_v1.types.DeleteJobRequest, dict]]):
                 The request object. Request message for
                 `TranscoderService.DeleteJob`.
             name (:class:`str`):
@@ -638,13 +648,13 @@ class TranscoderServiceAsyncClient:
 
     async def create_job_template(
         self,
-        request: Union[services.CreateJobTemplateRequest, dict] = None,
+        request: Optional[Union[services.CreateJobTemplateRequest, dict]] = None,
         *,
-        parent: str = None,
-        job_template: resources.JobTemplate = None,
-        job_template_id: str = None,
+        parent: Optional[str] = None,
+        job_template: Optional[resources.JobTemplate] = None,
+        job_template_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.JobTemplate:
         r"""Creates a job template in the specified region.
@@ -677,7 +687,7 @@ class TranscoderServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.transcoder_v1.types.CreateJobTemplateRequest, dict]):
+            request (Optional[Union[google.cloud.video.transcoder_v1.types.CreateJobTemplateRequest, dict]]):
                 The request object. Request message for
                 `TranscoderService.CreateJobTemplate`.
             parent (:class:`str`):
@@ -765,11 +775,11 @@ class TranscoderServiceAsyncClient:
 
     async def list_job_templates(
         self,
-        request: Union[services.ListJobTemplatesRequest, dict] = None,
+        request: Optional[Union[services.ListJobTemplatesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobTemplatesAsyncPager:
         r"""Lists job templates in the specified region.
@@ -802,7 +812,7 @@ class TranscoderServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.video.transcoder_v1.types.ListJobTemplatesRequest, dict]):
+            request (Optional[Union[google.cloud.video.transcoder_v1.types.ListJobTemplatesRequest, dict]]):
                 The request object. Request message for
                 `TranscoderService.ListJobTemplates`.
             parent (:class:`str`):
@@ -880,11 +890,11 @@ class TranscoderServiceAsyncClient:
 
     async def get_job_template(
         self,
-        request: Union[services.GetJobTemplateRequest, dict] = None,
+        request: Optional[Union[services.GetJobTemplateRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.JobTemplate:
         r"""Returns the job template data.
@@ -916,7 +926,7 @@ class TranscoderServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.video.transcoder_v1.types.GetJobTemplateRequest, dict]):
+            request (Optional[Union[google.cloud.video.transcoder_v1.types.GetJobTemplateRequest, dict]]):
                 The request object. Request message for
                 `TranscoderService.GetJobTemplate`.
             name (:class:`str`):
@@ -981,11 +991,11 @@ class TranscoderServiceAsyncClient:
 
     async def delete_job_template(
         self,
-        request: Union[services.DeleteJobTemplateRequest, dict] = None,
+        request: Optional[Union[services.DeleteJobTemplateRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a job template.
@@ -1014,7 +1024,7 @@ class TranscoderServiceAsyncClient:
                 await client.delete_job_template(request=request)
 
         Args:
-            request (Union[google.cloud.video.transcoder_v1.types.DeleteJobTemplateRequest, dict]):
+            request (Optional[Union[google.cloud.video.transcoder_v1.types.DeleteJobTemplateRequest, dict]]):
                 The request object. Request message for
                 `TranscoderService.DeleteJobTemplate`.
             name (:class:`str`):

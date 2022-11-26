@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -103,7 +105,7 @@ class Job(proto.Message):
             effective after job completion. Job should be
             deleted automatically after the given TTL. Enter
             a value between 1 and 90. The default is 30.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             The labels associated with this job. You can
             use these to organize and group your jobs.
         error (google.rpc.status_pb2.Status):
@@ -120,59 +122,59 @@ class Job(proto.Message):
         SUCCEEDED = 3
         FAILED = 4
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    input_uri = proto.Field(
+    input_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    output_uri = proto.Field(
+    output_uri: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    template_id = proto.Field(
+    template_id: str = proto.Field(
         proto.STRING,
         number=4,
         oneof="job_config",
     )
-    config = proto.Field(
+    config: "JobConfig" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="job_config",
         message="JobConfig",
     )
-    state = proto.Field(
+    state: ProcessingState = proto.Field(
         proto.ENUM,
         number=8,
         enum=ProcessingState,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=12,
         message=timestamp_pb2.Timestamp,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=13,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=14,
         message=timestamp_pb2.Timestamp,
     )
-    ttl_after_completion_days = proto.Field(
+    ttl_after_completion_days: int = proto.Field(
         proto.INT32,
         number=15,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=16,
     )
-    error = proto.Field(
+    error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=17,
         message=status_pb2.Status,
@@ -188,22 +190,22 @@ class JobTemplate(proto.Message):
             ``projects/{project_number}/locations/{location}/jobTemplates/{job_template}``
         config (google.cloud.video.transcoder_v1.types.JobConfig):
             The configuration for this template.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             The labels associated with this job template.
             You can use these to organize and group your job
             templates.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    config = proto.Field(
+    config: "JobConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="JobConfig",
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
@@ -214,80 +216,80 @@ class JobConfig(proto.Message):
     r"""Job configuration
 
     Attributes:
-        inputs (Sequence[google.cloud.video.transcoder_v1.types.Input]):
+        inputs (MutableSequence[google.cloud.video.transcoder_v1.types.Input]):
             List of input assets stored in Cloud Storage.
-        edit_list (Sequence[google.cloud.video.transcoder_v1.types.EditAtom]):
+        edit_list (MutableSequence[google.cloud.video.transcoder_v1.types.EditAtom]):
             List of ``Edit atom``\ s. Defines the ultimate timeline of
             the resulting file or manifest.
-        elementary_streams (Sequence[google.cloud.video.transcoder_v1.types.ElementaryStream]):
+        elementary_streams (MutableSequence[google.cloud.video.transcoder_v1.types.ElementaryStream]):
             List of elementary streams.
-        mux_streams (Sequence[google.cloud.video.transcoder_v1.types.MuxStream]):
+        mux_streams (MutableSequence[google.cloud.video.transcoder_v1.types.MuxStream]):
             List of multiplexing settings for output
             streams.
-        manifests (Sequence[google.cloud.video.transcoder_v1.types.Manifest]):
+        manifests (MutableSequence[google.cloud.video.transcoder_v1.types.Manifest]):
             List of output manifests.
         output (google.cloud.video.transcoder_v1.types.Output):
             Output configuration.
-        ad_breaks (Sequence[google.cloud.video.transcoder_v1.types.AdBreak]):
+        ad_breaks (MutableSequence[google.cloud.video.transcoder_v1.types.AdBreak]):
             List of ad breaks. Specifies where to insert
             ad break tags in the output manifests.
         pubsub_destination (google.cloud.video.transcoder_v1.types.PubsubDestination):
             Destination on Pub/Sub.
-        sprite_sheets (Sequence[google.cloud.video.transcoder_v1.types.SpriteSheet]):
+        sprite_sheets (MutableSequence[google.cloud.video.transcoder_v1.types.SpriteSheet]):
             List of output sprite sheets.
             Spritesheets require at least one VideoStream in
             the Jobconfig.
-        overlays (Sequence[google.cloud.video.transcoder_v1.types.Overlay]):
+        overlays (MutableSequence[google.cloud.video.transcoder_v1.types.Overlay]):
             List of overlays on the output video, in
             descending Z-order.
     """
 
-    inputs = proto.RepeatedField(
+    inputs: MutableSequence["Input"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Input",
     )
-    edit_list = proto.RepeatedField(
+    edit_list: MutableSequence["EditAtom"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="EditAtom",
     )
-    elementary_streams = proto.RepeatedField(
+    elementary_streams: MutableSequence["ElementaryStream"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="ElementaryStream",
     )
-    mux_streams = proto.RepeatedField(
+    mux_streams: MutableSequence["MuxStream"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="MuxStream",
     )
-    manifests = proto.RepeatedField(
+    manifests: MutableSequence["Manifest"] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="Manifest",
     )
-    output = proto.Field(
+    output: "Output" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="Output",
     )
-    ad_breaks = proto.RepeatedField(
+    ad_breaks: MutableSequence["AdBreak"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="AdBreak",
     )
-    pubsub_destination = proto.Field(
+    pubsub_destination: "PubsubDestination" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="PubsubDestination",
     )
-    sprite_sheets = proto.RepeatedField(
+    sprite_sheets: MutableSequence["SpriteSheet"] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message="SpriteSheet",
     )
-    overlays = proto.RepeatedField(
+    overlays: MutableSequence["Overlay"] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message="Overlay",
@@ -313,15 +315,15 @@ class Input(proto.Message):
             Preprocessing configurations.
     """
 
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    preprocessing_config = proto.Field(
+    preprocessing_config: "PreprocessingConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="PreprocessingConfig",
@@ -340,7 +342,7 @@ class Output(proto.Message):
             formats <https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>`__.
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -353,7 +355,7 @@ class EditAtom(proto.Message):
         key (str):
             A unique key for this atom. Must be specified
             when using advanced mapping.
-        inputs (Sequence[str]):
+        inputs (MutableSequence[str]):
             List of ``Input.key``\ s identifying files that should be
             used in this atom. The listed ``inputs`` must have the same
             timeline.
@@ -366,20 +368,20 @@ class EditAtom(proto.Message):
             file timeline. The default is ``0s``.
     """
 
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    inputs = proto.RepeatedField(
+    inputs: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    end_time_offset = proto.Field(
+    end_time_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=3,
         message=duration_pb2.Duration,
     )
-    start_time_offset = proto.Field(
+    start_time_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=4,
         message=duration_pb2.Duration,
@@ -395,7 +397,7 @@ class AdBreak(proto.Message):
             output file timeline. The default is ``0s``.
     """
 
-    start_time_offset = proto.Field(
+    start_time_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=1,
         message=duration_pb2.Duration,
@@ -432,23 +434,23 @@ class ElementaryStream(proto.Message):
             This field is a member of `oneof`_ ``elementary_stream``.
     """
 
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    video_stream = proto.Field(
+    video_stream: "VideoStream" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="elementary_stream",
         message="VideoStream",
     )
-    audio_stream = proto.Field(
+    audio_stream: "AudioStream" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="elementary_stream",
         message="AudioStream",
     )
-    text_stream = proto.Field(
+    text_stream: "TextStream" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="elementary_stream",
@@ -484,30 +486,30 @@ class MuxStream(proto.Message):
 
             See also: `Supported input and output
             formats <https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>`__
-        elementary_streams (Sequence[str]):
+        elementary_streams (MutableSequence[str]):
             List of ``ElementaryStream.key``\ s multiplexed in this
             stream.
         segment_settings (google.cloud.video.transcoder_v1.types.SegmentSettings):
             Segment settings for ``ts``, ``fmp4`` and ``vtt``.
     """
 
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    file_name = proto.Field(
+    file_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    container = proto.Field(
+    container: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    elementary_streams = proto.RepeatedField(
+    elementary_streams: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    segment_settings = proto.Field(
+    segment_settings: "SegmentSettings" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="SegmentSettings",
@@ -524,7 +526,7 @@ class Manifest(proto.Message):
             ``Manifest.type``.
         type_ (google.cloud.video.transcoder_v1.types.Manifest.ManifestType):
             Required. Type of the manifest, can be ``HLS`` or ``DASH``.
-        mux_streams (Sequence[str]):
+        mux_streams (MutableSequence[str]):
             Required. List of user given ``MuxStream.key``\ s that
             should appear in this manifest.
 
@@ -539,16 +541,16 @@ class Manifest(proto.Message):
         HLS = 1
         DASH = 2
 
-    file_name = proto.Field(
+    file_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    type_ = proto.Field(
+    type_: ManifestType = proto.Field(
         proto.ENUM,
         number=2,
         enum=ManifestType,
     )
-    mux_streams = proto.RepeatedField(
+    mux_streams: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -564,7 +566,7 @@ class PubsubDestination(proto.Message):
             ``projects/{project}/topics/{topic}``.
     """
 
-    topic = proto.Field(
+    topic: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -601,6 +603,12 @@ class SpriteSheet(proto.Message):
             [SpriteSheet.sprite_height_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_height_pixels]
             field, but not both (the API will automatically calculate
             the missing field).
+
+            For portrait videos that contain horizontal ASR and rotation
+            metadata, provide the width, in pixels, per the horizontal
+            ASR. The API calculates the height per the horizontal ASR.
+            The API detects any rotation metadata and swaps the
+            requested height and width for the output.
         sprite_height_pixels (int):
             Required. The height of sprite in pixels. Must be an even
             integer. To preserve the source aspect ratio, set the
@@ -609,6 +617,12 @@ class SpriteSheet(proto.Message):
             [SpriteSheet.sprite_width_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_width_pixels]
             field, but not both (the API will automatically calculate
             the missing field).
+
+            For portrait videos that contain horizontal ASR and rotation
+            metadata, provide the height, in pixels, per the horizontal
+            ASR. The API calculates the width per the horizontal ASR.
+            The API detects any rotation metadata and swaps the
+            requested height and width for the output.
         column_count (int):
             The maximum number of sprites per row in a
             sprite sheet. The default is 0, which indicates
@@ -646,52 +660,52 @@ class SpriteSheet(proto.Message):
             ratio.
     """
 
-    format_ = proto.Field(
+    format_: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    file_prefix = proto.Field(
+    file_prefix: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    sprite_width_pixels = proto.Field(
+    sprite_width_pixels: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    sprite_height_pixels = proto.Field(
+    sprite_height_pixels: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    column_count = proto.Field(
+    column_count: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    row_count = proto.Field(
+    row_count: int = proto.Field(
         proto.INT32,
         number=6,
     )
-    start_time_offset = proto.Field(
+    start_time_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=7,
         message=duration_pb2.Duration,
     )
-    end_time_offset = proto.Field(
+    end_time_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=8,
         message=duration_pb2.Duration,
     )
-    total_count = proto.Field(
+    total_count: int = proto.Field(
         proto.INT32,
         number=9,
         oneof="extraction_strategy",
     )
-    interval = proto.Field(
+    interval: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="extraction_strategy",
         message=duration_pb2.Duration,
     )
-    quality = proto.Field(
+    quality: int = proto.Field(
         proto.INT32,
         number=11,
     )
@@ -703,7 +717,7 @@ class Overlay(proto.Message):
     Attributes:
         image (google.cloud.video.transcoder_v1.types.Overlay.Image):
             Image overlay.
-        animations (Sequence[google.cloud.video.transcoder_v1.types.Overlay.Animation]):
+        animations (MutableSequence[google.cloud.video.transcoder_v1.types.Overlay.Animation]):
             List of Animations. The list should be
             chronological, without any time overlap.
     """
@@ -724,11 +738,11 @@ class Overlay(proto.Message):
                 Normalized y coordinate.
         """
 
-        x = proto.Field(
+        x: float = proto.Field(
             proto.DOUBLE,
             number=1,
         )
-        y = proto.Field(
+        y: float = proto.Field(
             proto.DOUBLE,
             number=2,
         )
@@ -753,16 +767,16 @@ class Overlay(proto.Message):
                 value greater than ``0.0``.
         """
 
-        uri = proto.Field(
+        uri: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        resolution = proto.Field(
+        resolution: "Overlay.NormalizedCoordinate" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="Overlay.NormalizedCoordinate",
         )
-        alpha = proto.Field(
+        alpha: float = proto.Field(
             proto.DOUBLE,
             number=3,
         )
@@ -783,12 +797,12 @@ class Overlay(proto.Message):
                 object, in seconds. Default: 0
         """
 
-        xy = proto.Field(
+        xy: "Overlay.NormalizedCoordinate" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="Overlay.NormalizedCoordinate",
         )
-        start_time_offset = proto.Field(
+        start_time_offset: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=2,
             message=duration_pb2.Duration,
@@ -816,22 +830,22 @@ class Overlay(proto.Message):
                 ``start_time_offset`` + 1s
         """
 
-        fade_type = proto.Field(
+        fade_type: "Overlay.FadeType" = proto.Field(
             proto.ENUM,
             number=1,
             enum="Overlay.FadeType",
         )
-        xy = proto.Field(
+        xy: "Overlay.NormalizedCoordinate" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="Overlay.NormalizedCoordinate",
         )
-        start_time_offset = proto.Field(
+        start_time_offset: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=3,
             message=duration_pb2.Duration,
         )
-        end_time_offset = proto.Field(
+        end_time_offset: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=4,
             message=duration_pb2.Duration,
@@ -848,7 +862,7 @@ class Overlay(proto.Message):
                 Default: 0
         """
 
-        start_time_offset = proto.Field(
+        start_time_offset: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=1,
             message=duration_pb2.Duration,
@@ -879,31 +893,31 @@ class Overlay(proto.Message):
                 This field is a member of `oneof`_ ``animation_type``.
         """
 
-        animation_static = proto.Field(
+        animation_static: "Overlay.AnimationStatic" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="animation_type",
             message="Overlay.AnimationStatic",
         )
-        animation_fade = proto.Field(
+        animation_fade: "Overlay.AnimationFade" = proto.Field(
             proto.MESSAGE,
             number=2,
             oneof="animation_type",
             message="Overlay.AnimationFade",
         )
-        animation_end = proto.Field(
+        animation_end: "Overlay.AnimationEnd" = proto.Field(
             proto.MESSAGE,
             number=3,
             oneof="animation_type",
             message="Overlay.AnimationEnd",
         )
 
-    image = proto.Field(
+    image: Image = proto.Field(
         proto.MESSAGE,
         number=1,
         message=Image,
     )
-    animations = proto.RepeatedField(
+    animations: MutableSequence[Animation] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=Animation,
@@ -926,6 +940,8 @@ class PreprocessingConfig(proto.Message):
             Specify the video cropping configuration.
         pad (google.cloud.video.transcoder_v1.types.PreprocessingConfig.Pad):
             Specify the video pad filter configuration.
+        deinterlace (google.cloud.video.transcoder_v1.types.PreprocessingConfig.Deinterlace):
+            Specify the video deinterlace configuration.
     """
 
     class Color(proto.Message):
@@ -951,15 +967,15 @@ class PreprocessingConfig(proto.Message):
                 change. The default is 0.
         """
 
-        saturation = proto.Field(
+        saturation: float = proto.Field(
             proto.DOUBLE,
             number=1,
         )
-        contrast = proto.Field(
+        contrast: float = proto.Field(
             proto.DOUBLE,
             number=2,
         )
-        brightness = proto.Field(
+        brightness: float = proto.Field(
             proto.DOUBLE,
             number=3,
         )
@@ -984,11 +1000,11 @@ class PreprocessingConfig(proto.Message):
                 -  ``grain``
         """
 
-        strength = proto.Field(
+        strength: float = proto.Field(
             proto.DOUBLE,
             number=1,
         )
-        tune = proto.Field(
+        tune: str = proto.Field(
             proto.STRING,
             number=2,
         )
@@ -1008,11 +1024,11 @@ class PreprocessingConfig(proto.Message):
                 Enable deblocker. The default is ``false``.
         """
 
-        strength = proto.Field(
+        strength: float = proto.Field(
             proto.DOUBLE,
             number=1,
         )
-        enabled = proto.Field(
+        enabled: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
@@ -1047,15 +1063,15 @@ class PreprocessingConfig(proto.Message):
                 **Note:** This field is not supported.
         """
 
-        lufs = proto.Field(
+        lufs: float = proto.Field(
             proto.DOUBLE,
             number=1,
         )
-        high_boost = proto.Field(
+        high_boost: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
-        low_boost = proto.Field(
+        low_boost: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
@@ -1079,19 +1095,19 @@ class PreprocessingConfig(proto.Message):
                 The default is 0.
         """
 
-        top_pixels = proto.Field(
+        top_pixels: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        bottom_pixels = proto.Field(
+        bottom_pixels: int = proto.Field(
             proto.INT32,
             number=2,
         )
-        left_pixels = proto.Field(
+        left_pixels: int = proto.Field(
             proto.INT32,
             number=3,
         )
-        right_pixels = proto.Field(
+        right_pixels: int = proto.Field(
             proto.INT32,
             number=4,
         )
@@ -1116,52 +1132,169 @@ class PreprocessingConfig(proto.Message):
                 default is 0.
         """
 
-        top_pixels = proto.Field(
+        top_pixels: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        bottom_pixels = proto.Field(
+        bottom_pixels: int = proto.Field(
             proto.INT32,
             number=2,
         )
-        left_pixels = proto.Field(
+        left_pixels: int = proto.Field(
             proto.INT32,
             number=3,
         )
-        right_pixels = proto.Field(
+        right_pixels: int = proto.Field(
             proto.INT32,
             number=4,
         )
 
-    color = proto.Field(
+    class Deinterlace(proto.Message):
+        r"""Deinterlace configuration for input video.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            yadif (google.cloud.video.transcoder_v1.types.PreprocessingConfig.Deinterlace.YadifConfig):
+                Specifies the Yet Another Deinterlacing
+                Filter Configuration.
+
+                This field is a member of `oneof`_ ``deinterlacing_filter``.
+            bwdif (google.cloud.video.transcoder_v1.types.PreprocessingConfig.Deinterlace.BwdifConfig):
+                Specifies the Bob Weaver Deinterlacing Filter
+                Configuration.
+
+                This field is a member of `oneof`_ ``deinterlacing_filter``.
+        """
+
+        class YadifConfig(proto.Message):
+            r"""Yet Another Deinterlacing Filter Configuration.
+
+            Attributes:
+                mode (str):
+                    Specifies the deinterlacing mode to adopt. The default is
+                    ``send_frame``. Supported values:
+
+                    -  ``send_frame``: Output one frame for each frame
+                    -  ``send_field``: Output one frame for each field
+                disable_spatial_interlacing (bool):
+                    Disable spacial interlacing. The default is ``false``.
+                parity (str):
+                    The picture field parity assumed for the input interlaced
+                    video. The default is ``auto``. Supported values:
+
+                    -  ``tff``: Assume the top field is first
+                    -  ``bff``: Assume the bottom field is first
+                    -  ``auto``: Enable automatic detection of field parity
+                deinterlace_all_frames (bool):
+                    Deinterlace all frames rather than just the frames
+                    identified as interlaced. The default is ``false``.
+            """
+
+            mode: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            disable_spatial_interlacing: bool = proto.Field(
+                proto.BOOL,
+                number=2,
+            )
+            parity: str = proto.Field(
+                proto.STRING,
+                number=3,
+            )
+            deinterlace_all_frames: bool = proto.Field(
+                proto.BOOL,
+                number=4,
+            )
+
+        class BwdifConfig(proto.Message):
+            r"""Bob Weaver Deinterlacing Filter Configuration.
+
+            Attributes:
+                mode (str):
+                    Specifies the deinterlacing mode to adopt. The default is
+                    ``send_frame``. Supported values:
+
+                    -  ``send_frame``: Output one frame for each frame
+                    -  ``send_field``: Output one frame for each field
+                parity (str):
+                    The picture field parity assumed for the input interlaced
+                    video. The default is ``auto``. Supported values:
+
+                    -  ``tff``: Assume the top field is first
+                    -  ``bff``: Assume the bottom field is first
+                    -  ``auto``: Enable automatic detection of field parity
+                deinterlace_all_frames (bool):
+                    Deinterlace all frames rather than just the frames
+                    identified as interlaced. The default is ``false``.
+            """
+
+            mode: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            parity: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+            deinterlace_all_frames: bool = proto.Field(
+                proto.BOOL,
+                number=3,
+            )
+
+        yadif: "PreprocessingConfig.Deinterlace.YadifConfig" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="deinterlacing_filter",
+            message="PreprocessingConfig.Deinterlace.YadifConfig",
+        )
+        bwdif: "PreprocessingConfig.Deinterlace.BwdifConfig" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="deinterlacing_filter",
+            message="PreprocessingConfig.Deinterlace.BwdifConfig",
+        )
+
+    color: Color = proto.Field(
         proto.MESSAGE,
         number=1,
         message=Color,
     )
-    denoise = proto.Field(
+    denoise: Denoise = proto.Field(
         proto.MESSAGE,
         number=2,
         message=Denoise,
     )
-    deblock = proto.Field(
+    deblock: Deblock = proto.Field(
         proto.MESSAGE,
         number=3,
         message=Deblock,
     )
-    audio = proto.Field(
+    audio: Audio = proto.Field(
         proto.MESSAGE,
         number=4,
         message=Audio,
     )
-    crop = proto.Field(
+    crop: Crop = proto.Field(
         proto.MESSAGE,
         number=5,
         message=Crop,
     )
-    pad = proto.Field(
+    pad: Pad = proto.Field(
         proto.MESSAGE,
         number=6,
         message=Pad,
+    )
+    deinterlace: Deinterlace = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=Deinterlace,
     )
 
 
@@ -1207,12 +1340,24 @@ class VideoStream(proto.Message):
                 adjusted to match the specified height and input
                 aspect ratio. If both are omitted, the input
                 width is used.
+                For portrait videos that contain horizontal ASR
+                and rotation metadata, provide the width, in
+                pixels, per the horizontal ASR. The API
+                calculates the height per the horizontal ASR.
+                The API detects any rotation metadata and swaps
+                the requested height and width for the output.
             height_pixels (int):
                 The height of the video in pixels. Must be an
                 even integer. When not specified, the height is
                 adjusted to match the specified width and input
                 aspect ratio. If both are omitted, the input
                 height is used.
+                For portrait videos that contain horizontal ASR
+                and rotation metadata, provide the height, in
+                pixels, per the horizontal ASR. The API
+                calculates the width per the horizontal ASR. The
+                API detects any rotation metadata and swaps the
+                requested height and width for the output.
             frame_rate (float):
                 Required. The target video frame rate in frames per second
                 (FPS). Must be less than or equal to 120. Will default to
@@ -1327,86 +1472,86 @@ class VideoStream(proto.Message):
                 ``H264CodecSettings`` message.
         """
 
-        width_pixels = proto.Field(
+        width_pixels: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        height_pixels = proto.Field(
+        height_pixels: int = proto.Field(
             proto.INT32,
             number=2,
         )
-        frame_rate = proto.Field(
+        frame_rate: float = proto.Field(
             proto.DOUBLE,
             number=3,
         )
-        bitrate_bps = proto.Field(
+        bitrate_bps: int = proto.Field(
             proto.INT32,
             number=4,
         )
-        pixel_format = proto.Field(
+        pixel_format: str = proto.Field(
             proto.STRING,
             number=5,
         )
-        rate_control_mode = proto.Field(
+        rate_control_mode: str = proto.Field(
             proto.STRING,
             number=6,
         )
-        crf_level = proto.Field(
+        crf_level: int = proto.Field(
             proto.INT32,
             number=7,
         )
-        allow_open_gop = proto.Field(
+        allow_open_gop: bool = proto.Field(
             proto.BOOL,
             number=8,
         )
-        gop_frame_count = proto.Field(
+        gop_frame_count: int = proto.Field(
             proto.INT32,
             number=9,
             oneof="gop_mode",
         )
-        gop_duration = proto.Field(
+        gop_duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=10,
             oneof="gop_mode",
             message=duration_pb2.Duration,
         )
-        enable_two_pass = proto.Field(
+        enable_two_pass: bool = proto.Field(
             proto.BOOL,
             number=11,
         )
-        vbv_size_bits = proto.Field(
+        vbv_size_bits: int = proto.Field(
             proto.INT32,
             number=12,
         )
-        vbv_fullness_bits = proto.Field(
+        vbv_fullness_bits: int = proto.Field(
             proto.INT32,
             number=13,
         )
-        entropy_coder = proto.Field(
+        entropy_coder: str = proto.Field(
             proto.STRING,
             number=14,
         )
-        b_pyramid = proto.Field(
+        b_pyramid: bool = proto.Field(
             proto.BOOL,
             number=15,
         )
-        b_frame_count = proto.Field(
+        b_frame_count: int = proto.Field(
             proto.INT32,
             number=16,
         )
-        aq_strength = proto.Field(
+        aq_strength: float = proto.Field(
             proto.DOUBLE,
             number=17,
         )
-        profile = proto.Field(
+        profile: str = proto.Field(
             proto.STRING,
             number=18,
         )
-        tune = proto.Field(
+        tune: str = proto.Field(
             proto.STRING,
             number=19,
         )
-        preset = proto.Field(
+        preset: str = proto.Field(
             proto.STRING,
             number=20,
         )
@@ -1428,12 +1573,24 @@ class VideoStream(proto.Message):
                 adjusted to match the specified height and input
                 aspect ratio. If both are omitted, the input
                 width is used.
+                For portrait videos that contain horizontal ASR
+                and rotation metadata, provide the width, in
+                pixels, per the horizontal ASR. The API
+                calculates the height per the horizontal ASR.
+                The API detects any rotation metadata and swaps
+                the requested height and width for the output.
             height_pixels (int):
                 The height of the video in pixels. Must be an
                 even integer. When not specified, the height is
                 adjusted to match the specified width and input
                 aspect ratio. If both are omitted, the input
                 height is used.
+                For portrait videos that contain horizontal ASR
+                and rotation metadata, provide the height, in
+                pixels, per the horizontal ASR. The API
+                calculates the width per the horizontal ASR. The
+                API detects any rotation metadata and swaps the
+                requested height and width for the output.
             frame_rate (float):
                 Required. The target video frame rate in frames per second
                 (FPS). Must be less than or equal to 120. Will default to
@@ -1561,82 +1718,82 @@ class VideoStream(proto.Message):
                 ``H265CodecSettings`` message.
         """
 
-        width_pixels = proto.Field(
+        width_pixels: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        height_pixels = proto.Field(
+        height_pixels: int = proto.Field(
             proto.INT32,
             number=2,
         )
-        frame_rate = proto.Field(
+        frame_rate: float = proto.Field(
             proto.DOUBLE,
             number=3,
         )
-        bitrate_bps = proto.Field(
+        bitrate_bps: int = proto.Field(
             proto.INT32,
             number=4,
         )
-        pixel_format = proto.Field(
+        pixel_format: str = proto.Field(
             proto.STRING,
             number=5,
         )
-        rate_control_mode = proto.Field(
+        rate_control_mode: str = proto.Field(
             proto.STRING,
             number=6,
         )
-        crf_level = proto.Field(
+        crf_level: int = proto.Field(
             proto.INT32,
             number=7,
         )
-        allow_open_gop = proto.Field(
+        allow_open_gop: bool = proto.Field(
             proto.BOOL,
             number=8,
         )
-        gop_frame_count = proto.Field(
+        gop_frame_count: int = proto.Field(
             proto.INT32,
             number=9,
             oneof="gop_mode",
         )
-        gop_duration = proto.Field(
+        gop_duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=10,
             oneof="gop_mode",
             message=duration_pb2.Duration,
         )
-        enable_two_pass = proto.Field(
+        enable_two_pass: bool = proto.Field(
             proto.BOOL,
             number=11,
         )
-        vbv_size_bits = proto.Field(
+        vbv_size_bits: int = proto.Field(
             proto.INT32,
             number=12,
         )
-        vbv_fullness_bits = proto.Field(
+        vbv_fullness_bits: int = proto.Field(
             proto.INT32,
             number=13,
         )
-        b_pyramid = proto.Field(
+        b_pyramid: bool = proto.Field(
             proto.BOOL,
             number=14,
         )
-        b_frame_count = proto.Field(
+        b_frame_count: int = proto.Field(
             proto.INT32,
             number=15,
         )
-        aq_strength = proto.Field(
+        aq_strength: float = proto.Field(
             proto.DOUBLE,
             number=16,
         )
-        profile = proto.Field(
+        profile: str = proto.Field(
             proto.STRING,
             number=17,
         )
-        tune = proto.Field(
+        tune: str = proto.Field(
             proto.STRING,
             number=18,
         )
-        preset = proto.Field(
+        preset: str = proto.Field(
             proto.STRING,
             number=19,
         )
@@ -1658,12 +1815,24 @@ class VideoStream(proto.Message):
                 adjusted to match the specified height and input
                 aspect ratio. If both are omitted, the input
                 width is used.
+                For portrait videos that contain horizontal ASR
+                and rotation metadata, provide the width, in
+                pixels, per the horizontal ASR. The API
+                calculates the height per the horizontal ASR.
+                The API detects any rotation metadata and swaps
+                the requested height and width for the output.
             height_pixels (int):
                 The height of the video in pixels. Must be an
                 even integer. When not specified, the height is
                 adjusted to match the specified width and input
                 aspect ratio. If both are omitted, the input
                 height is used.
+                For portrait videos that contain horizontal ASR
+                and rotation metadata, provide the height, in
+                pixels, per the horizontal ASR. The API
+                calculates the width per the horizontal ASR. The
+                API detects any rotation metadata and swaps the
+                requested height and width for the output.
             frame_rate (float):
                 Required. The target video frame rate in frames per second
                 (FPS). Must be less than or equal to 120. Will default to
@@ -1732,63 +1901,63 @@ class VideoStream(proto.Message):
                 ``Vp9CodecSettings`` message.
         """
 
-        width_pixels = proto.Field(
+        width_pixels: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        height_pixels = proto.Field(
+        height_pixels: int = proto.Field(
             proto.INT32,
             number=2,
         )
-        frame_rate = proto.Field(
+        frame_rate: float = proto.Field(
             proto.DOUBLE,
             number=3,
         )
-        bitrate_bps = proto.Field(
+        bitrate_bps: int = proto.Field(
             proto.INT32,
             number=4,
         )
-        pixel_format = proto.Field(
+        pixel_format: str = proto.Field(
             proto.STRING,
             number=5,
         )
-        rate_control_mode = proto.Field(
+        rate_control_mode: str = proto.Field(
             proto.STRING,
             number=6,
         )
-        crf_level = proto.Field(
+        crf_level: int = proto.Field(
             proto.INT32,
             number=7,
         )
-        gop_frame_count = proto.Field(
+        gop_frame_count: int = proto.Field(
             proto.INT32,
             number=8,
             oneof="gop_mode",
         )
-        gop_duration = proto.Field(
+        gop_duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=9,
             oneof="gop_mode",
             message=duration_pb2.Duration,
         )
-        profile = proto.Field(
+        profile: str = proto.Field(
             proto.STRING,
             number=10,
         )
 
-    h264 = proto.Field(
+    h264: H264CodecSettings = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="codec_settings",
         message=H264CodecSettings,
     )
-    h265 = proto.Field(
+    h265: H265CodecSettings = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="codec_settings",
         message=H265CodecSettings,
     )
-    vp9 = proto.Field(
+    vp9: Vp9CodecSettings = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="codec_settings",
@@ -1817,7 +1986,7 @@ class AudioStream(proto.Message):
         channel_count (int):
             Number of audio channels. Must be between 1
             and 6. The default is 2.
-        channel_layout (Sequence[str]):
+        channel_layout (MutableSequence[str]):
             A list of channel names specifying layout of the audio
             channels. This only affects the metadata embedded in the
             container headers, if supported by the specified format. The
@@ -1831,7 +2000,7 @@ class AudioStream(proto.Message):
             -  ``sr`` - Side right channel
             -  ``fc`` - Front center channel
             -  ``lfe`` - Low frequency
-        mapping_ (Sequence[google.cloud.video.transcoder_v1.types.AudioStream.AudioMapping]):
+        mapping_ (MutableSequence[google.cloud.video.transcoder_v1.types.AudioStream.AudioMapping]):
             The mapping for the ``Job.edit_list`` atoms with audio
             ``EditAtom.inputs``.
         sample_rate_hertz (int):
@@ -1864,53 +2033,53 @@ class AudioStream(proto.Message):
                 default is 0.
         """
 
-        atom_key = proto.Field(
+        atom_key: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        input_key = proto.Field(
+        input_key: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        input_track = proto.Field(
+        input_track: int = proto.Field(
             proto.INT32,
             number=3,
         )
-        input_channel = proto.Field(
+        input_channel: int = proto.Field(
             proto.INT32,
             number=4,
         )
-        output_channel = proto.Field(
+        output_channel: int = proto.Field(
             proto.INT32,
             number=5,
         )
-        gain_db = proto.Field(
+        gain_db: float = proto.Field(
             proto.DOUBLE,
             number=6,
         )
 
-    codec = proto.Field(
+    codec: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    bitrate_bps = proto.Field(
+    bitrate_bps: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    channel_count = proto.Field(
+    channel_count: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    channel_layout = proto.RepeatedField(
+    channel_layout: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    mapping_ = proto.RepeatedField(
+    mapping_: MutableSequence[AudioMapping] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=AudioMapping,
     )
-    sample_rate_hertz = proto.Field(
+    sample_rate_hertz: int = proto.Field(
         proto.INT32,
         number=6,
     )
@@ -1931,7 +2100,7 @@ class TextStream(proto.Message):
             -  ``cea608``
             -  ``cea708``
             -  ``webvtt``
-        mapping_ (Sequence[google.cloud.video.transcoder_v1.types.TextStream.TextMapping]):
+        mapping_ (MutableSequence[google.cloud.video.transcoder_v1.types.TextStream.TextMapping]):
             The mapping for the ``Job.edit_list`` atoms with text
             ``EditAtom.inputs``.
     """
@@ -1951,24 +2120,24 @@ class TextStream(proto.Message):
                 in the input file.
         """
 
-        atom_key = proto.Field(
+        atom_key: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        input_key = proto.Field(
+        input_key: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        input_track = proto.Field(
+        input_track: int = proto.Field(
             proto.INT32,
             number=3,
         )
 
-    codec = proto.Field(
+    codec: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    mapping_ = proto.RepeatedField(
+    mapping_: MutableSequence[TextMapping] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=TextMapping,
@@ -1990,12 +2159,12 @@ class SegmentSettings(proto.Message):
             ``false``.
     """
 
-    segment_duration = proto.Field(
+    segment_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=1,
         message=duration_pb2.Duration,
     )
-    individual_segments = proto.Field(
+    individual_segments: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
