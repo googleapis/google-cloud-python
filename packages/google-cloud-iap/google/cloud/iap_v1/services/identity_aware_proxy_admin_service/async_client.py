@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -183,9 +193,9 @@ class IdentityAwareProxyAdminServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, IdentityAwareProxyAdminServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the identity aware proxy admin service client.
@@ -229,10 +239,10 @@ class IdentityAwareProxyAdminServiceAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the access control policy for an Identity-Aware Proxy
@@ -268,7 +278,7 @@ class IdentityAwareProxyAdminServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -375,10 +385,10 @@ class IdentityAwareProxyAdminServiceAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the access control policy for an Identity-Aware Proxy
@@ -414,7 +424,7 @@ class IdentityAwareProxyAdminServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -521,10 +531,10 @@ class IdentityAwareProxyAdminServiceAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns permissions that a caller has on the Identity-Aware
@@ -561,7 +571,7 @@ class IdentityAwareProxyAdminServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -607,10 +617,10 @@ class IdentityAwareProxyAdminServiceAsyncClient:
 
     async def get_iap_settings(
         self,
-        request: Union[service.GetIapSettingsRequest, dict] = None,
+        request: Optional[Union[service.GetIapSettingsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.IapSettings:
         r"""Gets the IAP settings on a particular IAP protected
@@ -643,7 +653,7 @@ class IdentityAwareProxyAdminServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.iap_v1.types.GetIapSettingsRequest, dict]):
+            request (Optional[Union[google.cloud.iap_v1.types.GetIapSettingsRequest, dict]]):
                 The request object. The request sent to GetIapSettings.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -685,10 +695,10 @@ class IdentityAwareProxyAdminServiceAsyncClient:
 
     async def update_iap_settings(
         self,
-        request: Union[service.UpdateIapSettingsRequest, dict] = None,
+        request: Optional[Union[service.UpdateIapSettingsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.IapSettings:
         r"""Updates the IAP settings on a particular IAP protected resource.
@@ -724,7 +734,7 @@ class IdentityAwareProxyAdminServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.iap_v1.types.UpdateIapSettingsRequest, dict]):
+            request (Optional[Union[google.cloud.iap_v1.types.UpdateIapSettingsRequest, dict]]):
                 The request object. The request sent to
                 UpdateIapSettings.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -769,11 +779,11 @@ class IdentityAwareProxyAdminServiceAsyncClient:
 
     async def list_tunnel_dest_groups(
         self,
-        request: Union[service.ListTunnelDestGroupsRequest, dict] = None,
+        request: Optional[Union[service.ListTunnelDestGroupsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTunnelDestGroupsAsyncPager:
         r"""Lists the existing TunnelDestGroups. To group across all
@@ -808,7 +818,7 @@ class IdentityAwareProxyAdminServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.iap_v1.types.ListTunnelDestGroupsRequest, dict]):
+            request (Optional[Union[google.cloud.iap_v1.types.ListTunnelDestGroupsRequest, dict]]):
                 The request object. The request to ListTunnelDestGroups.
             parent (:class:`str`):
                 Required. Google Cloud Project ID and location. In the
@@ -888,13 +898,13 @@ class IdentityAwareProxyAdminServiceAsyncClient:
 
     async def create_tunnel_dest_group(
         self,
-        request: Union[service.CreateTunnelDestGroupRequest, dict] = None,
+        request: Optional[Union[service.CreateTunnelDestGroupRequest, dict]] = None,
         *,
-        parent: str = None,
-        tunnel_dest_group: service.TunnelDestGroup = None,
-        tunnel_dest_group_id: str = None,
+        parent: Optional[str] = None,
+        tunnel_dest_group: Optional[service.TunnelDestGroup] = None,
+        tunnel_dest_group_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.TunnelDestGroup:
         r"""Creates a new TunnelDestGroup.
@@ -931,7 +941,7 @@ class IdentityAwareProxyAdminServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.iap_v1.types.CreateTunnelDestGroupRequest, dict]):
+            request (Optional[Union[google.cloud.iap_v1.types.CreateTunnelDestGroupRequest, dict]]):
                 The request object. The request to
                 CreateTunnelDestGroup.
             parent (:class:`str`):
@@ -1017,11 +1027,11 @@ class IdentityAwareProxyAdminServiceAsyncClient:
 
     async def get_tunnel_dest_group(
         self,
-        request: Union[service.GetTunnelDestGroupRequest, dict] = None,
+        request: Optional[Union[service.GetTunnelDestGroupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.TunnelDestGroup:
         r"""Retrieves an existing TunnelDestGroup.
@@ -1053,7 +1063,7 @@ class IdentityAwareProxyAdminServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.iap_v1.types.GetTunnelDestGroupRequest, dict]):
+            request (Optional[Union[google.cloud.iap_v1.types.GetTunnelDestGroupRequest, dict]]):
                 The request object. The request to GetTunnelDestGroup.
             name (:class:`str`):
                 Required. Name of the TunnelDestGroup to be fetched. In
@@ -1117,11 +1127,11 @@ class IdentityAwareProxyAdminServiceAsyncClient:
 
     async def delete_tunnel_dest_group(
         self,
-        request: Union[service.DeleteTunnelDestGroupRequest, dict] = None,
+        request: Optional[Union[service.DeleteTunnelDestGroupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a TunnelDestGroup.
@@ -1150,7 +1160,7 @@ class IdentityAwareProxyAdminServiceAsyncClient:
                 await client.delete_tunnel_dest_group(request=request)
 
         Args:
-            request (Union[google.cloud.iap_v1.types.DeleteTunnelDestGroupRequest, dict]):
+            request (Optional[Union[google.cloud.iap_v1.types.DeleteTunnelDestGroupRequest, dict]]):
                 The request object. The request to
                 DeleteTunnelDestGroup.
             name (:class:`str`):
@@ -1208,12 +1218,12 @@ class IdentityAwareProxyAdminServiceAsyncClient:
 
     async def update_tunnel_dest_group(
         self,
-        request: Union[service.UpdateTunnelDestGroupRequest, dict] = None,
+        request: Optional[Union[service.UpdateTunnelDestGroupRequest, dict]] = None,
         *,
-        tunnel_dest_group: service.TunnelDestGroup = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        tunnel_dest_group: Optional[service.TunnelDestGroup] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.TunnelDestGroup:
         r"""Updates a TunnelDestGroup.
@@ -1248,7 +1258,7 @@ class IdentityAwareProxyAdminServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.iap_v1.types.UpdateTunnelDestGroupRequest, dict]):
+            request (Optional[Union[google.cloud.iap_v1.types.UpdateTunnelDestGroupRequest, dict]]):
                 The request object. The request to
                 UpdateTunnelDestGroup.
             tunnel_dest_group (:class:`google.cloud.iap_v1.types.TunnelDestGroup`):

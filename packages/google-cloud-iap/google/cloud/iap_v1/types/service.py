@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
@@ -81,15 +83,15 @@ class ListTunnelDestGroupsRequest(proto.Message):
             the page token.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -99,7 +101,7 @@ class ListTunnelDestGroupsResponse(proto.Message):
     r"""The response from ListTunnelDestGroups.
 
     Attributes:
-        tunnel_dest_groups (Sequence[google.cloud.iap_v1.types.TunnelDestGroup]):
+        tunnel_dest_groups (MutableSequence[google.cloud.iap_v1.types.TunnelDestGroup]):
             TunnelDestGroup existing in the project.
         next_page_token (str):
             A token that you can send as ``page_token`` to retrieve the
@@ -111,12 +113,12 @@ class ListTunnelDestGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    tunnel_dest_groups = proto.RepeatedField(
+    tunnel_dest_groups: MutableSequence["TunnelDestGroup"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="TunnelDestGroup",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -140,16 +142,16 @@ class CreateTunnelDestGroupRequest(proto.Message):
             ``[a-z][0-9]-``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    tunnel_dest_group = proto.Field(
+    tunnel_dest_group: "TunnelDestGroup" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="TunnelDestGroup",
     )
-    tunnel_dest_group_id = proto.Field(
+    tunnel_dest_group_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -165,7 +167,7 @@ class GetTunnelDestGroupRequest(proto.Message):
             ``projects/{project_number/id}/iap_tunnel/locations/{location}/destGroups/{dest_group}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -181,7 +183,7 @@ class DeleteTunnelDestGroupRequest(proto.Message):
             ``projects/{project_number/id}/iap_tunnel/locations/{location}/destGroups/{dest_group}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -201,12 +203,12 @@ class UpdateTunnelDestGroupRequest(proto.Message):
             https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
     """
 
-    tunnel_dest_group = proto.Field(
+    tunnel_dest_group: "TunnelDestGroup" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TunnelDestGroup",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -221,23 +223,23 @@ class TunnelDestGroup(proto.Message):
             Required. Immutable. Identifier for the
             TunnelDestGroup. Must be unique within the
             project.
-        cidrs (Sequence[str]):
+        cidrs (MutableSequence[str]):
             null List of CIDRs that this group applies
             to.
-        fqdns (Sequence[str]):
+        fqdns (MutableSequence[str]):
             null List of FQDNs that this group applies
             to.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    cidrs = proto.RepeatedField(
+    cidrs: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    fqdns = proto.RepeatedField(
+    fqdns: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -253,7 +255,7 @@ class GetIapSettingsRequest(proto.Message):
             permission for the associated resource.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -274,12 +276,12 @@ class UpdateIapSettingsRequest(proto.Message):
             https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
     """
 
-    iap_settings = proto.Field(
+    iap_settings: "IapSettings" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="IapSettings",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -301,16 +303,16 @@ class IapSettings(proto.Message):
             settings in IAP
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    access_settings = proto.Field(
+    access_settings: "AccessSettings" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="AccessSettings",
     )
-    application_settings = proto.Field(
+    application_settings: "ApplicationSettings" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="ApplicationSettings",
@@ -334,22 +336,22 @@ class AccessSettings(proto.Message):
             policies in IAP.
     """
 
-    gcip_settings = proto.Field(
+    gcip_settings: "GcipSettings" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="GcipSettings",
     )
-    cors_settings = proto.Field(
+    cors_settings: "CorsSettings" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="CorsSettings",
     )
-    oauth_settings = proto.Field(
+    oauth_settings: "OAuthSettings" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="OAuthSettings",
     )
-    reauth_settings = proto.Field(
+    reauth_settings: "ReauthSettings" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="ReauthSettings",
@@ -360,7 +362,7 @@ class GcipSettings(proto.Message):
     r"""Allows customers to configure tenant_id for GCIP instance per-app.
 
     Attributes:
-        tenant_ids (Sequence[str]):
+        tenant_ids (MutableSequence[str]):
             GCIP tenant ids that are linked to the IAP resource.
             tenant_ids could be a string beginning with a number
             character to indicate authenticating with GCIP tenant flow,
@@ -376,11 +378,11 @@ class GcipSettings(proto.Message):
             level.
     """
 
-    tenant_ids = proto.RepeatedField(
+    tenant_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    login_page_uri = proto.Field(
+    login_page_uri: wrappers_pb2.StringValue = proto.Field(
         proto.MESSAGE,
         number=2,
         message=wrappers_pb2.StringValue,
@@ -399,7 +401,7 @@ class CorsSettings(proto.Message):
             apply any special logic to OPTIONS requests.
     """
 
-    allow_http_options = proto.Field(
+    allow_http_options: wrappers_pb2.BoolValue = proto.Field(
         proto.MESSAGE,
         number=1,
         message=wrappers_pb2.BoolValue,
@@ -421,7 +423,7 @@ class OAuthSettings(proto.Message):
             is managed by IAM policies.
     """
 
-    login_hint = proto.Field(
+    login_hint: wrappers_pb2.StringValue = proto.Field(
         proto.MESSAGE,
         number=2,
         message=wrappers_pb2.StringValue,
@@ -457,17 +459,17 @@ class ReauthSettings(proto.Message):
         MINIMUM = 1
         DEFAULT = 2
 
-    method = proto.Field(
+    method: Method = proto.Field(
         proto.ENUM,
         number=1,
         enum=Method,
     )
-    max_age = proto.Field(
+    max_age: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,
     )
-    policy_type = proto.Field(
+    policy_type: PolicyType = proto.Field(
         proto.ENUM,
         number=3,
         enum=PolicyType,
@@ -489,17 +491,17 @@ class ApplicationSettings(proto.Message):
             but will be ignored at runtime if invalid.
     """
 
-    csm_settings = proto.Field(
+    csm_settings: "CsmSettings" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="CsmSettings",
     )
-    access_denied_page_settings = proto.Field(
+    access_denied_page_settings: "AccessDeniedPageSettings" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="AccessDeniedPageSettings",
     )
-    cookie_domain = proto.Field(
+    cookie_domain: wrappers_pb2.StringValue = proto.Field(
         proto.MESSAGE,
         number=3,
         message=wrappers_pb2.StringValue,
@@ -519,7 +521,7 @@ class CsmSettings(proto.Message):
             This value is not validated by IAP.
     """
 
-    rctoken_aud = proto.Field(
+    rctoken_aud: wrappers_pb2.StringValue = proto.Field(
         proto.MESSAGE,
         number=1,
         message=wrappers_pb2.StringValue,
@@ -541,12 +543,12 @@ class AccessDeniedPageSettings(proto.Message):
             access denied events to this application.
     """
 
-    access_denied_page_uri = proto.Field(
+    access_denied_page_uri: wrappers_pb2.StringValue = proto.Field(
         proto.MESSAGE,
         number=1,
         message=wrappers_pb2.StringValue,
     )
-    generate_troubleshooting_uri = proto.Field(
+    generate_troubleshooting_uri: wrappers_pb2.BoolValue = proto.Field(
         proto.MESSAGE,
         number=2,
         message=wrappers_pb2.BoolValue,
@@ -562,7 +564,7 @@ class ListBrandsRequest(proto.Message):
             projects/{project_number/id}.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -572,11 +574,11 @@ class ListBrandsResponse(proto.Message):
     r"""Response message for ListBrands.
 
     Attributes:
-        brands (Sequence[google.cloud.iap_v1.types.Brand]):
+        brands (MutableSequence[google.cloud.iap_v1.types.Brand]):
             Brands existing in the project.
     """
 
-    brands = proto.RepeatedField(
+    brands: MutableSequence["Brand"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Brand",
@@ -595,11 +597,11 @@ class CreateBrandRequest(proto.Message):
             Required. The brand to be created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    brand = proto.Field(
+    brand: "Brand" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Brand",
@@ -615,7 +617,7 @@ class GetBrandRequest(proto.Message):
             format: projects/{project_number/id}/brands/{brand}.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -644,15 +646,15 @@ class ListIdentityAwareProxyClientsRequest(proto.Message):
             provided the page token.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -662,7 +664,7 @@ class ListIdentityAwareProxyClientsResponse(proto.Message):
     r"""Response message for ListIdentityAwareProxyClients.
 
     Attributes:
-        identity_aware_proxy_clients (Sequence[google.cloud.iap_v1.types.IdentityAwareProxyClient]):
+        identity_aware_proxy_clients (MutableSequence[google.cloud.iap_v1.types.IdentityAwareProxyClient]):
             Clients existing in the brand.
         next_page_token (str):
             A token, which can be send as ``page_token`` to retrieve the
@@ -674,12 +676,14 @@ class ListIdentityAwareProxyClientsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    identity_aware_proxy_clients = proto.RepeatedField(
+    identity_aware_proxy_clients: MutableSequence[
+        "IdentityAwareProxyClient"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="IdentityAwareProxyClient",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -698,11 +702,11 @@ class CreateIdentityAwareProxyClientRequest(proto.Message):
             created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    identity_aware_proxy_client = proto.Field(
+    identity_aware_proxy_client: "IdentityAwareProxyClient" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="IdentityAwareProxyClient",
@@ -719,7 +723,7 @@ class GetIdentityAwareProxyClientRequest(proto.Message):
             projects/{project_number/id}/brands/{brand}/identityAwareProxyClients/{client_id}.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -735,7 +739,7 @@ class ResetIdentityAwareProxyClientSecretRequest(proto.Message):
             projects/{project_number/id}/brands/{brand}/identityAwareProxyClients/{client_id}.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -751,7 +755,7 @@ class DeleteIdentityAwareProxyClientRequest(proto.Message):
             projects/{project_number/id}/brands/{brand}/identityAwareProxyClients/{client_id}.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -780,19 +784,19 @@ class Brand(proto.Message):
             organization only.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    support_email = proto.Field(
+    support_email: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    application_title = proto.Field(
+    application_title: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    org_internal_only = proto.Field(
+    org_internal_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -814,15 +818,15 @@ class IdentityAwareProxyClient(proto.Message):
             client.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    secret = proto.Field(
+    secret: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
