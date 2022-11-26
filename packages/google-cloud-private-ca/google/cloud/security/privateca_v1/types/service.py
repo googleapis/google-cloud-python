@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -141,28 +143,28 @@ class CreateCertificateRequest(proto.Message):
             to "my-ca".
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    certificate_id = proto.Field(
+    certificate_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    certificate = proto.Field(
+    certificate: resources.Certificate = proto.Field(
         proto.MESSAGE,
         number=3,
         message=resources.Certificate,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    issuing_certificate_authority_id = proto.Field(
+    issuing_certificate_authority_id: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -181,7 +183,7 @@ class GetCertificateRequest(proto.Message):
             to get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -221,23 +223,23 @@ class ListCertificatesRequest(proto.Message):
             documentation <https://cloud.google.com/certificate-authority-service/docs/sorting-filtering-certificates#sorting_support>`__.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -248,14 +250,14 @@ class ListCertificatesResponse(proto.Message):
     [CertificateAuthorityService.ListCertificates][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificates].
 
     Attributes:
-        certificates (Sequence[google.cloud.security.privateca_v1.types.Certificate]):
+        certificates (MutableSequence[google.cloud.security.privateca_v1.types.Certificate]):
             The list of
             [Certificates][google.cloud.security.privateca.v1.Certificate].
         next_page_token (str):
             A token to retrieve next page of results. Pass this value in
             [ListCertificatesRequest.next_page_token][] to retrieve the
             next page of results.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             A list of locations (e.g. "us-west1") that
             could not be reached.
     """
@@ -264,16 +266,16 @@ class ListCertificatesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    certificates = proto.RepeatedField(
+    certificates: MutableSequence[resources.Certificate] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.Certificate,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -314,16 +316,16 @@ class RevokeCertificateRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    reason = proto.Field(
+    reason: resources.RevocationReason = proto.Field(
         proto.ENUM,
         number=2,
         enum=resources.RevocationReason,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -362,17 +364,17 @@ class UpdateCertificateRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    certificate = proto.Field(
+    certificate: resources.Certificate = proto.Field(
         proto.MESSAGE,
         number=1,
         message=resources.Certificate,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -416,20 +418,20 @@ class ActivateCertificateAuthorityRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    pem_ca_certificate = proto.Field(
+    pem_ca_certificate: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    subordinate_config = proto.Field(
+    subordinate_config: resources.SubordinateConfig = proto.Field(
         proto.MESSAGE,
         number=3,
         message=resources.SubordinateConfig,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -474,20 +476,20 @@ class CreateCertificateAuthorityRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    certificate_authority_id = proto.Field(
+    certificate_authority_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    certificate_authority = proto.Field(
+    certificate_authority: resources.CertificateAuthority = proto.Field(
         proto.MESSAGE,
         number=3,
         message=resources.CertificateAuthority,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -524,11 +526,11 @@ class DisableCertificateAuthorityRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -565,11 +567,11 @@ class EnableCertificateAuthorityRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -587,7 +589,7 @@ class FetchCertificateAuthorityCsrRequest(proto.Message):
             ``projects/*/locations/*/caPools/*/certificateAuthorities/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -603,7 +605,7 @@ class FetchCertificateAuthorityCsrResponse(proto.Message):
             certificate signing request (CSR).
     """
 
-    pem_csr = proto.Field(
+    pem_csr: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -622,7 +624,7 @@ class GetCertificateAuthorityRequest(proto.Message):
             to get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -659,23 +661,23 @@ class ListCertificateAuthoritiesRequest(proto.Message):
             sorted.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -686,14 +688,14 @@ class ListCertificateAuthoritiesResponse(proto.Message):
     [CertificateAuthorityService.ListCertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificateAuthorities].
 
     Attributes:
-        certificate_authorities (Sequence[google.cloud.security.privateca_v1.types.CertificateAuthority]):
+        certificate_authorities (MutableSequence[google.cloud.security.privateca_v1.types.CertificateAuthority]):
             The list of
             [CertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthority].
         next_page_token (str):
             A token to retrieve next page of results. Pass this value in
             [ListCertificateAuthoritiesRequest.next_page_token][] to
             retrieve the next page of results.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             A list of locations (e.g. "us-west1") that
             could not be reached.
     """
@@ -702,16 +704,18 @@ class ListCertificateAuthoritiesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    certificate_authorities = proto.RepeatedField(
+    certificate_authorities: MutableSequence[
+        resources.CertificateAuthority
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.CertificateAuthority,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -748,11 +752,11 @@ class UndeleteCertificateAuthorityRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -801,19 +805,19 @@ class DeleteCertificateAuthorityRequest(proto.Message):
             CA.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    ignore_active_certificates = proto.Field(
+    ignore_active_certificates: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    skip_grace_period = proto.Field(
+    skip_grace_period: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -852,17 +856,17 @@ class UpdateCertificateAuthorityRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    certificate_authority = proto.Field(
+    certificate_authority: resources.CertificateAuthority = proto.Field(
         proto.MESSAGE,
         number=1,
         message=resources.CertificateAuthority,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -905,20 +909,20 @@ class CreateCaPoolRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    ca_pool_id = proto.Field(
+    ca_pool_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    ca_pool = proto.Field(
+    ca_pool: resources.CaPool = proto.Field(
         proto.MESSAGE,
         number=3,
         message=resources.CaPool,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -957,17 +961,17 @@ class UpdateCaPoolRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    ca_pool = proto.Field(
+    ca_pool: resources.CaPool = proto.Field(
         proto.MESSAGE,
         number=1,
         message=resources.CaPool,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1003,11 +1007,11 @@ class DeleteCaPoolRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1043,11 +1047,11 @@ class FetchCaCertsRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    ca_pool = proto.Field(
+    ca_pool: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1058,7 +1062,7 @@ class FetchCaCertsResponse(proto.Message):
     [CertificateAuthorityService.FetchCaCerts][google.cloud.security.privateca.v1.CertificateAuthorityService.FetchCaCerts].
 
     Attributes:
-        ca_certs (Sequence[google.cloud.security.privateca_v1.types.FetchCaCertsResponse.CertChain]):
+        ca_certs (MutableSequence[google.cloud.security.privateca_v1.types.FetchCaCertsResponse.CertChain]):
             The PEM encoded CA certificate chains of all
             [ACTIVE][CertificateAuthority.State.ACTIVE]
             [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
@@ -1070,17 +1074,17 @@ class FetchCaCertsResponse(proto.Message):
         r"""
 
         Attributes:
-            certificates (Sequence[str]):
+            certificates (MutableSequence[str]):
                 The certificates that form the CA chain, from
                 leaf to root order.
         """
 
-        certificates = proto.RepeatedField(
+        certificates: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
 
-    ca_certs = proto.RepeatedField(
+    ca_certs: MutableSequence[CertChain] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=CertChain,
@@ -1099,7 +1103,7 @@ class GetCaPoolRequest(proto.Message):
             get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1134,23 +1138,23 @@ class ListCaPoolsRequest(proto.Message):
             sorted.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1161,14 +1165,14 @@ class ListCaPoolsResponse(proto.Message):
     [CertificateAuthorityService.ListCaPools][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCaPools].
 
     Attributes:
-        ca_pools (Sequence[google.cloud.security.privateca_v1.types.CaPool]):
+        ca_pools (MutableSequence[google.cloud.security.privateca_v1.types.CaPool]):
             The list of
             [CaPools][google.cloud.security.privateca.v1.CaPool].
         next_page_token (str):
             A token to retrieve next page of results. Pass this value in
             [ListCertificateAuthoritiesRequest.next_page_token][] to
             retrieve the next page of results.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             A list of locations (e.g. "us-west1") that
             could not be reached.
     """
@@ -1177,16 +1181,16 @@ class ListCaPoolsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    ca_pools = proto.RepeatedField(
+    ca_pools: MutableSequence[resources.CaPool] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.CaPool,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -1205,7 +1209,7 @@ class GetCertificateRevocationListRequest(proto.Message):
             to get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1242,23 +1246,23 @@ class ListCertificateRevocationListsRequest(proto.Message):
             sorted.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1269,14 +1273,14 @@ class ListCertificateRevocationListsResponse(proto.Message):
     [CertificateAuthorityService.ListCertificateRevocationLists][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificateRevocationLists].
 
     Attributes:
-        certificate_revocation_lists (Sequence[google.cloud.security.privateca_v1.types.CertificateRevocationList]):
+        certificate_revocation_lists (MutableSequence[google.cloud.security.privateca_v1.types.CertificateRevocationList]):
             The list of
             [CertificateRevocationLists][google.cloud.security.privateca.v1.CertificateRevocationList].
         next_page_token (str):
             A token to retrieve next page of results. Pass this value in
             [ListCertificateRevocationListsRequest.next_page_token][] to
             retrieve the next page of results.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             A list of locations (e.g. "us-west1") that
             could not be reached.
     """
@@ -1285,16 +1289,18 @@ class ListCertificateRevocationListsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    certificate_revocation_lists = proto.RepeatedField(
+    certificate_revocation_lists: MutableSequence[
+        resources.CertificateRevocationList
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.CertificateRevocationList,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -1333,17 +1339,17 @@ class UpdateCertificateRevocationListRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    certificate_revocation_list = proto.Field(
+    certificate_revocation_list: resources.CertificateRevocationList = proto.Field(
         proto.MESSAGE,
         number=1,
         message=resources.CertificateRevocationList,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1387,20 +1393,20 @@ class CreateCertificateTemplateRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    certificate_template_id = proto.Field(
+    certificate_template_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    certificate_template = proto.Field(
+    certificate_template: resources.CertificateTemplate = proto.Field(
         proto.MESSAGE,
         number=3,
         message=resources.CertificateTemplate,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1437,11 +1443,11 @@ class DeleteCertificateTemplateRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1460,7 +1466,7 @@ class GetCertificateTemplateRequest(proto.Message):
             to get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1496,23 +1502,23 @@ class ListCertificateTemplatesRequest(proto.Message):
             sorted.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1523,14 +1529,14 @@ class ListCertificateTemplatesResponse(proto.Message):
     [CertificateAuthorityService.ListCertificateTemplates][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificateTemplates].
 
     Attributes:
-        certificate_templates (Sequence[google.cloud.security.privateca_v1.types.CertificateTemplate]):
+        certificate_templates (MutableSequence[google.cloud.security.privateca_v1.types.CertificateTemplate]):
             The list of
             [CertificateTemplates][google.cloud.security.privateca.v1.CertificateTemplate].
         next_page_token (str):
             A token to retrieve next page of results. Pass this value in
             [ListCertificateTemplatesRequest.next_page_token][] to
             retrieve the next page of results.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             A list of locations (e.g. "us-west1") that
             could not be reached.
     """
@@ -1539,16 +1545,18 @@ class ListCertificateTemplatesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    certificate_templates = proto.RepeatedField(
+    certificate_templates: MutableSequence[
+        resources.CertificateTemplate
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.CertificateTemplate,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -1587,17 +1595,17 @@ class UpdateCertificateTemplateRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    certificate_template = proto.Field(
+    certificate_template: resources.CertificateTemplate = proto.Field(
         proto.MESSAGE,
         number=1,
         message=resources.CertificateTemplate,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1633,33 +1641,33 @@ class OperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_message = proto.Field(
+    status_message: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    requested_cancellation = proto.Field(
+    requested_cancellation: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )
