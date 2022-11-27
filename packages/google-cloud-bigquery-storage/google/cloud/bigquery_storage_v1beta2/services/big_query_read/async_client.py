@@ -19,6 +19,8 @@ import re
 from typing import (
     Dict,
     Mapping,
+    MutableMapping,
+    MutableSequence,
     Optional,
     AsyncIterable,
     Awaitable,
@@ -175,9 +177,9 @@ class BigQueryReadAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, BigQueryReadTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the big query read client.
@@ -221,13 +223,13 @@ class BigQueryReadAsyncClient:
 
     async def create_read_session(
         self,
-        request: Union[storage.CreateReadSessionRequest, dict] = None,
+        request: Optional[Union[storage.CreateReadSessionRequest, dict]] = None,
         *,
-        parent: str = None,
-        read_session: stream.ReadSession = None,
-        max_stream_count: int = None,
+        parent: Optional[str] = None,
+        read_session: Optional[stream.ReadSession] = None,
+        max_stream_count: Optional[int] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> stream.ReadSession:
         r"""Creates a new read session. A read session divides
@@ -281,7 +283,7 @@ class BigQueryReadAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_storage_v1beta2.types.CreateReadSessionRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_storage_v1beta2.types.CreateReadSessionRequest, dict]]):
                 The request object. Request message for
                 `CreateReadSession`.
             parent (:class:`str`):
@@ -385,12 +387,12 @@ class BigQueryReadAsyncClient:
 
     def read_rows(
         self,
-        request: Union[storage.ReadRowsRequest, dict] = None,
+        request: Optional[Union[storage.ReadRowsRequest, dict]] = None,
         *,
-        read_stream: str = None,
-        offset: int = None,
+        read_stream: Optional[str] = None,
+        offset: Optional[int] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[storage.ReadRowsResponse]]:
         r"""Reads rows from the stream in the format prescribed
@@ -430,7 +432,7 @@ class BigQueryReadAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_storage_v1beta2.types.ReadRowsRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_storage_v1beta2.types.ReadRowsRequest, dict]]):
                 The request object. Request message for `ReadRows`.
             read_stream (:class:`str`):
                 Required. Stream to read rows from.
@@ -516,10 +518,10 @@ class BigQueryReadAsyncClient:
 
     async def split_read_stream(
         self,
-        request: Union[storage.SplitReadStreamRequest, dict] = None,
+        request: Optional[Union[storage.SplitReadStreamRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> storage.SplitReadStreamResponse:
         r"""Splits a given ``ReadStream`` into two ``ReadStream`` objects.
@@ -563,7 +565,7 @@ class BigQueryReadAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_storage_v1beta2.types.SplitReadStreamRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_storage_v1beta2.types.SplitReadStreamRequest, dict]]):
                 The request object. Request message for
                 `SplitReadStream`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.bigquery_storage_v1.types import arrow
@@ -87,20 +89,20 @@ class CreateReadSessionRequest(proto.Message):
             might provide less.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    read_session = proto.Field(
+    read_session: stream.ReadSession = proto.Field(
         proto.MESSAGE,
         number=2,
         message=stream.ReadSession,
     )
-    max_stream_count = proto.Field(
+    max_stream_count: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    preferred_min_stream_count = proto.Field(
+    preferred_min_stream_count: int = proto.Field(
         proto.INT32,
         number=4,
     )
@@ -119,11 +121,11 @@ class ReadRowsRequest(proto.Message):
             reading from offset zero.
     """
 
-    read_stream = proto.Field(
+    read_stream: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    offset = proto.Field(
+    offset: int = proto.Field(
         proto.INT64,
         number=2,
     )
@@ -139,7 +141,7 @@ class ThrottleState(proto.Message):
             throttled.
     """
 
-    throttle_percent = proto.Field(
+    throttle_percent: int = proto.Field(
         proto.INT32,
         number=1,
     )
@@ -176,16 +178,16 @@ class StreamStats(proto.Message):
                 includes the rows in the current response.
         """
 
-        at_response_start = proto.Field(
+        at_response_start: float = proto.Field(
             proto.DOUBLE,
             number=1,
         )
-        at_response_end = proto.Field(
+        at_response_end: float = proto.Field(
             proto.DOUBLE,
             number=2,
         )
 
-    progress = proto.Field(
+    progress: Progress = proto.Field(
         proto.MESSAGE,
         number=2,
         message=Progress,
@@ -231,39 +233,39 @@ class ReadRowsResponse(proto.Message):
             This field is a member of `oneof`_ ``schema``.
     """
 
-    avro_rows = proto.Field(
+    avro_rows: avro.AvroRows = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="rows",
         message=avro.AvroRows,
     )
-    arrow_record_batch = proto.Field(
+    arrow_record_batch: arrow.ArrowRecordBatch = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="rows",
         message=arrow.ArrowRecordBatch,
     )
-    row_count = proto.Field(
+    row_count: int = proto.Field(
         proto.INT64,
         number=6,
     )
-    stats = proto.Field(
+    stats: "StreamStats" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="StreamStats",
     )
-    throttle_state = proto.Field(
+    throttle_state: "ThrottleState" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="ThrottleState",
     )
-    avro_schema = proto.Field(
+    avro_schema: avro.AvroSchema = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="schema",
         message=avro.AvroSchema,
     )
-    arrow_schema = proto.Field(
+    arrow_schema: arrow.ArrowSchema = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="schema",
@@ -292,11 +294,11 @@ class SplitReadStreamRequest(proto.Message):
             side.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    fraction = proto.Field(
+    fraction: float = proto.Field(
         proto.DOUBLE,
         number=2,
     )
@@ -316,12 +318,12 @@ class SplitReadStreamResponse(proto.Message):
             original stream can no longer be split.
     """
 
-    primary_stream = proto.Field(
+    primary_stream: stream.ReadStream = proto.Field(
         proto.MESSAGE,
         number=1,
         message=stream.ReadStream,
     )
-    remainder_stream = proto.Field(
+    remainder_stream: stream.ReadStream = proto.Field(
         proto.MESSAGE,
         number=2,
         message=stream.ReadStream,
@@ -340,11 +342,11 @@ class CreateWriteStreamRequest(proto.Message):
             Required. Stream to be created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    write_stream = proto.Field(
+    write_stream: stream.WriteStream = proto.Field(
         proto.MESSAGE,
         number=2,
         message=stream.WriteStream,
@@ -394,7 +396,36 @@ class AppendRowsRequest(proto.Message):
         trace_id (str):
             Id set by client to annotate its identity.
             Only initial request setting is respected.
+        missing_value_interpretations (MutableMapping[str, google.cloud.bigquery_storage_v1.types.AppendRowsRequest.MissingValueInterpretation]):
+            A map to indicate how to interpret missing value for some
+            fields. Missing values are fields present in user schema but
+            missing in rows. The key is the field name. The value is the
+            interpretation of missing values for the field.
+
+            For example, a map {'foo': NULL_VALUE, 'bar': DEFAULT_VALUE}
+            means all missing values in field foo are interpreted as
+            NULL, all missing values in field bar are interpreted as the
+            default value of field bar in table schema.
+
+            If a field is not in this map and has missing values, the
+            missing values in this field are interpreted as NULL.
+
+            This field only applies to the current request, it won't
+            affect other requests on the connection.
+
+            Currently, field name can only be top-level column name,
+            can't be a struct field path like 'foo.bar'.
     """
+
+    class MissingValueInterpretation(proto.Enum):
+        r"""An enum to indicate how to interpret missing values. Missing
+        values are fields present in user schema but missing in rows. A
+        missing value can represent a NULL or a column default value
+        defined in BigQuery table schema.
+        """
+        MISSING_VALUE_INTERPRETATION_UNSPECIFIED = 0
+        NULL_VALUE = 1
+        DEFAULT_VALUE = 2
 
     class ProtoData(proto.Message):
         r"""ProtoData contains the data rows and schema when constructing
@@ -415,35 +446,43 @@ class AppendRowsRequest(proto.Message):
                 to how default values are encoded.
         """
 
-        writer_schema = proto.Field(
+        writer_schema: protobuf.ProtoSchema = proto.Field(
             proto.MESSAGE,
             number=1,
             message=protobuf.ProtoSchema,
         )
-        rows = proto.Field(
+        rows: protobuf.ProtoRows = proto.Field(
             proto.MESSAGE,
             number=2,
             message=protobuf.ProtoRows,
         )
 
-    write_stream = proto.Field(
+    write_stream: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    offset = proto.Field(
+    offset: wrappers_pb2.Int64Value = proto.Field(
         proto.MESSAGE,
         number=2,
         message=wrappers_pb2.Int64Value,
     )
-    proto_rows = proto.Field(
+    proto_rows: ProtoData = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="rows",
         message=ProtoData,
     )
-    trace_id = proto.Field(
+    trace_id: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+    missing_value_interpretations: MutableMapping[
+        str, MissingValueInterpretation
+    ] = proto.MapField(
+        proto.STRING,
+        proto.ENUM,
+        number=7,
+        enum=MissingValueInterpretation,
     )
 
 
@@ -493,7 +532,7 @@ class AppendRowsResponse(proto.Message):
             to user so that user can use it to input new
             type of message. It will be empty when no schema
             updates have occurred.
-        row_errors (Sequence[google.cloud.bigquery_storage_v1.types.RowError]):
+        row_errors (MutableSequence[google.cloud.bigquery_storage_v1.types.RowError]):
             If a request failed due to corrupted rows, no
             rows in the batch will be appended. The API will
             return row level error info, so that the caller
@@ -513,35 +552,35 @@ class AppendRowsResponse(proto.Message):
                 appending using default streams.
         """
 
-        offset = proto.Field(
+        offset: wrappers_pb2.Int64Value = proto.Field(
             proto.MESSAGE,
             number=1,
             message=wrappers_pb2.Int64Value,
         )
 
-    append_result = proto.Field(
+    append_result: AppendResult = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="response",
         message=AppendResult,
     )
-    error = proto.Field(
+    error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="response",
         message=status_pb2.Status,
     )
-    updated_schema = proto.Field(
+    updated_schema: table.TableSchema = proto.Field(
         proto.MESSAGE,
         number=3,
         message=table.TableSchema,
     )
-    row_errors = proto.RepeatedField(
+    row_errors: MutableSequence["RowError"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="RowError",
     )
-    write_stream = proto.Field(
+    write_stream: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -560,11 +599,11 @@ class GetWriteStreamRequest(proto.Message):
             will be basic.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: stream.WriteStreamView = proto.Field(
         proto.ENUM,
         number=3,
         enum=stream.WriteStreamView,
@@ -579,16 +618,16 @@ class BatchCommitWriteStreamsRequest(proto.Message):
             Required. Parent table that all the streams should belong
             to, in the form of
             ``projects/{project}/datasets/{dataset}/tables/{table}``.
-        write_streams (Sequence[str]):
+        write_streams (MutableSequence[str]):
             Required. The group of streams that will be
             committed atomically.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    write_streams = proto.RepeatedField(
+    write_streams: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -603,7 +642,7 @@ class BatchCommitWriteStreamsResponse(proto.Message):
             granularity. This field will only exist when there are no
             stream errors. **Note** if this field is not set, it means
             the commit was not successful.
-        stream_errors (Sequence[google.cloud.bigquery_storage_v1.types.StorageError]):
+        stream_errors (MutableSequence[google.cloud.bigquery_storage_v1.types.StorageError]):
             Stream level error if commit failed. Only
             streams with error will be in the list.
             If empty, there is no error and all streams are
@@ -612,12 +651,12 @@ class BatchCommitWriteStreamsResponse(proto.Message):
             due to atomicity guarantee.
     """
 
-    commit_time = proto.Field(
+    commit_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    stream_errors = proto.RepeatedField(
+    stream_errors: MutableSequence["StorageError"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="StorageError",
@@ -633,7 +672,7 @@ class FinalizeWriteStreamRequest(proto.Message):
             ``projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -647,7 +686,7 @@ class FinalizeWriteStreamResponse(proto.Message):
             Number of rows in the finalized stream.
     """
 
-    row_count = proto.Field(
+    row_count: int = proto.Field(
         proto.INT64,
         number=1,
     )
@@ -666,11 +705,11 @@ class FlushRowsRequest(proto.Message):
             be flushed.
     """
 
-    write_stream = proto.Field(
+    write_stream: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    offset = proto.Field(
+    offset: wrappers_pb2.Int64Value = proto.Field(
         proto.MESSAGE,
         number=2,
         message=wrappers_pb2.Int64Value,
@@ -686,7 +725,7 @@ class FlushRowsResponse(proto.Message):
             offset) are flushed.
     """
 
-    offset = proto.Field(
+    offset: int = proto.Field(
         proto.INT64,
         number=1,
     )
@@ -721,16 +760,16 @@ class StorageError(proto.Message):
         OFFSET_ALREADY_EXISTS = 8
         OFFSET_OUT_OF_RANGE = 9
 
-    code = proto.Field(
+    code: StorageErrorCode = proto.Field(
         proto.ENUM,
         number=1,
         enum=StorageErrorCode,
     )
-    entity = proto.Field(
+    entity: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    error_message = proto.Field(
+    error_message: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -754,16 +793,16 @@ class RowError(proto.Message):
         ROW_ERROR_CODE_UNSPECIFIED = 0
         FIELDS_ERROR = 1
 
-    index = proto.Field(
+    index: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    code = proto.Field(
+    code: RowErrorCode = proto.Field(
         proto.ENUM,
         number=2,
         enum=RowErrorCode,
     )
-    message = proto.Field(
+    message: str = proto.Field(
         proto.STRING,
         number=3,
     )

@@ -19,6 +19,8 @@ import re
 from typing import (
     Dict,
     Mapping,
+    MutableMapping,
+    MutableSequence,
     Optional,
     AsyncIterable,
     Awaitable,
@@ -178,9 +180,9 @@ class BigQueryWriteAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, BigQueryWriteTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the big query write client.
@@ -224,12 +226,12 @@ class BigQueryWriteAsyncClient:
 
     async def create_write_stream(
         self,
-        request: Union[storage.CreateWriteStreamRequest, dict] = None,
+        request: Optional[Union[storage.CreateWriteStreamRequest, dict]] = None,
         *,
-        parent: str = None,
-        write_stream: stream.WriteStream = None,
+        parent: Optional[str] = None,
+        write_stream: Optional[stream.WriteStream] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> stream.WriteStream:
         r"""Creates a write stream to the given table. Additionally, every
@@ -267,7 +269,7 @@ class BigQueryWriteAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_storage_v1.types.CreateWriteStreamRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_storage_v1.types.CreateWriteStreamRequest, dict]]):
                 The request object. Request message for
                 `CreateWriteStream`.
             parent (:class:`str`):
@@ -353,10 +355,10 @@ class BigQueryWriteAsyncClient:
 
     def append_rows(
         self,
-        requests: AsyncIterator[storage.AppendRowsRequest] = None,
+        requests: Optional[AsyncIterator[storage.AppendRowsRequest]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[storage.AppendRowsResponse]]:
         r"""Appends data to the given stream.
@@ -393,13 +395,6 @@ class BigQueryWriteAsyncClient:
            stream itself is finalized (via the ``FinalizeWriteStream``
            rpc), and the stream is explicitly committed via the
            ``BatchCommitWriteStreams`` rpc.
-
-        Note: For users coding against the gRPC api directly, it may be
-        necessary to supply the x-goog-request-params system parameter
-        with ``write_stream=<full_write_stream_name>``.
-
-        More information about system parameters:
-        https://cloud.google.com/apis/docs/system-parameters
 
         .. code-block:: python
 
@@ -493,11 +488,11 @@ class BigQueryWriteAsyncClient:
 
     async def get_write_stream(
         self,
-        request: Union[storage.GetWriteStreamRequest, dict] = None,
+        request: Optional[Union[storage.GetWriteStreamRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> stream.WriteStream:
         r"""Gets information about a write stream.
@@ -529,7 +524,7 @@ class BigQueryWriteAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_storage_v1.types.GetWriteStreamRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_storage_v1.types.GetWriteStreamRequest, dict]]):
                 The request object. Request message for
                 `GetWriteStreamRequest`.
             name (:class:`str`):
@@ -606,11 +601,11 @@ class BigQueryWriteAsyncClient:
 
     async def finalize_write_stream(
         self,
-        request: Union[storage.FinalizeWriteStreamRequest, dict] = None,
+        request: Optional[Union[storage.FinalizeWriteStreamRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> storage.FinalizeWriteStreamResponse:
         r"""Finalize a write stream so that no new data can be appended to
@@ -643,7 +638,7 @@ class BigQueryWriteAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_storage_v1.types.FinalizeWriteStreamRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_storage_v1.types.FinalizeWriteStreamRequest, dict]]):
                 The request object. Request message for invoking
                 `FinalizeWriteStream`.
             name (:class:`str`):
@@ -717,11 +712,11 @@ class BigQueryWriteAsyncClient:
 
     async def batch_commit_write_streams(
         self,
-        request: Union[storage.BatchCommitWriteStreamsRequest, dict] = None,
+        request: Optional[Union[storage.BatchCommitWriteStreamsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> storage.BatchCommitWriteStreamsResponse:
         r"""Atomically commits a group of ``PENDING`` streams that belong to
@@ -759,7 +754,7 @@ class BigQueryWriteAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_storage_v1.types.BatchCommitWriteStreamsRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_storage_v1.types.BatchCommitWriteStreamsRequest, dict]]):
                 The request object. Request message for
                 `BatchCommitWriteStreams`.
             parent (:class:`str`):
@@ -834,11 +829,11 @@ class BigQueryWriteAsyncClient:
 
     async def flush_rows(
         self,
-        request: Union[storage.FlushRowsRequest, dict] = None,
+        request: Optional[Union[storage.FlushRowsRequest, dict]] = None,
         *,
-        write_stream: str = None,
+        write_stream: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> storage.FlushRowsResponse:
         r"""Flushes rows to a BUFFERED stream.
@@ -879,7 +874,7 @@ class BigQueryWriteAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_storage_v1.types.FlushRowsRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_storage_v1.types.FlushRowsRequest, dict]]):
                 The request object. Request message for `FlushRows`.
             write_stream (:class:`str`):
                 Required. The stream that is the

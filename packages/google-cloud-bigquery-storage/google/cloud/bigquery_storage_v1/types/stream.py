@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.bigquery_storage_v1.types import arrow
@@ -89,7 +91,7 @@ class ReadSession(proto.Message):
         read_options (google.cloud.bigquery_storage_v1.types.ReadSession.TableReadOptions):
             Optional. Read options for this session (e.g.
             column selection, filters).
-        streams (Sequence[google.cloud.bigquery_storage_v1.types.ReadStream]):
+        streams (MutableSequence[google.cloud.bigquery_storage_v1.types.ReadStream]):
             Output only. A list of streams created with the session.
 
             At least one stream is created with the session. In the
@@ -123,7 +125,7 @@ class ReadSession(proto.Message):
                 interpreted as now.
         """
 
-        snapshot_time = proto.Field(
+        snapshot_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=1,
             message=timestamp_pb2.Timestamp,
@@ -140,7 +142,7 @@ class ReadSession(proto.Message):
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
-            selected_fields (Sequence[str]):
+            selected_fields (MutableSequence[str]):
                 Optional. The names of the fields in the table to be
                 returned. If no field names are specified, then all fields
                 in the table are returned.
@@ -196,77 +198,77 @@ class ReadSession(proto.Message):
                 This field is a member of `oneof`_ ``output_format_serialization_options``.
         """
 
-        selected_fields = proto.RepeatedField(
+        selected_fields: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        row_restriction = proto.Field(
+        row_restriction: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        arrow_serialization_options = proto.Field(
+        arrow_serialization_options: arrow.ArrowSerializationOptions = proto.Field(
             proto.MESSAGE,
             number=3,
             oneof="output_format_serialization_options",
             message=arrow.ArrowSerializationOptions,
         )
-        avro_serialization_options = proto.Field(
+        avro_serialization_options: avro.AvroSerializationOptions = proto.Field(
             proto.MESSAGE,
             number=4,
             oneof="output_format_serialization_options",
             message=avro.AvroSerializationOptions,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    expire_time = proto.Field(
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    data_format = proto.Field(
+    data_format: "DataFormat" = proto.Field(
         proto.ENUM,
         number=3,
         enum="DataFormat",
     )
-    avro_schema = proto.Field(
+    avro_schema: avro.AvroSchema = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="schema",
         message=avro.AvroSchema,
     )
-    arrow_schema = proto.Field(
+    arrow_schema: arrow.ArrowSchema = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="schema",
         message=arrow.ArrowSchema,
     )
-    table = proto.Field(
+    table: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    table_modifiers = proto.Field(
+    table_modifiers: TableModifiers = proto.Field(
         proto.MESSAGE,
         number=7,
         message=TableModifiers,
     )
-    read_options = proto.Field(
+    read_options: TableReadOptions = proto.Field(
         proto.MESSAGE,
         number=8,
         message=TableReadOptions,
     )
-    streams = proto.RepeatedField(
+    streams: MutableSequence["ReadStream"] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message="ReadStream",
     )
-    estimated_total_bytes_scanned = proto.Field(
+    estimated_total_bytes_scanned: int = proto.Field(
         proto.INT64,
         number=12,
     )
-    trace_id = proto.Field(
+    trace_id: str = proto.Field(
         proto.STRING,
         number=13,
     )
@@ -283,7 +285,7 @@ class ReadStream(proto.Message):
             ``projects/{project_id}/locations/{location}/sessions/{session_id}/streams/{stream_id}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -334,36 +336,36 @@ class WriteStream(proto.Message):
         WRITE_MODE_UNSPECIFIED = 0
         INSERT = 1
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    type_ = proto.Field(
+    type_: Type = proto.Field(
         proto.ENUM,
         number=2,
         enum=Type,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    commit_time = proto.Field(
+    commit_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    table_schema = proto.Field(
+    table_schema: gcbs_table.TableSchema = proto.Field(
         proto.MESSAGE,
         number=5,
         message=gcbs_table.TableSchema,
     )
-    write_mode = proto.Field(
+    write_mode: WriteMode = proto.Field(
         proto.ENUM,
         number=7,
         enum=WriteMode,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=8,
     )

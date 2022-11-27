@@ -16,7 +16,19 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Iterable, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Iterable,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -58,7 +70,7 @@ class BigQueryReadClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[BigQueryReadTransport]:
         """Returns an appropriate transport class.
 
@@ -383,8 +395,8 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, BigQueryReadTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, BigQueryReadTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the big query read client.
@@ -398,7 +410,7 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
             transport (Union[str, BigQueryReadTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -428,6 +440,7 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -480,13 +493,13 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
 
     def create_read_session(
         self,
-        request: Union[storage.CreateReadSessionRequest, dict] = None,
+        request: Optional[Union[storage.CreateReadSessionRequest, dict]] = None,
         *,
-        parent: str = None,
-        read_session: stream.ReadSession = None,
-        max_stream_count: int = None,
+        parent: Optional[str] = None,
+        read_session: Optional[stream.ReadSession] = None,
+        max_stream_count: Optional[int] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> stream.ReadSession:
         r"""Creates a new read session. A read session divides
@@ -634,12 +647,12 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
 
     def read_rows(
         self,
-        request: Union[storage.ReadRowsRequest, dict] = None,
+        request: Optional[Union[storage.ReadRowsRequest, dict]] = None,
         *,
-        read_stream: str = None,
-        offset: int = None,
+        read_stream: Optional[str] = None,
+        offset: Optional[int] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[storage.ReadRowsResponse]:
         r"""Reads rows from the stream in the format prescribed
@@ -756,10 +769,10 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
 
     def split_read_stream(
         self,
-        request: Union[storage.SplitReadStreamRequest, dict] = None,
+        request: Optional[Union[storage.SplitReadStreamRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> storage.SplitReadStreamResponse:
         r"""Splits a given ``ReadStream`` into two ``ReadStream`` objects.

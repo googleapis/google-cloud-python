@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.bigquery_storage import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.bigquery_storage_v1 import BigQueryReadClient
 from google.cloud.bigquery_storage_v1.services.big_query_write.client import (

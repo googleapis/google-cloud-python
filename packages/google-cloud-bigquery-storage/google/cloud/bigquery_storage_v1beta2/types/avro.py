@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -34,7 +36,7 @@ class AvroSchema(proto.Message):
             https://avro.apache.org/docs/1.8.1/spec.html.
     """
 
-    schema = proto.Field(
+    schema: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -48,7 +50,7 @@ class AvroRows(proto.Message):
             Binary serialized rows in a block.
     """
 
-    serialized_binary_rows = proto.Field(
+    serialized_binary_rows: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )

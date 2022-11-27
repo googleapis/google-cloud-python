@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -38,7 +40,7 @@ class ArrowSchema(proto.Message):
             IPC serialized Arrow schema.
     """
 
-    serialized_schema = proto.Field(
+    serialized_schema: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
@@ -52,7 +54,7 @@ class ArrowRecordBatch(proto.Message):
             IPC-serialized Arrow RecordBatch.
     """
 
-    serialized_record_batch = proto.Field(
+    serialized_record_batch: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
@@ -72,7 +74,7 @@ class ArrowSerializationOptions(proto.Message):
         ARROW_0_14 = 1
         ARROW_0_15 = 2
 
-    format_ = proto.Field(
+    format_: Format = proto.Field(
         proto.ENUM,
         number=1,
         enum=Format,

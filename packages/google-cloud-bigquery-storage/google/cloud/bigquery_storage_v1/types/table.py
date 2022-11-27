@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -31,11 +33,11 @@ class TableSchema(proto.Message):
     necessary to generate valid message to write to BigQuery.
 
     Attributes:
-        fields (Sequence[google.cloud.bigquery_storage_v1.types.TableFieldSchema]):
+        fields (MutableSequence[google.cloud.bigquery_storage_v1.types.TableFieldSchema]):
             Describes the fields in a table.
     """
 
-    fields = proto.RepeatedField(
+    fields: MutableSequence["TableFieldSchema"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="TableFieldSchema",
@@ -57,7 +59,7 @@ class TableFieldSchema(proto.Message):
         mode (google.cloud.bigquery_storage_v1.types.TableFieldSchema.Mode):
             Optional. The field mode. The default value
             is NULLABLE.
-        fields (Sequence[google.cloud.bigquery_storage_v1.types.TableFieldSchema]):
+        fields (MutableSequence[google.cloud.bigquery_storage_v1.types.TableFieldSchema]):
             Optional. Describes the nested schema fields
             if the type property is set to STRUCT.
         description (str):
@@ -146,38 +148,38 @@ class TableFieldSchema(proto.Message):
         REQUIRED = 2
         REPEATED = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    type_ = proto.Field(
+    type_: Type = proto.Field(
         proto.ENUM,
         number=2,
         enum=Type,
     )
-    mode = proto.Field(
+    mode: Mode = proto.Field(
         proto.ENUM,
         number=3,
         enum=Mode,
     )
-    fields = proto.RepeatedField(
+    fields: MutableSequence["TableFieldSchema"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="TableFieldSchema",
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    max_length = proto.Field(
+    max_length: int = proto.Field(
         proto.INT64,
         number=7,
     )
-    precision = proto.Field(
+    precision: int = proto.Field(
         proto.INT64,
         number=8,
     )
-    scale = proto.Field(
+    scale: int = proto.Field(
         proto.INT64,
         number=9,
     )

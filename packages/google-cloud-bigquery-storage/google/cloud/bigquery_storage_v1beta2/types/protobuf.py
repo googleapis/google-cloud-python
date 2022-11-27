@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import descriptor_pb2  # type: ignore
@@ -40,7 +42,7 @@ class ProtoSchema(proto.Message):
             (https://developers.google.com/protocol-buffers/docs/reference/google.protobuf).
     """
 
-    proto_descriptor = proto.Field(
+    proto_descriptor: descriptor_pb2.DescriptorProto = proto.Field(
         proto.MESSAGE,
         number=1,
         message=descriptor_pb2.DescriptorProto,
@@ -51,7 +53,7 @@ class ProtoRows(proto.Message):
     r"""
 
     Attributes:
-        serialized_rows (Sequence[bytes]):
+        serialized_rows (MutableSequence[bytes]):
             A sequence of rows serialized as a Protocol
             Buffer.
             See
@@ -60,7 +62,7 @@ class ProtoRows(proto.Message):
             field.
     """
 
-    serialized_rows = proto.RepeatedField(
+    serialized_rows: MutableSequence[bytes] = proto.RepeatedField(
         proto.BYTES,
         number=1,
     )

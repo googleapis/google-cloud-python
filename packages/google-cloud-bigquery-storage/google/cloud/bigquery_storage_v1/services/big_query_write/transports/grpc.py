@@ -51,14 +51,14 @@ class BigQueryWriteGrpcTransport(BigQueryWriteTransport):
         self,
         *,
         host: str = "bigquerystorage.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Sequence[str] = None,
-        channel: grpc.Channel = None,
-        api_mtls_endpoint: str = None,
-        client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
-        ssl_channel_credentials: grpc.ChannelCredentials = None,
-        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        channel: Optional[grpc.Channel] = None,
+        api_mtls_endpoint: Optional[str] = None,
+        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
@@ -185,8 +185,8 @@ class BigQueryWriteGrpcTransport(BigQueryWriteTransport):
     def create_channel(
         cls,
         host: str = "bigquerystorage.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
         **kwargs,
@@ -305,13 +305,6 @@ class BigQueryWriteGrpcTransport(BigQueryWriteTransport):
            stream itself is finalized (via the ``FinalizeWriteStream``
            rpc), and the stream is explicitly committed via the
            ``BatchCommitWriteStreams`` rpc.
-
-        Note: For users coding against the gRPC api directly, it may be
-        necessary to supply the x-goog-request-params system parameter
-        with ``write_stream=<full_write_stream_name>``.
-
-        More information about system parameters:
-        https://cloud.google.com/apis/docs/system-parameters
 
         Returns:
             Callable[[~.AppendRowsRequest],
