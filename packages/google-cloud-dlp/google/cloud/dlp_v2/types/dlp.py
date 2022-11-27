@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -41,6 +43,7 @@ __protobuf__ = proto.module(
         "ResourceVisibility",
         "EncryptionStatus",
         "ExcludeInfoTypes",
+        "ExcludeByHotword",
         "ExclusionRule",
         "InspectionRule",
         "InspectionRuleSet",
@@ -313,7 +316,7 @@ class ExcludeInfoTypes(proto.Message):
     r"""List of excluded infoTypes.
 
     Attributes:
-        info_types (Sequence[google.cloud.dlp_v2.types.InfoType]):
+        info_types (MutableSequence[google.cloud.dlp_v2.types.InfoType]):
             InfoType list in ExclusionRule rule drops a finding when it
             overlaps or contained within with a finding of an infoType
             from this list. For example, for
@@ -325,10 +328,41 @@ class ExcludeInfoTypes(proto.Message):
             finding, namely email address.
     """
 
-    info_types = proto.RepeatedField(
+    info_types: MutableSequence[storage.InfoType] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=storage.InfoType,
+    )
+
+
+class ExcludeByHotword(proto.Message):
+    r"""The rule to exclude findings based on a hotword. For record
+    inspection of tables, column names are considered hotwords. An
+    example of this is to exclude a finding if a BigQuery column
+    matches a specific pattern.
+
+    Attributes:
+        hotword_regex (google.cloud.dlp_v2.types.CustomInfoType.Regex):
+            Regular expression pattern defining what
+            qualifies as a hotword.
+        proximity (google.cloud.dlp_v2.types.CustomInfoType.DetectionRule.Proximity):
+            Range of characters within which the entire
+            hotword must reside. The total length of the
+            window cannot exceed 1000 characters. The
+            windowBefore property in proximity should be set
+            to 1 if the hotword needs to be included in a
+            column header.
+    """
+
+    hotword_regex: storage.CustomInfoType.Regex = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=storage.CustomInfoType.Regex,
+    )
+    proximity: storage.CustomInfoType.DetectionRule.Proximity = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=storage.CustomInfoType.DetectionRule.Proximity,
     )
 
 
@@ -357,30 +391,42 @@ class ExclusionRule(proto.Message):
             affect this rule.
 
             This field is a member of `oneof`_ ``type``.
+        exclude_by_hotword (google.cloud.dlp_v2.types.ExcludeByHotword):
+            Drop if the hotword rule is contained in the
+            proximate context. For tabular data, the context
+            includes the column name.
+
+            This field is a member of `oneof`_ ``type``.
         matching_type (google.cloud.dlp_v2.types.MatchingType):
             How the rule is applied, see MatchingType
             documentation for details.
     """
 
-    dictionary = proto.Field(
+    dictionary: storage.CustomInfoType.Dictionary = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="type",
         message=storage.CustomInfoType.Dictionary,
     )
-    regex = proto.Field(
+    regex: storage.CustomInfoType.Regex = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="type",
         message=storage.CustomInfoType.Regex,
     )
-    exclude_info_types = proto.Field(
+    exclude_info_types: "ExcludeInfoTypes" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="type",
         message="ExcludeInfoTypes",
     )
-    matching_type = proto.Field(
+    exclude_by_hotword: "ExcludeByHotword" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="type",
+        message="ExcludeByHotword",
+    )
+    matching_type: "MatchingType" = proto.Field(
         proto.ENUM,
         number=4,
         enum="MatchingType",
@@ -409,13 +455,13 @@ class InspectionRule(proto.Message):
             This field is a member of `oneof`_ ``type``.
     """
 
-    hotword_rule = proto.Field(
+    hotword_rule: storage.CustomInfoType.DetectionRule.HotwordRule = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="type",
         message=storage.CustomInfoType.DetectionRule.HotwordRule,
     )
-    exclusion_rule = proto.Field(
+    exclusion_rule: "ExclusionRule" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="type",
@@ -429,20 +475,20 @@ class InspectionRuleSet(proto.Message):
     of the rules within the set.
 
     Attributes:
-        info_types (Sequence[google.cloud.dlp_v2.types.InfoType]):
+        info_types (MutableSequence[google.cloud.dlp_v2.types.InfoType]):
             List of infoTypes this rule set is applied
             to.
-        rules (Sequence[google.cloud.dlp_v2.types.InspectionRule]):
+        rules (MutableSequence[google.cloud.dlp_v2.types.InspectionRule]):
             Set of rules to be applied to infoTypes. The
             rules are applied in order.
     """
 
-    info_types = proto.RepeatedField(
+    info_types: MutableSequence[storage.InfoType] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=storage.InfoType,
     )
-    rules = proto.RepeatedField(
+    rules: MutableSequence["InspectionRule"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="InspectionRule",
@@ -454,7 +500,7 @@ class InspectConfig(proto.Message):
     redactContent only info_types and min_likelihood are currently used.
 
     Attributes:
-        info_types (Sequence[google.cloud.dlp_v2.types.InfoType]):
+        info_types (MutableSequence[google.cloud.dlp_v2.types.InfoType]):
             Restricts what info_types to look for. The values must
             correspond to InfoType values returned by ListInfoTypes or
             listed at
@@ -492,13 +538,13 @@ class InspectConfig(proto.Message):
         exclude_info_types (bool):
             When true, excludes type information of the
             findings. This is not used for data profiling.
-        custom_info_types (Sequence[google.cloud.dlp_v2.types.CustomInfoType]):
+        custom_info_types (MutableSequence[google.cloud.dlp_v2.types.CustomInfoType]):
             CustomInfoTypes provided by the user. See
             https://cloud.google.com/dlp/docs/creating-custom-infotypes
             to learn more.
-        content_options (Sequence[google.cloud.dlp_v2.types.ContentOption]):
+        content_options (MutableSequence[google.cloud.dlp_v2.types.ContentOption]):
             Deprecated and unused.
-        rule_set (Sequence[google.cloud.dlp_v2.types.InspectionRuleSet]):
+        rule_set (MutableSequence[google.cloud.dlp_v2.types.InspectionRuleSet]):
             Set of rules to apply to the findings for
             this InspectConfig. Exclusion rules, contained
             in the set are executed in the end, other rules
@@ -527,7 +573,7 @@ class InspectConfig(proto.Message):
                 Max number of findings that will be returned per
                 request/job. When set within ``InspectContentRequest``, the
                 maximum returned is 2000 regardless if this is set higher.
-            max_findings_per_info_type (Sequence[google.cloud.dlp_v2.types.InspectConfig.FindingLimits.InfoTypeLimit]):
+            max_findings_per_info_type (MutableSequence[google.cloud.dlp_v2.types.InspectConfig.FindingLimits.InfoTypeLimit]):
                 Configuration of findings limit given for
                 specified infoTypes.
         """
@@ -547,64 +593,66 @@ class InspectConfig(proto.Message):
                     Max findings limit for the given infoType.
             """
 
-            info_type = proto.Field(
+            info_type: storage.InfoType = proto.Field(
                 proto.MESSAGE,
                 number=1,
                 message=storage.InfoType,
             )
-            max_findings = proto.Field(
+            max_findings: int = proto.Field(
                 proto.INT32,
                 number=2,
             )
 
-        max_findings_per_item = proto.Field(
+        max_findings_per_item: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        max_findings_per_request = proto.Field(
+        max_findings_per_request: int = proto.Field(
             proto.INT32,
             number=2,
         )
-        max_findings_per_info_type = proto.RepeatedField(
+        max_findings_per_info_type: MutableSequence[
+            "InspectConfig.FindingLimits.InfoTypeLimit"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="InspectConfig.FindingLimits.InfoTypeLimit",
         )
 
-    info_types = proto.RepeatedField(
+    info_types: MutableSequence[storage.InfoType] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=storage.InfoType,
     )
-    min_likelihood = proto.Field(
+    min_likelihood: storage.Likelihood = proto.Field(
         proto.ENUM,
         number=2,
         enum=storage.Likelihood,
     )
-    limits = proto.Field(
+    limits: FindingLimits = proto.Field(
         proto.MESSAGE,
         number=3,
         message=FindingLimits,
     )
-    include_quote = proto.Field(
+    include_quote: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    exclude_info_types = proto.Field(
+    exclude_info_types: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    custom_info_types = proto.RepeatedField(
+    custom_info_types: MutableSequence[storage.CustomInfoType] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=storage.CustomInfoType,
     )
-    content_options = proto.RepeatedField(
+    content_options: MutableSequence["ContentOption"] = proto.RepeatedField(
         proto.ENUM,
         number=8,
         enum="ContentOption",
     )
-    rule_set = proto.RepeatedField(
+    rule_set: MutableSequence["InspectionRuleSet"] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message="InspectionRuleSet",
@@ -642,19 +690,19 @@ class ByteContentItem(proto.Message):
         CSV = 12
         TSV = 13
 
-    type_ = proto.Field(
+    type_: BytesType = proto.Field(
         proto.ENUM,
         number=1,
         enum=BytesType,
     )
-    data = proto.Field(
+    data: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
 
 
 class ContentItem(proto.Message):
-    r"""Container structure for the content to inspect.
+    r"""
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -681,18 +729,18 @@ class ContentItem(proto.Message):
             This field is a member of `oneof`_ ``data_item``.
     """
 
-    value = proto.Field(
+    value: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="data_item",
     )
-    table = proto.Field(
+    table: "Table" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="data_item",
         message="Table",
     )
-    byte_item = proto.Field(
+    byte_item: "ByteContentItem" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="data_item",
@@ -707,9 +755,9 @@ class Table(proto.Message):
     to learn more.
 
     Attributes:
-        headers (Sequence[google.cloud.dlp_v2.types.FieldId]):
+        headers (MutableSequence[google.cloud.dlp_v2.types.FieldId]):
             Headers of the table.
-        rows (Sequence[google.cloud.dlp_v2.types.Table.Row]):
+        rows (MutableSequence[google.cloud.dlp_v2.types.Table.Row]):
             Rows of the table.
     """
 
@@ -717,22 +765,22 @@ class Table(proto.Message):
         r"""Values of the row.
 
         Attributes:
-            values (Sequence[google.cloud.dlp_v2.types.Value]):
+            values (MutableSequence[google.cloud.dlp_v2.types.Value]):
                 Individual cells.
         """
 
-        values = proto.RepeatedField(
+        values: MutableSequence["Value"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Value",
         )
 
-    headers = proto.RepeatedField(
+    headers: MutableSequence[storage.FieldId] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=storage.FieldId,
     )
-    rows = proto.RepeatedField(
+    rows: MutableSequence[Row] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=Row,
@@ -743,7 +791,7 @@ class InspectResult(proto.Message):
     r"""All the findings for a single scanned item.
 
     Attributes:
-        findings (Sequence[google.cloud.dlp_v2.types.Finding]):
+        findings (MutableSequence[google.cloud.dlp_v2.types.Finding]):
             List of findings for an item.
         findings_truncated (bool):
             If true, then this item might have more
@@ -757,12 +805,12 @@ class InspectResult(proto.Message):
             batches.
     """
 
-    findings = proto.RepeatedField(
+    findings: MutableSequence["Finding"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Finding",
     )
-    findings_truncated = proto.Field(
+    findings_truncated: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -802,7 +850,7 @@ class Finding(proto.Message):
         trigger_name (str):
             Job trigger name, if applicable, for this
             finding.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             The labels associated with this ``Finding``.
 
             Label keys must be between 1 and 63 characters long and must
@@ -829,62 +877,62 @@ class Finding(proto.Message):
             The unique finding id.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    quote = proto.Field(
+    quote: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    info_type = proto.Field(
+    info_type: storage.InfoType = proto.Field(
         proto.MESSAGE,
         number=2,
         message=storage.InfoType,
     )
-    likelihood = proto.Field(
+    likelihood: storage.Likelihood = proto.Field(
         proto.ENUM,
         number=3,
         enum=storage.Likelihood,
     )
-    location = proto.Field(
+    location: "Location" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="Location",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    quote_info = proto.Field(
+    quote_info: "QuoteInfo" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="QuoteInfo",
     )
-    resource_name = proto.Field(
+    resource_name: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    trigger_name = proto.Field(
+    trigger_name: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=10,
     )
-    job_create_time = proto.Field(
+    job_create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=11,
         message=timestamp_pb2.Timestamp,
     )
-    job_name = proto.Field(
+    job_name: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    finding_id = proto.Field(
+    finding_id: str = proto.Field(
         proto.STRING,
         number=15,
     )
@@ -906,7 +954,7 @@ class Location(proto.Message):
             finding. These are relative to the finding's
             containing element. Provided when the content is
             text.
-        content_locations (Sequence[google.cloud.dlp_v2.types.ContentLocation]):
+        content_locations (MutableSequence[google.cloud.dlp_v2.types.ContentLocation]):
             List of nested objects pointing to the
             precise location of the finding within the file
             or record.
@@ -915,22 +963,22 @@ class Location(proto.Message):
             finding occurred, if available.
     """
 
-    byte_range = proto.Field(
+    byte_range: "Range" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Range",
     )
-    codepoint_range = proto.Field(
+    codepoint_range: "Range" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Range",
     )
-    content_locations = proto.RepeatedField(
+    content_locations: MutableSequence["ContentLocation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="ContentLocation",
     )
-    container = proto.Field(
+    container: "Container" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="Container",
@@ -990,40 +1038,40 @@ class ContentLocation(proto.Message):
             ("generation" for Cloud Storage).
     """
 
-    container_name = proto.Field(
+    container_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    record_location = proto.Field(
+    record_location: "RecordLocation" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="location",
         message="RecordLocation",
     )
-    image_location = proto.Field(
+    image_location: "ImageLocation" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="location",
         message="ImageLocation",
     )
-    document_location = proto.Field(
+    document_location: "DocumentLocation" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="location",
         message="DocumentLocation",
     )
-    metadata_location = proto.Field(
+    metadata_location: "MetadataLocation" = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="location",
         message="MetadataLocation",
     )
-    container_timestamp = proto.Field(
+    container_timestamp: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    container_version = proto.Field(
+    container_version: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -1043,12 +1091,12 @@ class MetadataLocation(proto.Message):
             This field is a member of `oneof`_ ``label``.
     """
 
-    type_ = proto.Field(
+    type_: "MetadataType" = proto.Field(
         proto.ENUM,
         number=1,
         enum="MetadataType",
     )
-    storage_label = proto.Field(
+    storage_label: "StorageMetadataLabel" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="label",
@@ -1065,7 +1113,7 @@ class StorageMetadataLabel(proto.Message):
 
     """
 
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1080,7 +1128,7 @@ class DocumentLocation(proto.Message):
             file, where the finding is located.
     """
 
-    file_offset = proto.Field(
+    file_offset: int = proto.Field(
         proto.INT64,
         number=1,
     )
@@ -1098,17 +1146,17 @@ class RecordLocation(proto.Message):
             Location within a ``ContentItem.Table``.
     """
 
-    record_key = proto.Field(
+    record_key: storage.RecordKey = proto.Field(
         proto.MESSAGE,
         number=1,
         message=storage.RecordKey,
     )
-    field_id = proto.Field(
+    field_id: storage.FieldId = proto.Field(
         proto.MESSAGE,
         number=2,
         message=storage.FieldId,
     )
-    table_location = proto.Field(
+    table_location: "TableLocation" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="TableLocation",
@@ -1129,7 +1177,7 @@ class TableLocation(proto.Message):
             those columns will be stored inside of Finding.
     """
 
-    row_index = proto.Field(
+    row_index: int = proto.Field(
         proto.INT64,
         number=1,
     )
@@ -1181,32 +1229,32 @@ class Container(proto.Message):
             ("generation" for Cloud Storage).
     """
 
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    full_path = proto.Field(
+    full_path: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    root_path = proto.Field(
+    root_path: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    relative_path = proto.Field(
+    relative_path: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -1224,11 +1272,11 @@ class Range(proto.Message):
             (exclusive).
     """
 
-    start = proto.Field(
+    start: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    end = proto.Field(
+    end: int = proto.Field(
         proto.INT64,
         number=2,
     )
@@ -1238,12 +1286,12 @@ class ImageLocation(proto.Message):
     r"""Location of the finding within an image.
 
     Attributes:
-        bounding_boxes (Sequence[google.cloud.dlp_v2.types.BoundingBox]):
+        bounding_boxes (MutableSequence[google.cloud.dlp_v2.types.BoundingBox]):
             Bounding boxes locating the pixels within the
             image containing the finding.
     """
 
-    bounding_boxes = proto.RepeatedField(
+    bounding_boxes: MutableSequence["BoundingBox"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="BoundingBox",
@@ -1266,19 +1314,19 @@ class BoundingBox(proto.Message):
             Height of the bounding box in pixels.
     """
 
-    top = proto.Field(
+    top: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    left = proto.Field(
+    left: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    width = proto.Field(
+    width: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    height = proto.Field(
+    height: int = proto.Field(
         proto.INT32,
         number=4,
     )
@@ -1312,7 +1360,7 @@ class RedactImageRequest(proto.Message):
             Deprecated. This field has no effect.
         inspect_config (google.cloud.dlp_v2.types.InspectConfig):
             Configuration for the inspector.
-        image_redaction_configs (Sequence[google.cloud.dlp_v2.types.RedactImageRequest.ImageRedactionConfig]):
+        image_redaction_configs (MutableSequence[google.cloud.dlp_v2.types.RedactImageRequest.ImageRedactionConfig]):
             The configuration for specifying what content
             to redact from images.
         include_findings (bool):
@@ -1354,46 +1402,48 @@ class RedactImageRequest(proto.Message):
                 black.
         """
 
-        info_type = proto.Field(
+        info_type: storage.InfoType = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="target",
             message=storage.InfoType,
         )
-        redact_all_text = proto.Field(
+        redact_all_text: bool = proto.Field(
             proto.BOOL,
             number=2,
             oneof="target",
         )
-        redaction_color = proto.Field(
+        redaction_color: "Color" = proto.Field(
             proto.MESSAGE,
             number=3,
             message="Color",
         )
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    location_id = proto.Field(
+    location_id: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    inspect_config = proto.Field(
+    inspect_config: "InspectConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="InspectConfig",
     )
-    image_redaction_configs = proto.RepeatedField(
+    image_redaction_configs: MutableSequence[
+        ImageRedactionConfig
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=ImageRedactionConfig,
     )
-    include_findings = proto.Field(
+    include_findings: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    byte_item = proto.Field(
+    byte_item: "ByteContentItem" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="ByteContentItem",
@@ -1415,15 +1465,15 @@ class Color(proto.Message):
             [0, 1].
     """
 
-    red = proto.Field(
+    red: float = proto.Field(
         proto.FLOAT,
         number=1,
     )
-    green = proto.Field(
+    green: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
-    blue = proto.Field(
+    blue: float = proto.Field(
         proto.FLOAT,
         number=3,
     )
@@ -1445,15 +1495,15 @@ class RedactImageResponse(proto.Message):
             is true.
     """
 
-    redacted_image = proto.Field(
+    redacted_image: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    extracted_text = proto.Field(
+    extracted_text: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    inspect_result = proto.Field(
+    inspect_result: "InspectResult" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="InspectResult",
@@ -1492,8 +1542,14 @@ class DeidentifyContentRequest(proto.Message):
             override the template referenced by the
             inspect_template_name argument.
         item (google.cloud.dlp_v2.types.ContentItem):
-            The item to de-identify. Will be treated as
-            text.
+            The item to de-identify. Will be treated as text.
+
+            This value must be of type
+            [Table][google.privacy.dlp.v2.Table] if your
+            [deidentify_config][google.privacy.dlp.v2.DeidentifyContentRequest.deidentify_config]
+            is a
+            [RecordTransformations][google.privacy.dlp.v2.RecordTransformations]
+            object.
         inspect_template_name (str):
             Template to use. Any configuration directly specified in
             inspect_config will override those set in the template.
@@ -1512,34 +1568,34 @@ class DeidentifyContentRequest(proto.Message):
             Deprecated. This field has no effect.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    deidentify_config = proto.Field(
+    deidentify_config: "DeidentifyConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="DeidentifyConfig",
     )
-    inspect_config = proto.Field(
+    inspect_config: "InspectConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="InspectConfig",
     )
-    item = proto.Field(
+    item: "ContentItem" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="ContentItem",
     )
-    inspect_template_name = proto.Field(
+    inspect_template_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    deidentify_template_name = proto.Field(
+    deidentify_template_name: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    location_id = proto.Field(
+    location_id: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -1555,12 +1611,12 @@ class DeidentifyContentResponse(proto.Message):
             An overview of the changes that were made on the ``item``.
     """
 
-    item = proto.Field(
+    item: "ContentItem" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ContentItem",
     )
-    overview = proto.Field(
+    overview: "TransformationOverview" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="TransformationOverview",
@@ -1629,34 +1685,34 @@ class ReidentifyContentRequest(proto.Message):
             Deprecated. This field has no effect.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    reidentify_config = proto.Field(
+    reidentify_config: "DeidentifyConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="DeidentifyConfig",
     )
-    inspect_config = proto.Field(
+    inspect_config: "InspectConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="InspectConfig",
     )
-    item = proto.Field(
+    item: "ContentItem" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="ContentItem",
     )
-    inspect_template_name = proto.Field(
+    inspect_template_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    reidentify_template_name = proto.Field(
+    reidentify_template_name: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    location_id = proto.Field(
+    location_id: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -1672,12 +1728,12 @@ class ReidentifyContentResponse(proto.Message):
             An overview of the changes that were made to the ``item``.
     """
 
-    item = proto.Field(
+    item: "ContentItem" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ContentItem",
     )
-    overview = proto.Field(
+    overview: "TransformationOverview" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="TransformationOverview",
@@ -1725,25 +1781,25 @@ class InspectContentRequest(proto.Message):
             Deprecated. This field has no effect.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    inspect_config = proto.Field(
+    inspect_config: "InspectConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="InspectConfig",
     )
-    item = proto.Field(
+    item: "ContentItem" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="ContentItem",
     )
-    inspect_template_name = proto.Field(
+    inspect_template_name: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    location_id = proto.Field(
+    location_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1757,7 +1813,7 @@ class InspectContentResponse(proto.Message):
             The findings.
     """
 
-    result = proto.Field(
+    result: "InspectResult" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="InspectResult",
@@ -1814,13 +1870,13 @@ class OutputStorageConfig(proto.Message):
         BIG_QUERY_COLUMNS = 4
         ALL_COLUMNS = 5
 
-    table = proto.Field(
+    table: storage.BigQueryTable = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="type",
         message=storage.BigQueryTable,
     )
-    output_schema = proto.Field(
+    output_schema: OutputSchema = proto.Field(
         proto.ENUM,
         number=3,
         enum=OutputSchema,
@@ -1837,12 +1893,12 @@ class InfoTypeStats(proto.Message):
             Number of findings for this infoType.
     """
 
-    info_type = proto.Field(
+    info_type: storage.InfoType = proto.Field(
         proto.MESSAGE,
         number=1,
         message=storage.InfoType,
     )
-    count = proto.Field(
+    count: int = proto.Field(
         proto.INT64,
         number=2,
     )
@@ -1870,12 +1926,12 @@ class InspectDataSourceDetails(proto.Message):
                 Inspect config.
         """
 
-        snapshot_inspect_template = proto.Field(
+        snapshot_inspect_template: "InspectTemplate" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="InspectTemplate",
         )
-        job_config = proto.Field(
+        job_config: "InspectJobConfig" = proto.Field(
             proto.MESSAGE,
             number=3,
             message="InspectJobConfig",
@@ -1890,7 +1946,7 @@ class InspectDataSourceDetails(proto.Message):
                 Total size in bytes that were processed.
             total_estimated_bytes (int):
                 Estimate of the number of bytes to process.
-            info_type_stats (Sequence[google.cloud.dlp_v2.types.InfoTypeStats]):
+            info_type_stats (MutableSequence[google.cloud.dlp_v2.types.InfoTypeStats]):
                 Statistics of how many instances of each info
                 type were found during inspect job.
             hybrid_stats (google.cloud.dlp_v2.types.HybridInspectStatistics):
@@ -1898,31 +1954,31 @@ class InspectDataSourceDetails(proto.Message):
                 hybrid inspect.
         """
 
-        processed_bytes = proto.Field(
+        processed_bytes: int = proto.Field(
             proto.INT64,
             number=1,
         )
-        total_estimated_bytes = proto.Field(
+        total_estimated_bytes: int = proto.Field(
             proto.INT64,
             number=2,
         )
-        info_type_stats = proto.RepeatedField(
+        info_type_stats: MutableSequence["InfoTypeStats"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="InfoTypeStats",
         )
-        hybrid_stats = proto.Field(
+        hybrid_stats: "HybridInspectStatistics" = proto.Field(
             proto.MESSAGE,
             number=7,
             message="HybridInspectStatistics",
         )
 
-    requested_options = proto.Field(
+    requested_options: RequestedOptions = proto.Field(
         proto.MESSAGE,
         number=2,
         message=RequestedOptions,
     )
-    result = proto.Field(
+    result: Result = proto.Field(
         proto.MESSAGE,
         number=3,
         message=Result,
@@ -1949,15 +2005,15 @@ class HybridInspectStatistics(proto.Message):
             enqueued for.
     """
 
-    processed_count = proto.Field(
+    processed_count: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    aborted_count = proto.Field(
+    aborted_count: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    pending_count = proto.Field(
+    pending_count: int = proto.Field(
         proto.INT64,
         number=3,
     )
@@ -1971,42 +2027,42 @@ class InfoTypeDescription(proto.Message):
             Internal name of the infoType.
         display_name (str):
             Human readable form of the infoType name.
-        supported_by (Sequence[google.cloud.dlp_v2.types.InfoTypeSupportedBy]):
+        supported_by (MutableSequence[google.cloud.dlp_v2.types.InfoTypeSupportedBy]):
             Which parts of the API supports this
             InfoType.
         description (str):
             Description of the infotype. Translated when
             language is provided in the request.
-        versions (Sequence[google.cloud.dlp_v2.types.VersionDescription]):
+        versions (MutableSequence[google.cloud.dlp_v2.types.VersionDescription]):
             A list of available versions for the
             infotype.
-        categories (Sequence[google.cloud.dlp_v2.types.InfoTypeCategory]):
+        categories (MutableSequence[google.cloud.dlp_v2.types.InfoTypeCategory]):
             The category of the infoType.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    supported_by = proto.RepeatedField(
+    supported_by: MutableSequence["InfoTypeSupportedBy"] = proto.RepeatedField(
         proto.ENUM,
         number=3,
         enum="InfoTypeSupportedBy",
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    versions = proto.RepeatedField(
+    versions: MutableSequence["VersionDescription"] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message="VersionDescription",
     )
-    categories = proto.RepeatedField(
+    categories: MutableSequence["InfoTypeCategory"] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message="InfoTypeCategory",
@@ -2087,6 +2143,7 @@ class InfoTypeCategory(proto.Message):
         URUGUAY = 38
         VENEZUELA = 39
         INTERNAL = 40
+        NEW_ZEALAND = 41
 
     class IndustryCategory(proto.Enum):
         r"""Enum of the current industries in the category.
@@ -2110,19 +2167,19 @@ class InfoTypeCategory(proto.Message):
         DOCUMENT = 6
         CONTEXTUAL_INFORMATION = 7
 
-    location_category = proto.Field(
+    location_category: LocationCategory = proto.Field(
         proto.ENUM,
         number=1,
         oneof="category",
         enum=LocationCategory,
     )
-    industry_category = proto.Field(
+    industry_category: IndustryCategory = proto.Field(
         proto.ENUM,
         number=2,
         oneof="category",
         enum=IndustryCategory,
     )
-    type_category = proto.Field(
+    type_category: TypeCategory = proto.Field(
         proto.ENUM,
         number=3,
         oneof="category",
@@ -2140,11 +2197,11 @@ class VersionDescription(proto.Message):
             Description of the version.
     """
 
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -2174,19 +2231,19 @@ class ListInfoTypesRequest(proto.Message):
             Deprecated. This field has no effect.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    location_id = proto.Field(
+    location_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -2196,11 +2253,11 @@ class ListInfoTypesResponse(proto.Message):
     r"""Response to the ListInfoTypes request.
 
     Attributes:
-        info_types (Sequence[google.cloud.dlp_v2.types.InfoTypeDescription]):
+        info_types (MutableSequence[google.cloud.dlp_v2.types.InfoTypeDescription]):
             Set of sensitive infoTypes.
     """
 
-    info_types = proto.RepeatedField(
+    info_types: MutableSequence["InfoTypeDescription"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="InfoTypeDescription",
@@ -2217,22 +2274,22 @@ class RiskAnalysisJobConfig(proto.Message):
             Privacy metric to compute.
         source_table (google.cloud.dlp_v2.types.BigQueryTable):
             Input dataset to compute metrics over.
-        actions (Sequence[google.cloud.dlp_v2.types.Action]):
+        actions (MutableSequence[google.cloud.dlp_v2.types.Action]):
             Actions to execute at the completion of the
             job. Are executed in the order provided.
     """
 
-    privacy_metric = proto.Field(
+    privacy_metric: "PrivacyMetric" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="PrivacyMetric",
     )
-    source_table = proto.Field(
+    source_table: storage.BigQueryTable = proto.Field(
         proto.MESSAGE,
         number=2,
         message=storage.BigQueryTable,
     )
-    actions = proto.RepeatedField(
+    actions: MutableSequence["Action"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="Action",
@@ -2276,23 +2333,23 @@ class QuasiId(proto.Message):
             This field is a member of `oneof`_ ``tag``.
     """
 
-    field = proto.Field(
+    field: storage.FieldId = proto.Field(
         proto.MESSAGE,
         number=1,
         message=storage.FieldId,
     )
-    info_type = proto.Field(
+    info_type: storage.InfoType = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="tag",
         message=storage.InfoType,
     )
-    custom_tag = proto.Field(
+    custom_tag: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="tag",
     )
-    inferred = proto.Field(
+    inferred: empty_pb2.Empty = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="tag",
@@ -2312,7 +2369,7 @@ class StatisticalTable(proto.Message):
     Attributes:
         table (google.cloud.dlp_v2.types.BigQueryTable):
             Required. Auxiliary table location.
-        quasi_ids (Sequence[google.cloud.dlp_v2.types.StatisticalTable.QuasiIdentifierField]):
+        quasi_ids (MutableSequence[google.cloud.dlp_v2.types.StatisticalTable.QuasiIdentifierField]):
             Required. Quasi-identifier columns.
         relative_frequency (google.cloud.dlp_v2.types.FieldId):
             Required. The relative frequency column must
@@ -2335,27 +2392,27 @@ class StatisticalTable(proto.Message):
                 the possible values of this column (below).
         """
 
-        field = proto.Field(
+        field: storage.FieldId = proto.Field(
             proto.MESSAGE,
             number=1,
             message=storage.FieldId,
         )
-        custom_tag = proto.Field(
+        custom_tag: str = proto.Field(
             proto.STRING,
             number=2,
         )
 
-    table = proto.Field(
+    table: storage.BigQueryTable = proto.Field(
         proto.MESSAGE,
         number=3,
         message=storage.BigQueryTable,
     )
-    quasi_ids = proto.RepeatedField(
+    quasi_ids: MutableSequence[QuasiIdentifierField] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=QuasiIdentifierField,
     )
-    relative_frequency = proto.Field(
+    relative_frequency: storage.FieldId = proto.Field(
         proto.MESSAGE,
         number=2,
         message=storage.FieldId,
@@ -2410,7 +2467,7 @@ class PrivacyMetric(proto.Message):
                 datetime, timestamp, time.
         """
 
-        field = proto.Field(
+        field: storage.FieldId = proto.Field(
             proto.MESSAGE,
             number=1,
             message=storage.FieldId,
@@ -2429,7 +2486,7 @@ class PrivacyMetric(proto.Message):
                 supported, depending on the data.
         """
 
-        field = proto.Field(
+        field: storage.FieldId = proto.Field(
             proto.MESSAGE,
             number=1,
             message=storage.FieldId,
@@ -2440,7 +2497,7 @@ class PrivacyMetric(proto.Message):
         risk.
 
         Attributes:
-            quasi_ids (Sequence[google.cloud.dlp_v2.types.FieldId]):
+            quasi_ids (MutableSequence[google.cloud.dlp_v2.types.FieldId]):
                 Set of fields to compute k-anonymity over.
                 When multiple fields are specified, they are
                 considered a single composite key. Structs and
@@ -2462,12 +2519,12 @@ class PrivacyMetric(proto.Message):
                 same entity ID, some might be ignored.
         """
 
-        quasi_ids = proto.RepeatedField(
+        quasi_ids: MutableSequence[storage.FieldId] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=storage.FieldId,
         )
-        entity_id = proto.Field(
+        entity_id: storage.EntityId = proto.Field(
             proto.MESSAGE,
             number=2,
             message=storage.EntityId,
@@ -2478,7 +2535,7 @@ class PrivacyMetric(proto.Message):
         risk.
 
         Attributes:
-            quasi_ids (Sequence[google.cloud.dlp_v2.types.FieldId]):
+            quasi_ids (MutableSequence[google.cloud.dlp_v2.types.FieldId]):
                 Set of quasi-identifiers indicating how
                 equivalence classes are defined for the
                 l-diversity computation. When multiple fields
@@ -2488,12 +2545,12 @@ class PrivacyMetric(proto.Message):
                 Sensitive field for computing the l-value.
         """
 
-        quasi_ids = proto.RepeatedField(
+        quasi_ids: MutableSequence[storage.FieldId] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=storage.FieldId,
         )
-        sensitive_attribute = proto.Field(
+        sensitive_attribute: storage.FieldId = proto.Field(
             proto.MESSAGE,
             number=2,
             message=storage.FieldId,
@@ -2510,7 +2567,7 @@ class PrivacyMetric(proto.Message):
         dataset.
 
         Attributes:
-            quasi_ids (Sequence[google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField]):
+            quasi_ids (MutableSequence[google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField]):
                 Required. Fields considered to be
                 quasi-identifiers. No two columns can have the
                 same tag.
@@ -2518,7 +2575,7 @@ class PrivacyMetric(proto.Message):
                 ISO 3166-1 alpha-2 region code to use in the statistical
                 modeling. Set if no column is tagged with a region-specific
                 InfoType (like US_ZIP_5) or a region code.
-            auxiliary_tables (Sequence[google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.AuxiliaryTable]):
+            auxiliary_tables (MutableSequence[google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.AuxiliaryTable]):
                 Several auxiliary tables can be used in the analysis. Each
                 custom_tag used to tag a quasi-identifiers column must
                 appear in exactly one column of one auxiliary table.
@@ -2561,23 +2618,23 @@ class PrivacyMetric(proto.Message):
                     This field is a member of `oneof`_ ``tag``.
             """
 
-            field = proto.Field(
+            field: storage.FieldId = proto.Field(
                 proto.MESSAGE,
                 number=1,
                 message=storage.FieldId,
             )
-            info_type = proto.Field(
+            info_type: storage.InfoType = proto.Field(
                 proto.MESSAGE,
                 number=2,
                 oneof="tag",
                 message=storage.InfoType,
             )
-            custom_tag = proto.Field(
+            custom_tag: str = proto.Field(
                 proto.STRING,
                 number=3,
                 oneof="tag",
             )
-            inferred = proto.Field(
+            inferred: empty_pb2.Empty = proto.Field(
                 proto.MESSAGE,
                 number=4,
                 oneof="tag",
@@ -2596,7 +2653,7 @@ class PrivacyMetric(proto.Message):
             Attributes:
                 table (google.cloud.dlp_v2.types.BigQueryTable):
                     Required. Auxiliary table location.
-                quasi_ids (Sequence[google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.AuxiliaryTable.QuasiIdField]):
+                quasi_ids (MutableSequence[google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.AuxiliaryTable.QuasiIdField]):
                     Required. Quasi-identifier columns.
                 relative_frequency (google.cloud.dlp_v2.types.FieldId):
                     Required. The relative frequency column must
@@ -2616,42 +2673,48 @@ class PrivacyMetric(proto.Message):
                         A auxiliary field.
                 """
 
-                field = proto.Field(
+                field: storage.FieldId = proto.Field(
                     proto.MESSAGE,
                     number=1,
                     message=storage.FieldId,
                 )
-                custom_tag = proto.Field(
+                custom_tag: str = proto.Field(
                     proto.STRING,
                     number=2,
                 )
 
-            table = proto.Field(
+            table: storage.BigQueryTable = proto.Field(
                 proto.MESSAGE,
                 number=3,
                 message=storage.BigQueryTable,
             )
-            quasi_ids = proto.RepeatedField(
+            quasi_ids: MutableSequence[
+                "PrivacyMetric.KMapEstimationConfig.AuxiliaryTable.QuasiIdField"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="PrivacyMetric.KMapEstimationConfig.AuxiliaryTable.QuasiIdField",
             )
-            relative_frequency = proto.Field(
+            relative_frequency: storage.FieldId = proto.Field(
                 proto.MESSAGE,
                 number=2,
                 message=storage.FieldId,
             )
 
-        quasi_ids = proto.RepeatedField(
+        quasi_ids: MutableSequence[
+            "PrivacyMetric.KMapEstimationConfig.TaggedField"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="PrivacyMetric.KMapEstimationConfig.TaggedField",
         )
-        region_code = proto.Field(
+        region_code: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        auxiliary_tables = proto.RepeatedField(
+        auxiliary_tables: MutableSequence[
+            "PrivacyMetric.KMapEstimationConfig.AuxiliaryTable"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="PrivacyMetric.KMapEstimationConfig.AuxiliaryTable",
@@ -2665,7 +2728,7 @@ class PrivacyMetric(proto.Message):
         so we use a statistical model instead.
 
         Attributes:
-            quasi_ids (Sequence[google.cloud.dlp_v2.types.QuasiId]):
+            quasi_ids (MutableSequence[google.cloud.dlp_v2.types.QuasiId]):
                 Required. Fields considered to be
                 quasi-identifiers. No two fields can have the
                 same tag.
@@ -2673,58 +2736,58 @@ class PrivacyMetric(proto.Message):
                 ISO 3166-1 alpha-2 region code to use in the statistical
                 modeling. Set if no column is tagged with a region-specific
                 InfoType (like US_ZIP_5) or a region code.
-            auxiliary_tables (Sequence[google.cloud.dlp_v2.types.StatisticalTable]):
+            auxiliary_tables (MutableSequence[google.cloud.dlp_v2.types.StatisticalTable]):
                 Several auxiliary tables can be used in the analysis. Each
                 custom_tag used to tag a quasi-identifiers field must appear
                 in exactly one field of one auxiliary table.
         """
 
-        quasi_ids = proto.RepeatedField(
+        quasi_ids: MutableSequence["QuasiId"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="QuasiId",
         )
-        region_code = proto.Field(
+        region_code: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        auxiliary_tables = proto.RepeatedField(
+        auxiliary_tables: MutableSequence["StatisticalTable"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="StatisticalTable",
         )
 
-    numerical_stats_config = proto.Field(
+    numerical_stats_config: NumericalStatsConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="type",
         message=NumericalStatsConfig,
     )
-    categorical_stats_config = proto.Field(
+    categorical_stats_config: CategoricalStatsConfig = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="type",
         message=CategoricalStatsConfig,
     )
-    k_anonymity_config = proto.Field(
+    k_anonymity_config: KAnonymityConfig = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="type",
         message=KAnonymityConfig,
     )
-    l_diversity_config = proto.Field(
+    l_diversity_config: LDiversityConfig = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="type",
         message=LDiversityConfig,
     )
-    k_map_estimation_config = proto.Field(
+    k_map_estimation_config: KMapEstimationConfig = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="type",
         message=KMapEstimationConfig,
     )
-    delta_presence_estimation_config = proto.Field(
+    delta_presence_estimation_config: DeltaPresenceEstimationConfig = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="type",
@@ -2783,22 +2846,22 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                 Minimum value appearing in the column.
             max_value (google.cloud.dlp_v2.types.Value):
                 Maximum value appearing in the column.
-            quantile_values (Sequence[google.cloud.dlp_v2.types.Value]):
+            quantile_values (MutableSequence[google.cloud.dlp_v2.types.Value]):
                 List of 99 values that partition the set of
                 field values into 100 equal sized buckets.
         """
 
-        min_value = proto.Field(
+        min_value: "Value" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="Value",
         )
-        max_value = proto.Field(
+        max_value: "Value" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="Value",
         )
-        quantile_values = proto.RepeatedField(
+        quantile_values: MutableSequence["Value"] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message="Value",
@@ -2808,7 +2871,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
         r"""Result of the categorical stats computation.
 
         Attributes:
-            value_frequency_histogram_buckets (Sequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket]):
+            value_frequency_histogram_buckets (MutableSequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket]):
                 Histogram of value frequencies in the column.
         """
 
@@ -2824,7 +2887,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                     values in this bucket.
                 bucket_size (int):
                     Total number of values in this bucket.
-                bucket_values (Sequence[google.cloud.dlp_v2.types.ValueFrequency]):
+                bucket_values (MutableSequence[google.cloud.dlp_v2.types.ValueFrequency]):
                     Sample of value frequencies in this bucket.
                     The total number of values returned per bucket
                     is capped at 20.
@@ -2833,29 +2896,31 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                     bucket.
             """
 
-            value_frequency_lower_bound = proto.Field(
+            value_frequency_lower_bound: int = proto.Field(
                 proto.INT64,
                 number=1,
             )
-            value_frequency_upper_bound = proto.Field(
+            value_frequency_upper_bound: int = proto.Field(
                 proto.INT64,
                 number=2,
             )
-            bucket_size = proto.Field(
+            bucket_size: int = proto.Field(
                 proto.INT64,
                 number=3,
             )
-            bucket_values = proto.RepeatedField(
+            bucket_values: MutableSequence["ValueFrequency"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="ValueFrequency",
             )
-            bucket_value_count = proto.Field(
+            bucket_value_count: int = proto.Field(
                 proto.INT64,
                 number=5,
             )
 
-        value_frequency_histogram_buckets = proto.RepeatedField(
+        value_frequency_histogram_buckets: MutableSequence[
+            "AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message="AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket",
@@ -2865,7 +2930,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
         r"""Result of the k-anonymity computation.
 
         Attributes:
-            equivalence_class_histogram_buckets (Sequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket]):
+            equivalence_class_histogram_buckets (MutableSequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket]):
                 Histogram of k-anonymity equivalence classes.
         """
 
@@ -2874,7 +2939,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
             value
 
             Attributes:
-                quasi_ids_values (Sequence[google.cloud.dlp_v2.types.Value]):
+                quasi_ids_values (MutableSequence[google.cloud.dlp_v2.types.Value]):
                     Set of values defining the equivalence class.
                     One value per quasi-identifier column in the
                     original KAnonymity metric message. The order is
@@ -2884,12 +2949,12 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                     number of rows with the above set of values.
             """
 
-            quasi_ids_values = proto.RepeatedField(
+            quasi_ids_values: MutableSequence["Value"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="Value",
             )
-            equivalence_class_size = proto.Field(
+            equivalence_class_size: int = proto.Field(
                 proto.INT64,
                 number=2,
             )
@@ -2907,7 +2972,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                 bucket_size (int):
                     Total number of equivalence classes in this
                     bucket.
-                bucket_values (Sequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityEquivalenceClass]):
+                bucket_values (MutableSequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityEquivalenceClass]):
                     Sample of equivalence classes in this bucket.
                     The total number of classes returned per bucket
                     is capped at 20.
@@ -2916,29 +2981,33 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                     in this bucket.
             """
 
-            equivalence_class_size_lower_bound = proto.Field(
+            equivalence_class_size_lower_bound: int = proto.Field(
                 proto.INT64,
                 number=1,
             )
-            equivalence_class_size_upper_bound = proto.Field(
+            equivalence_class_size_upper_bound: int = proto.Field(
                 proto.INT64,
                 number=2,
             )
-            bucket_size = proto.Field(
+            bucket_size: int = proto.Field(
                 proto.INT64,
                 number=3,
             )
-            bucket_values = proto.RepeatedField(
+            bucket_values: MutableSequence[
+                "AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityEquivalenceClass"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityEquivalenceClass",
             )
-            bucket_value_count = proto.Field(
+            bucket_value_count: int = proto.Field(
                 proto.INT64,
                 number=5,
             )
 
-        equivalence_class_histogram_buckets = proto.RepeatedField(
+        equivalence_class_histogram_buckets: MutableSequence[
+            "AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message="AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket",
@@ -2948,7 +3017,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
         r"""Result of the l-diversity computation.
 
         Attributes:
-            sensitive_value_frequency_histogram_buckets (Sequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket]):
+            sensitive_value_frequency_histogram_buckets (MutableSequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket]):
                 Histogram of l-diversity equivalence class
                 sensitive value frequencies.
         """
@@ -2958,7 +3027,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
             value.
 
             Attributes:
-                quasi_ids_values (Sequence[google.cloud.dlp_v2.types.Value]):
+                quasi_ids_values (MutableSequence[google.cloud.dlp_v2.types.Value]):
                     Quasi-identifier values defining the
                     k-anonymity equivalence class. The order is
                     always the same as the original request.
@@ -2967,25 +3036,27 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                 num_distinct_sensitive_values (int):
                     Number of distinct sensitive values in this
                     equivalence class.
-                top_sensitive_values (Sequence[google.cloud.dlp_v2.types.ValueFrequency]):
+                top_sensitive_values (MutableSequence[google.cloud.dlp_v2.types.ValueFrequency]):
                     Estimated frequencies of top sensitive
                     values.
             """
 
-            quasi_ids_values = proto.RepeatedField(
+            quasi_ids_values: MutableSequence["Value"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="Value",
             )
-            equivalence_class_size = proto.Field(
+            equivalence_class_size: int = proto.Field(
                 proto.INT64,
                 number=2,
             )
-            num_distinct_sensitive_values = proto.Field(
+            num_distinct_sensitive_values: int = proto.Field(
                 proto.INT64,
                 number=3,
             )
-            top_sensitive_values = proto.RepeatedField(
+            top_sensitive_values: MutableSequence[
+                "ValueFrequency"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="ValueFrequency",
@@ -3007,7 +3078,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                 bucket_size (int):
                     Total number of equivalence classes in this
                     bucket.
-                bucket_values (Sequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityEquivalenceClass]):
+                bucket_values (MutableSequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityEquivalenceClass]):
                     Sample of equivalence classes in this bucket.
                     The total number of classes returned per bucket
                     is capped at 20.
@@ -3016,29 +3087,33 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                     in this bucket.
             """
 
-            sensitive_value_frequency_lower_bound = proto.Field(
+            sensitive_value_frequency_lower_bound: int = proto.Field(
                 proto.INT64,
                 number=1,
             )
-            sensitive_value_frequency_upper_bound = proto.Field(
+            sensitive_value_frequency_upper_bound: int = proto.Field(
                 proto.INT64,
                 number=2,
             )
-            bucket_size = proto.Field(
+            bucket_size: int = proto.Field(
                 proto.INT64,
                 number=3,
             )
-            bucket_values = proto.RepeatedField(
+            bucket_values: MutableSequence[
+                "AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityEquivalenceClass"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityEquivalenceClass",
             )
-            bucket_value_count = proto.Field(
+            bucket_value_count: int = proto.Field(
                 proto.INT64,
                 number=5,
             )
 
-        sensitive_value_frequency_histogram_buckets = proto.RepeatedField(
+        sensitive_value_frequency_histogram_buckets: MutableSequence[
+            "AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message="AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket",
@@ -3049,7 +3124,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
         results are an estimation, not exact values.
 
         Attributes:
-            k_map_estimation_histogram (Sequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationHistogramBucket]):
+            k_map_estimation_histogram (MutableSequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationHistogramBucket]):
                 The intervals [min_anonymity, max_anonymity] do not overlap.
                 If a value doesn't correspond to any such interval, the
                 associated frequency is zero. For example, the following
@@ -3064,19 +3139,19 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
             r"""A tuple of values for the quasi-identifier columns.
 
             Attributes:
-                quasi_ids_values (Sequence[google.cloud.dlp_v2.types.Value]):
+                quasi_ids_values (MutableSequence[google.cloud.dlp_v2.types.Value]):
                     The quasi-identifier values.
                 estimated_anonymity (int):
                     The estimated anonymity for these
                     quasi-identifier values.
             """
 
-            quasi_ids_values = proto.RepeatedField(
+            quasi_ids_values: MutableSequence["Value"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="Value",
             )
-            estimated_anonymity = proto.Field(
+            estimated_anonymity: int = proto.Field(
                 proto.INT64,
                 number=2,
             )
@@ -3097,7 +3172,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                 bucket_size (int):
                     Number of records within these anonymity
                     bounds.
-                bucket_values (Sequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationQuasiIdValues]):
+                bucket_values (MutableSequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationQuasiIdValues]):
                     Sample of quasi-identifier tuple values in
                     this bucket. The total number of classes
                     returned per bucket is capped at 20.
@@ -3106,29 +3181,33 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                     tuple values in this bucket.
             """
 
-            min_anonymity = proto.Field(
+            min_anonymity: int = proto.Field(
                 proto.INT64,
                 number=1,
             )
-            max_anonymity = proto.Field(
+            max_anonymity: int = proto.Field(
                 proto.INT64,
                 number=2,
             )
-            bucket_size = proto.Field(
+            bucket_size: int = proto.Field(
                 proto.INT64,
                 number=5,
             )
-            bucket_values = proto.RepeatedField(
+            bucket_values: MutableSequence[
+                "AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationQuasiIdValues"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=6,
                 message="AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationQuasiIdValues",
             )
-            bucket_value_count = proto.Field(
+            bucket_value_count: int = proto.Field(
                 proto.INT64,
                 number=7,
             )
 
-        k_map_estimation_histogram = proto.RepeatedField(
+        k_map_estimation_histogram: MutableSequence[
+            "AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationHistogramBucket"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationHistogramBucket",
@@ -3139,7 +3218,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
         are an estimation, not exact values.
 
         Attributes:
-            delta_presence_estimation_histogram (Sequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket]):
+            delta_presence_estimation_histogram (MutableSequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket]):
                 The intervals [min_probability, max_probability) do not
                 overlap. If a value doesn't correspond to any such interval,
                 the associated frequency is zero. For example, the following
@@ -3155,7 +3234,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
             r"""A tuple of values for the quasi-identifier columns.
 
             Attributes:
-                quasi_ids_values (Sequence[google.cloud.dlp_v2.types.Value]):
+                quasi_ids_values (MutableSequence[google.cloud.dlp_v2.types.Value]):
                     The quasi-identifier values.
                 estimated_probability (float):
                     The estimated probability that a given individual sharing
@@ -3170,12 +3249,12 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                     0.15.
             """
 
-            quasi_ids_values = proto.RepeatedField(
+            quasi_ids_values: MutableSequence["Value"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="Value",
             )
-            estimated_probability = proto.Field(
+            estimated_probability: float = proto.Field(
                 proto.DOUBLE,
                 number=2,
             )
@@ -3196,7 +3275,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                 bucket_size (int):
                     Number of records within these probability
                     bounds.
-                bucket_values (Sequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationQuasiIdValues]):
+                bucket_values (MutableSequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationQuasiIdValues]):
                     Sample of quasi-identifier tuple values in
                     this bucket. The total number of classes
                     returned per bucket is capped at 20.
@@ -3205,29 +3284,33 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                     tuple values in this bucket.
             """
 
-            min_probability = proto.Field(
+            min_probability: float = proto.Field(
                 proto.DOUBLE,
                 number=1,
             )
-            max_probability = proto.Field(
+            max_probability: float = proto.Field(
                 proto.DOUBLE,
                 number=2,
             )
-            bucket_size = proto.Field(
+            bucket_size: int = proto.Field(
                 proto.INT64,
                 number=5,
             )
-            bucket_values = proto.RepeatedField(
+            bucket_values: MutableSequence[
+                "AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationQuasiIdValues"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=6,
                 message="AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationQuasiIdValues",
             )
-            bucket_value_count = proto.Field(
+            bucket_value_count: int = proto.Field(
                 proto.INT64,
                 number=7,
             )
 
-        delta_presence_estimation_histogram = proto.RepeatedField(
+        delta_presence_estimation_histogram: MutableSequence[
+            "AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket",
@@ -3241,59 +3324,59 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                 The job config for the risk job.
         """
 
-        job_config = proto.Field(
+        job_config: "RiskAnalysisJobConfig" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="RiskAnalysisJobConfig",
         )
 
-    requested_privacy_metric = proto.Field(
+    requested_privacy_metric: "PrivacyMetric" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="PrivacyMetric",
     )
-    requested_source_table = proto.Field(
+    requested_source_table: storage.BigQueryTable = proto.Field(
         proto.MESSAGE,
         number=2,
         message=storage.BigQueryTable,
     )
-    numerical_stats_result = proto.Field(
+    numerical_stats_result: NumericalStatsResult = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="result",
         message=NumericalStatsResult,
     )
-    categorical_stats_result = proto.Field(
+    categorical_stats_result: CategoricalStatsResult = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="result",
         message=CategoricalStatsResult,
     )
-    k_anonymity_result = proto.Field(
+    k_anonymity_result: KAnonymityResult = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="result",
         message=KAnonymityResult,
     )
-    l_diversity_result = proto.Field(
+    l_diversity_result: LDiversityResult = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="result",
         message=LDiversityResult,
     )
-    k_map_estimation_result = proto.Field(
+    k_map_estimation_result: KMapEstimationResult = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="result",
         message=KMapEstimationResult,
     )
-    delta_presence_estimation_result = proto.Field(
+    delta_presence_estimation_result: DeltaPresenceEstimationResult = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="result",
         message=DeltaPresenceEstimationResult,
     )
-    requested_options = proto.Field(
+    requested_options: RequestedRiskAnalysisOptions = proto.Field(
         proto.MESSAGE,
         number=10,
         message=RequestedRiskAnalysisOptions,
@@ -3311,12 +3394,12 @@ class ValueFrequency(proto.Message):
             field.
     """
 
-    value = proto.Field(
+    value: "Value" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Value",
     )
-    count = proto.Field(
+    count: int = proto.Field(
         proto.INT64,
         number=2,
     )
@@ -3372,45 +3455,45 @@ class Value(proto.Message):
             This field is a member of `oneof`_ ``type``.
     """
 
-    integer_value = proto.Field(
+    integer_value: int = proto.Field(
         proto.INT64,
         number=1,
         oneof="type",
     )
-    float_value = proto.Field(
+    float_value: float = proto.Field(
         proto.DOUBLE,
         number=2,
         oneof="type",
     )
-    string_value = proto.Field(
+    string_value: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="type",
     )
-    boolean_value = proto.Field(
+    boolean_value: bool = proto.Field(
         proto.BOOL,
         number=4,
         oneof="type",
     )
-    timestamp_value = proto.Field(
+    timestamp_value: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="type",
         message=timestamp_pb2.Timestamp,
     )
-    time_value = proto.Field(
+    time_value: timeofday_pb2.TimeOfDay = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="type",
         message=timeofday_pb2.TimeOfDay,
     )
-    date_value = proto.Field(
+    date_value: date_pb2.Date = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="type",
         message=date_pb2.Date,
     )
-    day_of_week_value = proto.Field(
+    day_of_week_value: dayofweek_pb2.DayOfWeek = proto.Field(
         proto.ENUM,
         number=8,
         oneof="type",
@@ -3430,7 +3513,7 @@ class QuoteInfo(proto.Message):
             This field is a member of `oneof`_ ``parsed_quote``.
     """
 
-    date_time = proto.Field(
+    date_time: "DateTime" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="parsed_quote",
@@ -3464,27 +3547,27 @@ class DateTime(proto.Message):
                 "UTC-9", this value is -540.
         """
 
-        offset_minutes = proto.Field(
+        offset_minutes: int = proto.Field(
             proto.INT32,
             number=1,
         )
 
-    date = proto.Field(
+    date: date_pb2.Date = proto.Field(
         proto.MESSAGE,
         number=1,
         message=date_pb2.Date,
     )
-    day_of_week = proto.Field(
+    day_of_week: dayofweek_pb2.DayOfWeek = proto.Field(
         proto.ENUM,
         number=2,
         enum=dayofweek_pb2.DayOfWeek,
     )
-    time = proto.Field(
+    time: timeofday_pb2.TimeOfDay = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timeofday_pb2.TimeOfDay,
     )
-    time_zone = proto.Field(
+    time_zone: TimeZone = proto.Field(
         proto.MESSAGE,
         number=4,
         message=TimeZone,
@@ -3524,25 +3607,25 @@ class DeidentifyConfig(proto.Message):
             ``TransformationErrorHandling.ThrowError``.
     """
 
-    info_type_transformations = proto.Field(
+    info_type_transformations: "InfoTypeTransformations" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="transformation",
         message="InfoTypeTransformations",
     )
-    record_transformations = proto.Field(
+    record_transformations: "RecordTransformations" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="transformation",
         message="RecordTransformations",
     )
-    image_transformations = proto.Field(
+    image_transformations: "ImageTransformations" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="transformation",
         message="ImageTransformations",
     )
-    transformation_error_handling = proto.Field(
+    transformation_error_handling: "TransformationErrorHandling" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="TransformationErrorHandling",
@@ -3553,7 +3636,7 @@ class ImageTransformations(proto.Message):
     r"""A type of transformation that is applied over images.
 
     Attributes:
-        transforms (Sequence[google.cloud.dlp_v2.types.ImageTransformations.ImageTransformation]):
+        transforms (MutableSequence[google.cloud.dlp_v2.types.ImageTransformations.ImageTransformation]):
 
     """
 
@@ -3595,14 +3678,14 @@ class ImageTransformations(proto.Message):
             r"""Apply transformation to the selected info_types.
 
             Attributes:
-                info_types (Sequence[google.cloud.dlp_v2.types.InfoType]):
+                info_types (MutableSequence[google.cloud.dlp_v2.types.InfoType]):
                     Required. InfoTypes to apply the
                     transformation to. Required. Provided InfoType
                     must be unique within the ImageTransformations
                     message.
             """
 
-            info_types = proto.RepeatedField(
+            info_types: MutableSequence[storage.InfoType] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=5,
                 message=storage.InfoType,
@@ -3614,31 +3697,33 @@ class ImageTransformations(proto.Message):
         class AllText(proto.Message):
             r"""Apply to all text."""
 
-        selected_info_types = proto.Field(
+        selected_info_types: "ImageTransformations.ImageTransformation.SelectedInfoTypes" = proto.Field(
             proto.MESSAGE,
             number=4,
             oneof="target",
             message="ImageTransformations.ImageTransformation.SelectedInfoTypes",
         )
-        all_info_types = proto.Field(
-            proto.MESSAGE,
-            number=5,
-            oneof="target",
-            message="ImageTransformations.ImageTransformation.AllInfoTypes",
+        all_info_types: "ImageTransformations.ImageTransformation.AllInfoTypes" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=5,
+                oneof="target",
+                message="ImageTransformations.ImageTransformation.AllInfoTypes",
+            )
         )
-        all_text = proto.Field(
+        all_text: "ImageTransformations.ImageTransformation.AllText" = proto.Field(
             proto.MESSAGE,
             number=6,
             oneof="target",
             message="ImageTransformations.ImageTransformation.AllText",
         )
-        redaction_color = proto.Field(
+        redaction_color: "Color" = proto.Field(
             proto.MESSAGE,
             number=3,
             message="Color",
         )
 
-    transforms = proto.RepeatedField(
+    transforms: MutableSequence[ImageTransformation] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=ImageTransformation,
@@ -3687,13 +3772,13 @@ class TransformationErrorHandling(proto.Message):
 
         """
 
-    throw_error = proto.Field(
+    throw_error: ThrowError = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="mode",
         message=ThrowError,
     )
-    leave_untransformed = proto.Field(
+    leave_untransformed: LeaveUntransformed = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="mode",
@@ -3763,73 +3848,73 @@ class PrimitiveTransformation(proto.Message):
             This field is a member of `oneof`_ ``transformation``.
     """
 
-    replace_config = proto.Field(
+    replace_config: "ReplaceValueConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="transformation",
         message="ReplaceValueConfig",
     )
-    redact_config = proto.Field(
+    redact_config: "RedactConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="transformation",
         message="RedactConfig",
     )
-    character_mask_config = proto.Field(
+    character_mask_config: "CharacterMaskConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="transformation",
         message="CharacterMaskConfig",
     )
-    crypto_replace_ffx_fpe_config = proto.Field(
+    crypto_replace_ffx_fpe_config: "CryptoReplaceFfxFpeConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="transformation",
         message="CryptoReplaceFfxFpeConfig",
     )
-    fixed_size_bucketing_config = proto.Field(
+    fixed_size_bucketing_config: "FixedSizeBucketingConfig" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="transformation",
         message="FixedSizeBucketingConfig",
     )
-    bucketing_config = proto.Field(
+    bucketing_config: "BucketingConfig" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="transformation",
         message="BucketingConfig",
     )
-    replace_with_info_type_config = proto.Field(
+    replace_with_info_type_config: "ReplaceWithInfoTypeConfig" = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="transformation",
         message="ReplaceWithInfoTypeConfig",
     )
-    time_part_config = proto.Field(
+    time_part_config: "TimePartConfig" = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="transformation",
         message="TimePartConfig",
     )
-    crypto_hash_config = proto.Field(
+    crypto_hash_config: "CryptoHashConfig" = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="transformation",
         message="CryptoHashConfig",
     )
-    date_shift_config = proto.Field(
+    date_shift_config: "DateShiftConfig" = proto.Field(
         proto.MESSAGE,
         number=11,
         oneof="transformation",
         message="DateShiftConfig",
     )
-    crypto_deterministic_config = proto.Field(
+    crypto_deterministic_config: "CryptoDeterministicConfig" = proto.Field(
         proto.MESSAGE,
         number=12,
         oneof="transformation",
         message="CryptoDeterministicConfig",
     )
-    replace_dictionary_config = proto.Field(
+    replace_dictionary_config: "ReplaceDictionaryConfig" = proto.Field(
         proto.MESSAGE,
         number=13,
         oneof="transformation",
@@ -3856,7 +3941,7 @@ class TimePartConfig(proto.Message):
         WEEK_OF_YEAR = 5
         HOUR_OF_DAY = 6
 
-    part_to_extract = proto.Field(
+    part_to_extract: TimePart = proto.Field(
         proto.ENUM,
         number=1,
         enum=TimePart,
@@ -3878,7 +3963,7 @@ class CryptoHashConfig(proto.Message):
             The key used by the hash function.
     """
 
-    crypto_key = proto.Field(
+    crypto_key: "CryptoKey" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="CryptoKey",
@@ -3959,17 +4044,17 @@ class CryptoDeterministicConfig(proto.Message):
             unstructured ``ContentItem``\ s.
     """
 
-    crypto_key = proto.Field(
+    crypto_key: "CryptoKey" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="CryptoKey",
     )
-    surrogate_info_type = proto.Field(
+    surrogate_info_type: storage.InfoType = proto.Field(
         proto.MESSAGE,
         number=2,
         message=storage.InfoType,
     )
-    context = proto.Field(
+    context: storage.FieldId = proto.Field(
         proto.MESSAGE,
         number=3,
         message=storage.FieldId,
@@ -3984,7 +4069,7 @@ class ReplaceValueConfig(proto.Message):
             Value to replace it with.
     """
 
-    new_value = proto.Field(
+    new_value: "Value" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Value",
@@ -4007,7 +4092,7 @@ class ReplaceDictionaryConfig(proto.Message):
             This field is a member of `oneof`_ ``type``.
     """
 
-    word_list = proto.Field(
+    word_list: storage.CustomInfoType.Dictionary.WordList = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="type",
@@ -4062,12 +4147,12 @@ class CharsToIgnore(proto.Message):
         PUNCTUATION = 4
         WHITESPACE = 5
 
-    characters_to_skip = proto.Field(
+    characters_to_skip: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="characters",
     )
-    common_characters_to_ignore = proto.Field(
+    common_characters_to_ignore: CommonCharsToIgnore = proto.Field(
         proto.ENUM,
         number=2,
         oneof="characters",
@@ -4118,7 +4203,7 @@ class CharacterMaskConfig(proto.Message):
             ``00000000000000-3456``. If ``masking_character`` is ``*``,
             ``number_to_mask`` is ``3``, and ``reverse_order`` is
             ``true``, then the string ``12345`` is masked as ``12***``.
-        characters_to_ignore (Sequence[google.cloud.dlp_v2.types.CharsToIgnore]):
+        characters_to_ignore (MutableSequence[google.cloud.dlp_v2.types.CharsToIgnore]):
             When masking a string, items in this list will be skipped
             when replacing characters. For example, if the input string
             is ``555-555-5555`` and you instruct Cloud DLP to skip ``-``
@@ -4126,19 +4211,19 @@ class CharacterMaskConfig(proto.Message):
             ``***-**5-5555``.
     """
 
-    masking_character = proto.Field(
+    masking_character: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    number_to_mask = proto.Field(
+    number_to_mask: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    reverse_order = proto.Field(
+    reverse_order: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    characters_to_ignore = proto.RepeatedField(
+    characters_to_ignore: MutableSequence["CharsToIgnore"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="CharsToIgnore",
@@ -4185,17 +4270,17 @@ class FixedSizeBucketingConfig(proto.Message):
             decimals works.
     """
 
-    lower_bound = proto.Field(
+    lower_bound: "Value" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Value",
     )
-    upper_bound = proto.Field(
+    upper_bound: "Value" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Value",
     )
-    bucket_size = proto.Field(
+    bucket_size: float = proto.Field(
         proto.DOUBLE,
         number=3,
     )
@@ -4213,7 +4298,7 @@ class BucketingConfig(proto.Message):
     to learn more.
 
     Attributes:
-        buckets (Sequence[google.cloud.dlp_v2.types.BucketingConfig.Bucket]):
+        buckets (MutableSequence[google.cloud.dlp_v2.types.BucketingConfig.Bucket]):
             Set of buckets. Ranges must be
             non-overlapping.
     """
@@ -4233,23 +4318,23 @@ class BucketingConfig(proto.Message):
                 Required. Replacement value for this bucket.
         """
 
-        min_ = proto.Field(
+        min_: "Value" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="Value",
         )
-        max_ = proto.Field(
+        max_: "Value" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="Value",
         )
-        replacement_value = proto.Field(
+        replacement_value: "Value" = proto.Field(
             proto.MESSAGE,
             number=3,
             message="Value",
         )
 
-    buckets = proto.RepeatedField(
+    buckets: MutableSequence[Bucket] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=Bucket,
@@ -4373,33 +4458,33 @@ class CryptoReplaceFfxFpeConfig(proto.Message):
         UPPER_CASE_ALPHA_NUMERIC = 3
         ALPHA_NUMERIC = 4
 
-    crypto_key = proto.Field(
+    crypto_key: "CryptoKey" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="CryptoKey",
     )
-    context = proto.Field(
+    context: storage.FieldId = proto.Field(
         proto.MESSAGE,
         number=2,
         message=storage.FieldId,
     )
-    common_alphabet = proto.Field(
+    common_alphabet: FfxCommonNativeAlphabet = proto.Field(
         proto.ENUM,
         number=4,
         oneof="alphabet",
         enum=FfxCommonNativeAlphabet,
     )
-    custom_alphabet = proto.Field(
+    custom_alphabet: str = proto.Field(
         proto.STRING,
         number=5,
         oneof="alphabet",
     )
-    radix = proto.Field(
+    radix: int = proto.Field(
         proto.INT32,
         number=6,
         oneof="alphabet",
     )
-    surrogate_info_type = proto.Field(
+    surrogate_info_type: storage.InfoType = proto.Field(
         proto.MESSAGE,
         number=8,
         message=storage.InfoType,
@@ -4436,19 +4521,19 @@ class CryptoKey(proto.Message):
             This field is a member of `oneof`_ ``source``.
     """
 
-    transient = proto.Field(
+    transient: "TransientCryptoKey" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="source",
         message="TransientCryptoKey",
     )
-    unwrapped = proto.Field(
+    unwrapped: "UnwrappedCryptoKey" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="source",
         message="UnwrappedCryptoKey",
     )
-    kms_wrapped = proto.Field(
+    kms_wrapped: "KmsWrappedCryptoKey" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="source",
@@ -4471,7 +4556,7 @@ class TransientCryptoKey(proto.Message):
             being generated).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -4486,7 +4571,7 @@ class UnwrappedCryptoKey(proto.Message):
             Required. A 128/192/256 bit key.
     """
 
-    key = proto.Field(
+    key: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
@@ -4513,11 +4598,11 @@ class KmsWrappedCryptoKey(proto.Message):
             CryptoKey to use for unwrapping.
     """
 
-    wrapped_key = proto.Field(
+    wrapped_key: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    crypto_key_name = proto.Field(
+    crypto_key_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -4558,20 +4643,20 @@ class DateShiftConfig(proto.Message):
             This field is a member of `oneof`_ ``method``.
     """
 
-    upper_bound_days = proto.Field(
+    upper_bound_days: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    lower_bound_days = proto.Field(
+    lower_bound_days: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    context = proto.Field(
+    context: storage.FieldId = proto.Field(
         proto.MESSAGE,
         number=3,
         message=storage.FieldId,
     )
-    crypto_key = proto.Field(
+    crypto_key: "CryptoKey" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="method",
@@ -4586,7 +4671,7 @@ class InfoTypeTransformations(proto.Message):
     specific info_type.
 
     Attributes:
-        transformations (Sequence[google.cloud.dlp_v2.types.InfoTypeTransformations.InfoTypeTransformation]):
+        transformations (MutableSequence[google.cloud.dlp_v2.types.InfoTypeTransformations.InfoTypeTransformation]):
             Required. Transformation for each infoType.
             Cannot specify more than one for a given
             infoType.
@@ -4597,7 +4682,7 @@ class InfoTypeTransformations(proto.Message):
         info_type.
 
         Attributes:
-            info_types (Sequence[google.cloud.dlp_v2.types.InfoType]):
+            info_types (MutableSequence[google.cloud.dlp_v2.types.InfoType]):
                 InfoTypes to apply the transformation to. An empty list will
                 cause this transformation to apply to all findings that
                 correspond to infoTypes that were requested in
@@ -4607,18 +4692,18 @@ class InfoTypeTransformations(proto.Message):
                 to the infoType.
         """
 
-        info_types = proto.RepeatedField(
+        info_types: MutableSequence[storage.InfoType] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=storage.InfoType,
         )
-        primitive_transformation = proto.Field(
+        primitive_transformation: "PrimitiveTransformation" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="PrimitiveTransformation",
         )
 
-    transformations = proto.RepeatedField(
+    transformations: MutableSequence[InfoTypeTransformation] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=InfoTypeTransformation,
@@ -4636,7 +4721,7 @@ class FieldTransformation(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        fields (Sequence[google.cloud.dlp_v2.types.FieldId]):
+        fields (MutableSequence[google.cloud.dlp_v2.types.FieldId]):
             Required. Input field(s) to apply the transformation to.
             When you have columns that reference their position within a
             list, omit the index from the FieldId. FieldId name matching
@@ -4666,23 +4751,23 @@ class FieldTransformation(proto.Message):
             This field is a member of `oneof`_ ``transformation``.
     """
 
-    fields = proto.RepeatedField(
+    fields: MutableSequence[storage.FieldId] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=storage.FieldId,
     )
-    condition = proto.Field(
+    condition: "RecordCondition" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="RecordCondition",
     )
-    primitive_transformation = proto.Field(
+    primitive_transformation: "PrimitiveTransformation" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="transformation",
         message="PrimitiveTransformation",
     )
-    info_type_transformations = proto.Field(
+    info_type_transformations: "InfoTypeTransformations" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="transformation",
@@ -4695,21 +4780,21 @@ class RecordTransformations(proto.Message):
     such as a table.
 
     Attributes:
-        field_transformations (Sequence[google.cloud.dlp_v2.types.FieldTransformation]):
+        field_transformations (MutableSequence[google.cloud.dlp_v2.types.FieldTransformation]):
             Transform the record by applying various
             field transformations.
-        record_suppressions (Sequence[google.cloud.dlp_v2.types.RecordSuppression]):
+        record_suppressions (MutableSequence[google.cloud.dlp_v2.types.RecordSuppression]):
             Configuration defining which records get
             suppressed entirely. Records that match any
             suppression rule are omitted from the output.
     """
 
-    field_transformations = proto.RepeatedField(
+    field_transformations: MutableSequence["FieldTransformation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="FieldTransformation",
     )
-    record_suppressions = proto.RepeatedField(
+    record_suppressions: MutableSequence["RecordSuppression"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="RecordSuppression",
@@ -4727,7 +4812,7 @@ class RecordSuppression(proto.Message):
             suppressed from the transformed content.
     """
 
-    condition = proto.Field(
+    condition: "RecordCondition" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="RecordCondition",
@@ -4776,17 +4861,17 @@ class RecordCondition(proto.Message):
                 tests.]
         """
 
-        field = proto.Field(
+        field: storage.FieldId = proto.Field(
             proto.MESSAGE,
             number=1,
             message=storage.FieldId,
         )
-        operator = proto.Field(
+        operator: "RelationalOperator" = proto.Field(
             proto.ENUM,
             number=3,
             enum="RelationalOperator",
         )
-        value = proto.Field(
+        value: "Value" = proto.Field(
             proto.MESSAGE,
             number=4,
             message="Value",
@@ -4796,11 +4881,11 @@ class RecordCondition(proto.Message):
         r"""A collection of conditions.
 
         Attributes:
-            conditions (Sequence[google.cloud.dlp_v2.types.RecordCondition.Condition]):
+            conditions (MutableSequence[google.cloud.dlp_v2.types.RecordCondition.Condition]):
                 A collection of conditions.
         """
 
-        conditions = proto.RepeatedField(
+        conditions: MutableSequence["RecordCondition.Condition"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="RecordCondition.Condition",
@@ -4826,19 +4911,19 @@ class RecordCondition(proto.Message):
             LOGICAL_OPERATOR_UNSPECIFIED = 0
             AND = 1
 
-        logical_operator = proto.Field(
+        logical_operator: "RecordCondition.Expressions.LogicalOperator" = proto.Field(
             proto.ENUM,
             number=1,
             enum="RecordCondition.Expressions.LogicalOperator",
         )
-        conditions = proto.Field(
+        conditions: "RecordCondition.Conditions" = proto.Field(
             proto.MESSAGE,
             number=3,
             oneof="type",
             message="RecordCondition.Conditions",
         )
 
-    expressions = proto.Field(
+    expressions: Expressions = proto.Field(
         proto.MESSAGE,
         number=3,
         message=Expressions,
@@ -4852,15 +4937,17 @@ class TransformationOverview(proto.Message):
         transformed_bytes (int):
             Total size in bytes that were transformed in
             some way.
-        transformation_summaries (Sequence[google.cloud.dlp_v2.types.TransformationSummary]):
+        transformation_summaries (MutableSequence[google.cloud.dlp_v2.types.TransformationSummary]):
             Transformations applied to the dataset.
     """
 
-    transformed_bytes = proto.Field(
+    transformed_bytes: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    transformation_summaries = proto.RepeatedField(
+    transformation_summaries: MutableSequence[
+        "TransformationSummary"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="TransformationSummary",
@@ -4881,7 +4968,7 @@ class TransformationSummary(proto.Message):
         transformation (google.cloud.dlp_v2.types.PrimitiveTransformation):
             The specific transformation these stats apply
             to.
-        field_transformations (Sequence[google.cloud.dlp_v2.types.FieldTransformation]):
+        field_transformations (MutableSequence[google.cloud.dlp_v2.types.FieldTransformation]):
             The field transformation that was applied.
             If multiple field transformations are requested
             for a single field, this list will contain all
@@ -4889,7 +4976,7 @@ class TransformationSummary(proto.Message):
         record_suppress (google.cloud.dlp_v2.types.RecordSuppression):
             The specific suppression option these stats
             apply to.
-        results (Sequence[google.cloud.dlp_v2.types.TransformationSummary.SummaryResult]):
+        results (MutableSequence[google.cloud.dlp_v2.types.TransformationSummary.SummaryResult]):
             Collection of all transformations that took
             place or had an error.
         transformed_bytes (int):
@@ -4918,51 +5005,51 @@ class TransformationSummary(proto.Message):
                 a transformation didn't work as expected.
         """
 
-        count = proto.Field(
+        count: int = proto.Field(
             proto.INT64,
             number=1,
         )
-        code = proto.Field(
+        code: "TransformationSummary.TransformationResultCode" = proto.Field(
             proto.ENUM,
             number=2,
             enum="TransformationSummary.TransformationResultCode",
         )
-        details = proto.Field(
+        details: str = proto.Field(
             proto.STRING,
             number=3,
         )
 
-    info_type = proto.Field(
+    info_type: storage.InfoType = proto.Field(
         proto.MESSAGE,
         number=1,
         message=storage.InfoType,
     )
-    field = proto.Field(
+    field: storage.FieldId = proto.Field(
         proto.MESSAGE,
         number=2,
         message=storage.FieldId,
     )
-    transformation = proto.Field(
+    transformation: "PrimitiveTransformation" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="PrimitiveTransformation",
     )
-    field_transformations = proto.RepeatedField(
+    field_transformations: MutableSequence["FieldTransformation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="FieldTransformation",
     )
-    record_suppress = proto.Field(
+    record_suppress: "RecordSuppression" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="RecordSuppression",
     )
-    results = proto.RepeatedField(
+    results: MutableSequence[SummaryResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=SummaryResult,
     )
-    transformed_bytes = proto.Field(
+    transformed_bytes: int = proto.Field(
         proto.INT64,
         number=7,
     )
@@ -4995,20 +5082,20 @@ class TransformationDescription(proto.Message):
             ``InfoType``.
     """
 
-    type_ = proto.Field(
+    type_: "TransformationType" = proto.Field(
         proto.ENUM,
         number=1,
         enum="TransformationType",
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    condition = proto.Field(
+    condition: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    info_type = proto.Field(
+    info_type: storage.InfoType = proto.Field(
         proto.MESSAGE,
         number=4,
         message=storage.InfoType,
@@ -5030,7 +5117,7 @@ class TransformationDetails(proto.Message):
             The top level name of the container where the
             transformation is located (this will be the
             source file name or table name).
-        transformation (Sequence[google.cloud.dlp_v2.types.TransformationDescription]):
+        transformation (MutableSequence[google.cloud.dlp_v2.types.TransformationDescription]):
             Description of transformation. This would only contain more
             than one element if there were multiple matching
             transformations and which one to apply was ambiguous. Not
@@ -5053,29 +5140,29 @@ class TransformationDetails(proto.Message):
             content in the original container.
     """
 
-    resource_name = proto.Field(
+    resource_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    container_name = proto.Field(
+    container_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    transformation = proto.RepeatedField(
+    transformation: MutableSequence["TransformationDescription"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="TransformationDescription",
     )
-    status_details = proto.Field(
+    status_details: "TransformationResultStatus" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="TransformationResultStatus",
     )
-    transformed_bytes = proto.Field(
+    transformed_bytes: int = proto.Field(
         proto.INT64,
         number=5,
     )
-    transformation_location = proto.Field(
+    transformation_location: "TransformationLocation" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="TransformationLocation",
@@ -5114,18 +5201,18 @@ class TransformationLocation(proto.Message):
             available.
     """
 
-    finding_id = proto.Field(
+    finding_id: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="location_type",
     )
-    record_transformation = proto.Field(
+    record_transformation: "RecordTransformation" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="location_type",
         message="RecordTransformation",
     )
-    container_type = proto.Field(
+    container_type: "TransformationContainerType" = proto.Field(
         proto.ENUM,
         number=3,
         enum="TransformationContainerType",
@@ -5146,17 +5233,17 @@ class RecordTransformation(proto.Message):
             for Cloud Storage).
     """
 
-    field_id = proto.Field(
+    field_id: storage.FieldId = proto.Field(
         proto.MESSAGE,
         number=1,
         message=storage.FieldId,
     )
-    container_timestamp = proto.Field(
+    container_timestamp: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    container_version = proto.Field(
+    container_version: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -5175,12 +5262,12 @@ class TransformationResultStatus(proto.Message):
             Detailed error codes and messages
     """
 
-    result_status_type = proto.Field(
+    result_status_type: "TransformationResultStatusType" = proto.Field(
         proto.ENUM,
         number=1,
         enum="TransformationResultStatusType",
     )
-    details = proto.Field(
+    details: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=2,
         message=status_pb2.Status,
@@ -5205,7 +5292,7 @@ class TransformationDetailsStorageConfig(proto.Message):
             This field is a member of `oneof`_ ``type``.
     """
 
-    table = proto.Field(
+    table: storage.BigQueryTable = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="type",
@@ -5233,7 +5320,7 @@ class Schedule(proto.Message):
             This field is a member of `oneof`_ ``option``.
     """
 
-    recurrence_period_duration = proto.Field(
+    recurrence_period_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="option",
@@ -5277,29 +5364,29 @@ class InspectTemplate(proto.Message):
             Configuration of the scanning process.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    inspect_config = proto.Field(
+    inspect_config: "InspectConfig" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="InspectConfig",
@@ -5333,29 +5420,29 @@ class DeidentifyTemplate(proto.Message):
             The core content of the template.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    deidentify_config = proto.Field(
+    deidentify_config: "DeidentifyConfig" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="DeidentifyConfig",
@@ -5370,16 +5457,16 @@ class Error(proto.Message):
     Attributes:
         details (google.rpc.status_pb2.Status):
             Detailed error codes and messages.
-        timestamps (Sequence[google.protobuf.timestamp_pb2.Timestamp]):
+        timestamps (MutableSequence[google.protobuf.timestamp_pb2.Timestamp]):
             The times the error occurred.
     """
 
-    details = proto.Field(
+    details: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=1,
         message=status_pb2.Status,
     )
-    timestamps = proto.RepeatedField(
+    timestamps: MutableSequence[timestamp_pb2.Timestamp] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
@@ -5409,13 +5496,13 @@ class JobTrigger(proto.Message):
             configuration.
 
             This field is a member of `oneof`_ ``job``.
-        triggers (Sequence[google.cloud.dlp_v2.types.JobTrigger.Trigger]):
+        triggers (MutableSequence[google.cloud.dlp_v2.types.JobTrigger.Trigger]):
             A list of triggers which will be OR'ed
             together. Only one in the list needs to trigger
             for a job to be started. The list may contain
             only a single Schedule trigger and must have at
             least one object.
-        errors (Sequence[google.cloud.dlp_v2.types.Error]):
+        errors (MutableSequence[google.cloud.dlp_v2.types.Error]):
             Output only. A stream of errors encountered
             when the trigger was activated. Repeated errors
             may result in the JobTrigger automatically being
@@ -5470,63 +5557,63 @@ class JobTrigger(proto.Message):
                 This field is a member of `oneof`_ ``trigger``.
         """
 
-        schedule = proto.Field(
+        schedule: "Schedule" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="trigger",
             message="Schedule",
         )
-        manual = proto.Field(
+        manual: "Manual" = proto.Field(
             proto.MESSAGE,
             number=2,
             oneof="trigger",
             message="Manual",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    inspect_job = proto.Field(
+    inspect_job: "InspectJobConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="job",
         message="InspectJobConfig",
     )
-    triggers = proto.RepeatedField(
+    triggers: MutableSequence[Trigger] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=Trigger,
     )
-    errors = proto.RepeatedField(
+    errors: MutableSequence["Error"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="Error",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    last_run_time = proto.Field(
+    last_run_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    status = proto.Field(
+    status: Status = proto.Field(
         proto.ENUM,
         number=10,
         enum=Status,
@@ -5570,8 +5657,9 @@ class Action(proto.Message):
 
             This field is a member of `oneof`_ ``action``.
         job_notification_emails (google.cloud.dlp_v2.types.Action.JobNotificationEmails):
-            Enable email notification for project owners
-            and editors on job's completion/failure.
+            Sends an email when the job completes. The email goes to IAM
+            project owners and technical `Essential
+            Contacts <https://cloud.google.com/resource-manager/docs/managing-notification-contacts>`__.
 
             This field is a member of `oneof`_ ``action``.
         publish_to_stackdriver (google.cloud.dlp_v2.types.Action.PublishToStackdriver):
@@ -5591,7 +5679,7 @@ class Action(proto.Message):
                 Location to store findings outside of DLP.
         """
 
-        output_config = proto.Field(
+        output_config: "OutputStorageConfig" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="OutputStorageConfig",
@@ -5614,7 +5702,7 @@ class Action(proto.Message):
                 projects/{project}/topics/{topic}.
         """
 
-        topic = proto.Field(
+        topic: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -5702,7 +5790,7 @@ class Action(proto.Message):
                 Form of: gs://bucket/folder/ or gs://bucket
 
                 This field is a member of `oneof`_ ``output``.
-            file_types_to_transform (Sequence[google.cloud.dlp_v2.types.FileType]):
+            file_types_to_transform (MutableSequence[google.cloud.dlp_v2.types.FileType]):
                 List of user-specified file type groups to transform. If
                 specified, only the files with these filetypes will be
                 transformed. If empty, all supported files will be
@@ -5713,22 +5801,26 @@ class Action(proto.Message):
                 only filetypes supported are: IMAGES, TEXT_FILES, CSV, TSV.
         """
 
-        transformation_config = proto.Field(
+        transformation_config: "TransformationConfig" = proto.Field(
             proto.MESSAGE,
             number=7,
             message="TransformationConfig",
         )
-        transformation_details_storage_config = proto.Field(
-            proto.MESSAGE,
-            number=3,
-            message="TransformationDetailsStorageConfig",
+        transformation_details_storage_config: "TransformationDetailsStorageConfig" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=3,
+                message="TransformationDetailsStorageConfig",
+            )
         )
-        cloud_storage_output = proto.Field(
+        cloud_storage_output: str = proto.Field(
             proto.STRING,
             number=9,
             oneof="output",
         )
-        file_types_to_transform = proto.RepeatedField(
+        file_types_to_transform: MutableSequence[
+            storage.FileType
+        ] = proto.RepeatedField(
             proto.ENUM,
             number=8,
             enum=storage.FileType,
@@ -5749,43 +5841,45 @@ class Action(proto.Message):
 
         """
 
-    save_findings = proto.Field(
+    save_findings: SaveFindings = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="action",
         message=SaveFindings,
     )
-    pub_sub = proto.Field(
+    pub_sub: PublishToPubSub = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="action",
         message=PublishToPubSub,
     )
-    publish_summary_to_cscc = proto.Field(
+    publish_summary_to_cscc: PublishSummaryToCscc = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="action",
         message=PublishSummaryToCscc,
     )
-    publish_findings_to_cloud_data_catalog = proto.Field(
-        proto.MESSAGE,
-        number=5,
-        oneof="action",
-        message=PublishFindingsToCloudDataCatalog,
+    publish_findings_to_cloud_data_catalog: PublishFindingsToCloudDataCatalog = (
+        proto.Field(
+            proto.MESSAGE,
+            number=5,
+            oneof="action",
+            message=PublishFindingsToCloudDataCatalog,
+        )
     )
-    deidentify = proto.Field(
+    deidentify: Deidentify = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="action",
         message=Deidentify,
     )
-    job_notification_emails = proto.Field(
+    job_notification_emails: JobNotificationEmails = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="action",
         message=JobNotificationEmails,
     )
-    publish_to_stackdriver = proto.Field(
+    publish_to_stackdriver: PublishToStackdriver = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="action",
@@ -5825,15 +5919,15 @@ class TransformationConfig(proto.Message):
             will be redacted with a black box.
     """
 
-    deidentify_template = proto.Field(
+    deidentify_template: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    structured_deidentify_template = proto.Field(
+    structured_deidentify_template: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    image_redact_template = proto.Field(
+    image_redact_template: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -5879,20 +5973,20 @@ class CreateInspectTemplateRequest(proto.Message):
             Deprecated. This field has no effect.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    inspect_template = proto.Field(
+    inspect_template: "InspectTemplate" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="InspectTemplate",
     )
-    template_id = proto.Field(
+    template_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    location_id = proto.Field(
+    location_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -5913,16 +6007,16 @@ class UpdateInspectTemplateRequest(proto.Message):
             Mask to control which fields get updated.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    inspect_template = proto.Field(
+    inspect_template: "InspectTemplate" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="InspectTemplate",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -5940,7 +6034,7 @@ class GetInspectTemplateRequest(proto.Message):
             projects/project-id/inspectTemplates/432452342.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -6002,23 +6096,23 @@ class ListInspectTemplatesRequest(proto.Message):
             Deprecated. This field has no effect.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    location_id = proto.Field(
+    location_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -6028,7 +6122,7 @@ class ListInspectTemplatesResponse(proto.Message):
     r"""Response message for ListInspectTemplates.
 
     Attributes:
-        inspect_templates (Sequence[google.cloud.dlp_v2.types.InspectTemplate]):
+        inspect_templates (MutableSequence[google.cloud.dlp_v2.types.InspectTemplate]):
             List of inspectTemplates, up to page_size in
             ListInspectTemplatesRequest.
         next_page_token (str):
@@ -6041,12 +6135,12 @@ class ListInspectTemplatesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    inspect_templates = proto.RepeatedField(
+    inspect_templates: MutableSequence["InspectTemplate"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="InspectTemplate",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -6063,7 +6157,7 @@ class DeleteInspectTemplateRequest(proto.Message):
             projects/project-id/inspectTemplates/432452342.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -6104,20 +6198,20 @@ class CreateJobTriggerRequest(proto.Message):
             Deprecated. This field has no effect.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    job_trigger = proto.Field(
+    job_trigger: "JobTrigger" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="JobTrigger",
     )
-    trigger_id = proto.Field(
+    trigger_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    location_id = proto.Field(
+    location_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -6132,7 +6226,7 @@ class ActivateJobTriggerRequest(proto.Message):
             example ``projects/dlp-test-project/jobTriggers/53234423``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -6152,16 +6246,16 @@ class UpdateJobTriggerRequest(proto.Message):
             Mask to control which fields get updated.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    job_trigger = proto.Field(
+    job_trigger: "JobTrigger" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="JobTrigger",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -6178,7 +6272,7 @@ class GetJobTriggerRequest(proto.Message):
             ``projects/dlp-test-project/jobTriggers/53234423``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -6237,27 +6331,27 @@ class CreateDlpJobRequest(proto.Message):
             Deprecated. This field has no effect.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    inspect_job = proto.Field(
+    inspect_job: "InspectJobConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="job",
         message="InspectJobConfig",
     )
-    risk_job = proto.Field(
+    risk_job: "RiskAnalysisJobConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="job",
         message="RiskAnalysisJobConfig",
     )
-    job_id = proto.Field(
+    job_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    location_id = proto.Field(
+    location_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -6356,32 +6450,32 @@ class ListJobTriggersRequest(proto.Message):
             Deprecated. This field has no effect.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    type_ = proto.Field(
+    type_: "DlpJobType" = proto.Field(
         proto.ENUM,
         number=6,
         enum="DlpJobType",
     )
-    location_id = proto.Field(
+    location_id: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -6391,7 +6485,7 @@ class ListJobTriggersResponse(proto.Message):
     r"""Response message for ListJobTriggers.
 
     Attributes:
-        job_triggers (Sequence[google.cloud.dlp_v2.types.JobTrigger]):
+        job_triggers (MutableSequence[google.cloud.dlp_v2.types.JobTrigger]):
             List of triggeredJobs, up to page_size in
             ListJobTriggersRequest.
         next_page_token (str):
@@ -6404,12 +6498,12 @@ class ListJobTriggersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    job_triggers = proto.RepeatedField(
+    job_triggers: MutableSequence["JobTrigger"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="JobTrigger",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -6425,7 +6519,7 @@ class DeleteJobTriggerRequest(proto.Message):
             ``projects/dlp-test-project/jobTriggers/53234423``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -6443,26 +6537,26 @@ class InspectJobConfig(proto.Message):
             If provided, will be used as the default for all values in
             InspectConfig. ``inspect_config`` will be merged into the
             values persisted as part of the template.
-        actions (Sequence[google.cloud.dlp_v2.types.Action]):
+        actions (MutableSequence[google.cloud.dlp_v2.types.Action]):
             Actions to execute at the completion of the
             job.
     """
 
-    storage_config = proto.Field(
+    storage_config: storage.StorageConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=storage.StorageConfig,
     )
-    inspect_config = proto.Field(
+    inspect_config: "InspectConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="InspectConfig",
     )
-    inspect_template_name = proto.Field(
+    inspect_template_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    actions = proto.RepeatedField(
+    actions: MutableSequence["Action"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="Action",
@@ -6511,7 +6605,7 @@ class DataProfileAction(proto.Message):
                 row in BigQuery.
         """
 
-        profile_table = proto.Field(
+        profile_table: storage.BigQueryTable = proto.Field(
             proto.MESSAGE,
             number=1,
             message=storage.BigQueryTable,
@@ -6547,33 +6641,35 @@ class DataProfileAction(proto.Message):
             TABLE_PROFILE = 1
             RESOURCE_NAME = 2
 
-        topic = proto.Field(
+        topic: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        event = proto.Field(
+        event: "DataProfileAction.EventType" = proto.Field(
             proto.ENUM,
             number=2,
             enum="DataProfileAction.EventType",
         )
-        pubsub_condition = proto.Field(
+        pubsub_condition: "DataProfilePubSubCondition" = proto.Field(
             proto.MESSAGE,
             number=3,
             message="DataProfilePubSubCondition",
         )
-        detail_of_message = proto.Field(
-            proto.ENUM,
-            number=4,
-            enum="DataProfileAction.PubSubNotification.DetailLevel",
+        detail_of_message: "DataProfileAction.PubSubNotification.DetailLevel" = (
+            proto.Field(
+                proto.ENUM,
+                number=4,
+                enum="DataProfileAction.PubSubNotification.DetailLevel",
+            )
         )
 
-    export_data = proto.Field(
+    export_data: Export = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="action",
         message=Export,
     )
-    pub_sub_notification = proto.Field(
+    pub_sub_notification: PubSubNotification = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="action",
@@ -6598,7 +6694,7 @@ class DataProfileJobConfig(proto.Message):
             service account that exists within this project
             must have access to all resources that are
             profiled, and the Cloud DLP API must be enabled.
-        inspect_templates (Sequence[str]):
+        inspect_templates (MutableSequence[str]):
             Detection logic for profile generation.
 
             Not all template features are used by profiles.
@@ -6616,25 +6712,25 @@ class DataProfileJobConfig(proto.Message):
 
             For more information, see
             https://cloud.google.com/dlp/docs/data-profiles#data_residency.
-        data_profile_actions (Sequence[google.cloud.dlp_v2.types.DataProfileAction]):
+        data_profile_actions (MutableSequence[google.cloud.dlp_v2.types.DataProfileAction]):
             Actions to execute at the completion of the
             job.
     """
 
-    location = proto.Field(
+    location: "DataProfileLocation" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="DataProfileLocation",
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    inspect_templates = proto.RepeatedField(
+    inspect_templates: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
-    data_profile_actions = proto.RepeatedField(
+    data_profile_actions: MutableSequence["DataProfileAction"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="DataProfileAction",
@@ -6663,12 +6759,12 @@ class DataProfileLocation(proto.Message):
             This field is a member of `oneof`_ ``location``.
     """
 
-    organization_id = proto.Field(
+    organization_id: int = proto.Field(
         proto.INT64,
         number=1,
         oneof="location",
     )
-    folder_id = proto.Field(
+    folder_id: int = proto.Field(
         proto.INT64,
         number=2,
         oneof="location",
@@ -6709,7 +6805,7 @@ class DlpJob(proto.Message):
         job_trigger_name (str):
             If created by a job trigger, the resource
             name of the trigger that instantiated the job.
-        errors (Sequence[google.cloud.dlp_v2.types.Error]):
+        errors (MutableSequence[google.cloud.dlp_v2.types.Error]):
             A stream of errors encountered running the
             job.
     """
@@ -6724,52 +6820,52 @@ class DlpJob(proto.Message):
         FAILED = 5
         ACTIVE = 6
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    type_ = proto.Field(
+    type_: "DlpJobType" = proto.Field(
         proto.ENUM,
         number=2,
         enum="DlpJobType",
     )
-    state = proto.Field(
+    state: JobState = proto.Field(
         proto.ENUM,
         number=3,
         enum=JobState,
     )
-    risk_details = proto.Field(
+    risk_details: "AnalyzeDataSourceRiskDetails" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="details",
         message="AnalyzeDataSourceRiskDetails",
     )
-    inspect_details = proto.Field(
+    inspect_details: "InspectDataSourceDetails" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="details",
         message="InspectDataSourceDetails",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    job_trigger_name = proto.Field(
+    job_trigger_name: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    errors = proto.RepeatedField(
+    errors: MutableSequence["Error"] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message="Error",
@@ -6784,7 +6880,7 @@ class GetDlpJobRequest(proto.Message):
             Required. The name of the DlpJob resource.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -6883,32 +6979,32 @@ class ListDlpJobsRequest(proto.Message):
             Deprecated. This field has no effect.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    type_ = proto.Field(
+    type_: "DlpJobType" = proto.Field(
         proto.ENUM,
         number=5,
         enum="DlpJobType",
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    location_id = proto.Field(
+    location_id: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -6918,7 +7014,7 @@ class ListDlpJobsResponse(proto.Message):
     r"""The response message for listing DLP jobs.
 
     Attributes:
-        jobs (Sequence[google.cloud.dlp_v2.types.DlpJob]):
+        jobs (MutableSequence[google.cloud.dlp_v2.types.DlpJob]):
             A list of DlpJobs that matches the specified
             filter in the request.
         next_page_token (str):
@@ -6929,12 +7025,12 @@ class ListDlpJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    jobs = proto.RepeatedField(
+    jobs: MutableSequence["DlpJob"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="DlpJob",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -6949,7 +7045,7 @@ class CancelDlpJobRequest(proto.Message):
             be cancelled.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -6964,7 +7060,7 @@ class FinishDlpJobRequest(proto.Message):
             be cancelled.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -6979,7 +7075,7 @@ class DeleteDlpJobRequest(proto.Message):
             be deleted.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -7025,20 +7121,20 @@ class CreateDeidentifyTemplateRequest(proto.Message):
             Deprecated. This field has no effect.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    deidentify_template = proto.Field(
+    deidentify_template: "DeidentifyTemplate" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="DeidentifyTemplate",
     )
-    template_id = proto.Field(
+    template_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    location_id = proto.Field(
+    location_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -7059,16 +7155,16 @@ class UpdateDeidentifyTemplateRequest(proto.Message):
             Mask to control which fields get updated.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    deidentify_template = proto.Field(
+    deidentify_template: "DeidentifyTemplate" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="DeidentifyTemplate",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -7086,7 +7182,7 @@ class GetDeidentifyTemplateRequest(proto.Message):
             projects/project-id/deidentifyTemplates/432452342.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -7148,23 +7244,23 @@ class ListDeidentifyTemplatesRequest(proto.Message):
             Deprecated. This field has no effect.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    location_id = proto.Field(
+    location_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -7174,7 +7270,7 @@ class ListDeidentifyTemplatesResponse(proto.Message):
     r"""Response message for ListDeidentifyTemplates.
 
     Attributes:
-        deidentify_templates (Sequence[google.cloud.dlp_v2.types.DeidentifyTemplate]):
+        deidentify_templates (MutableSequence[google.cloud.dlp_v2.types.DeidentifyTemplate]):
             List of deidentify templates, up to page_size in
             ListDeidentifyTemplatesRequest.
         next_page_token (str):
@@ -7187,12 +7283,12 @@ class ListDeidentifyTemplatesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    deidentify_templates = proto.RepeatedField(
+    deidentify_templates: MutableSequence["DeidentifyTemplate"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="DeidentifyTemplate",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -7209,7 +7305,7 @@ class DeleteDeidentifyTemplateRequest(proto.Message):
             projects/project-id/deidentifyTemplates/432452342.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -7250,18 +7346,18 @@ class LargeCustomDictionaryConfig(proto.Message):
             This field is a member of `oneof`_ ``source``.
     """
 
-    output_path = proto.Field(
+    output_path: storage.CloudStoragePath = proto.Field(
         proto.MESSAGE,
         number=1,
         message=storage.CloudStoragePath,
     )
-    cloud_storage_file_set = proto.Field(
+    cloud_storage_file_set: storage.CloudStorageFileSet = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="source",
         message=storage.CloudStorageFileSet,
     )
-    big_query_field = proto.Field(
+    big_query_field: storage.BigQueryField = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="source",
@@ -7278,7 +7374,7 @@ class LargeCustomDictionaryStats(proto.Message):
             dictionary.
     """
 
-    approx_num_phrases = proto.Field(
+    approx_num_phrases: int = proto.Field(
         proto.INT64,
         number=1,
     )
@@ -7319,27 +7415,27 @@ class StoredInfoTypeConfig(proto.Message):
             This field is a member of `oneof`_ ``type``.
     """
 
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    large_custom_dictionary = proto.Field(
+    large_custom_dictionary: "LargeCustomDictionaryConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="type",
         message="LargeCustomDictionaryConfig",
     )
-    dictionary = proto.Field(
+    dictionary: storage.CustomInfoType.Dictionary = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="type",
         message=storage.CustomInfoType.Dictionary,
     )
-    regex = proto.Field(
+    regex: storage.CustomInfoType.Regex = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="type",
@@ -7360,7 +7456,7 @@ class StoredInfoTypeStats(proto.Message):
             This field is a member of `oneof`_ ``type``.
     """
 
-    large_custom_dictionary = proto.Field(
+    large_custom_dictionary: "LargeCustomDictionaryStats" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="type",
@@ -7383,7 +7479,7 @@ class StoredInfoTypeVersion(proto.Message):
             Stored info type version state. Read-only,
             updated by the system during dictionary
             creation.
-        errors (Sequence[google.cloud.dlp_v2.types.Error]):
+        errors (MutableSequence[google.cloud.dlp_v2.types.Error]):
             Errors that occurred when creating this storedInfoType
             version, or anomalies detected in the storedInfoType data
             that render it unusable. Only the five most recent errors
@@ -7404,27 +7500,27 @@ class StoredInfoTypeVersion(proto.Message):
             Statistics about this storedInfoType version.
     """
 
-    config = proto.Field(
+    config: "StoredInfoTypeConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="StoredInfoTypeConfig",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: "StoredInfoTypeState" = proto.Field(
         proto.ENUM,
         number=3,
         enum="StoredInfoTypeState",
     )
-    errors = proto.RepeatedField(
+    errors: MutableSequence["Error"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="Error",
     )
-    stats = proto.Field(
+    stats: "StoredInfoTypeStats" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="StoredInfoTypeStats",
@@ -7440,21 +7536,21 @@ class StoredInfoType(proto.Message):
             Resource name.
         current_version (google.cloud.dlp_v2.types.StoredInfoTypeVersion):
             Current version of the stored info type.
-        pending_versions (Sequence[google.cloud.dlp_v2.types.StoredInfoTypeVersion]):
+        pending_versions (MutableSequence[google.cloud.dlp_v2.types.StoredInfoTypeVersion]):
             Pending versions of the stored info type.
             Empty if no versions are pending.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    current_version = proto.Field(
+    current_version: "StoredInfoTypeVersion" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="StoredInfoTypeVersion",
     )
-    pending_versions = proto.RepeatedField(
+    pending_versions: MutableSequence["StoredInfoTypeVersion"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="StoredInfoTypeVersion",
@@ -7502,20 +7598,20 @@ class CreateStoredInfoTypeRequest(proto.Message):
             Deprecated. This field has no effect.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    config = proto.Field(
+    config: "StoredInfoTypeConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="StoredInfoTypeConfig",
     )
-    stored_info_type_id = proto.Field(
+    stored_info_type_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    location_id = proto.Field(
+    location_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -7539,16 +7635,16 @@ class UpdateStoredInfoTypeRequest(proto.Message):
             Mask to control which fields get updated.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    config = proto.Field(
+    config: "StoredInfoTypeConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="StoredInfoTypeConfig",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -7566,7 +7662,7 @@ class GetStoredInfoTypeRequest(proto.Message):
             projects/project-id/storedInfoTypes/432452342.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -7623,23 +7719,23 @@ class ListStoredInfoTypesRequest(proto.Message):
             Deprecated. This field has no effect.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    location_id = proto.Field(
+    location_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -7649,7 +7745,7 @@ class ListStoredInfoTypesResponse(proto.Message):
     r"""Response message for ListStoredInfoTypes.
 
     Attributes:
-        stored_info_types (Sequence[google.cloud.dlp_v2.types.StoredInfoType]):
+        stored_info_types (MutableSequence[google.cloud.dlp_v2.types.StoredInfoType]):
             List of storedInfoTypes, up to page_size in
             ListStoredInfoTypesRequest.
         next_page_token (str):
@@ -7662,12 +7758,12 @@ class ListStoredInfoTypesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    stored_info_types = proto.RepeatedField(
+    stored_info_types: MutableSequence["StoredInfoType"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="StoredInfoType",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -7684,7 +7780,7 @@ class DeleteStoredInfoTypeRequest(proto.Message):
             projects/project-id/storedInfoTypes/432452342.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -7703,11 +7799,11 @@ class HybridInspectJobTriggerRequest(proto.Message):
             The item to inspect.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    hybrid_item = proto.Field(
+    hybrid_item: "HybridContentItem" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="HybridContentItem",
@@ -7727,11 +7823,11 @@ class HybridInspectDlpJobRequest(proto.Message):
             The item to inspect.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    hybrid_item = proto.Field(
+    hybrid_item: "HybridContentItem" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="HybridContentItem",
@@ -7750,12 +7846,12 @@ class HybridContentItem(proto.Message):
             to each finding.
     """
 
-    item = proto.Field(
+    item: "ContentItem" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ContentItem",
     )
-    finding_details = proto.Field(
+    finding_details: "HybridFindingDetails" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="HybridFindingDetails",
@@ -7788,7 +7884,7 @@ class HybridFindingDetails(proto.Message):
             each inspect hybrid call and the two will be merged. Note
             that identifying_fields will only be stored to BigQuery, and
             only if the BigQuery action has been included.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels to represent user provided metadata about the data
             being inspected. If configured by the job, some key values
             may be required. The labels associated with ``Finding``'s
@@ -7811,25 +7907,25 @@ class HybridFindingDetails(proto.Message):
             -  ``"pipeline" : "etl"``
     """
 
-    container_details = proto.Field(
+    container_details: "Container" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Container",
     )
-    file_offset = proto.Field(
+    file_offset: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    row_offset = proto.Field(
+    row_offset: int = proto.Field(
         proto.INT64,
         number=3,
     )
-    table_options = proto.Field(
+    table_options: storage.TableOptions = proto.Field(
         proto.MESSAGE,
         number=4,
         message=storage.TableOptions,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
@@ -7856,7 +7952,7 @@ class DataRiskLevel(proto.Message):
         RISK_MODERATE = 20
         RISK_HIGH = 30
 
-    score = proto.Field(
+    score: DataRiskLevelScore = proto.Field(
         proto.ENUM,
         number=1,
         enum=DataRiskLevelScore,
@@ -7876,12 +7972,12 @@ class DataProfileConfigSnapshot(proto.Message):
             this profile.
     """
 
-    inspect_config = proto.Field(
+    inspect_config: "InspectConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="InspectConfig",
     )
-    data_profile_job = proto.Field(
+    data_profile_job: "DataProfileJobConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="DataProfileJobConfig",
@@ -7922,10 +8018,10 @@ class TableDataProfile(proto.Message):
             The sensitivity score of this table.
         data_risk_level (google.cloud.dlp_v2.types.DataRiskLevel):
             The data risk level of this table.
-        predicted_info_types (Sequence[google.cloud.dlp_v2.types.InfoTypeSummary]):
+        predicted_info_types (MutableSequence[google.cloud.dlp_v2.types.InfoTypeSummary]):
             The infoTypes predicted from this table's
             data.
-        other_info_types (Sequence[google.cloud.dlp_v2.types.OtherInfoTypeSummary]):
+        other_info_types (MutableSequence[google.cloud.dlp_v2.types.OtherInfoTypeSummary]):
             Other infoTypes found in this table's data.
         config_snapshot (google.cloud.dlp_v2.types.DataProfileConfigSnapshot):
             The snapshot of the configurations used to
@@ -7944,14 +8040,15 @@ class TableDataProfile(proto.Message):
             generated.
         row_count (int):
             Number of rows in the table when the profile
-            was generated.
+            was generated. This will not be populated for
+            BigLake tables.
         encryption_status (google.cloud.dlp_v2.types.EncryptionStatus):
             How the table is encrypted.
         resource_visibility (google.cloud.dlp_v2.types.ResourceVisibility):
             How broadly a resource has been shared.
         profile_last_generated (google.protobuf.timestamp_pb2.Timestamp):
             The last time the profile was generated.
-        resource_labels (Mapping[str, str]):
+        resource_labels (MutableMapping[str, str]):
             The labels applied to the resource at the
             time the profile was generated.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -7964,116 +8061,116 @@ class TableDataProfile(proto.Message):
         RUNNING = 1
         DONE = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project_data_profile = proto.Field(
+    project_data_profile: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    dataset_project_id = proto.Field(
+    dataset_project_id: str = proto.Field(
         proto.STRING,
         number=24,
     )
-    dataset_location = proto.Field(
+    dataset_location: str = proto.Field(
         proto.STRING,
         number=29,
     )
-    dataset_id = proto.Field(
+    dataset_id: str = proto.Field(
         proto.STRING,
         number=25,
     )
-    table_id = proto.Field(
+    table_id: str = proto.Field(
         proto.STRING,
         number=26,
     )
-    full_resource = proto.Field(
+    full_resource: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    profile_status = proto.Field(
+    profile_status: "ProfileStatus" = proto.Field(
         proto.MESSAGE,
         number=21,
         message="ProfileStatus",
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=22,
         enum=State,
     )
-    sensitivity_score = proto.Field(
+    sensitivity_score: storage.SensitivityScore = proto.Field(
         proto.MESSAGE,
         number=5,
         message=storage.SensitivityScore,
     )
-    data_risk_level = proto.Field(
+    data_risk_level: "DataRiskLevel" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="DataRiskLevel",
     )
-    predicted_info_types = proto.RepeatedField(
+    predicted_info_types: MutableSequence["InfoTypeSummary"] = proto.RepeatedField(
         proto.MESSAGE,
         number=27,
         message="InfoTypeSummary",
     )
-    other_info_types = proto.RepeatedField(
+    other_info_types: MutableSequence["OtherInfoTypeSummary"] = proto.RepeatedField(
         proto.MESSAGE,
         number=28,
         message="OtherInfoTypeSummary",
     )
-    config_snapshot = proto.Field(
+    config_snapshot: "DataProfileConfigSnapshot" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="DataProfileConfigSnapshot",
     )
-    last_modified_time = proto.Field(
+    last_modified_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    expiration_time = proto.Field(
+    expiration_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    scanned_column_count = proto.Field(
+    scanned_column_count: int = proto.Field(
         proto.INT64,
         number=10,
     )
-    failed_column_count = proto.Field(
+    failed_column_count: int = proto.Field(
         proto.INT64,
         number=11,
     )
-    table_size_bytes = proto.Field(
+    table_size_bytes: int = proto.Field(
         proto.INT64,
         number=12,
     )
-    row_count = proto.Field(
+    row_count: int = proto.Field(
         proto.INT64,
         number=13,
     )
-    encryption_status = proto.Field(
+    encryption_status: "EncryptionStatus" = proto.Field(
         proto.ENUM,
         number=14,
         enum="EncryptionStatus",
     )
-    resource_visibility = proto.Field(
+    resource_visibility: "ResourceVisibility" = proto.Field(
         proto.ENUM,
         number=15,
         enum="ResourceVisibility",
     )
-    profile_last_generated = proto.Field(
+    profile_last_generated: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=16,
         message=timestamp_pb2.Timestamp,
     )
-    resource_labels = proto.MapField(
+    resource_labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=17,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=23,
         message=timestamp_pb2.Timestamp,
@@ -8091,12 +8188,12 @@ class ProfileStatus(proto.Message):
             updated
     """
 
-    status = proto.Field(
+    status: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=1,
         message=status_pb2.Status,
     )
-    timestamp = proto.Field(
+    timestamp: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -8113,12 +8210,12 @@ class InfoTypeSummary(proto.Message):
             Not populated for predicted infotypes.
     """
 
-    info_type = proto.Field(
+    info_type: storage.InfoType = proto.Field(
         proto.MESSAGE,
         number=1,
         message=storage.InfoType,
     )
-    estimated_prevalence = proto.Field(
+    estimated_prevalence: int = proto.Field(
         proto.INT32,
         number=2,
     )
@@ -8135,12 +8232,12 @@ class OtherInfoTypeSummary(proto.Message):
             contained data detected by this infotype.
     """
 
-    info_type = proto.Field(
+    info_type: storage.InfoType = proto.Field(
         proto.MESSAGE,
         number=1,
         message=storage.InfoType,
     )
-    estimated_prevalence = proto.Field(
+    estimated_prevalence: int = proto.Field(
         proto.INT32,
         number=2,
     )
@@ -8184,17 +8281,21 @@ class DataProfilePubSubCondition(proto.Message):
                 This field is a member of `oneof`_ ``value``.
         """
 
-        minimum_risk_score = proto.Field(
-            proto.ENUM,
-            number=1,
-            oneof="value",
-            enum="DataProfilePubSubCondition.ProfileScoreBucket",
+        minimum_risk_score: "DataProfilePubSubCondition.ProfileScoreBucket" = (
+            proto.Field(
+                proto.ENUM,
+                number=1,
+                oneof="value",
+                enum="DataProfilePubSubCondition.ProfileScoreBucket",
+            )
         )
-        minimum_sensitivity_score = proto.Field(
-            proto.ENUM,
-            number=2,
-            oneof="value",
-            enum="DataProfilePubSubCondition.ProfileScoreBucket",
+        minimum_sensitivity_score: "DataProfilePubSubCondition.ProfileScoreBucket" = (
+            proto.Field(
+                proto.ENUM,
+                number=2,
+                oneof="value",
+                enum="DataProfilePubSubCondition.ProfileScoreBucket",
+            )
         )
 
     class PubSubExpressions(proto.Message):
@@ -8204,7 +8305,7 @@ class DataProfilePubSubCondition(proto.Message):
             logical_operator (google.cloud.dlp_v2.types.DataProfilePubSubCondition.PubSubExpressions.PubSubLogicalOperator):
                 The operator to apply to the collection of
                 conditions.
-            conditions (Sequence[google.cloud.dlp_v2.types.DataProfilePubSubCondition.PubSubCondition]):
+            conditions (MutableSequence[google.cloud.dlp_v2.types.DataProfilePubSubCondition.PubSubCondition]):
                 Conditions to apply to the expression.
         """
 
@@ -8214,18 +8315,20 @@ class DataProfilePubSubCondition(proto.Message):
             OR = 1
             AND = 2
 
-        logical_operator = proto.Field(
+        logical_operator: "DataProfilePubSubCondition.PubSubExpressions.PubSubLogicalOperator" = proto.Field(
             proto.ENUM,
             number=1,
             enum="DataProfilePubSubCondition.PubSubExpressions.PubSubLogicalOperator",
         )
-        conditions = proto.RepeatedField(
+        conditions: MutableSequence[
+            "DataProfilePubSubCondition.PubSubCondition"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="DataProfilePubSubCondition.PubSubCondition",
         )
 
-    expressions = proto.Field(
+    expressions: PubSubExpressions = proto.Field(
         proto.MESSAGE,
         number=1,
         message=PubSubExpressions,
@@ -8249,12 +8352,12 @@ class DataProfilePubSubMessage(proto.Message):
             be sent.
     """
 
-    profile = proto.Field(
+    profile: "TableDataProfile" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TableDataProfile",
     )
-    event = proto.Field(
+    event: "DataProfileAction.EventType" = proto.Field(
         proto.ENUM,
         number=2,
         enum="DataProfileAction.EventType",
