@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -176,9 +186,9 @@ class DataMigrationServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, DataMigrationServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the data migration service client.
@@ -222,11 +232,11 @@ class DataMigrationServiceAsyncClient:
 
     async def list_migration_jobs(
         self,
-        request: Union[clouddms.ListMigrationJobsRequest, dict] = None,
+        request: Optional[Union[clouddms.ListMigrationJobsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMigrationJobsAsyncPager:
         r"""Lists migration jobs in a given project and location.
@@ -259,7 +269,7 @@ class DataMigrationServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.clouddms_v1.types.ListMigrationJobsRequest, dict]):
+            request (Optional[Union[google.cloud.clouddms_v1.types.ListMigrationJobsRequest, dict]]):
                 The request object. Retrieve a list of all migration
                 jobs in a given project and location.
             parent (:class:`str`):
@@ -337,11 +347,11 @@ class DataMigrationServiceAsyncClient:
 
     async def get_migration_job(
         self,
-        request: Union[clouddms.GetMigrationJobRequest, dict] = None,
+        request: Optional[Union[clouddms.GetMigrationJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> clouddms_resources.MigrationJob:
         r"""Gets details of a single migration job.
@@ -373,7 +383,7 @@ class DataMigrationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.clouddms_v1.types.GetMigrationJobRequest, dict]):
+            request (Optional[Union[google.cloud.clouddms_v1.types.GetMigrationJobRequest, dict]]):
                 The request object. Request message for
                 'GetMigrationJob' request.
             name (:class:`str`):
@@ -439,13 +449,13 @@ class DataMigrationServiceAsyncClient:
 
     async def create_migration_job(
         self,
-        request: Union[clouddms.CreateMigrationJobRequest, dict] = None,
+        request: Optional[Union[clouddms.CreateMigrationJobRequest, dict]] = None,
         *,
-        parent: str = None,
-        migration_job: clouddms_resources.MigrationJob = None,
-        migration_job_id: str = None,
+        parent: Optional[str] = None,
+        migration_job: Optional[clouddms_resources.MigrationJob] = None,
+        migration_job_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new migration job in a given project and
@@ -491,7 +501,7 @@ class DataMigrationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.clouddms_v1.types.CreateMigrationJobRequest, dict]):
+            request (Optional[Union[google.cloud.clouddms_v1.types.CreateMigrationJobRequest, dict]]):
                 The request object. Request message to create a new
                 Database Migration Service migration job in the
                 specified project and region.
@@ -589,12 +599,12 @@ class DataMigrationServiceAsyncClient:
 
     async def update_migration_job(
         self,
-        request: Union[clouddms.UpdateMigrationJobRequest, dict] = None,
+        request: Optional[Union[clouddms.UpdateMigrationJobRequest, dict]] = None,
         *,
-        migration_job: clouddms_resources.MigrationJob = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        migration_job: Optional[clouddms_resources.MigrationJob] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single migration job.
@@ -637,7 +647,7 @@ class DataMigrationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.clouddms_v1.types.UpdateMigrationJobRequest, dict]):
+            request (Optional[Union[google.cloud.clouddms_v1.types.UpdateMigrationJobRequest, dict]]):
                 The request object. Request message for
                 'UpdateMigrationJob' request.
             migration_job (:class:`google.cloud.clouddms_v1.types.MigrationJob`):
@@ -728,11 +738,11 @@ class DataMigrationServiceAsyncClient:
 
     async def delete_migration_job(
         self,
-        request: Union[clouddms.DeleteMigrationJobRequest, dict] = None,
+        request: Optional[Union[clouddms.DeleteMigrationJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single migration job.
@@ -768,7 +778,7 @@ class DataMigrationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.clouddms_v1.types.DeleteMigrationJobRequest, dict]):
+            request (Optional[Union[google.cloud.clouddms_v1.types.DeleteMigrationJobRequest, dict]]):
                 The request object. Request message for
                 'DeleteMigrationJob' request.
             name (:class:`str`):
@@ -852,10 +862,10 @@ class DataMigrationServiceAsyncClient:
 
     async def start_migration_job(
         self,
-        request: Union[clouddms.StartMigrationJobRequest, dict] = None,
+        request: Optional[Union[clouddms.StartMigrationJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Start an already created migration job.
@@ -890,7 +900,7 @@ class DataMigrationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.clouddms_v1.types.StartMigrationJobRequest, dict]):
+            request (Optional[Union[google.cloud.clouddms_v1.types.StartMigrationJobRequest, dict]]):
                 The request object. Request message for
                 'StartMigrationJob' request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -947,10 +957,10 @@ class DataMigrationServiceAsyncClient:
 
     async def stop_migration_job(
         self,
-        request: Union[clouddms.StopMigrationJobRequest, dict] = None,
+        request: Optional[Union[clouddms.StopMigrationJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Stops a running migration job.
@@ -985,7 +995,7 @@ class DataMigrationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.clouddms_v1.types.StopMigrationJobRequest, dict]):
+            request (Optional[Union[google.cloud.clouddms_v1.types.StopMigrationJobRequest, dict]]):
                 The request object. Request message for
                 'StopMigrationJob' request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1042,10 +1052,10 @@ class DataMigrationServiceAsyncClient:
 
     async def resume_migration_job(
         self,
-        request: Union[clouddms.ResumeMigrationJobRequest, dict] = None,
+        request: Optional[Union[clouddms.ResumeMigrationJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Resume a migration job that is currently stopped and
@@ -1081,7 +1091,7 @@ class DataMigrationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.clouddms_v1.types.ResumeMigrationJobRequest, dict]):
+            request (Optional[Union[google.cloud.clouddms_v1.types.ResumeMigrationJobRequest, dict]]):
                 The request object. Request message for
                 'ResumeMigrationJob' request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1138,10 +1148,10 @@ class DataMigrationServiceAsyncClient:
 
     async def promote_migration_job(
         self,
-        request: Union[clouddms.PromoteMigrationJobRequest, dict] = None,
+        request: Optional[Union[clouddms.PromoteMigrationJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Promote a migration job, stopping replication to the
@@ -1178,7 +1188,7 @@ class DataMigrationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.clouddms_v1.types.PromoteMigrationJobRequest, dict]):
+            request (Optional[Union[google.cloud.clouddms_v1.types.PromoteMigrationJobRequest, dict]]):
                 The request object. Request message for
                 'PromoteMigrationJob' request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1235,10 +1245,10 @@ class DataMigrationServiceAsyncClient:
 
     async def verify_migration_job(
         self,
-        request: Union[clouddms.VerifyMigrationJobRequest, dict] = None,
+        request: Optional[Union[clouddms.VerifyMigrationJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Verify a migration job, making sure the destination
@@ -1275,7 +1285,7 @@ class DataMigrationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.clouddms_v1.types.VerifyMigrationJobRequest, dict]):
+            request (Optional[Union[google.cloud.clouddms_v1.types.VerifyMigrationJobRequest, dict]]):
                 The request object. Request message for
                 'VerifyMigrationJob' request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1332,10 +1342,10 @@ class DataMigrationServiceAsyncClient:
 
     async def restart_migration_job(
         self,
-        request: Union[clouddms.RestartMigrationJobRequest, dict] = None,
+        request: Optional[Union[clouddms.RestartMigrationJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Restart a stopped or failed migration job, resetting
@@ -1372,7 +1382,7 @@ class DataMigrationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.clouddms_v1.types.RestartMigrationJobRequest, dict]):
+            request (Optional[Union[google.cloud.clouddms_v1.types.RestartMigrationJobRequest, dict]]):
                 The request object. Request message for
                 'RestartMigrationJob' request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1429,10 +1439,10 @@ class DataMigrationServiceAsyncClient:
 
     async def generate_ssh_script(
         self,
-        request: Union[clouddms.GenerateSshScriptRequest, dict] = None,
+        request: Optional[Union[clouddms.GenerateSshScriptRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> clouddms.SshScript:
         r"""Generate a SSH configuration script to configure the
@@ -1469,7 +1479,7 @@ class DataMigrationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.clouddms_v1.types.GenerateSshScriptRequest, dict]):
+            request (Optional[Union[google.cloud.clouddms_v1.types.GenerateSshScriptRequest, dict]]):
                 The request object. Request message for
                 'GenerateSshScript' request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1516,11 +1526,11 @@ class DataMigrationServiceAsyncClient:
 
     async def list_connection_profiles(
         self,
-        request: Union[clouddms.ListConnectionProfilesRequest, dict] = None,
+        request: Optional[Union[clouddms.ListConnectionProfilesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConnectionProfilesAsyncPager:
         r"""Retrieve a list of all connection profiles in a given
@@ -1554,7 +1564,7 @@ class DataMigrationServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.clouddms_v1.types.ListConnectionProfilesRequest, dict]):
+            request (Optional[Union[google.cloud.clouddms_v1.types.ListConnectionProfilesRequest, dict]]):
                 The request object. Request message for
                 'ListConnectionProfiles' request.
             parent (:class:`str`):
@@ -1632,11 +1642,11 @@ class DataMigrationServiceAsyncClient:
 
     async def get_connection_profile(
         self,
-        request: Union[clouddms.GetConnectionProfileRequest, dict] = None,
+        request: Optional[Union[clouddms.GetConnectionProfileRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> clouddms_resources.ConnectionProfile:
         r"""Gets details of a single connection profile.
@@ -1668,7 +1678,7 @@ class DataMigrationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.clouddms_v1.types.GetConnectionProfileRequest, dict]):
+            request (Optional[Union[google.cloud.clouddms_v1.types.GetConnectionProfileRequest, dict]]):
                 The request object. Request message for
                 'GetConnectionProfile' request.
             name (:class:`str`):
@@ -1732,13 +1742,13 @@ class DataMigrationServiceAsyncClient:
 
     async def create_connection_profile(
         self,
-        request: Union[clouddms.CreateConnectionProfileRequest, dict] = None,
+        request: Optional[Union[clouddms.CreateConnectionProfileRequest, dict]] = None,
         *,
-        parent: str = None,
-        connection_profile: clouddms_resources.ConnectionProfile = None,
-        connection_profile_id: str = None,
+        parent: Optional[str] = None,
+        connection_profile: Optional[clouddms_resources.ConnectionProfile] = None,
+        connection_profile_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new connection profile in a given project
@@ -1783,7 +1793,7 @@ class DataMigrationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.clouddms_v1.types.CreateConnectionProfileRequest, dict]):
+            request (Optional[Union[google.cloud.clouddms_v1.types.CreateConnectionProfileRequest, dict]]):
                 The request object. Request message for
                 'CreateConnectionProfile' request.
             parent (:class:`str`):
@@ -1878,12 +1888,12 @@ class DataMigrationServiceAsyncClient:
 
     async def update_connection_profile(
         self,
-        request: Union[clouddms.UpdateConnectionProfileRequest, dict] = None,
+        request: Optional[Union[clouddms.UpdateConnectionProfileRequest, dict]] = None,
         *,
-        connection_profile: clouddms_resources.ConnectionProfile = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        connection_profile: Optional[clouddms_resources.ConnectionProfile] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Update the configuration of a single connection
@@ -1926,7 +1936,7 @@ class DataMigrationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.clouddms_v1.types.UpdateConnectionProfileRequest, dict]):
+            request (Optional[Union[google.cloud.clouddms_v1.types.UpdateConnectionProfileRequest, dict]]):
                 The request object. Request message for
                 'UpdateConnectionProfile' request.
             connection_profile (:class:`google.cloud.clouddms_v1.types.ConnectionProfile`):
@@ -2016,11 +2026,11 @@ class DataMigrationServiceAsyncClient:
 
     async def delete_connection_profile(
         self,
-        request: Union[clouddms.DeleteConnectionProfileRequest, dict] = None,
+        request: Optional[Union[clouddms.DeleteConnectionProfileRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Database Migration Service
@@ -2059,7 +2069,7 @@ class DataMigrationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.clouddms_v1.types.DeleteConnectionProfileRequest, dict]):
+            request (Optional[Union[google.cloud.clouddms_v1.types.DeleteConnectionProfileRequest, dict]]):
                 The request object. Request message for
                 'DeleteConnectionProfile' request.
             name (:class:`str`):

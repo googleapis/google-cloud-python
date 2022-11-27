@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -90,23 +92,23 @@ class ListMigrationJobsRequest(proto.Message):
             "name desc".
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -116,13 +118,13 @@ class ListMigrationJobsResponse(proto.Message):
     r"""Response message for 'ListMigrationJobs' request.
 
     Attributes:
-        migration_jobs (Sequence[google.cloud.clouddms_v1.types.MigrationJob]):
+        migration_jobs (MutableSequence[google.cloud.clouddms_v1.types.MigrationJob]):
             The list of migration jobs objects.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -130,16 +132,18 @@ class ListMigrationJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    migration_jobs = proto.RepeatedField(
+    migration_jobs: MutableSequence[
+        clouddms_resources.MigrationJob
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=clouddms_resources.MigrationJob,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -154,7 +158,7 @@ class GetMigrationJobRequest(proto.Message):
             to get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -186,20 +190,20 @@ class CreateMigrationJobRequest(proto.Message):
             characters.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    migration_job_id = proto.Field(
+    migration_job_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    migration_job = proto.Field(
+    migration_job: clouddms_resources.MigrationJob = proto.Field(
         proto.MESSAGE,
         number=3,
         message=clouddms_resources.MigrationJob,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -228,17 +232,17 @@ class UpdateMigrationJobRequest(proto.Message):
             characters.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    migration_job = proto.Field(
+    migration_job: clouddms_resources.MigrationJob = proto.Field(
         proto.MESSAGE,
         number=2,
         message=clouddms_resources.MigrationJob,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -268,15 +272,15 @@ class DeleteMigrationJobRequest(proto.Message):
             replica database is also deleted.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -290,7 +294,7 @@ class StartMigrationJobRequest(proto.Message):
             Name of the migration job resource to start.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -304,7 +308,7 @@ class StopMigrationJobRequest(proto.Message):
             Name of the migration job resource to stop.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -318,7 +322,7 @@ class ResumeMigrationJobRequest(proto.Message):
             Name of the migration job resource to resume.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -333,7 +337,7 @@ class PromoteMigrationJobRequest(proto.Message):
             promote.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -347,7 +351,7 @@ class VerifyMigrationJobRequest(proto.Message):
             Name of the migration job resource to verify.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -362,7 +366,7 @@ class RestartMigrationJobRequest(proto.Message):
             restart.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -398,27 +402,27 @@ class GenerateSshScriptRequest(proto.Message):
             host
     """
 
-    migration_job = proto.Field(
+    migration_job: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    vm = proto.Field(
+    vm: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    vm_creation_config = proto.Field(
+    vm_creation_config: "VmCreationConfig" = proto.Field(
         proto.MESSAGE,
         number=100,
         oneof="vm_config",
         message="VmCreationConfig",
     )
-    vm_selection_config = proto.Field(
+    vm_selection_config: "VmSelectionConfig" = proto.Field(
         proto.MESSAGE,
         number=101,
         oneof="vm_config",
         message="VmSelectionConfig",
     )
-    vm_port = proto.Field(
+    vm_port: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -438,15 +442,15 @@ class VmCreationConfig(proto.Message):
             in.
     """
 
-    vm_machine_type = proto.Field(
+    vm_machine_type: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    vm_zone = proto.Field(
+    vm_zone: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    subnet = proto.Field(
+    subnet: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -461,7 +465,7 @@ class VmSelectionConfig(proto.Message):
             VM is located.
     """
 
-    vm_zone = proto.Field(
+    vm_zone: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -475,7 +479,7 @@ class SshScript(proto.Message):
             The ssh configuration script.
     """
 
-    script = proto.Field(
+    script: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -518,23 +522,23 @@ class ListConnectionProfilesRequest(proto.Message):
             the order by fields for the result.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -544,13 +548,13 @@ class ListConnectionProfilesResponse(proto.Message):
     r"""Response message for 'ListConnectionProfiles' request.
 
     Attributes:
-        connection_profiles (Sequence[google.cloud.clouddms_v1.types.ConnectionProfile]):
+        connection_profiles (MutableSequence[google.cloud.clouddms_v1.types.ConnectionProfile]):
             The response list of connection profiles.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -558,16 +562,18 @@ class ListConnectionProfilesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    connection_profiles = proto.RepeatedField(
+    connection_profiles: MutableSequence[
+        clouddms_resources.ConnectionProfile
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=clouddms_resources.ConnectionProfile,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -582,7 +588,7 @@ class GetConnectionProfileRequest(proto.Message):
             resource to get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -612,20 +618,20 @@ class CreateConnectionProfileRequest(proto.Message):
             characters.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    connection_profile_id = proto.Field(
+    connection_profile_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    connection_profile = proto.Field(
+    connection_profile: clouddms_resources.ConnectionProfile = proto.Field(
         proto.MESSAGE,
         number=3,
         message=clouddms_resources.ConnectionProfile,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -654,17 +660,17 @@ class UpdateConnectionProfileRequest(proto.Message):
             characters.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    connection_profile = proto.Field(
+    connection_profile: clouddms_resources.ConnectionProfile = proto.Field(
         proto.MESSAGE,
         number=2,
         message=clouddms_resources.ConnectionProfile,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -693,15 +699,15 @@ class DeleteConnectionProfileRequest(proto.Message):
             connection profile).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -737,33 +743,33 @@ class OperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_message = proto.Field(
+    status_message: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    requested_cancellation = proto.Field(
+    requested_cancellation: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )

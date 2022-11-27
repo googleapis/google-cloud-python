@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -66,7 +77,7 @@ class DataMigrationServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[DataMigrationServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -363,8 +374,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DataMigrationServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, DataMigrationServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the data migration service client.
@@ -378,7 +389,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
             transport (Union[str, DataMigrationServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -408,6 +419,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -460,11 +472,11 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def list_migration_jobs(
         self,
-        request: Union[clouddms.ListMigrationJobsRequest, dict] = None,
+        request: Optional[Union[clouddms.ListMigrationJobsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMigrationJobsPager:
         r"""Lists migration jobs in a given project and location.
@@ -575,11 +587,11 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def get_migration_job(
         self,
-        request: Union[clouddms.GetMigrationJobRequest, dict] = None,
+        request: Optional[Union[clouddms.GetMigrationJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> clouddms_resources.MigrationJob:
         r"""Gets details of a single migration job.
@@ -677,13 +689,13 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def create_migration_job(
         self,
-        request: Union[clouddms.CreateMigrationJobRequest, dict] = None,
+        request: Optional[Union[clouddms.CreateMigrationJobRequest, dict]] = None,
         *,
-        parent: str = None,
-        migration_job: clouddms_resources.MigrationJob = None,
-        migration_job_id: str = None,
+        parent: Optional[str] = None,
+        migration_job: Optional[clouddms_resources.MigrationJob] = None,
+        migration_job_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new migration job in a given project and
@@ -827,12 +839,12 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def update_migration_job(
         self,
-        request: Union[clouddms.UpdateMigrationJobRequest, dict] = None,
+        request: Optional[Union[clouddms.UpdateMigrationJobRequest, dict]] = None,
         *,
-        migration_job: clouddms_resources.MigrationJob = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        migration_job: Optional[clouddms_resources.MigrationJob] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single migration job.
@@ -966,11 +978,11 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def delete_migration_job(
         self,
-        request: Union[clouddms.DeleteMigrationJobRequest, dict] = None,
+        request: Optional[Union[clouddms.DeleteMigrationJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single migration job.
@@ -1090,10 +1102,10 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def start_migration_job(
         self,
-        request: Union[clouddms.StartMigrationJobRequest, dict] = None,
+        request: Optional[Union[clouddms.StartMigrationJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Start an already created migration job.
@@ -1186,10 +1198,10 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def stop_migration_job(
         self,
-        request: Union[clouddms.StopMigrationJobRequest, dict] = None,
+        request: Optional[Union[clouddms.StopMigrationJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Stops a running migration job.
@@ -1282,10 +1294,10 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def resume_migration_job(
         self,
-        request: Union[clouddms.ResumeMigrationJobRequest, dict] = None,
+        request: Optional[Union[clouddms.ResumeMigrationJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Resume a migration job that is currently stopped and
@@ -1379,10 +1391,10 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def promote_migration_job(
         self,
-        request: Union[clouddms.PromoteMigrationJobRequest, dict] = None,
+        request: Optional[Union[clouddms.PromoteMigrationJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Promote a migration job, stopping replication to the
@@ -1477,10 +1489,10 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def verify_migration_job(
         self,
-        request: Union[clouddms.VerifyMigrationJobRequest, dict] = None,
+        request: Optional[Union[clouddms.VerifyMigrationJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Verify a migration job, making sure the destination
@@ -1575,10 +1587,10 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def restart_migration_job(
         self,
-        request: Union[clouddms.RestartMigrationJobRequest, dict] = None,
+        request: Optional[Union[clouddms.RestartMigrationJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Restart a stopped or failed migration job, resetting
@@ -1673,10 +1685,10 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def generate_ssh_script(
         self,
-        request: Union[clouddms.GenerateSshScriptRequest, dict] = None,
+        request: Optional[Union[clouddms.GenerateSshScriptRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> clouddms.SshScript:
         r"""Generate a SSH configuration script to configure the
@@ -1761,11 +1773,11 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def list_connection_profiles(
         self,
-        request: Union[clouddms.ListConnectionProfilesRequest, dict] = None,
+        request: Optional[Union[clouddms.ListConnectionProfilesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConnectionProfilesPager:
         r"""Retrieve a list of all connection profiles in a given
@@ -1877,11 +1889,11 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def get_connection_profile(
         self,
-        request: Union[clouddms.GetConnectionProfileRequest, dict] = None,
+        request: Optional[Union[clouddms.GetConnectionProfileRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> clouddms_resources.ConnectionProfile:
         r"""Gets details of a single connection profile.
@@ -1977,13 +1989,13 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def create_connection_profile(
         self,
-        request: Union[clouddms.CreateConnectionProfileRequest, dict] = None,
+        request: Optional[Union[clouddms.CreateConnectionProfileRequest, dict]] = None,
         *,
-        parent: str = None,
-        connection_profile: clouddms_resources.ConnectionProfile = None,
-        connection_profile_id: str = None,
+        parent: Optional[str] = None,
+        connection_profile: Optional[clouddms_resources.ConnectionProfile] = None,
+        connection_profile_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new connection profile in a given project
@@ -2125,12 +2137,12 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def update_connection_profile(
         self,
-        request: Union[clouddms.UpdateConnectionProfileRequest, dict] = None,
+        request: Optional[Union[clouddms.UpdateConnectionProfileRequest, dict]] = None,
         *,
-        connection_profile: clouddms_resources.ConnectionProfile = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        connection_profile: Optional[clouddms_resources.ConnectionProfile] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Update the configuration of a single connection
@@ -2265,11 +2277,11 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def delete_connection_profile(
         self,
-        request: Union[clouddms.DeleteConnectionProfileRequest, dict] = None,
+        request: Optional[Union[clouddms.DeleteConnectionProfileRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single Database Migration Service
