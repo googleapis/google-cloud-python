@@ -18,9 +18,10 @@ from google.cloud.iam import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from .services.policies import PoliciesAsyncClient, PoliciesClient
-from .types.deny import DenyRule
-from .types.policy import (
+from google.cloud.iam_v2.services.policies.async_client import PoliciesAsyncClient
+from google.cloud.iam_v2.services.policies.client import PoliciesClient
+from google.cloud.iam_v2.types.deny import DenyRule
+from google.cloud.iam_v2.types.policy import (
     CreatePolicyRequest,
     DeletePolicyRequest,
     GetPolicyRequest,
@@ -33,14 +34,14 @@ from .types.policy import (
 )
 
 __all__ = (
+    "PoliciesClient",
     "PoliciesAsyncClient",
+    "DenyRule",
     "CreatePolicyRequest",
     "DeletePolicyRequest",
-    "DenyRule",
     "GetPolicyRequest",
     "ListPoliciesRequest",
     "ListPoliciesResponse",
-    "PoliciesClient",
     "Policy",
     "PolicyOperationMetadata",
     "PolicyRule",

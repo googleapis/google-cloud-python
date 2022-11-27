@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.type import expr_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -28,7 +30,7 @@ class DenyRule(proto.Message):
     r"""A deny rule in an IAM deny policy.
 
     Attributes:
-        denied_principals (Sequence[str]):
+        denied_principals (MutableSequence[str]):
             The identities that are prevented from using one or more
             permissions on Google Cloud resources. This field can
             contain the following values:
@@ -76,7 +78,7 @@ class DenyRule(proto.Message):
                Google Workspace or Cloud Identity customer ID. For
                example,
                ``principalSet://goog/cloudIdentityCustomerId/C01Abc35``.
-        exception_principals (Sequence[str]):
+        exception_principals (MutableSequence[str]):
             The identities that are excluded from the deny rule, even if
             they are listed in the ``denied_principals``. For example,
             you could add a Google group to the ``denied_principals``,
@@ -86,13 +88,13 @@ class DenyRule(proto.Message):
             ``denied_principals`` field, excluding
             ``principalSet://goog/public:all``, which represents all
             users on the internet.
-        denied_permissions (Sequence[str]):
+        denied_permissions (MutableSequence[str]):
             The permissions that are explicitly denied by this rule.
             Each permission uses the format
             ``{service_fqdn}/{resource}.{verb}``, where
             ``{service_fqdn}`` is the fully qualified domain name for
             the service. For example, ``iam.googleapis.com/roles.list``.
-        exception_permissions (Sequence[str]):
+        exception_permissions (MutableSequence[str]):
             Specifies the permissions that this rule excludes from the
             set of denied permissions given by ``denied_permissions``.
             If a permission appears in ``denied_permissions`` *and* in
@@ -115,23 +117,23 @@ class DenyRule(proto.Message):
             Other functions and operators are not supported.
     """
 
-    denied_principals = proto.RepeatedField(
+    denied_principals: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    exception_principals = proto.RepeatedField(
+    exception_principals: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    denied_permissions = proto.RepeatedField(
+    denied_permissions: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    exception_permissions = proto.RepeatedField(
+    exception_permissions: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    denial_condition = proto.Field(
+    denial_condition: expr_pb2.Expr = proto.Field(
         proto.MESSAGE,
         number=5,
         message=expr_pb2.Expr,

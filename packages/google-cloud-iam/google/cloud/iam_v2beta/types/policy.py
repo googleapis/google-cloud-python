@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -61,7 +63,7 @@ class Policy(proto.Message):
         display_name (str):
             A user-specified description of the ``Policy``. This value
             can be up to 63 characters.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             A key-value map to store arbitrary metadata for the
             ``Policy``. Keys can be up to 63 characters. Values can be
             up to 255 characters.
@@ -80,53 +82,53 @@ class Policy(proto.Message):
         delete_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the ``Policy`` was deleted. Empty
             if the policy is not deleted.
-        rules (Sequence[google.cloud.iam_v2beta.types.PolicyRule]):
+        rules (MutableSequence[google.cloud.iam_v2beta.types.PolicyRule]):
             A list of rules that specify the behavior of the ``Policy``.
             All of the rules should be of the ``kind`` specified in the
             ``Policy``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    kind = proto.Field(
+    kind: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    delete_time = proto.Field(
+    delete_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    rules = proto.RepeatedField(
+    rules: MutableSequence["PolicyRule"] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message="PolicyRule",
@@ -148,13 +150,13 @@ class PolicyRule(proto.Message):
             This value can be up to 256 characters.
     """
 
-    deny_rule = proto.Field(
+    deny_rule: deny.DenyRule = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="kind",
         message=deny.DenyRule,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -186,15 +188,15 @@ class ListPoliciesRequest(proto.Message):
             Provide this token to retrieve the next page.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -204,7 +206,7 @@ class ListPoliciesResponse(proto.Message):
     r"""Response message for ``ListPolicies``.
 
     Attributes:
-        policies (Sequence[google.cloud.iam_v2beta.types.Policy]):
+        policies (MutableSequence[google.cloud.iam_v2beta.types.Policy]):
             Metadata for the policies that are attached
             to the resource.
         next_page_token (str):
@@ -218,12 +220,12 @@ class ListPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    policies = proto.RepeatedField(
+    policies: MutableSequence["Policy"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Policy",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -248,7 +250,7 @@ class GetPolicyRequest(proto.Message):
             alphanumeric or the numeric ID.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -281,16 +283,16 @@ class CreatePolicyRequest(proto.Message):
             first character must be a lowercase letter.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    policy = proto.Field(
+    policy: "Policy" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Policy",
     )
-    policy_id = proto.Field(
+    policy_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -309,7 +311,7 @@ class UpdatePolicyRequest(proto.Message):
             code and ``ABORTED`` status.
     """
 
-    policy = proto.Field(
+    policy: "Policy" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Policy",
@@ -342,11 +344,11 @@ class DeletePolicyRequest(proto.Message):
             its current ``etag``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -361,7 +363,7 @@ class PolicyOperationMetadata(proto.Message):
             created.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,

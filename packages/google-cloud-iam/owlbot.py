@@ -12,14 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
 from pathlib import Path
 from typing import List, Optional
 
 import shutil
+
 import synthtool as s
-from synthtool.gcp.common import CommonTemplates, detect_versions
+import synthtool.gcp as gcp
 from synthtool.languages import python
 
+# ----------------------------------------------------------------------------
+# Copy the generated client from the owl-bot staging directory
+# ----------------------------------------------------------------------------
+
+clean_up_generated_samples = True
 
 # This is a customized version of the s.get_staging_dirs() function from synthtool to
 # cater for copying 2 different folders from googleapis-gen
@@ -65,44 +72,29 @@ iam_credentials_default_version = "v1"
 iam_default_version = "v2"
 
 for library in get_staging_dirs(iam_default_version, "iam"):
-    s.replace(
-        # workaround docstring formatting issues
-        library / "google/cloud/iam_v2/services/policies/*client.py",
-                """
-                ```
-                \{
-                   attachment_point:
-                'cloudresourcemanager.googleapis.com%2Forganizations%2F212345678901'
-                filter: 'kind:denyPolicies'
-                \}
-                ```""",
-                """
-                    ```
-                    {
-                    attachment_point:
-                    'cloudresourcemanager.googleapis.com%2Forganizations%2F212345678901'
-                    filter: 'kind:denyPolicies'
-                    }
-                    ```""",
-        )
-    s.move([library], excludes=["setup.py", "README.rst", "docs/index.rst", "google/cloud/iam/**",])
+    if clean_up_generated_samples:
+        shutil.rmtree("samples/generated_samples", ignore_errors=True)
+        clean_up_generated_samples = False
+    s.move([library], excludes=["docs/index.rst", "**/gapic_version.py"])
 
 for library in get_staging_dirs(iam_credentials_default_version, "iamcredentials"):
-    s.move([library], excludes=["setup.py", "README.rst", "docs/index.rst"])
+    s.move([library], excludes=["setup.py", "docs/index.rst", "**/gapic_version.py"])
 
 s.remove_staging_dirs()
 
-templated_files = CommonTemplates().py_library(
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+
+templated_files = gcp.CommonTemplates().py_library(
+    cov_level=100,
     microgenerator=True,
+    versions=gcp.common.detect_versions(path="./google", default_first=True),
 )
-s.move(
-    [templated_files], excludes=[".coveragerc"]
-)  # the microgenerator has a good coveragerc file
+s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml", "docs/index.rst"])
 
 python.py_samples(skip_readmes=True)
 
-# run format nox session for all directories which have a noxfile
+# run format session for all directories which have a noxfile
 for noxfile in Path(".").glob("**/noxfile.py"):
     s.shell.run(["nox", "-s", "format"], cwd=noxfile.parent, hide_output=False)
-
-python.configure_previous_major_version_branches()

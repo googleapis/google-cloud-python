@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -42,7 +44,7 @@ class GenerateAccessTokenRequest(proto.Message):
             ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
             The ``-`` wildcard character is required; replacing it with
             a project ID is invalid.
-        delegates (Sequence[str]):
+        delegates (MutableSequence[str]):
             The sequence of service accounts in a delegation chain. Each
             service account must be granted the
             ``roles/iam.serviceAccountTokenCreator`` role on its next
@@ -56,7 +58,7 @@ class GenerateAccessTokenRequest(proto.Message):
             ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
             The ``-`` wildcard character is required; replacing it with
             a project ID is invalid.
-        scope (Sequence[str]):
+        scope (MutableSequence[str]):
             Required. Code to identify the scopes to be
             included in the OAuth 2.0 access token. See
             https://developers.google.com/identity/protocols/googlescopes
@@ -70,19 +72,19 @@ class GenerateAccessTokenRequest(proto.Message):
             to a default value of one hour.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    delegates = proto.RepeatedField(
+    delegates: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    scope = proto.RepeatedField(
+    scope: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    lifetime = proto.Field(
+    lifetime: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=7,
         message=duration_pb2.Duration,
@@ -100,11 +102,11 @@ class GenerateAccessTokenResponse(proto.Message):
             The expiration time is always set.
     """
 
-    access_token = proto.Field(
+    access_token: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    expire_time = proto.Field(
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -121,7 +123,7 @@ class SignBlobRequest(proto.Message):
             ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
             The ``-`` wildcard character is required; replacing it with
             a project ID is invalid.
-        delegates (Sequence[str]):
+        delegates (MutableSequence[str]):
             The sequence of service accounts in a delegation chain. Each
             service account must be granted the
             ``roles/iam.serviceAccountTokenCreator`` role on its next
@@ -139,15 +141,15 @@ class SignBlobRequest(proto.Message):
             Required. The bytes to sign.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    delegates = proto.RepeatedField(
+    delegates: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    payload = proto.Field(
+    payload: bytes = proto.Field(
         proto.BYTES,
         number=5,
     )
@@ -163,11 +165,11 @@ class SignBlobResponse(proto.Message):
             The signed blob.
     """
 
-    key_id = proto.Field(
+    key_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    signed_blob = proto.Field(
+    signed_blob: bytes = proto.Field(
         proto.BYTES,
         number=4,
     )
@@ -183,7 +185,7 @@ class SignJwtRequest(proto.Message):
             ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
             The ``-`` wildcard character is required; replacing it with
             a project ID is invalid.
-        delegates (Sequence[str]):
+        delegates (MutableSequence[str]):
             The sequence of service accounts in a delegation chain. Each
             service account must be granted the
             ``roles/iam.serviceAccountTokenCreator`` role on its next
@@ -202,15 +204,15 @@ class SignJwtRequest(proto.Message):
             object that contains a JWT Claims Set.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    delegates = proto.RepeatedField(
+    delegates: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    payload = proto.Field(
+    payload: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -226,11 +228,11 @@ class SignJwtResponse(proto.Message):
             The signed JWT.
     """
 
-    key_id = proto.Field(
+    key_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    signed_jwt = proto.Field(
+    signed_jwt: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -246,7 +248,7 @@ class GenerateIdTokenRequest(proto.Message):
             ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
             The ``-`` wildcard character is required; replacing it with
             a project ID is invalid.
-        delegates (Sequence[str]):
+        delegates (MutableSequence[str]):
             The sequence of service accounts in a delegation chain. Each
             service account must be granted the
             ``roles/iam.serviceAccountTokenCreator`` role on its next
@@ -270,19 +272,19 @@ class GenerateIdTokenRequest(proto.Message):
             ``email_verified`` claims.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    delegates = proto.RepeatedField(
+    delegates: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    audience = proto.Field(
+    audience: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    include_email = proto.Field(
+    include_email: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -296,7 +298,7 @@ class GenerateIdTokenResponse(proto.Message):
             The OpenId Connect ID token.
     """
 
-    token = proto.Field(
+    token: str = proto.Field(
         proto.STRING,
         number=1,
     )

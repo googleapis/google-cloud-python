@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -62,7 +73,7 @@ class PoliciesClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[PoliciesTransport]:
         """Returns an appropriate transport class.
 
@@ -317,8 +328,8 @@ class PoliciesClient(metaclass=PoliciesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, PoliciesTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, PoliciesTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the policies client.
@@ -332,7 +343,7 @@ class PoliciesClient(metaclass=PoliciesClientMeta):
             transport (Union[str, PoliciesTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -362,6 +373,7 @@ class PoliciesClient(metaclass=PoliciesClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -414,11 +426,11 @@ class PoliciesClient(metaclass=PoliciesClientMeta):
 
     def list_policies(
         self,
-        request: Union[policy.ListPoliciesRequest, dict] = None,
+        request: Optional[Union[policy.ListPoliciesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPoliciesPager:
         r"""Retrieves the policies of the specified kind that are
@@ -542,11 +554,11 @@ class PoliciesClient(metaclass=PoliciesClientMeta):
 
     def get_policy(
         self,
-        request: Union[policy.GetPolicyRequest, dict] = None,
+        request: Optional[Union[policy.GetPolicyRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy.Policy:
         r"""Gets a policy.
@@ -651,13 +663,13 @@ class PoliciesClient(metaclass=PoliciesClientMeta):
 
     def create_policy(
         self,
-        request: Union[gi_policy.CreatePolicyRequest, dict] = None,
+        request: Optional[Union[gi_policy.CreatePolicyRequest, dict]] = None,
         *,
-        parent: str = None,
-        policy: gi_policy.Policy = None,
-        policy_id: str = None,
+        parent: Optional[str] = None,
+        policy: Optional[gi_policy.Policy] = None,
+        policy_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a policy.
@@ -800,10 +812,10 @@ class PoliciesClient(metaclass=PoliciesClientMeta):
 
     def update_policy(
         self,
-        request: Union[policy.UpdatePolicyRequest, dict] = None,
+        request: Optional[Union[policy.UpdatePolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the specified policy.
@@ -908,11 +920,11 @@ class PoliciesClient(metaclass=PoliciesClientMeta):
 
     def delete_policy(
         self,
-        request: Union[policy.DeletePolicyRequest, dict] = None,
+        request: Optional[Union[policy.DeletePolicyRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a policy. This action is permanent.
@@ -1047,10 +1059,10 @@ class PoliciesClient(metaclass=PoliciesClientMeta):
 
     def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.

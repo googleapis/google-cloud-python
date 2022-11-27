@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -157,9 +167,9 @@ class PoliciesAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, PoliciesTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the policies client.
@@ -203,11 +213,11 @@ class PoliciesAsyncClient:
 
     async def list_policies(
         self,
-        request: Union[policy.ListPoliciesRequest, dict] = None,
+        request: Optional[Union[policy.ListPoliciesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPoliciesAsyncPager:
         r"""Retrieves the policies of the specified kind that are
@@ -244,7 +254,7 @@ class PoliciesAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.iam_v2.types.ListPoliciesRequest, dict]):
+            request (Optional[Union[google.cloud.iam_v2.types.ListPoliciesRequest, dict]]):
                 The request object. Request message for `ListPolicies`.
             parent (:class:`str`):
                 Required. The resource that the policy is attached to,
@@ -340,11 +350,11 @@ class PoliciesAsyncClient:
 
     async def get_policy(
         self,
-        request: Union[policy.GetPolicyRequest, dict] = None,
+        request: Optional[Union[policy.GetPolicyRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy.Policy:
         r"""Gets a policy.
@@ -376,7 +386,7 @@ class PoliciesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.iam_v2.types.GetPolicyRequest, dict]):
+            request (Optional[Union[google.cloud.iam_v2.types.GetPolicyRequest, dict]]):
                 The request object. Request message for `GetPolicy`.
             name (:class:`str`):
                 Required. The resource name of the policy to retrieve.
@@ -458,13 +468,13 @@ class PoliciesAsyncClient:
 
     async def create_policy(
         self,
-        request: Union[gi_policy.CreatePolicyRequest, dict] = None,
+        request: Optional[Union[gi_policy.CreatePolicyRequest, dict]] = None,
         *,
-        parent: str = None,
-        policy: gi_policy.Policy = None,
-        policy_id: str = None,
+        parent: Optional[str] = None,
+        policy: Optional[gi_policy.Policy] = None,
+        policy_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a policy.
@@ -500,7 +510,7 @@ class PoliciesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.iam_v2.types.CreatePolicyRequest, dict]):
+            request (Optional[Union[google.cloud.iam_v2.types.CreatePolicyRequest, dict]]):
                 The request object. Request message for `CreatePolicy`.
             parent (:class:`str`):
                 Required. The resource that the policy is attached to,
@@ -616,10 +626,10 @@ class PoliciesAsyncClient:
 
     async def update_policy(
         self,
-        request: Union[policy.UpdatePolicyRequest, dict] = None,
+        request: Optional[Union[policy.UpdatePolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the specified policy.
@@ -666,7 +676,7 @@ class PoliciesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.iam_v2.types.UpdatePolicyRequest, dict]):
+            request (Optional[Union[google.cloud.iam_v2.types.UpdatePolicyRequest, dict]]):
                 The request object. Request message for `UpdatePolicy`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -732,11 +742,11 @@ class PoliciesAsyncClient:
 
     async def delete_policy(
         self,
-        request: Union[policy.DeletePolicyRequest, dict] = None,
+        request: Optional[Union[policy.DeletePolicyRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a policy. This action is permanent.
@@ -772,7 +782,7 @@ class PoliciesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.iam_v2.types.DeletePolicyRequest, dict]):
+            request (Optional[Union[google.cloud.iam_v2.types.DeletePolicyRequest, dict]]):
                 The request object. Request message for `DeletePolicy`.
             name (:class:`str`):
                 Required. The resource name of the policy to delete.
@@ -867,10 +877,10 @@ class PoliciesAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
