@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.eventarc.v1",
@@ -52,10 +52,9 @@ class Channel(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last-modified time.
         provider (str):
-            Required. The name of the event provider (e.g. Eventarc SaaS
-            partner) associated with the channel. This provider will be
-            granted permissions to publish events to the channel.
-            Format:
+            The name of the event provider (e.g. Eventarc SaaS partner)
+            associated with the channel. This provider will be granted
+            permissions to publish events to the channel. Format:
             ``projects/{project}/locations/{location}/providers/{provider_id}``.
         pubsub_topic (str):
             Output only. The name of the Pub/Sub topic created and
@@ -69,6 +68,12 @@ class Channel(proto.Message):
             Output only. The activation token for the
             channel. The token must be used by the provider
             to register the channel for publishing.
+        crypto_key_name (str):
+            Optional. Resource name of a KMS crypto key (managed by the
+            user) used to encrypt/decrypt their event data.
+
+            It must match the pattern
+            ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
     """
 
     class State(proto.Enum):
@@ -78,41 +83,45 @@ class Channel(proto.Message):
         ACTIVE = 2
         INACTIVE = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    provider = proto.Field(
+    provider: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    pubsub_topic = proto.Field(
+    pubsub_topic: str = proto.Field(
         proto.STRING,
         number=8,
         oneof="transport",
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=9,
         enum=State,
     )
-    activation_token = proto.Field(
+    activation_token: str = proto.Field(
         proto.STRING,
         number=10,
+    )
+    crypto_key_name: str = proto.Field(
+        proto.STRING,
+        number=11,
     )
 
 

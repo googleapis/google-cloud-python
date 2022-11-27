@@ -2,6 +2,7 @@
 
 .. include:: multiprocessing.rst
 
+
 API Reference
 -------------
 .. toctree::
@@ -10,12 +11,13 @@ API Reference
     eventarc_v1/services
     eventarc_v1/types
 
+
 Changelog
 ---------
 
 For a list of all ``google-cloud-eventarc`` releases:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   changelog
+    changelog

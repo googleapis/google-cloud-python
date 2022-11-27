@@ -50,6 +50,11 @@
                 "get_channel_connection"
               ]
             },
+            "GetGoogleChannelConfig": {
+              "methods": [
+                "get_google_channel_config"
+              ]
+            },
             "GetProvider": {
               "methods": [
                 "get_provider"
@@ -83,6 +88,11 @@
             "UpdateChannel": {
               "methods": [
                 "update_channel"
+              ]
+            },
+            "UpdateGoogleChannelConfig": {
+              "methods": [
+                "update_google_channel_config"
               ]
             },
             "UpdateTrigger": {
@@ -135,6 +145,11 @@
                 "get_channel_connection"
               ]
             },
+            "GetGoogleChannelConfig": {
+              "methods": [
+                "get_google_channel_config"
+              ]
+            },
             "GetProvider": {
               "methods": [
                 "get_provider"
@@ -168,6 +183,11 @@
             "UpdateChannel": {
               "methods": [
                 "update_channel"
+              ]
+            },
+            "UpdateGoogleChannelConfig": {
+              "methods": [
+                "update_google_channel_config"
               ]
             },
             "UpdateTrigger": {

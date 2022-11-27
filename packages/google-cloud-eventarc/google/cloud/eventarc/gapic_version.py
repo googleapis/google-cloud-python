@@ -13,10 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import EventarcAsyncClient
-from .client import EventarcClient
-
-__all__ = (
-    "EventarcClient",
-    "EventarcAsyncClient",
-)
+__version__ = "1.6.3"  # {x-release-please-version}

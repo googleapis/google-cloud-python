@@ -18,17 +18,19 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.eventarc_v1.types import channel
-from google.cloud.eventarc_v1.types import channel_connection
-from google.cloud.eventarc_v1.types import discovery
-from google.cloud.eventarc_v1.types import eventarc
-from google.cloud.eventarc_v1.types import trigger
+from google.cloud.eventarc_v1.types import (
+    channel,
+    channel_connection,
+    discovery,
+    eventarc,
+    trigger,
+)
 
 
 class ListTriggersPager:

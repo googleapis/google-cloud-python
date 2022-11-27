@@ -16,15 +16,25 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -33,20 +43,29 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+
 from google.cloud.eventarc_v1.services.eventarc import pagers
+from google.cloud.eventarc_v1.types import channel_connection as gce_channel_connection
+from google.cloud.eventarc_v1.types import (
+    google_channel_config as gce_google_channel_config,
+)
 from google.cloud.eventarc_v1.types import channel
 from google.cloud.eventarc_v1.types import channel as gce_channel
 from google.cloud.eventarc_v1.types import channel_connection
-from google.cloud.eventarc_v1.types import channel_connection as gce_channel_connection
-from google.cloud.eventarc_v1.types import discovery
-from google.cloud.eventarc_v1.types import eventarc
+from google.cloud.eventarc_v1.types import discovery, eventarc
+from google.cloud.eventarc_v1.types import google_channel_config
 from google.cloud.eventarc_v1.types import trigger
 from google.cloud.eventarc_v1.types import trigger as gce_trigger
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import EventarcTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import EventarcGrpcAsyncIOTransport
+
 from .client import EventarcClient
+from .transports.base import DEFAULT_CLIENT_INFO, EventarcTransport
+from .transports.grpc_asyncio import EventarcGrpcAsyncIOTransport
 
 
 class EventarcAsyncClient:
@@ -68,14 +87,22 @@ class EventarcAsyncClient:
     )
     cloud_function_path = staticmethod(EventarcClient.cloud_function_path)
     parse_cloud_function_path = staticmethod(EventarcClient.parse_cloud_function_path)
+    crypto_key_path = staticmethod(EventarcClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(EventarcClient.parse_crypto_key_path)
+    google_channel_config_path = staticmethod(EventarcClient.google_channel_config_path)
+    parse_google_channel_config_path = staticmethod(
+        EventarcClient.parse_google_channel_config_path
+    )
     provider_path = staticmethod(EventarcClient.provider_path)
     parse_provider_path = staticmethod(EventarcClient.parse_provider_path)
     service_path = staticmethod(EventarcClient.service_path)
-
+    parse_service_path = staticmethod(EventarcClient.parse_service_path)
     service_account_path = staticmethod(EventarcClient.service_account_path)
     parse_service_account_path = staticmethod(EventarcClient.parse_service_account_path)
     trigger_path = staticmethod(EventarcClient.trigger_path)
     parse_trigger_path = staticmethod(EventarcClient.parse_trigger_path)
+    workflow_path = staticmethod(EventarcClient.workflow_path)
+    parse_workflow_path = staticmethod(EventarcClient.parse_workflow_path)
     common_billing_account_path = staticmethod(
         EventarcClient.common_billing_account_path
     )
@@ -178,9 +205,9 @@ class EventarcAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, EventarcTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the eventarc client.
@@ -224,11 +251,11 @@ class EventarcAsyncClient:
 
     async def get_trigger(
         self,
-        request: Union[eventarc.GetTriggerRequest, dict] = None,
+        request: Optional[Union[eventarc.GetTriggerRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> trigger.Trigger:
         r"""Get a single trigger.
@@ -260,7 +287,7 @@ class EventarcAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.GetTriggerRequest, dict]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.GetTriggerRequest, dict]]):
                 The request object. The request message for the
                 GetTrigger method.
             name (:class:`str`):
@@ -326,11 +353,11 @@ class EventarcAsyncClient:
 
     async def list_triggers(
         self,
-        request: Union[eventarc.ListTriggersRequest, dict] = None,
+        request: Optional[Union[eventarc.ListTriggersRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTriggersAsyncPager:
         r"""List triggers.
@@ -363,7 +390,7 @@ class EventarcAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.ListTriggersRequest, dict]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.ListTriggersRequest, dict]]):
                 The request object. The request message for the
                 ListTriggers method.
             parent (:class:`str`):
@@ -440,13 +467,13 @@ class EventarcAsyncClient:
 
     async def create_trigger(
         self,
-        request: Union[eventarc.CreateTriggerRequest, dict] = None,
+        request: Optional[Union[eventarc.CreateTriggerRequest, dict]] = None,
         *,
-        parent: str = None,
-        trigger: gce_trigger.Trigger = None,
-        trigger_id: str = None,
+        parent: Optional[str] = None,
+        trigger: Optional[gce_trigger.Trigger] = None,
+        trigger_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Create a new trigger in a particular project and
@@ -493,7 +520,7 @@ class EventarcAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.CreateTriggerRequest, dict]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.CreateTriggerRequest, dict]]):
                 The request object. The request message for the
                 CreateTrigger method.
             parent (:class:`str`):
@@ -586,13 +613,13 @@ class EventarcAsyncClient:
 
     async def update_trigger(
         self,
-        request: Union[eventarc.UpdateTriggerRequest, dict] = None,
+        request: Optional[Union[eventarc.UpdateTriggerRequest, dict]] = None,
         *,
-        trigger: gce_trigger.Trigger = None,
-        update_mask: field_mask_pb2.FieldMask = None,
-        allow_missing: bool = None,
+        trigger: Optional[gce_trigger.Trigger] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        allow_missing: Optional[bool] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Update a single trigger.
@@ -628,7 +655,7 @@ class EventarcAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.UpdateTriggerRequest, dict]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.UpdateTriggerRequest, dict]]):
                 The request object. The request message for the
                 UpdateTrigger method.
             trigger (:class:`google.cloud.eventarc_v1.types.Trigger`):
@@ -726,12 +753,12 @@ class EventarcAsyncClient:
 
     async def delete_trigger(
         self,
-        request: Union[eventarc.DeleteTriggerRequest, dict] = None,
+        request: Optional[Union[eventarc.DeleteTriggerRequest, dict]] = None,
         *,
-        name: str = None,
-        allow_missing: bool = None,
+        name: Optional[str] = None,
+        allow_missing: Optional[bool] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Delete a single trigger.
@@ -768,7 +795,7 @@ class EventarcAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.DeleteTriggerRequest, dict]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.DeleteTriggerRequest, dict]]):
                 The request object. The request message for the
                 DeleteTrigger method.
             name (:class:`str`):
@@ -855,11 +882,11 @@ class EventarcAsyncClient:
 
     async def get_channel(
         self,
-        request: Union[eventarc.GetChannelRequest, dict] = None,
+        request: Optional[Union[eventarc.GetChannelRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> channel.Channel:
         r"""Get a single Channel.
@@ -891,7 +918,7 @@ class EventarcAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.GetChannelRequest, dict]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.GetChannelRequest, dict]]):
                 The request object. The request message for the
                 GetChannel method.
             name (:class:`str`):
@@ -963,11 +990,11 @@ class EventarcAsyncClient:
 
     async def list_channels(
         self,
-        request: Union[eventarc.ListChannelsRequest, dict] = None,
+        request: Optional[Union[eventarc.ListChannelsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListChannelsAsyncPager:
         r"""List channels.
@@ -1000,7 +1027,7 @@ class EventarcAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.ListChannelsRequest, dict]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.ListChannelsRequest, dict]]):
                 The request object. The request message for the
                 ListChannels method.
             parent (:class:`str`):
@@ -1077,13 +1104,13 @@ class EventarcAsyncClient:
 
     async def create_channel(
         self,
-        request: Union[eventarc.CreateChannelRequest, dict] = None,
+        request: Optional[Union[eventarc.CreateChannelRequest, dict]] = None,
         *,
-        parent: str = None,
-        channel: gce_channel.Channel = None,
-        channel_id: str = None,
+        parent: Optional[str] = None,
+        channel: Optional[gce_channel.Channel] = None,
+        channel_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Create a new channel in a particular project and
@@ -1108,7 +1135,6 @@ class EventarcAsyncClient:
                 channel = eventarc_v1.Channel()
                 channel.pubsub_topic = "pubsub_topic_value"
                 channel.name = "name_value"
-                channel.provider = "provider_value"
 
                 request = eventarc_v1.CreateChannelRequest(
                     parent="parent_value",
@@ -1128,7 +1154,7 @@ class EventarcAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.CreateChannelRequest, dict]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.CreateChannelRequest, dict]]):
                 The request object. The request message for the
                 CreateChannel method.
             parent (:class:`str`):
@@ -1224,12 +1250,12 @@ class EventarcAsyncClient:
 
     async def update_channel(
         self,
-        request: Union[eventarc.UpdateChannelRequest, dict] = None,
+        request: Optional[Union[eventarc.UpdateChannelRequest, dict]] = None,
         *,
-        channel: gce_channel.Channel = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        channel: Optional[gce_channel.Channel] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Update a single channel.
@@ -1265,7 +1291,7 @@ class EventarcAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.UpdateChannelRequest, dict]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.UpdateChannelRequest, dict]]):
                 The request object. The request message for the
                 UpdateChannel method.
             channel (:class:`google.cloud.eventarc_v1.types.Channel`):
@@ -1356,11 +1382,11 @@ class EventarcAsyncClient:
 
     async def delete_channel(
         self,
-        request: Union[eventarc.DeleteChannelRequest, dict] = None,
+        request: Optional[Union[eventarc.DeleteChannelRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Delete a single channel.
@@ -1397,7 +1423,7 @@ class EventarcAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.DeleteChannelRequest, dict]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.DeleteChannelRequest, dict]]):
                 The request object. The request message for the
                 DeleteChannel method.
             name (:class:`str`):
@@ -1477,11 +1503,11 @@ class EventarcAsyncClient:
 
     async def get_provider(
         self,
-        request: Union[eventarc.GetProviderRequest, dict] = None,
+        request: Optional[Union[eventarc.GetProviderRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> discovery.Provider:
         r"""Get a single Provider.
@@ -1513,7 +1539,7 @@ class EventarcAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.GetProviderRequest, dict]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.GetProviderRequest, dict]]):
                 The request object. The request message for the
                 GetProvider method.
             name (:class:`str`):
@@ -1579,11 +1605,11 @@ class EventarcAsyncClient:
 
     async def list_providers(
         self,
-        request: Union[eventarc.ListProvidersRequest, dict] = None,
+        request: Optional[Union[eventarc.ListProvidersRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListProvidersAsyncPager:
         r"""List providers.
@@ -1616,7 +1642,7 @@ class EventarcAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.ListProvidersRequest, dict]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.ListProvidersRequest, dict]]):
                 The request object. The request message for the
                 ListProviders method.
             parent (:class:`str`):
@@ -1693,11 +1719,11 @@ class EventarcAsyncClient:
 
     async def get_channel_connection(
         self,
-        request: Union[eventarc.GetChannelConnectionRequest, dict] = None,
+        request: Optional[Union[eventarc.GetChannelConnectionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> channel_connection.ChannelConnection:
         r"""Get a single ChannelConnection.
@@ -1729,7 +1755,7 @@ class EventarcAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.GetChannelConnectionRequest, dict]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.GetChannelConnectionRequest, dict]]):
                 The request object. The request message for the
                 GetChannelConnection method.
             name (:class:`str`):
@@ -1800,11 +1826,11 @@ class EventarcAsyncClient:
 
     async def list_channel_connections(
         self,
-        request: Union[eventarc.ListChannelConnectionsRequest, dict] = None,
+        request: Optional[Union[eventarc.ListChannelConnectionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListChannelConnectionsAsyncPager:
         r"""List channel connections.
@@ -1837,7 +1863,7 @@ class EventarcAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.ListChannelConnectionsRequest, dict]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.ListChannelConnectionsRequest, dict]]):
                 The request object. The request message for the
                 ListChannelConnections method.
             parent (:class:`str`):
@@ -1915,13 +1941,13 @@ class EventarcAsyncClient:
 
     async def create_channel_connection(
         self,
-        request: Union[eventarc.CreateChannelConnectionRequest, dict] = None,
+        request: Optional[Union[eventarc.CreateChannelConnectionRequest, dict]] = None,
         *,
-        parent: str = None,
-        channel_connection: gce_channel_connection.ChannelConnection = None,
-        channel_connection_id: str = None,
+        parent: Optional[str] = None,
+        channel_connection: Optional[gce_channel_connection.ChannelConnection] = None,
+        channel_connection_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Create a new ChannelConnection in a particular
@@ -1964,7 +1990,7 @@ class EventarcAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.CreateChannelConnectionRequest, dict]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.CreateChannelConnectionRequest, dict]]):
                 The request object. The request message for the
                 CreateChannelConnection method.
             parent (:class:`str`):
@@ -2061,11 +2087,11 @@ class EventarcAsyncClient:
 
     async def delete_channel_connection(
         self,
-        request: Union[eventarc.DeleteChannelConnectionRequest, dict] = None,
+        request: Optional[Union[eventarc.DeleteChannelConnectionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Delete a single ChannelConnection.
@@ -2101,7 +2127,7 @@ class EventarcAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.DeleteChannelConnectionRequest, dict]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.DeleteChannelConnectionRequest, dict]]):
                 The request object. The request message for the
                 DeleteChannelConnection method.
             name (:class:`str`):
@@ -2173,6 +2199,866 @@ class EventarcAsyncClient:
             self._client._transport.operations_client,
             channel_connection.ChannelConnection,
             metadata_type=eventarc.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_google_channel_config(
+        self,
+        request: Optional[Union[eventarc.GetGoogleChannelConfigRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> google_channel_config.GoogleChannelConfig:
+        r"""Get a GoogleChannelConfig
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import eventarc_v1
+
+            async def sample_get_google_channel_config():
+                # Create a client
+                client = eventarc_v1.EventarcAsyncClient()
+
+                # Initialize request argument(s)
+                request = eventarc_v1.GetGoogleChannelConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_google_channel_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.eventarc_v1.types.GetGoogleChannelConfigRequest, dict]]):
+                The request object. The request message for the
+                GetGoogleChannelConfig method.
+            name (:class:`str`):
+                Required. The name of the config to
+                get.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.eventarc_v1.types.GoogleChannelConfig:
+                A GoogleChannelConfig is a resource
+                that stores the custom settings
+                respected by Eventarc first-party
+                triggers in the matching region. Once
+                configured, first-party event data will
+                be protected using the specified custom
+                managed encryption key instead of
+                Google-managed encryption keys.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = eventarc.GetGoogleChannelConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_google_channel_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_google_channel_config(
+        self,
+        request: Optional[
+            Union[eventarc.UpdateGoogleChannelConfigRequest, dict]
+        ] = None,
+        *,
+        google_channel_config: Optional[
+            gce_google_channel_config.GoogleChannelConfig
+        ] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gce_google_channel_config.GoogleChannelConfig:
+        r"""Update a single GoogleChannelConfig
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import eventarc_v1
+
+            async def sample_update_google_channel_config():
+                # Create a client
+                client = eventarc_v1.EventarcAsyncClient()
+
+                # Initialize request argument(s)
+                google_channel_config = eventarc_v1.GoogleChannelConfig()
+                google_channel_config.name = "name_value"
+
+                request = eventarc_v1.UpdateGoogleChannelConfigRequest(
+                    google_channel_config=google_channel_config,
+                )
+
+                # Make the request
+                response = await client.update_google_channel_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.eventarc_v1.types.UpdateGoogleChannelConfigRequest, dict]]):
+                The request object. The request message for the
+                UpdateGoogleChannelConfig method.
+            google_channel_config (:class:`google.cloud.eventarc_v1.types.GoogleChannelConfig`):
+                Required. The config to be updated.
+                This corresponds to the ``google_channel_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                The fields to be updated; only fields explicitly
+                provided are updated. If no field mask is provided, all
+                provided fields in the request are updated. To update
+                all fields, provide a field mask of "*".
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.eventarc_v1.types.GoogleChannelConfig:
+                A GoogleChannelConfig is a resource
+                that stores the custom settings
+                respected by Eventarc first-party
+                triggers in the matching region. Once
+                configured, first-party event data will
+                be protected using the specified custom
+                managed encryption key instead of
+                Google-managed encryption keys.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([google_channel_config, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = eventarc.UpdateGoogleChannelConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if google_channel_config is not None:
+            request.google_channel_config = google_channel_config
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_google_channel_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("google_channel_config.name", request.google_channel_config.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_operations(
+        self,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.ListOperationsResponse:
+        r"""Lists operations that match the specified filter in the request.
+
+        Args:
+            request (:class:`~.operations_pb2.ListOperationsRequest`):
+                The request object. Request message for
+                `ListOperations` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.ListOperationsResponse:
+                Response message for ``ListOperations`` method.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.ListOperationsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.list_operations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_operation(
+        self,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.Operation:
+        r"""Gets the latest state of a long-running operation.
+
+        Args:
+            request (:class:`~.operations_pb2.GetOperationRequest`):
+                The request object. Request message for
+                `GetOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.Operation:
+                An ``Operation`` object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.GetOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.get_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_operation(
+        self,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a long-running operation.
+
+        This method indicates that the client is no longer interested
+        in the operation result. It does not cancel the operation.
+        If the server doesn't support this method, it returns
+        `google.rpc.Code.UNIMPLEMENTED`.
+
+        Args:
+            request (:class:`~.operations_pb2.DeleteOperationRequest`):
+                The request object. Request message for
+                `DeleteOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            None
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.DeleteOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.delete_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def cancel_operation(
+        self,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Starts asynchronous cancellation on a long-running operation.
+
+        The server makes a best effort to cancel the operation, but success
+        is not guaranteed.  If the server doesn't support this method, it returns
+        `google.rpc.Code.UNIMPLEMENTED`.
+
+        Args:
+            request (:class:`~.operations_pb2.CancelOperationRequest`):
+                The request object. Request message for
+                `CancelOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            None
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.CancelOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.cancel_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def set_iam_policy(
+        self,
+        request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> policy_pb2.Policy:
+        r"""Sets the IAM access control policy on the specified function.
+
+        Replaces any existing policy.
+
+        Args:
+            request (:class:`~.iam_policy_pb2.SetIamPolicyRequest`):
+                The request object. Request message for `SetIamPolicy`
+                method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.policy_pb2.Policy:
+                Defines an Identity and Access Management (IAM) policy.
+                It is used to specify access control policies for Cloud
+                Platform resources.
+                A ``Policy`` is a collection of ``bindings``. A
+                ``binding`` binds one or more ``members`` to a single
+                ``role``. Members can be user accounts, service
+                accounts, Google groups, and domains (such as G Suite).
+                A ``role`` is a named list of permissions (defined by
+                IAM or configured by users). A ``binding`` can
+                optionally specify a ``condition``, which is a logic
+                expression that further constrains the role binding
+                based on attributes about the request and/or target
+                resource.
+
+                **JSON Example**
+
+                ::
+
+                    {
+                      "bindings": [
+                        {
+                          "role": "roles/resourcemanager.organizationAdmin",
+                          "members": [
+                            "user:mike@example.com",
+                            "group:admins@example.com",
+                            "domain:google.com",
+                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                          ]
+                        },
+                        {
+                          "role": "roles/resourcemanager.organizationViewer",
+                          "members": ["user:eve@example.com"],
+                          "condition": {
+                            "title": "expirable access",
+                            "description": "Does not grant access after Sep 2020",
+                            "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')",
+                          }
+                        }
+                      ]
+                    }
+
+                **YAML Example**
+
+                ::
+
+                    bindings:
+                    - members:
+                      - user:mike@example.com
+                      - group:admins@example.com
+                      - domain:google.com
+                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin
+                    - members:
+                      - user:eve@example.com
+                      role: roles/resourcemanager.organizationViewer
+                      condition:
+                        title: expirable access
+                        description: Does not grant access after Sep 2020
+                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+
+                For a description of IAM and its features, see the `IAM
+                developer's
+                guide <https://cloud.google.com/iam/docs>`__.
+        """
+        # Create or coerce a protobuf request object.
+
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = iam_policy_pb2.SetIamPolicyRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.set_iam_policy,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_iam_policy(
+        self,
+        request: Optional[iam_policy_pb2.GetIamPolicyRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> policy_pb2.Policy:
+        r"""Gets the IAM access control policy for a function.
+
+        Returns an empty policy if the function exists and does not have a
+        policy set.
+
+        Args:
+            request (:class:`~.iam_policy_pb2.GetIamPolicyRequest`):
+                The request object. Request message for `GetIamPolicy`
+                method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if
+                any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.policy_pb2.Policy:
+                Defines an Identity and Access Management (IAM) policy.
+                It is used to specify access control policies for Cloud
+                Platform resources.
+                A ``Policy`` is a collection of ``bindings``. A
+                ``binding`` binds one or more ``members`` to a single
+                ``role``. Members can be user accounts, service
+                accounts, Google groups, and domains (such as G Suite).
+                A ``role`` is a named list of permissions (defined by
+                IAM or configured by users). A ``binding`` can
+                optionally specify a ``condition``, which is a logic
+                expression that further constrains the role binding
+                based on attributes about the request and/or target
+                resource.
+
+                **JSON Example**
+
+                ::
+
+                    {
+                      "bindings": [
+                        {
+                          "role": "roles/resourcemanager.organizationAdmin",
+                          "members": [
+                            "user:mike@example.com",
+                            "group:admins@example.com",
+                            "domain:google.com",
+                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                          ]
+                        },
+                        {
+                          "role": "roles/resourcemanager.organizationViewer",
+                          "members": ["user:eve@example.com"],
+                          "condition": {
+                            "title": "expirable access",
+                            "description": "Does not grant access after Sep 2020",
+                            "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')",
+                          }
+                        }
+                      ]
+                    }
+
+                **YAML Example**
+
+                ::
+
+                    bindings:
+                    - members:
+                      - user:mike@example.com
+                      - group:admins@example.com
+                      - domain:google.com
+                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin
+                    - members:
+                      - user:eve@example.com
+                      role: roles/resourcemanager.organizationViewer
+                      condition:
+                        title: expirable access
+                        description: Does not grant access after Sep 2020
+                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+
+                For a description of IAM and its features, see the `IAM
+                developer's
+                guide <https://cloud.google.com/iam/docs>`__.
+        """
+        # Create or coerce a protobuf request object.
+
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = iam_policy_pb2.GetIamPolicyRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.get_iam_policy,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def test_iam_permissions(
+        self,
+        request: Optional[iam_policy_pb2.TestIamPermissionsRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+        r"""Tests the specified IAM permissions against the IAM access control
+            policy for a function.
+
+        If the function does not exist, this will return an empty set
+        of permissions, not a NOT_FOUND error.
+
+        Args:
+            request (:class:`~.iam_policy_pb2.TestIamPermissionsRequest`):
+                The request object. Request message for
+                `TestIamPermissions` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                 if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.iam_policy_pb2.TestIamPermissionsResponse:
+                Response message for ``TestIamPermissions`` method.
+        """
+        # Create or coerce a protobuf request object.
+
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = iam_policy_pb2.TestIamPermissionsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.test_iam_permissions,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_location(
+        self,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> locations_pb2.Location:
+        r"""Gets information about a location.
+
+        Args:
+            request (:class:`~.location_pb2.GetLocationRequest`):
+                The request object. Request message for
+                `GetLocation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                 if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.location_pb2.Location:
+                Location object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = locations_pb2.GetLocationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.get_location,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_locations(
+        self,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> locations_pb2.ListLocationsResponse:
+        r"""Lists information about the supported locations for this service.
+
+        Args:
+            request (:class:`~.location_pb2.ListLocationsRequest`):
+                The request object. Request message for
+                `ListLocations` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                 if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.location_pb2.ListLocationsResponse:
+                Response message for ``ListLocations`` method.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = locations_pb2.ListLocationsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.list_locations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
         # Done; return the response.

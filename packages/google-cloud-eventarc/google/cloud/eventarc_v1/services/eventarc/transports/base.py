@@ -15,23 +15,31 @@
 #
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
-import pkg_resources
 
-import google.auth  # type: ignore
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
-from google.api_core import operations_v1
+import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
-from google.cloud.eventarc_v1.types import channel
-from google.cloud.eventarc_v1.types import channel_connection
-from google.cloud.eventarc_v1.types import discovery
-from google.cloud.eventarc_v1.types import eventarc
-from google.cloud.eventarc_v1.types import trigger
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.oauth2 import service_account  # type: ignore
+import pkg_resources
+
+from google.cloud.eventarc_v1.types import (
+    channel,
+    channel_connection,
+    discovery,
+    eventarc,
+)
+from google.cloud.eventarc_v1.types import (
+    google_channel_config as gce_google_channel_config,
+)
+from google.cloud.eventarc_v1.types import google_channel_config
+from google.cloud.eventarc_v1.types import trigger
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -54,7 +62,7 @@ class EventarcTransport(abc.ABC):
         self,
         *,
         host: str = DEFAULT_HOST,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -210,6 +218,16 @@ class EventarcTransport(abc.ABC):
             ),
             self.delete_channel_connection: gapic_v1.method.wrap_method(
                 self.delete_channel_connection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_google_channel_config: gapic_v1.method.wrap_method(
+                self.get_google_channel_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_google_channel_config: gapic_v1.method.wrap_method(
+                self.update_google_channel_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -376,6 +394,114 @@ class EventarcTransport(abc.ABC):
     ) -> Callable[
         [eventarc.DeleteChannelConnectionRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_google_channel_config(
+        self,
+    ) -> Callable[
+        [eventarc.GetGoogleChannelConfigRequest],
+        Union[
+            google_channel_config.GoogleChannelConfig,
+            Awaitable[google_channel_config.GoogleChannelConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_google_channel_config(
+        self,
+    ) -> Callable[
+        [eventarc.UpdateGoogleChannelConfigRequest],
+        Union[
+            gce_google_channel_config.GoogleChannelConfig,
+            Awaitable[gce_google_channel_config.GoogleChannelConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest],
+        Union[
+            operations_pb2.ListOperationsResponse,
+            Awaitable[operations_pb2.ListOperationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def delete_operation(
+        self,
+    ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.SetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.GetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        Union[
+            iam_policy_pb2.TestIamPermissionsResponse,
+            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_location(
+        self,
+    ) -> Callable[
+        [locations_pb2.GetLocationRequest],
+        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_locations(
+        self,
+    ) -> Callable[
+        [locations_pb2.ListLocationsRequest],
+        Union[
+            locations_pb2.ListLocationsResponse,
+            Awaitable[locations_pb2.ListLocationsResponse],
+        ],
     ]:
         raise NotImplementedError()
 

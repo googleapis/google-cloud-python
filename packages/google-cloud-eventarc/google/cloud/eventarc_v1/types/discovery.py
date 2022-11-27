@@ -13,8 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.eventarc.v1",
@@ -37,19 +38,19 @@ class Provider(proto.Message):
         display_name (str):
             Output only. Human friendly name for the
             Provider. For example "Cloud Storage".
-        event_types (Sequence[google.cloud.eventarc_v1.types.EventType]):
+        event_types (MutableSequence[google.cloud.eventarc_v1.types.EventType]):
             Output only. Event types for this provider.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    event_types = proto.RepeatedField(
+    event_types: MutableSequence["EventType"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="EventType",
@@ -74,7 +75,7 @@ class EventType(proto.Message):
             Output only. Human friendly description of
             what the event type is about. For example
             "Bucket created in Cloud Storage".
-        filtering_attributes (Sequence[google.cloud.eventarc_v1.types.FilteringAttribute]):
+        filtering_attributes (MutableSequence[google.cloud.eventarc_v1.types.FilteringAttribute]):
             Output only. Filtering attributes for the
             event type.
         event_schema_uri (str):
@@ -83,20 +84,20 @@ class EventType(proto.Message):
             "https://github.com/googleapis/google-cloudevents/blob/master/proto/google/events/cloud/storage/v1/events.proto".
     """
 
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    filtering_attributes = proto.RepeatedField(
+    filtering_attributes: MutableSequence["FilteringAttribute"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="FilteringAttribute",
     )
-    event_schema_uri = proto.Field(
+    event_schema_uri: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -124,19 +125,19 @@ class FilteringAttribute(proto.Message):
             format.
     """
 
-    attribute = proto.Field(
+    attribute: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    required = proto.Field(
+    required: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    path_pattern_supported = proto.Field(
+    path_pattern_supported: bool = proto.Field(
         proto.BOOL,
         number=4,
     )

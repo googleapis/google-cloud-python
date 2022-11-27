@@ -20,7 +20,6 @@ from .base import EventarcTransport
 from .grpc import EventarcGrpcTransport
 from .grpc_asyncio import EventarcGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[EventarcTransport]]
 _transport_registry["grpc"] = EventarcGrpcTransport

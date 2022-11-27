@@ -42,7 +42,6 @@ async def sample_create_channel():
     channel = eventarc_v1.Channel()
     channel.pubsub_topic = "pubsub_topic_value"
     channel.name = "name_value"
-    channel.provider = "provider_value"
 
     request = eventarc_v1.CreateChannelRequest(
         parent="parent_value",

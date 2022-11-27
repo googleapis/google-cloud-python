@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateChannel
+# Snippet for UpdateGoogleChannelConfig
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-eventarc
 
 
-# [START eventarc_v1_generated_Eventarc_CreateChannel_sync]
+# [START eventarc_v1_generated_Eventarc_UpdateGoogleChannelConfig_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,30 +34,22 @@
 from google.cloud import eventarc_v1
 
 
-def sample_create_channel():
+def sample_update_google_channel_config():
     # Create a client
     client = eventarc_v1.EventarcClient()
 
     # Initialize request argument(s)
-    channel = eventarc_v1.Channel()
-    channel.pubsub_topic = "pubsub_topic_value"
-    channel.name = "name_value"
+    google_channel_config = eventarc_v1.GoogleChannelConfig()
+    google_channel_config.name = "name_value"
 
-    request = eventarc_v1.CreateChannelRequest(
-        parent="parent_value",
-        channel=channel,
-        channel_id="channel_id_value",
-        validate_only=True,
+    request = eventarc_v1.UpdateGoogleChannelConfigRequest(
+        google_channel_config=google_channel_config,
     )
 
     # Make the request
-    operation = client.create_channel(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
+    response = client.update_google_channel_config(request=request)
 
     # Handle the response
     print(response)
 
-# [END eventarc_v1_generated_Eventarc_CreateChannel_sync]
+# [END eventarc_v1_generated_Eventarc_UpdateGoogleChannelConfig_sync]
