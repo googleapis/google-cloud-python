@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.language import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.language_v1.services.language_service.async_client import (
     LanguageServiceAsyncClient,
