@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.securitycenter_v1p1beta1.types import resource as gcs_resource
@@ -44,17 +46,17 @@ class NotificationMessage(proto.Message):
             The Cloud resource tied to the notification.
     """
 
-    notification_config_name = proto.Field(
+    notification_config_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    finding = proto.Field(
+    finding: gcs_finding.Finding = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="event",
         message=gcs_finding.Finding,
     )
-    resource = proto.Field(
+    resource: gcs_resource.Resource = proto.Field(
         proto.MESSAGE,
         number=3,
         message=gcs_resource.Resource,

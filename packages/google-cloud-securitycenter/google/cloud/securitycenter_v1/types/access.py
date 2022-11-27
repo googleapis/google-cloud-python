@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -73,7 +75,7 @@ class Access(proto.Message):
             name. For example:
 
             "//iam.googleapis.com/projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}/keys/{key}".
-        service_account_delegation_info (Sequence[google.cloud.securitycenter_v1.types.ServiceAccountDelegationInfo]):
+        service_account_delegation_info (MutableSequence[google.cloud.securitycenter_v1.types.ServiceAccountDelegationInfo]):
             Identity delegation history of an
             authenticated service account that makes the
             request. It contains information on the real
@@ -84,40 +86,42 @@ class Access(proto.Message):
             identity delegation events.
     """
 
-    principal_email = proto.Field(
+    principal_email: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    caller_ip = proto.Field(
+    caller_ip: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    caller_ip_geo = proto.Field(
+    caller_ip_geo: "Geolocation" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Geolocation",
     )
-    user_agent_family = proto.Field(
+    user_agent_family: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    service_name = proto.Field(
+    service_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    method_name = proto.Field(
+    method_name: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    principal_subject = proto.Field(
+    principal_subject: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    service_account_key_name = proto.Field(
+    service_account_key_name: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    service_account_delegation_info = proto.RepeatedField(
+    service_account_delegation_info: MutableSequence[
+        "ServiceAccountDelegationInfo"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message="ServiceAccountDelegationInfo",
@@ -143,11 +147,11 @@ class ServiceAccountDelegationInfo(proto.Message):
             ``serviceAccount:{identity pool name}[{subject}]``
     """
 
-    principal_email = proto.Field(
+    principal_email: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    principal_subject = proto.Field(
+    principal_subject: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -161,7 +165,7 @@ class Geolocation(proto.Message):
             A CLDR.
     """
 
-    region_code = proto.Field(
+    region_code: str = proto.Field(
         proto.STRING,
         number=1,
     )

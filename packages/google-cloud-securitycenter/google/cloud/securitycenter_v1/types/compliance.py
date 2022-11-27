@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -33,20 +35,20 @@ class Compliance(proto.Message):
             benchmarks e.g. "cis", "pci", "owasp", etc.
         version (str):
             Version of the standard/benchmark e.g. 1.1
-        ids (Sequence[str]):
+        ids (MutableSequence[str]):
             Policies within the standard/benchmark e.g.
             A.12.4.1
     """
 
-    standard = proto.Field(
+    standard: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    ids = proto.RepeatedField(
+    ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )

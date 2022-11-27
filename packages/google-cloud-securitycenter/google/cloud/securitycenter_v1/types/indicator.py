@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -31,16 +33,16 @@ class Indicator(proto.Message):
     https://en.wikipedia.org/wiki/Indicator_of_compromise
 
     Attributes:
-        ip_addresses (Sequence[str]):
+        ip_addresses (MutableSequence[str]):
             List of ip addresses associated to the
             Finding.
-        domains (Sequence[str]):
+        domains (MutableSequence[str]):
             List of domains associated to the Finding.
-        signatures (Sequence[google.cloud.securitycenter_v1.types.Indicator.ProcessSignature]):
+        signatures (MutableSequence[google.cloud.securitycenter_v1.types.Indicator.ProcessSignature]):
             The list of matched signatures indicating
             that the given process is present in the
             environment.
-        uris (Sequence[str]):
+        uris (MutableSequence[str]):
             The list of URIs associated to the Findings.
     """
 
@@ -73,7 +75,7 @@ class Indicator(proto.Message):
             Attributes:
                 binary_family (str):
                     The binary family.
-                detections (Sequence[google.cloud.securitycenter_v1.types.Indicator.ProcessSignature.MemoryHashSignature.Detection]):
+                detections (MutableSequence[google.cloud.securitycenter_v1.types.Indicator.ProcessSignature.MemoryHashSignature.Detection]):
                     The list of memory hash detections
                     contributing to the binary family match.
             """
@@ -91,20 +93,22 @@ class Indicator(proto.Message):
                         signature that were matched.
                 """
 
-                binary = proto.Field(
+                binary: str = proto.Field(
                     proto.STRING,
                     number=2,
                 )
-                percent_pages_matched = proto.Field(
+                percent_pages_matched: float = proto.Field(
                     proto.DOUBLE,
                     number=3,
                 )
 
-            binary_family = proto.Field(
+            binary_family: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            detections = proto.RepeatedField(
+            detections: MutableSequence[
+                "Indicator.ProcessSignature.MemoryHashSignature.Detection"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="Indicator.ProcessSignature.MemoryHashSignature.Detection",
@@ -118,38 +122,42 @@ class Indicator(proto.Message):
                     The name of the YARA rule.
             """
 
-            yara_rule = proto.Field(
+            yara_rule: str = proto.Field(
                 proto.STRING,
                 number=5,
             )
 
-        memory_hash_signature = proto.Field(
-            proto.MESSAGE,
-            number=6,
-            oneof="signature",
-            message="Indicator.ProcessSignature.MemoryHashSignature",
+        memory_hash_signature: "Indicator.ProcessSignature.MemoryHashSignature" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=6,
+                oneof="signature",
+                message="Indicator.ProcessSignature.MemoryHashSignature",
+            )
         )
-        yara_rule_signature = proto.Field(
-            proto.MESSAGE,
-            number=7,
-            oneof="signature",
-            message="Indicator.ProcessSignature.YaraRuleSignature",
+        yara_rule_signature: "Indicator.ProcessSignature.YaraRuleSignature" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=7,
+                oneof="signature",
+                message="Indicator.ProcessSignature.YaraRuleSignature",
+            )
         )
 
-    ip_addresses = proto.RepeatedField(
+    ip_addresses: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    domains = proto.RepeatedField(
+    domains: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    signatures = proto.RepeatedField(
+    signatures: MutableSequence[ProcessSignature] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=ProcessSignature,
     )
-    uris = proto.RepeatedField(
+    uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )

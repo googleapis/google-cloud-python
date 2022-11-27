@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -49,7 +51,7 @@ class Asset(proto.Message):
             Security Command Center managed properties.
             These properties are managed by Security Command
             Center and cannot be modified by the user.
-        resource_properties (Mapping[str, google.protobuf.struct_pb2.Value]):
+        resource_properties (MutableMapping[str, google.protobuf.struct_pb2.Value]):
             Resource managed properties. These properties
             are managed and defined by the Google Cloud
             resource and cannot be modified by the user.
@@ -92,57 +94,57 @@ class Asset(proto.Message):
                 The full resource name of the project the resource belongs
                 to. See:
                 https://cloud.google.com/apis/design/resource_names#full_resource_name
-            resource_owners (Sequence[str]):
+            resource_owners (MutableSequence[str]):
                 Owners of the Google Cloud resource.
         """
 
-        resource_name = proto.Field(
+        resource_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        resource_type = proto.Field(
+        resource_type: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        resource_parent = proto.Field(
+        resource_parent: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        resource_project = proto.Field(
+        resource_project: str = proto.Field(
             proto.STRING,
             number=4,
         )
-        resource_owners = proto.RepeatedField(
+        resource_owners: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=5,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    security_center_properties = proto.Field(
+    security_center_properties: SecurityCenterProperties = proto.Field(
         proto.MESSAGE,
         number=2,
         message=SecurityCenterProperties,
     )
-    resource_properties = proto.MapField(
+    resource_properties: MutableMapping[str, struct_pb2.Value] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=7,
         message=struct_pb2.Value,
     )
-    security_marks = proto.Field(
+    security_marks: gcs_security_marks.SecurityMarks = proto.Field(
         proto.MESSAGE,
         number=8,
         message=gcs_security_marks.SecurityMarks,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,

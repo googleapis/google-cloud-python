@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
@@ -84,15 +86,15 @@ class CreateFindingRequest(proto.Message):
             fields on this resource.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    finding_id = proto.Field(
+    finding_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    finding = proto.Field(
+    finding: gcs_finding.Finding = proto.Field(
         proto.MESSAGE,
         number=3,
         message=gcs_finding.Finding,
@@ -119,15 +121,15 @@ class CreateNotificationConfigRequest(proto.Message):
             on this resource.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    config_id = proto.Field(
+    config_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    notification_config = proto.Field(
+    notification_config: gcs_notification_config.NotificationConfig = proto.Field(
         proto.MESSAGE,
         number=3,
         message=gcs_notification_config.NotificationConfig,
@@ -147,11 +149,11 @@ class CreateSourceRequest(proto.Message):
             ignored.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    source = proto.Field(
+    source: gcs_source.Source = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcs_source.Source,
@@ -168,7 +170,7 @@ class DeleteNotificationConfigRequest(proto.Message):
             "organizations/[organization_id]/notificationConfigs/[config_id]".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -184,7 +186,7 @@ class GetNotificationConfigRequest(proto.Message):
             "organizations/[organization_id]/notificationConfigs/[config_id]".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -200,7 +202,7 @@ class GetOrganizationSettingsRequest(proto.Message):
             "organizations/[organization_id]/organizationSettings".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -215,7 +217,7 @@ class GetSourceRequest(proto.Message):
             is "organizations/[organization_id]/source/[source_id]".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -381,33 +383,33 @@ class GroupAssetsRequest(proto.Message):
             maximum is 1000.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    group_by = proto.Field(
+    group_by: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    compare_duration = proto.Field(
+    compare_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=4,
         message=duration_pb2.Duration,
     )
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=8,
     )
@@ -417,7 +419,7 @@ class GroupAssetsResponse(proto.Message):
     r"""Response message for grouping by assets.
 
     Attributes:
-        group_by_results (Sequence[google.cloud.securitycenter_v1p1beta1.types.GroupResult]):
+        group_by_results (MutableSequence[google.cloud.securitycenter_v1p1beta1.types.GroupResult]):
             Group results. There exists an element for
             each existing unique combination of
             property/values. The element contains a count
@@ -437,21 +439,21 @@ class GroupAssetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    group_by_results = proto.RepeatedField(
+    group_by_results: MutableSequence["GroupResult"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="GroupResult",
     )
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    total_size = proto.Field(
+    total_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
@@ -606,33 +608,33 @@ class GroupFindingsRequest(proto.Message):
             maximum is 1000.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    group_by = proto.Field(
+    group_by: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    compare_duration = proto.Field(
+    compare_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=5,
         message=duration_pb2.Duration,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=8,
     )
@@ -642,7 +644,7 @@ class GroupFindingsResponse(proto.Message):
     r"""Response message for group by findings.
 
     Attributes:
-        group_by_results (Sequence[google.cloud.securitycenter_v1p1beta1.types.GroupResult]):
+        group_by_results (MutableSequence[google.cloud.securitycenter_v1p1beta1.types.GroupResult]):
             Group results. There exists an element for
             each existing unique combination of
             property/values. The element contains a count
@@ -662,21 +664,21 @@ class GroupFindingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    group_by_results = proto.RepeatedField(
+    group_by_results: MutableSequence["GroupResult"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="GroupResult",
     )
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    total_size = proto.Field(
+    total_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
@@ -687,7 +689,7 @@ class GroupResult(proto.Message):
     request.
 
     Attributes:
-        properties (Mapping[str, google.protobuf.struct_pb2.Value]):
+        properties (MutableMapping[str, google.protobuf.struct_pb2.Value]):
             Properties matching the groupBy fields in the
             request.
         count (int):
@@ -695,13 +697,13 @@ class GroupResult(proto.Message):
             properties.
     """
 
-    properties = proto.MapField(
+    properties: MutableMapping[str, struct_pb2.Value] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,
         message=struct_pb2.Value,
     )
-    count = proto.Field(
+    count: int = proto.Field(
         proto.INT64,
         number=2,
     )
@@ -725,15 +727,15 @@ class ListNotificationConfigsRequest(proto.Message):
             maximum is 1000.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -743,7 +745,7 @@ class ListNotificationConfigsResponse(proto.Message):
     r"""Response message for listing notification configs.
 
     Attributes:
-        notification_configs (Sequence[google.cloud.securitycenter_v1p1beta1.types.NotificationConfig]):
+        notification_configs (MutableSequence[google.cloud.securitycenter_v1p1beta1.types.NotificationConfig]):
             Notification configs belonging to the
             requested parent.
         next_page_token (str):
@@ -755,12 +757,14 @@ class ListNotificationConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    notification_configs = proto.RepeatedField(
+    notification_configs: MutableSequence[
+        gcs_notification_config.NotificationConfig
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcs_notification_config.NotificationConfig,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -785,15 +789,15 @@ class ListSourcesRequest(proto.Message):
             maximum is 1000.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=7,
     )
@@ -803,7 +807,7 @@ class ListSourcesResponse(proto.Message):
     r"""Response message for listing sources.
 
     Attributes:
-        sources (Sequence[google.cloud.securitycenter_v1p1beta1.types.Source]):
+        sources (MutableSequence[google.cloud.securitycenter_v1p1beta1.types.Source]):
             Sources belonging to the requested parent.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -814,12 +818,12 @@ class ListSourcesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    sources = proto.RepeatedField(
+    sources: MutableSequence[gcs_source.Source] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcs_source.Source,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -986,38 +990,38 @@ class ListAssetsRequest(proto.Message):
             maximum is 1000.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    compare_duration = proto.Field(
+    compare_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=5,
         message=duration_pb2.Duration,
     )
-    field_mask = proto.Field(
+    field_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=7,
         message=field_mask_pb2.FieldMask,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=9,
     )
@@ -1027,7 +1031,7 @@ class ListAssetsResponse(proto.Message):
     r"""Response message for listing assets.
 
     Attributes:
-        list_assets_results (Sequence[google.cloud.securitycenter_v1p1beta1.types.ListAssetsResponse.ListAssetsResult]):
+        list_assets_results (MutableSequence[google.cloud.securitycenter_v1p1beta1.types.ListAssetsResponse.ListAssetsResult]):
             Assets matching the list request.
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Time used for executing the list request.
@@ -1063,12 +1067,12 @@ class ListAssetsResponse(proto.Message):
             REMOVED = 2
             ACTIVE = 3
 
-        asset = proto.Field(
+        asset: gcs_asset.Asset = proto.Field(
             proto.MESSAGE,
             number=1,
             message=gcs_asset.Asset,
         )
-        state_change = proto.Field(
+        state_change: "ListAssetsResponse.ListAssetsResult.StateChange" = proto.Field(
             proto.ENUM,
             number=2,
             enum="ListAssetsResponse.ListAssetsResult.StateChange",
@@ -1078,21 +1082,21 @@ class ListAssetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    list_assets_results = proto.RepeatedField(
+    list_assets_results: MutableSequence[ListAssetsResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=ListAssetsResult,
     )
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    total_size = proto.Field(
+    total_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
@@ -1244,38 +1248,38 @@ class ListFindingsRequest(proto.Message):
             maximum is 1000.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    compare_duration = proto.Field(
+    compare_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=5,
         message=duration_pb2.Duration,
     )
-    field_mask = proto.Field(
+    field_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=7,
         message=field_mask_pb2.FieldMask,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=9,
     )
@@ -1285,7 +1289,7 @@ class ListFindingsResponse(proto.Message):
     r"""Response message for listing findings.
 
     Attributes:
-        list_findings_results (Sequence[google.cloud.securitycenter_v1p1beta1.types.ListFindingsResponse.ListFindingsResult]):
+        list_findings_results (MutableSequence[google.cloud.securitycenter_v1p1beta1.types.ListFindingsResponse.ListFindingsResult]):
             Findings matching the list request.
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Time used for executing the list request.
@@ -1345,50 +1349,52 @@ class ListFindingsResponse(proto.Message):
                     The full resource name of resource's parent.
                 parent_display_name (str):
                     The human readable name of resource's parent.
-                folders (Sequence[google.cloud.securitycenter_v1p1beta1.types.Folder]):
+                folders (MutableSequence[google.cloud.securitycenter_v1p1beta1.types.Folder]):
                     Contains a Folder message for each folder in
                     the assets ancestry. The first folder is the
                     deepest nested folder, and the last folder is
                     the folder directly under the Organization.
             """
 
-            name = proto.Field(
+            name: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            project_name = proto.Field(
+            project_name: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
-            project_display_name = proto.Field(
+            project_display_name: str = proto.Field(
                 proto.STRING,
                 number=3,
             )
-            parent_name = proto.Field(
+            parent_name: str = proto.Field(
                 proto.STRING,
                 number=4,
             )
-            parent_display_name = proto.Field(
+            parent_display_name: str = proto.Field(
                 proto.STRING,
                 number=5,
             )
-            folders = proto.RepeatedField(
+            folders: MutableSequence[folder.Folder] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=10,
                 message=folder.Folder,
             )
 
-        finding = proto.Field(
+        finding: gcs_finding.Finding = proto.Field(
             proto.MESSAGE,
             number=1,
             message=gcs_finding.Finding,
         )
-        state_change = proto.Field(
-            proto.ENUM,
-            number=2,
-            enum="ListFindingsResponse.ListFindingsResult.StateChange",
+        state_change: "ListFindingsResponse.ListFindingsResult.StateChange" = (
+            proto.Field(
+                proto.ENUM,
+                number=2,
+                enum="ListFindingsResponse.ListFindingsResult.StateChange",
+            )
         )
-        resource = proto.Field(
+        resource: "ListFindingsResponse.ListFindingsResult.Resource" = proto.Field(
             proto.MESSAGE,
             number=3,
             message="ListFindingsResponse.ListFindingsResult.Resource",
@@ -1398,21 +1404,21 @@ class ListFindingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    list_findings_results = proto.RepeatedField(
+    list_findings_results: MutableSequence[ListFindingsResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=ListFindingsResult,
     )
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    total_size = proto.Field(
+    total_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
@@ -1434,16 +1440,16 @@ class SetFindingStateRequest(proto.Message):
             takes effect.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    state = proto.Field(
+    state: gcs_finding.Finding.State = proto.Field(
         proto.ENUM,
         number=2,
         enum=gcs_finding.Finding.State,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -1460,7 +1466,7 @@ class RunAssetDiscoveryRequest(proto.Message):
             for. Its format is "organizations/[organization_id]".
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1488,12 +1494,12 @@ class UpdateFindingRequest(proto.Message):
             "source_properties." in the field mask.
     """
 
-    finding = proto.Field(
+    finding: gcs_finding.Finding = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcs_finding.Finding,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -1512,12 +1518,12 @@ class UpdateNotificationConfigRequest(proto.Message):
             If empty all mutable fields will be updated.
     """
 
-    notification_config = proto.Field(
+    notification_config: gcs_notification_config.NotificationConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcs_notification_config.NotificationConfig,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -1537,12 +1543,12 @@ class UpdateOrganizationSettingsRequest(proto.Message):
             If empty all mutable fields will be updated.
     """
 
-    organization_settings = proto.Field(
+    organization_settings: gcs_organization_settings.OrganizationSettings = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcs_organization_settings.OrganizationSettings,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -1561,12 +1567,12 @@ class UpdateSourceRequest(proto.Message):
             If empty all mutable fields will be updated.
     """
 
-    source = proto.Field(
+    source: gcs_source.Source = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcs_source.Source,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -1595,17 +1601,17 @@ class UpdateSecurityMarksRequest(proto.Message):
             preceding this time.
     """
 
-    security_marks = proto.Field(
+    security_marks: gcs_security_marks.SecurityMarks = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcs_security_marks.SecurityMarks,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -36,11 +38,11 @@ class Folder(proto.Message):
             folder.
     """
 
-    resource_folder = proto.Field(
+    resource_folder: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    resource_folder_display_name = proto.Field(
+    resource_folder_display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )

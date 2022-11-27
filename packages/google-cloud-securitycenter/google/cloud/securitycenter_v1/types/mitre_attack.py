@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -31,7 +33,7 @@ class MitreAttack(proto.Message):
         primary_tactic (google.cloud.securitycenter_v1.types.MitreAttack.Tactic):
             The MITRE ATT&CK tactic most closely
             represented by this finding, if any.
-        primary_techniques (Sequence[google.cloud.securitycenter_v1.types.MitreAttack.Technique]):
+        primary_techniques (MutableSequence[google.cloud.securitycenter_v1.types.MitreAttack.Technique]):
             The MITRE ATT&CK technique most closely represented by this
             finding, if any. primary_techniques is a repeated field
             because there are multiple levels of MITRE ATT&CK
@@ -40,10 +42,10 @@ class MitreAttack(proto.Message):
             ``SCANNING_IP_BLOCKS``), both the sub-technique and its
             parent technique(s) will be listed (e.g.
             ``SCANNING_IP_BLOCKS``, ``ACTIVE_SCANNING``).
-        additional_tactics (Sequence[google.cloud.securitycenter_v1.types.MitreAttack.Tactic]):
+        additional_tactics (MutableSequence[google.cloud.securitycenter_v1.types.MitreAttack.Tactic]):
             Additional MITRE ATT&CK tactics related to
             this finding, if any.
-        additional_techniques (Sequence[google.cloud.securitycenter_v1.types.MitreAttack.Technique]):
+        additional_techniques (MutableSequence[google.cloud.securitycenter_v1.types.MitreAttack.Technique]):
             Additional MITRE ATT&CK techniques related to
             this finding, if any, along with any of their
             respective parent techniques.
@@ -111,28 +113,29 @@ class MitreAttack(proto.Message):
         NETWORK_SERVICE_DISCOVERY = 32
         ACCESS_TOKEN_MANIPULATION = 33
         ABUSE_ELEVATION_CONTROL_MECHANISM = 34
+        DEFAULT_ACCOUNTS = 35
 
-    primary_tactic = proto.Field(
+    primary_tactic: Tactic = proto.Field(
         proto.ENUM,
         number=1,
         enum=Tactic,
     )
-    primary_techniques = proto.RepeatedField(
+    primary_techniques: MutableSequence[Technique] = proto.RepeatedField(
         proto.ENUM,
         number=2,
         enum=Technique,
     )
-    additional_tactics = proto.RepeatedField(
+    additional_tactics: MutableSequence[Tactic] = proto.RepeatedField(
         proto.ENUM,
         number=3,
         enum=Tactic,
     )
-    additional_techniques = proto.RepeatedField(
+    additional_techniques: MutableSequence[Technique] = proto.RepeatedField(
         proto.ENUM,
         number=4,
         enum=Technique,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=5,
     )

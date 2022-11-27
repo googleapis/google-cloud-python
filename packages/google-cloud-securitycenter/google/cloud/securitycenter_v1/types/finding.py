@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -23,13 +25,13 @@ from google.cloud.securitycenter_v1.types import (
     contact_details,
     container,
 )
+from google.cloud.securitycenter_v1.types import external_system, file, iam_binding
 from google.cloud.securitycenter_v1.types import exfiltration as gcs_exfiltration
 from google.cloud.securitycenter_v1.types import mitre_attack as gcs_mitre_attack
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v1.types import vulnerability as gcs_vulnerability
 from google.cloud.securitycenter_v1.types import access as gcs_access
 from google.cloud.securitycenter_v1.types import database as gcs_database
-from google.cloud.securitycenter_v1.types import external_system, iam_binding
 from google.cloud.securitycenter_v1.types import indicator as gcs_indicator
 from google.cloud.securitycenter_v1.types import kubernetes as gcs_kubernetes
 from google.cloud.securitycenter_v1.types import process
@@ -81,7 +83,7 @@ class Finding(proto.Message):
             additional information about the finding can be
             found. This field is guaranteed to be either
             empty or a well formed URL.
-        source_properties (Mapping[str, google.protobuf.struct_pb2.Value]):
+        source_properties (MutableMapping[str, google.protobuf.struct_pb2.Value]):
             Source specific properties. These properties are managed by
             the source that writes the finding. The key names in the
             source_properties map must be between 1 and 255 characters,
@@ -138,7 +140,7 @@ class Finding(proto.Message):
         mute_update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The most recent time this
             finding was muted or unmuted.
-        external_systems (Mapping[str, google.cloud.securitycenter_v1.types.ExternalSystem]):
+        external_systems (MutableMapping[str, google.cloud.securitycenter_v1.types.ExternalSystem]):
             Output only. Third party SIEM/SOAR fields
             within SCC, contains external system information
             and external system finding fields.
@@ -149,7 +151,7 @@ class Finding(proto.Message):
             Access details associated to the Finding,
             such as more information on the caller, which
             method was accessed, from where, etc.
-        connections (Sequence[google.cloud.securitycenter_v1.types.Connection]):
+        connections (MutableSequence[google.cloud.securitycenter_v1.types.Connection]):
             Contains information about the IP connection
             associated with the finding.
         mute_initiator (str):
@@ -158,10 +160,10 @@ class Finding(proto.Message):
             muted the finding, user who muted the finding, etc. Unlike
             other attributes of a finding, a finding provider shouldn't
             set the value of mute.
-        processes (Sequence[google.cloud.securitycenter_v1.types.Process]):
+        processes (MutableSequence[google.cloud.securitycenter_v1.types.Process]):
             Represents operating system processes
             associated with the Finding.
-        contacts (Mapping[str, google.cloud.securitycenter_v1.types.ContactDetails]):
+        contacts (MutableMapping[str, google.cloud.securitycenter_v1.types.ContactDetails]):
             Output only. Map containing the points of contact for the
             given finding. The key represents the type of contact, while
             the value contains a list of all the contacts that pertain.
@@ -182,7 +184,7 @@ class Finding(proto.Message):
                     ]
                   }
                 }
-        compliances (Sequence[google.cloud.securitycenter_v1.types.Compliance]):
+        compliances (MutableSequence[google.cloud.securitycenter_v1.types.Compliance]):
             Contains compliance information for security
             standards associated to the finding.
         parent_display_name (str):
@@ -194,12 +196,12 @@ class Finding(proto.Message):
         exfiltration (google.cloud.securitycenter_v1.types.Exfiltration):
             Represents exfiltration associated with the
             Finding.
-        iam_bindings (Sequence[google.cloud.securitycenter_v1.types.IamBinding]):
+        iam_bindings (MutableSequence[google.cloud.securitycenter_v1.types.IamBinding]):
             Represents IAM bindings associated with the
             Finding.
         next_steps (str):
             Next steps associate to the finding.
-        containers (Sequence[google.cloud.securitycenter_v1.types.Container]):
+        containers (MutableSequence[google.cloud.securitycenter_v1.types.Container]):
             Containers associated with the finding.
             containers provides information for both
             Kubernetes and non-Kubernetes containers.
@@ -208,6 +210,8 @@ class Finding(proto.Message):
             finding.
         database (google.cloud.securitycenter_v1.types.Database):
             Database associated with the finding.
+        files (MutableSequence[google.cloud.securitycenter_v1.types.File]):
+            File associated with the finding.
     """
 
     class State(proto.Enum):
@@ -240,163 +244,170 @@ class Finding(proto.Message):
         OBSERVATION = 4
         SCC_ERROR = 5
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    resource_name = proto.Field(
+    resource_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=4,
         enum=State,
     )
-    category = proto.Field(
+    category: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    external_uri = proto.Field(
+    external_uri: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    source_properties = proto.MapField(
+    source_properties: MutableMapping[str, struct_pb2.Value] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=7,
         message=struct_pb2.Value,
     )
-    security_marks = proto.Field(
+    security_marks: gcs_security_marks.SecurityMarks = proto.Field(
         proto.MESSAGE,
         number=8,
         message=gcs_security_marks.SecurityMarks,
     )
-    event_time = proto.Field(
+    event_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
     )
-    severity = proto.Field(
+    severity: Severity = proto.Field(
         proto.ENUM,
         number=12,
         enum=Severity,
     )
-    canonical_name = proto.Field(
+    canonical_name: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    mute = proto.Field(
+    mute: Mute = proto.Field(
         proto.ENUM,
         number=15,
         enum=Mute,
     )
-    finding_class = proto.Field(
+    finding_class: FindingClass = proto.Field(
         proto.ENUM,
         number=17,
         enum=FindingClass,
     )
-    indicator = proto.Field(
+    indicator: gcs_indicator.Indicator = proto.Field(
         proto.MESSAGE,
         number=18,
         message=gcs_indicator.Indicator,
     )
-    vulnerability = proto.Field(
+    vulnerability: gcs_vulnerability.Vulnerability = proto.Field(
         proto.MESSAGE,
         number=20,
         message=gcs_vulnerability.Vulnerability,
     )
-    mute_update_time = proto.Field(
+    mute_update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=21,
         message=timestamp_pb2.Timestamp,
     )
-    external_systems = proto.MapField(
+    external_systems: MutableMapping[
+        str, external_system.ExternalSystem
+    ] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=22,
         message=external_system.ExternalSystem,
     )
-    mitre_attack = proto.Field(
+    mitre_attack: gcs_mitre_attack.MitreAttack = proto.Field(
         proto.MESSAGE,
         number=25,
         message=gcs_mitre_attack.MitreAttack,
     )
-    access = proto.Field(
+    access: gcs_access.Access = proto.Field(
         proto.MESSAGE,
         number=26,
         message=gcs_access.Access,
     )
-    connections = proto.RepeatedField(
+    connections: MutableSequence[connection.Connection] = proto.RepeatedField(
         proto.MESSAGE,
         number=31,
         message=connection.Connection,
     )
-    mute_initiator = proto.Field(
+    mute_initiator: str = proto.Field(
         proto.STRING,
         number=28,
     )
-    processes = proto.RepeatedField(
+    processes: MutableSequence[process.Process] = proto.RepeatedField(
         proto.MESSAGE,
         number=30,
         message=process.Process,
     )
-    contacts = proto.MapField(
+    contacts: MutableMapping[str, contact_details.ContactDetails] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=33,
         message=contact_details.ContactDetails,
     )
-    compliances = proto.RepeatedField(
+    compliances: MutableSequence[compliance.Compliance] = proto.RepeatedField(
         proto.MESSAGE,
         number=34,
         message=compliance.Compliance,
     )
-    parent_display_name = proto.Field(
+    parent_display_name: str = proto.Field(
         proto.STRING,
         number=36,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=37,
     )
-    exfiltration = proto.Field(
+    exfiltration: gcs_exfiltration.Exfiltration = proto.Field(
         proto.MESSAGE,
         number=38,
         message=gcs_exfiltration.Exfiltration,
     )
-    iam_bindings = proto.RepeatedField(
+    iam_bindings: MutableSequence[iam_binding.IamBinding] = proto.RepeatedField(
         proto.MESSAGE,
         number=39,
         message=iam_binding.IamBinding,
     )
-    next_steps = proto.Field(
+    next_steps: str = proto.Field(
         proto.STRING,
         number=40,
     )
-    containers = proto.RepeatedField(
+    containers: MutableSequence[container.Container] = proto.RepeatedField(
         proto.MESSAGE,
         number=42,
         message=container.Container,
     )
-    kubernetes = proto.Field(
+    kubernetes: gcs_kubernetes.Kubernetes = proto.Field(
         proto.MESSAGE,
         number=43,
         message=gcs_kubernetes.Kubernetes,
     )
-    database = proto.Field(
+    database: gcs_database.Database = proto.Field(
         proto.MESSAGE,
         number=44,
         message=gcs_database.Database,
+    )
+    files: MutableSequence[file.File] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=46,
+        message=file.File,
     )
 
 

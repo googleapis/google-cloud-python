@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -45,16 +47,16 @@ class IamBinding(proto.Message):
         ADD = 1
         REMOVE = 2
 
-    action = proto.Field(
+    action: Action = proto.Field(
         proto.ENUM,
         number=1,
         enum=Action,
     )
-    role = proto.Field(
+    role: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    member = proto.Field(
+    member: str = proto.Field(
         proto.STRING,
         number=3,
     )

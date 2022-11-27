@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -64,6 +74,7 @@ from google.cloud.securitycenter_v1.types import (
     organization_settings as gcs_organization_settings,
 )
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
+from google.cloud.securitycenter_v1.types import file
 from google.cloud.securitycenter_v1.types import finding
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1.types import mute_config
@@ -233,9 +244,9 @@ class SecurityCenterAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, SecurityCenterTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the security center client.
@@ -279,11 +290,13 @@ class SecurityCenterAsyncClient:
 
     async def bulk_mute_findings(
         self,
-        request: Union[securitycenter_service.BulkMuteFindingsRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.BulkMuteFindingsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Kicks off an LRO to bulk mute findings for a parent
@@ -322,7 +335,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.BulkMuteFindingsRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.BulkMuteFindingsRequest, dict]]):
                 The request object. Request message for bulk findings
                 update.
                 Note:
@@ -408,12 +421,14 @@ class SecurityCenterAsyncClient:
 
     async def create_source(
         self,
-        request: Union[securitycenter_service.CreateSourceRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.CreateSourceRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        source: gcs_source.Source = None,
+        parent: Optional[str] = None,
+        source: Optional[gcs_source.Source] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_source.Source:
         r"""Creates a source.
@@ -445,7 +460,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.CreateSourceRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.CreateSourceRequest, dict]]):
                 The request object. Request message for creating a
                 source.
             parent (:class:`str`):
@@ -525,13 +540,15 @@ class SecurityCenterAsyncClient:
 
     async def create_finding(
         self,
-        request: Union[securitycenter_service.CreateFindingRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.CreateFindingRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        finding_id: str = None,
-        finding: gcs_finding.Finding = None,
+        parent: Optional[str] = None,
+        finding_id: Optional[str] = None,
+        finding: Optional[gcs_finding.Finding] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_finding.Finding:
         r"""Creates a finding. The corresponding source must
@@ -565,7 +582,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.CreateFindingRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.CreateFindingRequest, dict]]):
                 The request object. Request message for creating a
                 finding.
             parent (:class:`str`):
@@ -661,13 +678,15 @@ class SecurityCenterAsyncClient:
 
     async def create_mute_config(
         self,
-        request: Union[securitycenter_service.CreateMuteConfigRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.CreateMuteConfigRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        mute_config: gcs_mute_config.MuteConfig = None,
-        mute_config_id: str = None,
+        parent: Optional[str] = None,
+        mute_config: Optional[gcs_mute_config.MuteConfig] = None,
+        mute_config_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_mute_config.MuteConfig:
         r"""Creates a mute config.
@@ -704,7 +723,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.CreateMuteConfigRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.CreateMuteConfigRequest, dict]]):
                 The request object. Request message for creating a mute
                 config.
             parent (:class:`str`):
@@ -794,15 +813,17 @@ class SecurityCenterAsyncClient:
 
     async def create_notification_config(
         self,
-        request: Union[
-            securitycenter_service.CreateNotificationConfigRequest, dict
+        request: Optional[
+            Union[securitycenter_service.CreateNotificationConfigRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        config_id: str = None,
-        notification_config: gcs_notification_config.NotificationConfig = None,
+        parent: Optional[str] = None,
+        config_id: Optional[str] = None,
+        notification_config: Optional[
+            gcs_notification_config.NotificationConfig
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_notification_config.NotificationConfig:
         r"""Creates a notification config.
@@ -835,7 +856,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.CreateNotificationConfigRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.CreateNotificationConfigRequest, dict]]):
                 The request object. Request message for creating a
                 notification config.
             parent (:class:`str`):
@@ -930,11 +951,13 @@ class SecurityCenterAsyncClient:
 
     async def delete_mute_config(
         self,
-        request: Union[securitycenter_service.DeleteMuteConfigRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.DeleteMuteConfigRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an existing mute config.
@@ -963,7 +986,7 @@ class SecurityCenterAsyncClient:
                 await client.delete_mute_config(request=request)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.DeleteMuteConfigRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.DeleteMuteConfigRequest, dict]]):
                 The request object. Request message for deleting a mute
                 config.
             name (:class:`str`):
@@ -1022,13 +1045,13 @@ class SecurityCenterAsyncClient:
 
     async def delete_notification_config(
         self,
-        request: Union[
-            securitycenter_service.DeleteNotificationConfigRequest, dict
+        request: Optional[
+            Union[securitycenter_service.DeleteNotificationConfigRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a notification config.
@@ -1057,7 +1080,7 @@ class SecurityCenterAsyncClient:
                 await client.delete_notification_config(request=request)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.DeleteNotificationConfigRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.DeleteNotificationConfigRequest, dict]]):
                 The request object. Request message for deleting a
                 notification config.
             name (:class:`str`):
@@ -1115,11 +1138,13 @@ class SecurityCenterAsyncClient:
 
     async def get_big_query_export(
         self,
-        request: Union[securitycenter_service.GetBigQueryExportRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.GetBigQueryExportRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigquery_export.BigQueryExport:
         r"""Gets a big query export.
@@ -1151,7 +1176,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.GetBigQueryExportRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.GetBigQueryExportRequest, dict]]):
                 The request object. Request message for retrieving a big
                 query export.
             name (:class:`str`):
@@ -1220,11 +1245,11 @@ class SecurityCenterAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the access control policy on the specified
@@ -1258,7 +1283,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -1397,11 +1422,13 @@ class SecurityCenterAsyncClient:
 
     async def get_mute_config(
         self,
-        request: Union[securitycenter_service.GetMuteConfigRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.GetMuteConfigRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> mute_config.MuteConfig:
         r"""Gets a mute config.
@@ -1433,7 +1460,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.GetMuteConfigRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.GetMuteConfigRequest, dict]]):
                 The request object. Request message for retrieving a
                 mute config.
             name (:class:`str`):
@@ -1503,13 +1530,13 @@ class SecurityCenterAsyncClient:
 
     async def get_notification_config(
         self,
-        request: Union[
-            securitycenter_service.GetNotificationConfigRequest, dict
+        request: Optional[
+            Union[securitycenter_service.GetNotificationConfigRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> notification_config.NotificationConfig:
         r"""Gets a notification config.
@@ -1541,7 +1568,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.GetNotificationConfigRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.GetNotificationConfigRequest, dict]]):
                 The request object. Request message for getting a
                 notification config.
             name (:class:`str`):
@@ -1622,13 +1649,13 @@ class SecurityCenterAsyncClient:
 
     async def get_organization_settings(
         self,
-        request: Union[
-            securitycenter_service.GetOrganizationSettingsRequest, dict
+        request: Optional[
+            Union[securitycenter_service.GetOrganizationSettingsRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> organization_settings.OrganizationSettings:
         r"""Gets the settings for an organization.
@@ -1660,7 +1687,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.GetOrganizationSettingsRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.GetOrganizationSettingsRequest, dict]]):
                 The request object. Request message for getting
                 organization settings.
             name (:class:`str`):
@@ -1738,11 +1765,11 @@ class SecurityCenterAsyncClient:
 
     async def get_source(
         self,
-        request: Union[securitycenter_service.GetSourceRequest, dict] = None,
+        request: Optional[Union[securitycenter_service.GetSourceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> source.Source:
         r"""Gets a source.
@@ -1774,7 +1801,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.GetSourceRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.GetSourceRequest, dict]]):
                 The request object. Request message for getting a
                 source.
             name (:class:`str`):
@@ -1855,10 +1882,12 @@ class SecurityCenterAsyncClient:
 
     async def group_assets(
         self,
-        request: Union[securitycenter_service.GroupAssetsRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.GroupAssetsRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.GroupAssetsAsyncPager:
         r"""Filters an organization's assets and  groups them by
@@ -1893,7 +1922,7 @@ class SecurityCenterAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.GroupAssetsRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.GroupAssetsRequest, dict]]):
                 The request object. Request message for grouping by
                 assets.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1960,12 +1989,14 @@ class SecurityCenterAsyncClient:
 
     async def group_findings(
         self,
-        request: Union[securitycenter_service.GroupFindingsRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.GroupFindingsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        group_by: str = None,
+        parent: Optional[str] = None,
+        group_by: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.GroupFindingsAsyncPager:
         r"""Filters an organization or source's findings and groups them by
@@ -2005,7 +2036,7 @@ class SecurityCenterAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.GroupFindingsRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.GroupFindingsRequest, dict]]):
                 The request object. Request message for grouping by
                 findings.
             parent (:class:`str`):
@@ -2123,10 +2154,10 @@ class SecurityCenterAsyncClient:
 
     async def list_assets(
         self,
-        request: Union[securitycenter_service.ListAssetsRequest, dict] = None,
+        request: Optional[Union[securitycenter_service.ListAssetsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAssetsAsyncPager:
         r"""Lists an organization's assets.
@@ -2159,7 +2190,7 @@ class SecurityCenterAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.ListAssetsRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.ListAssetsRequest, dict]]):
                 The request object. Request message for listing assets.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -2224,10 +2255,12 @@ class SecurityCenterAsyncClient:
 
     async def list_findings(
         self,
-        request: Union[securitycenter_service.ListFindingsRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.ListFindingsRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListFindingsAsyncPager:
         r"""Lists an organization or source's findings.
@@ -2263,7 +2296,7 @@ class SecurityCenterAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.ListFindingsRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.ListFindingsRequest, dict]]):
                 The request object. Request message for listing
                 findings.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2330,11 +2363,13 @@ class SecurityCenterAsyncClient:
 
     async def list_mute_configs(
         self,
-        request: Union[securitycenter_service.ListMuteConfigsRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.ListMuteConfigsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMuteConfigsAsyncPager:
         r"""Lists mute configs.
@@ -2367,7 +2402,7 @@ class SecurityCenterAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.ListMuteConfigsRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.ListMuteConfigsRequest, dict]]):
                 The request object. Request message for listing  mute
                 configs at a given scope e.g. organization, folder or
                 project.
@@ -2448,13 +2483,13 @@ class SecurityCenterAsyncClient:
 
     async def list_notification_configs(
         self,
-        request: Union[
-            securitycenter_service.ListNotificationConfigsRequest, dict
+        request: Optional[
+            Union[securitycenter_service.ListNotificationConfigsRequest, dict]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNotificationConfigsAsyncPager:
         r"""Lists notification configs.
@@ -2487,7 +2522,7 @@ class SecurityCenterAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.ListNotificationConfigsRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.ListNotificationConfigsRequest, dict]]):
                 The request object. Request message for listing
                 notification configs.
             parent (:class:`str`):
@@ -2577,11 +2612,13 @@ class SecurityCenterAsyncClient:
 
     async def list_sources(
         self,
-        request: Union[securitycenter_service.ListSourcesRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.ListSourcesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSourcesAsyncPager:
         r"""Lists all sources belonging to an organization.
@@ -2614,7 +2651,7 @@ class SecurityCenterAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.ListSourcesRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.ListSourcesRequest, dict]]):
                 The request object. Request message for listing sources.
             parent (:class:`str`):
                 Required. Resource name of the parent of sources to
@@ -2702,11 +2739,13 @@ class SecurityCenterAsyncClient:
 
     async def run_asset_discovery(
         self,
-        request: Union[securitycenter_service.RunAssetDiscoveryRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.RunAssetDiscoveryRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Runs asset discovery. The discovery is tracked with a
@@ -2747,7 +2786,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.RunAssetDiscoveryRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.RunAssetDiscoveryRequest, dict]]):
                 The request object. Request message for running asset
                 discovery for an organization.
             parent (:class:`str`):
@@ -2825,13 +2864,15 @@ class SecurityCenterAsyncClient:
 
     async def set_finding_state(
         self,
-        request: Union[securitycenter_service.SetFindingStateRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.SetFindingStateRequest, dict]
+        ] = None,
         *,
-        name: str = None,
-        state: finding.Finding.State = None,
-        start_time: timestamp_pb2.Timestamp = None,
+        name: Optional[str] = None,
+        state: Optional[finding.Finding.State] = None,
+        start_time: Optional[timestamp_pb2.Timestamp] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> finding.Finding:
         r"""Updates the state of a finding.
@@ -2864,7 +2905,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.SetFindingStateRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.SetFindingStateRequest, dict]]):
                 The request object. Request message for updating a
                 finding's state.
             name (:class:`str`):
@@ -2872,7 +2913,7 @@ class SecurityCenterAsyncClient:
                 See:
                 https://cloud.google.com/apis/design/resource_names#relative_resource_name
                 Example:
-                "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}".
+                "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}".
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2958,12 +2999,12 @@ class SecurityCenterAsyncClient:
 
     async def set_mute(
         self,
-        request: Union[securitycenter_service.SetMuteRequest, dict] = None,
+        request: Optional[Union[securitycenter_service.SetMuteRequest, dict]] = None,
         *,
-        name: str = None,
-        mute: finding.Finding.Mute = None,
+        name: Optional[str] = None,
+        mute: Optional[finding.Finding.Mute] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> finding.Finding:
         r"""Updates the mute state of a finding.
@@ -2996,7 +3037,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.SetMuteRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.SetMuteRequest, dict]]):
                 The request object. Request message for updating a
                 finding's mute status.
             name (:class:`str`):
@@ -3004,9 +3045,9 @@ class SecurityCenterAsyncClient:
                 See:
                 https://cloud.google.com/apis/design/resource_names#relative_resource_name
                 Example:
-                "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}",
-                "folders/{folder_id}/sources/{source_id}/finding/{finding_id}",
-                "projects/{project_id}/sources/{source_id}/finding/{finding_id}".
+                "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
+                "folders/{folder_id}/sources/{source_id}/findings/{finding_id}",
+                "projects/{project_id}/sources/{source_id}/findings/{finding_id}".
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3083,11 +3124,11 @@ class SecurityCenterAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the access control policy on the specified
@@ -3121,7 +3162,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -3250,12 +3291,12 @@ class SecurityCenterAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
-        resource: str = None,
-        permissions: Sequence[str] = None,
+        resource: Optional[str] = None,
+        permissions: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns the permissions that a caller has on the
@@ -3290,7 +3331,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             resource (:class:`str`):
@@ -3302,7 +3343,7 @@ class SecurityCenterAsyncClient:
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            permissions (:class:`Sequence[str]`):
+            permissions (:class:`MutableSequence[str]`):
                 The set of permissions to check for the ``resource``.
                 Permissions with wildcards (such as '*' or 'storage.*')
                 are not allowed. For more information see `IAM
@@ -3378,12 +3419,14 @@ class SecurityCenterAsyncClient:
 
     async def update_external_system(
         self,
-        request: Union[securitycenter_service.UpdateExternalSystemRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.UpdateExternalSystemRequest, dict]
+        ] = None,
         *,
-        external_system: gcs_external_system.ExternalSystem = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        external_system: Optional[gcs_external_system.ExternalSystem] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_external_system.ExternalSystem:
         r"""Updates external system. This is for a given finding.
@@ -3414,7 +3457,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.UpdateExternalSystemRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.UpdateExternalSystemRequest, dict]]):
                 The request object. Request message for updating a
                 ExternalSystem resource.
             external_system (:class:`google.cloud.securitycenter_v1.types.ExternalSystem`):
@@ -3493,11 +3536,13 @@ class SecurityCenterAsyncClient:
 
     async def update_finding(
         self,
-        request: Union[securitycenter_service.UpdateFindingRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.UpdateFindingRequest, dict]
+        ] = None,
         *,
-        finding: gcs_finding.Finding = None,
+        finding: Optional[gcs_finding.Finding] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_finding.Finding:
         r"""Creates or updates a finding. The corresponding
@@ -3529,7 +3574,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.UpdateFindingRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.UpdateFindingRequest, dict]]):
                 The request object. Request message for updating or
                 creating a finding.
             finding (:class:`google.cloud.securitycenter_v1.types.Finding`):
@@ -3609,12 +3654,14 @@ class SecurityCenterAsyncClient:
 
     async def update_mute_config(
         self,
-        request: Union[securitycenter_service.UpdateMuteConfigRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.UpdateMuteConfigRequest, dict]
+        ] = None,
         *,
-        mute_config: gcs_mute_config.MuteConfig = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        mute_config: Optional[gcs_mute_config.MuteConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_mute_config.MuteConfig:
         r"""Updates a mute config.
@@ -3649,7 +3696,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.UpdateMuteConfigRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.UpdateMuteConfigRequest, dict]]):
                 The request object. Request message for updating a mute
                 config.
             mute_config (:class:`google.cloud.securitycenter_v1.types.MuteConfig`):
@@ -3728,14 +3775,16 @@ class SecurityCenterAsyncClient:
 
     async def update_notification_config(
         self,
-        request: Union[
-            securitycenter_service.UpdateNotificationConfigRequest, dict
+        request: Optional[
+            Union[securitycenter_service.UpdateNotificationConfigRequest, dict]
         ] = None,
         *,
-        notification_config: gcs_notification_config.NotificationConfig = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        notification_config: Optional[
+            gcs_notification_config.NotificationConfig
+        ] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_notification_config.NotificationConfig:
         r"""Updates a notification config. The following update fields are
@@ -3767,7 +3816,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.UpdateNotificationConfigRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.UpdateNotificationConfigRequest, dict]]):
                 The request object. Request message for updating a
                 notification config.
             notification_config (:class:`google.cloud.securitycenter_v1.types.NotificationConfig`):
@@ -3850,13 +3899,15 @@ class SecurityCenterAsyncClient:
 
     async def update_organization_settings(
         self,
-        request: Union[
-            securitycenter_service.UpdateOrganizationSettingsRequest, dict
+        request: Optional[
+            Union[securitycenter_service.UpdateOrganizationSettingsRequest, dict]
         ] = None,
         *,
-        organization_settings: gcs_organization_settings.OrganizationSettings = None,
+        organization_settings: Optional[
+            gcs_organization_settings.OrganizationSettings
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_organization_settings.OrganizationSettings:
         r"""Updates an organization's settings.
@@ -3887,7 +3938,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.UpdateOrganizationSettingsRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.UpdateOrganizationSettingsRequest, dict]]):
                 The request object. Request message for updating an
                 organization's settings.
             organization_settings (:class:`google.cloud.securitycenter_v1.types.OrganizationSettings`):
@@ -3956,11 +4007,13 @@ class SecurityCenterAsyncClient:
 
     async def update_source(
         self,
-        request: Union[securitycenter_service.UpdateSourceRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.UpdateSourceRequest, dict]
+        ] = None,
         *,
-        source: gcs_source.Source = None,
+        source: Optional[gcs_source.Source] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_source.Source:
         r"""Updates a source.
@@ -3991,7 +4044,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.UpdateSourceRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.UpdateSourceRequest, dict]]):
                 The request object. Request message for updating a
                 source.
             source (:class:`google.cloud.securitycenter_v1.types.Source`):
@@ -4063,11 +4116,13 @@ class SecurityCenterAsyncClient:
 
     async def update_security_marks(
         self,
-        request: Union[securitycenter_service.UpdateSecurityMarksRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.UpdateSecurityMarksRequest, dict]
+        ] = None,
         *,
-        security_marks: gcs_security_marks.SecurityMarks = None,
+        security_marks: Optional[gcs_security_marks.SecurityMarks] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_security_marks.SecurityMarks:
         r"""Updates security marks.
@@ -4098,7 +4153,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.UpdateSecurityMarksRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.UpdateSecurityMarksRequest, dict]]):
                 The request object. Request message for updating a
                 SecurityMarks resource.
             security_marks (:class:`google.cloud.securitycenter_v1.types.SecurityMarks`):
@@ -4172,13 +4227,15 @@ class SecurityCenterAsyncClient:
 
     async def create_big_query_export(
         self,
-        request: Union[securitycenter_service.CreateBigQueryExportRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.CreateBigQueryExportRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        big_query_export: bigquery_export.BigQueryExport = None,
-        big_query_export_id: str = None,
+        parent: Optional[str] = None,
+        big_query_export: Optional[bigquery_export.BigQueryExport] = None,
+        big_query_export_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigquery_export.BigQueryExport:
         r"""Creates a big query export.
@@ -4211,7 +4268,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.CreateBigQueryExportRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.CreateBigQueryExportRequest, dict]]):
                 The request object. Request message for creating a big
                 query export.
             parent (:class:`str`):
@@ -4300,11 +4357,13 @@ class SecurityCenterAsyncClient:
 
     async def delete_big_query_export(
         self,
-        request: Union[securitycenter_service.DeleteBigQueryExportRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.DeleteBigQueryExportRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an existing big query export.
@@ -4333,7 +4392,7 @@ class SecurityCenterAsyncClient:
                 await client.delete_big_query_export(request=request)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.DeleteBigQueryExportRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.DeleteBigQueryExportRequest, dict]]):
                 The request object. Request message for deleting a big
                 query export.
             name (:class:`str`):
@@ -4393,12 +4452,14 @@ class SecurityCenterAsyncClient:
 
     async def update_big_query_export(
         self,
-        request: Union[securitycenter_service.UpdateBigQueryExportRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.UpdateBigQueryExportRequest, dict]
+        ] = None,
         *,
-        big_query_export: bigquery_export.BigQueryExport = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        big_query_export: Optional[bigquery_export.BigQueryExport] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigquery_export.BigQueryExport:
         r"""Updates a BigQuery export.
@@ -4429,7 +4490,7 @@ class SecurityCenterAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.UpdateBigQueryExportRequest, dict]):
+            request (Optional[Union[google.cloud.securitycenter_v1.types.UpdateBigQueryExportRequest, dict]]):
                 The request object. Request message for updating a
                 BigQuery export.
             big_query_export (:class:`google.cloud.securitycenter_v1.types.BigQueryExport`):
@@ -4507,11 +4568,13 @@ class SecurityCenterAsyncClient:
 
     async def list_big_query_exports(
         self,
-        request: Union[securitycenter_service.ListBigQueryExportsRequest, dict] = None,
+        request: Optional[
+            Union[securitycenter_service.ListBigQueryExportsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBigQueryExportsAsyncPager:
         r"""Lists BigQuery exports. Note that when requesting
@@ -4549,10 +4612,10 @@ class SecurityCenterAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.securitycenter_v1.types.ListBigQueryExportsRequest, dict]):
-                The request object. Request message for listing
-                BigQuery exports at a given scope e.g. organization,
-                folder or project.
+            request (Optional[Union[google.cloud.securitycenter_v1.types.ListBigQueryExportsRequest, dict]]):
+                The request object. Request message for listing BigQuery
+                exports at a given scope e.g. organization, folder or
+                project.
             parent (:class:`str`):
                 Required. The parent, which owns the collection of
                 BigQuery exports. Its format is

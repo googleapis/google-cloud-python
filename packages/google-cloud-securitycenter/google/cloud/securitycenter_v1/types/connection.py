@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -52,23 +54,23 @@ class Connection(proto.Message):
         GRE = 47
         ESP = 50
 
-    destination_ip = proto.Field(
+    destination_ip: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    destination_port = proto.Field(
+    destination_port: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    source_ip = proto.Field(
+    source_ip: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    source_port = proto.Field(
+    source_port: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    protocol = proto.Field(
+    protocol: Protocol = proto.Field(
         proto.ENUM,
         number=5,
         enum=Protocol,

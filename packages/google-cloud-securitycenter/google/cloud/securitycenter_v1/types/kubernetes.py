@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.securitycenter_v1.types import container, label
@@ -29,24 +31,24 @@ class Kubernetes(proto.Message):
     r"""Kubernetes related attributes.
 
     Attributes:
-        pods (Sequence[google.cloud.securitycenter_v1.types.Kubernetes.Pod]):
+        pods (MutableSequence[google.cloud.securitycenter_v1.types.Kubernetes.Pod]):
             Kubernetes Pods associated with the finding.
             This field will contain Pod records for each
             container that is owned by a Pod.
-        nodes (Sequence[google.cloud.securitycenter_v1.types.Kubernetes.Node]):
+        nodes (MutableSequence[google.cloud.securitycenter_v1.types.Kubernetes.Node]):
             Provides Kubernetes Node information.
-        node_pools (Sequence[google.cloud.securitycenter_v1.types.Kubernetes.NodePool]):
+        node_pools (MutableSequence[google.cloud.securitycenter_v1.types.Kubernetes.NodePool]):
             GKE Node Pools associated with the finding.
             This field will contain NodePool information for
             each Node, when it is available.
-        roles (Sequence[google.cloud.securitycenter_v1.types.Kubernetes.Role]):
+        roles (MutableSequence[google.cloud.securitycenter_v1.types.Kubernetes.Role]):
             Provides Kubernetes role information for
             findings that involve Roles or ClusterRoles.
-        bindings (Sequence[google.cloud.securitycenter_v1.types.Kubernetes.Binding]):
+        bindings (MutableSequence[google.cloud.securitycenter_v1.types.Kubernetes.Binding]):
             Provides Kubernetes role binding information
             for findings that involve RoleBindings or
             ClusterRoleBindings.
-        access_reviews (Sequence[google.cloud.securitycenter_v1.types.Kubernetes.AccessReview]):
+        access_reviews (MutableSequence[google.cloud.securitycenter_v1.types.Kubernetes.AccessReview]):
             Provides information on any Kubernetes access
             reviews (i.e. privilege checks) relevant to the
             finding.
@@ -60,28 +62,28 @@ class Kubernetes(proto.Message):
                 Kubernetes Pod namespace.
             name (str):
                 Kubernetes Pod name.
-            labels (Sequence[google.cloud.securitycenter_v1.types.Label]):
+            labels (MutableSequence[google.cloud.securitycenter_v1.types.Label]):
                 Pod labels.  For Kubernetes containers, these
                 are applied to the container.
-            containers (Sequence[google.cloud.securitycenter_v1.types.Container]):
+            containers (MutableSequence[google.cloud.securitycenter_v1.types.Container]):
                 Pod containers associated with this finding,
                 if any.
         """
 
-        ns = proto.Field(
+        ns: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        labels = proto.RepeatedField(
+        labels: MutableSequence[label.Label] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message=label.Label,
         )
-        containers = proto.RepeatedField(
+        containers: MutableSequence[container.Container] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message=container.Container,
@@ -96,7 +98,7 @@ class Kubernetes(proto.Message):
                 running the cluster node.
         """
 
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -107,15 +109,15 @@ class Kubernetes(proto.Message):
         Attributes:
             name (str):
                 Kubernetes Node pool name.
-            nodes (Sequence[google.cloud.securitycenter_v1.types.Kubernetes.Node]):
+            nodes (MutableSequence[google.cloud.securitycenter_v1.types.Kubernetes.Node]):
                 Nodes associated with the finding.
         """
 
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        nodes = proto.RepeatedField(
+        nodes: MutableSequence["Kubernetes.Node"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="Kubernetes.Node",
@@ -139,16 +141,16 @@ class Kubernetes(proto.Message):
             ROLE = 1
             CLUSTER_ROLE = 2
 
-        kind = proto.Field(
+        kind: "Kubernetes.Role.Kind" = proto.Field(
             proto.ENUM,
             number=1,
             enum="Kubernetes.Role.Kind",
         )
-        ns = proto.Field(
+        ns: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=3,
         )
@@ -164,25 +166,25 @@ class Kubernetes(proto.Message):
             role (google.cloud.securitycenter_v1.types.Kubernetes.Role):
                 The Role or ClusterRole referenced by the
                 binding.
-            subjects (Sequence[google.cloud.securitycenter_v1.types.Kubernetes.Subject]):
+            subjects (MutableSequence[google.cloud.securitycenter_v1.types.Kubernetes.Subject]):
                 Represents the subjects(s) bound to the role.
                 Not always available for PATCH requests.
         """
 
-        ns = proto.Field(
+        ns: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        role = proto.Field(
+        role: "Kubernetes.Role" = proto.Field(
             proto.MESSAGE,
             number=3,
             message="Kubernetes.Role",
         )
-        subjects = proto.RepeatedField(
+        subjects: MutableSequence["Kubernetes.Subject"] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message="Kubernetes.Subject",
@@ -207,16 +209,16 @@ class Kubernetes(proto.Message):
             SERVICEACCOUNT = 2
             GROUP = 3
 
-        kind = proto.Field(
+        kind: "Kubernetes.Subject.AuthType" = proto.Field(
             proto.ENUM,
             number=1,
             enum="Kubernetes.Subject.AuthType",
         )
-        ns = proto.Field(
+        ns: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=3,
         )
@@ -248,61 +250,61 @@ class Kubernetes(proto.Message):
                 Version is the API Version of the Resource. "*" means all.
         """
 
-        group = proto.Field(
+        group: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        ns = proto.Field(
+        ns: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        resource = proto.Field(
+        resource: str = proto.Field(
             proto.STRING,
             number=4,
         )
-        subresource = proto.Field(
+        subresource: str = proto.Field(
             proto.STRING,
             number=5,
         )
-        verb = proto.Field(
+        verb: str = proto.Field(
             proto.STRING,
             number=6,
         )
-        version = proto.Field(
+        version: str = proto.Field(
             proto.STRING,
             number=7,
         )
 
-    pods = proto.RepeatedField(
+    pods: MutableSequence[Pod] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=Pod,
     )
-    nodes = proto.RepeatedField(
+    nodes: MutableSequence[Node] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=Node,
     )
-    node_pools = proto.RepeatedField(
+    node_pools: MutableSequence[NodePool] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=NodePool,
     )
-    roles = proto.RepeatedField(
+    roles: MutableSequence[Role] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=Role,
     )
-    bindings = proto.RepeatedField(
+    bindings: MutableSequence[Binding] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=Binding,
     )
-    access_reviews = proto.RepeatedField(
+    access_reviews: MutableSequence[AccessReview] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=AccessReview,

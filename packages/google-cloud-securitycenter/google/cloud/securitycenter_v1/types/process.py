@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.securitycenter_v1.types import file
@@ -36,7 +38,7 @@ class Process(proto.Message):
             changed with ``prctl(PR_SET_NAME)``.
         binary (google.cloud.securitycenter_v1.types.File):
             File information for the process executable.
-        libraries (Sequence[google.cloud.securitycenter_v1.types.File]):
+        libraries (MutableSequence[google.cloud.securitycenter_v1.types.File]):
             File information for libraries loaded by the
             process.
         script (google.cloud.securitycenter_v1.types.File):
@@ -44,11 +46,11 @@ class Process(proto.Message):
             ``binary`` provides information about the interpreter while
             ``script`` provides information about the script file
             provided to the interpreter.
-        args (Sequence[str]):
+        args (MutableSequence[str]):
             Process arguments as JSON encoded strings.
         arguments_truncated (bool):
             True if ``args`` is incomplete.
-        env_variables (Sequence[google.cloud.securitycenter_v1.types.EnvironmentVariable]):
+        env_variables (MutableSequence[google.cloud.securitycenter_v1.types.EnvironmentVariable]):
             Process environment variables.
         env_variables_truncated (bool):
             True if ``env_variables`` is incomplete.
@@ -58,47 +60,47 @@ class Process(proto.Message):
             The parent process id.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    binary = proto.Field(
+    binary: file.File = proto.Field(
         proto.MESSAGE,
         number=3,
         message=file.File,
     )
-    libraries = proto.RepeatedField(
+    libraries: MutableSequence[file.File] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=file.File,
     )
-    script = proto.Field(
+    script: file.File = proto.Field(
         proto.MESSAGE,
         number=5,
         message=file.File,
     )
-    args = proto.RepeatedField(
+    args: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    arguments_truncated = proto.Field(
+    arguments_truncated: bool = proto.Field(
         proto.BOOL,
         number=7,
     )
-    env_variables = proto.RepeatedField(
+    env_variables: MutableSequence["EnvironmentVariable"] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message="EnvironmentVariable",
     )
-    env_variables_truncated = proto.Field(
+    env_variables_truncated: bool = proto.Field(
         proto.BOOL,
         number=9,
     )
-    pid = proto.Field(
+    pid: int = proto.Field(
         proto.INT64,
         number=10,
     )
-    parent_pid = proto.Field(
+    parent_pid: int = proto.Field(
         proto.INT64,
         number=11,
     )
@@ -117,11 +119,11 @@ class EnvironmentVariable(proto.Message):
             string.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    val = proto.Field(
+    val: str = proto.Field(
         proto.STRING,
         number=2,
     )

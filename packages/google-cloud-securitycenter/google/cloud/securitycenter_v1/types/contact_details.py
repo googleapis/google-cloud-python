@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -28,11 +30,11 @@ class ContactDetails(proto.Message):
     r"""The details pertaining to specific contacts
 
     Attributes:
-        contacts (Sequence[google.cloud.securitycenter_v1.types.Contact]):
+        contacts (MutableSequence[google.cloud.securitycenter_v1.types.Contact]):
             A list of contacts
     """
 
-    contacts = proto.RepeatedField(
+    contacts: MutableSequence["Contact"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Contact",
@@ -47,7 +49,7 @@ class Contact(proto.Message):
             An email address e.g. "person123@company.com".
     """
 
-    email = proto.Field(
+    email: str = proto.Field(
         proto.STRING,
         number=1,
     )

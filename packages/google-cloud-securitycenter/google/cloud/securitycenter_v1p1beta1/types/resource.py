@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.securitycenter_v1p1beta1.types import folder
@@ -42,7 +44,7 @@ class Resource(proto.Message):
             The full resource name of resource's parent.
         parent_display_name (str):
             The human readable name of resource's parent.
-        folders (Sequence[google.cloud.securitycenter_v1p1beta1.types.Folder]):
+        folders (MutableSequence[google.cloud.securitycenter_v1p1beta1.types.Folder]):
             Output only. Contains a Folder message for
             each folder in the assets ancestry. The first
             folder is the deepest nested folder, and the
@@ -50,27 +52,27 @@ class Resource(proto.Message):
             Organization.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project = proto.Field(
+    project: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    project_display_name = proto.Field(
+    project_display_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    parent_display_name = proto.Field(
+    parent_display_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    folders = proto.RepeatedField(
+    folders: MutableSequence[folder.Folder] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=folder.Folder,

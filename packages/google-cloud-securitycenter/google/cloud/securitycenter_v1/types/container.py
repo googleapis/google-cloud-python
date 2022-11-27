@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.securitycenter_v1.types import label
@@ -40,24 +42,24 @@ class Container(proto.Message):
             the container runtime. Uniquely identifies the
             container image launched using a container image
             digest.
-        labels (Sequence[google.cloud.securitycenter_v1.types.Label]):
+        labels (MutableSequence[google.cloud.securitycenter_v1.types.Label]):
             Container labels, as provided by the
             container runtime.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    image_id = proto.Field(
+    image_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    labels = proto.RepeatedField(
+    labels: MutableSequence[label.Label] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=label.Label,

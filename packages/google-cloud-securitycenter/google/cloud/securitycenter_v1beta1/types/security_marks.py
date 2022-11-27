@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -37,7 +39,7 @@ class SecurityMarks(proto.Message):
             Examples:
             "organizations/{organization_id}/assets/{asset_id}/securityMarks"
             "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks".
-        marks (Mapping[str, str]):
+        marks (MutableMapping[str, str]):
             Mutable user specified security marks belonging to the
             parent resource. Constraints are as follows:
 
@@ -49,11 +51,11 @@ class SecurityMarks(proto.Message):
                (inclusive)
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    marks = proto.MapField(
+    marks: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,

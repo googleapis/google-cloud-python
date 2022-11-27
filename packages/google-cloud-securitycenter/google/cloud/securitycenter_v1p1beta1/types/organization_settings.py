@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -47,13 +49,13 @@ class OrganizationSettings(proto.Message):
         r"""The configuration used for Asset Discovery runs.
 
         Attributes:
-            project_ids (Sequence[str]):
+            project_ids (MutableSequence[str]):
                 The project ids to use for filtering asset
                 discovery.
             inclusion_mode (google.cloud.securitycenter_v1p1beta1.types.OrganizationSettings.AssetDiscoveryConfig.InclusionMode):
                 The mode to use for filtering asset
                 discovery.
-            folder_ids (Sequence[str]):
+            folder_ids (MutableSequence[str]):
                 The folder ids to use for filtering asset
                 discovery. It consists of only digits, e.g.,
                 756619654966.
@@ -73,29 +75,31 @@ class OrganizationSettings(proto.Message):
             INCLUDE_ONLY = 1
             EXCLUDE = 2
 
-        project_ids = proto.RepeatedField(
+        project_ids: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        inclusion_mode = proto.Field(
-            proto.ENUM,
-            number=2,
-            enum="OrganizationSettings.AssetDiscoveryConfig.InclusionMode",
+        inclusion_mode: "OrganizationSettings.AssetDiscoveryConfig.InclusionMode" = (
+            proto.Field(
+                proto.ENUM,
+                number=2,
+                enum="OrganizationSettings.AssetDiscoveryConfig.InclusionMode",
+            )
         )
-        folder_ids = proto.RepeatedField(
+        folder_ids: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=3,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    enable_asset_discovery = proto.Field(
+    enable_asset_discovery: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    asset_discovery_config = proto.Field(
+    asset_discovery_config: AssetDiscoveryConfig = proto.Field(
         proto.MESSAGE,
         number=3,
         message=AssetDiscoveryConfig,

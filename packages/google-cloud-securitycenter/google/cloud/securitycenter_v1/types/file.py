@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -50,27 +52,27 @@ class File(proto.Message):
             Script Executed findings.)
     """
 
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    size = proto.Field(
+    size: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    sha256 = proto.Field(
+    sha256: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    hashed_size = proto.Field(
+    hashed_size: int = proto.Field(
         proto.INT64,
         number=4,
     )
-    partially_hashed = proto.Field(
+    partially_hashed: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    contents = proto.Field(
+    contents: str = proto.Field(
         proto.STRING,
         number=6,
     )

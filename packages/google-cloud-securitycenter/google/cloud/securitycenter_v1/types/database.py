@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -48,28 +50,28 @@ class Database(proto.Message):
         query (str):
             The SQL statement associated with the
             relevant access.
-        grantees (Sequence[str]):
+        grantees (MutableSequence[str]):
             The target usernames/roles/groups of a SQL
             privilege grant (not an IAM policy change).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    user_name = proto.Field(
+    user_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    grantees = proto.RepeatedField(
+    grantees: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )

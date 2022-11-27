@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -68,7 +70,7 @@ class Finding(proto.Message):
             additional information about the finding can be
             found. This field is guaranteed to be either
             empty or a well formed URL.
-        source_properties (Mapping[str, google.protobuf.struct_pb2.Value]):
+        source_properties (MutableMapping[str, google.protobuf.struct_pb2.Value]):
             Source specific properties. These properties are managed by
             the source that writes the finding. The key names in the
             source_properties map must be between 1 and 255 characters,
@@ -122,58 +124,58 @@ class Finding(proto.Message):
         MEDIUM = 3
         LOW = 4
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    resource_name = proto.Field(
+    resource_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=4,
         enum=State,
     )
-    category = proto.Field(
+    category: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    external_uri = proto.Field(
+    external_uri: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    source_properties = proto.MapField(
+    source_properties: MutableMapping[str, struct_pb2.Value] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=7,
         message=struct_pb2.Value,
     )
-    security_marks = proto.Field(
+    security_marks: gcs_security_marks.SecurityMarks = proto.Field(
         proto.MESSAGE,
         number=8,
         message=gcs_security_marks.SecurityMarks,
     )
-    event_time = proto.Field(
+    event_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
     )
-    severity = proto.Field(
+    severity: Severity = proto.Field(
         proto.ENUM,
         number=13,
         enum=Severity,
     )
-    canonical_name = proto.Field(
+    canonical_name: str = proto.Field(
         proto.STRING,
         number=14,
     )

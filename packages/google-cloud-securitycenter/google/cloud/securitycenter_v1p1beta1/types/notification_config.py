@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -94,33 +96,33 @@ class NotificationConfig(proto.Message):
                 -  boolean literals ``true`` and ``false`` without quotes.
         """
 
-        filter = proto.Field(
+        filter: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    event_type = proto.Field(
+    event_type: EventType = proto.Field(
         proto.ENUM,
         number=3,
         enum=EventType,
     )
-    pubsub_topic = proto.Field(
+    pubsub_topic: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    service_account = proto.Field(
+    service_account: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    streaming_config = proto.Field(
+    streaming_config: StreamingConfig = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="notify_config",

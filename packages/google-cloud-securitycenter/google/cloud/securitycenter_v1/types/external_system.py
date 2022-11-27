@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -33,7 +35,7 @@ class ExternalSystem(proto.Message):
             ``organizations/1234/sources/5678/findings/123456/externalSystems/jira``
             ``folders/1234/sources/5678/findings/123456/externalSystems/jira``
             ``projects/1234/sources/5678/findings/123456/externalSystems/jira``
-        assignees (Sequence[str]):
+        assignees (MutableSequence[str]):
             References primary/secondary etc assignees in
             the external system.
         external_uid (str):
@@ -48,23 +50,23 @@ class ExternalSystem(proto.Message):
             external system.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    assignees = proto.RepeatedField(
+    assignees: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    external_uid = proto.Field(
+    external_uid: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    status = proto.Field(
+    status: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    external_system_update_time = proto.Field(
+    external_system_update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,

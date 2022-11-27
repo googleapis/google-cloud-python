@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -31,23 +33,23 @@ class Exfiltration(proto.Message):
     destination the data was copied to.
 
     Attributes:
-        sources (Sequence[google.cloud.securitycenter_v1.types.ExfilResource]):
+        sources (MutableSequence[google.cloud.securitycenter_v1.types.ExfilResource]):
             If there are multiple sources, then the data
             is considered "joined" between them. For
             instance, BigQuery can join multiple tables, and
             each table would be considered a source.
-        targets (Sequence[google.cloud.securitycenter_v1.types.ExfilResource]):
+        targets (MutableSequence[google.cloud.securitycenter_v1.types.ExfilResource]):
             If there are multiple targets, each target
             would get a complete copy of the "joined" source
             data.
     """
 
-    sources = proto.RepeatedField(
+    sources: MutableSequence["ExfilResource"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ExfilResource",
     )
-    targets = proto.RepeatedField(
+    targets: MutableSequence["ExfilResource"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="ExfilResource",
@@ -61,7 +63,7 @@ class ExfilResource(proto.Message):
         name (str):
             Resource's URI
             (https://google.aip.dev/122#full-resource-names)
-        components (Sequence[str]):
+        components (MutableSequence[str]):
             Subcomponents of the asset that is
             exfiltrated - these could be URIs used during
             exfiltration, table names, databases, filenames,
@@ -71,11 +73,11 @@ class ExfilResource(proto.Message):
             bucket.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    components = proto.RepeatedField(
+    components: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
