@@ -18,6 +18,7 @@ from .configmanagement import (
     ConfigSyncDeploymentState,
     ConfigSyncState,
     ConfigSyncVersion,
+    DeploymentState,
     ErrorResource,
     GatekeeperDeploymentState,
     GitConfig,
@@ -35,7 +36,6 @@ from .configmanagement import (
     PolicyControllerVersion,
     SyncError,
     SyncState,
-    DeploymentState,
 )
 
 __all__ = (

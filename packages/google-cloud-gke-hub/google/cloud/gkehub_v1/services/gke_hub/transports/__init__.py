@@ -20,7 +20,6 @@ from .base import GkeHubTransport
 from .grpc import GkeHubGrpcTransport
 from .grpc_asyncio import GkeHubGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[GkeHubTransport]]
 _transport_registry["grpc"] = GkeHubGrpcTransport

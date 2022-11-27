@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .multiclusteringress import (
-    FeatureSpec,
-)
+from .multiclusteringress import FeatureSpec
 
 __all__ = ("FeatureSpec",)

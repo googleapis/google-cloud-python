@@ -20,7 +20,6 @@ from .base import GkeHubMembershipServiceTransport
 from .grpc import GkeHubMembershipServiceGrpcTransport
 from .grpc_asyncio import GkeHubMembershipServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

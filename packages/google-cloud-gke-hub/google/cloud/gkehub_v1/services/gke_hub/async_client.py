@@ -16,15 +16,25 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -33,16 +43,16 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.gkehub_v1.services.gke_hub import pagers
-from google.cloud.gkehub_v1.types import feature
-from google.cloud.gkehub_v1.types import membership
-from google.cloud.gkehub_v1.types import service
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import GkeHubTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import GkeHubGrpcAsyncIOTransport
+
+from google.cloud.gkehub_v1.services.gke_hub import pagers
+from google.cloud.gkehub_v1.types import feature, membership, service
+
 from .client import GkeHubClient
+from .transports.base import DEFAULT_CLIENT_INFO, GkeHubTransport
+from .transports.grpc_asyncio import GkeHubGrpcAsyncIOTransport
 
 
 class GkeHubAsyncClient:
@@ -171,9 +181,9 @@ class GkeHubAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, GkeHubTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the gke hub client.
@@ -217,11 +227,11 @@ class GkeHubAsyncClient:
 
     async def list_memberships(
         self,
-        request: Union[service.ListMembershipsRequest, dict] = None,
+        request: Optional[Union[service.ListMembershipsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMembershipsAsyncPager:
         r"""Lists Memberships in a given project and location.
@@ -254,7 +264,7 @@ class GkeHubAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.gkehub_v1.types.ListMembershipsRequest, dict]):
+            request (Optional[Union[google.cloud.gkehub_v1.types.ListMembershipsRequest, dict]]):
                 The request object. Request message for
                 `GkeHub.ListMemberships` method.
             parent (:class:`str`):
@@ -332,11 +342,11 @@ class GkeHubAsyncClient:
 
     async def list_features(
         self,
-        request: Union[service.ListFeaturesRequest, dict] = None,
+        request: Optional[Union[service.ListFeaturesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListFeaturesAsyncPager:
         r"""Lists Features in a given project and location.
@@ -368,7 +378,7 @@ class GkeHubAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.gkehub_v1.types.ListFeaturesRequest, dict]):
+            request (Optional[Union[google.cloud.gkehub_v1.types.ListFeaturesRequest, dict]]):
                 The request object. Request message for
                 `GkeHub.ListFeatures` method.
             parent (:class:`str`):
@@ -446,11 +456,11 @@ class GkeHubAsyncClient:
 
     async def get_membership(
         self,
-        request: Union[service.GetMembershipRequest, dict] = None,
+        request: Optional[Union[service.GetMembershipRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> membership.Membership:
         r"""Gets the details of a Membership.
@@ -482,7 +492,7 @@ class GkeHubAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gkehub_v1.types.GetMembershipRequest, dict]):
+            request (Optional[Union[google.cloud.gkehub_v1.types.GetMembershipRequest, dict]]):
                 The request object. Request message for
                 `GkeHub.GetMembership` method.
             name (:class:`str`):
@@ -548,11 +558,11 @@ class GkeHubAsyncClient:
 
     async def get_feature(
         self,
-        request: Union[service.GetFeatureRequest, dict] = None,
+        request: Optional[Union[service.GetFeatureRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> feature.Feature:
         r"""Gets details of a single Feature.
@@ -583,7 +593,7 @@ class GkeHubAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gkehub_v1.types.GetFeatureRequest, dict]):
+            request (Optional[Union[google.cloud.gkehub_v1.types.GetFeatureRequest, dict]]):
                 The request object. Request message for
                 `GkeHub.GetFeature` method.
             name (:class:`str`):
@@ -649,13 +659,13 @@ class GkeHubAsyncClient:
 
     async def create_membership(
         self,
-        request: Union[service.CreateMembershipRequest, dict] = None,
+        request: Optional[Union[service.CreateMembershipRequest, dict]] = None,
         *,
-        parent: str = None,
-        resource: membership.Membership = None,
-        membership_id: str = None,
+        parent: Optional[str] = None,
+        resource: Optional[membership.Membership] = None,
+        membership_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Membership.
@@ -696,7 +706,7 @@ class GkeHubAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gkehub_v1.types.CreateMembershipRequest, dict]):
+            request (Optional[Union[google.cloud.gkehub_v1.types.CreateMembershipRequest, dict]]):
                 The request object. Request message for the
                 `GkeHub.CreateMembership` method.
             parent (:class:`str`):
@@ -800,13 +810,13 @@ class GkeHubAsyncClient:
 
     async def create_feature(
         self,
-        request: Union[service.CreateFeatureRequest, dict] = None,
+        request: Optional[Union[service.CreateFeatureRequest, dict]] = None,
         *,
-        parent: str = None,
-        resource: feature.Feature = None,
-        feature_id: str = None,
+        parent: Optional[str] = None,
+        resource: Optional[feature.Feature] = None,
+        feature_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Adds a new Feature.
@@ -841,7 +851,7 @@ class GkeHubAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gkehub_v1.types.CreateFeatureRequest, dict]):
+            request (Optional[Union[google.cloud.gkehub_v1.types.CreateFeatureRequest, dict]]):
                 The request object. Request message for the
                 `GkeHub.CreateFeature` method.
             parent (:class:`str`):
@@ -933,11 +943,11 @@ class GkeHubAsyncClient:
 
     async def delete_membership(
         self,
-        request: Union[service.DeleteMembershipRequest, dict] = None,
+        request: Optional[Union[service.DeleteMembershipRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Removes a Membership.
@@ -978,7 +988,7 @@ class GkeHubAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gkehub_v1.types.DeleteMembershipRequest, dict]):
+            request (Optional[Union[google.cloud.gkehub_v1.types.DeleteMembershipRequest, dict]]):
                 The request object. Request message for
                 `GkeHub.DeleteMembership` method.
             name (:class:`str`):
@@ -1062,11 +1072,11 @@ class GkeHubAsyncClient:
 
     async def delete_feature(
         self,
-        request: Union[service.DeleteFeatureRequest, dict] = None,
+        request: Optional[Union[service.DeleteFeatureRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Removes a Feature.
@@ -1101,7 +1111,7 @@ class GkeHubAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gkehub_v1.types.DeleteFeatureRequest, dict]):
+            request (Optional[Union[google.cloud.gkehub_v1.types.DeleteFeatureRequest, dict]]):
                 The request object. Request message for
                 `GkeHub.DeleteFeature` method.
             name (:class:`str`):
@@ -1185,13 +1195,13 @@ class GkeHubAsyncClient:
 
     async def update_membership(
         self,
-        request: Union[service.UpdateMembershipRequest, dict] = None,
+        request: Optional[Union[service.UpdateMembershipRequest, dict]] = None,
         *,
-        name: str = None,
-        resource: membership.Membership = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        name: Optional[str] = None,
+        resource: Optional[membership.Membership] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates an existing Membership.
@@ -1227,7 +1237,7 @@ class GkeHubAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gkehub_v1.types.UpdateMembershipRequest, dict]):
+            request (Optional[Union[google.cloud.gkehub_v1.types.UpdateMembershipRequest, dict]]):
                 The request object. Request message for
                 `GkeHub.UpdateMembership` method.
             name (:class:`str`):
@@ -1327,13 +1337,13 @@ class GkeHubAsyncClient:
 
     async def update_feature(
         self,
-        request: Union[service.UpdateFeatureRequest, dict] = None,
+        request: Optional[Union[service.UpdateFeatureRequest, dict]] = None,
         *,
-        name: str = None,
-        resource: feature.Feature = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        name: Optional[str] = None,
+        resource: Optional[feature.Feature] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates an existing Feature.
@@ -1368,7 +1378,7 @@ class GkeHubAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gkehub_v1.types.UpdateFeatureRequest, dict]):
+            request (Optional[Union[google.cloud.gkehub_v1.types.UpdateFeatureRequest, dict]]):
                 The request object. Request message for
                 `GkeHub.UpdateFeature` method.
             name (:class:`str`):
@@ -1468,10 +1478,10 @@ class GkeHubAsyncClient:
 
     async def generate_connect_manifest(
         self,
-        request: Union[service.GenerateConnectManifestRequest, dict] = None,
+        request: Optional[Union[service.GenerateConnectManifestRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.GenerateConnectManifestResponse:
         r"""Generates the manifest for deployment of the GKE connect agent.
@@ -1506,7 +1516,7 @@ class GkeHubAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gkehub_v1.types.GenerateConnectManifestRequest, dict]):
+            request (Optional[Union[google.cloud.gkehub_v1.types.GenerateConnectManifestRequest, dict]]):
                 The request object. Request message for
                 `GkeHub.GenerateConnectManifest` method.
                 .

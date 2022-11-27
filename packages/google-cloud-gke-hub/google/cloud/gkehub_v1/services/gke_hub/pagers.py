@@ -18,15 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.gkehub_v1.types import feature
-from google.cloud.gkehub_v1.types import membership
-from google.cloud.gkehub_v1.types import service
+from google.cloud.gkehub_v1.types import feature, membership, service
 
 
 class ListMembershipsPager:

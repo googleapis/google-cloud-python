@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gkehub_v1 import configmanagement_v1  # type: ignore
 from google.cloud.gkehub_v1 import multiclusteringress_v1  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.gkehub.v1",
@@ -42,7 +43,7 @@ class Feature(proto.Message):
         name (str):
             Output only. The full, unique name of this Feature resource
             in the format ``projects/*/locations/*/features/*``.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             GCP labels for this Feature.
         resource_state (google.cloud.gkehub_v1.types.FeatureResourceState):
             Output only. State of the Feature resource
@@ -51,7 +52,7 @@ class Feature(proto.Message):
             Optional. Hub-wide Feature configuration. If
             this Feature does not support any Hub-wide
             configuration, this field may be unused.
-        membership_specs (Mapping[str, google.cloud.gkehub_v1.types.MembershipFeatureSpec]):
+        membership_specs (MutableMapping[str, google.cloud.gkehub_v1.types.MembershipFeatureSpec]):
             Optional. Membership-specific configuration
             for this Feature. If this Feature does not
             support any per-Membership configuration, this
@@ -75,7 +76,7 @@ class Feature(proto.Message):
             mutating a Feature.
         state (google.cloud.gkehub_v1.types.CommonFeatureState):
             Output only. The Hub-wide Feature state.
-        membership_states (Mapping[str, google.cloud.gkehub_v1.types.MembershipFeatureState]):
+        membership_states (MutableMapping[str, google.cloud.gkehub_v1.types.MembershipFeatureState]):
             Output only. Membership-specific Feature
             status. If this Feature does report any
             per-Membership status, this field may be unused.
@@ -97,53 +98,53 @@ class Feature(proto.Message):
             deleted.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
     )
-    resource_state = proto.Field(
+    resource_state: "FeatureResourceState" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="FeatureResourceState",
     )
-    spec = proto.Field(
+    spec: "CommonFeatureSpec" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="CommonFeatureSpec",
     )
-    membership_specs = proto.MapField(
+    membership_specs: MutableMapping[str, "MembershipFeatureSpec"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=5,
         message="MembershipFeatureSpec",
     )
-    state = proto.Field(
+    state: "CommonFeatureState" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="CommonFeatureState",
     )
-    membership_states = proto.MapField(
+    membership_states: MutableMapping[str, "MembershipFeatureState"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=7,
         message="MembershipFeatureState",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    delete_time = proto.Field(
+    delete_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
@@ -170,7 +171,7 @@ class FeatureResourceState(proto.Message):
         UPDATING = 4
         SERVICE_UPDATING = 5
 
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
@@ -203,16 +204,16 @@ class FeatureState(proto.Message):
         WARNING = 2
         ERROR = 3
 
-    code = proto.Field(
+    code: Code = proto.Field(
         proto.ENUM,
         number=1,
         enum=Code,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -231,7 +232,7 @@ class CommonFeatureSpec(proto.Message):
             This field is a member of `oneof`_ ``feature_spec``.
     """
 
-    multiclusteringress = proto.Field(
+    multiclusteringress: multiclusteringress_v1.FeatureSpec = proto.Field(
         proto.MESSAGE,
         number=102,
         oneof="feature_spec",
@@ -249,7 +250,7 @@ class CommonFeatureState(proto.Message):
             Feature in this Hub.
     """
 
-    state = proto.Field(
+    state: "FeatureState" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="FeatureState",
@@ -270,7 +271,7 @@ class MembershipFeatureSpec(proto.Message):
             This field is a member of `oneof`_ ``feature_spec``.
     """
 
-    configmanagement = proto.Field(
+    configmanagement: configmanagement_v1.MembershipSpec = proto.Field(
         proto.MESSAGE,
         number=106,
         oneof="feature_spec",
@@ -295,13 +296,13 @@ class MembershipFeatureState(proto.Message):
             single membership.
     """
 
-    configmanagement = proto.Field(
+    configmanagement: configmanagement_v1.MembershipState = proto.Field(
         proto.MESSAGE,
         number=106,
         oneof="feature_state",
         message=configmanagement_v1.MembershipState,
     )
-    state = proto.Field(
+    state: "FeatureState" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="FeatureState",

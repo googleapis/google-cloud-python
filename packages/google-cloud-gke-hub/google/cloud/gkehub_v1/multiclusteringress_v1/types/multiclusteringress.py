@@ -13,8 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.gkehub.multiclusteringress.v1",
@@ -35,7 +36,7 @@ class FeatureSpec(proto.Message):
             ``projects/foo-proj/locations/global/memberships/bar``
     """
 
-    config_membership = proto.Field(
+    config_membership: str = proto.Field(
         proto.STRING,
         number=1,
     )

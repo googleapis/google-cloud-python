@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.gkehub.configmanagement.v1",
@@ -83,31 +83,31 @@ class MembershipState(proto.Message):
             Hierarchy Controller status
     """
 
-    cluster_name = proto.Field(
+    cluster_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    membership_spec = proto.Field(
+    membership_spec: "MembershipSpec" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="MembershipSpec",
     )
-    operator_state = proto.Field(
+    operator_state: "OperatorState" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="OperatorState",
     )
-    config_sync_state = proto.Field(
+    config_sync_state: "ConfigSyncState" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="ConfigSyncState",
     )
-    policy_controller_state = proto.Field(
+    policy_controller_state: "PolicyControllerState" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="PolicyControllerState",
     )
-    hierarchy_controller_state = proto.Field(
+    hierarchy_controller_state: "HierarchyControllerState" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="HierarchyControllerState",
@@ -131,22 +131,22 @@ class MembershipSpec(proto.Message):
             Version of ACM installed.
     """
 
-    config_sync = proto.Field(
+    config_sync: "ConfigSync" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ConfigSync",
     )
-    policy_controller = proto.Field(
+    policy_controller: "PolicyController" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="PolicyController",
     )
-    hierarchy_controller = proto.Field(
+    hierarchy_controller: "HierarchyControllerConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="HierarchyControllerConfig",
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=10,
     )
@@ -163,12 +163,12 @@ class ConfigSync(proto.Message):
             in “hierarchical” or “unstructured” mode.
     """
 
-    git = proto.Field(
+    git: "GitConfig" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="GitConfig",
     )
-    source_format = proto.Field(
+    source_format: str = proto.Field(
         proto.STRING,
         number=8,
     )
@@ -205,35 +205,35 @@ class GitConfig(proto.Message):
             is gcpServiceAccount.
     """
 
-    sync_repo = proto.Field(
+    sync_repo: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    sync_branch = proto.Field(
+    sync_branch: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    policy_dir = proto.Field(
+    policy_dir: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    sync_wait_secs = proto.Field(
+    sync_wait_secs: int = proto.Field(
         proto.INT64,
         number=4,
     )
-    sync_rev = proto.Field(
+    sync_rev: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    secret_type = proto.Field(
+    secret_type: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    https_proxy = proto.Field(
+    https_proxy: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    gcp_service_account_email = proto.Field(
+    gcp_service_account_email: str = proto.Field(
         proto.STRING,
         number=8,
     )
@@ -260,7 +260,7 @@ class PolicyController(proto.Message):
             audit functionality altogether.
 
             This field is a member of `oneof`_ ``_audit_interval_seconds``.
-        exemptable_namespaces (Sequence[str]):
+        exemptable_namespaces (MutableSequence[str]):
             The set of namespaces that are excluded from
             Policy Controller checks. Namespaces do not need
             to currently exist on the cluster.
@@ -272,29 +272,29 @@ class PolicyController(proto.Message):
             Logs all denies and dry run failures.
     """
 
-    enabled = proto.Field(
+    enabled: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    template_library_installed = proto.Field(
+    template_library_installed: bool = proto.Field(
         proto.BOOL,
         number=2,
         optional=True,
     )
-    audit_interval_seconds = proto.Field(
+    audit_interval_seconds: int = proto.Field(
         proto.INT64,
         number=3,
         optional=True,
     )
-    exemptable_namespaces = proto.RepeatedField(
+    exemptable_namespaces: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    referential_rules_enabled = proto.Field(
+    referential_rules_enabled: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    log_denies_enabled = proto.Field(
+    log_denies_enabled: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
@@ -315,15 +315,15 @@ class HierarchyControllerConfig(proto.Message):
             enabled in this cluster.
     """
 
-    enabled = proto.Field(
+    enabled: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    enable_pod_tree_labels = proto.Field(
+    enable_pod_tree_labels: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    enable_hierarchical_resource_quota = proto.Field(
+    enable_hierarchical_resource_quota: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -341,12 +341,12 @@ class HierarchyControllerDeploymentState(proto.Message):
             extension (e.g. v0.7.0-hc.1)
     """
 
-    hnc = proto.Field(
+    hnc: "DeploymentState" = proto.Field(
         proto.ENUM,
         number=1,
         enum="DeploymentState",
     )
-    extension = proto.Field(
+    extension: "DeploymentState" = proto.Field(
         proto.ENUM,
         number=2,
         enum="DeploymentState",
@@ -363,11 +363,11 @@ class HierarchyControllerVersion(proto.Message):
             Version for Hierarchy Controller extension
     """
 
-    hnc = proto.Field(
+    hnc: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    extension = proto.Field(
+    extension: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -383,12 +383,12 @@ class HierarchyControllerState(proto.Message):
             The deployment state for Hierarchy Controller
     """
 
-    version = proto.Field(
+    version: "HierarchyControllerVersion" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="HierarchyControllerVersion",
     )
-    state = proto.Field(
+    state: "HierarchyControllerDeploymentState" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="HierarchyControllerDeploymentState",
@@ -403,20 +403,20 @@ class OperatorState(proto.Message):
             The semenatic version number of the operator
         deployment_state (google.cloud.gkehub.configmanagement_v1.types.DeploymentState):
             The state of the Operator's deployment
-        errors (Sequence[google.cloud.gkehub.configmanagement_v1.types.InstallError]):
+        errors (MutableSequence[google.cloud.gkehub.configmanagement_v1.types.InstallError]):
             Install errors.
     """
 
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    deployment_state = proto.Field(
+    deployment_state: "DeploymentState" = proto.Field(
         proto.ENUM,
         number=2,
         enum="DeploymentState",
     )
-    errors = proto.RepeatedField(
+    errors: MutableSequence["InstallError"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="InstallError",
@@ -432,7 +432,7 @@ class InstallError(proto.Message):
             message
     """
 
-    error_message = proto.Field(
+    error_message: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -453,17 +453,17 @@ class ConfigSyncState(proto.Message):
             configs to a cluster
     """
 
-    version = proto.Field(
+    version: "ConfigSyncVersion" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ConfigSyncVersion",
     )
-    deployment_state = proto.Field(
+    deployment_state: "ConfigSyncDeploymentState" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ConfigSyncDeploymentState",
     )
-    sync_state = proto.Field(
+    sync_state: "SyncState" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="SyncState",
@@ -491,27 +491,27 @@ class ConfigSyncVersion(proto.Message):
             in root-reconciler pod
     """
 
-    importer = proto.Field(
+    importer: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    syncer = proto.Field(
+    syncer: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    git_sync = proto.Field(
+    git_sync: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    monitor = proto.Field(
+    monitor: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    reconciler_manager = proto.Field(
+    reconciler_manager: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    root_reconciler = proto.Field(
+    root_reconciler: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -535,32 +535,32 @@ class ConfigSyncDeploymentState(proto.Message):
             Deployment state of root-reconciler
     """
 
-    importer = proto.Field(
+    importer: "DeploymentState" = proto.Field(
         proto.ENUM,
         number=1,
         enum="DeploymentState",
     )
-    syncer = proto.Field(
+    syncer: "DeploymentState" = proto.Field(
         proto.ENUM,
         number=2,
         enum="DeploymentState",
     )
-    git_sync = proto.Field(
+    git_sync: "DeploymentState" = proto.Field(
         proto.ENUM,
         number=3,
         enum="DeploymentState",
     )
-    monitor = proto.Field(
+    monitor: "DeploymentState" = proto.Field(
         proto.ENUM,
         number=4,
         enum="DeploymentState",
     )
-    reconciler_manager = proto.Field(
+    reconciler_manager: "DeploymentState" = proto.Field(
         proto.ENUM,
         number=5,
         enum="DeploymentState",
     )
-    root_reconciler = proto.Field(
+    root_reconciler: "DeploymentState" = proto.Field(
         proto.ENUM,
         number=6,
         enum="DeploymentState",
@@ -587,7 +587,7 @@ class SyncState(proto.Message):
             synced the repo
         code (google.cloud.gkehub.configmanagement_v1.types.SyncState.SyncCode):
             Sync status code
-        errors (Sequence[google.cloud.gkehub.configmanagement_v1.types.SyncError]):
+        errors (MutableSequence[google.cloud.gkehub.configmanagement_v1.types.SyncError]):
             A list of errors resulting from problematic
             configs. This list will be truncated after 100
             errors, although it is unlikely for that many
@@ -607,33 +607,33 @@ class SyncState(proto.Message):
         UNAUTHORIZED = 6
         UNREACHABLE = 7
 
-    source_token = proto.Field(
+    source_token: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    import_token = proto.Field(
+    import_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    sync_token = proto.Field(
+    sync_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    last_sync = proto.Field(
+    last_sync: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    last_sync_time = proto.Field(
+    last_sync_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    code = proto.Field(
+    code: SyncCode = proto.Field(
         proto.ENUM,
         number=5,
         enum=SyncCode,
     )
-    errors = proto.RepeatedField(
+    errors: MutableSequence["SyncError"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="SyncError",
@@ -649,20 +649,20 @@ class SyncError(proto.Message):
             An ACM defined error code
         error_message (str):
             A description of the error
-        error_resources (Sequence[google.cloud.gkehub.configmanagement_v1.types.ErrorResource]):
+        error_resources (MutableSequence[google.cloud.gkehub.configmanagement_v1.types.ErrorResource]):
             A list of config(s) associated with the
             error, if any
     """
 
-    code = proto.Field(
+    code: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    error_message = proto.Field(
+    error_message: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    error_resources = proto.RepeatedField(
+    error_resources: MutableSequence["ErrorResource"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="ErrorResource",
@@ -687,19 +687,19 @@ class ErrorResource(proto.Message):
             causing an error
     """
 
-    source_path = proto.Field(
+    source_path: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    resource_name = proto.Field(
+    resource_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    resource_namespace = proto.Field(
+    resource_namespace: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    resource_gvk = proto.Field(
+    resource_gvk: "GroupVersionKind" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="GroupVersionKind",
@@ -718,15 +718,15 @@ class GroupVersionKind(proto.Message):
             Kubernetes Kind
     """
 
-    group = proto.Field(
+    group: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    kind = proto.Field(
+    kind: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -744,12 +744,12 @@ class PolicyControllerState(proto.Message):
             installation.
     """
 
-    version = proto.Field(
+    version: "PolicyControllerVersion" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="PolicyControllerVersion",
     )
-    deployment_state = proto.Field(
+    deployment_state: "GatekeeperDeploymentState" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="GatekeeperDeploymentState",
@@ -765,7 +765,7 @@ class PolicyControllerVersion(proto.Message):
             ACM version, git tag, build number.
     """
 
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -781,12 +781,12 @@ class GatekeeperDeploymentState(proto.Message):
             Status of gatekeeper-audit deployment.
     """
 
-    gatekeeper_controller_manager_state = proto.Field(
+    gatekeeper_controller_manager_state: "DeploymentState" = proto.Field(
         proto.ENUM,
         number=1,
         enum="DeploymentState",
     )
-    gatekeeper_audit = proto.Field(
+    gatekeeper_audit: "DeploymentState" = proto.Field(
         proto.ENUM,
         number=2,
         enum="DeploymentState",

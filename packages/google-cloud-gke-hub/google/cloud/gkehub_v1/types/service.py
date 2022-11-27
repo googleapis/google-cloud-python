@@ -13,13 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
-from google.cloud.gkehub_v1.types import feature
-from google.cloud.gkehub_v1.types import membership
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.gkehub_v1.types import feature, membership
 
 __protobuf__ = proto.module(
     package="google.cloud.gkehub.v1",
@@ -92,23 +92,23 @@ class ListMembershipsRequest(proto.Message):
             https://google.aip.dev/132#ordering.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -118,13 +118,13 @@ class ListMembershipsResponse(proto.Message):
     r"""Response message for the ``GkeHub.ListMemberships`` method.
 
     Attributes:
-        resources (Sequence[google.cloud.gkehub_v1.types.Membership]):
+        resources (MutableSequence[google.cloud.gkehub_v1.types.Membership]):
             The list of matching Memberships.
         next_page_token (str):
             A token to request the next page of resources from the
             ``ListMemberships`` method. The value of an empty string
             means that there are no more resources to return.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             List of locations that could not be reached
             while fetching this list.
     """
@@ -133,16 +133,16 @@ class ListMembershipsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    resources = proto.RepeatedField(
+    resources: MutableSequence[membership.Membership] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=membership.Membership,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -157,7 +157,7 @@ class GetMembershipRequest(proto.Message):
             ``projects/*/locations/*/memberships/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -206,20 +206,20 @@ class CreateMembershipRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    membership_id = proto.Field(
+    membership_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    resource = proto.Field(
+    resource: membership.Membership = proto.Field(
         proto.MESSAGE,
         number=3,
         message=membership.Membership,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -252,11 +252,11 @@ class DeleteMembershipRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -300,21 +300,21 @@ class UpdateMembershipRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    resource = proto.Field(
+    resource: membership.Membership = proto.Field(
         proto.MESSAGE,
         number=3,
         message=membership.Membership,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -357,31 +357,31 @@ class GenerateConnectManifestRequest(proto.Message):
             the registry, if not public.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    namespace = proto.Field(
+    namespace: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    proxy = proto.Field(
+    proxy: bytes = proto.Field(
         proto.BYTES,
         number=3,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    is_upgrade = proto.Field(
+    is_upgrade: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    registry = proto.Field(
+    registry: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    image_pull_secret_content = proto.Field(
+    image_pull_secret_content: bytes = proto.Field(
         proto.BYTES,
         number=7,
     )
@@ -392,13 +392,13 @@ class GenerateConnectManifestResponse(proto.Message):
     for installing/upgrading a Connect agent.
 
     Attributes:
-        manifest (Sequence[google.cloud.gkehub_v1.types.ConnectAgentResource]):
+        manifest (MutableSequence[google.cloud.gkehub_v1.types.ConnectAgentResource]):
             The ordered list of Kubernetes resources that
             need to be applied to the cluster for GKE
             Connect agent installation/upgrade.
     """
 
-    manifest = proto.RepeatedField(
+    manifest: MutableSequence["ConnectAgentResource"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ConnectAgentResource",
@@ -416,12 +416,12 @@ class ConnectAgentResource(proto.Message):
             YAML manifest of the resource.
     """
 
-    type_ = proto.Field(
+    type_: "TypeMeta" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TypeMeta",
     )
-    manifest = proto.Field(
+    manifest: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -438,11 +438,11 @@ class TypeMeta(proto.Message):
             APIVersion of the resource (e.g. v1).
     """
 
-    kind = proto.Field(
+    kind: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -490,23 +490,23 @@ class ListFeaturesRequest(proto.Message):
             https://google.aip.dev/132#ordering.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -516,7 +516,7 @@ class ListFeaturesResponse(proto.Message):
     r"""Response message for the ``GkeHub.ListFeatures`` method.
 
     Attributes:
-        resources (Sequence[google.cloud.gkehub_v1.types.Feature]):
+        resources (MutableSequence[google.cloud.gkehub_v1.types.Feature]):
             The list of matching Features
         next_page_token (str):
             A token to request the next page of resources from the
@@ -528,12 +528,12 @@ class ListFeaturesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    resources = proto.RepeatedField(
+    resources: MutableSequence[feature.Feature] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=feature.Feature,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -548,7 +548,7 @@ class GetFeatureRequest(proto.Message):
             ``projects/*/locations/*/features/*``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -586,20 +586,20 @@ class CreateFeatureRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    feature_id = proto.Field(
+    feature_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    resource = proto.Field(
+    resource: feature.Feature = proto.Field(
         proto.MESSAGE,
         number=3,
         message=feature.Feature,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -637,15 +637,15 @@ class DeleteFeatureRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -689,21 +689,21 @@ class UpdateFeatureRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    resource = proto.Field(
+    resource: feature.Feature = proto.Field(
         proto.MESSAGE,
         number=3,
         message=feature.Feature,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -739,33 +739,33 @@ class OperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_detail = proto.Field(
+    status_detail: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    cancel_requested = proto.Field(
+    cancel_requested: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )

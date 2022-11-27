@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.gkehub.v1",
@@ -62,7 +62,7 @@ class Membership(proto.Message):
             Which can be expressed as the regex:
             ``[a-z0-9]([-a-z0-9]*[a-z0-9])?``, with a maximum length of
             63 characters.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. GCP labels for this membership.
         description (str):
             Output only. Description of this membership, limited to 63
@@ -111,59 +111,59 @@ class Membership(proto.Message):
             https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
     """
 
-    endpoint = proto.Field(
+    endpoint: "MembershipEndpoint" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="type",
         message="MembershipEndpoint",
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    state = proto.Field(
+    state: "MembershipState" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="MembershipState",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    delete_time = proto.Field(
+    delete_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    external_id = proto.Field(
+    external_id: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    last_connection_time = proto.Field(
+    last_connection_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
     )
-    unique_id = proto.Field(
+    unique_id: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    authority = proto.Field(
+    authority: "Authority" = proto.Field(
         proto.MESSAGE,
         number=12,
         message="Authority",
@@ -194,17 +194,17 @@ class MembershipEndpoint(proto.Message):
                Features.
     """
 
-    gke_cluster = proto.Field(
+    gke_cluster: "GkeCluster" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="GkeCluster",
     )
-    kubernetes_metadata = proto.Field(
+    kubernetes_metadata: "KubernetesMetadata" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="KubernetesMetadata",
     )
-    kubernetes_resource = proto.Field(
+    kubernetes_resource: "KubernetesResource" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="KubernetesResource",
@@ -228,7 +228,7 @@ class KubernetesResource(proto.Message):
             if none exists. The CR manifest is used to
             validate the cluster has not been registered
             with another Membership.
-        membership_resources (Sequence[google.cloud.gkehub_v1.types.ResourceManifest]):
+        membership_resources (MutableSequence[google.cloud.gkehub_v1.types.ResourceManifest]):
             Output only. Additional Kubernetes resources
             that need to be applied to the cluster after
             Membership creation, and after every update.
@@ -240,7 +240,7 @@ class KubernetesResource(proto.Message):
             requests. To get the resource manifest after the
             initial registration, the caller should make a
             UpdateMembership call with an empty field mask.
-        connect_resources (Sequence[google.cloud.gkehub_v1.types.ResourceManifest]):
+        connect_resources (MutableSequence[google.cloud.gkehub_v1.types.ResourceManifest]):
             Output only. The Kubernetes resources for
             installing the GKE Connect agent
             This field is only populated in the Membership
@@ -256,21 +256,21 @@ class KubernetesResource(proto.Message):
             generation.
     """
 
-    membership_cr_manifest = proto.Field(
+    membership_cr_manifest: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    membership_resources = proto.RepeatedField(
+    membership_resources: MutableSequence["ResourceManifest"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="ResourceManifest",
     )
-    connect_resources = proto.RepeatedField(
+    connect_resources: MutableSequence["ResourceManifest"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="ResourceManifest",
     )
-    resource_options = proto.Field(
+    resource_options: "ResourceOptions" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="ResourceOptions",
@@ -299,15 +299,15 @@ class ResourceOptions(proto.Message):
             ``apiextensions/v1beta1`` or\ ``apiextensions/v1``.
     """
 
-    connect_version = proto.Field(
+    connect_version: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    v1beta1_crd = proto.Field(
+    v1beta1_crd: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    k8s_version = proto.Field(
+    k8s_version: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -329,11 +329,11 @@ class ResourceManifest(proto.Message):
             resource in a cluster.
     """
 
-    manifest = proto.Field(
+    manifest: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    cluster_scoped = proto.Field(
+    cluster_scoped: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -350,7 +350,7 @@ class GkeCluster(proto.Message):
             Zonal clusters are also supported.
     """
 
-    resource_link = proto.Field(
+    resource_link: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -387,27 +387,27 @@ class KubernetesMetadata(proto.Message):
             updated internally for API consumers.
     """
 
-    kubernetes_api_server_version = proto.Field(
+    kubernetes_api_server_version: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    node_provider_id = proto.Field(
+    node_provider_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    node_count = proto.Field(
+    node_count: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    vcpu_count = proto.Field(
+    vcpu_count: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    memory_mb = proto.Field(
+    memory_mb: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=100,
         message=timestamp_pb2.Timestamp,
@@ -432,7 +432,7 @@ class MembershipState(proto.Message):
         UPDATING = 4
         SERVICE_UPDATING = 5
 
-    code = proto.Field(
+    code: Code = proto.Field(
         proto.ENUM,
         number=1,
         enum=Code,
@@ -481,19 +481,19 @@ class Authority(proto.Message):
             using this field.
     """
 
-    issuer = proto.Field(
+    issuer: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    workload_identity_pool = proto.Field(
+    workload_identity_pool: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    identity_provider = proto.Field(
+    identity_provider: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    oidc_jwks = proto.Field(
+    oidc_jwks: bytes = proto.Field(
         proto.BYTES,
         number=4,
     )

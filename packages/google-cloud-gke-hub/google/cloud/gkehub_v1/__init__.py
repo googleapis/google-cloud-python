@@ -13,43 +13,51 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.gkehub import gapic_version as package_version
 
-from .services.gke_hub import GkeHubClient
-from .services.gke_hub import GkeHubAsyncClient
+__version__ = package_version.__version__
 
-from .types.feature import CommonFeatureSpec
-from .types.feature import CommonFeatureState
-from .types.feature import Feature
-from .types.feature import FeatureResourceState
-from .types.feature import FeatureState
-from .types.feature import MembershipFeatureSpec
-from .types.feature import MembershipFeatureState
-from .types.membership import Authority
-from .types.membership import GkeCluster
-from .types.membership import KubernetesMetadata
-from .types.membership import KubernetesResource
-from .types.membership import Membership
-from .types.membership import MembershipEndpoint
-from .types.membership import MembershipState
-from .types.membership import ResourceManifest
-from .types.membership import ResourceOptions
-from .types.service import ConnectAgentResource
-from .types.service import CreateFeatureRequest
-from .types.service import CreateMembershipRequest
-from .types.service import DeleteFeatureRequest
-from .types.service import DeleteMembershipRequest
-from .types.service import GenerateConnectManifestRequest
-from .types.service import GenerateConnectManifestResponse
-from .types.service import GetFeatureRequest
-from .types.service import GetMembershipRequest
-from .types.service import ListFeaturesRequest
-from .types.service import ListFeaturesResponse
-from .types.service import ListMembershipsRequest
-from .types.service import ListMembershipsResponse
-from .types.service import OperationMetadata
-from .types.service import TypeMeta
-from .types.service import UpdateFeatureRequest
-from .types.service import UpdateMembershipRequest
+
+from .services.gke_hub import GkeHubAsyncClient, GkeHubClient
+from .types.feature import (
+    CommonFeatureSpec,
+    CommonFeatureState,
+    Feature,
+    FeatureResourceState,
+    FeatureState,
+    MembershipFeatureSpec,
+    MembershipFeatureState,
+)
+from .types.membership import (
+    Authority,
+    GkeCluster,
+    KubernetesMetadata,
+    KubernetesResource,
+    Membership,
+    MembershipEndpoint,
+    MembershipState,
+    ResourceManifest,
+    ResourceOptions,
+)
+from .types.service import (
+    ConnectAgentResource,
+    CreateFeatureRequest,
+    CreateMembershipRequest,
+    DeleteFeatureRequest,
+    DeleteMembershipRequest,
+    GenerateConnectManifestRequest,
+    GenerateConnectManifestResponse,
+    GetFeatureRequest,
+    GetMembershipRequest,
+    ListFeaturesRequest,
+    ListFeaturesResponse,
+    ListMembershipsRequest,
+    ListMembershipsResponse,
+    OperationMetadata,
+    TypeMeta,
+    UpdateFeatureRequest,
+    UpdateMembershipRequest,
+)
 
 __all__ = (
     "GkeHubAsyncClient",
