@@ -16,15 +16,25 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -33,24 +43,25 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+
 from google.cloud.gke_backup_v1.services.backup_for_gke import pagers
 from google.cloud.gke_backup_v1.types import backup
 from google.cloud.gke_backup_v1.types import backup as gcg_backup
 from google.cloud.gke_backup_v1.types import backup_plan
 from google.cloud.gke_backup_v1.types import backup_plan as gcg_backup_plan
-from google.cloud.gke_backup_v1.types import common
-from google.cloud.gke_backup_v1.types import gkebackup
+from google.cloud.gke_backup_v1.types import common, gkebackup
 from google.cloud.gke_backup_v1.types import restore
 from google.cloud.gke_backup_v1.types import restore as gcg_restore
 from google.cloud.gke_backup_v1.types import restore_plan
 from google.cloud.gke_backup_v1.types import restore_plan as gcg_restore_plan
 from google.cloud.gke_backup_v1.types import volume
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import BackupForGKETransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import BackupForGKEGrpcAsyncIOTransport
+
 from .client import BackupForGKEClient
+from .transports.base import DEFAULT_CLIENT_INFO, BackupForGKETransport
+from .transports.grpc_asyncio import BackupForGKEGrpcAsyncIOTransport
 
 
 class BackupForGKEAsyncClient:
@@ -188,9 +199,9 @@ class BackupForGKEAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, BackupForGKETransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the backup for gke client.
@@ -234,13 +245,13 @@ class BackupForGKEAsyncClient:
 
     async def create_backup_plan(
         self,
-        request: Union[gkebackup.CreateBackupPlanRequest, dict] = None,
+        request: Optional[Union[gkebackup.CreateBackupPlanRequest, dict]] = None,
         *,
-        parent: str = None,
-        backup_plan: gcg_backup_plan.BackupPlan = None,
-        backup_plan_id: str = None,
+        parent: Optional[str] = None,
+        backup_plan: Optional[gcg_backup_plan.BackupPlan] = None,
+        backup_plan_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new BackupPlan in a given location.
@@ -281,7 +292,7 @@ class BackupForGKEAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.CreateBackupPlanRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.CreateBackupPlanRequest, dict]]):
                 The request object. Request message for
                 CreateBackupPlan.
             parent (:class:`str`):
@@ -385,11 +396,11 @@ class BackupForGKEAsyncClient:
 
     async def list_backup_plans(
         self,
-        request: Union[gkebackup.ListBackupPlansRequest, dict] = None,
+        request: Optional[Union[gkebackup.ListBackupPlansRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBackupPlansAsyncPager:
         r"""Lists BackupPlans in a given location.
@@ -422,7 +433,7 @@ class BackupForGKEAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.ListBackupPlansRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.ListBackupPlansRequest, dict]]):
                 The request object. Request message for ListBackupPlans.
             parent (:class:`str`):
                 Required. The location that contains the BackupPlans to
@@ -507,11 +518,11 @@ class BackupForGKEAsyncClient:
 
     async def get_backup_plan(
         self,
-        request: Union[gkebackup.GetBackupPlanRequest, dict] = None,
+        request: Optional[Union[gkebackup.GetBackupPlanRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> backup_plan.BackupPlan:
         r"""Retrieve the details of a single BackupPlan.
@@ -543,7 +554,7 @@ class BackupForGKEAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.GetBackupPlanRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.GetBackupPlanRequest, dict]]):
                 The request object. Request message for GetBackupPlan.
             name (:class:`str`):
                 Required. Fully qualified BackupPlan name. Format:
@@ -617,12 +628,12 @@ class BackupForGKEAsyncClient:
 
     async def update_backup_plan(
         self,
-        request: Union[gkebackup.UpdateBackupPlanRequest, dict] = None,
+        request: Optional[Union[gkebackup.UpdateBackupPlanRequest, dict]] = None,
         *,
-        backup_plan: gcg_backup_plan.BackupPlan = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        backup_plan: Optional[gcg_backup_plan.BackupPlan] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Update a BackupPlan.
@@ -661,7 +672,7 @@ class BackupForGKEAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.UpdateBackupPlanRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.UpdateBackupPlanRequest, dict]]):
                 The request object. Request message for
                 UpdateBackupPlan.
             backup_plan (:class:`google.cloud.gke_backup_v1.types.BackupPlan`):
@@ -760,11 +771,11 @@ class BackupForGKEAsyncClient:
 
     async def delete_backup_plan(
         self,
-        request: Union[gkebackup.DeleteBackupPlanRequest, dict] = None,
+        request: Optional[Union[gkebackup.DeleteBackupPlanRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes an existing BackupPlan.
@@ -800,7 +811,7 @@ class BackupForGKEAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.DeleteBackupPlanRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.DeleteBackupPlanRequest, dict]]):
                 The request object. Request message for
                 DeleteBackupPlan.
             name (:class:`str`):
@@ -884,13 +895,13 @@ class BackupForGKEAsyncClient:
 
     async def create_backup(
         self,
-        request: Union[gkebackup.CreateBackupRequest, dict] = None,
+        request: Optional[Union[gkebackup.CreateBackupRequest, dict]] = None,
         *,
-        parent: str = None,
-        backup: gcg_backup.Backup = None,
-        backup_id: str = None,
+        parent: Optional[str] = None,
+        backup: Optional[gcg_backup.Backup] = None,
+        backup_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a Backup for the given BackupPlan.
@@ -926,7 +937,7 @@ class BackupForGKEAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.CreateBackupRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.CreateBackupRequest, dict]]):
                 The request object. Request message for CreateBackup.
             parent (:class:`str`):
                 Required. The BackupPlan within which to create the
@@ -1026,11 +1037,11 @@ class BackupForGKEAsyncClient:
 
     async def list_backups(
         self,
-        request: Union[gkebackup.ListBackupsRequest, dict] = None,
+        request: Optional[Union[gkebackup.ListBackupsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBackupsAsyncPager:
         r"""Lists the Backups for a given BackupPlan.
@@ -1063,7 +1074,7 @@ class BackupForGKEAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.ListBackupsRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.ListBackupsRequest, dict]]):
                 The request object. Request message for ListBackups.
             parent (:class:`str`):
                 Required. The BackupPlan that contains the Backups to
@@ -1148,11 +1159,11 @@ class BackupForGKEAsyncClient:
 
     async def get_backup(
         self,
-        request: Union[gkebackup.GetBackupRequest, dict] = None,
+        request: Optional[Union[gkebackup.GetBackupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> backup.Backup:
         r"""Retrieve the details of a single Backup.
@@ -1184,7 +1195,7 @@ class BackupForGKEAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.GetBackupRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.GetBackupRequest, dict]]):
                 The request object. Request message for GetBackup.
             name (:class:`str`):
                 Required. Full name of the Backup resource. Format:
@@ -1264,12 +1275,12 @@ class BackupForGKEAsyncClient:
 
     async def update_backup(
         self,
-        request: Union[gkebackup.UpdateBackupRequest, dict] = None,
+        request: Optional[Union[gkebackup.UpdateBackupRequest, dict]] = None,
         *,
-        backup: gcg_backup.Backup = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        backup: Optional[gcg_backup.Backup] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Update a Backup.
@@ -1308,7 +1319,7 @@ class BackupForGKEAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.UpdateBackupRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.UpdateBackupRequest, dict]]):
                 The request object. Request message for UpdateBackup.
             backup (:class:`google.cloud.gke_backup_v1.types.Backup`):
                 Required. A new version of the Backup resource that
@@ -1405,11 +1416,11 @@ class BackupForGKEAsyncClient:
 
     async def delete_backup(
         self,
-        request: Union[gkebackup.DeleteBackupRequest, dict] = None,
+        request: Optional[Union[gkebackup.DeleteBackupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes an existing Backup.
@@ -1445,7 +1456,7 @@ class BackupForGKEAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.DeleteBackupRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.DeleteBackupRequest, dict]]):
                 The request object. Request message for DeleteBackup.
             name (:class:`str`):
                 Required. Name of the Backup resource. Format:
@@ -1528,11 +1539,11 @@ class BackupForGKEAsyncClient:
 
     async def list_volume_backups(
         self,
-        request: Union[gkebackup.ListVolumeBackupsRequest, dict] = None,
+        request: Optional[Union[gkebackup.ListVolumeBackupsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListVolumeBackupsAsyncPager:
         r"""Lists the VolumeBackups for a given Backup.
@@ -1565,7 +1576,7 @@ class BackupForGKEAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.ListVolumeBackupsRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.ListVolumeBackupsRequest, dict]]):
                 The request object. Request message for
                 ListVolumeBackups.
             parent (:class:`str`):
@@ -1653,11 +1664,11 @@ class BackupForGKEAsyncClient:
 
     async def get_volume_backup(
         self,
-        request: Union[gkebackup.GetVolumeBackupRequest, dict] = None,
+        request: Optional[Union[gkebackup.GetVolumeBackupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> volume.VolumeBackup:
         r"""Retrieve the details of a single VolumeBackup.
@@ -1689,7 +1700,7 @@ class BackupForGKEAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.GetVolumeBackupRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.GetVolumeBackupRequest, dict]]):
                 The request object. Request message for GetVolumeBackup.
             name (:class:`str`):
                 Required. Full name of the VolumeBackup resource.
@@ -1768,13 +1779,13 @@ class BackupForGKEAsyncClient:
 
     async def create_restore_plan(
         self,
-        request: Union[gkebackup.CreateRestorePlanRequest, dict] = None,
+        request: Optional[Union[gkebackup.CreateRestorePlanRequest, dict]] = None,
         *,
-        parent: str = None,
-        restore_plan: gcg_restore_plan.RestorePlan = None,
-        restore_plan_id: str = None,
+        parent: Optional[str] = None,
+        restore_plan: Optional[gcg_restore_plan.RestorePlan] = None,
+        restore_plan_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new RestorePlan in a given location.
@@ -1817,7 +1828,7 @@ class BackupForGKEAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.CreateRestorePlanRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.CreateRestorePlanRequest, dict]]):
                 The request object. Request message for
                 CreateRestorePlan.
             parent (:class:`str`):
@@ -1919,11 +1930,11 @@ class BackupForGKEAsyncClient:
 
     async def list_restore_plans(
         self,
-        request: Union[gkebackup.ListRestorePlansRequest, dict] = None,
+        request: Optional[Union[gkebackup.ListRestorePlansRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRestorePlansAsyncPager:
         r"""Lists RestorePlans in a given location.
@@ -1956,7 +1967,7 @@ class BackupForGKEAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.ListRestorePlansRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.ListRestorePlansRequest, dict]]):
                 The request object. Request message for
                 ListRestorePlans.
             parent (:class:`str`):
@@ -2043,11 +2054,11 @@ class BackupForGKEAsyncClient:
 
     async def get_restore_plan(
         self,
-        request: Union[gkebackup.GetRestorePlanRequest, dict] = None,
+        request: Optional[Union[gkebackup.GetRestorePlanRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> restore_plan.RestorePlan:
         r"""Retrieve the details of a single RestorePlan.
@@ -2079,7 +2090,7 @@ class BackupForGKEAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.GetRestorePlanRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.GetRestorePlanRequest, dict]]):
                 The request object. Request message for GetRestorePlan.
             name (:class:`str`):
                 Required. Fully qualified RestorePlan name. Format:
@@ -2155,12 +2166,12 @@ class BackupForGKEAsyncClient:
 
     async def update_restore_plan(
         self,
-        request: Union[gkebackup.UpdateRestorePlanRequest, dict] = None,
+        request: Optional[Union[gkebackup.UpdateRestorePlanRequest, dict]] = None,
         *,
-        restore_plan: gcg_restore_plan.RestorePlan = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        restore_plan: Optional[gcg_restore_plan.RestorePlan] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Update a RestorePlan.
@@ -2201,7 +2212,7 @@ class BackupForGKEAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.UpdateRestorePlanRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.UpdateRestorePlanRequest, dict]]):
                 The request object. Request message for
                 UpdateRestorePlan.
             restore_plan (:class:`google.cloud.gke_backup_v1.types.RestorePlan`):
@@ -2298,11 +2309,11 @@ class BackupForGKEAsyncClient:
 
     async def delete_restore_plan(
         self,
-        request: Union[gkebackup.DeleteRestorePlanRequest, dict] = None,
+        request: Optional[Union[gkebackup.DeleteRestorePlanRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes an existing RestorePlan.
@@ -2338,7 +2349,7 @@ class BackupForGKEAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.DeleteRestorePlanRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.DeleteRestorePlanRequest, dict]]):
                 The request object. Request message for
                 DeleteRestorePlan.
             name (:class:`str`):
@@ -2422,13 +2433,13 @@ class BackupForGKEAsyncClient:
 
     async def create_restore(
         self,
-        request: Union[gkebackup.CreateRestoreRequest, dict] = None,
+        request: Optional[Union[gkebackup.CreateRestoreRequest, dict]] = None,
         *,
-        parent: str = None,
-        restore: gcg_restore.Restore = None,
-        restore_id: str = None,
+        parent: Optional[str] = None,
+        restore: Optional[gcg_restore.Restore] = None,
+        restore_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Restore for the given RestorePlan.
@@ -2469,7 +2480,7 @@ class BackupForGKEAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.CreateRestoreRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.CreateRestoreRequest, dict]]):
                 The request object. Request message for CreateRestore.
             parent (:class:`str`):
                 Required. The RestorePlan within which to create the
@@ -2571,11 +2582,11 @@ class BackupForGKEAsyncClient:
 
     async def list_restores(
         self,
-        request: Union[gkebackup.ListRestoresRequest, dict] = None,
+        request: Optional[Union[gkebackup.ListRestoresRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRestoresAsyncPager:
         r"""Lists the Restores for a given RestorePlan.
@@ -2608,7 +2619,7 @@ class BackupForGKEAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.ListRestoresRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.ListRestoresRequest, dict]]):
                 The request object. Request message for ListRestores.
             parent (:class:`str`):
                 Required. The RestorePlan that contains the Restores to
@@ -2693,11 +2704,11 @@ class BackupForGKEAsyncClient:
 
     async def get_restore(
         self,
-        request: Union[gkebackup.GetRestoreRequest, dict] = None,
+        request: Optional[Union[gkebackup.GetRestoreRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> restore.Restore:
         r"""Retrieves the details of a single Restore.
@@ -2729,7 +2740,7 @@ class BackupForGKEAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.GetRestoreRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.GetRestoreRequest, dict]]):
                 The request object. Request message for GetRestore.
             name (:class:`str`):
                 Required. Name of the restore resource. Format:
@@ -2805,12 +2816,12 @@ class BackupForGKEAsyncClient:
 
     async def update_restore(
         self,
-        request: Union[gkebackup.UpdateRestoreRequest, dict] = None,
+        request: Optional[Union[gkebackup.UpdateRestoreRequest, dict]] = None,
         *,
-        restore: gcg_restore.Restore = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        restore: Optional[gcg_restore.Restore] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Update a Restore.
@@ -2849,7 +2860,7 @@ class BackupForGKEAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.UpdateRestoreRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.UpdateRestoreRequest, dict]]):
                 The request object. Request message for UpdateRestore.
             restore (:class:`google.cloud.gke_backup_v1.types.Restore`):
                 Required. A new version of the Restore resource that
@@ -2944,11 +2955,11 @@ class BackupForGKEAsyncClient:
 
     async def delete_restore(
         self,
-        request: Union[gkebackup.DeleteRestoreRequest, dict] = None,
+        request: Optional[Union[gkebackup.DeleteRestoreRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes an existing Restore.
@@ -2984,7 +2995,7 @@ class BackupForGKEAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.DeleteRestoreRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.DeleteRestoreRequest, dict]]):
                 The request object. Request message for DeleteRestore.
             name (:class:`str`):
                 Required. Full name of the Restore Format:
@@ -3067,11 +3078,11 @@ class BackupForGKEAsyncClient:
 
     async def list_volume_restores(
         self,
-        request: Union[gkebackup.ListVolumeRestoresRequest, dict] = None,
+        request: Optional[Union[gkebackup.ListVolumeRestoresRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListVolumeRestoresAsyncPager:
         r"""Lists the VolumeRestores for a given Restore.
@@ -3104,7 +3115,7 @@ class BackupForGKEAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.ListVolumeRestoresRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.ListVolumeRestoresRequest, dict]]):
                 The request object. Request message for
                 ListVolumeRestores.
             parent (:class:`str`):
@@ -3192,11 +3203,11 @@ class BackupForGKEAsyncClient:
 
     async def get_volume_restore(
         self,
-        request: Union[gkebackup.GetVolumeRestoreRequest, dict] = None,
+        request: Optional[Union[gkebackup.GetVolumeRestoreRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> volume.VolumeRestore:
         r"""Retrieve the details of a single VolumeRestore.
@@ -3228,7 +3239,7 @@ class BackupForGKEAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_backup_v1.types.GetVolumeRestoreRequest, dict]):
+            request (Optional[Union[google.cloud.gke_backup_v1.types.GetVolumeRestoreRequest, dict]]):
                 The request object. Request message for
                 GetVolumeRestore.
             name (:class:`str`):

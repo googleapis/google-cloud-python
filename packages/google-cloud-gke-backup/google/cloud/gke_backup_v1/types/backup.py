@@ -13,11 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gke_backup_v1.types import common
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.gkebackup.v1",
@@ -59,7 +60,7 @@ class Backup(proto.Message):
             Backup resource was created manually by a user
             or via a schedule in the BackupPlan. A value of
             True means that the Backup was created manually.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             A set of custom labels supplied by user.
         delete_lock_days (int):
             Minimum age for this Backup (in days). If this field is set
@@ -202,7 +203,7 @@ class Backup(proto.Message):
             k8s_version (str):
                 The Kubernetes server version of the source
                 cluster.
-            backup_crd_versions (Mapping[str, str]):
+            backup_crd_versions (MutableMapping[str, str]):
                 A list of the Backup for GKE CRD versions
                 found in the cluster.
             gke_version (str):
@@ -215,149 +216,149 @@ class Backup(proto.Message):
                 This field is a member of `oneof`_ ``platform_version``.
         """
 
-        cluster = proto.Field(
+        cluster: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        k8s_version = proto.Field(
+        k8s_version: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        backup_crd_versions = proto.MapField(
+        backup_crd_versions: MutableMapping[str, str] = proto.MapField(
             proto.STRING,
             proto.STRING,
             number=3,
         )
-        gke_version = proto.Field(
+        gke_version: str = proto.Field(
             proto.STRING,
             number=4,
             oneof="platform_version",
         )
-        anthos_version = proto.Field(
+        anthos_version: str = proto.Field(
             proto.STRING,
             number=5,
             oneof="platform_version",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    manual = proto.Field(
+    manual: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=6,
     )
-    delete_lock_days = proto.Field(
+    delete_lock_days: int = proto.Field(
         proto.INT32,
         number=7,
     )
-    delete_lock_expire_time = proto.Field(
+    delete_lock_expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    retain_days = proto.Field(
+    retain_days: int = proto.Field(
         proto.INT32,
         number=9,
     )
-    retain_expire_time = proto.Field(
+    retain_expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
     )
-    encryption_key = proto.Field(
+    encryption_key: common.EncryptionKey = proto.Field(
         proto.MESSAGE,
         number=11,
         message=common.EncryptionKey,
     )
-    all_namespaces = proto.Field(
+    all_namespaces: bool = proto.Field(
         proto.BOOL,
         number=12,
         oneof="backup_scope",
     )
-    selected_namespaces = proto.Field(
+    selected_namespaces: common.Namespaces = proto.Field(
         proto.MESSAGE,
         number=13,
         oneof="backup_scope",
         message=common.Namespaces,
     )
-    selected_applications = proto.Field(
+    selected_applications: common.NamespacedNames = proto.Field(
         proto.MESSAGE,
         number=14,
         oneof="backup_scope",
         message=common.NamespacedNames,
     )
-    contains_volume_data = proto.Field(
+    contains_volume_data: bool = proto.Field(
         proto.BOOL,
         number=15,
     )
-    contains_secrets = proto.Field(
+    contains_secrets: bool = proto.Field(
         proto.BOOL,
         number=16,
     )
-    cluster_metadata = proto.Field(
+    cluster_metadata: ClusterMetadata = proto.Field(
         proto.MESSAGE,
         number=17,
         message=ClusterMetadata,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=18,
         enum=State,
     )
-    state_reason = proto.Field(
+    state_reason: str = proto.Field(
         proto.STRING,
         number=19,
     )
-    complete_time = proto.Field(
+    complete_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=20,
         message=timestamp_pb2.Timestamp,
     )
-    resource_count = proto.Field(
+    resource_count: int = proto.Field(
         proto.INT32,
         number=21,
     )
-    volume_count = proto.Field(
+    volume_count: int = proto.Field(
         proto.INT32,
         number=22,
     )
-    size_bytes = proto.Field(
+    size_bytes: int = proto.Field(
         proto.INT64,
         number=23,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=24,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=25,
     )
-    pod_count = proto.Field(
+    pod_count: int = proto.Field(
         proto.INT32,
         number=26,
     )
-    config_backup_size_bytes = proto.Field(
+    config_backup_size_bytes: int = proto.Field(
         proto.INT64,
         number=27,
     )

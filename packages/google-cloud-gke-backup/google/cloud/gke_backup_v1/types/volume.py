@@ -13,11 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gke_backup_v1.types import common
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.gkebackup.v1",
@@ -106,61 +107,61 @@ class VolumeBackup(proto.Message):
         FAILED = 5
         DELETING = 6
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    source_pvc = proto.Field(
+    source_pvc: common.NamespacedName = proto.Field(
         proto.MESSAGE,
         number=5,
         message=common.NamespacedName,
     )
-    volume_backup_handle = proto.Field(
+    volume_backup_handle: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    format_ = proto.Field(
+    format_: VolumeBackupFormat = proto.Field(
         proto.ENUM,
         number=7,
         enum=VolumeBackupFormat,
     )
-    storage_bytes = proto.Field(
+    storage_bytes: int = proto.Field(
         proto.INT64,
         number=8,
     )
-    disk_size_bytes = proto.Field(
+    disk_size_bytes: int = proto.Field(
         proto.INT64,
         number=9,
     )
-    complete_time = proto.Field(
+    complete_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=11,
         enum=State,
     )
-    state_message = proto.Field(
+    state_message: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=13,
     )
@@ -232,57 +233,57 @@ class VolumeRestore(proto.Message):
         FAILED = 4
         DELETING = 5
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    volume_backup = proto.Field(
+    volume_backup: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    target_pvc = proto.Field(
+    target_pvc: common.NamespacedName = proto.Field(
         proto.MESSAGE,
         number=6,
         message=common.NamespacedName,
     )
-    volume_handle = proto.Field(
+    volume_handle: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    volume_type = proto.Field(
+    volume_type: VolumeType = proto.Field(
         proto.ENUM,
         number=8,
         enum=VolumeType,
     )
-    complete_time = proto.Field(
+    complete_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=10,
         enum=State,
     )
-    state_message = proto.Field(
+    state_message: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=12,
     )

@@ -13,11 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gke_backup_v1.types import common
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.gkebackup.v1",
@@ -57,7 +58,7 @@ class BackupPlan(proto.Message):
         retention_policy (google.cloud.gke_backup_v1.types.BackupPlan.RetentionPolicy):
             RetentionPolicy governs lifecycle of Backups
             created under this plan.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             A set of custom labels supplied by user.
         backup_schedule (google.cloud.gke_backup_v1.types.BackupPlan.Schedule):
             Defines a schedule for automatic Backup
@@ -131,15 +132,15 @@ class BackupPlan(proto.Message):
                 Default: False
         """
 
-        backup_delete_lock_days = proto.Field(
+        backup_delete_lock_days: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        backup_retain_days = proto.Field(
+        backup_retain_days: int = proto.Field(
             proto.INT32,
             number=2,
         )
-        locked = proto.Field(
+        locked: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
@@ -162,11 +163,11 @@ class BackupPlan(proto.Message):
                 Default: False
         """
 
-        cron_schedule = proto.Field(
+        cron_schedule: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        paused = proto.Field(
+        paused: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
@@ -217,92 +218,92 @@ class BackupPlan(proto.Message):
                 not be encrypted.
         """
 
-        all_namespaces = proto.Field(
+        all_namespaces: bool = proto.Field(
             proto.BOOL,
             number=1,
             oneof="backup_scope",
         )
-        selected_namespaces = proto.Field(
+        selected_namespaces: common.Namespaces = proto.Field(
             proto.MESSAGE,
             number=2,
             oneof="backup_scope",
             message=common.Namespaces,
         )
-        selected_applications = proto.Field(
+        selected_applications: common.NamespacedNames = proto.Field(
             proto.MESSAGE,
             number=3,
             oneof="backup_scope",
             message=common.NamespacedNames,
         )
-        include_volume_data = proto.Field(
+        include_volume_data: bool = proto.Field(
             proto.BOOL,
             number=4,
         )
-        include_secrets = proto.Field(
+        include_secrets: bool = proto.Field(
             proto.BOOL,
             number=5,
         )
-        encryption_key = proto.Field(
+        encryption_key: common.EncryptionKey = proto.Field(
             proto.MESSAGE,
             number=6,
             message=common.EncryptionKey,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    cluster = proto.Field(
+    cluster: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    retention_policy = proto.Field(
+    retention_policy: RetentionPolicy = proto.Field(
         proto.MESSAGE,
         number=7,
         message=RetentionPolicy,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=8,
     )
-    backup_schedule = proto.Field(
+    backup_schedule: Schedule = proto.Field(
         proto.MESSAGE,
         number=9,
         message=Schedule,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    deactivated = proto.Field(
+    deactivated: bool = proto.Field(
         proto.BOOL,
         number=11,
     )
-    backup_config = proto.Field(
+    backup_config: BackupConfig = proto.Field(
         proto.MESSAGE,
         number=12,
         message=BackupConfig,
     )
-    protected_pod_count = proto.Field(
+    protected_pod_count: int = proto.Field(
         proto.INT32,
         number=13,
     )

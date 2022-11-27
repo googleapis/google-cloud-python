@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gke_backup_v1.types import backup as gcg_backup
@@ -20,9 +24,6 @@ from google.cloud.gke_backup_v1.types import backup_plan as gcg_backup_plan
 from google.cloud.gke_backup_v1.types import restore as gcg_restore
 from google.cloud.gke_backup_v1.types import restore_plan as gcg_restore_plan
 from google.cloud.gke_backup_v1.types import volume
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.gkebackup.v1",
@@ -92,33 +93,33 @@ class OperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_message = proto.Field(
+    status_message: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    requested_cancellation = proto.Field(
+    requested_cancellation: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -145,16 +146,16 @@ class CreateBackupPlanRequest(proto.Message):
             - be unique within the set of BackupPlans in this location
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    backup_plan = proto.Field(
+    backup_plan: gcg_backup_plan.BackupPlan = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcg_backup_plan.BackupPlan,
     )
-    backup_plan_id = proto.Field(
+    backup_plan_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -189,23 +190,23 @@ class ListBackupPlansRequest(proto.Message):
             Field by which to sort the results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -215,7 +216,7 @@ class ListBackupPlansResponse(proto.Message):
     r"""Response message for ListBackupPlans.
 
     Attributes:
-        backup_plans (Sequence[google.cloud.gke_backup_v1.types.BackupPlan]):
+        backup_plans (MutableSequence[google.cloud.gke_backup_v1.types.BackupPlan]):
             The list of BackupPlans matching the given
             criteria.
         next_page_token (str):
@@ -224,7 +225,7 @@ class ListBackupPlansResponse(proto.Message):
             in a subsequent ``ListBackupPlans`` call to retrieve the
             next page of results. If this field is omitted or empty,
             then there are no more results to return.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -232,16 +233,16 @@ class ListBackupPlansResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backup_plans = proto.RepeatedField(
+    backup_plans: MutableSequence[gcg_backup_plan.BackupPlan] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcg_backup_plan.BackupPlan,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -256,7 +257,7 @@ class GetBackupPlanRequest(proto.Message):
             ``projects/*/locations/*/backupPlans/*``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -283,12 +284,12 @@ class UpdateBackupPlanRequest(proto.Message):
             ignored and are not used to update the target BackupPlan.
     """
 
-    backup_plan = proto.Field(
+    backup_plan: gcg_backup_plan.BackupPlan = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcg_backup_plan.BackupPlan,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -309,11 +310,11 @@ class DeleteBackupPlanRequest(proto.Message):
             the request is rejected.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -339,16 +340,16 @@ class CreateBackupRequest(proto.Message):
             - be unique within the set of Backups in this BackupPlan
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    backup = proto.Field(
+    backup: gcg_backup.Backup = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcg_backup.Backup,
     )
-    backup_id = proto.Field(
+    backup_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -383,23 +384,23 @@ class ListBackupsRequest(proto.Message):
             Field by which to sort the results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -409,7 +410,7 @@ class ListBackupsResponse(proto.Message):
     r"""Response message for ListBackups.
 
     Attributes:
-        backups (Sequence[google.cloud.gke_backup_v1.types.Backup]):
+        backups (MutableSequence[google.cloud.gke_backup_v1.types.Backup]):
             The list of Backups matching the given
             criteria.
         next_page_token (str):
@@ -424,12 +425,12 @@ class ListBackupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backups = proto.RepeatedField(
+    backups: MutableSequence[gcg_backup.Backup] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcg_backup.Backup,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -444,7 +445,7 @@ class GetBackupRequest(proto.Message):
             ``projects/*/locations/*/backupPlans/*/backups/*``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -470,12 +471,12 @@ class UpdateBackupRequest(proto.Message):
             Backup.
     """
 
-    backup = proto.Field(
+    backup: gcg_backup.Backup = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcg_backup.Backup,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -501,15 +502,15 @@ class DeleteBackupRequest(proto.Message):
             VolumeBackups.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -545,23 +546,23 @@ class ListVolumeBackupsRequest(proto.Message):
             Field by which to sort the results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -571,7 +572,7 @@ class ListVolumeBackupsResponse(proto.Message):
     r"""Response message for ListVolumeBackups.
 
     Attributes:
-        volume_backups (Sequence[google.cloud.gke_backup_v1.types.VolumeBackup]):
+        volume_backups (MutableSequence[google.cloud.gke_backup_v1.types.VolumeBackup]):
             The list of VolumeBackups matching the given
             criteria.
         next_page_token (str):
@@ -586,12 +587,12 @@ class ListVolumeBackupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    volume_backups = proto.RepeatedField(
+    volume_backups: MutableSequence[volume.VolumeBackup] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=volume.VolumeBackup,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -606,7 +607,7 @@ class GetVolumeBackupRequest(proto.Message):
             ``projects/*/locations/*/backupPlans/*/backups/*/volumeBackups/*``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -633,16 +634,16 @@ class CreateRestorePlanRequest(proto.Message):
             - be unique within the set of RestorePlans in this location
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    restore_plan = proto.Field(
+    restore_plan: gcg_restore_plan.RestorePlan = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcg_restore_plan.RestorePlan,
     )
-    restore_plan_id = proto.Field(
+    restore_plan_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -677,23 +678,23 @@ class ListRestorePlansRequest(proto.Message):
             Field by which to sort the results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -703,7 +704,7 @@ class ListRestorePlansResponse(proto.Message):
     r"""Response message for ListRestorePlans.
 
     Attributes:
-        restore_plans (Sequence[google.cloud.gke_backup_v1.types.RestorePlan]):
+        restore_plans (MutableSequence[google.cloud.gke_backup_v1.types.RestorePlan]):
             The list of RestorePlans matching the given
             criteria.
         next_page_token (str):
@@ -712,7 +713,7 @@ class ListRestorePlansResponse(proto.Message):
             in a subsequent ``ListRestorePlans`` call to retrieve the
             next page of results. If this field is omitted or empty,
             then there are no more results to return.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -720,16 +721,16 @@ class ListRestorePlansResponse(proto.Message):
     def raw_page(self):
         return self
 
-    restore_plans = proto.RepeatedField(
+    restore_plans: MutableSequence[gcg_restore_plan.RestorePlan] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcg_restore_plan.RestorePlan,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -744,7 +745,7 @@ class GetRestorePlanRequest(proto.Message):
             ``projects/*/locations/*/restorePlans/*``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -770,12 +771,12 @@ class UpdateRestorePlanRequest(proto.Message):
             update the target RestorePlan.
     """
 
-    restore_plan = proto.Field(
+    restore_plan: gcg_restore_plan.RestorePlan = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcg_restore_plan.RestorePlan,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -801,15 +802,15 @@ class DeleteRestorePlanRequest(proto.Message):
             no Restores.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -835,16 +836,16 @@ class CreateRestoreRequest(proto.Message):
             - be unique within the set of Restores in this RestorePlan.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    restore = proto.Field(
+    restore: gcg_restore.Restore = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcg_restore.Restore,
     )
-    restore_id = proto.Field(
+    restore_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -879,23 +880,23 @@ class ListRestoresRequest(proto.Message):
             Field by which to sort the results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -905,7 +906,7 @@ class ListRestoresResponse(proto.Message):
     r"""Response message for ListRestores.
 
     Attributes:
-        restores (Sequence[google.cloud.gke_backup_v1.types.Restore]):
+        restores (MutableSequence[google.cloud.gke_backup_v1.types.Restore]):
             The list of Restores matching the given
             criteria.
         next_page_token (str):
@@ -914,7 +915,7 @@ class ListRestoresResponse(proto.Message):
             in a subsequent ``ListRestores`` call to retrieve the next
             page of results. If this field is omitted or empty, then
             there are no more results to return.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -922,16 +923,16 @@ class ListRestoresResponse(proto.Message):
     def raw_page(self):
         return self
 
-    restores = proto.RepeatedField(
+    restores: MutableSequence[gcg_restore.Restore] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcg_restore.Restore,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -946,7 +947,7 @@ class GetRestoreRequest(proto.Message):
             ``projects/*/locations/*/restorePlans/*/restores/*``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -972,12 +973,12 @@ class UpdateRestoreRequest(proto.Message):
             target Restore.
     """
 
-    restore = proto.Field(
+    restore: gcg_restore.Restore = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcg_restore.Restore,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -1003,15 +1004,15 @@ class DeleteRestoreRequest(proto.Message):
             VolumeRestores.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -1047,23 +1048,23 @@ class ListVolumeRestoresRequest(proto.Message):
             Field by which to sort the results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1073,7 +1074,7 @@ class ListVolumeRestoresResponse(proto.Message):
     r"""Response message for ListVolumeRestores.
 
     Attributes:
-        volume_restores (Sequence[google.cloud.gke_backup_v1.types.VolumeRestore]):
+        volume_restores (MutableSequence[google.cloud.gke_backup_v1.types.VolumeRestore]):
             The list of VolumeRestores matching the given
             criteria.
         next_page_token (str):
@@ -1088,12 +1089,12 @@ class ListVolumeRestoresResponse(proto.Message):
     def raw_page(self):
         return self
 
-    volume_restores = proto.RepeatedField(
+    volume_restores: MutableSequence[volume.VolumeRestore] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=volume.VolumeRestore,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1108,7 +1109,7 @@ class GetVolumeRestoreRequest(proto.Message):
             ``projects/*/locations/*/restorePlans/*/restores/*/volumeRestores/*``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

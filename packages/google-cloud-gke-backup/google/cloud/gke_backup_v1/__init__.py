@@ -13,52 +13,51 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.gke_backup import gapic_version as package_version
 
-from .services.backup_for_gke import BackupForGKEClient
-from .services.backup_for_gke import BackupForGKEAsyncClient
+__version__ = package_version.__version__
 
+
+from .services.backup_for_gke import BackupForGKEAsyncClient, BackupForGKEClient
 from .types.backup import Backup
 from .types.backup_plan import BackupPlan
-from .types.common import EncryptionKey
-from .types.common import NamespacedName
-from .types.common import NamespacedNames
-from .types.common import Namespaces
-from .types.gkebackup import CreateBackupPlanRequest
-from .types.gkebackup import CreateBackupRequest
-from .types.gkebackup import CreateRestorePlanRequest
-from .types.gkebackup import CreateRestoreRequest
-from .types.gkebackup import DeleteBackupPlanRequest
-from .types.gkebackup import DeleteBackupRequest
-from .types.gkebackup import DeleteRestorePlanRequest
-from .types.gkebackup import DeleteRestoreRequest
-from .types.gkebackup import GetBackupPlanRequest
-from .types.gkebackup import GetBackupRequest
-from .types.gkebackup import GetRestorePlanRequest
-from .types.gkebackup import GetRestoreRequest
-from .types.gkebackup import GetVolumeBackupRequest
-from .types.gkebackup import GetVolumeRestoreRequest
-from .types.gkebackup import ListBackupPlansRequest
-from .types.gkebackup import ListBackupPlansResponse
-from .types.gkebackup import ListBackupsRequest
-from .types.gkebackup import ListBackupsResponse
-from .types.gkebackup import ListRestorePlansRequest
-from .types.gkebackup import ListRestorePlansResponse
-from .types.gkebackup import ListRestoresRequest
-from .types.gkebackup import ListRestoresResponse
-from .types.gkebackup import ListVolumeBackupsRequest
-from .types.gkebackup import ListVolumeBackupsResponse
-from .types.gkebackup import ListVolumeRestoresRequest
-from .types.gkebackup import ListVolumeRestoresResponse
-from .types.gkebackup import OperationMetadata
-from .types.gkebackup import UpdateBackupPlanRequest
-from .types.gkebackup import UpdateBackupRequest
-from .types.gkebackup import UpdateRestorePlanRequest
-from .types.gkebackup import UpdateRestoreRequest
-from .types.restore import Restore
-from .types.restore import RestoreConfig
+from .types.common import EncryptionKey, NamespacedName, NamespacedNames, Namespaces
+from .types.gkebackup import (
+    CreateBackupPlanRequest,
+    CreateBackupRequest,
+    CreateRestorePlanRequest,
+    CreateRestoreRequest,
+    DeleteBackupPlanRequest,
+    DeleteBackupRequest,
+    DeleteRestorePlanRequest,
+    DeleteRestoreRequest,
+    GetBackupPlanRequest,
+    GetBackupRequest,
+    GetRestorePlanRequest,
+    GetRestoreRequest,
+    GetVolumeBackupRequest,
+    GetVolumeRestoreRequest,
+    ListBackupPlansRequest,
+    ListBackupPlansResponse,
+    ListBackupsRequest,
+    ListBackupsResponse,
+    ListRestorePlansRequest,
+    ListRestorePlansResponse,
+    ListRestoresRequest,
+    ListRestoresResponse,
+    ListVolumeBackupsRequest,
+    ListVolumeBackupsResponse,
+    ListVolumeRestoresRequest,
+    ListVolumeRestoresResponse,
+    OperationMetadata,
+    UpdateBackupPlanRequest,
+    UpdateBackupRequest,
+    UpdateRestorePlanRequest,
+    UpdateRestoreRequest,
+)
+from .types.restore import Restore, RestoreConfig
 from .types.restore_plan import RestorePlan
-from .types.volume import VolumeBackup
-from .types.volume import VolumeRestore
+from .types.volume import VolumeBackup, VolumeRestore
 
 __all__ = (
     "BackupForGKEAsyncClient",

@@ -13,10 +13,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .backup import Backup
-from .backup_plan import BackupPlan
-from .common import EncryptionKey, NamespacedName, NamespacedNames, Namespaces
-from .gkebackup import (
+from google.cloud.gke_backup import gapic_version as package_version
+
+__version__ = package_version.__version__
+
+
+from google.cloud.gke_backup_v1.services.backup_for_gke.async_client import (
+    BackupForGKEAsyncClient,
+)
+from google.cloud.gke_backup_v1.services.backup_for_gke.client import BackupForGKEClient
+from google.cloud.gke_backup_v1.types.backup import Backup
+from google.cloud.gke_backup_v1.types.backup_plan import BackupPlan
+from google.cloud.gke_backup_v1.types.common import (
+    EncryptionKey,
+    NamespacedName,
+    NamespacedNames,
+    Namespaces,
+)
+from google.cloud.gke_backup_v1.types.gkebackup import (
     CreateBackupPlanRequest,
     CreateBackupRequest,
     CreateRestorePlanRequest,
@@ -49,11 +63,13 @@ from .gkebackup import (
     UpdateRestorePlanRequest,
     UpdateRestoreRequest,
 )
-from .restore import Restore, RestoreConfig
-from .restore_plan import RestorePlan
-from .volume import VolumeBackup, VolumeRestore
+from google.cloud.gke_backup_v1.types.restore import Restore, RestoreConfig
+from google.cloud.gke_backup_v1.types.restore_plan import RestorePlan
+from google.cloud.gke_backup_v1.types.volume import VolumeBackup, VolumeRestore
 
 __all__ = (
+    "BackupForGKEClient",
+    "BackupForGKEAsyncClient",
     "Backup",
     "BackupPlan",
     "EncryptionKey",

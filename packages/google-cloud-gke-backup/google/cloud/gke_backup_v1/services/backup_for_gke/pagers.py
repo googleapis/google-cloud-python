@@ -18,18 +18,20 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.gke_backup_v1.types import backup
-from google.cloud.gke_backup_v1.types import backup_plan
-from google.cloud.gke_backup_v1.types import gkebackup
-from google.cloud.gke_backup_v1.types import restore
-from google.cloud.gke_backup_v1.types import restore_plan
-from google.cloud.gke_backup_v1.types import volume
+from google.cloud.gke_backup_v1.types import (
+    backup,
+    backup_plan,
+    gkebackup,
+    restore,
+    restore_plan,
+    volume,
+)
 
 
 class ListBackupPlansPager:

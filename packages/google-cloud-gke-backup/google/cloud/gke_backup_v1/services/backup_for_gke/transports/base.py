@@ -15,24 +15,25 @@
 #
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
-import pkg_resources
 
-import google.auth  # type: ignore
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
-from google.api_core import operations_v1
+import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
-from google.cloud.gke_backup_v1.types import backup
-from google.cloud.gke_backup_v1.types import backup_plan
-from google.cloud.gke_backup_v1.types import gkebackup
-from google.cloud.gke_backup_v1.types import restore
-from google.cloud.gke_backup_v1.types import restore_plan
-from google.cloud.gke_backup_v1.types import volume
 from google.longrunning import operations_pb2  # type: ignore
+from google.oauth2 import service_account  # type: ignore
+import pkg_resources
+
+from google.cloud.gke_backup_v1.types import (
+    backup,
+    backup_plan,
+    gkebackup,
+    restore,
+    restore_plan,
+    volume,
+)
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -55,7 +56,7 @@ class BackupForGKETransport(abc.ABC):
         self,
         *,
         host: str = DEFAULT_HOST,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,

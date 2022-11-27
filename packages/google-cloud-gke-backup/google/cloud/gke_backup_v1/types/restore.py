@@ -13,11 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gke_backup_v1.types import common
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.gkebackup.v1",
@@ -71,7 +72,7 @@ class Restore(proto.Message):
             Output only. Configuration of the Restore. Inherited from
             parent RestorePlan's
             [restore_config][google.cloud.gkebackup.v1.RestorePlan.restore_config].
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             A set of custom labels supplied by user.
         state (google.cloud.gke_backup_v1.types.Restore.State):
             Output only. The current state of the
@@ -116,77 +117,77 @@ class Restore(proto.Message):
         FAILED = 4
         DELETING = 5
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    backup = proto.Field(
+    backup: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    cluster = proto.Field(
+    cluster: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    restore_config = proto.Field(
+    restore_config: "RestoreConfig" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="RestoreConfig",
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=9,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=10,
         enum=State,
     )
-    state_reason = proto.Field(
+    state_reason: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    complete_time = proto.Field(
+    complete_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=12,
         message=timestamp_pb2.Timestamp,
     )
-    resources_restored_count = proto.Field(
+    resources_restored_count: int = proto.Field(
         proto.INT32,
         number=13,
     )
-    resources_excluded_count = proto.Field(
+    resources_excluded_count: int = proto.Field(
         proto.INT32,
         number=14,
     )
-    resources_failed_count = proto.Field(
+    resources_failed_count: int = proto.Field(
         proto.INT32,
         number=15,
     )
-    volumes_restored_count = proto.Field(
+    volumes_restored_count: int = proto.Field(
         proto.INT32,
         number=16,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=17,
     )
@@ -243,7 +244,7 @@ class RestoreConfig(proto.Message):
             restored.
 
             This field is a member of `oneof`_ ``namespaced_resource_restore_scope``.
-        substitution_rules (Sequence[google.cloud.gke_backup_v1.types.RestoreConfig.SubstitutionRule]):
+        substitution_rules (MutableSequence[google.cloud.gke_backup_v1.types.RestoreConfig.SubstitutionRule]):
             A list of transformation rules to be applied
             against Kubernetes resources as they are
             selected for restoration from a Backup. Rules
@@ -294,11 +295,11 @@ class RestoreConfig(proto.Message):
                 "CustomResourceDefinition", "StorageClass", etc.
         """
 
-        resource_group = proto.Field(
+        resource_group: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        resource_kind = proto.Field(
+        resource_kind: str = proto.Field(
             proto.STRING,
             number=2,
         )
@@ -308,7 +309,7 @@ class RestoreConfig(proto.Message):
         Backup.
 
         Attributes:
-            selected_group_kinds (Sequence[google.cloud.gke_backup_v1.types.RestoreConfig.GroupKind]):
+            selected_group_kinds (MutableSequence[google.cloud.gke_backup_v1.types.RestoreConfig.GroupKind]):
                 A list of "types" of cluster-scoped resources
                 to be restored from the Backup.  An empty list
                 means that NO cluster-scoped resources will be
@@ -317,7 +318,9 @@ class RestoreConfig(proto.Message):
                 separately and is not governed by this field.
         """
 
-        selected_group_kinds = proto.RepeatedField(
+        selected_group_kinds: MutableSequence[
+            "RestoreConfig.GroupKind"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="RestoreConfig.GroupKind",
@@ -330,7 +333,7 @@ class RestoreConfig(proto.Message):
         to substitution) and substitution logic.
 
         Attributes:
-            target_namespaces (Sequence[str]):
+            target_namespaces (MutableSequence[str]):
                 (Filtering parameter) Any resource subject to
                 substitution must be contained within one of the
                 listed Kubernetes Namespace in the Backup. If
@@ -341,7 +344,7 @@ class RestoreConfig(proto.Message):
                 To mix cluster-scoped and namespaced resources
                 in the same rule, use an empty string ("") as
                 one of the target namespaces.
-            target_group_kinds (Sequence[google.cloud.gke_backup_v1.types.RestoreConfig.GroupKind]):
+            target_group_kinds (MutableSequence[google.cloud.gke_backup_v1.types.RestoreConfig.GroupKind]):
                 (Filtering parameter) Any resource subject to
                 substitution must belong to one of the listed
                 "types". If this field is not provided, no type
@@ -376,66 +379,68 @@ class RestoreConfig(proto.Message):
                 to the empty string ("").
         """
 
-        target_namespaces = proto.RepeatedField(
+        target_namespaces: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        target_group_kinds = proto.RepeatedField(
+        target_group_kinds: MutableSequence[
+            "RestoreConfig.GroupKind"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="RestoreConfig.GroupKind",
         )
-        target_json_path = proto.Field(
+        target_json_path: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        original_value_pattern = proto.Field(
+        original_value_pattern: str = proto.Field(
             proto.STRING,
             number=4,
         )
-        new_value = proto.Field(
+        new_value: str = proto.Field(
             proto.STRING,
             number=5,
         )
 
-    volume_data_restore_policy = proto.Field(
+    volume_data_restore_policy: VolumeDataRestorePolicy = proto.Field(
         proto.ENUM,
         number=1,
         enum=VolumeDataRestorePolicy,
     )
-    cluster_resource_conflict_policy = proto.Field(
+    cluster_resource_conflict_policy: ClusterResourceConflictPolicy = proto.Field(
         proto.ENUM,
         number=2,
         enum=ClusterResourceConflictPolicy,
     )
-    namespaced_resource_restore_mode = proto.Field(
+    namespaced_resource_restore_mode: NamespacedResourceRestoreMode = proto.Field(
         proto.ENUM,
         number=3,
         enum=NamespacedResourceRestoreMode,
     )
-    cluster_resource_restore_scope = proto.Field(
+    cluster_resource_restore_scope: ClusterResourceRestoreScope = proto.Field(
         proto.MESSAGE,
         number=4,
         message=ClusterResourceRestoreScope,
     )
-    all_namespaces = proto.Field(
+    all_namespaces: bool = proto.Field(
         proto.BOOL,
         number=5,
         oneof="namespaced_resource_restore_scope",
     )
-    selected_namespaces = proto.Field(
+    selected_namespaces: common.Namespaces = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="namespaced_resource_restore_scope",
         message=common.Namespaces,
     )
-    selected_applications = proto.Field(
+    selected_applications: common.NamespacedNames = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="namespaced_resource_restore_scope",
         message=common.NamespacedNames,
     )
-    substitution_rules = proto.RepeatedField(
+    substitution_rules: MutableSequence[SubstitutionRule] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message=SubstitutionRule,

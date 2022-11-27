@@ -1,28 +1,40 @@
 # -*- coding: utf-8 -*-
-#
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+#
 import io
 import os
 
-import setuptools
+import setuptools  # type: ignore
+
+package_root = os.path.abspath(os.path.dirname(__file__))
 
 name = "google-cloud-gke-backup"
-description = "Backup for GKE API client library"
-version = "0.2.2"
-release_status = "Development Status :: 4 - Beta"
+
+
+description = "Google Cloud Gke Backup API client library"
+
+version = {}
+with open(os.path.join(package_root, "google/cloud/gke_backup/gapic_version.py")) as fp:
+    exec(fp.read(), version)
+version = version["__version__"]
+
+if version[0] == "0":
+    release_status = "Development Status :: 4 - Beta"
+else:
+    release_status = "Development Status :: 5 - Production/Stable"
+
 dependencies = [
     "google-api-core[grpc] >= 1.33.2, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*",
     "proto-plus >= 1.22.0, <2.0.0dev",
@@ -45,7 +57,6 @@ packages = [
 namespaces = ["google"]
 if "google.cloud" in packages:
     namespaces.append("google.cloud")
-
 
 setuptools.setup(
     name=name,

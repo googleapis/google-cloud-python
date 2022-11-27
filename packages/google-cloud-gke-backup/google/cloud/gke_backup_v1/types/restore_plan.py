@@ -13,11 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gke_backup_v1.types import restore
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.gkebackup.v1",
@@ -66,7 +67,7 @@ class RestorePlan(proto.Message):
         restore_config (google.cloud.gke_backup_v1.types.RestoreConfig):
             Required. Configuration of Restores created
             via this RestorePlan.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             A set of custom labels supplied by user.
         etag (str):
             Output only. ``etag`` is used for optimistic concurrency
@@ -81,47 +82,47 @@ class RestorePlan(proto.Message):
             applied to the same version of the resource.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    backup_plan = proto.Field(
+    backup_plan: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    cluster = proto.Field(
+    cluster: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    restore_config = proto.Field(
+    restore_config: restore.RestoreConfig = proto.Field(
         proto.MESSAGE,
         number=8,
         message=restore.RestoreConfig,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=9,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=10,
     )

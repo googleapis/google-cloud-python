@@ -16,18 +16,29 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -36,22 +47,23 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+
 from google.cloud.gke_backup_v1.services.backup_for_gke import pagers
 from google.cloud.gke_backup_v1.types import backup
 from google.cloud.gke_backup_v1.types import backup as gcg_backup
 from google.cloud.gke_backup_v1.types import backup_plan
 from google.cloud.gke_backup_v1.types import backup_plan as gcg_backup_plan
-from google.cloud.gke_backup_v1.types import common
-from google.cloud.gke_backup_v1.types import gkebackup
+from google.cloud.gke_backup_v1.types import common, gkebackup
 from google.cloud.gke_backup_v1.types import restore
 from google.cloud.gke_backup_v1.types import restore as gcg_restore
 from google.cloud.gke_backup_v1.types import restore_plan
 from google.cloud.gke_backup_v1.types import restore_plan as gcg_restore_plan
 from google.cloud.gke_backup_v1.types import volume
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import BackupForGKETransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, BackupForGKETransport
 from .transports.grpc import BackupForGKEGrpcTransport
 from .transports.grpc_asyncio import BackupForGKEGrpcAsyncIOTransport
 from .transports.rest import BackupForGKERestTransport
@@ -72,7 +84,7 @@ class BackupForGKEClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[BackupForGKETransport]:
         """Returns an appropriate transport class.
 
@@ -520,8 +532,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, BackupForGKETransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, BackupForGKETransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the backup for gke client.
@@ -538,7 +550,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -568,6 +580,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -620,13 +633,13 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def create_backup_plan(
         self,
-        request: Union[gkebackup.CreateBackupPlanRequest, dict] = None,
+        request: Optional[Union[gkebackup.CreateBackupPlanRequest, dict]] = None,
         *,
-        parent: str = None,
-        backup_plan: gcg_backup_plan.BackupPlan = None,
-        backup_plan_id: str = None,
+        parent: Optional[str] = None,
+        backup_plan: Optional[gcg_backup_plan.BackupPlan] = None,
+        backup_plan_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new BackupPlan in a given location.
@@ -771,11 +784,11 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def list_backup_plans(
         self,
-        request: Union[gkebackup.ListBackupPlansRequest, dict] = None,
+        request: Optional[Union[gkebackup.ListBackupPlansRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBackupPlansPager:
         r"""Lists BackupPlans in a given location.
@@ -884,11 +897,11 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def get_backup_plan(
         self,
-        request: Union[gkebackup.GetBackupPlanRequest, dict] = None,
+        request: Optional[Union[gkebackup.GetBackupPlanRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> backup_plan.BackupPlan:
         r"""Retrieve the details of a single BackupPlan.
@@ -985,12 +998,12 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def update_backup_plan(
         self,
-        request: Union[gkebackup.UpdateBackupPlanRequest, dict] = None,
+        request: Optional[Union[gkebackup.UpdateBackupPlanRequest, dict]] = None,
         *,
-        backup_plan: gcg_backup_plan.BackupPlan = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        backup_plan: Optional[gcg_backup_plan.BackupPlan] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Update a BackupPlan.
@@ -1128,11 +1141,11 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def delete_backup_plan(
         self,
-        request: Union[gkebackup.DeleteBackupPlanRequest, dict] = None,
+        request: Optional[Union[gkebackup.DeleteBackupPlanRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes an existing BackupPlan.
@@ -1252,13 +1265,13 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def create_backup(
         self,
-        request: Union[gkebackup.CreateBackupRequest, dict] = None,
+        request: Optional[Union[gkebackup.CreateBackupRequest, dict]] = None,
         *,
-        parent: str = None,
-        backup: gcg_backup.Backup = None,
-        backup_id: str = None,
+        parent: Optional[str] = None,
+        backup: Optional[gcg_backup.Backup] = None,
+        backup_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a Backup for the given BackupPlan.
@@ -1394,11 +1407,11 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def list_backups(
         self,
-        request: Union[gkebackup.ListBackupsRequest, dict] = None,
+        request: Optional[Union[gkebackup.ListBackupsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBackupsPager:
         r"""Lists the Backups for a given BackupPlan.
@@ -1507,11 +1520,11 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def get_backup(
         self,
-        request: Union[gkebackup.GetBackupRequest, dict] = None,
+        request: Optional[Union[gkebackup.GetBackupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> backup.Backup:
         r"""Retrieve the details of a single Backup.
@@ -1614,12 +1627,12 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def update_backup(
         self,
-        request: Union[gkebackup.UpdateBackupRequest, dict] = None,
+        request: Optional[Union[gkebackup.UpdateBackupRequest, dict]] = None,
         *,
-        backup: gcg_backup.Backup = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        backup: Optional[gcg_backup.Backup] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Update a Backup.
@@ -1755,11 +1768,11 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def delete_backup(
         self,
-        request: Union[gkebackup.DeleteBackupRequest, dict] = None,
+        request: Optional[Union[gkebackup.DeleteBackupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes an existing Backup.
@@ -1878,11 +1891,11 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def list_volume_backups(
         self,
-        request: Union[gkebackup.ListVolumeBackupsRequest, dict] = None,
+        request: Optional[Union[gkebackup.ListVolumeBackupsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListVolumeBackupsPager:
         r"""Lists the VolumeBackups for a given Backup.
@@ -1994,11 +2007,11 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def get_volume_backup(
         self,
-        request: Union[gkebackup.GetVolumeBackupRequest, dict] = None,
+        request: Optional[Union[gkebackup.GetVolumeBackupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> volume.VolumeBackup:
         r"""Retrieve the details of a single VolumeBackup.
@@ -2100,13 +2113,13 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def create_restore_plan(
         self,
-        request: Union[gkebackup.CreateRestorePlanRequest, dict] = None,
+        request: Optional[Union[gkebackup.CreateRestorePlanRequest, dict]] = None,
         *,
-        parent: str = None,
-        restore_plan: gcg_restore_plan.RestorePlan = None,
-        restore_plan_id: str = None,
+        parent: Optional[str] = None,
+        restore_plan: Optional[gcg_restore_plan.RestorePlan] = None,
+        restore_plan_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new RestorePlan in a given location.
@@ -2251,11 +2264,11 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def list_restore_plans(
         self,
-        request: Union[gkebackup.ListRestorePlansRequest, dict] = None,
+        request: Optional[Union[gkebackup.ListRestorePlansRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRestorePlansPager:
         r"""Lists RestorePlans in a given location.
@@ -2366,11 +2379,11 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def get_restore_plan(
         self,
-        request: Union[gkebackup.GetRestorePlanRequest, dict] = None,
+        request: Optional[Union[gkebackup.GetRestorePlanRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> restore_plan.RestorePlan:
         r"""Retrieve the details of a single RestorePlan.
@@ -2469,12 +2482,12 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def update_restore_plan(
         self,
-        request: Union[gkebackup.UpdateRestorePlanRequest, dict] = None,
+        request: Optional[Union[gkebackup.UpdateRestorePlanRequest, dict]] = None,
         *,
-        restore_plan: gcg_restore_plan.RestorePlan = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        restore_plan: Optional[gcg_restore_plan.RestorePlan] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Update a RestorePlan.
@@ -2612,11 +2625,11 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def delete_restore_plan(
         self,
-        request: Union[gkebackup.DeleteRestorePlanRequest, dict] = None,
+        request: Optional[Union[gkebackup.DeleteRestorePlanRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes an existing RestorePlan.
@@ -2736,13 +2749,13 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def create_restore(
         self,
-        request: Union[gkebackup.CreateRestoreRequest, dict] = None,
+        request: Optional[Union[gkebackup.CreateRestoreRequest, dict]] = None,
         *,
-        parent: str = None,
-        restore: gcg_restore.Restore = None,
-        restore_id: str = None,
+        parent: Optional[str] = None,
+        restore: Optional[gcg_restore.Restore] = None,
+        restore_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new Restore for the given RestorePlan.
@@ -2885,11 +2898,11 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def list_restores(
         self,
-        request: Union[gkebackup.ListRestoresRequest, dict] = None,
+        request: Optional[Union[gkebackup.ListRestoresRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRestoresPager:
         r"""Lists the Restores for a given RestorePlan.
@@ -2998,11 +3011,11 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def get_restore(
         self,
-        request: Union[gkebackup.GetRestoreRequest, dict] = None,
+        request: Optional[Union[gkebackup.GetRestoreRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> restore.Restore:
         r"""Retrieves the details of a single Restore.
@@ -3101,12 +3114,12 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def update_restore(
         self,
-        request: Union[gkebackup.UpdateRestoreRequest, dict] = None,
+        request: Optional[Union[gkebackup.UpdateRestoreRequest, dict]] = None,
         *,
-        restore: gcg_restore.Restore = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        restore: Optional[gcg_restore.Restore] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Update a Restore.
@@ -3240,11 +3253,11 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def delete_restore(
         self,
-        request: Union[gkebackup.DeleteRestoreRequest, dict] = None,
+        request: Optional[Union[gkebackup.DeleteRestoreRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes an existing Restore.
@@ -3363,11 +3376,11 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def list_volume_restores(
         self,
-        request: Union[gkebackup.ListVolumeRestoresRequest, dict] = None,
+        request: Optional[Union[gkebackup.ListVolumeRestoresRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListVolumeRestoresPager:
         r"""Lists the VolumeRestores for a given Restore.
@@ -3479,11 +3492,11 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
     def get_volume_restore(
         self,
-        request: Union[gkebackup.GetVolumeRestoreRequest, dict] = None,
+        request: Optional[Union[gkebackup.GetVolumeRestoreRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> volume.VolumeRestore:
         r"""Retrieve the details of a single VolumeRestore.
