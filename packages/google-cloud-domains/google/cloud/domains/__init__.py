@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.domains import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.domains_v1.services.domains.async_client import DomainsAsyncClient
 from google.cloud.domains_v1.services.domains.client import DomainsClient

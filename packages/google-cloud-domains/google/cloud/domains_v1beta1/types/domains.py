@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import money_pb2  # type: ignore
@@ -130,10 +132,10 @@ class Registration(proto.Message):
             ``Registration``.
         state (google.cloud.domains_v1beta1.types.Registration.State):
             Output only. The state of the ``Registration``
-        issues (Sequence[google.cloud.domains_v1beta1.types.Registration.Issue]):
+        issues (MutableSequence[google.cloud.domains_v1beta1.types.Registration.Issue]):
             Output only. The set of issues with the ``Registration``
             that require attention.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Set of labels associated with the ``Registration``.
         management_settings (google.cloud.domains_v1beta1.types.ManagementSettings):
             Settings for management of the ``Registration``, including
@@ -160,7 +162,7 @@ class Registration(proto.Message):
             been confirmed. To confirm the changes, the
             ``registrant_contact`` must follow the instructions in the
             email they receive.
-        supported_privacy (Sequence[google.cloud.domains_v1beta1.types.ContactPrivacy]):
+        supported_privacy (MutableSequence[google.cloud.domains_v1beta1.types.ContactPrivacy]):
             Output only. Set of options for the
             ``contact_settings.privacy`` field that this
             ``Registration`` supports.
@@ -183,60 +185,60 @@ class Registration(proto.Message):
         CONTACT_SUPPORT = 1
         UNVERIFIED_EMAIL = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    domain_name = proto.Field(
+    domain_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    expire_time = proto.Field(
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=7,
         enum=State,
     )
-    issues = proto.RepeatedField(
+    issues: MutableSequence[Issue] = proto.RepeatedField(
         proto.ENUM,
         number=8,
         enum=Issue,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=9,
     )
-    management_settings = proto.Field(
+    management_settings: "ManagementSettings" = proto.Field(
         proto.MESSAGE,
         number=10,
         message="ManagementSettings",
     )
-    dns_settings = proto.Field(
+    dns_settings: "DnsSettings" = proto.Field(
         proto.MESSAGE,
         number=11,
         message="DnsSettings",
     )
-    contact_settings = proto.Field(
+    contact_settings: "ContactSettings" = proto.Field(
         proto.MESSAGE,
         number=12,
         message="ContactSettings",
     )
-    pending_contact_settings = proto.Field(
+    pending_contact_settings: "ContactSettings" = proto.Field(
         proto.MESSAGE,
         number=13,
         message="ContactSettings",
     )
-    supported_privacy = proto.RepeatedField(
+    supported_privacy: MutableSequence["ContactPrivacy"] = proto.RepeatedField(
         proto.ENUM,
         number=14,
         enum="ContactPrivacy",
@@ -261,12 +263,12 @@ class ManagementSettings(proto.Message):
         AUTOMATIC_RENEWAL = 1
         MANUAL_RENEWAL = 2
 
-    renewal_method = proto.Field(
+    renewal_method: RenewalMethod = proto.Field(
         proto.ENUM,
         number=3,
         enum=RenewalMethod,
     )
-    transfer_lock_state = proto.Field(
+    transfer_lock_state: "TransferLockState" = proto.Field(
         proto.ENUM,
         number=4,
         enum="TransferLockState",
@@ -295,7 +297,7 @@ class DnsSettings(proto.Message):
             Domains <https://domains.google/>`__.
 
             This field is a member of `oneof`_ ``dns_provider``.
-        glue_records (Sequence[google.cloud.domains_v1beta1.types.DnsSettings.GlueRecord]):
+        glue_records (MutableSequence[google.cloud.domains_v1beta1.types.DnsSettings.GlueRecord]):
             The list of glue records for this ``Registration``. Commonly
             empty.
     """
@@ -310,23 +312,23 @@ class DnsSettings(proto.Message):
         r"""Configuration for an arbitrary DNS provider.
 
         Attributes:
-            name_servers (Sequence[str]):
+            name_servers (MutableSequence[str]):
                 Required. A list of name servers that store
                 the DNS zone for this domain. Each name server
                 is a domain name, with Unicode domain names
                 expressed in Punycode format.
-            ds_records (Sequence[google.cloud.domains_v1beta1.types.DnsSettings.DsRecord]):
+            ds_records (MutableSequence[google.cloud.domains_v1beta1.types.DnsSettings.DsRecord]):
                 The list of DS records for this domain, which
                 are used to enable DNSSEC. The domain's DNS
                 provider can provide the values to set here. If
                 this field is empty, DNSSEC is disabled.
         """
 
-        name_servers = proto.RepeatedField(
+        name_servers: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        ds_records = proto.RepeatedField(
+        ds_records: MutableSequence["DnsSettings.DsRecord"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="DnsSettings.DsRecord",
@@ -339,7 +341,7 @@ class DnsSettings(proto.Message):
         `Google Domains <https://domains.google/>`__.
 
         Attributes:
-            name_servers (Sequence[str]):
+            name_servers (MutableSequence[str]):
                 Output only. A list of name servers that
                 store the DNS zone for this domain. Each name
                 server is a domain name, with Unicode domain
@@ -350,23 +352,23 @@ class DnsSettings(proto.Message):
                 Required. The state of DS records for this
                 domain. Used to enable or disable automatic
                 DNSSEC.
-            ds_records (Sequence[google.cloud.domains_v1beta1.types.DnsSettings.DsRecord]):
+            ds_records (MutableSequence[google.cloud.domains_v1beta1.types.DnsSettings.DsRecord]):
                 Output only. The list of DS records published for this
                 domain. The list is automatically populated when
                 ``ds_state`` is ``DS_RECORDS_PUBLISHED``, otherwise it
                 remains empty.
         """
 
-        name_servers = proto.RepeatedField(
+        name_servers: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        ds_state = proto.Field(
+        ds_state: "DnsSettings.DsState" = proto.Field(
             proto.ENUM,
             number=2,
             enum="DnsSettings.DsState",
         )
-        ds_records = proto.RepeatedField(
+        ds_records: MutableSequence["DnsSettings.DsRecord"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="DnsSettings.DsRecord",
@@ -425,21 +427,21 @@ class DnsSettings(proto.Message):
             GOST3411 = 3
             SHA384 = 4
 
-        key_tag = proto.Field(
+        key_tag: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        algorithm = proto.Field(
+        algorithm: "DnsSettings.DsRecord.Algorithm" = proto.Field(
             proto.ENUM,
             number=2,
             enum="DnsSettings.DsRecord.Algorithm",
         )
-        digest_type = proto.Field(
+        digest_type: "DnsSettings.DsRecord.DigestType" = proto.Field(
             proto.ENUM,
             number=3,
             enum="DnsSettings.DsRecord.DigestType",
         )
-        digest = proto.Field(
+        digest: str = proto.Field(
             proto.STRING,
             number=4,
         )
@@ -456,42 +458,42 @@ class DnsSettings(proto.Message):
             host_name (str):
                 Required. Domain name of the host in Punycode
                 format.
-            ipv4_addresses (Sequence[str]):
+            ipv4_addresses (MutableSequence[str]):
                 List of IPv4 addresses corresponding to this host in the
                 standard decimal format (e.g. ``198.51.100.1``). At least
                 one of ``ipv4_address`` and ``ipv6_address`` must be set.
-            ipv6_addresses (Sequence[str]):
+            ipv6_addresses (MutableSequence[str]):
                 List of IPv6 addresses corresponding to this host in the
                 standard hexadecimal format (e.g. ``2001:db8::``). At least
                 one of ``ipv4_address`` and ``ipv6_address`` must be set.
         """
 
-        host_name = proto.Field(
+        host_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        ipv4_addresses = proto.RepeatedField(
+        ipv4_addresses: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
-        ipv6_addresses = proto.RepeatedField(
+        ipv6_addresses: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=3,
         )
 
-    custom_dns = proto.Field(
+    custom_dns: CustomDns = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="dns_provider",
         message=CustomDns,
     )
-    google_domains_dns = proto.Field(
+    google_domains_dns: GoogleDomainsDns = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="dns_provider",
         message=GoogleDomainsDns,
     )
-    glue_records = proto.RepeatedField(
+    glue_records: MutableSequence[GlueRecord] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=GlueRecord,
@@ -543,40 +545,40 @@ class ContactSettings(proto.Message):
                 example, ``"+1-800-555-0123"``.
         """
 
-        postal_address = proto.Field(
+        postal_address: postal_address_pb2.PostalAddress = proto.Field(
             proto.MESSAGE,
             number=1,
             message=postal_address_pb2.PostalAddress,
         )
-        email = proto.Field(
+        email: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        phone_number = proto.Field(
+        phone_number: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        fax_number = proto.Field(
+        fax_number: str = proto.Field(
             proto.STRING,
             number=4,
         )
 
-    privacy = proto.Field(
+    privacy: "ContactPrivacy" = proto.Field(
         proto.ENUM,
         number=1,
         enum="ContactPrivacy",
     )
-    registrant_contact = proto.Field(
+    registrant_contact: Contact = proto.Field(
         proto.MESSAGE,
         number=2,
         message=Contact,
     )
-    admin_contact = proto.Field(
+    admin_contact: Contact = proto.Field(
         proto.MESSAGE,
         number=3,
         message=Contact,
     )
-    technical_contact = proto.Field(
+    technical_contact: Contact = proto.Field(
         proto.MESSAGE,
         number=4,
         message=Contact,
@@ -595,11 +597,11 @@ class SearchDomainsRequest(proto.Message):
             ``projects/*/locations/*``.
     """
 
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -609,11 +611,11 @@ class SearchDomainsResponse(proto.Message):
     r"""Response for the ``SearchDomains`` method.
 
     Attributes:
-        register_parameters (Sequence[google.cloud.domains_v1beta1.types.RegisterParameters]):
+        register_parameters (MutableSequence[google.cloud.domains_v1beta1.types.RegisterParameters]):
             Results of the domain name search.
     """
 
-    register_parameters = proto.RepeatedField(
+    register_parameters: MutableSequence["RegisterParameters"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="RegisterParameters",
@@ -632,11 +634,11 @@ class RetrieveRegisterParametersRequest(proto.Message):
             ``projects/*/locations/*``.
     """
 
-    domain_name = proto.Field(
+    domain_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -651,7 +653,7 @@ class RetrieveRegisterParametersResponse(proto.Message):
             method.
     """
 
-    register_parameters = proto.Field(
+    register_parameters: "RegisterParameters" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="RegisterParameters",
@@ -668,11 +670,11 @@ class RegisterDomainRequest(proto.Message):
         registration (google.cloud.domains_v1beta1.types.Registration):
             Required. The complete ``Registration`` resource to be
             created.
-        domain_notices (Sequence[google.cloud.domains_v1beta1.types.DomainNotice]):
+        domain_notices (MutableSequence[google.cloud.domains_v1beta1.types.DomainNotice]):
             The list of domain notices that you acknowledge. Call
             ``RetrieveRegisterParameters`` to see the notices that need
             acknowledgement.
-        contact_notices (Sequence[google.cloud.domains_v1beta1.types.ContactNotice]):
+        contact_notices (MutableSequence[google.cloud.domains_v1beta1.types.ContactNotice]):
             The list of contact notices that the caller acknowledges.
             The notices needed here depend on the values specified in
             ``registration.contact_settings``.
@@ -687,31 +689,31 @@ class RegisterDomainRequest(proto.Message):
             https://cloud.google.com/apis/design/design_patterns#request_validation
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    registration = proto.Field(
+    registration: "Registration" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Registration",
     )
-    domain_notices = proto.RepeatedField(
+    domain_notices: MutableSequence["DomainNotice"] = proto.RepeatedField(
         proto.ENUM,
         number=3,
         enum="DomainNotice",
     )
-    contact_notices = proto.RepeatedField(
+    contact_notices: MutableSequence["ContactNotice"] = proto.RepeatedField(
         proto.ENUM,
         number=4,
         enum="ContactNotice",
     )
-    yearly_price = proto.Field(
+    yearly_price: money_pb2.Money = proto.Field(
         proto.MESSAGE,
         number=5,
         message=money_pb2.Money,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
@@ -729,11 +731,11 @@ class RetrieveTransferParametersRequest(proto.Message):
             ``projects/*/locations/*``.
     """
 
-    domain_name = proto.Field(
+    domain_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -748,7 +750,7 @@ class RetrieveTransferParametersResponse(proto.Message):
             method.
     """
 
-    transfer_parameters = proto.Field(
+    transfer_parameters: "TransferParameters" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TransferParameters",
@@ -772,7 +774,7 @@ class TransferDomainRequest(proto.Message):
             domain's current DNS service does not cease upon transfer,
             as is often the case for DNS services provided for free by
             the registrar.
-        contact_notices (Sequence[google.cloud.domains_v1beta1.types.ContactNotice]):
+        contact_notices (MutableSequence[google.cloud.domains_v1beta1.types.ContactNotice]):
             The list of contact notices that you acknowledge. The
             notices needed here depend on the values specified in
             ``registration.contact_settings``.
@@ -789,31 +791,31 @@ class TransferDomainRequest(proto.Message):
             transferring the domain.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    registration = proto.Field(
+    registration: "Registration" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Registration",
     )
-    contact_notices = proto.RepeatedField(
+    contact_notices: MutableSequence["ContactNotice"] = proto.RepeatedField(
         proto.ENUM,
         number=3,
         enum="ContactNotice",
     )
-    yearly_price = proto.Field(
+    yearly_price: money_pb2.Money = proto.Field(
         proto.MESSAGE,
         number=4,
         message=money_pb2.Money,
     )
-    authorization_code = proto.Field(
+    authorization_code: "AuthorizationCode" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="AuthorizationCode",
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
@@ -855,19 +857,19 @@ class ListRegistrationsRequest(proto.Message):
             ``(state=SUSPENDED) OR (issue:*)``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -877,7 +879,7 @@ class ListRegistrationsResponse(proto.Message):
     r"""Response for the ``ListRegistrations`` method.
 
     Attributes:
-        registrations (Sequence[google.cloud.domains_v1beta1.types.Registration]):
+        registrations (MutableSequence[google.cloud.domains_v1beta1.types.Registration]):
             A list of ``Registration``\ s.
         next_page_token (str):
             When present, there are more results to retrieve. Set
@@ -889,12 +891,12 @@ class ListRegistrationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    registrations = proto.RepeatedField(
+    registrations: MutableSequence["Registration"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Registration",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -909,7 +911,7 @@ class GetRegistrationRequest(proto.Message):
             format ``projects/*/locations/*/registrations/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -927,12 +929,12 @@ class UpdateRegistrationRequest(proto.Message):
             are being updated, the ``update_mask`` is ``"labels"``.
     """
 
-    registration = proto.Field(
+    registration: "Registration" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Registration",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -956,16 +958,16 @@ class ConfigureManagementSettingsRequest(proto.Message):
             ``"transfer_lock_state"``.
     """
 
-    registration = proto.Field(
+    registration: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    management_settings = proto.Field(
+    management_settings: "ManagementSettings" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ManagementSettings",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -999,21 +1001,21 @@ class ConfigureDnsSettingsRequest(proto.Message):
             updating the DNS settings.
     """
 
-    registration = proto.Field(
+    registration: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    dns_settings = proto.Field(
+    dns_settings: "DnsSettings" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="DnsSettings",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -1034,7 +1036,7 @@ class ConfigureContactSettingsRequest(proto.Message):
             as a comma-separated list. For example, if only the
             registrant contact is being updated, the ``update_mask`` is
             ``"registrant_contact"``.
-        contact_notices (Sequence[google.cloud.domains_v1beta1.types.ContactNotice]):
+        contact_notices (MutableSequence[google.cloud.domains_v1beta1.types.ContactNotice]):
             The list of contact notices that the caller acknowledges.
             The notices needed here depend on the values specified in
             ``contact_settings``.
@@ -1043,26 +1045,26 @@ class ConfigureContactSettingsRequest(proto.Message):
             updating the contact settings.
     """
 
-    registration = proto.Field(
+    registration: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    contact_settings = proto.Field(
+    contact_settings: "ContactSettings" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ContactSettings",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
     )
-    contact_notices = proto.RepeatedField(
+    contact_notices: MutableSequence["ContactNotice"] = proto.RepeatedField(
         proto.ENUM,
         number=4,
         enum="ContactNotice",
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -1077,7 +1079,7 @@ class ExportRegistrationRequest(proto.Message):
             format ``projects/*/locations/*/registrations/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1092,7 +1094,7 @@ class DeleteRegistrationRequest(proto.Message):
             format ``projects/*/locations/*/registrations/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1108,7 +1110,7 @@ class RetrieveAuthorizationCodeRequest(proto.Message):
             ``projects/*/locations/*/registrations/*``.
     """
 
-    registration = proto.Field(
+    registration: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1124,7 +1126,7 @@ class ResetAuthorizationCodeRequest(proto.Message):
             ``projects/*/locations/*/registrations/*``.
     """
 
-    registration = proto.Field(
+    registration: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1142,10 +1144,10 @@ class RegisterParameters(proto.Message):
             This value is accurate when obtained by calling
             ``RetrieveRegisterParameters``, but is approximate when
             obtained by calling ``SearchDomains``.
-        supported_privacy (Sequence[google.cloud.domains_v1beta1.types.ContactPrivacy]):
+        supported_privacy (MutableSequence[google.cloud.domains_v1beta1.types.ContactPrivacy]):
             Contact privacy options that the domain
             supports.
-        domain_notices (Sequence[google.cloud.domains_v1beta1.types.DomainNotice]):
+        domain_notices (MutableSequence[google.cloud.domains_v1beta1.types.DomainNotice]):
             Notices about special properties of the
             domain.
         yearly_price (google.type.money_pb2.Money):
@@ -1161,26 +1163,26 @@ class RegisterParameters(proto.Message):
         UNSUPPORTED = 3
         UNKNOWN = 4
 
-    domain_name = proto.Field(
+    domain_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    availability = proto.Field(
+    availability: Availability = proto.Field(
         proto.ENUM,
         number=2,
         enum=Availability,
     )
-    supported_privacy = proto.RepeatedField(
+    supported_privacy: MutableSequence["ContactPrivacy"] = proto.RepeatedField(
         proto.ENUM,
         number=3,
         enum="ContactPrivacy",
     )
-    domain_notices = proto.RepeatedField(
+    domain_notices: MutableSequence["DomainNotice"] = proto.RepeatedField(
         proto.ENUM,
         number=4,
         enum="DomainNotice",
     )
-    yearly_price = proto.Field(
+    yearly_price: money_pb2.Money = proto.Field(
         proto.MESSAGE,
         number=5,
         message=money_pb2.Money,
@@ -1198,7 +1200,7 @@ class TransferParameters(proto.Message):
         current_registrar (str):
             The registrar that currently manages the
             domain.
-        name_servers (Sequence[str]):
+        name_servers (MutableSequence[str]):
             The name servers that currently store the
             configuration of the domain.
         transfer_lock_state (google.cloud.domains_v1beta1.types.TransferLockState):
@@ -1206,7 +1208,7 @@ class TransferParameters(proto.Message):
             lock. For a transfer to succeed, this must show
             ``UNLOCKED``. To unlock a domain, go to its current
             registrar.
-        supported_privacy (Sequence[google.cloud.domains_v1beta1.types.ContactPrivacy]):
+        supported_privacy (MutableSequence[google.cloud.domains_v1beta1.types.ContactPrivacy]):
             Contact privacy options that the domain
             supports.
         yearly_price (google.type.money_pb2.Money):
@@ -1214,29 +1216,29 @@ class TransferParameters(proto.Message):
             year.
     """
 
-    domain_name = proto.Field(
+    domain_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    current_registrar = proto.Field(
+    current_registrar: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    name_servers = proto.RepeatedField(
+    name_servers: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    transfer_lock_state = proto.Field(
+    transfer_lock_state: "TransferLockState" = proto.Field(
         proto.ENUM,
         number=4,
         enum="TransferLockState",
     )
-    supported_privacy = proto.RepeatedField(
+    supported_privacy: MutableSequence["ContactPrivacy"] = proto.RepeatedField(
         proto.ENUM,
         number=5,
         enum="ContactPrivacy",
     )
-    yearly_price = proto.Field(
+    yearly_price: money_pb2.Money = proto.Field(
         proto.MESSAGE,
         number=6,
         message=money_pb2.Money,
@@ -1253,7 +1255,7 @@ class AuthorizationCode(proto.Message):
             registrar.
     """
 
-    code = proto.Field(
+    code: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1280,29 +1282,29 @@ class OperationMetadata(proto.Message):
             API version used to start the operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_detail = proto.Field(
+    status_detail: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=6,
     )

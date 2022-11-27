@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -63,7 +74,7 @@ class DomainsClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[DomainsTransport]:
         """Returns an appropriate transport class.
 
@@ -340,8 +351,8 @@ class DomainsClient(metaclass=DomainsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DomainsTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, DomainsTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the domains client.
@@ -355,7 +366,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
             transport (Union[str, DomainsTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -385,6 +396,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -437,12 +449,12 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def search_domains(
         self,
-        request: Union[domains.SearchDomainsRequest, dict] = None,
+        request: Optional[Union[domains.SearchDomainsRequest, dict]] = None,
         *,
-        location: str = None,
-        query: str = None,
+        location: Optional[str] = None,
+        query: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> domains.SearchDomainsResponse:
         r"""Searches for available domain names similar to the provided
@@ -553,12 +565,14 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def retrieve_register_parameters(
         self,
-        request: Union[domains.RetrieveRegisterParametersRequest, dict] = None,
+        request: Optional[
+            Union[domains.RetrieveRegisterParametersRequest, dict]
+        ] = None,
         *,
-        location: str = None,
-        domain_name: str = None,
+        location: Optional[str] = None,
+        domain_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> domains.RetrieveRegisterParametersResponse:
         r"""Gets parameters needed to register a new domain name, including
@@ -669,13 +683,13 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def register_domain(
         self,
-        request: Union[domains.RegisterDomainRequest, dict] = None,
+        request: Optional[Union[domains.RegisterDomainRequest, dict]] = None,
         *,
-        parent: str = None,
-        registration: domains.Registration = None,
-        yearly_price: money_pb2.Money = None,
+        parent: Optional[str] = None,
+        registration: Optional[domains.Registration] = None,
+        yearly_price: Optional[money_pb2.Money] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Registers a new domain name and creates a corresponding
@@ -852,12 +866,14 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def retrieve_transfer_parameters(
         self,
-        request: Union[domains.RetrieveTransferParametersRequest, dict] = None,
+        request: Optional[
+            Union[domains.RetrieveTransferParametersRequest, dict]
+        ] = None,
         *,
-        location: str = None,
-        domain_name: str = None,
+        location: Optional[str] = None,
+        domain_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> domains.RetrieveTransferParametersResponse:
         r"""Gets parameters needed to transfer a domain name from another
@@ -970,14 +986,14 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def transfer_domain(
         self,
-        request: Union[domains.TransferDomainRequest, dict] = None,
+        request: Optional[Union[domains.TransferDomainRequest, dict]] = None,
         *,
-        parent: str = None,
-        registration: domains.Registration = None,
-        yearly_price: money_pb2.Money = None,
-        authorization_code: domains.AuthorizationCode = None,
+        parent: Optional[str] = None,
+        registration: Optional[domains.Registration] = None,
+        yearly_price: Optional[money_pb2.Money] = None,
+        authorization_code: Optional[domains.AuthorizationCode] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Transfers a domain name from another registrar to Cloud Domains.
@@ -1182,11 +1198,11 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def list_registrations(
         self,
-        request: Union[domains.ListRegistrationsRequest, dict] = None,
+        request: Optional[Union[domains.ListRegistrationsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRegistrationsPager:
         r"""Lists the ``Registration`` resources in a project.
@@ -1297,11 +1313,11 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def get_registration(
         self,
-        request: Union[domains.GetRegistrationRequest, dict] = None,
+        request: Optional[Union[domains.GetRegistrationRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> domains.Registration:
         r"""Gets the details of a ``Registration`` resource.
@@ -1419,12 +1435,12 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def update_registration(
         self,
-        request: Union[domains.UpdateRegistrationRequest, dict] = None,
+        request: Optional[Union[domains.UpdateRegistrationRequest, dict]] = None,
         *,
-        registration: domains.Registration = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        registration: Optional[domains.Registration] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates select fields of a ``Registration`` resource, notably
@@ -1574,13 +1590,15 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def configure_management_settings(
         self,
-        request: Union[domains.ConfigureManagementSettingsRequest, dict] = None,
+        request: Optional[
+            Union[domains.ConfigureManagementSettingsRequest, dict]
+        ] = None,
         *,
-        registration: str = None,
-        management_settings: domains.ManagementSettings = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        registration: Optional[str] = None,
+        management_settings: Optional[domains.ManagementSettings] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates a ``Registration``'s management settings.
@@ -1735,13 +1753,13 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def configure_dns_settings(
         self,
-        request: Union[domains.ConfigureDnsSettingsRequest, dict] = None,
+        request: Optional[Union[domains.ConfigureDnsSettingsRequest, dict]] = None,
         *,
-        registration: str = None,
-        dns_settings: domains.DnsSettings = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        registration: Optional[str] = None,
+        dns_settings: Optional[domains.DnsSettings] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates a ``Registration``'s DNS settings.
@@ -1901,13 +1919,13 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def configure_contact_settings(
         self,
-        request: Union[domains.ConfigureContactSettingsRequest, dict] = None,
+        request: Optional[Union[domains.ConfigureContactSettingsRequest, dict]] = None,
         *,
-        registration: str = None,
-        contact_settings: domains.ContactSettings = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        registration: Optional[str] = None,
+        contact_settings: Optional[domains.ContactSettings] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates a ``Registration``'s contact settings. Some changes
@@ -2063,11 +2081,11 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def export_registration(
         self,
-        request: Union[domains.ExportRegistrationRequest, dict] = None,
+        request: Optional[Union[domains.ExportRegistrationRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Exports a ``Registration`` resource, such that it is no longer
@@ -2208,11 +2226,11 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def delete_registration(
         self,
-        request: Union[domains.DeleteRegistrationRequest, dict] = None,
+        request: Optional[Union[domains.DeleteRegistrationRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a ``Registration`` resource.
@@ -2353,11 +2371,11 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def retrieve_authorization_code(
         self,
-        request: Union[domains.RetrieveAuthorizationCodeRequest, dict] = None,
+        request: Optional[Union[domains.RetrieveAuthorizationCodeRequest, dict]] = None,
         *,
-        registration: str = None,
+        registration: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> domains.AuthorizationCode:
         r"""Gets the authorization code of the ``Registration`` for the
@@ -2462,11 +2480,11 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def reset_authorization_code(
         self,
-        request: Union[domains.ResetAuthorizationCodeRequest, dict] = None,
+        request: Optional[Union[domains.ResetAuthorizationCodeRequest, dict]] = None,
         *,
-        registration: str = None,
+        registration: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> domains.AuthorizationCode:
         r"""Resets the authorization code of the ``Registration`` to a new

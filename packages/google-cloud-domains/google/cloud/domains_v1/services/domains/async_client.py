@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -160,9 +170,9 @@ class DomainsAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, DomainsTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the domains client.
@@ -206,12 +216,12 @@ class DomainsAsyncClient:
 
     async def search_domains(
         self,
-        request: Union[domains.SearchDomainsRequest, dict] = None,
+        request: Optional[Union[domains.SearchDomainsRequest, dict]] = None,
         *,
-        location: str = None,
-        query: str = None,
+        location: Optional[str] = None,
+        query: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> domains.SearchDomainsResponse:
         r"""Searches for available domain names similar to the provided
@@ -249,7 +259,7 @@ class DomainsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.domains_v1.types.SearchDomainsRequest, dict]):
+            request (Optional[Union[google.cloud.domains_v1.types.SearchDomainsRequest, dict]]):
                 The request object. Request for the `SearchDomains`
                 method.
             location (:class:`str`):
@@ -322,12 +332,14 @@ class DomainsAsyncClient:
 
     async def retrieve_register_parameters(
         self,
-        request: Union[domains.RetrieveRegisterParametersRequest, dict] = None,
+        request: Optional[
+            Union[domains.RetrieveRegisterParametersRequest, dict]
+        ] = None,
         *,
-        location: str = None,
-        domain_name: str = None,
+        location: Optional[str] = None,
+        domain_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> domains.RetrieveRegisterParametersResponse:
         r"""Gets parameters needed to register a new domain name, including
@@ -362,7 +374,7 @@ class DomainsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.domains_v1.types.RetrieveRegisterParametersRequest, dict]):
+            request (Optional[Union[google.cloud.domains_v1.types.RetrieveRegisterParametersRequest, dict]]):
                 The request object. Request for the
                 `RetrieveRegisterParameters` method.
             location (:class:`str`):
@@ -436,13 +448,13 @@ class DomainsAsyncClient:
 
     async def register_domain(
         self,
-        request: Union[domains.RegisterDomainRequest, dict] = None,
+        request: Optional[Union[domains.RegisterDomainRequest, dict]] = None,
         *,
-        parent: str = None,
-        registration: domains.Registration = None,
-        yearly_price: money_pb2.Money = None,
+        parent: Optional[str] = None,
+        registration: Optional[domains.Registration] = None,
+        yearly_price: Optional[money_pb2.Money] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Registers a new domain name and creates a corresponding
@@ -502,7 +514,7 @@ class DomainsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.domains_v1.types.RegisterDomainRequest, dict]):
+            request (Optional[Union[google.cloud.domains_v1.types.RegisterDomainRequest, dict]]):
                 The request object. Request for the `RegisterDomain`
                 method.
             parent (:class:`str`):
@@ -619,12 +631,14 @@ class DomainsAsyncClient:
 
     async def retrieve_transfer_parameters(
         self,
-        request: Union[domains.RetrieveTransferParametersRequest, dict] = None,
+        request: Optional[
+            Union[domains.RetrieveTransferParametersRequest, dict]
+        ] = None,
         *,
-        location: str = None,
-        domain_name: str = None,
+        location: Optional[str] = None,
+        domain_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> domains.RetrieveTransferParametersResponse:
         r"""Gets parameters needed to transfer a domain name from another
@@ -661,7 +675,7 @@ class DomainsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.domains_v1.types.RetrieveTransferParametersRequest, dict]):
+            request (Optional[Union[google.cloud.domains_v1.types.RetrieveTransferParametersRequest, dict]]):
                 The request object. Request for the
                 `RetrieveTransferParameters` method.
             location (:class:`str`):
@@ -735,14 +749,14 @@ class DomainsAsyncClient:
 
     async def transfer_domain(
         self,
-        request: Union[domains.TransferDomainRequest, dict] = None,
+        request: Optional[Union[domains.TransferDomainRequest, dict]] = None,
         *,
-        parent: str = None,
-        registration: domains.Registration = None,
-        yearly_price: money_pb2.Money = None,
-        authorization_code: domains.AuthorizationCode = None,
+        parent: Optional[str] = None,
+        registration: Optional[domains.Registration] = None,
+        yearly_price: Optional[money_pb2.Money] = None,
+        authorization_code: Optional[domains.AuthorizationCode] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Transfers a domain name from another registrar to Cloud Domains.
@@ -812,7 +826,7 @@ class DomainsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.domains_v1.types.TransferDomainRequest, dict]):
+            request (Optional[Union[google.cloud.domains_v1.types.TransferDomainRequest, dict]]):
                 The request object. Request for the `TransferDomain`
                 method.
             parent (:class:`str`):
@@ -947,11 +961,11 @@ class DomainsAsyncClient:
 
     async def list_registrations(
         self,
-        request: Union[domains.ListRegistrationsRequest, dict] = None,
+        request: Optional[Union[domains.ListRegistrationsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRegistrationsAsyncPager:
         r"""Lists the ``Registration`` resources in a project.
@@ -984,7 +998,7 @@ class DomainsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.domains_v1.types.ListRegistrationsRequest, dict]):
+            request (Optional[Union[google.cloud.domains_v1.types.ListRegistrationsRequest, dict]]):
                 The request object. Request for the `ListRegistrations`
                 method.
             parent (:class:`str`):
@@ -1062,11 +1076,11 @@ class DomainsAsyncClient:
 
     async def get_registration(
         self,
-        request: Union[domains.GetRegistrationRequest, dict] = None,
+        request: Optional[Union[domains.GetRegistrationRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> domains.Registration:
         r"""Gets the details of a ``Registration`` resource.
@@ -1098,7 +1112,7 @@ class DomainsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.domains_v1.types.GetRegistrationRequest, dict]):
+            request (Optional[Union[google.cloud.domains_v1.types.GetRegistrationRequest, dict]]):
                 The request object. Request for the `GetRegistration`
                 method.
             name (:class:`str`):
@@ -1184,12 +1198,12 @@ class DomainsAsyncClient:
 
     async def update_registration(
         self,
-        request: Union[domains.UpdateRegistrationRequest, dict] = None,
+        request: Optional[Union[domains.UpdateRegistrationRequest, dict]] = None,
         *,
-        registration: domains.Registration = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        registration: Optional[domains.Registration] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates select fields of a ``Registration`` resource, notably
@@ -1232,7 +1246,7 @@ class DomainsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.domains_v1.types.UpdateRegistrationRequest, dict]):
+            request (Optional[Union[google.cloud.domains_v1.types.UpdateRegistrationRequest, dict]]):
                 The request object. Request for the `UpdateRegistration`
                 method.
             registration (:class:`google.cloud.domains_v1.types.Registration`):
@@ -1339,13 +1353,15 @@ class DomainsAsyncClient:
 
     async def configure_management_settings(
         self,
-        request: Union[domains.ConfigureManagementSettingsRequest, dict] = None,
+        request: Optional[
+            Union[domains.ConfigureManagementSettingsRequest, dict]
+        ] = None,
         *,
-        registration: str = None,
-        management_settings: domains.ManagementSettings = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        registration: Optional[str] = None,
+        management_settings: Optional[domains.ManagementSettings] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates a ``Registration``'s management settings.
@@ -1381,7 +1397,7 @@ class DomainsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.domains_v1.types.ConfigureManagementSettingsRequest, dict]):
+            request (Optional[Union[google.cloud.domains_v1.types.ConfigureManagementSettingsRequest, dict]]):
                 The request object. Request for the
                 `ConfigureManagementSettings` method.
             registration (:class:`str`):
@@ -1498,13 +1514,13 @@ class DomainsAsyncClient:
 
     async def configure_dns_settings(
         self,
-        request: Union[domains.ConfigureDnsSettingsRequest, dict] = None,
+        request: Optional[Union[domains.ConfigureDnsSettingsRequest, dict]] = None,
         *,
-        registration: str = None,
-        dns_settings: domains.DnsSettings = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        registration: Optional[str] = None,
+        dns_settings: Optional[domains.DnsSettings] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates a ``Registration``'s DNS settings.
@@ -1540,7 +1556,7 @@ class DomainsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.domains_v1.types.ConfigureDnsSettingsRequest, dict]):
+            request (Optional[Union[google.cloud.domains_v1.types.ConfigureDnsSettingsRequest, dict]]):
                 The request object. Request for the
                 `ConfigureDnsSettings` method.
             registration (:class:`str`):
@@ -1664,13 +1680,13 @@ class DomainsAsyncClient:
 
     async def configure_contact_settings(
         self,
-        request: Union[domains.ConfigureContactSettingsRequest, dict] = None,
+        request: Optional[Union[domains.ConfigureContactSettingsRequest, dict]] = None,
         *,
-        registration: str = None,
-        contact_settings: domains.ContactSettings = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        registration: Optional[str] = None,
+        contact_settings: Optional[domains.ContactSettings] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates a ``Registration``'s contact settings. Some changes
@@ -1707,7 +1723,7 @@ class DomainsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.domains_v1.types.ConfigureContactSettingsRequest, dict]):
+            request (Optional[Union[google.cloud.domains_v1.types.ConfigureContactSettingsRequest, dict]]):
                 The request object. Request for the
                 `ConfigureContactSettings` method.
             registration (:class:`str`):
@@ -1824,11 +1840,11 @@ class DomainsAsyncClient:
 
     async def export_registration(
         self,
-        request: Union[domains.ExportRegistrationRequest, dict] = None,
+        request: Optional[Union[domains.ExportRegistrationRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Exports a ``Registration`` resource, such that it is no longer
@@ -1873,7 +1889,7 @@ class DomainsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.domains_v1.types.ExportRegistrationRequest, dict]):
+            request (Optional[Union[google.cloud.domains_v1.types.ExportRegistrationRequest, dict]]):
                 The request object. Request for the `ExportRegistration`
                 method.
             name (:class:`str`):
@@ -1969,11 +1985,11 @@ class DomainsAsyncClient:
 
     async def delete_registration(
         self,
-        request: Union[domains.DeleteRegistrationRequest, dict] = None,
+        request: Optional[Union[domains.DeleteRegistrationRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a ``Registration`` resource.
@@ -2030,7 +2046,7 @@ class DomainsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.domains_v1.types.DeleteRegistrationRequest, dict]):
+            request (Optional[Union[google.cloud.domains_v1.types.DeleteRegistrationRequest, dict]]):
                 The request object. Request for the `DeleteRegistration`
                 method.
             name (:class:`str`):
@@ -2114,11 +2130,11 @@ class DomainsAsyncClient:
 
     async def retrieve_authorization_code(
         self,
-        request: Union[domains.RetrieveAuthorizationCodeRequest, dict] = None,
+        request: Optional[Union[domains.RetrieveAuthorizationCodeRequest, dict]] = None,
         *,
-        registration: str = None,
+        registration: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> domains.AuthorizationCode:
         r"""Gets the authorization code of the ``Registration`` for the
@@ -2154,7 +2170,7 @@ class DomainsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.domains_v1.types.RetrieveAuthorizationCodeRequest, dict]):
+            request (Optional[Union[google.cloud.domains_v1.types.RetrieveAuthorizationCodeRequest, dict]]):
                 The request object. Request for the
                 `RetrieveAuthorizationCode` method.
             registration (:class:`str`):
@@ -2221,11 +2237,11 @@ class DomainsAsyncClient:
 
     async def reset_authorization_code(
         self,
-        request: Union[domains.ResetAuthorizationCodeRequest, dict] = None,
+        request: Optional[Union[domains.ResetAuthorizationCodeRequest, dict]] = None,
         *,
-        registration: str = None,
+        registration: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> domains.AuthorizationCode:
         r"""Resets the authorization code of the ``Registration`` to a new
@@ -2261,7 +2277,7 @@ class DomainsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.domains_v1.types.ResetAuthorizationCodeRequest, dict]):
+            request (Optional[Union[google.cloud.domains_v1.types.ResetAuthorizationCodeRequest, dict]]):
                 The request object. Request for the
                 `ResetAuthorizationCode` method.
             registration (:class:`str`):
