@@ -15,15 +15,15 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetQuestion
+# Snippet for SuggestQueries
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-dataqna
+#   python3 -m pip install google-cloud-data-qna
 
 
-# [START dataqna_v1alpha_generated_QuestionService_GetQuestion_sync_42230e84]
+# [START dataqna_v1alpha_generated_AutoSuggestionService_SuggestQueries_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,19 +34,19 @@
 from google.cloud import dataqna_v1alpha
 
 
-def sample_get_question():
+def sample_suggest_queries():
     # Create a client
-    client = dataqna_v1alpha.QuestionServiceClient()
+    client = dataqna_v1alpha.AutoSuggestionServiceClient()
 
     # Initialize request argument(s)
-    request = dataqna_v1alpha.GetQuestionRequest(
-        name="name_value",
+    request = dataqna_v1alpha.SuggestQueriesRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = client.get_question(request=request)
+    response = client.suggest_queries(request=request)
 
     # Handle the response
     print(response)
 
-# [END dataqna_v1alpha_generated_QuestionService_GetQuestion_sync_42230e84]
+# [END dataqna_v1alpha_generated_AutoSuggestionService_SuggestQueries_sync]

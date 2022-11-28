@@ -30,7 +30,7 @@ from google.cloud.dataqna_v1alpha.types import auto_suggestion_service
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dataqna",
+            "google-cloud-data-qna",
         ).version,
     )
 except pkg_resources.DistributionNotFound:
@@ -48,7 +48,7 @@ class AutoSuggestionServiceTransport(abc.ABC):
         self,
         *,
         host: str = DEFAULT_HOST,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,

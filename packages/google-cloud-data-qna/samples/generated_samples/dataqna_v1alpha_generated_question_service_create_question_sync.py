@@ -15,15 +15,15 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateUserFeedback
+# Snippet for CreateQuestion
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-dataqna
+#   python3 -m pip install google-cloud-data-qna
 
 
-# [START dataqna_v1alpha_generated_QuestionService_UpdateUserFeedback_sync_66ce529c]
+# [START dataqna_v1alpha_generated_QuestionService_CreateQuestion_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,22 +34,24 @@
 from google.cloud import dataqna_v1alpha
 
 
-def sample_update_user_feedback():
+def sample_create_question():
     # Create a client
     client = dataqna_v1alpha.QuestionServiceClient()
 
     # Initialize request argument(s)
-    user_feedback = dataqna_v1alpha.UserFeedback()
-    user_feedback.name = "name_value"
+    question = dataqna_v1alpha.Question()
+    question.scopes = ['scopes_value1', 'scopes_value2']
+    question.query = "query_value"
 
-    request = dataqna_v1alpha.UpdateUserFeedbackRequest(
-        user_feedback=user_feedback,
+    request = dataqna_v1alpha.CreateQuestionRequest(
+        parent="parent_value",
+        question=question,
     )
 
     # Make the request
-    response = client.update_user_feedback(request=request)
+    response = client.create_question(request=request)
 
     # Handle the response
     print(response)
 
-# [END dataqna_v1alpha_generated_QuestionService_UpdateUserFeedback_sync_66ce529c]
+# [END dataqna_v1alpha_generated_QuestionService_CreateQuestion_sync]

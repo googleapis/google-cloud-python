@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -60,7 +62,7 @@ class AnnotatedString(proto.Message):
             Text version of the string.
         html_formatted (str):
             HTML version of the string annotation.
-        markups (Sequence[google.cloud.dataqna_v1alpha.types.AnnotatedString.SemanticMarkup]):
+        markups (MutableSequence[google.cloud.dataqna_v1alpha.types.AnnotatedString.SemanticMarkup]):
             Semantic version of the string annotation.
     """
 
@@ -88,29 +90,29 @@ class AnnotatedString(proto.Message):
                 the markup substring.
         """
 
-        type_ = proto.Field(
+        type_: "AnnotatedString.SemanticMarkupType" = proto.Field(
             proto.ENUM,
             number=1,
             enum="AnnotatedString.SemanticMarkupType",
         )
-        start_char_index = proto.Field(
+        start_char_index: int = proto.Field(
             proto.INT32,
             number=2,
         )
-        length = proto.Field(
+        length: int = proto.Field(
             proto.INT32,
             number=3,
         )
 
-    text_formatted = proto.Field(
+    text_formatted: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    html_formatted = proto.Field(
+    html_formatted: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    markups = proto.RepeatedField(
+    markups: MutableSequence[SemanticMarkup] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=SemanticMarkup,

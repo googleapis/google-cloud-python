@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.dataqna_v1alpha.types import annotated_string
@@ -44,7 +46,7 @@ class SuggestQueriesRequest(proto.Message):
             Required. The parent of the suggestion query
             is the resource denoting the project and
             location.
-        scopes (Sequence[str]):
+        scopes (MutableSequence[str]):
             The scopes to which this search is restricted. The only
             supported scope pattern is
             ``//bigquery.googleapis.com/projects/{GCP-PROJECT-ID}/datasets/{DATASET-ID}/tables/{TABLE-ID}``.
@@ -54,7 +56,7 @@ class SuggestQueriesRequest(proto.Message):
             are returned. This allows UIs to display
             suggestions right away, helping the user to get
             a sense of what a query might look like.
-        suggestion_types (Sequence[google.cloud.dataqna_v1alpha.types.SuggestionType]):
+        suggestion_types (MutableSequence[google.cloud.dataqna_v1alpha.types.SuggestionType]):
             The requested suggestion type. Multiple
             suggestion types can be requested, but there is
             no guarantee that the service will return
@@ -64,19 +66,19 @@ class SuggestQueriesRequest(proto.Message):
             cut these suggestions off.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    scopes = proto.RepeatedField(
+    scopes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    suggestion_types = proto.RepeatedField(
+    suggestion_types: MutableSequence["SuggestionType"] = proto.RepeatedField(
         proto.ENUM,
         number=4,
         enum="SuggestionType",
@@ -98,16 +100,16 @@ class Suggestion(proto.Message):
             The type of the suggestion.
     """
 
-    suggestion_info = proto.Field(
+    suggestion_info: "SuggestionInfo" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="SuggestionInfo",
     )
-    ranking_score = proto.Field(
+    ranking_score: float = proto.Field(
         proto.DOUBLE,
         number=2,
     )
-    suggestion_type = proto.Field(
+    suggestion_type: "SuggestionType" = proto.Field(
         proto.ENUM,
         number=3,
         enum="SuggestionType",
@@ -123,7 +125,7 @@ class SuggestionInfo(proto.Message):
             information about which part of the suggestion
             corresponds to what semantic meaning (e.g. a
             metric).
-        query_matches (Sequence[google.cloud.dataqna_v1alpha.types.SuggestionInfo.MatchInfo]):
+        query_matches (MutableSequence[google.cloud.dataqna_v1alpha.types.SuggestionInfo.MatchInfo]):
             Matches between user query and the annotated
             string.
     """
@@ -163,21 +165,21 @@ class SuggestionInfo(proto.Message):
                 substring.
         """
 
-        start_char_index = proto.Field(
+        start_char_index: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        length = proto.Field(
+        length: int = proto.Field(
             proto.INT32,
             number=2,
         )
 
-    annotated_suggestion = proto.Field(
+    annotated_suggestion: annotated_string.AnnotatedString = proto.Field(
         proto.MESSAGE,
         number=1,
         message=annotated_string.AnnotatedString,
     )
-    query_matches = proto.RepeatedField(
+    query_matches: MutableSequence[MatchInfo] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=MatchInfo,
@@ -188,11 +190,11 @@ class SuggestQueriesResponse(proto.Message):
     r"""Response to SuggestQueries.
 
     Attributes:
-        suggestions (Sequence[google.cloud.dataqna_v1alpha.types.Suggestion]):
+        suggestions (MutableSequence[google.cloud.dataqna_v1alpha.types.Suggestion]):
             A list of suggestions.
     """
 
-    suggestions = proto.RepeatedField(
+    suggestions: MutableSequence["Suggestion"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Suggestion",

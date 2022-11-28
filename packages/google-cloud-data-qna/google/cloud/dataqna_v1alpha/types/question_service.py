@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -42,11 +44,11 @@ class GetQuestionRequest(proto.Message):
             The list of fields to be retrieved.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    read_mask = proto.Field(
+    read_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -64,11 +66,11 @@ class CreateQuestionRequest(proto.Message):
             Required. The question to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    question = proto.Field(
+    question: gcd_question.Question = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcd_question.Question,
@@ -87,11 +89,11 @@ class ExecuteQuestionRequest(proto.Message):
             execute.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    interpretation_index = proto.Field(
+    interpretation_index: int = proto.Field(
         proto.INT32,
         number=2,
     )
@@ -107,7 +109,7 @@ class GetUserFeedbackRequest(proto.Message):
             ``projects/foo/locations/bar/questions/1234/userFeedback``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -127,12 +129,12 @@ class UpdateUserFeedbackRequest(proto.Message):
             The list of fields to be updated.
     """
 
-    user_feedback = proto.Field(
+    user_feedback: gcd_user_feedback.UserFeedback = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcd_user_feedback.UserFeedback,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,

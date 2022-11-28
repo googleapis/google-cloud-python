@@ -20,10 +20,10 @@
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-dataqna
+#   python3 -m pip install google-cloud-data-qna
 
 
-# [START dataqna_v1alpha_generated_QuestionService_GetUserFeedback_sync_57510043]
+# [START dataqna_v1alpha_generated_QuestionService_GetUserFeedback_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -49,4 +49,4 @@ def sample_get_user_feedback():
     # Handle the response
     print(response)
 
-# [END dataqna_v1alpha_generated_QuestionService_GetUserFeedback_sync_57510043]
+# [END dataqna_v1alpha_generated_QuestionService_GetUserFeedback_sync]

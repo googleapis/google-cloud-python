@@ -263,10 +263,10 @@ class QuestionServiceRestTransport(QuestionServiceTransport):
         self,
         *,
         host: str = "dataqna.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Sequence[str] = None,
-        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
@@ -358,7 +358,7 @@ class QuestionServiceRestTransport(QuestionServiceTransport):
             request: question_service.CreateQuestionRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> gcd_question.Question:
             r"""Call the create question method over HTTP.
@@ -458,7 +458,7 @@ class QuestionServiceRestTransport(QuestionServiceTransport):
             request: question_service.ExecuteQuestionRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> question.Question:
             r"""Call the execute question method over HTTP.
@@ -558,7 +558,7 @@ class QuestionServiceRestTransport(QuestionServiceTransport):
             request: question_service.GetQuestionRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> question.Question:
             r"""Call the get question method over HTTP.
@@ -649,7 +649,7 @@ class QuestionServiceRestTransport(QuestionServiceTransport):
             request: question_service.GetUserFeedbackRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> user_feedback.UserFeedback:
             r"""Call the get user feedback method over HTTP.
@@ -735,7 +735,7 @@ class QuestionServiceRestTransport(QuestionServiceTransport):
             request: question_service.UpdateUserFeedbackRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> gcd_user_feedback.UserFeedback:
             r"""Call the update user feedback method over HTTP.

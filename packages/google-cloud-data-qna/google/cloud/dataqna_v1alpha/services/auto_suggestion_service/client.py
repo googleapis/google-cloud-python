@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -59,7 +70,7 @@ class AutoSuggestionServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[AutoSuggestionServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -383,8 +394,8 @@ class AutoSuggestionServiceClient(metaclass=AutoSuggestionServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, AutoSuggestionServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, AutoSuggestionServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the auto suggestion service client.
@@ -401,7 +412,7 @@ class AutoSuggestionServiceClient(metaclass=AutoSuggestionServiceClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -431,6 +442,7 @@ class AutoSuggestionServiceClient(metaclass=AutoSuggestionServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -483,10 +495,12 @@ class AutoSuggestionServiceClient(metaclass=AutoSuggestionServiceClientMeta):
 
     def suggest_queries(
         self,
-        request: Union[auto_suggestion_service.SuggestQueriesRequest, dict] = None,
+        request: Optional[
+            Union[auto_suggestion_service.SuggestQueriesRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> auto_suggestion_service.SuggestQueriesResponse:
         r"""Gets a list of suggestions based on a prefix string.
@@ -577,7 +591,7 @@ class AutoSuggestionServiceClient(metaclass=AutoSuggestionServiceClientMeta):
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dataqna",
+            "google-cloud-data-qna",
         ).version,
     )
 except pkg_resources.DistributionNotFound:

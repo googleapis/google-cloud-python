@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -43,15 +45,15 @@ class UserFeedback(proto.Message):
         POSITIVE = 1
         NEGATIVE = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    free_form_feedback = proto.Field(
+    free_form_feedback: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    rating = proto.Field(
+    rating: UserFeedbackRating = proto.Field(
         proto.ENUM,
         number=3,
         enum=UserFeedbackRating,

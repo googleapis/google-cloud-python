@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -230,9 +240,9 @@ class AutoSuggestionServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, AutoSuggestionServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the auto suggestion service client.
@@ -276,10 +286,12 @@ class AutoSuggestionServiceAsyncClient:
 
     async def suggest_queries(
         self,
-        request: Union[auto_suggestion_service.SuggestQueriesRequest, dict] = None,
+        request: Optional[
+            Union[auto_suggestion_service.SuggestQueriesRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> auto_suggestion_service.SuggestQueriesResponse:
         r"""Gets a list of suggestions based on a prefix string.
@@ -312,7 +324,7 @@ class AutoSuggestionServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataqna_v1alpha.types.SuggestQueriesRequest, dict]):
+            request (Optional[Union[google.cloud.dataqna_v1alpha.types.SuggestQueriesRequest, dict]]):
                 The request object. Request for query suggestions.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -362,7 +374,7 @@ class AutoSuggestionServiceAsyncClient:
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dataqna",
+            "google-cloud-data-qna",
         ).version,
     )
 except pkg_resources.DistributionNotFound:
