@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.common import gapic_version as package_version
+
+__version__ = package_version.__version__
 
 
 from .types.operation_metadata import OperationMetadata

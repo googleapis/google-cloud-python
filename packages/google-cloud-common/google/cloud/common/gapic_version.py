@@ -13,6 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .operation_metadata import OperationMetadata
-
-__all__ = ("OperationMetadata",)
+__version__ = "1.0.6"  # {x-release-please-version}
