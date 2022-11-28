@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.firestore_admin_v1.types import index as gfa_index
@@ -70,31 +72,31 @@ class IndexOperationMetadata(proto.Message):
             The progress, in bytes, of this operation.
     """
 
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    index = proto.Field(
+    index: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    state = proto.Field(
+    state: "OperationState" = proto.Field(
         proto.ENUM,
         number=4,
         enum="OperationState",
     )
-    progress_documents = proto.Field(
+    progress_documents: "Progress" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="Progress",
     )
-    progress_bytes = proto.Field(
+    progress_bytes: "Progress" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="Progress",
@@ -117,7 +119,7 @@ class FieldOperationMetadata(proto.Message):
             The field resource that this operation is acting on. For
             example:
             ``projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/fields/{field_path}``
-        index_config_deltas (Sequence[google.cloud.firestore_admin_v1.types.FieldOperationMetadata.IndexConfigDelta]):
+        index_config_deltas (MutableSequence[google.cloud.firestore_admin_v1.types.FieldOperationMetadata.IndexConfigDelta]):
             A list of
             [IndexConfigDelta][google.firestore.admin.v1.FieldOperationMetadata.IndexConfigDelta],
             which describe the intent of this operation.
@@ -148,12 +150,12 @@ class FieldOperationMetadata(proto.Message):
             ADD = 1
             REMOVE = 2
 
-        change_type = proto.Field(
+        change_type: "FieldOperationMetadata.IndexConfigDelta.ChangeType" = proto.Field(
             proto.ENUM,
             number=1,
             enum="FieldOperationMetadata.IndexConfigDelta.ChangeType",
         )
-        index = proto.Field(
+        index: gfa_index.Index = proto.Field(
             proto.MESSAGE,
             number=2,
             message=gfa_index.Index,
@@ -174,47 +176,47 @@ class FieldOperationMetadata(proto.Message):
             ADD = 1
             REMOVE = 2
 
-        change_type = proto.Field(
+        change_type: "FieldOperationMetadata.TtlConfigDelta.ChangeType" = proto.Field(
             proto.ENUM,
             number=1,
             enum="FieldOperationMetadata.TtlConfigDelta.ChangeType",
         )
 
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    field = proto.Field(
+    field: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    index_config_deltas = proto.RepeatedField(
+    index_config_deltas: MutableSequence[IndexConfigDelta] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=IndexConfigDelta,
     )
-    state = proto.Field(
+    state: "OperationState" = proto.Field(
         proto.ENUM,
         number=5,
         enum="OperationState",
     )
-    progress_documents = proto.Field(
+    progress_documents: "Progress" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="Progress",
     )
-    progress_bytes = proto.Field(
+    progress_bytes: "Progress" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="Progress",
     )
-    ttl_config_delta = proto.Field(
+    ttl_config_delta: TtlConfigDelta = proto.Field(
         proto.MESSAGE,
         number=8,
         message=TtlConfigDelta,
@@ -240,42 +242,42 @@ class ExportDocumentsMetadata(proto.Message):
             operation.
         progress_bytes (google.cloud.firestore_admin_v1.types.Progress):
             The progress, in bytes, of this operation.
-        collection_ids (Sequence[str]):
+        collection_ids (MutableSequence[str]):
             Which collection ids are being exported.
         output_uri_prefix (str):
             Where the entities are being exported to.
     """
 
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    operation_state = proto.Field(
+    operation_state: "OperationState" = proto.Field(
         proto.ENUM,
         number=3,
         enum="OperationState",
     )
-    progress_documents = proto.Field(
+    progress_documents: "Progress" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="Progress",
     )
-    progress_bytes = proto.Field(
+    progress_bytes: "Progress" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="Progress",
     )
-    collection_ids = proto.RepeatedField(
+    collection_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    output_uri_prefix = proto.Field(
+    output_uri_prefix: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -300,42 +302,42 @@ class ImportDocumentsMetadata(proto.Message):
             operation.
         progress_bytes (google.cloud.firestore_admin_v1.types.Progress):
             The progress, in bytes, of this operation.
-        collection_ids (Sequence[str]):
+        collection_ids (MutableSequence[str]):
             Which collection ids are being imported.
         input_uri_prefix (str):
             The location of the documents being imported.
     """
 
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    operation_state = proto.Field(
+    operation_state: "OperationState" = proto.Field(
         proto.ENUM,
         number=3,
         enum="OperationState",
     )
-    progress_documents = proto.Field(
+    progress_documents: "Progress" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="Progress",
     )
-    progress_bytes = proto.Field(
+    progress_bytes: "Progress" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="Progress",
     )
-    collection_ids = proto.RepeatedField(
+    collection_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    input_uri_prefix = proto.Field(
+    input_uri_prefix: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -354,7 +356,7 @@ class ExportDocumentsResponse(proto.Message):
             operation completes successfully.
     """
 
-    output_uri_prefix = proto.Field(
+    output_uri_prefix: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -372,11 +374,11 @@ class Progress(proto.Message):
             The amount of work completed.
     """
 
-    estimated_work = proto.Field(
+    estimated_work: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    completed_work = proto.Field(
+    completed_work: int = proto.Field(
         proto.INT64,
         number=2,
     )

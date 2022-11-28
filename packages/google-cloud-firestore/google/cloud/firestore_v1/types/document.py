@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import struct_pb2  # type: ignore
@@ -39,7 +41,7 @@ class Document(proto.Message):
         name (str):
             The resource name of the document, for example
             ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
-        fields (Mapping[str, google.cloud.firestore_v1.types.Value]):
+        fields (MutableMapping[str, google.cloud.firestore_v1.types.Value]):
             The document's fields.
 
             The map keys represent field names.
@@ -82,22 +84,22 @@ class Document(proto.Message):
             ``read_time`` of a query.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    fields = proto.MapField(
+    fields: MutableMapping[str, "Value"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=2,
         message="Value",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
@@ -175,61 +177,61 @@ class Value(proto.Message):
             This field is a member of `oneof`_ ``value_type``.
     """
 
-    null_value = proto.Field(
+    null_value: struct_pb2.NullValue = proto.Field(
         proto.ENUM,
         number=11,
         oneof="value_type",
         enum=struct_pb2.NullValue,
     )
-    boolean_value = proto.Field(
+    boolean_value: bool = proto.Field(
         proto.BOOL,
         number=1,
         oneof="value_type",
     )
-    integer_value = proto.Field(
+    integer_value: int = proto.Field(
         proto.INT64,
         number=2,
         oneof="value_type",
     )
-    double_value = proto.Field(
+    double_value: float = proto.Field(
         proto.DOUBLE,
         number=3,
         oneof="value_type",
     )
-    timestamp_value = proto.Field(
+    timestamp_value: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="value_type",
         message=timestamp_pb2.Timestamp,
     )
-    string_value = proto.Field(
+    string_value: str = proto.Field(
         proto.STRING,
         number=17,
         oneof="value_type",
     )
-    bytes_value = proto.Field(
+    bytes_value: bytes = proto.Field(
         proto.BYTES,
         number=18,
         oneof="value_type",
     )
-    reference_value = proto.Field(
+    reference_value: str = proto.Field(
         proto.STRING,
         number=5,
         oneof="value_type",
     )
-    geo_point_value = proto.Field(
+    geo_point_value: latlng_pb2.LatLng = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="value_type",
         message=latlng_pb2.LatLng,
     )
-    array_value = proto.Field(
+    array_value: "ArrayValue" = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="value_type",
         message="ArrayValue",
     )
-    map_value = proto.Field(
+    map_value: "MapValue" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="value_type",
@@ -241,11 +243,11 @@ class ArrayValue(proto.Message):
     r"""An array value.
 
     Attributes:
-        values (Sequence[google.cloud.firestore_v1.types.Value]):
+        values (MutableSequence[google.cloud.firestore_v1.types.Value]):
             Values in the array.
     """
 
-    values = proto.RepeatedField(
+    values: MutableSequence["Value"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Value",
@@ -256,7 +258,7 @@ class MapValue(proto.Message):
     r"""A map value.
 
     Attributes:
-        fields (Mapping[str, google.cloud.firestore_v1.types.Value]):
+        fields (MutableMapping[str, google.cloud.firestore_v1.types.Value]):
             The map's fields.
 
             The map keys represent field names. Field names matching the
@@ -266,7 +268,7 @@ class MapValue(proto.Message):
             bytes and cannot be empty.
     """
 
-    fields = proto.MapField(
+    fields: MutableMapping[str, "Value"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,

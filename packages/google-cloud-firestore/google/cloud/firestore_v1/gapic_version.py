@@ -13,24 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import MutableMapping, MutableSequence
-
-import proto  # type: ignore
-
-
-__protobuf__ = proto.module(
-    package="google.firestore.admin.v1",
-    manifest={
-        "LocationMetadata",
-    },
-)
-
-
-class LocationMetadata(proto.Message):
-    r"""The metadata message for
-    [google.cloud.location.Location.metadata][google.cloud.location.Location.metadata].
-
-    """
-
-
-__all__ = tuple(sorted(__protobuf__.manifest))
+__version__ = "2.7.2"  # {x-release-please-version}

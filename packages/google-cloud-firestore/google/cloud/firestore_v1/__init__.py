@@ -19,12 +19,9 @@
 """Python idiomatic client for Google Cloud Firestore."""
 
 
-import pkg_resources
+from google.cloud.firestore_v1 import gapic_version as package_version
 
-try:
-    __version__ = pkg_resources.get_distribution("google-cloud-firestore").version
-except pkg_resources.DistributionNotFound:
-    __version__ = None
+__version__ = package_version.__version__
 
 from google.cloud.firestore_v1 import types
 from google.cloud.firestore_v1._helpers import GeoPoint

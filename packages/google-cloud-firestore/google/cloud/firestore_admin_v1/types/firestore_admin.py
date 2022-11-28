@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.firestore_admin_v1.types import database as gfa_database
@@ -54,7 +56,7 @@ class ListDatabasesRequest(proto.Message):
             ``projects/{project_id}``
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -64,11 +66,11 @@ class ListDatabasesResponse(proto.Message):
     r"""The list of databases for a project.
 
     Attributes:
-        databases (Sequence[google.cloud.firestore_admin_v1.types.Database]):
+        databases (MutableSequence[google.cloud.firestore_admin_v1.types.Database]):
             The databases in the project.
     """
 
-    databases = proto.RepeatedField(
+    databases: MutableSequence[gfa_database.Database] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gfa_database.Database,
@@ -85,7 +87,7 @@ class GetDatabaseRequest(proto.Message):
             ``projects/{project_id}/databases/{database_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -102,12 +104,12 @@ class UpdateDatabaseRequest(proto.Message):
             The list of fields to be updated.
     """
 
-    database = proto.Field(
+    database: gfa_database.Database = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gfa_database.Database,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -130,11 +132,11 @@ class CreateIndexRequest(proto.Message):
             Required. The composite index to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    index = proto.Field(
+    index: gfa_index.Index = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gfa_index.Index,
@@ -159,19 +161,19 @@ class ListIndexesRequest(proto.Message):
             that may be used to get the next page of results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -182,7 +184,7 @@ class ListIndexesResponse(proto.Message):
     [FirestoreAdmin.ListIndexes][google.firestore.admin.v1.FirestoreAdmin.ListIndexes].
 
     Attributes:
-        indexes (Sequence[google.cloud.firestore_admin_v1.types.Index]):
+        indexes (MutableSequence[google.cloud.firestore_admin_v1.types.Index]):
             The requested indexes.
         next_page_token (str):
             A page token that may be used to request
@@ -194,12 +196,12 @@ class ListIndexesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    indexes = proto.RepeatedField(
+    indexes: MutableSequence[gfa_index.Index] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gfa_index.Index,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -215,7 +217,7 @@ class GetIndexRequest(proto.Message):
             ``projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/indexes/{index_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -231,7 +233,7 @@ class DeleteIndexRequest(proto.Message):
             ``projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/indexes/{index_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -250,12 +252,12 @@ class UpdateFieldRequest(proto.Message):
             in the field.
     """
 
-    field = proto.Field(
+    field: gfa_field.Field = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gfa_field.Field,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -272,7 +274,7 @@ class GetFieldRequest(proto.Message):
             ``projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/fields/{field_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -302,19 +304,19 @@ class ListFieldsRequest(proto.Message):
             that may be used to get the next page of results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -325,7 +327,7 @@ class ListFieldsResponse(proto.Message):
     [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields].
 
     Attributes:
-        fields (Sequence[google.cloud.firestore_admin_v1.types.Field]):
+        fields (MutableSequence[google.cloud.firestore_admin_v1.types.Field]):
             The requested fields.
         next_page_token (str):
             A page token that may be used to request
@@ -337,12 +339,12 @@ class ListFieldsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    fields = proto.RepeatedField(
+    fields: MutableSequence[gfa_field.Field] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gfa_field.Field,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -356,7 +358,7 @@ class ExportDocumentsRequest(proto.Message):
         name (str):
             Required. Database to export. Should be of the form:
             ``projects/{project_id}/databases/{database_id}``.
-        collection_ids (Sequence[str]):
+        collection_ids (MutableSequence[str]):
             Which collection ids to export. Unspecified
             means all collections.
         output_uri_prefix (str):
@@ -371,15 +373,15 @@ class ExportDocumentsRequest(proto.Message):
             generated based on the start time.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    collection_ids = proto.RepeatedField(
+    collection_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    output_uri_prefix = proto.Field(
+    output_uri_prefix: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -393,7 +395,7 @@ class ImportDocumentsRequest(proto.Message):
         name (str):
             Required. Database to import into. Should be of the form:
             ``projects/{project_id}/databases/{database_id}``.
-        collection_ids (Sequence[str]):
+        collection_ids (MutableSequence[str]):
             Which collection ids to import. Unspecified
             means all collections included in the import.
         input_uri_prefix (str):
@@ -403,15 +405,15 @@ class ImportDocumentsRequest(proto.Message):
             [google.firestore.admin.v1.ExportDocumentsResponse.output_uri_prefix][google.firestore.admin.v1.ExportDocumentsResponse.output_uri_prefix].
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    collection_ids = proto.RepeatedField(
+    collection_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    input_uri_prefix = proto.Field(
+    input_uri_prefix: str = proto.Field(
         proto.STRING,
         number=3,
     )

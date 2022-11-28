@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -90,34 +92,34 @@ class Database(proto.Message):
         ENABLED = 1
         DISABLED = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    location_id = proto.Field(
+    location_id: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    type_ = proto.Field(
+    type_: DatabaseType = proto.Field(
         proto.ENUM,
         number=10,
         enum=DatabaseType,
     )
-    concurrency_mode = proto.Field(
+    concurrency_mode: ConcurrencyMode = proto.Field(
         proto.ENUM,
         number=15,
         enum=ConcurrencyMode,
     )
-    app_engine_integration_mode = proto.Field(
+    app_engine_integration_mode: AppEngineIntegrationMode = proto.Field(
         proto.ENUM,
         number=19,
         enum=AppEngineIntegrationMode,
     )
-    key_prefix = proto.Field(
+    key_prefix: str = proto.Field(
         proto.STRING,
         number=20,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=99,
     )

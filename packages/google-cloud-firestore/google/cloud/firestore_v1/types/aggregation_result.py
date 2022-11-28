@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.firestore_v1.types import document
@@ -34,7 +36,7 @@ class AggregationResult(proto.Message):
     fields present for each result.
 
     Attributes:
-        aggregate_fields (Mapping[str, google.cloud.firestore_v1.types.Value]):
+        aggregate_fields (MutableMapping[str, google.cloud.firestore_v1.types.Value]):
             The result of the aggregation functions, ex:
             ``COUNT(*) AS total_docs``.
 
@@ -45,7 +47,7 @@ class AggregationResult(proto.Message):
             the query.
     """
 
-    aggregate_fields = proto.MapField(
+    aggregate_fields: MutableMapping[str, document.Value] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=2,

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -45,7 +47,7 @@ class Index(proto.Message):
             descended from a specific document, specified at
             query time, and that have the same collection id
             as this index.
-        fields (Sequence[google.cloud.firestore_admin_v1.types.Index.IndexField]):
+        fields (MutableSequence[google.cloud.firestore_admin_v1.types.Index.IndexField]):
             The fields supported by this index.
 
             For composite indexes, this is always 2 or more fields. The
@@ -123,38 +125,38 @@ class Index(proto.Message):
             ARRAY_CONFIG_UNSPECIFIED = 0
             CONTAINS = 1
 
-        field_path = proto.Field(
+        field_path: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        order = proto.Field(
+        order: "Index.IndexField.Order" = proto.Field(
             proto.ENUM,
             number=2,
             oneof="value_mode",
             enum="Index.IndexField.Order",
         )
-        array_config = proto.Field(
+        array_config: "Index.IndexField.ArrayConfig" = proto.Field(
             proto.ENUM,
             number=3,
             oneof="value_mode",
             enum="Index.IndexField.ArrayConfig",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    query_scope = proto.Field(
+    query_scope: QueryScope = proto.Field(
         proto.ENUM,
         number=2,
         enum=QueryScope,
     )
-    fields = proto.RepeatedField(
+    fields: MutableSequence[IndexField] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=IndexField,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=4,
         enum=State,

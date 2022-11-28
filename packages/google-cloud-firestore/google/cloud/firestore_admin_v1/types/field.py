@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.firestore_admin_v1.types import index
@@ -73,7 +75,7 @@ class Field(proto.Message):
         r"""The index configuration for this field.
 
         Attributes:
-            indexes (Sequence[google.cloud.firestore_admin_v1.types.Index]):
+            indexes (MutableSequence[google.cloud.firestore_admin_v1.types.Index]):
                 The indexes supported for this field.
             uses_ancestor_config (bool):
                 Output only. When true, the ``Field``'s index configuration
@@ -95,20 +97,20 @@ class Field(proto.Message):
                 will be ``false``.
         """
 
-        indexes = proto.RepeatedField(
+        indexes: MutableSequence[index.Index] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=index.Index,
         )
-        uses_ancestor_config = proto.Field(
+        uses_ancestor_config: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
-        ancestor_field = proto.Field(
+        ancestor_field: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        reverting = proto.Field(
+        reverting: bool = proto.Field(
             proto.BOOL,
             number=4,
         )
@@ -133,22 +135,22 @@ class Field(proto.Message):
             ACTIVE = 2
             NEEDS_REPAIR = 3
 
-        state = proto.Field(
+        state: "Field.TtlConfig.State" = proto.Field(
             proto.ENUM,
             number=1,
             enum="Field.TtlConfig.State",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    index_config = proto.Field(
+    index_config: IndexConfig = proto.Field(
         proto.MESSAGE,
         number=2,
         message=IndexConfig,
     )
-    ttl_config = proto.Field(
+    ttl_config: TtlConfig = proto.Field(
         proto.MESSAGE,
         number=3,
         message=TtlConfig,

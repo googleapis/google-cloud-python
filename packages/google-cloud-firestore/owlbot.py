@@ -83,13 +83,13 @@ except ImportError:
     )
 
 for library in get_staging_dirs(default_version=firestore_default_version, sub_directory="firestore"):
-    s.move(library / f"google/cloud/firestore_{library.name}", excludes=[f"__init__.py"])
+    s.move(library / f"google/cloud/firestore_{library.name}", excludes=[f"__init__.py", "**/gapic_version.py"])
     s.move(library / f"tests/", f"tests")
     update_fixup_scripts(library)
     s.move(library / "scripts")
 
 for library in get_staging_dirs(default_version=firestore_admin_default_version, sub_directory="firestore_admin"):
-    s.move(library / f"google/cloud/firestore_admin_{library.name}", excludes=[f"__init__.py"])
+    s.move(library / f"google/cloud/firestore_admin_{library.name}", excludes=[f"__init__.py", "**/gapic_version.py"])
     s.move(library / f"tests", f"tests")
     update_fixup_scripts(library)
     s.move(library / "scripts")
@@ -115,13 +115,19 @@ for library in get_staging_dirs(sub_directory="firestore_bundle"):
 
     s.replace(
         library / "google/cloud/bundle/__init__.py",
-        "\'BundledQuery\',",
-        "\"BundledQuery\",\n\"FirestoreBundle\",",
+        "from google.cloud.bundle import gapic_version as package_version\n",
+        "from google.cloud.firestore_bundle import gapic_version as package_version\n",
     )
+
+    s.replace(
+        library / "google/cloud/bundle/__init__.py",
+        "\'BundledQuery\',",
+        "\"BundledQuery\",\n\"FirestoreBundle\",",)
 
     s.move(
         library / f"google/cloud/bundle",
         f"google/cloud/firestore_bundle",
+        excludes=["**/gapic_version.py"],
     )
     s.move(library / f"tests", f"tests")
 
@@ -140,11 +146,10 @@ templated_files = common.py_library(
     split_system_tests=True,
 )
 
-s.move(templated_files)
+s.move(templated_files,
+       excludes=[".github/release-please.yml"])
 
 python.py_samples(skip_readmes=True)
-
-python.configure_previous_major_version_branches()
 
 # ----------------------------------------------------------------------------
 # Customize noxfile.py

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.firestore_v1.types import document as document_pb2  # type: ignore
@@ -55,17 +57,17 @@ class BundledQuery(proto.Message):
         FIRST = 0
         LAST = 1
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    structured_query = proto.Field(
+    structured_query: query_pb2.StructuredQuery = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="query_type",
         message=query_pb2.StructuredQuery,
     )
-    limit_type = proto.Field(
+    limit_type: LimitType = proto.Field(
         proto.ENUM,
         number=3,
         enum=LimitType,
@@ -92,16 +94,16 @@ class NamedQuery(proto.Message):
             client SDKs.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    bundled_query = proto.Field(
+    bundled_query: "BundledQuery" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="BundledQuery",
     )
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -119,25 +121,25 @@ class BundledDocumentMetadata(proto.Message):
             bundled.
         exists (bool):
             Whether the document exists.
-        queries (Sequence[str]):
+        queries (MutableSequence[str]):
             The names of the queries in this bundle that
             this document matches to.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    exists = proto.Field(
+    exists: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    queries = proto.RepeatedField(
+    queries: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
@@ -161,24 +163,24 @@ class BundleMetadata(proto.Message):
             ``BundleMetadata``.
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    version = proto.Field(
+    version: int = proto.Field(
         proto.UINT32,
         number=3,
     )
-    total_documents = proto.Field(
+    total_documents: int = proto.Field(
         proto.UINT32,
         number=4,
     )
-    total_bytes = proto.Field(
+    total_bytes: int = proto.Field(
         proto.UINT64,
         number=5,
     )
@@ -213,25 +215,25 @@ class BundleElement(proto.Message):
             This field is a member of `oneof`_ ``element_type``.
     """
 
-    metadata = proto.Field(
+    metadata: "BundleMetadata" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="element_type",
         message="BundleMetadata",
     )
-    named_query = proto.Field(
+    named_query: "NamedQuery" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="element_type",
         message="NamedQuery",
     )
-    document_metadata = proto.Field(
+    document_metadata: "BundledDocumentMetadata" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="element_type",
         message="BundledDocumentMetadata",
     )
-    document = proto.Field(
+    document: document_pb2.Document = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="element_type",

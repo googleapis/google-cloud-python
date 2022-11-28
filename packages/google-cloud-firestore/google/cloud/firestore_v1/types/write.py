@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.firestore_v1.types import common
@@ -69,7 +71,7 @@ class Write(proto.Message):
             the mask, but not present in the input document, are deleted
             from the document on the server. The field paths in this
             mask must not contain a reserved field name.
-        update_transforms (Sequence[google.cloud.firestore_v1.types.DocumentTransform.FieldTransform]):
+        update_transforms (MutableSequence[google.cloud.firestore_v1.types.DocumentTransform.FieldTransform]):
             The transforms to perform after update.
 
             This field can be set only when the operation is ``update``.
@@ -82,34 +84,36 @@ class Write(proto.Message):
             by the target document.
     """
 
-    update = proto.Field(
+    update: gf_document.Document = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="operation",
         message=gf_document.Document,
     )
-    delete = proto.Field(
+    delete: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="operation",
     )
-    transform = proto.Field(
+    transform: "DocumentTransform" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="operation",
         message="DocumentTransform",
     )
-    update_mask = proto.Field(
+    update_mask: common.DocumentMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=common.DocumentMask,
     )
-    update_transforms = proto.RepeatedField(
+    update_transforms: MutableSequence[
+        "DocumentTransform.FieldTransform"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="DocumentTransform.FieldTransform",
     )
-    current_document = proto.Field(
+    current_document: common.Precondition = proto.Field(
         proto.MESSAGE,
         number=4,
         message=common.Precondition,
@@ -122,7 +126,7 @@ class DocumentTransform(proto.Message):
     Attributes:
         document (str):
             The name of the document to transform.
-        field_transforms (Sequence[google.cloud.firestore_v1.types.DocumentTransform.FieldTransform]):
+        field_transforms (MutableSequence[google.cloud.firestore_v1.types.DocumentTransform.FieldTransform]):
             The list of transformations to apply to the
             fields of the document, in order.
             This must not be empty.
@@ -237,52 +241,54 @@ class DocumentTransform(proto.Message):
             SERVER_VALUE_UNSPECIFIED = 0
             REQUEST_TIME = 1
 
-        field_path = proto.Field(
+        field_path: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        set_to_server_value = proto.Field(
-            proto.ENUM,
-            number=2,
-            oneof="transform_type",
-            enum="DocumentTransform.FieldTransform.ServerValue",
+        set_to_server_value: "DocumentTransform.FieldTransform.ServerValue" = (
+            proto.Field(
+                proto.ENUM,
+                number=2,
+                oneof="transform_type",
+                enum="DocumentTransform.FieldTransform.ServerValue",
+            )
         )
-        increment = proto.Field(
+        increment: gf_document.Value = proto.Field(
             proto.MESSAGE,
             number=3,
             oneof="transform_type",
             message=gf_document.Value,
         )
-        maximum = proto.Field(
+        maximum: gf_document.Value = proto.Field(
             proto.MESSAGE,
             number=4,
             oneof="transform_type",
             message=gf_document.Value,
         )
-        minimum = proto.Field(
+        minimum: gf_document.Value = proto.Field(
             proto.MESSAGE,
             number=5,
             oneof="transform_type",
             message=gf_document.Value,
         )
-        append_missing_elements = proto.Field(
+        append_missing_elements: gf_document.ArrayValue = proto.Field(
             proto.MESSAGE,
             number=6,
             oneof="transform_type",
             message=gf_document.ArrayValue,
         )
-        remove_all_from_array = proto.Field(
+        remove_all_from_array: gf_document.ArrayValue = proto.Field(
             proto.MESSAGE,
             number=7,
             oneof="transform_type",
             message=gf_document.ArrayValue,
         )
 
-    document = proto.Field(
+    document: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    field_transforms = proto.RepeatedField(
+    field_transforms: MutableSequence[FieldTransform] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=FieldTransform,
@@ -299,18 +305,18 @@ class WriteResult(proto.Message):
 
             If the write did not actually change the document, this will
             be the previous update_time.
-        transform_results (Sequence[google.cloud.firestore_v1.types.Value]):
+        transform_results (MutableSequence[google.cloud.firestore_v1.types.Value]):
             The results of applying each
             [DocumentTransform.FieldTransform][google.firestore.v1.DocumentTransform.FieldTransform],
             in the same order.
     """
 
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    transform_results = proto.RepeatedField(
+    transform_results: MutableSequence[gf_document.Value] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=gf_document.Value,
@@ -335,24 +341,24 @@ class DocumentChange(proto.Message):
 
             If ``mask`` is set, contains only fields that were updated
             or added.
-        target_ids (Sequence[int]):
+        target_ids (MutableSequence[int]):
             A set of target IDs of targets that match
             this document.
-        removed_target_ids (Sequence[int]):
+        removed_target_ids (MutableSequence[int]):
             A set of target IDs for targets that no
             longer match this document.
     """
 
-    document = proto.Field(
+    document: gf_document.Document = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gf_document.Document,
     )
-    target_ids = proto.RepeatedField(
+    target_ids: MutableSequence[int] = proto.RepeatedField(
         proto.INT32,
         number=5,
     )
-    removed_target_ids = proto.RepeatedField(
+    removed_target_ids: MutableSequence[int] = proto.RepeatedField(
         proto.INT32,
         number=6,
     )
@@ -373,7 +379,7 @@ class DocumentDelete(proto.Message):
         document (str):
             The resource name of the
             [Document][google.firestore.v1.Document] that was deleted.
-        removed_target_ids (Sequence[int]):
+        removed_target_ids (MutableSequence[int]):
             A set of target IDs for targets that
             previously matched this entity.
         read_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -382,15 +388,15 @@ class DocumentDelete(proto.Message):
             Greater or equal to the ``commit_time`` of the delete.
     """
 
-    document = proto.Field(
+    document: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    removed_target_ids = proto.RepeatedField(
+    removed_target_ids: MutableSequence[int] = proto.RepeatedField(
         proto.INT32,
         number=6,
     )
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
@@ -414,7 +420,7 @@ class DocumentRemove(proto.Message):
             The resource name of the
             [Document][google.firestore.v1.Document] that has gone out
             of view.
-        removed_target_ids (Sequence[int]):
+        removed_target_ids (MutableSequence[int]):
             A set of target IDs for targets that
             previously matched this document.
         read_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -424,15 +430,15 @@ class DocumentRemove(proto.Message):
             change/delete/remove.
     """
 
-    document = proto.Field(
+    document: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    removed_target_ids = proto.RepeatedField(
+    removed_target_ids: MutableSequence[int] = proto.RepeatedField(
         proto.INT32,
         number=2,
     )
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
@@ -454,11 +460,11 @@ class ExistenceFilter(proto.Message):
             longer match the target.
     """
 
-    target_id = proto.Field(
+    target_id: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    count = proto.Field(
+    count: int = proto.Field(
         proto.INT32,
         number=2,
     )

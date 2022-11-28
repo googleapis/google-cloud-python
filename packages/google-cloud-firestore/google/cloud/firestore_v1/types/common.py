@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -36,13 +38,13 @@ class DocumentMask(proto.Message):
     dynamic nature of [Value][google.firestore.v1.Value].
 
     Attributes:
-        field_paths (Sequence[str]):
+        field_paths (MutableSequence[str]):
             The list of field paths in the mask. See
             [Document.fields][google.firestore.v1.Document.fields] for a
             field path syntax reference.
     """
 
-    field_paths = proto.RepeatedField(
+    field_paths: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -73,12 +75,12 @@ class Precondition(proto.Message):
             This field is a member of `oneof`_ ``condition_type``.
     """
 
-    exists = proto.Field(
+    exists: bool = proto.Field(
         proto.BOOL,
         number=1,
         oneof="condition_type",
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="condition_type",
@@ -118,7 +120,7 @@ class TransactionOptions(proto.Message):
                 An optional transaction to retry.
         """
 
-        retry_transaction = proto.Field(
+        retry_transaction: bytes = proto.Field(
             proto.BYTES,
             number=1,
         )
@@ -138,20 +140,20 @@ class TransactionOptions(proto.Message):
                 This field is a member of `oneof`_ ``consistency_selector``.
         """
 
-        read_time = proto.Field(
+        read_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=2,
             oneof="consistency_selector",
             message=timestamp_pb2.Timestamp,
         )
 
-    read_only = proto.Field(
+    read_only: ReadOnly = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="mode",
         message=ReadOnly,
     )
-    read_write = proto.Field(
+    read_write: ReadWrite = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="mode",

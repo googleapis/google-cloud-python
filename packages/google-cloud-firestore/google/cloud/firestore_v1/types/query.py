@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.firestore_v1.types import document
@@ -35,11 +37,11 @@ class StructuredQuery(proto.Message):
     Attributes:
         select (google.cloud.firestore_v1.types.StructuredQuery.Projection):
             The projection to return.
-        from_ (Sequence[google.cloud.firestore_v1.types.StructuredQuery.CollectionSelector]):
+        from_ (MutableSequence[google.cloud.firestore_v1.types.StructuredQuery.CollectionSelector]):
             The collections to query.
         where (google.cloud.firestore_v1.types.StructuredQuery.Filter):
             The filter to apply.
-        order_by (Sequence[google.cloud.firestore_v1.types.StructuredQuery.Order]):
+        order_by (MutableSequence[google.cloud.firestore_v1.types.StructuredQuery.Order]):
             The order to apply to the query results.
 
             Firestore allows callers to provide a full ordering, a
@@ -156,11 +158,11 @@ class StructuredQuery(proto.Message):
                 collections.
         """
 
-        collection_id = proto.Field(
+        collection_id: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        all_descendants = proto.Field(
+        all_descendants: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
@@ -190,19 +192,19 @@ class StructuredQuery(proto.Message):
                 This field is a member of `oneof`_ ``filter_type``.
         """
 
-        composite_filter = proto.Field(
+        composite_filter: "StructuredQuery.CompositeFilter" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="filter_type",
             message="StructuredQuery.CompositeFilter",
         )
-        field_filter = proto.Field(
+        field_filter: "StructuredQuery.FieldFilter" = proto.Field(
             proto.MESSAGE,
             number=2,
             oneof="filter_type",
             message="StructuredQuery.FieldFilter",
         )
-        unary_filter = proto.Field(
+        unary_filter: "StructuredQuery.UnaryFilter" = proto.Field(
             proto.MESSAGE,
             number=3,
             oneof="filter_type",
@@ -216,7 +218,7 @@ class StructuredQuery(proto.Message):
         Attributes:
             op (google.cloud.firestore_v1.types.StructuredQuery.CompositeFilter.Operator):
                 The operator for combining multiple filters.
-            filters (Sequence[google.cloud.firestore_v1.types.StructuredQuery.Filter]):
+            filters (MutableSequence[google.cloud.firestore_v1.types.StructuredQuery.Filter]):
                 The list of filters to combine.
 
                 Requires:
@@ -229,12 +231,12 @@ class StructuredQuery(proto.Message):
             OPERATOR_UNSPECIFIED = 0
             AND = 1
 
-        op = proto.Field(
+        op: "StructuredQuery.CompositeFilter.Operator" = proto.Field(
             proto.ENUM,
             number=1,
             enum="StructuredQuery.CompositeFilter.Operator",
         )
-        filters = proto.RepeatedField(
+        filters: MutableSequence["StructuredQuery.Filter"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="StructuredQuery.Filter",
@@ -266,17 +268,17 @@ class StructuredQuery(proto.Message):
             ARRAY_CONTAINS_ANY = 9
             NOT_IN = 10
 
-        field = proto.Field(
+        field: "StructuredQuery.FieldReference" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="StructuredQuery.FieldReference",
         )
-        op = proto.Field(
+        op: "StructuredQuery.FieldFilter.Operator" = proto.Field(
             proto.ENUM,
             number=2,
             enum="StructuredQuery.FieldFilter.Operator",
         )
-        value = proto.Field(
+        value: document.Value = proto.Field(
             proto.MESSAGE,
             number=3,
             message=document.Value,
@@ -304,12 +306,12 @@ class StructuredQuery(proto.Message):
             IS_NOT_NAN = 4
             IS_NOT_NULL = 5
 
-        op = proto.Field(
+        op: "StructuredQuery.UnaryFilter.Operator" = proto.Field(
             proto.ENUM,
             number=1,
             enum="StructuredQuery.UnaryFilter.Operator",
         )
-        field = proto.Field(
+        field: "StructuredQuery.FieldReference" = proto.Field(
             proto.MESSAGE,
             number=2,
             oneof="operand_type",
@@ -326,12 +328,12 @@ class StructuredQuery(proto.Message):
                 The direction to order by. Defaults to ``ASCENDING``.
         """
 
-        field = proto.Field(
+        field: "StructuredQuery.FieldReference" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="StructuredQuery.FieldReference",
         )
-        direction = proto.Field(
+        direction: "StructuredQuery.Direction" = proto.Field(
             proto.ENUM,
             number=2,
             enum="StructuredQuery.Direction",
@@ -350,7 +352,7 @@ class StructuredQuery(proto.Message):
                    name][google.firestore.v1.Document.fields] limitations.
         """
 
-        field_path = proto.Field(
+        field_path: str = proto.Field(
             proto.STRING,
             number=2,
         )
@@ -359,54 +361,54 @@ class StructuredQuery(proto.Message):
         r"""The projection of document's fields to return.
 
         Attributes:
-            fields (Sequence[google.cloud.firestore_v1.types.StructuredQuery.FieldReference]):
+            fields (MutableSequence[google.cloud.firestore_v1.types.StructuredQuery.FieldReference]):
                 The fields to return.
 
                 If empty, all fields are returned. To only return the name
                 of the document, use ``['__name__']``.
         """
 
-        fields = proto.RepeatedField(
+        fields: MutableSequence["StructuredQuery.FieldReference"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="StructuredQuery.FieldReference",
         )
 
-    select = proto.Field(
+    select: Projection = proto.Field(
         proto.MESSAGE,
         number=1,
         message=Projection,
     )
-    from_ = proto.RepeatedField(
+    from_: MutableSequence[CollectionSelector] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=CollectionSelector,
     )
-    where = proto.Field(
+    where: Filter = proto.Field(
         proto.MESSAGE,
         number=3,
         message=Filter,
     )
-    order_by = proto.RepeatedField(
+    order_by: MutableSequence[Order] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=Order,
     )
-    start_at = proto.Field(
+    start_at: "Cursor" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="Cursor",
     )
-    end_at = proto.Field(
+    end_at: "Cursor" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="Cursor",
     )
-    offset = proto.Field(
+    offset: int = proto.Field(
         proto.INT32,
         number=6,
     )
-    limit = proto.Field(
+    limit: wrappers_pb2.Int32Value = proto.Field(
         proto.MESSAGE,
         number=5,
         message=wrappers_pb2.Int32Value,
@@ -425,7 +427,7 @@ class StructuredAggregationQuery(proto.Message):
             Nested structured query.
 
             This field is a member of `oneof`_ ``query_type``.
-        aggregations (Sequence[google.cloud.firestore_v1.types.StructuredAggregationQuery.Aggregation]):
+        aggregations (MutableSequence[google.cloud.firestore_v1.types.StructuredAggregationQuery.Aggregation]):
             Optional. Series of aggregations to apply over the results
             of the ``structured_query``.
 
@@ -511,30 +513,30 @@ class StructuredAggregationQuery(proto.Message):
                     -  Must be greater than zero when present.
             """
 
-            up_to = proto.Field(
+            up_to: wrappers_pb2.Int64Value = proto.Field(
                 proto.MESSAGE,
                 number=1,
                 message=wrappers_pb2.Int64Value,
             )
 
-        count = proto.Field(
+        count: "StructuredAggregationQuery.Aggregation.Count" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="operator",
             message="StructuredAggregationQuery.Aggregation.Count",
         )
-        alias = proto.Field(
+        alias: str = proto.Field(
             proto.STRING,
             number=7,
         )
 
-    structured_query = proto.Field(
+    structured_query: "StructuredQuery" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="query_type",
         message="StructuredQuery",
     )
-    aggregations = proto.RepeatedField(
+    aggregations: MutableSequence[Aggregation] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=Aggregation,
@@ -545,7 +547,7 @@ class Cursor(proto.Message):
     r"""A position in a query result set.
 
     Attributes:
-        values (Sequence[google.cloud.firestore_v1.types.Value]):
+        values (MutableSequence[google.cloud.firestore_v1.types.Value]):
             The values that represent a position, in the
             order they appear in the order by clause of a
             query.
@@ -557,12 +559,12 @@ class Cursor(proto.Message):
             defined by the query.
     """
 
-    values = proto.RepeatedField(
+    values: MutableSequence[document.Value] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=document.Value,
     )
-    before = proto.Field(
+    before: bool = proto.Field(
         proto.BOOL,
         number=2,
     )

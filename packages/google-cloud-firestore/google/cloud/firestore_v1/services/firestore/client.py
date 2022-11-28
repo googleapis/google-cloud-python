@@ -19,6 +19,8 @@ import re
 from typing import (
     Dict,
     Mapping,
+    MutableMapping,
+    MutableSequence,
     Optional,
     Iterable,
     Iterator,
@@ -26,6 +28,7 @@ from typing import (
     Tuple,
     Type,
     Union,
+    cast,
 )
 import pkg_resources
 
@@ -75,7 +78,7 @@ class FirestoreClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[FirestoreTransport]:
         """Returns an appropriate transport class.
 
@@ -336,8 +339,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, FirestoreTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, FirestoreTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the firestore client.
@@ -351,7 +354,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
             transport (Union[str, FirestoreTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -381,6 +384,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -433,10 +437,10 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
     def get_document(
         self,
-        request: Union[firestore.GetDocumentRequest, dict] = None,
+        request: Optional[Union[firestore.GetDocumentRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document.Document:
         r"""Gets a single document.
@@ -515,10 +519,10 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
     def list_documents(
         self,
-        request: Union[firestore.ListDocumentsRequest, dict] = None,
+        request: Optional[Union[firestore.ListDocumentsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDocumentsPager:
         r"""Lists documents.
@@ -616,12 +620,12 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
     def update_document(
         self,
-        request: Union[firestore.UpdateDocumentRequest, dict] = None,
+        request: Optional[Union[firestore.UpdateDocumentRequest, dict]] = None,
         *,
-        document: gf_document.Document = None,
-        update_mask: common.DocumentMask = None,
+        document: Optional[gf_document.Document] = None,
+        update_mask: Optional[common.DocumentMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gf_document.Document:
         r"""Updates or inserts a document.
@@ -737,11 +741,11 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
     def delete_document(
         self,
-        request: Union[firestore.DeleteDocumentRequest, dict] = None,
+        request: Optional[Union[firestore.DeleteDocumentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a document.
@@ -828,10 +832,10 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
     def batch_get_documents(
         self,
-        request: Union[firestore.BatchGetDocumentsRequest, dict] = None,
+        request: Optional[Union[firestore.BatchGetDocumentsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[firestore.BatchGetDocumentsResponse]:
         r"""Gets multiple documents.
@@ -913,11 +917,11 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
     def begin_transaction(
         self,
-        request: Union[firestore.BeginTransactionRequest, dict] = None,
+        request: Optional[Union[firestore.BeginTransactionRequest, dict]] = None,
         *,
-        database: str = None,
+        database: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> firestore.BeginTransactionResponse:
         r"""Starts a new transaction.
@@ -1015,12 +1019,12 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
     def commit(
         self,
-        request: Union[firestore.CommitRequest, dict] = None,
+        request: Optional[Union[firestore.CommitRequest, dict]] = None,
         *,
-        database: str = None,
-        writes: Sequence[gf_write.Write] = None,
+        database: Optional[str] = None,
+        writes: Optional[MutableSequence[gf_write.Write]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> firestore.CommitResponse:
         r"""Commits a transaction, while optionally updating
@@ -1063,7 +1067,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
                 This corresponds to the ``database`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            writes (Sequence[google.cloud.firestore_v1.types.Write]):
+            writes (MutableSequence[google.cloud.firestore_v1.types.Write]):
                 The writes to apply.
                 Always executed atomically and in order.
 
@@ -1128,12 +1132,12 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
     def rollback(
         self,
-        request: Union[firestore.RollbackRequest, dict] = None,
+        request: Optional[Union[firestore.RollbackRequest, dict]] = None,
         *,
-        database: str = None,
-        transaction: bytes = None,
+        database: Optional[str] = None,
+        transaction: Optional[bytes] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Rolls back a transaction.
@@ -1229,10 +1233,10 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
     def run_query(
         self,
-        request: Union[firestore.RunQueryRequest, dict] = None,
+        request: Optional[Union[firestore.RunQueryRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[firestore.RunQueryResponse]:
         r"""Runs a query.
@@ -1312,10 +1316,10 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
     def run_aggregation_query(
         self,
-        request: Union[firestore.RunAggregationQueryRequest, dict] = None,
+        request: Optional[Union[firestore.RunAggregationQueryRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[firestore.RunAggregationQueryResponse]:
         r"""Runs an aggregation query.
@@ -1409,10 +1413,10 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
     def partition_query(
         self,
-        request: Union[firestore.PartitionQueryRequest, dict] = None,
+        request: Optional[Union[firestore.PartitionQueryRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.PartitionQueryPager:
         r"""Partitions a query by returning partition cursors
@@ -1507,10 +1511,10 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
     def write(
         self,
-        requests: Iterator[firestore.WriteRequest] = None,
+        requests: Optional[Iterator[firestore.WriteRequest]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[firestore.WriteResponse]:
         r"""Streams batches of document updates and deletes, in
@@ -1601,10 +1605,10 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
     def listen(
         self,
-        requests: Iterator[firestore.ListenRequest] = None,
+        requests: Optional[Iterator[firestore.ListenRequest]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[firestore.ListenResponse]:
         r"""Listens to changes.
@@ -1688,11 +1692,11 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
     def list_collection_ids(
         self,
-        request: Union[firestore.ListCollectionIdsRequest, dict] = None,
+        request: Optional[Union[firestore.ListCollectionIdsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCollectionIdsPager:
         r"""Lists all the collection IDs underneath a document.
@@ -1805,10 +1809,10 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
     def batch_write(
         self,
-        request: Union[firestore.BatchWriteRequest, dict] = None,
+        request: Optional[Union[firestore.BatchWriteRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> firestore.BatchWriteResponse:
         r"""Applies a batch of write operations.
@@ -1896,10 +1900,10 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
     def create_document(
         self,
-        request: Union[firestore.CreateDocumentRequest, dict] = None,
+        request: Optional[Union[firestore.CreateDocumentRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document.Document:
         r"""Creates a new document.
@@ -1996,10 +2000,10 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
     def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -2050,10 +2054,10 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
     def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -2104,10 +2108,10 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
     def delete_operation(
         self,
-        request: operations_pb2.DeleteOperationRequest = None,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -2159,10 +2163,10 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
     def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.

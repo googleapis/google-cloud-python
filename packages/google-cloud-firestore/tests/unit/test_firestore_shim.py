@@ -17,6 +17,12 @@ import unittest
 
 
 class TestFirestoreShim(unittest.TestCase):
+    def test_version_from_gapic_version_meatches_firestore_v1(self):
+        from google.cloud.firestore import gapic_version
+        from google.cloud.firestore_v1 import gapic_version as gapic_version_v1
+
+        self.assertEqual(gapic_version.__version__, gapic_version_v1.__version__)
+
     def test_shim_matches_firestore_v1(self):
         from google.cloud import firestore
         from google.cloud import firestore_v1
