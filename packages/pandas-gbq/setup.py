@@ -26,7 +26,7 @@ dependencies = [
     "db-dtypes >=1.0.4,<2.0.0",
     "numpy >=1.16.6",
     "pandas >=1.1.4",
-    "pyarrow >=3.0.0, <10.0dev",
+    "pyarrow >=3.0.0",
     "pydata-google-auth >=1.4.0",
     # Note: google-api-core and google-auth are also included via transitive
     # dependency on google-cloud-bigquery, but this library also uses them
@@ -89,6 +89,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Operating System :: OS Independent",
         "Topic :: Internet",
         "Topic :: Scientific/Engineering",
@@ -97,7 +98,7 @@ setuptools.setup(
     packages=packages,
     install_requires=dependencies,
     extras_require=extras,
-    python_requires=">=3.7, <3.11",
+    python_requires=">=3.7",
     include_package_data=True,
     zip_safe=False,
 )
