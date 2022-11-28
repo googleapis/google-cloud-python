@@ -50,8 +50,19 @@ from .metastore import (
     RestoreServiceRequest,
     Secret,
     Service,
+    TelemetryConfig,
     UpdateMetadataImportRequest,
     UpdateServiceRequest,
+)
+from .metastore_federation import (
+    BackendMetastore,
+    CreateFederationRequest,
+    DeleteFederationRequest,
+    Federation,
+    GetFederationRequest,
+    ListFederationsRequest,
+    ListFederationsResponse,
+    UpdateFederationRequest,
 )
 
 __all__ = (
@@ -91,6 +102,15 @@ __all__ = (
     "RestoreServiceRequest",
     "Secret",
     "Service",
+    "TelemetryConfig",
     "UpdateMetadataImportRequest",
     "UpdateServiceRequest",
+    "BackendMetastore",
+    "CreateFederationRequest",
+    "DeleteFederationRequest",
+    "Federation",
+    "GetFederationRequest",
+    "ListFederationsRequest",
+    "ListFederationsResponse",
+    "UpdateFederationRequest",
 )

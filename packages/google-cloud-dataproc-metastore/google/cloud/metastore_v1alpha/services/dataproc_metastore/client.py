@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -64,7 +75,7 @@ class DataprocMetastoreClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[DataprocMetastoreTransport]:
         """Returns an appropriate transport class.
 
@@ -472,8 +483,8 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DataprocMetastoreTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, DataprocMetastoreTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the dataproc metastore client.
@@ -487,7 +498,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
             transport (Union[str, DataprocMetastoreTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -517,6 +528,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -569,11 +581,11 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
 
     def list_services(
         self,
-        request: Union[metastore.ListServicesRequest, dict] = None,
+        request: Optional[Union[metastore.ListServicesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServicesPager:
         r"""Lists services in a project and location.
@@ -627,7 +639,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         Returns:
             google.cloud.metastore_v1alpha.services.dataproc_metastore.pagers.ListServicesPager:
                 Response message for
-                [DataprocMetastore.ListServices][google.cloud.metastore.v1alpha.DataprocMetastore.ListServices].
+                   [DataprocMetastore.ListServices][google.cloud.metastore.v1alpha.DataprocMetastore.ListServices].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -686,11 +698,11 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
 
     def get_service(
         self,
-        request: Union[metastore.GetServiceRequest, dict] = None,
+        request: Optional[Union[metastore.GetServiceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metastore.Service:
         r"""Gets the details of a single service.
@@ -790,13 +802,13 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
 
     def create_service(
         self,
-        request: Union[metastore.CreateServiceRequest, dict] = None,
+        request: Optional[Union[metastore.CreateServiceRequest, dict]] = None,
         *,
-        parent: str = None,
-        service: metastore.Service = None,
-        service_id: str = None,
+        parent: Optional[str] = None,
+        service: Optional[metastore.Service] = None,
+        service_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a metastore service in a project and
@@ -941,12 +953,12 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
 
     def update_service(
         self,
-        request: Union[metastore.UpdateServiceRequest, dict] = None,
+        request: Optional[Union[metastore.UpdateServiceRequest, dict]] = None,
         *,
-        service: metastore.Service = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        service: Optional[metastore.Service] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single service.
@@ -1076,11 +1088,11 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
 
     def delete_service(
         self,
-        request: Union[metastore.DeleteServiceRequest, dict] = None,
+        request: Optional[Union[metastore.DeleteServiceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single service.
@@ -1202,11 +1214,11 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
 
     def list_metadata_imports(
         self,
-        request: Union[metastore.ListMetadataImportsRequest, dict] = None,
+        request: Optional[Union[metastore.ListMetadataImportsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMetadataImportsPager:
         r"""Lists imports in a service.
@@ -1260,7 +1272,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         Returns:
             google.cloud.metastore_v1alpha.services.dataproc_metastore.pagers.ListMetadataImportsPager:
                 Response message for
-                [DataprocMetastore.ListMetadataImports][google.cloud.metastore.v1alpha.DataprocMetastore.ListMetadataImports].
+                   [DataprocMetastore.ListMetadataImports][google.cloud.metastore.v1alpha.DataprocMetastore.ListMetadataImports].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1319,11 +1331,11 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
 
     def get_metadata_import(
         self,
-        request: Union[metastore.GetMetadataImportRequest, dict] = None,
+        request: Optional[Union[metastore.GetMetadataImportRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metastore.MetadataImport:
         r"""Gets details of a single import.
@@ -1423,13 +1435,13 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
 
     def create_metadata_import(
         self,
-        request: Union[metastore.CreateMetadataImportRequest, dict] = None,
+        request: Optional[Union[metastore.CreateMetadataImportRequest, dict]] = None,
         *,
-        parent: str = None,
-        metadata_import: metastore.MetadataImport = None,
-        metadata_import_id: str = None,
+        parent: Optional[str] = None,
+        metadata_import: Optional[metastore.MetadataImport] = None,
+        metadata_import_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new MetadataImport in a given project and
@@ -1573,12 +1585,12 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
 
     def update_metadata_import(
         self,
-        request: Union[metastore.UpdateMetadataImportRequest, dict] = None,
+        request: Optional[Union[metastore.UpdateMetadataImportRequest, dict]] = None,
         *,
-        metadata_import: metastore.MetadataImport = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        metadata_import: Optional[metastore.MetadataImport] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates a single import.
@@ -1710,10 +1722,10 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
 
     def export_metadata(
         self,
-        request: Union[metastore.ExportMetadataRequest, dict] = None,
+        request: Optional[Union[metastore.ExportMetadataRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Exports metadata from a service.
@@ -1807,12 +1819,12 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
 
     def restore_service(
         self,
-        request: Union[metastore.RestoreServiceRequest, dict] = None,
+        request: Optional[Union[metastore.RestoreServiceRequest, dict]] = None,
         *,
-        service: str = None,
-        backup: str = None,
+        service: Optional[str] = None,
+        backup: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Restores a service from a backup.
@@ -1939,11 +1951,11 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
 
     def list_backups(
         self,
-        request: Union[metastore.ListBackupsRequest, dict] = None,
+        request: Optional[Union[metastore.ListBackupsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBackupsPager:
         r"""Lists backups in a service.
@@ -1997,7 +2009,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         Returns:
             google.cloud.metastore_v1alpha.services.dataproc_metastore.pagers.ListBackupsPager:
                 Response message for
-                [DataprocMetastore.ListBackups][google.cloud.metastore.v1alpha.DataprocMetastore.ListBackups].
+                   [DataprocMetastore.ListBackups][google.cloud.metastore.v1alpha.DataprocMetastore.ListBackups].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -2056,11 +2068,11 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
 
     def get_backup(
         self,
-        request: Union[metastore.GetBackupRequest, dict] = None,
+        request: Optional[Union[metastore.GetBackupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metastore.Backup:
         r"""Gets details of a single backup.
@@ -2158,13 +2170,13 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
 
     def create_backup(
         self,
-        request: Union[metastore.CreateBackupRequest, dict] = None,
+        request: Optional[Union[metastore.CreateBackupRequest, dict]] = None,
         *,
-        parent: str = None,
-        backup: metastore.Backup = None,
-        backup_id: str = None,
+        parent: Optional[str] = None,
+        backup: Optional[metastore.Backup] = None,
+        backup_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new backup in a given project and location.
@@ -2305,11 +2317,11 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
 
     def delete_backup(
         self,
-        request: Union[metastore.DeleteBackupRequest, dict] = None,
+        request: Optional[Union[metastore.DeleteBackupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single backup.
@@ -2446,7 +2458,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
-            "google-cloud-metastore",
+            "google-cloud-dataproc-metastore",
         ).version,
     )
 except pkg_resources.DistributionNotFound:

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
@@ -34,6 +36,7 @@ __protobuf__ = proto.module(
         "EncryptionConfig",
         "AuxiliaryVersionConfig",
         "NetworkConfig",
+        "TelemetryConfig",
         "MetadataManagementActivity",
         "MetadataImport",
         "MetadataExport",
@@ -78,7 +81,7 @@ class Service(proto.Message):
             This field is a member of `oneof`_ ``metastore_config``.
         name (str):
             Immutable. The relative resource name of the metastore
-            service, of the form:
+            service, in the following format:
 
             ``projects/{project_number}/locations/{location_id}/services/{service_id}``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -87,7 +90,7 @@ class Service(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the metastore
             service was last updated.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             User-defined labels for the metastore
             service.
         network (str):
@@ -140,12 +143,15 @@ class Service(proto.Message):
             Dataproc Metastore service to encrypt customer
             data at rest. Cannot be updated.
         network_config (google.cloud.metastore_v1alpha.types.NetworkConfig):
-            Immutable. The configuration specifying the
-            network settings for the Dataproc Metastore
-            service.
+            The configuration specifying the network
+            settings for the Dataproc Metastore service.
         database_type (google.cloud.metastore_v1alpha.types.Service.DatabaseType):
             Immutable. The database type that the
             Metastore service stores its data.
+        telemetry_config (google.cloud.metastore_v1alpha.types.TelemetryConfig):
+            The configuration specifying telemetry settings for the
+            Dataproc Metastore service. If unspecified defaults to
+            ``JSON``.
     """
 
     class State(proto.Enum):
@@ -181,99 +187,104 @@ class Service(proto.Message):
         MYSQL = 1
         SPANNER = 2
 
-    hive_metastore_config = proto.Field(
+    hive_metastore_config: "HiveMetastoreConfig" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="metastore_config",
         message="HiveMetastoreConfig",
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    network = proto.Field(
+    network: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    endpoint_uri = proto.Field(
+    endpoint_uri: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    port = proto.Field(
+    port: int = proto.Field(
         proto.INT32,
         number=9,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=10,
         enum=State,
     )
-    state_message = proto.Field(
+    state_message: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    artifact_gcs_uri = proto.Field(
+    artifact_gcs_uri: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    tier = proto.Field(
+    tier: Tier = proto.Field(
         proto.ENUM,
         number=13,
         enum=Tier,
     )
-    metadata_integration = proto.Field(
+    metadata_integration: "MetadataIntegration" = proto.Field(
         proto.MESSAGE,
         number=14,
         message="MetadataIntegration",
     )
-    maintenance_window = proto.Field(
+    maintenance_window: "MaintenanceWindow" = proto.Field(
         proto.MESSAGE,
         number=15,
         message="MaintenanceWindow",
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    metadata_management_activity = proto.Field(
+    metadata_management_activity: "MetadataManagementActivity" = proto.Field(
         proto.MESSAGE,
         number=17,
         message="MetadataManagementActivity",
     )
-    release_channel = proto.Field(
+    release_channel: ReleaseChannel = proto.Field(
         proto.ENUM,
         number=19,
         enum=ReleaseChannel,
     )
-    encryption_config = proto.Field(
+    encryption_config: "EncryptionConfig" = proto.Field(
         proto.MESSAGE,
         number=20,
         message="EncryptionConfig",
     )
-    network_config = proto.Field(
+    network_config: "NetworkConfig" = proto.Field(
         proto.MESSAGE,
         number=21,
         message="NetworkConfig",
     )
-    database_type = proto.Field(
+    database_type: DatabaseType = proto.Field(
         proto.ENUM,
         number=22,
         enum=DatabaseType,
+    )
+    telemetry_config: "TelemetryConfig" = proto.Field(
+        proto.MESSAGE,
+        number=23,
+        message="TelemetryConfig",
     )
 
 
@@ -290,12 +301,12 @@ class MetadataIntegration(proto.Message):
             service.
     """
 
-    data_catalog_config = proto.Field(
+    data_catalog_config: "DataCatalogConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="DataCatalogConfig",
     )
-    dataplex_config = proto.Field(
+    dataplex_config: "DataplexConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="DataplexConfig",
@@ -314,7 +325,7 @@ class DataCatalogConfig(proto.Message):
             Catalog.
     """
 
-    enabled = proto.Field(
+    enabled: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -325,14 +336,14 @@ class DataplexConfig(proto.Message):
     the Dataplex service.
 
     Attributes:
-        lake_resources (Mapping[str, google.cloud.metastore_v1alpha.types.Lake]):
+        lake_resources (MutableMapping[str, google.cloud.metastore_v1alpha.types.Lake]):
             A reference to the Lake resources that this metastore
             service is attached to. The key is the lake resource name.
             Example:
             ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}``.
     """
 
-    lake_resources = proto.MapField(
+    lake_resources: MutableMapping[str, "Lake"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,
@@ -349,7 +360,7 @@ class Lake(proto.Message):
             ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -367,12 +378,12 @@ class MaintenanceWindow(proto.Message):
             The day of week, when the window starts.
     """
 
-    hour_of_day = proto.Field(
+    hour_of_day: wrappers_pb2.Int32Value = proto.Field(
         proto.MESSAGE,
         number=1,
         message=wrappers_pb2.Int32Value,
     )
-    day_of_week = proto.Field(
+    day_of_week: dayofweek_pb2.DayOfWeek = proto.Field(
         proto.ENUM,
         number=2,
         enum=dayofweek_pb2.DayOfWeek,
@@ -386,7 +397,7 @@ class HiveMetastoreConfig(proto.Message):
     Attributes:
         version (str):
             Immutable. The Hive metastore schema version.
-        config_overrides (Mapping[str, str]):
+        config_overrides (MutableMapping[str, str]):
             A mapping of Hive metastore configuration key-value pairs to
             apply to the Hive metastore (configured in
             ``hive-site.xml``). The mappings override system defaults
@@ -403,7 +414,7 @@ class HiveMetastoreConfig(proto.Message):
         endpoint_protocol (google.cloud.metastore_v1alpha.types.HiveMetastoreConfig.EndpointProtocol):
             The protocol to use for the metastore service endpoint. If
             unspecified, defaults to ``THRIFT``.
-        auxiliary_versions (Mapping[str, google.cloud.metastore_v1alpha.types.AuxiliaryVersionConfig]):
+        auxiliary_versions (MutableMapping[str, google.cloud.metastore_v1alpha.types.AuxiliaryVersionConfig]):
             A mapping of Hive metastore version to the auxiliary version
             configuration. When specified, a secondary Hive metastore
             service is created along with the primary service. All
@@ -424,26 +435,26 @@ class HiveMetastoreConfig(proto.Message):
         THRIFT = 1
         GRPC = 2
 
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    config_overrides = proto.MapField(
+    config_overrides: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
     )
-    kerberos_config = proto.Field(
+    kerberos_config: "KerberosConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="KerberosConfig",
     )
-    endpoint_protocol = proto.Field(
+    endpoint_protocol: EndpointProtocol = proto.Field(
         proto.ENUM,
         number=4,
         enum=EndpointProtocol,
     )
-    auxiliary_versions = proto.MapField(
+    auxiliary_versions: MutableMapping[str, "AuxiliaryVersionConfig"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=5,
@@ -470,16 +481,16 @@ class KerberosConfig(proto.Message):
             does not need to be named krb5.conf explicitly.
     """
 
-    keytab = proto.Field(
+    keytab: "Secret" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Secret",
     )
-    principal = proto.Field(
+    principal: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    krb5_config_gcs_uri = proto.Field(
+    krb5_config_gcs_uri: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -500,7 +511,7 @@ class Secret(proto.Message):
             This field is a member of `oneof`_ ``value``.
     """
 
-    cloud_secret = proto.Field(
+    cloud_secret: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="value",
@@ -518,7 +529,7 @@ class EncryptionConfig(proto.Message):
             ``projects/{project_number}/locations/{location_id}/keyRings/{key_ring_id}/cryptoKeys/{crypto_key_id}``.
     """
 
-    kms_key = proto.Field(
+    kms_key: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -532,7 +543,7 @@ class AuxiliaryVersionConfig(proto.Message):
             The Hive metastore version of the auxiliary
             service. It must be less than the primary Hive
             metastore service's version.
-        config_overrides (Mapping[str, str]):
+        config_overrides (MutableMapping[str, str]):
             A mapping of Hive metastore configuration key-value pairs to
             apply to the auxiliary Hive metastore (configured in
             ``hive-site.xml``) in addition to the primary version's
@@ -546,16 +557,16 @@ class AuxiliaryVersionConfig(proto.Message):
             Hive metastore service.
     """
 
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    config_overrides = proto.MapField(
+    config_overrides: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
     )
-    network_config = proto.Field(
+    network_config: "NetworkConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="NetworkConfig",
@@ -566,7 +577,7 @@ class NetworkConfig(proto.Message):
     r"""Network configuration for the Dataproc Metastore service.
 
     Attributes:
-        consumers (Sequence[google.cloud.metastore_v1alpha.types.NetworkConfig.Consumer]):
+        consumers (MutableSequence[google.cloud.metastore_v1alpha.types.NetworkConfig.Consumer]):
             Immutable. The consumer-side network
             configuration for the Dataproc Metastore
             instance.
@@ -581,8 +592,8 @@ class NetworkConfig(proto.Message):
 
         Attributes:
             subnetwork (str):
-                The subnetwork of the customer project from which an IP
-                address is reserved and used as the Dataproc Metastore
+                Immutable. The subnetwork of the customer project from which
+                an IP address is reserved and used as the Dataproc Metastore
                 service's endpoint. It is accessible to hosts in the subnet
                 and to all hosts in a subnet in the same region and same
                 network. There must be at least one IP address available in
@@ -597,20 +608,42 @@ class NetworkConfig(proto.Message):
                 access the metastore service.
         """
 
-        subnetwork = proto.Field(
+        subnetwork: str = proto.Field(
             proto.STRING,
             number=1,
             oneof="vpc_resource",
         )
-        endpoint_uri = proto.Field(
+        endpoint_uri: str = proto.Field(
             proto.STRING,
             number=3,
         )
 
-    consumers = proto.RepeatedField(
+    consumers: MutableSequence[Consumer] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=Consumer,
+    )
+
+
+class TelemetryConfig(proto.Message):
+    r"""Telemetry Configuration for the Dataproc Metastore service.
+
+    Attributes:
+        log_format (google.cloud.metastore_v1alpha.types.TelemetryConfig.LogFormat):
+            The output format of the Dataproc Metastore
+            service's logs.
+    """
+
+    class LogFormat(proto.Enum):
+        r""""""
+        LOG_FORMAT_UNSPECIFIED = 0
+        LEGACY = 1
+        JSON = 2
+
+    log_format: LogFormat = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=LogFormat,
     )
 
 
@@ -618,20 +651,20 @@ class MetadataManagementActivity(proto.Message):
     r"""The metadata management activities of the metastore service.
 
     Attributes:
-        metadata_exports (Sequence[google.cloud.metastore_v1alpha.types.MetadataExport]):
+        metadata_exports (MutableSequence[google.cloud.metastore_v1alpha.types.MetadataExport]):
             Output only. The latest metadata exports of
             the metastore service.
-        restores (Sequence[google.cloud.metastore_v1alpha.types.Restore]):
+        restores (MutableSequence[google.cloud.metastore_v1alpha.types.Restore]):
             Output only. The latest restores of the
             metastore service.
     """
 
-    metadata_exports = proto.RepeatedField(
+    metadata_exports: MutableSequence["MetadataExport"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="MetadataExport",
     )
-    restores = proto.RepeatedField(
+    restores: MutableSequence["Restore"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="Restore",
@@ -701,55 +734,55 @@ class MetadataImport(proto.Message):
             DATABASE_TYPE_UNSPECIFIED = 0
             MYSQL = 1
 
-        database_type = proto.Field(
+        database_type: "MetadataImport.DatabaseDump.DatabaseType" = proto.Field(
             proto.ENUM,
             number=1,
             enum="MetadataImport.DatabaseDump.DatabaseType",
         )
-        gcs_uri = proto.Field(
+        gcs_uri: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        source_database = proto.Field(
+        source_database: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        type_ = proto.Field(
+        type_: "DatabaseDumpSpec.Type" = proto.Field(
             proto.ENUM,
             number=4,
             enum="DatabaseDumpSpec.Type",
         )
 
-    database_dump = proto.Field(
+    database_dump: DatabaseDump = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="metadata",
         message=DatabaseDump,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=5,
         enum=State,
@@ -788,27 +821,27 @@ class MetadataExport(proto.Message):
         FAILED = 3
         CANCELLED = 4
 
-    destination_gcs_uri = proto.Field(
+    destination_gcs_uri: str = proto.Field(
         proto.STRING,
         number=4,
         oneof="destination",
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=3,
         enum=State,
     )
-    database_dump_type = proto.Field(
+    database_dump_type: "DatabaseDumpSpec.Type" = proto.Field(
         proto.ENUM,
         number=5,
         enum="DatabaseDumpSpec.Type",
@@ -837,7 +870,7 @@ class Backup(proto.Message):
             the time of backup.
         description (str):
             The description of the backup.
-        restoring_services (Sequence[str]):
+        restoring_services (MutableSequence[str]):
             Output only. Services that are restoring from
             the backup.
     """
@@ -851,35 +884,35 @@ class Backup(proto.Message):
         FAILED = 4
         RESTORING = 5
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=4,
         enum=State,
     )
-    service_revision = proto.Field(
+    service_revision: "Service" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="Service",
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    restoring_services = proto.RepeatedField(
+    restoring_services: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
@@ -924,31 +957,31 @@ class Restore(proto.Message):
         FULL = 1
         METADATA_ONLY = 2
 
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=3,
         enum=State,
     )
-    backup = proto.Field(
+    backup: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    type_ = proto.Field(
+    type_: RestoreType = proto.Field(
         proto.ENUM,
         number=5,
         enum=RestoreType,
     )
-    details = proto.Field(
+    details: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -991,23 +1024,23 @@ class ListServicesRequest(proto.Message):
             order.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1018,13 +1051,13 @@ class ListServicesResponse(proto.Message):
     [DataprocMetastore.ListServices][google.cloud.metastore.v1alpha.DataprocMetastore.ListServices].
 
     Attributes:
-        services (Sequence[google.cloud.metastore_v1alpha.types.Service]):
+        services (MutableSequence[google.cloud.metastore_v1alpha.types.Service]):
             The services in the specified location.
         next_page_token (str):
             A token that can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -1032,16 +1065,16 @@ class ListServicesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    services = proto.RepeatedField(
+    services: MutableSequence["Service"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Service",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -1059,7 +1092,7 @@ class GetServiceRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/services/{service_id}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1105,20 +1138,20 @@ class CreateServiceRequest(proto.Message):
             supported.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    service_id = proto.Field(
+    service_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    service = proto.Field(
+    service: "Service" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Service",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1160,17 +1193,17 @@ class UpdateServiceRequest(proto.Message):
             supported.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    service = proto.Field(
+    service: "Service" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Service",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1204,11 +1237,11 @@ class DeleteServiceRequest(proto.Message):
             supported.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1251,23 +1284,23 @@ class ListMetadataImportsRequest(proto.Message):
             order.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1278,13 +1311,13 @@ class ListMetadataImportsResponse(proto.Message):
     [DataprocMetastore.ListMetadataImports][google.cloud.metastore.v1alpha.DataprocMetastore.ListMetadataImports].
 
     Attributes:
-        metadata_imports (Sequence[google.cloud.metastore_v1alpha.types.MetadataImport]):
+        metadata_imports (MutableSequence[google.cloud.metastore_v1alpha.types.MetadataImport]):
             The imports in the specified service.
         next_page_token (str):
             A token that can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -1292,16 +1325,16 @@ class ListMetadataImportsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    metadata_imports = proto.RepeatedField(
+    metadata_imports: MutableSequence["MetadataImport"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="MetadataImport",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -1319,7 +1352,7 @@ class GetMetadataImportRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/services/{service_id}/metadataImports/{import_id}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1365,20 +1398,20 @@ class CreateMetadataImportRequest(proto.Message):
             supported.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    metadata_import_id = proto.Field(
+    metadata_import_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    metadata_import = proto.Field(
+    metadata_import: "MetadataImport" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="MetadataImport",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1420,17 +1453,17 @@ class UpdateMetadataImportRequest(proto.Message):
             supported.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    metadata_import = proto.Field(
+    metadata_import: "MetadataImport" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="MetadataImport",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1473,23 +1506,23 @@ class ListBackupsRequest(proto.Message):
             order.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1500,13 +1533,13 @@ class ListBackupsResponse(proto.Message):
     [DataprocMetastore.ListBackups][google.cloud.metastore.v1alpha.DataprocMetastore.ListBackups].
 
     Attributes:
-        backups (Sequence[google.cloud.metastore_v1alpha.types.Backup]):
+        backups (MutableSequence[google.cloud.metastore_v1alpha.types.Backup]):
             The backups of the specified service.
         next_page_token (str):
             A token that can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -1514,16 +1547,16 @@ class ListBackupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backups = proto.RepeatedField(
+    backups: MutableSequence["Backup"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Backup",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -1541,7 +1574,7 @@ class GetBackupRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/services/{service_id}/backups/{backup_id}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1587,20 +1620,20 @@ class CreateBackupRequest(proto.Message):
             supported.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    backup_id = proto.Field(
+    backup_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    backup = proto.Field(
+    backup: "Backup" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Backup",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1634,11 +1667,11 @@ class DeleteBackupRequest(proto.Message):
             supported.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1685,20 +1718,20 @@ class ExportMetadataRequest(proto.Message):
             defaults to ``MYSQL``.
     """
 
-    destination_gcs_folder = proto.Field(
+    destination_gcs_folder: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="destination",
     )
-    service = proto.Field(
+    service: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    database_dump_type = proto.Field(
+    database_dump_type: "DatabaseDumpSpec.Type" = proto.Field(
         proto.ENUM,
         number=4,
         enum="DatabaseDumpSpec.Type",
@@ -1740,20 +1773,20 @@ class RestoreServiceRequest(proto.Message):
             supported.
     """
 
-    service = proto.Field(
+    service: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    backup = proto.Field(
+    backup: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    restore_type = proto.Field(
+    restore_type: "Restore.RestoreType" = proto.Field(
         proto.ENUM,
         number=3,
         enum="Restore.RestoreType",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1789,33 +1822,33 @@ class OperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_message = proto.Field(
+    status_message: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    requested_cancellation = proto.Field(
+    requested_cancellation: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -1825,7 +1858,7 @@ class LocationMetadata(proto.Message):
     r"""Metadata about the service in a location.
 
     Attributes:
-        supported_hive_metastore_versions (Sequence[google.cloud.metastore_v1alpha.types.LocationMetadata.HiveMetastoreVersion]):
+        supported_hive_metastore_versions (MutableSequence[google.cloud.metastore_v1alpha.types.LocationMetadata.HiveMetastoreVersion]):
             The versions of Hive Metastore that can be used when
             creating a new metastore service in this location. The
             server guarantees that exactly one ``HiveMetastoreVersion``
@@ -1846,16 +1879,18 @@ class LocationMetadata(proto.Message):
                 that omits the ``version``.
         """
 
-        version = proto.Field(
+        version: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        is_default = proto.Field(
+        is_default: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
 
-    supported_hive_metastore_versions = proto.RepeatedField(
+    supported_hive_metastore_versions: MutableSequence[
+        HiveMetastoreVersion
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=HiveMetastoreVersion,

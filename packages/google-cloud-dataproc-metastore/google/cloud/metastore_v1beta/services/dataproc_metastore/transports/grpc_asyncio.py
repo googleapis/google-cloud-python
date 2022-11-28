@@ -33,12 +33,11 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
     """gRPC AsyncIO backend transport for DataprocMetastore.
 
     Configures and manages metastore services. Metastore services are
-    fully managed, highly available, auto-scaled, auto-healing,
-    OSS-native deployments of technical metadata management software.
-    Each metastore service exposes a network endpoint through which
-    metadata queries are served. Metadata queries can originate from a
-    variety of sources, including Apache Hive, Apache Presto, and Apache
-    Spark.
+    fully managed, highly available, autoscaled, autohealing, OSS-native
+    deployments of technical metadata management software. Each
+    metastore service exposes a network endpoint through which metadata
+    queries are served. Metadata queries can originate from a variety of
+    sources, including Apache Hive, Apache Presto, and Apache Spark.
 
     The Dataproc Metastore API defines the following resource model:
 
@@ -71,7 +70,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
     def create_channel(
         cls,
         host: str = "metastore.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -114,15 +113,15 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
         self,
         *,
         host: str = "metastore.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: aio.Channel = None,
-        api_mtls_endpoint: str = None,
-        client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
-        ssl_channel_credentials: grpc.ChannelCredentials = None,
-        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
-        quota_project_id=None,
+        channel: Optional[aio.Channel] = None,
+        api_mtls_endpoint: Optional[str] = None,
+        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         api_audience: Optional[str] = None,
@@ -642,7 +641,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
     ) -> Callable[[metastore.CreateBackupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create backup method over gRPC.
 
-        Creates a new Backup in a given project and location.
+        Creates a new backup in a given project and location.
 
         Returns:
             Callable[[~.CreateBackupRequest],

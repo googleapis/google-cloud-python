@@ -13,12 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.metastore import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.metastore_v1.services.dataproc_metastore.async_client import (
     DataprocMetastoreAsyncClient,
 )
 from google.cloud.metastore_v1.services.dataproc_metastore.client import (
     DataprocMetastoreClient,
+)
+from google.cloud.metastore_v1.services.dataproc_metastore_federation.async_client import (
+    DataprocMetastoreFederationAsyncClient,
+)
+from google.cloud.metastore_v1.services.dataproc_metastore_federation.client import (
+    DataprocMetastoreFederationClient,
 )
 from google.cloud.metastore_v1.types.metastore import (
     Backup,
@@ -28,6 +38,7 @@ from google.cloud.metastore_v1.types.metastore import (
     DatabaseDumpSpec,
     DeleteBackupRequest,
     DeleteServiceRequest,
+    EncryptionConfig,
     ExportMetadataRequest,
     GetBackupRequest,
     GetMetadataImportRequest,
@@ -45,18 +56,32 @@ from google.cloud.metastore_v1.types.metastore import (
     MetadataExport,
     MetadataImport,
     MetadataManagementActivity,
+    NetworkConfig,
     OperationMetadata,
     Restore,
     RestoreServiceRequest,
     Secret,
     Service,
+    TelemetryConfig,
     UpdateMetadataImportRequest,
     UpdateServiceRequest,
+)
+from google.cloud.metastore_v1.types.metastore_federation import (
+    BackendMetastore,
+    CreateFederationRequest,
+    DeleteFederationRequest,
+    Federation,
+    GetFederationRequest,
+    ListFederationsRequest,
+    ListFederationsResponse,
+    UpdateFederationRequest,
 )
 
 __all__ = (
     "DataprocMetastoreClient",
     "DataprocMetastoreAsyncClient",
+    "DataprocMetastoreFederationClient",
+    "DataprocMetastoreFederationAsyncClient",
     "Backup",
     "CreateBackupRequest",
     "CreateMetadataImportRequest",
@@ -64,6 +89,7 @@ __all__ = (
     "DatabaseDumpSpec",
     "DeleteBackupRequest",
     "DeleteServiceRequest",
+    "EncryptionConfig",
     "ExportMetadataRequest",
     "GetBackupRequest",
     "GetMetadataImportRequest",
@@ -81,11 +107,21 @@ __all__ = (
     "MetadataExport",
     "MetadataImport",
     "MetadataManagementActivity",
+    "NetworkConfig",
     "OperationMetadata",
     "Restore",
     "RestoreServiceRequest",
     "Secret",
     "Service",
+    "TelemetryConfig",
     "UpdateMetadataImportRequest",
     "UpdateServiceRequest",
+    "BackendMetastore",
+    "CreateFederationRequest",
+    "DeleteFederationRequest",
+    "Federation",
+    "GetFederationRequest",
+    "ListFederationsRequest",
+    "ListFederationsResponse",
+    "UpdateFederationRequest",
 )

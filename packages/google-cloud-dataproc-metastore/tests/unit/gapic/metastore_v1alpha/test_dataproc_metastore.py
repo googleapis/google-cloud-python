@@ -41,6 +41,7 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore

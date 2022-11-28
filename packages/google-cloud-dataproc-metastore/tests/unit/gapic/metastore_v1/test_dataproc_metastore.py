@@ -41,6 +41,7 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
@@ -1164,6 +1165,7 @@ def test_get_service(request_type, transport: str = "grpc"):
             tier=metastore.Service.Tier.DEVELOPER,
             uid="uid_value",
             release_channel=metastore.Service.ReleaseChannel.CANARY,
+            database_type=metastore.Service.DatabaseType.MYSQL,
             hive_metastore_config=metastore.HiveMetastoreConfig(
                 version="version_value"
             ),
@@ -1187,6 +1189,7 @@ def test_get_service(request_type, transport: str = "grpc"):
     assert response.tier == metastore.Service.Tier.DEVELOPER
     assert response.uid == "uid_value"
     assert response.release_channel == metastore.Service.ReleaseChannel.CANARY
+    assert response.database_type == metastore.Service.DatabaseType.MYSQL
 
 
 def test_get_service_empty_call():
@@ -1233,6 +1236,7 @@ async def test_get_service_async(
                 tier=metastore.Service.Tier.DEVELOPER,
                 uid="uid_value",
                 release_channel=metastore.Service.ReleaseChannel.CANARY,
+                database_type=metastore.Service.DatabaseType.MYSQL,
             )
         )
         response = await client.get_service(request)
@@ -1254,6 +1258,7 @@ async def test_get_service_async(
     assert response.tier == metastore.Service.Tier.DEVELOPER
     assert response.uid == "uid_value"
     assert response.release_channel == metastore.Service.ReleaseChannel.CANARY
+    assert response.database_type == metastore.Service.DatabaseType.MYSQL
 
 
 @pytest.mark.asyncio
@@ -5570,8 +5575,34 @@ def test_parse_service_path():
     assert expected == actual
 
 
+def test_subnetwork_path():
+    project = "whelk"
+    region = "octopus"
+    subnetwork = "oyster"
+    expected = "projects/{project}/regions/{region}/subnetworks/{subnetwork}".format(
+        project=project,
+        region=region,
+        subnetwork=subnetwork,
+    )
+    actual = DataprocMetastoreClient.subnetwork_path(project, region, subnetwork)
+    assert expected == actual
+
+
+def test_parse_subnetwork_path():
+    expected = {
+        "project": "nudibranch",
+        "region": "cuttlefish",
+        "subnetwork": "mussel",
+    }
+    path = DataprocMetastoreClient.subnetwork_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataprocMetastoreClient.parse_subnetwork_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5581,7 +5612,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nautilus",
     }
     path = DataprocMetastoreClient.common_billing_account_path(**expected)
 
@@ -5591,7 +5622,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -5601,7 +5632,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "abalone",
     }
     path = DataprocMetastoreClient.common_folder_path(**expected)
 
@@ -5611,7 +5642,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -5621,7 +5652,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "clam",
     }
     path = DataprocMetastoreClient.common_organization_path(**expected)
 
@@ -5631,7 +5662,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -5641,7 +5672,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "octopus",
     }
     path = DataprocMetastoreClient.common_project_path(**expected)
 
@@ -5651,8 +5682,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -5663,8 +5694,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = DataprocMetastoreClient.common_location_path(**expected)
 

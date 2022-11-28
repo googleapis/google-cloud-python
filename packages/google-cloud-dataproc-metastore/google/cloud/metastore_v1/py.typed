@@ -1,2 +1,2 @@
 # Marker file for PEP 561.
-# The google-cloud-metastore package uses inline types.
+# The google-cloud-dataproc-metastore package uses inline types.

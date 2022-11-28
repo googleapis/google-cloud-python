@@ -7,9 +7,839 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-dataproc-metastore"
+    "name": "google-cloud-dataproc-metastore",
+    "version": "0.1.0"
   },
   "snippets": [
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreFederationAsyncClient",
+          "shortName": "DataprocMetastoreFederationAsyncClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreFederationAsyncClient.create_federation",
+        "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastoreFederation.CreateFederation",
+          "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastoreFederation",
+            "shortName": "DataprocMetastoreFederation"
+          },
+          "shortName": "CreateFederation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.CreateFederationRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "federation",
+            "type": "google.cloud.metastore_v1beta.types.Federation"
+          },
+          {
+            "name": "federation_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_federation"
+      },
+      "description": "Sample for CreateFederation",
+      "file": "metastore_v1beta_generated_dataproc_metastore_federation_create_federation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastoreFederation_CreateFederation_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_federation_create_federation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreFederationClient",
+          "shortName": "DataprocMetastoreFederationClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreFederationClient.create_federation",
+        "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastoreFederation.CreateFederation",
+          "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastoreFederation",
+            "shortName": "DataprocMetastoreFederation"
+          },
+          "shortName": "CreateFederation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.CreateFederationRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "federation",
+            "type": "google.cloud.metastore_v1beta.types.Federation"
+          },
+          {
+            "name": "federation_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_federation"
+      },
+      "description": "Sample for CreateFederation",
+      "file": "metastore_v1beta_generated_dataproc_metastore_federation_create_federation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastoreFederation_CreateFederation_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_federation_create_federation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreFederationAsyncClient",
+          "shortName": "DataprocMetastoreFederationAsyncClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreFederationAsyncClient.delete_federation",
+        "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastoreFederation.DeleteFederation",
+          "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastoreFederation",
+            "shortName": "DataprocMetastoreFederation"
+          },
+          "shortName": "DeleteFederation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.DeleteFederationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_federation"
+      },
+      "description": "Sample for DeleteFederation",
+      "file": "metastore_v1beta_generated_dataproc_metastore_federation_delete_federation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastoreFederation_DeleteFederation_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_federation_delete_federation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreFederationClient",
+          "shortName": "DataprocMetastoreFederationClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreFederationClient.delete_federation",
+        "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastoreFederation.DeleteFederation",
+          "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastoreFederation",
+            "shortName": "DataprocMetastoreFederation"
+          },
+          "shortName": "DeleteFederation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.DeleteFederationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_federation"
+      },
+      "description": "Sample for DeleteFederation",
+      "file": "metastore_v1beta_generated_dataproc_metastore_federation_delete_federation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastoreFederation_DeleteFederation_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_federation_delete_federation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreFederationAsyncClient",
+          "shortName": "DataprocMetastoreFederationAsyncClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreFederationAsyncClient.get_federation",
+        "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastoreFederation.GetFederation",
+          "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastoreFederation",
+            "shortName": "DataprocMetastoreFederation"
+          },
+          "shortName": "GetFederation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.GetFederationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.metastore_v1beta.types.Federation",
+        "shortName": "get_federation"
+      },
+      "description": "Sample for GetFederation",
+      "file": "metastore_v1beta_generated_dataproc_metastore_federation_get_federation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastoreFederation_GetFederation_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_federation_get_federation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreFederationClient",
+          "shortName": "DataprocMetastoreFederationClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreFederationClient.get_federation",
+        "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastoreFederation.GetFederation",
+          "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastoreFederation",
+            "shortName": "DataprocMetastoreFederation"
+          },
+          "shortName": "GetFederation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.GetFederationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.metastore_v1beta.types.Federation",
+        "shortName": "get_federation"
+      },
+      "description": "Sample for GetFederation",
+      "file": "metastore_v1beta_generated_dataproc_metastore_federation_get_federation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastoreFederation_GetFederation_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_federation_get_federation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreFederationAsyncClient",
+          "shortName": "DataprocMetastoreFederationAsyncClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreFederationAsyncClient.list_federations",
+        "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastoreFederation.ListFederations",
+          "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastoreFederation",
+            "shortName": "DataprocMetastoreFederation"
+          },
+          "shortName": "ListFederations"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.ListFederationsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.metastore_v1beta.services.dataproc_metastore_federation.pagers.ListFederationsAsyncPager",
+        "shortName": "list_federations"
+      },
+      "description": "Sample for ListFederations",
+      "file": "metastore_v1beta_generated_dataproc_metastore_federation_list_federations_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastoreFederation_ListFederations_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_federation_list_federations_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreFederationClient",
+          "shortName": "DataprocMetastoreFederationClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreFederationClient.list_federations",
+        "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastoreFederation.ListFederations",
+          "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastoreFederation",
+            "shortName": "DataprocMetastoreFederation"
+          },
+          "shortName": "ListFederations"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.ListFederationsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.metastore_v1beta.services.dataproc_metastore_federation.pagers.ListFederationsPager",
+        "shortName": "list_federations"
+      },
+      "description": "Sample for ListFederations",
+      "file": "metastore_v1beta_generated_dataproc_metastore_federation_list_federations_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastoreFederation_ListFederations_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_federation_list_federations_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreFederationAsyncClient",
+          "shortName": "DataprocMetastoreFederationAsyncClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreFederationAsyncClient.update_federation",
+        "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastoreFederation.UpdateFederation",
+          "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastoreFederation",
+            "shortName": "DataprocMetastoreFederation"
+          },
+          "shortName": "UpdateFederation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.UpdateFederationRequest"
+          },
+          {
+            "name": "federation",
+            "type": "google.cloud.metastore_v1beta.types.Federation"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_federation"
+      },
+      "description": "Sample for UpdateFederation",
+      "file": "metastore_v1beta_generated_dataproc_metastore_federation_update_federation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastoreFederation_UpdateFederation_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_federation_update_federation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreFederationClient",
+          "shortName": "DataprocMetastoreFederationClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreFederationClient.update_federation",
+        "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastoreFederation.UpdateFederation",
+          "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastoreFederation",
+            "shortName": "DataprocMetastoreFederation"
+          },
+          "shortName": "UpdateFederation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.UpdateFederationRequest"
+          },
+          {
+            "name": "federation",
+            "type": "google.cloud.metastore_v1beta.types.Federation"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_federation"
+      },
+      "description": "Sample for UpdateFederation",
+      "file": "metastore_v1beta_generated_dataproc_metastore_federation_update_federation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastoreFederation_UpdateFederation_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_federation_update_federation_sync.py"
+    },
     {
       "canonical": true,
       "clientMethod": {
