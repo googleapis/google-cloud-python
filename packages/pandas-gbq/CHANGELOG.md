@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.1](https://github.com/googleapis/python-bigquery-pandas/compare/v0.18.0...v0.18.1) (2022-11-28)
+
+
+### Dependencies
+
+* Remove upper bound for python and pyarrow ([#592](https://github.com/googleapis/python-bigquery-pandas/issues/592)) ([4d28684](https://github.com/googleapis/python-bigquery-pandas/commit/4d286840feaa8290f4d674dce1c269e7e09980d5))
+
 ## [0.18.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.9...v0.18.0) (2022-11-19)
 
 
