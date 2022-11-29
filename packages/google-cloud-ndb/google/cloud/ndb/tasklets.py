@@ -36,7 +36,7 @@ For example::
     def main():
         f = foo()
         x = f.result()
-        print x
+        print(x)
 
 In this example, `foo` needs the results of two futures, `AFuture` and
 `BFuture`, which it gets somehow, for example as results of calls.
@@ -63,7 +63,7 @@ cases such code should be rewritten as a tasklet instead::
     def main_tasklet():
         f = foo()
         x = yield f
-        print x
+        print(x)
 
 Calling a tasklet automatically schedules it with the event loop::
 
