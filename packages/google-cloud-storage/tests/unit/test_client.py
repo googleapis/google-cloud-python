@@ -28,10 +28,9 @@ from google.api_core import exceptions
 from google.auth.credentials import AnonymousCredentials
 from google.oauth2.service_account import Credentials
 
-from google.cloud.storage import _helpers
 from google.cloud.storage._helpers import STORAGE_EMULATOR_ENV_VAR
 from google.cloud.storage._helpers import _get_default_headers
-from google.cloud.storage._http import Connection
+from google.cloud.storage import _helpers
 from google.cloud.storage.retry import DEFAULT_RETRY
 from google.cloud.storage.retry import DEFAULT_RETRY_IF_GENERATION_SPECIFIED
 from tests.unit.test__helpers import GCCL_INVOCATION_TEST_CONST
@@ -120,6 +119,7 @@ class TestClient(unittest.TestCase):
 
     def test_ctor_connection_type(self):
         from google.cloud._http import ClientInfo
+        from google.cloud.storage._http import Connection
 
         PROJECT = "PROJECT"
         credentials = _make_credentials()
@@ -179,6 +179,8 @@ class TestClient(unittest.TestCase):
         )
 
     def test_ctor_wo_project(self):
+        from google.cloud.storage._http import Connection
+
         PROJECT = "PROJECT"
         credentials = _make_credentials(project=PROJECT)
 
@@ -191,6 +193,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(list(client._batch_stack), [])
 
     def test_ctor_w_project_explicit_none(self):
+        from google.cloud.storage._http import Connection
+
         credentials = _make_credentials()
 
         client = self._make_one(project=None, credentials=credentials)
@@ -203,6 +207,7 @@ class TestClient(unittest.TestCase):
 
     def test_ctor_w_client_info(self):
         from google.cloud._http import ClientInfo
+        from google.cloud.storage._http import Connection
 
         credentials = _make_credentials()
         client_info = ClientInfo()
@@ -234,40 +239,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client._connection.ALLOW_AUTO_SWITCH_TO_MTLS_URL, False)
         self.assertEqual(client._connection.API_BASE_URL, "http://foo")
 
-    def test_ctor_w_custom_endpoint_use_auth(self):
-        custom_endpoint = "storage-example.p.googleapis.com"
-        client = self._make_one(client_options={"api_endpoint": custom_endpoint})
-        self.assertEqual(client._connection.API_BASE_URL, custom_endpoint)
-        self.assertIsNotNone(client.project)
-        self.assertIsInstance(client._connection, Connection)
-        self.assertIsNotNone(client._connection.credentials)
-        self.assertNotIsInstance(client._connection.credentials, AnonymousCredentials)
-
-    def test_ctor_w_custom_endpoint_bypass_auth(self):
-        custom_endpoint = "storage-example.p.googleapis.com"
-        client = self._make_one(
-            client_options={"api_endpoint": custom_endpoint},
-            use_auth_w_custom_endpoint=False,
-        )
-        self.assertEqual(client._connection.API_BASE_URL, custom_endpoint)
-        self.assertEqual(client.project, None)
-        self.assertIsInstance(client._connection, Connection)
-        self.assertIsInstance(client._connection.credentials, AnonymousCredentials)
-
-    def test_ctor_w_custom_endpoint_w_credentials(self):
-        PROJECT = "PROJECT"
-        custom_endpoint = "storage-example.p.googleapis.com"
-        credentials = _make_credentials(project=PROJECT)
-        client = self._make_one(
-            credentials=credentials, client_options={"api_endpoint": custom_endpoint}
-        )
-        self.assertEqual(client._connection.API_BASE_URL, custom_endpoint)
-        self.assertEqual(client.project, PROJECT)
-        self.assertIsInstance(client._connection, Connection)
-        self.assertIs(client._connection.credentials, credentials)
-
     def test_ctor_w_emulator_wo_project(self):
-        # bypasses authentication if STORAGE_EMULATOR_ENV_VAR is set
+        # avoids authentication if STORAGE_EMULATOR_ENV_VAR is set
         host = "http://localhost:8080"
         environ = {STORAGE_EMULATOR_ENV_VAR: host}
         with mock.patch("os.environ", environ):
@@ -277,8 +250,16 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client._connection.API_BASE_URL, host)
         self.assertIsInstance(client._connection.credentials, AnonymousCredentials)
 
+        # avoids authentication if storage emulator is set through api_endpoint
+        client = self._make_one(
+            client_options={"api_endpoint": "http://localhost:8080"}
+        )
+        self.assertIsNone(client.project)
+        self.assertEqual(client._connection.API_BASE_URL, host)
+        self.assertIsInstance(client._connection.credentials, AnonymousCredentials)
+
     def test_ctor_w_emulator_w_environ_project(self):
-        # bypasses authentication and infers the project from the environment
+        # avoids authentication and infers the project from the environment
         host = "http://localhost:8080"
         environ_project = "environ-project"
         environ = {
@@ -308,17 +289,9 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client._connection.API_BASE_URL, host)
         self.assertIsInstance(client._connection.credentials, AnonymousCredentials)
 
-    def test_ctor_w_emulator_w_credentials(self):
-        host = "http://localhost:8080"
-        environ = {STORAGE_EMULATOR_ENV_VAR: host}
-        credentials = _make_credentials()
-        with mock.patch("os.environ", environ):
-            client = self._make_one(credentials=credentials)
-
-        self.assertEqual(client._connection.API_BASE_URL, host)
-        self.assertIs(client._connection.credentials, credentials)
-
     def test_create_anonymous_client(self):
+        from google.cloud.storage._http import Connection
+
         klass = self._get_target_class()
         client = klass.create_anonymous_client()
 

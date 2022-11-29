@@ -33,14 +33,16 @@ from google.cloud.storage.retry import DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED
 STORAGE_EMULATOR_ENV_VAR = "STORAGE_EMULATOR_HOST"
 """Environment variable defining host for Storage emulator."""
 
-_BASE_STORAGE_URI = "https://storage.googleapis.com"
-"""Base request endpoint URI for JSON API."""
-
-_DEFAULT_STORAGE_HOST = os.getenv("API_ENDPOINT_OVERRIDE", _BASE_STORAGE_URI)
+_DEFAULT_STORAGE_HOST = os.getenv(
+    "API_ENDPOINT_OVERRIDE", "https://storage.googleapis.com"
+)
 """Default storage host for JSON API."""
 
 _API_VERSION = os.getenv("API_VERSION_OVERRIDE", "v1")
 """API version of the default storage host"""
+
+_BASE_STORAGE_URI = "storage.googleapis.com"
+"""Base request endpoint URI for JSON API."""
 
 # etag match parameters in snake case and equivalent header
 _ETAG_MATCH_PARAMETERS = (
