@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.iam.v1 import policy_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -35,7 +37,7 @@ class AuditData(proto.Message):
             the newly set policy.
     """
 
-    policy_delta = proto.Field(
+    policy_delta: policy_pb2.PolicyDelta = proto.Field(
         proto.MESSAGE,
         number=2,
         message=policy_pb2.PolicyDelta,
