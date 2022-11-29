@@ -14,6 +14,22 @@ Older versions of this project were distributed as [pybigquery][0].
 [2]: https://pypi.org/project/pybigquery/#history
 
 
+## [1.5.0](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.4.4...v1.5.0) (2022-11-29)
+
+
+### Features
+
+* Allow Users to Supply Their Own BigQuery Client ([#474](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/474)) ([4f72d4e](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/4f72d4eb12fe986c2bae1bb1884a4ef5e78c95bc))
+
+
+### Bug Fixes
+
+* **deps:** Allow pyarrow version 7+ ([#479](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/479)) ([0f6be67](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/0f6be6712d5b89b14160cad3440d0bc1308dd5e5))
+* Require python 3.7+ ([#468](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/468)) ([52ec808](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/52ec80849b574edd2827df345c0085f3c68dc39d))
+* Sets cache support to false, removes upper req limit ([#499](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/499)) ([be63adc](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/be63adc345a3bfcd199c758e45e7d2c7036c4bab))
+* Updates test to account for UTC in failing test ([#501](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/501)) ([a050ccf](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/a050ccf534fe8e6d2135818474868f072212aa6f))
+* Use packaging version parser instead of string splitting ([#513](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/513)) ([bb7f6a7](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/bb7f6a78c1b7d738ab31a6a6d5112ab6e888c6aa))
+
 ## [1.4.4](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.4.3...v1.4.4) (2022-06-03)
 
 
