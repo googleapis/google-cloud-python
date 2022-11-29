@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
@@ -155,130 +157,130 @@ class AuditData(proto.Message):
             This field is a member of `oneof`_ ``response``.
         job_completed_event (google.cloud.bigquery_logging_v1.types.JobCompletedEvent):
             A job completion event.
-        table_data_read_events (Sequence[google.cloud.bigquery_logging_v1.types.TableDataReadEvent]):
+        table_data_read_events (MutableSequence[google.cloud.bigquery_logging_v1.types.TableDataReadEvent]):
             Information about the table access events.
     """
 
-    table_insert_request = proto.Field(
+    table_insert_request: "TableInsertRequest" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="request",
         message="TableInsertRequest",
     )
-    table_update_request = proto.Field(
+    table_update_request: "TableUpdateRequest" = proto.Field(
         proto.MESSAGE,
         number=16,
         oneof="request",
         message="TableUpdateRequest",
     )
-    dataset_list_request = proto.Field(
+    dataset_list_request: "DatasetListRequest" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="request",
         message="DatasetListRequest",
     )
-    dataset_insert_request = proto.Field(
+    dataset_insert_request: "DatasetInsertRequest" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="request",
         message="DatasetInsertRequest",
     )
-    dataset_update_request = proto.Field(
+    dataset_update_request: "DatasetUpdateRequest" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="request",
         message="DatasetUpdateRequest",
     )
-    job_insert_request = proto.Field(
+    job_insert_request: "JobInsertRequest" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="request",
         message="JobInsertRequest",
     )
-    job_query_request = proto.Field(
+    job_query_request: "JobQueryRequest" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="request",
         message="JobQueryRequest",
     )
-    job_get_query_results_request = proto.Field(
+    job_get_query_results_request: "JobGetQueryResultsRequest" = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="request",
         message="JobGetQueryResultsRequest",
     )
-    table_data_list_request = proto.Field(
+    table_data_list_request: "TableDataListRequest" = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="request",
         message="TableDataListRequest",
     )
-    set_iam_policy_request = proto.Field(
+    set_iam_policy_request: iam_policy_pb2.SetIamPolicyRequest = proto.Field(
         proto.MESSAGE,
         number=20,
         oneof="request",
         message=iam_policy_pb2.SetIamPolicyRequest,
     )
-    table_insert_response = proto.Field(
+    table_insert_response: "TableInsertResponse" = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="response",
         message="TableInsertResponse",
     )
-    table_update_response = proto.Field(
+    table_update_response: "TableUpdateResponse" = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="response",
         message="TableUpdateResponse",
     )
-    dataset_insert_response = proto.Field(
+    dataset_insert_response: "DatasetInsertResponse" = proto.Field(
         proto.MESSAGE,
         number=11,
         oneof="response",
         message="DatasetInsertResponse",
     )
-    dataset_update_response = proto.Field(
+    dataset_update_response: "DatasetUpdateResponse" = proto.Field(
         proto.MESSAGE,
         number=12,
         oneof="response",
         message="DatasetUpdateResponse",
     )
-    job_insert_response = proto.Field(
+    job_insert_response: "JobInsertResponse" = proto.Field(
         proto.MESSAGE,
         number=18,
         oneof="response",
         message="JobInsertResponse",
     )
-    job_query_response = proto.Field(
+    job_query_response: "JobQueryResponse" = proto.Field(
         proto.MESSAGE,
         number=13,
         oneof="response",
         message="JobQueryResponse",
     )
-    job_get_query_results_response = proto.Field(
+    job_get_query_results_response: "JobGetQueryResultsResponse" = proto.Field(
         proto.MESSAGE,
         number=14,
         oneof="response",
         message="JobGetQueryResultsResponse",
     )
-    job_query_done_response = proto.Field(
+    job_query_done_response: "JobQueryDoneResponse" = proto.Field(
         proto.MESSAGE,
         number=15,
         oneof="response",
         message="JobQueryDoneResponse",
     )
-    policy_response = proto.Field(
+    policy_response: policy_pb2.Policy = proto.Field(
         proto.MESSAGE,
         number=21,
         oneof="response",
         message=policy_pb2.Policy,
     )
-    job_completed_event = proto.Field(
+    job_completed_event: "JobCompletedEvent" = proto.Field(
         proto.MESSAGE,
         number=17,
         message="JobCompletedEvent",
     )
-    table_data_read_events = proto.RepeatedField(
+    table_data_read_events: MutableSequence["TableDataReadEvent"] = proto.RepeatedField(
         proto.MESSAGE,
         number=19,
         message="TableDataReadEvent",
@@ -293,7 +295,7 @@ class TableInsertRequest(proto.Message):
             The new table.
     """
 
-    resource = proto.Field(
+    resource: "Table" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Table",
@@ -308,7 +310,7 @@ class TableUpdateRequest(proto.Message):
             The table to be updated.
     """
 
-    resource = proto.Field(
+    resource: "Table" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Table",
@@ -323,7 +325,7 @@ class TableInsertResponse(proto.Message):
             Final state of the inserted table.
     """
 
-    resource = proto.Field(
+    resource: "Table" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Table",
@@ -338,7 +340,7 @@ class TableUpdateResponse(proto.Message):
             Final state of the updated table.
     """
 
-    resource = proto.Field(
+    resource: "Table" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Table",
@@ -354,7 +356,7 @@ class DatasetListRequest(proto.Message):
             hidden ones.
     """
 
-    list_all = proto.Field(
+    list_all: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
@@ -368,7 +370,7 @@ class DatasetInsertRequest(proto.Message):
             The dataset to be inserted.
     """
 
-    resource = proto.Field(
+    resource: "Dataset" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Dataset",
@@ -383,7 +385,7 @@ class DatasetInsertResponse(proto.Message):
             Final state of the inserted dataset.
     """
 
-    resource = proto.Field(
+    resource: "Dataset" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Dataset",
@@ -398,7 +400,7 @@ class DatasetUpdateRequest(proto.Message):
             The dataset to be updated.
     """
 
-    resource = proto.Field(
+    resource: "Dataset" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Dataset",
@@ -413,7 +415,7 @@ class DatasetUpdateResponse(proto.Message):
             Final state of the updated dataset.
     """
 
-    resource = proto.Field(
+    resource: "Dataset" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Dataset",
@@ -428,7 +430,7 @@ class JobInsertRequest(proto.Message):
             Job insert request.
     """
 
-    resource = proto.Field(
+    resource: "Job" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Job",
@@ -443,7 +445,7 @@ class JobInsertResponse(proto.Message):
             Job insert response.
     """
 
-    resource = proto.Field(
+    resource: "Job" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Job",
@@ -468,24 +470,24 @@ class JobQueryRequest(proto.Message):
             check that it would run.
     """
 
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    max_results = proto.Field(
+    max_results: int = proto.Field(
         proto.UINT32,
         number=2,
     )
-    default_dataset = proto.Field(
+    default_dataset: "DatasetName" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="DatasetName",
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    dry_run = proto.Field(
+    dry_run: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -502,11 +504,11 @@ class JobQueryResponse(proto.Message):
             Information about the queried job.
     """
 
-    total_results = proto.Field(
+    total_results: int = proto.Field(
         proto.UINT64,
         number=1,
     )
-    job = proto.Field(
+    job: "Job" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Job",
@@ -523,11 +525,11 @@ class JobGetQueryResultsRequest(proto.Message):
             Zero-based row number at which to start.
     """
 
-    max_results = proto.Field(
+    max_results: int = proto.Field(
         proto.UINT32,
         number=1,
     )
-    start_row = proto.Field(
+    start_row: int = proto.Field(
         proto.UINT64,
         number=2,
     )
@@ -545,11 +547,11 @@ class JobGetQueryResultsResponse(proto.Message):
             ``job.status.errorResult`` is also present.
     """
 
-    total_results = proto.Field(
+    total_results: int = proto.Field(
         proto.UINT64,
         number=1,
     )
-    job = proto.Field(
+    job: "Job" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Job",
@@ -565,7 +567,7 @@ class JobQueryDoneResponse(proto.Message):
             ``job.status.state`` is ``DONE``.
     """
 
-    job = proto.Field(
+    job: "Job" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Job",
@@ -582,11 +584,11 @@ class JobCompletedEvent(proto.Message):
             Job information.
     """
 
-    event_name = proto.Field(
+    event_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    job = proto.Field(
+    job: "Job" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Job",
@@ -601,19 +603,19 @@ class TableDataReadEvent(proto.Message):
     Attributes:
         table_name (google.cloud.bigquery_logging_v1.types.TableName):
             Name of the accessed table.
-        referenced_fields (Sequence[str]):
+        referenced_fields (MutableSequence[str]):
             A list of referenced fields. This information
             is not included by default. To enable this in
             the logs, please contact BigQuery support or
             open a bug in the BigQuery issue tracker.
     """
 
-    table_name = proto.Field(
+    table_name: "TableName" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TableName",
     )
-    referenced_fields = proto.RepeatedField(
+    referenced_fields: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -629,11 +631,11 @@ class TableDataListRequest(proto.Message):
             Maximum number of results to return.
     """
 
-    start_row = proto.Field(
+    start_row: int = proto.Field(
         proto.UINT64,
         number=1,
     )
-    max_results = proto.Field(
+    max_results: int = proto.Field(
         proto.UINT32,
         number=2,
     )
@@ -673,46 +675,46 @@ class Table(proto.Message):
             non-default encryption is used.
     """
 
-    table_name = proto.Field(
+    table_name: "TableName" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TableName",
     )
-    info = proto.Field(
+    info: "TableInfo" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="TableInfo",
     )
-    schema_json = proto.Field(
+    schema_json: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    view = proto.Field(
+    view: "TableViewDefinition" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="TableViewDefinition",
     )
-    expire_time = proto.Field(
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    truncate_time = proto.Field(
+    truncate_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    encryption = proto.Field(
+    encryption: "EncryptionInfo" = proto.Field(
         proto.MESSAGE,
         number=10,
         message="EncryptionInfo",
@@ -730,19 +732,19 @@ class TableInfo(proto.Message):
             A long description, perhaps several
             paragraphs, describing the table contents in
             detail.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels provided for the table.
     """
 
-    friendly_name = proto.Field(
+    friendly_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
@@ -757,7 +759,7 @@ class TableViewDefinition(proto.Message):
             SQL query defining the view.
     """
 
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -786,32 +788,32 @@ class Dataset(proto.Message):
             is empty, there is no default table expiration time.
     """
 
-    dataset_name = proto.Field(
+    dataset_name: "DatasetName" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="DatasetName",
     )
-    info = proto.Field(
+    info: "DatasetInfo" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="DatasetInfo",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    acl = proto.Field(
+    acl: "BigQueryAcl" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="BigQueryAcl",
     )
-    default_table_expire_duration = proto.Field(
+    default_table_expire_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=8,
         message=duration_pb2.Duration,
@@ -829,19 +831,19 @@ class DatasetInfo(proto.Message):
             A long description, perhaps several
             paragraphs, describing the dataset contents in
             detail.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels provided for the dataset.
     """
 
-    friendly_name = proto.Field(
+    friendly_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
@@ -852,7 +854,7 @@ class BigQueryAcl(proto.Message):
     r"""An access control list.
 
     Attributes:
-        entries (Sequence[google.cloud.bigquery_logging_v1.types.BigQueryAcl.Entry]):
+        entries (MutableSequence[google.cloud.bigquery_logging_v1.types.BigQueryAcl.Entry]):
             Access control entry list.
     """
 
@@ -879,33 +881,33 @@ class BigQueryAcl(proto.Message):
                 Grants access to a BigQuery View.
         """
 
-        role = proto.Field(
+        role: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        group_email = proto.Field(
+        group_email: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        user_email = proto.Field(
+        user_email: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        domain = proto.Field(
+        domain: str = proto.Field(
             proto.STRING,
             number=4,
         )
-        special_group = proto.Field(
+        special_group: str = proto.Field(
             proto.STRING,
             number=5,
         )
-        view_name = proto.Field(
+        view_name: "TableName" = proto.Field(
             proto.MESSAGE,
             number=6,
             message="TableName",
         )
 
-    entries = proto.RepeatedField(
+    entries: MutableSequence[Entry] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=Entry,
@@ -926,22 +928,22 @@ class Job(proto.Message):
             Job statistics.
     """
 
-    job_name = proto.Field(
+    job_name: "JobName" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="JobName",
     )
-    job_configuration = proto.Field(
+    job_configuration: "JobConfiguration" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="JobConfiguration",
     )
-    job_status = proto.Field(
+    job_status: "JobStatus" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="JobStatus",
     )
-    job_statistics = proto.Field(
+    job_statistics: "JobStatistics" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="JobStatistics",
@@ -980,7 +982,7 @@ class JobConfiguration(proto.Message):
         dry_run (bool):
             If true, don't actually run the job. Just
             check that it would run.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels provided for the job.
     """
 
@@ -1002,7 +1004,7 @@ class JobConfiguration(proto.Message):
                 If a table name is specified without a
                 dataset in a query, this dataset will be added
                 to table name.
-            table_definitions (Sequence[google.cloud.bigquery_logging_v1.types.TableDefinition]):
+            table_definitions (MutableSequence[google.cloud.bigquery_logging_v1.types.TableDefinition]):
                 Describes data sources outside BigQuery, if
                 needed.
             query_priority (str):
@@ -1016,43 +1018,43 @@ class JobConfiguration(proto.Message):
                 CREATE_MODEL..)
         """
 
-        query = proto.Field(
+        query: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        destination_table = proto.Field(
+        destination_table: "TableName" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="TableName",
         )
-        create_disposition = proto.Field(
+        create_disposition: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        write_disposition = proto.Field(
+        write_disposition: str = proto.Field(
             proto.STRING,
             number=4,
         )
-        default_dataset = proto.Field(
+        default_dataset: "DatasetName" = proto.Field(
             proto.MESSAGE,
             number=5,
             message="DatasetName",
         )
-        table_definitions = proto.RepeatedField(
+        table_definitions: MutableSequence["TableDefinition"] = proto.RepeatedField(
             proto.MESSAGE,
             number=6,
             message="TableDefinition",
         )
-        query_priority = proto.Field(
+        query_priority: str = proto.Field(
             proto.STRING,
             number=7,
         )
-        destination_table_encryption = proto.Field(
+        destination_table_encryption: "EncryptionInfo" = proto.Field(
             proto.MESSAGE,
             number=8,
             message="EncryptionInfo",
         )
-        statement_type = proto.Field(
+        statement_type: str = proto.Field(
             proto.STRING,
             number=9,
         )
@@ -1062,7 +1064,7 @@ class JobConfiguration(proto.Message):
         source via the  import pipeline.
 
         Attributes:
-            source_uris (Sequence[str]):
+            source_uris (MutableSequence[str]):
                 URIs for the data to be imported. Only Google
                 Cloud Storage URIs are supported.
             schema_json (str):
@@ -1081,28 +1083,28 @@ class JobConfiguration(proto.Message):
                 non-default encryption is used.
         """
 
-        source_uris = proto.RepeatedField(
+        source_uris: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        schema_json = proto.Field(
+        schema_json: str = proto.Field(
             proto.STRING,
             number=6,
         )
-        destination_table = proto.Field(
+        destination_table: "TableName" = proto.Field(
             proto.MESSAGE,
             number=3,
             message="TableName",
         )
-        create_disposition = proto.Field(
+        create_disposition: str = proto.Field(
             proto.STRING,
             number=4,
         )
-        write_disposition = proto.Field(
+        write_disposition: str = proto.Field(
             proto.STRING,
             number=5,
         )
-        destination_table_encryption = proto.Field(
+        destination_table_encryption: "EncryptionInfo" = proto.Field(
             proto.MESSAGE,
             number=7,
             message="EncryptionInfo",
@@ -1113,18 +1115,18 @@ class JobConfiguration(proto.Message):
         source via the  export pipeline.
 
         Attributes:
-            destination_uris (Sequence[str]):
+            destination_uris (MutableSequence[str]):
                 Google Cloud Storage URIs where extracted
                 data should be written.
             source_table (google.cloud.bigquery_logging_v1.types.TableName):
                 The source table.
         """
 
-        destination_uris = proto.RepeatedField(
+        destination_uris: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        source_table = proto.Field(
+        source_table: "TableName" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="TableName",
@@ -1135,7 +1137,7 @@ class JobConfiguration(proto.Message):
         another table.
 
         Attributes:
-            source_tables (Sequence[google.cloud.bigquery_logging_v1.types.TableName]):
+            source_tables (MutableSequence[google.cloud.bigquery_logging_v1.types.TableName]):
                 Source tables.
             destination_table (google.cloud.bigquery_logging_v1.types.TableName):
                 Destination table.
@@ -1150,59 +1152,59 @@ class JobConfiguration(proto.Message):
                 non-default encryption is used.
         """
 
-        source_tables = proto.RepeatedField(
+        source_tables: MutableSequence["TableName"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="TableName",
         )
-        destination_table = proto.Field(
+        destination_table: "TableName" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="TableName",
         )
-        create_disposition = proto.Field(
+        create_disposition: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        write_disposition = proto.Field(
+        write_disposition: str = proto.Field(
             proto.STRING,
             number=4,
         )
-        destination_table_encryption = proto.Field(
+        destination_table_encryption: "EncryptionInfo" = proto.Field(
             proto.MESSAGE,
             number=5,
             message="EncryptionInfo",
         )
 
-    query = proto.Field(
+    query: Query = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="configuration",
         message=Query,
     )
-    load = proto.Field(
+    load: Load = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="configuration",
         message=Load,
     )
-    extract = proto.Field(
+    extract: Extract = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="configuration",
         message=Extract,
     )
-    table_copy = proto.Field(
+    table_copy: TableCopy = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="configuration",
         message=TableCopy,
     )
-    dry_run = proto.Field(
+    dry_run: bool = proto.Field(
         proto.BOOL,
         number=9,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
@@ -1215,16 +1217,16 @@ class TableDefinition(proto.Message):
     Attributes:
         name (str):
             Name of the table, used in queries.
-        source_uris (Sequence[str]):
+        source_uris (MutableSequence[str]):
             Google Cloud Storage URIs for the data to be
             imported.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    source_uris = proto.RepeatedField(
+    source_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -1239,22 +1241,22 @@ class JobStatus(proto.Message):
         error (google.rpc.status_pb2.Status):
             If the job did not complete successfully,
             this field describes why.
-        additional_errors (Sequence[google.rpc.status_pb2.Status]):
+        additional_errors (MutableSequence[google.rpc.status_pb2.Status]):
             Errors encountered during the running of the
             job. Do not necessarily mean that the job has
             completed or was unsuccessful.
     """
 
-    state = proto.Field(
+    state: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    error = proto.Field(
+    error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=2,
         message=status_pb2.Status,
     )
-    additional_errors = proto.RepeatedField(
+    additional_errors: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=status_pb2.Status,
@@ -1281,9 +1283,9 @@ class JobStatistics(proto.Message):
         total_slot_ms (int):
             The total number of slot-ms consumed by the
             query job.
-        reservation_usage (Sequence[google.cloud.bigquery_logging_v1.types.JobStatistics.ReservationResourceUsage]):
+        reservation_usage (MutableSequence[google.cloud.bigquery_logging_v1.types.JobStatistics.ReservationResourceUsage]):
             Reservation usage.
-        referenced_tables (Sequence[google.cloud.bigquery_logging_v1.types.TableName]):
+        referenced_tables (MutableSequence[google.cloud.bigquery_logging_v1.types.TableName]):
             The first N tables accessed by the query job. Older queries
             that reference a large number of tables may not have all of
             their tables in this list. You can use the
@@ -1293,7 +1295,7 @@ class JobStatistics(proto.Message):
         total_tables_processed (int):
             Total number of unique tables referenced in
             the query.
-        referenced_views (Sequence[google.cloud.bigquery_logging_v1.types.TableName]):
+        referenced_views (MutableSequence[google.cloud.bigquery_logging_v1.types.TableName]):
             The first N views accessed by the query job. Older queries
             that reference a large number of views may not have all of
             their views in this list. You can use the
@@ -1322,74 +1324,74 @@ class JobStatistics(proto.Message):
                 reservation for a particular job.
         """
 
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        slot_ms = proto.Field(
+        slot_ms: int = proto.Field(
             proto.INT64,
             number=2,
         )
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    total_processed_bytes = proto.Field(
+    total_processed_bytes: int = proto.Field(
         proto.INT64,
         number=4,
     )
-    total_billed_bytes = proto.Field(
+    total_billed_bytes: int = proto.Field(
         proto.INT64,
         number=5,
     )
-    billing_tier = proto.Field(
+    billing_tier: int = proto.Field(
         proto.INT32,
         number=7,
     )
-    total_slot_ms = proto.Field(
+    total_slot_ms: int = proto.Field(
         proto.INT64,
         number=8,
     )
-    reservation_usage = proto.RepeatedField(
+    reservation_usage: MutableSequence[ReservationResourceUsage] = proto.RepeatedField(
         proto.MESSAGE,
         number=14,
         message=ReservationResourceUsage,
     )
-    referenced_tables = proto.RepeatedField(
+    referenced_tables: MutableSequence["TableName"] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message="TableName",
     )
-    total_tables_processed = proto.Field(
+    total_tables_processed: int = proto.Field(
         proto.INT32,
         number=10,
     )
-    referenced_views = proto.RepeatedField(
+    referenced_views: MutableSequence["TableName"] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message="TableName",
     )
-    total_views_processed = proto.Field(
+    total_views_processed: int = proto.Field(
         proto.INT32,
         number=12,
     )
-    query_output_row_count = proto.Field(
+    query_output_row_count: int = proto.Field(
         proto.INT64,
         number=15,
     )
-    total_load_output_bytes = proto.Field(
+    total_load_output_bytes: int = proto.Field(
         proto.INT64,
         number=13,
     )
@@ -1405,11 +1407,11 @@ class DatasetName(proto.Message):
             The dataset ID within the project.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    dataset_id = proto.Field(
+    dataset_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1427,15 +1429,15 @@ class TableName(proto.Message):
             The table ID of the table within the dataset.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    dataset_id = proto.Field(
+    dataset_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    table_id = proto.Field(
+    table_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1453,15 +1455,15 @@ class JobName(proto.Message):
             The job location.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    job_id = proto.Field(
+    job_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1475,7 +1477,7 @@ class EncryptionInfo(proto.Message):
             unique identifier for cloud kms key
     """
 
-    kms_key_name = proto.Field(
+    kms_key_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
