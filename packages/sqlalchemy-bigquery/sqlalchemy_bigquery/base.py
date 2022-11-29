@@ -32,7 +32,7 @@ import google.api_core.exceptions
 from google.cloud.bigquery import dbapi
 from google.cloud.bigquery.table import TableReference
 from google.api_core.exceptions import NotFound
-
+import packaging.version
 import sqlalchemy
 import sqlalchemy.sql.expression
 import sqlalchemy.sql.functions
@@ -340,14 +340,18 @@ class BigQueryCompiler(_struct.SQLCompiler, SQLCompiler):
     # no way to tell sqlalchemy that, so it works harder than
     # necessary and makes us do the same.
 
-    __sqlalchemy_version_info = tuple(map(int, sqlalchemy.__version__.split(".")))
+    __sqlalchemy_version_info = packaging.version.parse(sqlalchemy.__version__)
 
     __expanding_text = (
-        "EXPANDING" if __sqlalchemy_version_info < (1, 4) else "POSTCOMPILE"
+        "EXPANDING"
+        if __sqlalchemy_version_info < packaging.version.parse("1.4")
+        else "POSTCOMPILE"
     )
 
     # https://github.com/sqlalchemy/sqlalchemy/commit/f79df12bd6d99b8f6f09d4bf07722638c4b4c159
-    __expanding_conflict = "" if __sqlalchemy_version_info < (1, 4, 27) else "__"
+    __expanding_conflict = (
+        "" if __sqlalchemy_version_info < packaging.version.parse("1.4.27") else "__"
+    )
 
     __in_expanding_bind = _helpers.substitute_string_re_method(
         rf"""
@@ -529,7 +533,7 @@ class BigQueryCompiler(_struct.SQLCompiler, SQLCompiler):
 
         if bindparam.expanding:  # pragma: NO COVER
             assert_(self.__expanded_param(param), f"Unexpected param: {param}")
-            if self.__sqlalchemy_version_info < (1, 4, 27):
+            if self.__sqlalchemy_version_info < packaging.version.parse("1.4.27"):
                 param = param.replace(")", f":{bq_type})")
 
         else:
