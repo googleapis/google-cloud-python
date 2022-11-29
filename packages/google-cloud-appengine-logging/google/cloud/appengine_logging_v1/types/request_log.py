@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.logging.type import log_severity_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -45,21 +47,21 @@ class LogLine(proto.Message):
             written.
     """
 
-    time = proto.Field(
+    time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    severity = proto.Field(
+    severity: log_severity_pb2.LogSeverity = proto.Field(
         proto.ENUM,
         number=2,
         enum=log_severity_pb2.LogSeverity,
     )
-    log_message = proto.Field(
+    log_message: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    source_location = proto.Field(
+    source_location: "SourceLocation" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="SourceLocation",
@@ -86,15 +88,15 @@ class SourceLocation(proto.Message):
             (Go), ``function`` (Python).
     """
 
-    file = proto.Field(
+    file: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    line = proto.Field(
+    line: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    function_name = proto.Field(
+    function_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -115,11 +117,11 @@ class SourceReference(proto.Message):
             "0035781c50ec7aa23385dc841529ce8a4b70db1b".
     """
 
-    repository = proto.Field(
+    repository: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    revision_id = proto.Field(
+    revision_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -220,7 +222,7 @@ class RequestLog(proto.Message):
         instance_id (str):
             An identifier for the instance that handled
             the request.
-        line (Sequence[google.cloud.appengine_logging_v1.types.LogLine]):
+        line (MutableSequence[google.cloud.appengine_logging_v1.types.LogLine]):
             A list of log lines emitted by the
             application while serving this request.
         app_engine_release (str):
@@ -231,147 +233,147 @@ class RequestLog(proto.Message):
         trace_sampled (bool):
             If true, the value in the 'trace_id' field was sampled for
             storage in a trace backend.
-        source_reference (Sequence[google.cloud.appengine_logging_v1.types.SourceReference]):
+        source_reference (MutableSequence[google.cloud.appengine_logging_v1.types.SourceReference]):
             Source code for the application that handled
             this request. There can be more than one source
             reference per deployed application if source
             code is distributed among multiple repositories.
     """
 
-    app_id = proto.Field(
+    app_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    module_id = proto.Field(
+    module_id: str = proto.Field(
         proto.STRING,
         number=37,
     )
-    version_id = proto.Field(
+    version_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    ip = proto.Field(
+    ip: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    latency = proto.Field(
+    latency: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=8,
         message=duration_pb2.Duration,
     )
-    mega_cycles = proto.Field(
+    mega_cycles: int = proto.Field(
         proto.INT64,
         number=9,
     )
-    method = proto.Field(
+    method: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    resource = proto.Field(
+    resource: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    http_version = proto.Field(
+    http_version: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    status = proto.Field(
+    status: int = proto.Field(
         proto.INT32,
         number=13,
     )
-    response_size = proto.Field(
+    response_size: int = proto.Field(
         proto.INT64,
         number=14,
     )
-    referrer = proto.Field(
+    referrer: str = proto.Field(
         proto.STRING,
         number=15,
     )
-    user_agent = proto.Field(
+    user_agent: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    nickname = proto.Field(
+    nickname: str = proto.Field(
         proto.STRING,
         number=40,
     )
-    url_map_entry = proto.Field(
+    url_map_entry: str = proto.Field(
         proto.STRING,
         number=17,
     )
-    host = proto.Field(
+    host: str = proto.Field(
         proto.STRING,
         number=20,
     )
-    cost = proto.Field(
+    cost: float = proto.Field(
         proto.DOUBLE,
         number=21,
     )
-    task_queue_name = proto.Field(
+    task_queue_name: str = proto.Field(
         proto.STRING,
         number=22,
     )
-    task_name = proto.Field(
+    task_name: str = proto.Field(
         proto.STRING,
         number=23,
     )
-    was_loading_request = proto.Field(
+    was_loading_request: bool = proto.Field(
         proto.BOOL,
         number=24,
     )
-    pending_time = proto.Field(
+    pending_time: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=25,
         message=duration_pb2.Duration,
     )
-    instance_index = proto.Field(
+    instance_index: int = proto.Field(
         proto.INT32,
         number=26,
     )
-    finished = proto.Field(
+    finished: bool = proto.Field(
         proto.BOOL,
         number=27,
     )
-    first = proto.Field(
+    first: bool = proto.Field(
         proto.BOOL,
         number=42,
     )
-    instance_id = proto.Field(
+    instance_id: str = proto.Field(
         proto.STRING,
         number=28,
     )
-    line = proto.RepeatedField(
+    line: MutableSequence["LogLine"] = proto.RepeatedField(
         proto.MESSAGE,
         number=29,
         message="LogLine",
     )
-    app_engine_release = proto.Field(
+    app_engine_release: str = proto.Field(
         proto.STRING,
         number=38,
     )
-    trace_id = proto.Field(
+    trace_id: str = proto.Field(
         proto.STRING,
         number=39,
     )
-    trace_sampled = proto.Field(
+    trace_sampled: bool = proto.Field(
         proto.BOOL,
         number=43,
     )
-    source_reference = proto.RepeatedField(
+    source_reference: MutableSequence["SourceReference"] = proto.RepeatedField(
         proto.MESSAGE,
         number=41,
         message="SourceReference",
