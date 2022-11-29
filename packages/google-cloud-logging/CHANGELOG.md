@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.3.0](https://github.com/googleapis/python-logging/compare/v3.2.4...v3.3.0) (2022-11-26)
+
+
+### Features
+
+* Add support to custom JSON encoders ([#657](https://github.com/googleapis/python-logging/issues/657)) ([77e621c](https://github.com/googleapis/python-logging/commit/77e621cb85b726a801227da85c31319f25969d19))
+* Include context on batch log errors ([#650](https://github.com/googleapis/python-logging/issues/650)) ([d08be9a](https://github.com/googleapis/python-logging/commit/d08be9ae26c70f94e4a264e2bc518dd8a8dbae91))
+* Set partial_success to default to true for batched logs ([#649](https://github.com/googleapis/python-logging/issues/649)) ([e56d3e8](https://github.com/googleapis/python-logging/commit/e56d3e83859e20fbbd9cd22d3275ff123f79d6c9))
+* Support Django asgi middleware ([#625](https://github.com/googleapis/python-logging/issues/625)) ([f52b3aa](https://github.com/googleapis/python-logging/commit/f52b3aae28e7ed5809fc5470213b2a1c6f7d77bd))
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#644](https://github.com/googleapis/python-logging/issues/644)) ([12f3001](https://github.com/googleapis/python-logging/commit/12f3001d834e858dbbbcdaab5894ec25a14c6820))
+* Json fields dictionary has modification side effect ([#654](https://github.com/googleapis/python-logging/issues/654)) ([a62a0d6](https://github.com/googleapis/python-logging/commit/a62a0d66cb8c07e617636e5ed54961f5e28164ae))
+
 ## [3.2.4](https://github.com/googleapis/python-logging/compare/v3.2.3...v3.2.4) (2022-10-04)
 
 
