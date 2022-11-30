@@ -20,9 +20,9 @@
 SQLAlchemy dialect for Google BigQuery
 """
 
-from .version import __version__  # noqa
+from .version import __version__
 
-from .base import BigQueryDialect, dialect  # noqa
+from .base import BigQueryDialect, dialect
 from ._types import (
     ARRAY,
     BIGNUMERIC,
@@ -44,6 +44,8 @@ from ._types import (
 )
 
 __all__ = [
+    "__version__",
+    "dialect",
     "ARRAY",
     "BIGNUMERIC",
     "BigQueryDialect",
