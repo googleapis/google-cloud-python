@@ -20,7 +20,7 @@
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-binaryauthorization
+#   python3 -m pip install google-cloud-binary-authorization
 
 
 # [START binaryauthorization_v1beta1_generated_SystemPolicyV1Beta1_GetSystemPolicy_sync]

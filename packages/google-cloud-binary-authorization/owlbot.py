@@ -36,14 +36,6 @@ for library in s.get_staging_dirs(default_version):
         shutil.rmtree("samples/generated_samples", ignore_errors=True)
         clean_up_generated_samples = False
 
-    # Rename package to 'google-cloud-binary-authorization'
-    # Remove once cl/490002122 is submitted
-    s.replace(
-        [library / "google/**/*.py", library / "tests/**/*.py"],
-        "google-cloud-binaryauthorization",
-        "google-cloud-binary-authorization",
-    )
-
     if library.name == "v1":
         # Fix import of grafeas
         s.replace(

@@ -7,7 +7,7 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-binaryauthorization",
+    "name": "google-cloud-binary-authorization",
     "version": "0.1.0"
   },
   "snippets": [
