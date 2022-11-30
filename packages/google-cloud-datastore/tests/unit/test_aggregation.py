@@ -127,6 +127,22 @@ def test_query_fetch_w_explicit_client_w_retry_w_timeout(client):
     assert iterator._timeout == timeout
 
 
+def test_query_fetch_w_explicit_client_w_limit(client):
+    from google.cloud.datastore.aggregation import AggregationResultIterator
+
+    other_client = _make_client()
+    query = _make_query(client)
+    aggregation_query = _make_aggregation_query(client=client, query=query)
+    limit = 2
+
+    iterator = aggregation_query.fetch(client=other_client, limit=limit)
+
+    assert isinstance(iterator, AggregationResultIterator)
+    assert iterator._aggregation_query is aggregation_query
+    assert iterator.client is other_client
+    assert iterator._limit == limit
+
+
 def test_iterator_constructor_defaults():
     query = object()
     client = object()
@@ -149,12 +165,10 @@ def test_iterator_constructor_explicit():
     aggregation_query = AggregationQuery(client=client, query=query)
     retry = mock.Mock()
     timeout = 100000
+    limit = 2
 
     iterator = _make_aggregation_iterator(
-        aggregation_query,
-        client,
-        retry=retry,
-        timeout=timeout,
+        aggregation_query, client, retry=retry, timeout=timeout, limit=limit
     )
 
     assert not iterator._started
@@ -165,6 +179,7 @@ def test_iterator_constructor_explicit():
     assert iterator._more_results
     assert iterator._retry == retry
     assert iterator._timeout == timeout
+    assert iterator._limit == limit
 
 
 def test_iterator__build_protobuf_empty():
@@ -186,14 +201,20 @@ def test_iterator__build_protobuf_all_values():
 
     client = _Client(None)
     query = _make_query(client)
+    alias = "total"
+    limit = 2
     aggregation_query = AggregationQuery(client=client, query=query)
+    aggregation_query.count(alias)
 
-    iterator = _make_aggregation_iterator(aggregation_query, client)
+    iterator = _make_aggregation_iterator(aggregation_query, client, limit=limit)
     iterator.num_results = 4
 
     pb = iterator._build_protobuf()
     expected_pb = query_pb2.AggregationQuery()
     expected_pb.nested_query = query_pb2.Query()
+    expected_count_pb = query_pb2.AggregationQuery.Aggregation(alias=alias)
+    expected_count_pb.count.up_to = limit
+    expected_pb.aggregations.append(expected_count_pb)
     assert pb == expected_pb
 
 

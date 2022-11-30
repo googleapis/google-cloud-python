@@ -174,6 +174,7 @@ class AggregationQuery(object):
     def fetch(
         self,
         client=None,
+        limit=None,
         eventual=False,
         retry=None,
         timeout=None,
@@ -204,7 +205,7 @@ class AggregationQuery(object):
             >>> client.put_multi([andy, sally, bobby])
             >>> query = client.query(kind='Andy')
             >>> aggregation_query = client.aggregation_query(query)
-            >>> result = aggregation_query.count(alias="total").fetch()
+            >>> result = aggregation_query.count(alias="total").fetch(limit=5)
             >>> result
             <google.cloud.datastore.aggregation.AggregationResultIterator object at ...>
 
@@ -248,6 +249,7 @@ class AggregationQuery(object):
         return AggregationResultIterator(
             self,
             client,
+            limit=limit,
             eventual=eventual,
             retry=retry,
             timeout=timeout,
@@ -293,6 +295,7 @@ class AggregationResultIterator(page_iterator.Iterator):
         self,
         aggregation_query,
         client,
+        limit=None,
         eventual=False,
         retry=None,
         timeout=None,
@@ -308,6 +311,7 @@ class AggregationResultIterator(page_iterator.Iterator):
         self._retry = retry
         self._timeout = timeout
         self._read_time = read_time
+        self._limit = limit
         # The attributes below will change over the life of the iterator.
         self._more_results = True
 
@@ -322,6 +326,9 @@ class AggregationResultIterator(page_iterator.Iterator):
                   state of the iterator.
         """
         pb = self._aggregation_query._to_pb()
+        if self._limit is not None and self._limit > 0:
+            for aggregation in pb.aggregations:
+                aggregation.count.up_to = self._limit
         return pb
 
     def _process_query_results(self, response_pb):
