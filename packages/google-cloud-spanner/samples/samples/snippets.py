@@ -169,7 +169,10 @@ def create_database(instance_id, database_id):
             SingerId     INT64 NOT NULL,
             FirstName    STRING(1024),
             LastName     STRING(1024),
-            SingerInfo   BYTES(MAX)
+            SingerInfo   BYTES(MAX),
+            FullName   STRING(2048) AS (
+                ARRAY_TO_STRING([FirstName, LastName], " ")
+            ) STORED
         ) PRIMARY KEY (SingerId)""",
             """CREATE TABLE Albums (
             SingerId     INT64 NOT NULL,
@@ -1344,6 +1347,37 @@ def update_data_with_dml(instance_id, database_id):
     # [END spanner_dml_standard_update]
 
 
+def update_data_with_dml_returning(instance_id, database_id):
+    """Updates sample data from the database using a DML statement having a THEN RETURN clause."""
+    # [START spanner_dml_update_returning]
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    # Update MarketingBudget column for records satisfying
+    # a particular condition and returns the modified
+    # MarketingBudget column of the updated records using
+    # 'THEN RETURN MarketingBudget'.
+    # It is also possible to return all columns of all the
+    # updated records by using 'THEN RETURN *'.
+    def update_albums(transaction):
+        results = transaction.execute_sql(
+            "UPDATE Albums "
+            "SET MarketingBudget = MarketingBudget * 2 "
+            "WHERE SingerId = 1 and AlbumId = 1 "
+            "THEN RETURN MarketingBudget"
+        )
+        for result in results:
+            print("MarketingBudget: {}".format(*result))
+        print("{} record(s) updated.".format(results.stats.row_count_exact))
+
+    database.run_in_transaction(update_albums)
+    # [END spanner_dml_update_returning]
+
+
 def delete_data_with_dml(instance_id, database_id):
     """Deletes sample data from the database using a DML statement."""
     # [START spanner_dml_standard_delete]
@@ -1363,6 +1397,35 @@ def delete_data_with_dml(instance_id, database_id):
 
     database.run_in_transaction(delete_singers)
     # [END spanner_dml_standard_delete]
+
+
+def delete_data_with_dml_returning(instance_id, database_id):
+    """Deletes sample data from the database using a DML statement having a THEN RETURN clause. """
+    # [START spanner_dml_delete_returning]
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    # Delete records from SINGERS table satisfying a
+    # particular condition and returns the SingerId
+    # and FullName column of the deleted records using
+    # 'THEN RETURN SingerId, FullName'.
+    # It is also possible to return all columns of all the
+    # deleted records by using 'THEN RETURN *'.
+    def delete_singers(transaction):
+        results = transaction.execute_sql(
+            "DELETE FROM Singers WHERE FirstName = 'David' "
+            "THEN RETURN SingerId, FullName"
+        )
+        for result in results:
+            print("SingerId: {}, FullName: {}".format(*result))
+        print("{} record(s) deleted.".format(results.stats.row_count_exact))
+
+    database.run_in_transaction(delete_singers)
+    # [END spanner_dml_delete_returning]
 
 
 def update_data_with_dml_timestamp(instance_id, database_id):
@@ -1470,6 +1533,38 @@ def insert_with_dml(instance_id, database_id):
 
     database.run_in_transaction(insert_singers)
     # [END spanner_dml_getting_started_insert]
+
+
+def insert_with_dml_returning(instance_id, database_id):
+    """Inserts sample data into the given database using a DML statement having a THEN RETURN clause. """
+    # [START spanner_dml_insert_returning]
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    # Insert records into the SINGERS table and returns the
+    # generated column FullName of the inserted records using
+    # 'THEN RETURN FullName'.
+    # It is also possible to return all columns of all the
+    # inserted records by using 'THEN RETURN *'.
+    def insert_singers(transaction):
+        results = transaction.execute_sql(
+            "INSERT INTO Singers (SingerId, FirstName, LastName) VALUES "
+            "(21, 'Luann', 'Chizoba'), "
+            "(22, 'Denis', 'Patricio'), "
+            "(23, 'Felxi', 'Ronan'), "
+            "(24, 'Dominik', 'Martyna') "
+            "THEN RETURN FullName"
+        )
+        for result in results:
+            print("FullName: {}".format(*result))
+        print("{} record(s) inserted.".format(results.stats.row_count_exact))
+
+    database.run_in_transaction(insert_singers)
+    # [END spanner_dml_insert_returning]
 
 
 def query_data_with_parameter(instance_id, database_id):
@@ -2273,7 +2368,9 @@ if __name__ == "__main__":  # noqa: C901
     subparsers.add_parser("insert_data_with_dml", help=insert_data_with_dml.__doc__)
     subparsers.add_parser("log_commit_stats", help=log_commit_stats.__doc__)
     subparsers.add_parser("update_data_with_dml", help=update_data_with_dml.__doc__)
+    subparsers.add_parser("update_data_with_dml_returning", help=update_data_with_dml_returning.__doc__)
     subparsers.add_parser("delete_data_with_dml", help=delete_data_with_dml.__doc__)
+    subparsers.add_parser("delete_data_with_dml_returning", help=delete_data_with_dml_returning.__doc__)
     subparsers.add_parser(
         "update_data_with_dml_timestamp", help=update_data_with_dml_timestamp.__doc__
     )
@@ -2284,6 +2381,7 @@ if __name__ == "__main__":  # noqa: C901
         "update_data_with_dml_struct", help=update_data_with_dml_struct.__doc__
     )
     subparsers.add_parser("insert_with_dml", help=insert_with_dml.__doc__)
+    subparsers.add_parser("insert_with_dml_returning", help=insert_with_dml_returning.__doc__)
     subparsers.add_parser(
         "query_data_with_parameter", help=query_data_with_parameter.__doc__
     )
@@ -2386,8 +2484,12 @@ if __name__ == "__main__":  # noqa: C901
         log_commit_stats(args.instance_id, args.database_id)
     elif args.command == "update_data_with_dml":
         update_data_with_dml(args.instance_id, args.database_id)
+    elif args.command == "update_data_with_dml_returning":
+        update_data_with_dml_returning(args.instance_id, args.database_id)
     elif args.command == "delete_data_with_dml":
         delete_data_with_dml(args.instance_id, args.database_id)
+    elif args.command == "delete_data_with_dml_returning":
+        delete_data_with_dml_returning(args.instance_id, args.database_id)
     elif args.command == "update_data_with_dml_timestamp":
         update_data_with_dml_timestamp(args.instance_id, args.database_id)
     elif args.command == "dml_write_read_transaction":
@@ -2396,6 +2498,8 @@ if __name__ == "__main__":  # noqa: C901
         update_data_with_dml_struct(args.instance_id, args.database_id)
     elif args.command == "insert_with_dml":
         insert_with_dml(args.instance_id, args.database_id)
+    elif args.command == "insert_with_dml_returning":
+        insert_with_dml_returning(args.instance_id, args.database_id)
     elif args.command == "query_data_with_parameter":
         query_data_with_parameter(args.instance_id, args.database_id)
     elif args.command == "write_with_dml_transaction":

@@ -28,7 +28,10 @@ CREATE TABLE Singers (
     SingerId     INT64 NOT NULL,
     FirstName    STRING(1024),
     LastName     STRING(1024),
-    SingerInfo   BYTES(MAX)
+    SingerInfo   BYTES(MAX),
+    FullName     STRING(2048) AS (
+        ARRAY_TO_STRING([FirstName, LastName], " ")
+    ) STORED
 ) PRIMARY KEY (SingerId)
 """
 
@@ -480,7 +483,8 @@ def test_log_commit_stats(capsys, instance_id, sample_database):
     snippets.log_commit_stats(instance_id, sample_database.database_id)
     out, _ = capsys.readouterr()
     assert "1 record(s) inserted." in out
-    assert "3 mutation(s) in transaction." in out
+    # SingerId, FirstName, and LastName plus FullName which is generated.
+    assert "4 mutation(s) in transaction." in out
 
 
 @pytest.mark.dependency(depends=["insert_data"])
@@ -490,9 +494,23 @@ def test_update_data_with_dml(capsys, instance_id, sample_database):
     assert "1 record(s) updated." in out
 
 
+@pytest.mark.dependency(depends=["add_column"])
+def test_update_data_with_dml_returning(capsys, instance_id, sample_database):
+    snippets.update_data_with_dml_returning(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert "1 record(s) updated." in out
+
+
 @pytest.mark.dependency(depends=["insert_data"])
 def test_delete_data_with_dml(capsys, instance_id, sample_database):
     snippets.delete_data_with_dml(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert "1 record(s) deleted." in out
+
+
+@pytest.mark.dependency(depends=["insert_data"])
+def test_delete_data_with_dml_returning(capsys, instance_id, sample_database):
+    snippets.delete_data_with_dml_returning(instance_id, sample_database.database_id)
     out, _ = capsys.readouterr()
     assert "1 record(s) deleted." in out
 
@@ -525,6 +543,13 @@ def test_update_data_with_dml_struct(capsys, instance_id, sample_database):
 @pytest.mark.dependency(name="insert_with_dml")
 def test_insert_with_dml(capsys, instance_id, sample_database):
     snippets.insert_with_dml(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert "4 record(s) inserted" in out
+
+
+@pytest.mark.dependency(depends=[""])
+def test_insert_with_dml_returning(capsys, instance_id, sample_database):
+    snippets.insert_with_dml_returning(instance_id, sample_database.database_id)
     out, _ = capsys.readouterr()
     assert "4 record(s) inserted" in out
 
