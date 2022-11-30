@@ -16,11 +16,9 @@
 
 from __future__ import absolute_import
 
-import pkg_resources
+from google.cloud.bigquery_storage_v1 import gapic_version as package_version
 
-__version__ = pkg_resources.get_distribution(
-    "google-cloud-bigquery-storage"
-).version  # noqa
+__version__ = package_version.__version__
 
 from google.cloud.bigquery_storage_v1 import client
 from google.cloud.bigquery_storage_v1 import types

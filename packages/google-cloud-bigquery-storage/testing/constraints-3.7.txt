@@ -6,4 +6,8 @@
 # Then this file should have google-cloud-foo==1.14.0
 google-api-core==1.33.2
 proto-plus==1.22.0
+libcst==0.2.5
+fastavro==0.21.2
+pandas==1.0.5
+pyarrow==0.15.0
 protobuf==3.19.5

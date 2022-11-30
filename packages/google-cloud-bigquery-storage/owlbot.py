@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,25 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""This script is used to synthesize generated parts of this library."""
+import json
+from pathlib import Path
+import shutil
 
 import synthtool as s
-from synthtool import gcp
+import synthtool.gcp as gcp
 from synthtool.languages import python
 
-common = gcp.CommonTemplates()
+# ----------------------------------------------------------------------------
+# Copy the generated client from the owl-bot staging directory
+# ----------------------------------------------------------------------------
 
-default_version = "v1"
+clean_up_generated_samples = True
+
+# Load the default version defined in .repo-metadata.json.
+default_version = json.load(open(".repo-metadata.json", "rt")).get("default_version")
 
 for library in s.get_staging_dirs(default_version):
-    # Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
-    s.replace(
-        library / f"google/cloud/bigquery_storage_{library.name}/types/arrow.py",
-        r""".
-    Attributes:""",
-        r""".\n
-    Attributes:""",
-    )
+    if clean_up_generated_samples:
+        shutil.rmtree("samples/generated_samples", ignore_errors=True)
+        clean_up_generated_samples = False
 
     # We don't want the generated client to be accessible through
     # "google.cloud.bigquery_storage", replace it with the hand written client that
@@ -57,30 +59,20 @@ for library in s.get_staging_dirs(default_version):
         "",
     )
 
-    # We want types and __version__ to be accessible through the "main" library
-    # entry point.
-    s.replace(
-        library / "google/cloud/bigquery_storage/__init__.py",
-        f"from google\\.cloud\\.bigquery_storage_{library.name}\\.types\\.arrow import ArrowRecordBatch",
-        (
-            f"from google.cloud.bigquery_storage_{library.name} import types\n"
-            f"from google.cloud.bigquery_storage_{library.name} import __version__\n"
-            "\\g<0>"
-        ),
-    )
     s.replace(
         library / "google/cloud/bigquery_storage/__init__.py",
         r"""["']ArrowRecordBatch["']""",
         ('"__version__",\n' '    "types",\n' "    \\g<0>"),
     )
 
-    # We want to expose all types through "google.cloud.bigquery_storage.types",
-    # not just the types generated for the BQ Storage library. For example, we also
-    # want to include common proto types such as Timestamp.
+    # We want types to be accessible through the "main" library
     s.replace(
         library / "google/cloud/bigquery_storage/__init__.py",
-        r"import types",
-        "import gapic_types as types",
+        f"from google\\.cloud\\.bigquery_storage_{library.name}\\.types\\.arrow import ArrowRecordBatch",
+        (
+            f"from google.cloud.bigquery_storage_{library.name} import gapic_types as types\n"
+            "\\g<0>"
+        ),
     )
 
     # The DataFormat enum is not exposed in bigquery_storage_v1/types, add it there.
@@ -95,59 +87,42 @@ for library in s.get_staging_dirs(default_version):
         '"DataFormat",\n    \\g<0>',
     )
 
-    # The append_rows method doesn't contain keyword arguments that build request
-    # objects, so flattened tests are not needed and break with TypeError.
-    s.replace(
-        library
-        / f"tests/unit/gapic/bigquery_storage_{library.name}*/test_big_query_write.py",
-        r"(@[a-z.()\n]*\n)?(async )?"
-        r"def test_append_rows_flattened[_a-z]*\(\):\n"
-        r"( {4}.*|\n)+",
-        "\n",
-    )
-
     s.move(
-        library,
+        [library],
         excludes=[
-            "bigquery-storage-*-py.tar.gz",
-            "docs/conf.py",
-            "docs/index.rst",
+            "setup.py",
             f"google/cloud/bigquery_storage_{library.name}/__init__.py",
             # v1beta2 was first generated after the microgenerator migration.
             "scripts/fixup_bigquery_storage_v1beta2_keywords.py",
-            "README.rst",
-            "nox*.py",
-            "setup.py",
-            "setup.cfg",
+            "**/gapic_version.py",
+            "docs/index.rst",
+            "testing/constraints-3.7.txt",
         ],
     )
-
 s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
+
 extras = ["fastavro", "pandas", "pyarrow"]
 unit_test_extras = ["tests"] + extras
 
-templated_files = common.py_library(
+templated_files = gcp.CommonTemplates().py_library(
+    cov_level=98,
     microgenerator=True,
-    samples=True,
     unit_test_extras=unit_test_extras,
     system_test_extras=extras,
     system_test_external_dependencies=["google-cloud-bigquery"],
-    cov_level=98,
+    versions=gcp.common.detect_versions(path="./google", default_first=True),
 )
 s.move(
-    templated_files, excludes=[".coveragerc"]
-)  # microgenerator has a good .coveragerc file
-
-python.configure_previous_major_version_branches()
-
-# ----------------------------------------------------------------------------
-# Samples templates
-# ----------------------------------------------------------------------------
+    templated_files,
+    excludes=[".coveragerc", ".github/release-please.yml", "docs/index.rst"],
+)
 
 python.py_samples(skip_readmes=True)
 
-s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+# run format session for all directories which have a noxfile
+for noxfile in Path(".").glob("**/noxfile.py"):
+    s.shell.run(["nox", "-s", "blacken"], cwd=noxfile.parent, hide_output=False)

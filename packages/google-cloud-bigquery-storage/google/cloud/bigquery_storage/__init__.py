@@ -27,7 +27,6 @@ from google.cloud.bigquery_storage_v1.services.big_query_write.async_client impo
 )
 
 from google.cloud.bigquery_storage_v1 import gapic_types as types
-from google.cloud.bigquery_storage_v1 import __version__
 from google.cloud.bigquery_storage_v1.types.arrow import ArrowRecordBatch
 from google.cloud.bigquery_storage_v1.types.arrow import ArrowSchema
 from google.cloud.bigquery_storage_v1.types.arrow import ArrowSerializationOptions
