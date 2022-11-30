@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.automl_v1beta1.types import classification
@@ -124,66 +126,70 @@ class ModelEvaluation(proto.Message):
             [annotation_spec_id][google.cloud.automl.v1beta1.ModelEvaluation.annotation_spec_id].
     """
 
-    classification_evaluation_metrics = proto.Field(
+    classification_evaluation_metrics: classification.ClassificationEvaluationMetrics = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="metrics",
         message=classification.ClassificationEvaluationMetrics,
     )
-    regression_evaluation_metrics = proto.Field(
+    regression_evaluation_metrics: regression.RegressionEvaluationMetrics = proto.Field(
         proto.MESSAGE,
         number=24,
         oneof="metrics",
         message=regression.RegressionEvaluationMetrics,
     )
-    translation_evaluation_metrics = proto.Field(
-        proto.MESSAGE,
-        number=9,
-        oneof="metrics",
-        message=translation.TranslationEvaluationMetrics,
+    translation_evaluation_metrics: translation.TranslationEvaluationMetrics = (
+        proto.Field(
+            proto.MESSAGE,
+            number=9,
+            oneof="metrics",
+            message=translation.TranslationEvaluationMetrics,
+        )
     )
-    image_object_detection_evaluation_metrics = proto.Field(
+    image_object_detection_evaluation_metrics: detection.ImageObjectDetectionEvaluationMetrics = proto.Field(
         proto.MESSAGE,
         number=12,
         oneof="metrics",
         message=detection.ImageObjectDetectionEvaluationMetrics,
     )
-    video_object_tracking_evaluation_metrics = proto.Field(
+    video_object_tracking_evaluation_metrics: detection.VideoObjectTrackingEvaluationMetrics = proto.Field(
         proto.MESSAGE,
         number=14,
         oneof="metrics",
         message=detection.VideoObjectTrackingEvaluationMetrics,
     )
-    text_sentiment_evaluation_metrics = proto.Field(
-        proto.MESSAGE,
-        number=11,
-        oneof="metrics",
-        message=text_sentiment.TextSentimentEvaluationMetrics,
+    text_sentiment_evaluation_metrics: text_sentiment.TextSentimentEvaluationMetrics = (
+        proto.Field(
+            proto.MESSAGE,
+            number=11,
+            oneof="metrics",
+            message=text_sentiment.TextSentimentEvaluationMetrics,
+        )
     )
-    text_extraction_evaluation_metrics = proto.Field(
+    text_extraction_evaluation_metrics: text_extraction.TextExtractionEvaluationMetrics = proto.Field(
         proto.MESSAGE,
         number=13,
         oneof="metrics",
         message=text_extraction.TextExtractionEvaluationMetrics,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    annotation_spec_id = proto.Field(
+    annotation_spec_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=15,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    evaluated_example_count = proto.Field(
+    evaluated_example_count: int = proto.Field(
         proto.INT32,
         number=6,
     )

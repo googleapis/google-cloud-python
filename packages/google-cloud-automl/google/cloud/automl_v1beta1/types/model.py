@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.automl_v1beta1.types import image
@@ -109,83 +111,93 @@ class Model(proto.Message):
         DEPLOYED = 1
         UNDEPLOYED = 2
 
-    translation_model_metadata = proto.Field(
+    translation_model_metadata: translation.TranslationModelMetadata = proto.Field(
         proto.MESSAGE,
         number=15,
         oneof="model_metadata",
         message=translation.TranslationModelMetadata,
     )
-    image_classification_model_metadata = proto.Field(
-        proto.MESSAGE,
-        number=13,
-        oneof="model_metadata",
-        message=image.ImageClassificationModelMetadata,
+    image_classification_model_metadata: image.ImageClassificationModelMetadata = (
+        proto.Field(
+            proto.MESSAGE,
+            number=13,
+            oneof="model_metadata",
+            message=image.ImageClassificationModelMetadata,
+        )
     )
-    text_classification_model_metadata = proto.Field(
-        proto.MESSAGE,
-        number=14,
-        oneof="model_metadata",
-        message=text.TextClassificationModelMetadata,
+    text_classification_model_metadata: text.TextClassificationModelMetadata = (
+        proto.Field(
+            proto.MESSAGE,
+            number=14,
+            oneof="model_metadata",
+            message=text.TextClassificationModelMetadata,
+        )
     )
-    image_object_detection_model_metadata = proto.Field(
-        proto.MESSAGE,
-        number=20,
-        oneof="model_metadata",
-        message=image.ImageObjectDetectionModelMetadata,
+    image_object_detection_model_metadata: image.ImageObjectDetectionModelMetadata = (
+        proto.Field(
+            proto.MESSAGE,
+            number=20,
+            oneof="model_metadata",
+            message=image.ImageObjectDetectionModelMetadata,
+        )
     )
-    video_classification_model_metadata = proto.Field(
-        proto.MESSAGE,
-        number=23,
-        oneof="model_metadata",
-        message=video.VideoClassificationModelMetadata,
+    video_classification_model_metadata: video.VideoClassificationModelMetadata = (
+        proto.Field(
+            proto.MESSAGE,
+            number=23,
+            oneof="model_metadata",
+            message=video.VideoClassificationModelMetadata,
+        )
     )
-    video_object_tracking_model_metadata = proto.Field(
-        proto.MESSAGE,
-        number=21,
-        oneof="model_metadata",
-        message=video.VideoObjectTrackingModelMetadata,
+    video_object_tracking_model_metadata: video.VideoObjectTrackingModelMetadata = (
+        proto.Field(
+            proto.MESSAGE,
+            number=21,
+            oneof="model_metadata",
+            message=video.VideoObjectTrackingModelMetadata,
+        )
     )
-    text_extraction_model_metadata = proto.Field(
+    text_extraction_model_metadata: text.TextExtractionModelMetadata = proto.Field(
         proto.MESSAGE,
         number=19,
         oneof="model_metadata",
         message=text.TextExtractionModelMetadata,
     )
-    tables_model_metadata = proto.Field(
+    tables_model_metadata: tables.TablesModelMetadata = proto.Field(
         proto.MESSAGE,
         number=24,
         oneof="model_metadata",
         message=tables.TablesModelMetadata,
     )
-    text_sentiment_model_metadata = proto.Field(
+    text_sentiment_model_metadata: text.TextSentimentModelMetadata = proto.Field(
         proto.MESSAGE,
         number=22,
         oneof="model_metadata",
         message=text.TextSentimentModelMetadata,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    dataset_id = proto.Field(
+    dataset_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=11,
         message=timestamp_pb2.Timestamp,
     )
-    deployment_state = proto.Field(
+    deployment_state: DeploymentState = proto.Field(
         proto.ENUM,
         number=8,
         enum=DeploymentState,

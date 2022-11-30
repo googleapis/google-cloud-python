@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -42,23 +44,23 @@ class RegressionEvaluationMetrics(proto.Message):
             Output only. Root mean squared log error.
     """
 
-    root_mean_squared_error = proto.Field(
+    root_mean_squared_error: float = proto.Field(
         proto.FLOAT,
         number=1,
     )
-    mean_absolute_error = proto.Field(
+    mean_absolute_error: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
-    mean_absolute_percentage_error = proto.Field(
+    mean_absolute_percentage_error: float = proto.Field(
         proto.FLOAT,
         number=3,
     )
-    r_squared = proto.Field(
+    r_squared: float = proto.Field(
         proto.FLOAT,
         number=4,
     )
-    root_mean_squared_log_error = proto.Field(
+    root_mean_squared_log_error: float = proto.Field(
         proto.FLOAT,
         number=5,
     )

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.automl_v1.types import image
@@ -92,7 +94,7 @@ class Dataset(proto.Message):
             Used to perform consistent read-modify-write
             updates. If not set, a blind "overwrite" update
             happens.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. The labels with user-defined
             metadata to organize your dataset.
             Label keys and values can be no longer than 64
@@ -105,68 +107,72 @@ class Dataset(proto.Message):
             on and examples of labels.
     """
 
-    translation_dataset_metadata = proto.Field(
+    translation_dataset_metadata: translation.TranslationDatasetMetadata = proto.Field(
         proto.MESSAGE,
         number=23,
         oneof="dataset_metadata",
         message=translation.TranslationDatasetMetadata,
     )
-    image_classification_dataset_metadata = proto.Field(
-        proto.MESSAGE,
-        number=24,
-        oneof="dataset_metadata",
-        message=image.ImageClassificationDatasetMetadata,
+    image_classification_dataset_metadata: image.ImageClassificationDatasetMetadata = (
+        proto.Field(
+            proto.MESSAGE,
+            number=24,
+            oneof="dataset_metadata",
+            message=image.ImageClassificationDatasetMetadata,
+        )
     )
-    text_classification_dataset_metadata = proto.Field(
-        proto.MESSAGE,
-        number=25,
-        oneof="dataset_metadata",
-        message=text.TextClassificationDatasetMetadata,
+    text_classification_dataset_metadata: text.TextClassificationDatasetMetadata = (
+        proto.Field(
+            proto.MESSAGE,
+            number=25,
+            oneof="dataset_metadata",
+            message=text.TextClassificationDatasetMetadata,
+        )
     )
-    image_object_detection_dataset_metadata = proto.Field(
+    image_object_detection_dataset_metadata: image.ImageObjectDetectionDatasetMetadata = proto.Field(
         proto.MESSAGE,
         number=26,
         oneof="dataset_metadata",
         message=image.ImageObjectDetectionDatasetMetadata,
     )
-    text_extraction_dataset_metadata = proto.Field(
+    text_extraction_dataset_metadata: text.TextExtractionDatasetMetadata = proto.Field(
         proto.MESSAGE,
         number=28,
         oneof="dataset_metadata",
         message=text.TextExtractionDatasetMetadata,
     )
-    text_sentiment_dataset_metadata = proto.Field(
+    text_sentiment_dataset_metadata: text.TextSentimentDatasetMetadata = proto.Field(
         proto.MESSAGE,
         number=30,
         oneof="dataset_metadata",
         message=text.TextSentimentDatasetMetadata,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    example_count = proto.Field(
+    example_count: int = proto.Field(
         proto.INT32,
         number=21,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=14,
         message=timestamp_pb2.Timestamp,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=17,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=39,

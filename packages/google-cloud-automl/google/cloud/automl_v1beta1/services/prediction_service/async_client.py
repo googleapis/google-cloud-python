@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -167,9 +177,9 @@ class PredictionServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, PredictionServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the prediction service client.
@@ -213,13 +223,13 @@ class PredictionServiceAsyncClient:
 
     async def predict(
         self,
-        request: Union[prediction_service.PredictRequest, dict] = None,
+        request: Optional[Union[prediction_service.PredictRequest, dict]] = None,
         *,
-        name: str = None,
-        payload: data_items.ExamplePayload = None,
-        params: Mapping[str, str] = None,
+        name: Optional[str] = None,
+        payload: Optional[data_items.ExamplePayload] = None,
+        params: Optional[MutableMapping[str, str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> prediction_service.PredictResponse:
         r"""Perform an online prediction. The prediction result will be
@@ -275,7 +285,7 @@ class PredictionServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.automl_v1beta1.types.PredictRequest, dict]):
+            request (Optional[Union[google.cloud.automl_v1beta1.types.PredictRequest, dict]]):
                 The request object. Request message for
                 [PredictionService.Predict][google.cloud.automl.v1beta1.PredictionService.Predict].
             name (:class:`str`):
@@ -294,7 +304,7 @@ class PredictionServiceAsyncClient:
                 This corresponds to the ``payload`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            params (:class:`Mapping[str, str]`):
+            params (:class:`MutableMapping[str, str]`):
                 Additional domain-specific parameters, any string must
                 be up to 25000 characters long.
 
@@ -382,14 +392,14 @@ class PredictionServiceAsyncClient:
 
     async def batch_predict(
         self,
-        request: Union[prediction_service.BatchPredictRequest, dict] = None,
+        request: Optional[Union[prediction_service.BatchPredictRequest, dict]] = None,
         *,
-        name: str = None,
-        input_config: io.BatchPredictInputConfig = None,
-        output_config: io.BatchPredictOutputConfig = None,
-        params: Mapping[str, str] = None,
+        name: Optional[str] = None,
+        input_config: Optional[io.BatchPredictInputConfig] = None,
+        output_config: Optional[io.BatchPredictOutputConfig] = None,
+        params: Optional[MutableMapping[str, str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Perform a batch prediction. Unlike the online
@@ -441,7 +451,7 @@ class PredictionServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.automl_v1beta1.types.BatchPredictRequest, dict]):
+            request (Optional[Union[google.cloud.automl_v1beta1.types.BatchPredictRequest, dict]]):
                 The request object. Request message for
                 [PredictionService.BatchPredict][google.cloud.automl.v1beta1.PredictionService.BatchPredict].
             name (:class:`str`):
@@ -466,7 +476,7 @@ class PredictionServiceAsyncClient:
                 This corresponds to the ``output_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            params (:class:`Mapping[str, str]`):
+            params (:class:`MutableMapping[str, str]`):
                 Required. Additional domain-specific parameters for the
                 predictions, any string must be up to 25000 characters
                 long.

@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-automl"
+    "name": "google-cloud-automl",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -3958,7 +3959,7 @@
           },
           {
             "name": "params",
-            "type": "Mapping[str, str]"
+            "type": "MutableMapping[str, str]"
           },
           {
             "name": "retry",
@@ -4050,7 +4051,7 @@
           },
           {
             "name": "params",
-            "type": "Mapping[str, str]"
+            "type": "MutableMapping[str, str]"
           },
           {
             "name": "retry",
@@ -4139,7 +4140,7 @@
           },
           {
             "name": "params",
-            "type": "Mapping[str, str]"
+            "type": "MutableMapping[str, str]"
           },
           {
             "name": "retry",
@@ -4227,7 +4228,7 @@
           },
           {
             "name": "params",
-            "type": "Mapping[str, str]"
+            "type": "MutableMapping[str, str]"
           },
           {
             "name": "retry",

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import duration_pb2  # type: ignore
@@ -41,12 +43,12 @@ class TimeSegment(proto.Message):
             start.
     """
 
-    start_time_offset = proto.Field(
+    start_time_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=1,
         message=duration_pb2.Duration,
     )
-    end_time_offset = proto.Field(
+    end_time_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,

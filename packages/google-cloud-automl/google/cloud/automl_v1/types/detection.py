@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.automl_v1.types import geometry
@@ -41,12 +43,12 @@ class ImageObjectDetectionAnnotation(proto.Message):
             positivity confidence.
     """
 
-    bounding_box = proto.Field(
+    bounding_box: geometry.BoundingPoly = proto.Field(
         proto.MESSAGE,
         number=1,
         message=geometry.BoundingPoly,
     )
-    score = proto.Field(
+    score: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
@@ -65,7 +67,7 @@ class BoundingBoxMetricsEntry(proto.Message):
         mean_average_precision (float):
             Output only. The mean average precision, most often close to
             au_prc.
-        confidence_metrics_entries (Sequence[google.cloud.automl_v1.types.BoundingBoxMetricsEntry.ConfidenceMetricsEntry]):
+        confidence_metrics_entries (MutableSequence[google.cloud.automl_v1.types.BoundingBoxMetricsEntry.ConfidenceMetricsEntry]):
             Output only. Metrics for each label-match
             confidence_threshold from
             0.05,0.10,...,0.95,0.96,0.97,0.98,0.99. Precision-recall
@@ -90,32 +92,34 @@ class BoundingBoxMetricsEntry(proto.Message):
                 precision.
         """
 
-        confidence_threshold = proto.Field(
+        confidence_threshold: float = proto.Field(
             proto.FLOAT,
             number=1,
         )
-        recall = proto.Field(
+        recall: float = proto.Field(
             proto.FLOAT,
             number=2,
         )
-        precision = proto.Field(
+        precision: float = proto.Field(
             proto.FLOAT,
             number=3,
         )
-        f1_score = proto.Field(
+        f1_score: float = proto.Field(
             proto.FLOAT,
             number=4,
         )
 
-    iou_threshold = proto.Field(
+    iou_threshold: float = proto.Field(
         proto.FLOAT,
         number=1,
     )
-    mean_average_precision = proto.Field(
+    mean_average_precision: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
-    confidence_metrics_entries = proto.RepeatedField(
+    confidence_metrics_entries: MutableSequence[
+        ConfidenceMetricsEntry
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=ConfidenceMetricsEntry,
@@ -131,7 +135,7 @@ class ImageObjectDetectionEvaluationMetrics(proto.Message):
             Output only. The total number of bounding
             boxes (i.e. summed over all images) the ground
             truth used to create this evaluation had.
-        bounding_box_metrics_entries (Sequence[google.cloud.automl_v1.types.BoundingBoxMetricsEntry]):
+        bounding_box_metrics_entries (MutableSequence[google.cloud.automl_v1.types.BoundingBoxMetricsEntry]):
             Output only. The bounding boxes match metrics
             for each Intersection-over-union threshold
             0.05,0.10,...,0.95,0.96,0.97,0.98,0.99 and each
@@ -143,16 +147,18 @@ class ImageObjectDetectionEvaluationMetrics(proto.Message):
             bounding_box_metrics_entries.
     """
 
-    evaluated_bounding_box_count = proto.Field(
+    evaluated_bounding_box_count: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    bounding_box_metrics_entries = proto.RepeatedField(
+    bounding_box_metrics_entries: MutableSequence[
+        "BoundingBoxMetricsEntry"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="BoundingBoxMetricsEntry",
     )
-    bounding_box_mean_average_precision = proto.Field(
+    bounding_box_mean_average_precision: float = proto.Field(
         proto.FLOAT,
         number=3,
     )

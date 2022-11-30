@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.automl_v1beta1.types import io
@@ -63,7 +65,7 @@ class TableSpec(proto.Message):
             Output only. The number of columns of the
             table. That is, the number of child
             ColumnSpec-s.
-        input_configs (Sequence[google.cloud.automl_v1beta1.types.InputConfig]):
+        input_configs (MutableSequence[google.cloud.automl_v1beta1.types.InputConfig]):
             Output only. Input configs via which data
             currently residing in the table had been
             imported.
@@ -73,32 +75,32 @@ class TableSpec(proto.Message):
             happens.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    time_column_spec_id = proto.Field(
+    time_column_spec_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    row_count = proto.Field(
+    row_count: int = proto.Field(
         proto.INT64,
         number=3,
     )
-    valid_row_count = proto.Field(
+    valid_row_count: int = proto.Field(
         proto.INT64,
         number=4,
     )
-    column_count = proto.Field(
+    column_count: int = proto.Field(
         proto.INT64,
         number=7,
     )
-    input_configs = proto.RepeatedField(
+    input_configs: MutableSequence[io.InputConfig] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=io.InputConfig,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=6,
     )

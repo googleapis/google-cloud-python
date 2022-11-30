@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.automl_v1.types import classification
@@ -39,7 +41,7 @@ class TextClassificationDatasetMetadata(proto.Message):
             Required. Type of the classification problem.
     """
 
-    classification_type = proto.Field(
+    classification_type: classification.ClassificationType = proto.Field(
         proto.ENUM,
         number=1,
         enum=classification.ClassificationType,
@@ -55,7 +57,7 @@ class TextClassificationModelMetadata(proto.Message):
             dataset used to train this model.
     """
 
-    classification_type = proto.Field(
+    classification_type: classification.ClassificationType = proto.Field(
         proto.ENUM,
         number=3,
         enum=classification.ClassificationType,
@@ -84,7 +86,7 @@ class TextSentimentDatasetMetadata(proto.Message):
             and 10 (inclusive).
     """
 
-    sentiment_max = proto.Field(
+    sentiment_max: int = proto.Field(
         proto.INT32,
         number=1,
     )

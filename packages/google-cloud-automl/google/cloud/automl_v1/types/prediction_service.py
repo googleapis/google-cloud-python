@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.automl_v1.types import annotation_payload
@@ -43,7 +45,7 @@ class PredictRequest(proto.Message):
             Required. Payload to perform a prediction on.
             The payload must match the problem type that the
             model was trained to solve.
-        params (Mapping[str, str]):
+        params (MutableMapping[str, str]):
             Additional domain-specific parameters, any string must be up
             to 25000 characters long.
 
@@ -74,16 +76,16 @@ class PredictRequest(proto.Message):
             objects. The default is false.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    payload = proto.Field(
+    payload: data_items.ExamplePayload = proto.Field(
         proto.MESSAGE,
         number=2,
         message=data_items.ExamplePayload,
     )
-    params = proto.MapField(
+    params: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
@@ -95,7 +97,7 @@ class PredictResponse(proto.Message):
     [PredictionService.Predict][google.cloud.automl.v1.PredictionService.Predict].
 
     Attributes:
-        payload (Sequence[google.cloud.automl_v1.types.AnnotationPayload]):
+        payload (MutableSequence[google.cloud.automl_v1.types.AnnotationPayload]):
             Prediction result.
             AutoML Translation and AutoML Natural Language
             Sentiment Analysis return precisely one payload.
@@ -109,7 +111,7 @@ class PredictResponse(proto.Message):
             document, the recognized text is returned in the
             [document_text][google.cloud.automl.v1.Document.document_text]
             property.
-        metadata (Mapping[str, str]):
+        metadata (MutableMapping[str, str]):
             Additional domain-specific prediction response metadata.
 
             AutoML Vision Object Detection
@@ -130,17 +132,19 @@ class PredictResponse(proto.Message):
             API.
     """
 
-    payload = proto.RepeatedField(
+    payload: MutableSequence[
+        annotation_payload.AnnotationPayload
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=annotation_payload.AnnotationPayload,
     )
-    preprocessed_input = proto.Field(
+    preprocessed_input: data_items.ExamplePayload = proto.Field(
         proto.MESSAGE,
         number=3,
         message=data_items.ExamplePayload,
     )
-    metadata = proto.MapField(
+    metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
@@ -161,7 +165,7 @@ class BatchPredictRequest(proto.Message):
         output_config (google.cloud.automl_v1.types.BatchPredictOutputConfig):
             Required. The Configuration specifying where
             output predictions should be written.
-        params (Mapping[str, str]):
+        params (MutableMapping[str, str]):
             Additional domain-specific parameters for the predictions,
             any string must be up to 25000 characters long.
 
@@ -246,21 +250,21 @@ class BatchPredictRequest(proto.Message):
             Default is 0.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    input_config = proto.Field(
+    input_config: io.BatchPredictInputConfig = proto.Field(
         proto.MESSAGE,
         number=3,
         message=io.BatchPredictInputConfig,
     )
-    output_config = proto.Field(
+    output_config: io.BatchPredictOutputConfig = proto.Field(
         proto.MESSAGE,
         number=4,
         message=io.BatchPredictOutputConfig,
     )
-    params = proto.MapField(
+    params: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
@@ -274,7 +278,7 @@ class BatchPredictResult(proto.Message):
     [PredictionService.BatchPredict][google.cloud.automl.v1.PredictionService.BatchPredict].
 
     Attributes:
-        metadata (Mapping[str, str]):
+        metadata (MutableMapping[str, str]):
             Additional domain-specific prediction response metadata.
 
             AutoML Vision Object Detection
@@ -288,7 +292,7 @@ class BatchPredictResult(proto.Message):
             bounding boxes returned per frame.
     """
 
-    metadata = proto.MapField(
+    metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=1,

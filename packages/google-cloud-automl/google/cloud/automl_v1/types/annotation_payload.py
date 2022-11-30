@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.automl_v1.types import classification as gca_classification
@@ -79,41 +81,41 @@ class AnnotationPayload(proto.Message):
             between any two model training.
     """
 
-    translation = proto.Field(
+    translation: gca_translation.TranslationAnnotation = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="detail",
         message=gca_translation.TranslationAnnotation,
     )
-    classification = proto.Field(
+    classification: gca_classification.ClassificationAnnotation = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="detail",
         message=gca_classification.ClassificationAnnotation,
     )
-    image_object_detection = proto.Field(
+    image_object_detection: detection.ImageObjectDetectionAnnotation = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="detail",
         message=detection.ImageObjectDetectionAnnotation,
     )
-    text_extraction = proto.Field(
+    text_extraction: gca_text_extraction.TextExtractionAnnotation = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="detail",
         message=gca_text_extraction.TextExtractionAnnotation,
     )
-    text_sentiment = proto.Field(
+    text_sentiment: gca_text_sentiment.TextSentimentAnnotation = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="detail",
         message=gca_text_sentiment.TextSentimentAnnotation,
     )
-    annotation_spec_id = proto.Field(
+    annotation_spec_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=5,
     )

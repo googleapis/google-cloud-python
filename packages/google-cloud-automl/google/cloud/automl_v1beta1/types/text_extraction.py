@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.automl_v1beta1.types import text_segment as gca_text_segment
@@ -45,13 +47,13 @@ class TextExtractionAnnotation(proto.Message):
             confidence in correctness of the annotation.
     """
 
-    text_segment = proto.Field(
+    text_segment: gca_text_segment.TextSegment = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="annotation",
         message=gca_text_segment.TextSegment,
     )
-    score = proto.Field(
+    score: float = proto.Field(
         proto.FLOAT,
         number=1,
     )
@@ -64,7 +66,7 @@ class TextExtractionEvaluationMetrics(proto.Message):
         au_prc (float):
             Output only. The Area under precision recall
             curve metric.
-        confidence_metrics_entries (Sequence[google.cloud.automl_v1beta1.types.TextExtractionEvaluationMetrics.ConfidenceMetricsEntry]):
+        confidence_metrics_entries (MutableSequence[google.cloud.automl_v1beta1.types.TextExtractionEvaluationMetrics.ConfidenceMetricsEntry]):
             Output only. Metrics that have confidence
             thresholds. Precision-recall curve can be
             derived from it.
@@ -90,28 +92,30 @@ class TextExtractionEvaluationMetrics(proto.Message):
                 precision.
         """
 
-        confidence_threshold = proto.Field(
+        confidence_threshold: float = proto.Field(
             proto.FLOAT,
             number=1,
         )
-        recall = proto.Field(
+        recall: float = proto.Field(
             proto.FLOAT,
             number=3,
         )
-        precision = proto.Field(
+        precision: float = proto.Field(
             proto.FLOAT,
             number=4,
         )
-        f1_score = proto.Field(
+        f1_score: float = proto.Field(
             proto.FLOAT,
             number=5,
         )
 
-    au_prc = proto.Field(
+    au_prc: float = proto.Field(
         proto.FLOAT,
         number=1,
     )
-    confidence_metrics_entries = proto.RepeatedField(
+    confidence_metrics_entries: MutableSequence[
+        ConfidenceMetricsEntry
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=ConfidenceMetricsEntry,

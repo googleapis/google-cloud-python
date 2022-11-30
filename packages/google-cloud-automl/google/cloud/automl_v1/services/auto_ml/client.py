@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -75,7 +86,7 @@ class AutoMlClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[AutoMlTransport]:
         """Returns an appropriate transport class.
 
@@ -435,8 +446,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, AutoMlTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, AutoMlTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the auto ml client.
@@ -450,7 +461,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
             transport (Union[str, AutoMlTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -480,6 +491,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -532,12 +544,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def create_dataset(
         self,
-        request: Union[service.CreateDatasetRequest, dict] = None,
+        request: Optional[Union[service.CreateDatasetRequest, dict]] = None,
         *,
-        parent: str = None,
-        dataset: gca_dataset.Dataset = None,
+        parent: Optional[str] = None,
+        dataset: Optional[gca_dataset.Dataset] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a dataset.
@@ -661,11 +673,11 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def get_dataset(
         self,
-        request: Union[service.GetDatasetRequest, dict] = None,
+        request: Optional[Union[service.GetDatasetRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataset.Dataset:
         r"""Gets a dataset.
@@ -765,11 +777,11 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def list_datasets(
         self,
-        request: Union[service.ListDatasetsRequest, dict] = None,
+        request: Optional[Union[service.ListDatasetsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDatasetsPager:
         r"""Lists datasets in a project.
@@ -880,12 +892,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def update_dataset(
         self,
-        request: Union[service.UpdateDatasetRequest, dict] = None,
+        request: Optional[Union[service.UpdateDatasetRequest, dict]] = None,
         *,
-        dataset: gca_dataset.Dataset = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        dataset: Optional[gca_dataset.Dataset] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gca_dataset.Dataset:
         r"""Updates a dataset.
@@ -1000,11 +1012,11 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def delete_dataset(
         self,
-        request: Union[service.DeleteDatasetRequest, dict] = None,
+        request: Optional[Union[service.DeleteDatasetRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a dataset and all of its contents. Returns empty
@@ -1128,12 +1140,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def import_data(
         self,
-        request: Union[service.ImportDataRequest, dict] = None,
+        request: Optional[Union[service.ImportDataRequest, dict]] = None,
         *,
-        name: str = None,
-        input_config: io.InputConfig = None,
+        name: Optional[str] = None,
+        input_config: Optional[io.InputConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Imports data into a dataset. For Tables this method can only be
@@ -1277,12 +1289,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def export_data(
         self,
-        request: Union[service.ExportDataRequest, dict] = None,
+        request: Optional[Union[service.ExportDataRequest, dict]] = None,
         *,
-        name: str = None,
-        output_config: io.OutputConfig = None,
+        name: Optional[str] = None,
+        output_config: Optional[io.OutputConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Exports dataset's data to the provided output location. Returns
@@ -1418,11 +1430,11 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def get_annotation_spec(
         self,
-        request: Union[service.GetAnnotationSpecRequest, dict] = None,
+        request: Optional[Union[service.GetAnnotationSpecRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> annotation_spec.AnnotationSpec:
         r"""Gets an annotation spec.
@@ -1518,12 +1530,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def create_model(
         self,
-        request: Union[service.CreateModelRequest, dict] = None,
+        request: Optional[Union[service.CreateModelRequest, dict]] = None,
         *,
-        parent: str = None,
-        model: gca_model.Model = None,
+        parent: Optional[str] = None,
+        model: Optional[gca_model.Model] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a model. Returns a Model in the
@@ -1648,11 +1660,11 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def get_model(
         self,
-        request: Union[service.GetModelRequest, dict] = None,
+        request: Optional[Union[service.GetModelRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> model.Model:
         r"""Gets a model.
@@ -1748,11 +1760,11 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def list_models(
         self,
-        request: Union[service.ListModelsRequest, dict] = None,
+        request: Optional[Union[service.ListModelsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListModelsPager:
         r"""Lists models.
@@ -1863,11 +1875,11 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def delete_model(
         self,
-        request: Union[service.DeleteModelRequest, dict] = None,
+        request: Optional[Union[service.DeleteModelRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a model. Returns ``google.protobuf.Empty`` in the
@@ -1990,12 +2002,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def update_model(
         self,
-        request: Union[service.UpdateModelRequest, dict] = None,
+        request: Optional[Union[service.UpdateModelRequest, dict]] = None,
         *,
-        model: gca_model.Model = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        model: Optional[gca_model.Model] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gca_model.Model:
         r"""Updates a model.
@@ -2103,11 +2115,11 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def deploy_model(
         self,
-        request: Union[service.DeployModelRequest, dict] = None,
+        request: Optional[Union[service.DeployModelRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deploys a model. If a model is already deployed, deploying it
@@ -2240,11 +2252,11 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def undeploy_model(
         self,
-        request: Union[service.UndeployModelRequest, dict] = None,
+        request: Optional[Union[service.UndeployModelRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Undeploys a model. If the model is not deployed this method has
@@ -2372,12 +2384,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def export_model(
         self,
-        request: Union[service.ExportModelRequest, dict] = None,
+        request: Optional[Union[service.ExportModelRequest, dict]] = None,
         *,
-        name: str = None,
-        output_config: io.ModelExportOutputConfig = None,
+        name: Optional[str] = None,
+        output_config: Optional[io.ModelExportOutputConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Exports a trained, "export-able", model to a user specified
@@ -2519,11 +2531,11 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def get_model_evaluation(
         self,
-        request: Union[service.GetModelEvaluationRequest, dict] = None,
+        request: Optional[Union[service.GetModelEvaluationRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> model_evaluation.ModelEvaluation:
         r"""Gets a model evaluation.
@@ -2619,12 +2631,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def list_model_evaluations(
         self,
-        request: Union[service.ListModelEvaluationsRequest, dict] = None,
+        request: Optional[Union[service.ListModelEvaluationsRequest, dict]] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListModelEvaluationsPager:
         r"""Lists model evaluations.

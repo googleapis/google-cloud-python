@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -34,11 +36,11 @@ class DoubleRange(proto.Message):
             End of the range, exclusive.
     """
 
-    start = proto.Field(
+    start: float = proto.Field(
         proto.DOUBLE,
         number=1,
     )
-    end = proto.Field(
+    end: float = proto.Field(
         proto.DOUBLE,
         number=2,
     )

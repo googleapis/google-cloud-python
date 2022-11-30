@@ -2,23 +2,20 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of the Cloud AutoML API.
-By default, you will get ``v1``, the latest stable version.
+This package includes clients for multiple versions of Cloud AutoML.
+By default, you will get version ``automl_v1``.
 
-v1 API Reference
-------------------------
+
+API Reference
+-------------
 .. toctree::
     :maxdepth: 2
 
     automl_v1/services
     automl_v1/types
 
-Previous beta release v1beta1 is provided as well.
-
-An API and type reference is provided for ``v1beta1``:
-
-v1beta1 API Reference
-----------------------
+API Reference
+-------------
 .. toctree::
     :maxdepth: 2
 
@@ -29,13 +26,12 @@ v1beta1 API Reference
 Migration Guide
 ---------------
 
-See the guide below for instructions on migrating to the 2.x release of this library.
+See the guide below for instructions on migrating to the latest version.
 
 .. toctree::
     :maxdepth: 2
 
-    UPGRADING
-
+    UPGRADING
 
 
 Changelog
@@ -44,8 +40,6 @@ Changelog
 For a list of all ``google-cloud-automl`` releases:
 
 .. toctree::
-  :maxdepth: 2
+    :maxdepth: 2
 
-  changelog
-
-
+    changelog

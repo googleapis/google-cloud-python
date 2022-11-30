@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.automl_v1beta1.types import data_stats as gca_data_stats
@@ -53,7 +55,7 @@ class ColumnSpec(proto.Message):
             This field may be stale, see the ancestor's
             Dataset.tables_dataset_metadata.stats_update_time field for
             the timestamp at which these stats were last updated.
-        top_correlated_columns (Sequence[google.cloud.automl_v1beta1.types.ColumnSpec.CorrelatedColumn]):
+        top_correlated_columns (MutableSequence[google.cloud.automl_v1beta1.types.ColumnSpec.CorrelatedColumn]):
             Deprecated.
         etag (str):
             Used to perform consistent read-modify-write
@@ -74,40 +76,40 @@ class ColumnSpec(proto.Message):
                 column.
         """
 
-        column_spec_id = proto.Field(
+        column_spec_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        correlation_stats = proto.Field(
+        correlation_stats: gca_data_stats.CorrelationStats = proto.Field(
             proto.MESSAGE,
             number=2,
             message=gca_data_stats.CorrelationStats,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    data_type = proto.Field(
+    data_type: data_types.DataType = proto.Field(
         proto.MESSAGE,
         number=2,
         message=data_types.DataType,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    data_stats = proto.Field(
+    data_stats: gca_data_stats.DataStats = proto.Field(
         proto.MESSAGE,
         number=4,
         message=gca_data_stats.DataStats,
     )
-    top_correlated_columns = proto.RepeatedField(
+    top_correlated_columns: MutableSequence[CorrelatedColumn] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=CorrelatedColumn,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=6,
     )

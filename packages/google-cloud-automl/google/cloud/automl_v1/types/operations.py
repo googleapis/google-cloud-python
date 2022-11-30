@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.automl_v1.types import io
@@ -88,7 +90,7 @@ class OperationMetadata(proto.Message):
         progress_percent (int):
             Output only. Progress of operation. Range: [0, 100]. Not
             used currently.
-        partial_failures (Sequence[google.rpc.status_pb2.Status]):
+        partial_failures (MutableSequence[google.rpc.status_pb2.Status]):
             Output only. Partial failures encountered.
             E.g. single files that couldn't be read.
             This field should never exceed 20 entries.
@@ -102,75 +104,75 @@ class OperationMetadata(proto.Message):
             updated for the last time.
     """
 
-    delete_details = proto.Field(
+    delete_details: "DeleteOperationMetadata" = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="details",
         message="DeleteOperationMetadata",
     )
-    deploy_model_details = proto.Field(
+    deploy_model_details: "DeployModelOperationMetadata" = proto.Field(
         proto.MESSAGE,
         number=24,
         oneof="details",
         message="DeployModelOperationMetadata",
     )
-    undeploy_model_details = proto.Field(
+    undeploy_model_details: "UndeployModelOperationMetadata" = proto.Field(
         proto.MESSAGE,
         number=25,
         oneof="details",
         message="UndeployModelOperationMetadata",
     )
-    create_model_details = proto.Field(
+    create_model_details: "CreateModelOperationMetadata" = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="details",
         message="CreateModelOperationMetadata",
     )
-    create_dataset_details = proto.Field(
+    create_dataset_details: "CreateDatasetOperationMetadata" = proto.Field(
         proto.MESSAGE,
         number=30,
         oneof="details",
         message="CreateDatasetOperationMetadata",
     )
-    import_data_details = proto.Field(
+    import_data_details: "ImportDataOperationMetadata" = proto.Field(
         proto.MESSAGE,
         number=15,
         oneof="details",
         message="ImportDataOperationMetadata",
     )
-    batch_predict_details = proto.Field(
+    batch_predict_details: "BatchPredictOperationMetadata" = proto.Field(
         proto.MESSAGE,
         number=16,
         oneof="details",
         message="BatchPredictOperationMetadata",
     )
-    export_data_details = proto.Field(
+    export_data_details: "ExportDataOperationMetadata" = proto.Field(
         proto.MESSAGE,
         number=21,
         oneof="details",
         message="ExportDataOperationMetadata",
     )
-    export_model_details = proto.Field(
+    export_model_details: "ExportModelOperationMetadata" = proto.Field(
         proto.MESSAGE,
         number=22,
         oneof="details",
         message="ExportModelOperationMetadata",
     )
-    progress_percent = proto.Field(
+    progress_percent: int = proto.Field(
         proto.INT32,
         number=13,
     )
-    partial_failures = proto.RepeatedField(
+    partial_failures: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=status_pb2.Status,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
@@ -226,13 +228,13 @@ class ExportDataOperationMetadata(proto.Message):
                 This field is a member of `oneof`_ ``output_location``.
         """
 
-        gcs_output_directory = proto.Field(
+        gcs_output_directory: str = proto.Field(
             proto.STRING,
             number=1,
             oneof="output_location",
         )
 
-    output_info = proto.Field(
+    output_info: ExportDataOutputInfo = proto.Field(
         proto.MESSAGE,
         number=1,
         message=ExportDataOutputInfo,
@@ -267,18 +269,18 @@ class BatchPredictOperationMetadata(proto.Message):
                 This field is a member of `oneof`_ ``output_location``.
         """
 
-        gcs_output_directory = proto.Field(
+        gcs_output_directory: str = proto.Field(
             proto.STRING,
             number=1,
             oneof="output_location",
         )
 
-    input_config = proto.Field(
+    input_config: io.BatchPredictInputConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=io.BatchPredictInputConfig,
     )
-    output_info = proto.Field(
+    output_info: BatchPredictOutputInfo = proto.Field(
         proto.MESSAGE,
         number=2,
         message=BatchPredictOutputInfo,
@@ -305,12 +307,12 @@ class ExportModelOperationMetadata(proto.Message):
                 exported.
         """
 
-        gcs_output_directory = proto.Field(
+        gcs_output_directory: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    output_info = proto.Field(
+    output_info: ExportModelOutputInfo = proto.Field(
         proto.MESSAGE,
         number=2,
         message=ExportModelOutputInfo,

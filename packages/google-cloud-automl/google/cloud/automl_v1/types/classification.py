@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -47,7 +49,7 @@ class ClassificationAnnotation(proto.Message):
             negative or 1 for positive.
     """
 
-    score = proto.Field(
+    score: float = proto.Field(
         proto.FLOAT,
         number=1,
     )
@@ -69,7 +71,7 @@ class ClassificationEvaluationMetrics(proto.Message):
             Micro-averaged for the overall evaluation.
         log_loss (float):
             Output only. The Log Loss metric.
-        confidence_metrics_entry (Sequence[google.cloud.automl_v1.types.ClassificationEvaluationMetrics.ConfidenceMetricsEntry]):
+        confidence_metrics_entry (MutableSequence[google.cloud.automl_v1.types.ClassificationEvaluationMetrics.ConfidenceMetricsEntry]):
             Output only. Metrics for each confidence_threshold in
             0.00,0.05,0.10,...,0.95,0.96,0.97,0.98,0.99 and
             position_threshold = INT32_MAX_VALUE. ROC and
@@ -84,7 +86,7 @@ class ClassificationEvaluationMetrics(proto.Message):
             is no more than 10.
             Only set for model level evaluation, not for
             evaluation per label.
-        annotation_spec_id (Sequence[str]):
+        annotation_spec_id (MutableSequence[str]):
             Output only. The annotation spec ids used for
             this evaluation.
     """
@@ -150,59 +152,59 @@ class ClassificationEvaluationMetrics(proto.Message):
                 they would not match a ground truth label.
         """
 
-        confidence_threshold = proto.Field(
+        confidence_threshold: float = proto.Field(
             proto.FLOAT,
             number=1,
         )
-        position_threshold = proto.Field(
+        position_threshold: int = proto.Field(
             proto.INT32,
             number=14,
         )
-        recall = proto.Field(
+        recall: float = proto.Field(
             proto.FLOAT,
             number=2,
         )
-        precision = proto.Field(
+        precision: float = proto.Field(
             proto.FLOAT,
             number=3,
         )
-        false_positive_rate = proto.Field(
+        false_positive_rate: float = proto.Field(
             proto.FLOAT,
             number=8,
         )
-        f1_score = proto.Field(
+        f1_score: float = proto.Field(
             proto.FLOAT,
             number=4,
         )
-        recall_at1 = proto.Field(
+        recall_at1: float = proto.Field(
             proto.FLOAT,
             number=5,
         )
-        precision_at1 = proto.Field(
+        precision_at1: float = proto.Field(
             proto.FLOAT,
             number=6,
         )
-        false_positive_rate_at1 = proto.Field(
+        false_positive_rate_at1: float = proto.Field(
             proto.FLOAT,
             number=9,
         )
-        f1_score_at1 = proto.Field(
+        f1_score_at1: float = proto.Field(
             proto.FLOAT,
             number=7,
         )
-        true_positive_count = proto.Field(
+        true_positive_count: int = proto.Field(
             proto.INT64,
             number=10,
         )
-        false_positive_count = proto.Field(
+        false_positive_count: int = proto.Field(
             proto.INT64,
             number=11,
         )
-        false_negative_count = proto.Field(
+        false_negative_count: int = proto.Field(
             proto.INT64,
             number=12,
         )
-        true_negative_count = proto.Field(
+        true_negative_count: int = proto.Field(
             proto.INT64,
             number=13,
         )
@@ -211,20 +213,20 @@ class ClassificationEvaluationMetrics(proto.Message):
         r"""Confusion matrix of the model running the classification.
 
         Attributes:
-            annotation_spec_id (Sequence[str]):
+            annotation_spec_id (MutableSequence[str]):
                 Output only. IDs of the annotation specs used in the
                 confusion matrix. For Tables CLASSIFICATION
                 [prediction_type][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type]
                 only list of [annotation_spec_display_name-s][] is
                 populated.
-            display_name (Sequence[str]):
+            display_name (MutableSequence[str]):
                 Output only. Display name of the annotation specs used in
                 the confusion matrix, as they were at the moment of the
                 evaluation. For Tables CLASSIFICATION
                 [prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type],
                 distinct values of the target column at the moment of the
                 model evaluation are populated here.
-            row (Sequence[google.cloud.automl_v1.types.ClassificationEvaluationMetrics.ConfusionMatrix.Row]):
+            row (MutableSequence[google.cloud.automl_v1.types.ClassificationEvaluationMetrics.ConfusionMatrix.Row]):
                 Output only. Rows in the confusion matrix. The number of
                 rows is equal to the size of ``annotation_spec_id``.
                 ``row[i].example_count[j]`` is the number of examples that
@@ -237,7 +239,7 @@ class ClassificationEvaluationMetrics(proto.Message):
             r"""Output only. A row in the confusion matrix.
 
             Attributes:
-                example_count (Sequence[int]):
+                example_count (MutableSequence[int]):
                     Output only. Value of the specific cell in the confusion
                     matrix. The number of values each row has (i.e. the length
                     of the row) is equal to the length of the
@@ -247,48 +249,52 @@ class ClassificationEvaluationMetrics(proto.Message):
                     field.
             """
 
-            example_count = proto.RepeatedField(
+            example_count: MutableSequence[int] = proto.RepeatedField(
                 proto.INT32,
                 number=1,
             )
 
-        annotation_spec_id = proto.RepeatedField(
+        annotation_spec_id: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        display_name = proto.RepeatedField(
+        display_name: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=3,
         )
-        row = proto.RepeatedField(
+        row: MutableSequence[
+            "ClassificationEvaluationMetrics.ConfusionMatrix.Row"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="ClassificationEvaluationMetrics.ConfusionMatrix.Row",
         )
 
-    au_prc = proto.Field(
+    au_prc: float = proto.Field(
         proto.FLOAT,
         number=1,
     )
-    au_roc = proto.Field(
+    au_roc: float = proto.Field(
         proto.FLOAT,
         number=6,
     )
-    log_loss = proto.Field(
+    log_loss: float = proto.Field(
         proto.FLOAT,
         number=7,
     )
-    confidence_metrics_entry = proto.RepeatedField(
+    confidence_metrics_entry: MutableSequence[
+        ConfidenceMetricsEntry
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=ConfidenceMetricsEntry,
     )
-    confusion_matrix = proto.Field(
+    confusion_matrix: ConfusionMatrix = proto.Field(
         proto.MESSAGE,
         number=4,
         message=ConfusionMatrix,
     )
-    annotation_spec_id = proto.RepeatedField(
+    annotation_spec_id: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )

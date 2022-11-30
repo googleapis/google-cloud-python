@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -41,15 +43,15 @@ class AnnotationSpec(proto.Message):
             parent dataset labeled by the annotation spec.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    example_count = proto.Field(
+    example_count: int = proto.Field(
         proto.INT32,
         number=9,
     )

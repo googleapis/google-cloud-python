@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -42,15 +44,15 @@ class TextSegment(proto.Message):
             is NOT included in the text segment.
     """
 
-    content = proto.Field(
+    content: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    start_offset = proto.Field(
+    start_offset: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    end_offset = proto.Field(
+    end_offset: int = proto.Field(
         proto.INT64,
         number=2,
     )

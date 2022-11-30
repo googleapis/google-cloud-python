@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.automl_v1beta1.types import column_spec
@@ -80,7 +82,7 @@ class TablesDatasetMetadata(proto.Message):
             as ``UNASSIGNED``. NOTE: Updates of this field will
             instantly affect any other users concurrently working with
             the dataset.
-        target_column_correlations (Mapping[str, google.cloud.automl_v1beta1.types.CorrelationStats]):
+        target_column_correlations (MutableMapping[str, google.cloud.automl_v1beta1.types.CorrelationStats]):
             Output only. Correlations between
 
             [TablesDatasetMetadata.target_column_spec_id][google.cloud.automl.v1beta1.TablesDatasetMetadata.target_column_spec_id],
@@ -102,29 +104,31 @@ class TablesDatasetMetadata(proto.Message):
             effort basis.
     """
 
-    primary_table_spec_id = proto.Field(
+    primary_table_spec_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    target_column_spec_id = proto.Field(
+    target_column_spec_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    weight_column_spec_id = proto.Field(
+    weight_column_spec_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    ml_use_column_spec_id = proto.Field(
+    ml_use_column_spec_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    target_column_correlations = proto.MapField(
+    target_column_correlations: MutableMapping[
+        str, data_stats.CorrelationStats
+    ] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=6,
         message=data_stats.CorrelationStats,
     )
-    stats_update_time = proto.Field(
+    stats_update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
@@ -163,7 +167,7 @@ class TablesModelMetadata(proto.Message):
             model is trained from is used. If neither is set,
             CreateModel will error. display_name - Output only.
             data_type - Output only.
-        input_feature_column_specs (Sequence[google.cloud.automl_v1beta1.types.ColumnSpec]):
+        input_feature_column_specs (MutableSequence[google.cloud.automl_v1beta1.types.ColumnSpec]):
             Column specs of the dataset's primary table's columns, on
             which the model is trained and which are used as the input
             for predictions. The
@@ -213,7 +217,7 @@ class TablesModelMetadata(proto.Message):
             root-mean-squared error (RMSE). "MINIMIZE_MAE" - Minimize
             mean-absolute error (MAE). "MINIMIZE_RMSLE" - Minimize
             root-mean-squared log error (RMSLE).
-        tables_model_column_info (Sequence[google.cloud.automl_v1beta1.types.TablesModelColumnInfo]):
+        tables_model_column_info (MutableSequence[google.cloud.automl_v1beta1.types.TablesModelColumnInfo]):
             Output only. Auxiliary information for each of the
             input_feature_column_specs with respect to this particular
             model.
@@ -248,44 +252,48 @@ class TablesModelMetadata(proto.Message):
             the entire training budget has been used.
     """
 
-    optimization_objective_recall_value = proto.Field(
+    optimization_objective_recall_value: float = proto.Field(
         proto.FLOAT,
         number=17,
         oneof="additional_optimization_objective_config",
     )
-    optimization_objective_precision_value = proto.Field(
+    optimization_objective_precision_value: float = proto.Field(
         proto.FLOAT,
         number=18,
         oneof="additional_optimization_objective_config",
     )
-    target_column_spec = proto.Field(
+    target_column_spec: column_spec.ColumnSpec = proto.Field(
         proto.MESSAGE,
         number=2,
         message=column_spec.ColumnSpec,
     )
-    input_feature_column_specs = proto.RepeatedField(
+    input_feature_column_specs: MutableSequence[
+        column_spec.ColumnSpec
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=column_spec.ColumnSpec,
     )
-    optimization_objective = proto.Field(
+    optimization_objective: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    tables_model_column_info = proto.RepeatedField(
+    tables_model_column_info: MutableSequence[
+        "TablesModelColumnInfo"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="TablesModelColumnInfo",
     )
-    train_budget_milli_node_hours = proto.Field(
+    train_budget_milli_node_hours: int = proto.Field(
         proto.INT64,
         number=6,
     )
-    train_cost_milli_node_hours = proto.Field(
+    train_cost_milli_node_hours: int = proto.Field(
         proto.INT64,
         number=7,
     )
-    disable_early_stopping = proto.Field(
+    disable_early_stopping: bool = proto.Field(
         proto.BOOL,
         number=12,
     )
@@ -319,7 +327,7 @@ class TablesAnnotation(proto.Message):
 
             -  FLOAT64 - the predicted (with above
                ``prediction_interval``) FLOAT64 value.
-        tables_model_column_info (Sequence[google.cloud.automl_v1beta1.types.TablesModelColumnInfo]):
+        tables_model_column_info (MutableSequence[google.cloud.automl_v1beta1.types.TablesModelColumnInfo]):
             Output only. Auxiliary information for each of the model's
 
             [input_feature_column_specs][google.cloud.automl.v1beta1.TablesModelMetadata.input_feature_column_specs]
@@ -345,26 +353,28 @@ class TablesAnnotation(proto.Message):
             baseline example for the argmax class.
     """
 
-    score = proto.Field(
+    score: float = proto.Field(
         proto.FLOAT,
         number=1,
     )
-    prediction_interval = proto.Field(
+    prediction_interval: ranges.DoubleRange = proto.Field(
         proto.MESSAGE,
         number=4,
         message=ranges.DoubleRange,
     )
-    value = proto.Field(
+    value: struct_pb2.Value = proto.Field(
         proto.MESSAGE,
         number=2,
         message=struct_pb2.Value,
     )
-    tables_model_column_info = proto.RepeatedField(
+    tables_model_column_info: MutableSequence[
+        "TablesModelColumnInfo"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="TablesModelColumnInfo",
     )
-    baseline_score = proto.Field(
+    baseline_score: float = proto.Field(
         proto.FLOAT,
         number=5,
     )
@@ -403,15 +413,15 @@ class TablesModelColumnInfo(proto.Message):
             values are computed using the Sampled Shapley method.
     """
 
-    column_spec_name = proto.Field(
+    column_spec_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    column_display_name = proto.Field(
+    column_display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    feature_importance = proto.Field(
+    feature_importance: float = proto.Field(
         proto.FLOAT,
         number=3,
     )

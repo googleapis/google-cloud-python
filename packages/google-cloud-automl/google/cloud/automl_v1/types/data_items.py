@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.automl_v1.types import geometry
@@ -50,12 +52,12 @@ class Image(proto.Message):
             Output only. HTTP URI to the thumbnail image.
     """
 
-    image_bytes = proto.Field(
+    image_bytes: bytes = proto.Field(
         proto.BYTES,
         number=1,
         oneof="data",
     )
-    thumbnail_uri = proto.Field(
+    thumbnail_uri: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -80,15 +82,15 @@ class TextSnippet(proto.Message):
             the content.
     """
 
-    content = proto.Field(
+    content: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    mime_type = proto.Field(
+    mime_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    content_uri = proto.Field(
+    content_uri: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -115,16 +117,16 @@ class DocumentDimensions(proto.Message):
         CENTIMETER = 2
         POINT = 3
 
-    unit = proto.Field(
+    unit: DocumentDimensionUnit = proto.Field(
         proto.ENUM,
         number=1,
         enum=DocumentDimensionUnit,
     )
-    width = proto.Field(
+    width: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
-    height = proto.Field(
+    height: float = proto.Field(
         proto.FLOAT,
         number=3,
     )
@@ -139,7 +141,7 @@ class Document(proto.Message):
             document.
         document_text (google.cloud.automl_v1.types.TextSnippet):
             The plain text version of this document.
-        layout (Sequence[google.cloud.automl_v1.types.Document.Layout]):
+        layout (MutableSequence[google.cloud.automl_v1.types.Document.Layout]):
             Describes the layout of the document. Sorted by
             [page_number][].
         document_dimensions (google.cloud.automl_v1.types.DocumentDimensions):
@@ -192,47 +194,47 @@ class Document(proto.Message):
             TABLE_ROW = 8
             TABLE_CELL = 9
 
-        text_segment = proto.Field(
+        text_segment: gca_text_segment.TextSegment = proto.Field(
             proto.MESSAGE,
             number=1,
             message=gca_text_segment.TextSegment,
         )
-        page_number = proto.Field(
+        page_number: int = proto.Field(
             proto.INT32,
             number=2,
         )
-        bounding_poly = proto.Field(
+        bounding_poly: geometry.BoundingPoly = proto.Field(
             proto.MESSAGE,
             number=3,
             message=geometry.BoundingPoly,
         )
-        text_segment_type = proto.Field(
+        text_segment_type: "Document.Layout.TextSegmentType" = proto.Field(
             proto.ENUM,
             number=4,
             enum="Document.Layout.TextSegmentType",
         )
 
-    input_config = proto.Field(
+    input_config: io.DocumentInputConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=io.DocumentInputConfig,
     )
-    document_text = proto.Field(
+    document_text: "TextSnippet" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="TextSnippet",
     )
-    layout = proto.RepeatedField(
+    layout: MutableSequence[Layout] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=Layout,
     )
-    document_dimensions = proto.Field(
+    document_dimensions: "DocumentDimensions" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="DocumentDimensions",
     )
-    page_count = proto.Field(
+    page_count: int = proto.Field(
         proto.INT32,
         number=5,
     )
@@ -263,19 +265,19 @@ class ExamplePayload(proto.Message):
             This field is a member of `oneof`_ ``payload``.
     """
 
-    image = proto.Field(
+    image: "Image" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="payload",
         message="Image",
     )
-    text_snippet = proto.Field(
+    text_snippet: "TextSnippet" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="payload",
         message="TextSnippet",
     )
-    document = proto.Field(
+    document: "Document" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="payload",

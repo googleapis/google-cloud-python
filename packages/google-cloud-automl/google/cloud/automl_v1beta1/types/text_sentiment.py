@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.automl_v1beta1.types import classification
@@ -50,7 +52,7 @@ class TextSentimentAnnotation(proto.Message):
             Analysis API.
     """
 
-    sentiment = proto.Field(
+    sentiment: int = proto.Field(
         proto.INT32,
         number=1,
     )
@@ -88,45 +90,47 @@ class TextSentimentEvaluationMetrics(proto.Message):
             evaluation. Only set for the overall model
             evaluation, not for evaluation of a single
             annotation spec.
-        annotation_spec_id (Sequence[str]):
+        annotation_spec_id (MutableSequence[str]):
             Output only. The annotation spec ids used for
             this evaluation. Deprecated .
     """
 
-    precision = proto.Field(
+    precision: float = proto.Field(
         proto.FLOAT,
         number=1,
     )
-    recall = proto.Field(
+    recall: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
-    f1_score = proto.Field(
+    f1_score: float = proto.Field(
         proto.FLOAT,
         number=3,
     )
-    mean_absolute_error = proto.Field(
+    mean_absolute_error: float = proto.Field(
         proto.FLOAT,
         number=4,
     )
-    mean_squared_error = proto.Field(
+    mean_squared_error: float = proto.Field(
         proto.FLOAT,
         number=5,
     )
-    linear_kappa = proto.Field(
+    linear_kappa: float = proto.Field(
         proto.FLOAT,
         number=6,
     )
-    quadratic_kappa = proto.Field(
+    quadratic_kappa: float = proto.Field(
         proto.FLOAT,
         number=7,
     )
-    confusion_matrix = proto.Field(
-        proto.MESSAGE,
-        number=8,
-        message=classification.ClassificationEvaluationMetrics.ConfusionMatrix,
+    confusion_matrix: classification.ClassificationEvaluationMetrics.ConfusionMatrix = (
+        proto.Field(
+            proto.MESSAGE,
+            number=8,
+            message=classification.ClassificationEvaluationMetrics.ConfusionMatrix,
+        )
     )
-    annotation_spec_id = proto.RepeatedField(
+    annotation_spec_id: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=9,
     )

@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -189,9 +199,9 @@ class AutoMlAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, AutoMlTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the auto ml client.
@@ -235,12 +245,12 @@ class AutoMlAsyncClient:
 
     async def create_dataset(
         self,
-        request: Union[service.CreateDatasetRequest, dict] = None,
+        request: Optional[Union[service.CreateDatasetRequest, dict]] = None,
         *,
-        parent: str = None,
-        dataset: gca_dataset.Dataset = None,
+        parent: Optional[str] = None,
+        dataset: Optional[gca_dataset.Dataset] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a dataset.
@@ -281,7 +291,7 @@ class AutoMlAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.automl_v1.types.CreateDatasetRequest, dict]):
+            request (Optional[Union[google.cloud.automl_v1.types.CreateDatasetRequest, dict]]):
                 The request object. Request message for
                 [AutoMl.CreateDataset][google.cloud.automl.v1.AutoMl.CreateDataset].
             parent (:class:`str`):
@@ -364,11 +374,11 @@ class AutoMlAsyncClient:
 
     async def get_dataset(
         self,
-        request: Union[service.GetDatasetRequest, dict] = None,
+        request: Optional[Union[service.GetDatasetRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataset.Dataset:
         r"""Gets a dataset.
@@ -400,7 +410,7 @@ class AutoMlAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.automl_v1.types.GetDatasetRequest, dict]):
+            request (Optional[Union[google.cloud.automl_v1.types.GetDatasetRequest, dict]]):
                 The request object. Request message for
                 [AutoMl.GetDataset][google.cloud.automl.v1.AutoMl.GetDataset].
             name (:class:`str`):
@@ -478,11 +488,11 @@ class AutoMlAsyncClient:
 
     async def list_datasets(
         self,
-        request: Union[service.ListDatasetsRequest, dict] = None,
+        request: Optional[Union[service.ListDatasetsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDatasetsAsyncPager:
         r"""Lists datasets in a project.
@@ -515,7 +525,7 @@ class AutoMlAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.automl_v1.types.ListDatasetsRequest, dict]):
+            request (Optional[Union[google.cloud.automl_v1.types.ListDatasetsRequest, dict]]):
                 The request object. Request message for
                 [AutoMl.ListDatasets][google.cloud.automl.v1.AutoMl.ListDatasets].
             parent (:class:`str`):
@@ -603,12 +613,12 @@ class AutoMlAsyncClient:
 
     async def update_dataset(
         self,
-        request: Union[service.UpdateDatasetRequest, dict] = None,
+        request: Optional[Union[service.UpdateDatasetRequest, dict]] = None,
         *,
-        dataset: gca_dataset.Dataset = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        dataset: Optional[gca_dataset.Dataset] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gca_dataset.Dataset:
         r"""Updates a dataset.
@@ -644,7 +654,7 @@ class AutoMlAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.automl_v1.types.UpdateDatasetRequest, dict]):
+            request (Optional[Union[google.cloud.automl_v1.types.UpdateDatasetRequest, dict]]):
                 The request object. Request message for
                 [AutoMl.UpdateDataset][google.cloud.automl.v1.AutoMl.UpdateDataset]
             dataset (:class:`google.cloud.automl_v1.types.Dataset`):
@@ -723,11 +733,11 @@ class AutoMlAsyncClient:
 
     async def delete_dataset(
         self,
-        request: Union[service.DeleteDatasetRequest, dict] = None,
+        request: Optional[Union[service.DeleteDatasetRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a dataset and all of its contents. Returns empty
@@ -767,7 +777,7 @@ class AutoMlAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.automl_v1.types.DeleteDatasetRequest, dict]):
+            request (Optional[Union[google.cloud.automl_v1.types.DeleteDatasetRequest, dict]]):
                 The request object. Request message for
                 [AutoMl.DeleteDataset][google.cloud.automl.v1.AutoMl.DeleteDataset].
             name (:class:`str`):
@@ -861,12 +871,12 @@ class AutoMlAsyncClient:
 
     async def import_data(
         self,
-        request: Union[service.ImportDataRequest, dict] = None,
+        request: Optional[Union[service.ImportDataRequest, dict]] = None,
         *,
-        name: str = None,
-        input_config: io.InputConfig = None,
+        name: Optional[str] = None,
+        input_config: Optional[io.InputConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Imports data into a dataset. For Tables this method can only be
@@ -915,7 +925,7 @@ class AutoMlAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.automl_v1.types.ImportDataRequest, dict]):
+            request (Optional[Union[google.cloud.automl_v1.types.ImportDataRequest, dict]]):
                 The request object. Request message for
                 [AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData].
             name (:class:`str`):
@@ -1010,12 +1020,12 @@ class AutoMlAsyncClient:
 
     async def export_data(
         self,
-        request: Union[service.ExportDataRequest, dict] = None,
+        request: Optional[Union[service.ExportDataRequest, dict]] = None,
         *,
-        name: str = None,
-        output_config: io.OutputConfig = None,
+        name: Optional[str] = None,
+        output_config: Optional[io.OutputConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Exports dataset's data to the provided output location. Returns
@@ -1058,7 +1068,7 @@ class AutoMlAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.automl_v1.types.ExportDataRequest, dict]):
+            request (Optional[Union[google.cloud.automl_v1.types.ExportDataRequest, dict]]):
                 The request object. Request message for
                 [AutoMl.ExportData][google.cloud.automl.v1.AutoMl.ExportData].
             name (:class:`str`):
@@ -1151,11 +1161,11 @@ class AutoMlAsyncClient:
 
     async def get_annotation_spec(
         self,
-        request: Union[service.GetAnnotationSpecRequest, dict] = None,
+        request: Optional[Union[service.GetAnnotationSpecRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> annotation_spec.AnnotationSpec:
         r"""Gets an annotation spec.
@@ -1187,7 +1197,7 @@ class AutoMlAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.automl_v1.types.GetAnnotationSpecRequest, dict]):
+            request (Optional[Union[google.cloud.automl_v1.types.GetAnnotationSpecRequest, dict]]):
                 The request object. Request message for
                 [AutoMl.GetAnnotationSpec][google.cloud.automl.v1.AutoMl.GetAnnotationSpec].
             name (:class:`str`):
@@ -1261,12 +1271,12 @@ class AutoMlAsyncClient:
 
     async def create_model(
         self,
-        request: Union[service.CreateModelRequest, dict] = None,
+        request: Optional[Union[service.CreateModelRequest, dict]] = None,
         *,
-        parent: str = None,
-        model: gca_model.Model = None,
+        parent: Optional[str] = None,
+        model: Optional[gca_model.Model] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a model. Returns a Model in the
@@ -1306,7 +1316,7 @@ class AutoMlAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.automl_v1.types.CreateModelRequest, dict]):
+            request (Optional[Union[google.cloud.automl_v1.types.CreateModelRequest, dict]]):
                 The request object. Request message for
                 [AutoMl.CreateModel][google.cloud.automl.v1.AutoMl.CreateModel].
             parent (:class:`str`):
@@ -1391,11 +1401,11 @@ class AutoMlAsyncClient:
 
     async def get_model(
         self,
-        request: Union[service.GetModelRequest, dict] = None,
+        request: Optional[Union[service.GetModelRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> model.Model:
         r"""Gets a model.
@@ -1427,7 +1437,7 @@ class AutoMlAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.automl_v1.types.GetModelRequest, dict]):
+            request (Optional[Union[google.cloud.automl_v1.types.GetModelRequest, dict]]):
                 The request object. Request message for
                 [AutoMl.GetModel][google.cloud.automl.v1.AutoMl.GetModel].
             name (:class:`str`):
@@ -1501,11 +1511,11 @@ class AutoMlAsyncClient:
 
     async def list_models(
         self,
-        request: Union[service.ListModelsRequest, dict] = None,
+        request: Optional[Union[service.ListModelsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListModelsAsyncPager:
         r"""Lists models.
@@ -1538,7 +1548,7 @@ class AutoMlAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.automl_v1.types.ListModelsRequest, dict]):
+            request (Optional[Union[google.cloud.automl_v1.types.ListModelsRequest, dict]]):
                 The request object. Request message for
                 [AutoMl.ListModels][google.cloud.automl.v1.AutoMl.ListModels].
             parent (:class:`str`):
@@ -1626,11 +1636,11 @@ class AutoMlAsyncClient:
 
     async def delete_model(
         self,
-        request: Union[service.DeleteModelRequest, dict] = None,
+        request: Optional[Union[service.DeleteModelRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a model. Returns ``google.protobuf.Empty`` in the
@@ -1669,7 +1679,7 @@ class AutoMlAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.automl_v1.types.DeleteModelRequest, dict]):
+            request (Optional[Union[google.cloud.automl_v1.types.DeleteModelRequest, dict]]):
                 The request object. Request message for
                 [AutoMl.DeleteModel][google.cloud.automl.v1.AutoMl.DeleteModel].
             name (:class:`str`):
@@ -1763,12 +1773,12 @@ class AutoMlAsyncClient:
 
     async def update_model(
         self,
-        request: Union[service.UpdateModelRequest, dict] = None,
+        request: Optional[Union[service.UpdateModelRequest, dict]] = None,
         *,
-        model: gca_model.Model = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        model: Optional[gca_model.Model] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gca_model.Model:
         r"""Updates a model.
@@ -1799,7 +1809,7 @@ class AutoMlAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.automl_v1.types.UpdateModelRequest, dict]):
+            request (Optional[Union[google.cloud.automl_v1.types.UpdateModelRequest, dict]]):
                 The request object. Request message for
                 [AutoMl.UpdateModel][google.cloud.automl.v1.AutoMl.UpdateModel]
             model (:class:`google.cloud.automl_v1.types.Model`):
@@ -1876,11 +1886,11 @@ class AutoMlAsyncClient:
 
     async def deploy_model(
         self,
-        request: Union[service.DeployModelRequest, dict] = None,
+        request: Optional[Union[service.DeployModelRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deploys a model. If a model is already deployed, deploying it
@@ -1929,7 +1939,7 @@ class AutoMlAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.automl_v1.types.DeployModelRequest, dict]):
+            request (Optional[Union[google.cloud.automl_v1.types.DeployModelRequest, dict]]):
                 The request object. Request message for
                 [AutoMl.DeployModel][google.cloud.automl.v1.AutoMl.DeployModel].
             name (:class:`str`):
@@ -2013,11 +2023,11 @@ class AutoMlAsyncClient:
 
     async def undeploy_model(
         self,
-        request: Union[service.UndeployModelRequest, dict] = None,
+        request: Optional[Union[service.UndeployModelRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Undeploys a model. If the model is not deployed this method has
@@ -2061,7 +2071,7 @@ class AutoMlAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.automl_v1.types.UndeployModelRequest, dict]):
+            request (Optional[Union[google.cloud.automl_v1.types.UndeployModelRequest, dict]]):
                 The request object. Request message for
                 [AutoMl.UndeployModel][google.cloud.automl.v1.AutoMl.UndeployModel].
             name (:class:`str`):
@@ -2145,12 +2155,12 @@ class AutoMlAsyncClient:
 
     async def export_model(
         self,
-        request: Union[service.ExportModelRequest, dict] = None,
+        request: Optional[Union[service.ExportModelRequest, dict]] = None,
         *,
-        name: str = None,
-        output_config: io.ModelExportOutputConfig = None,
+        name: Optional[str] = None,
+        output_config: Optional[io.ModelExportOutputConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Exports a trained, "export-able", model to a user specified
@@ -2197,7 +2207,7 @@ class AutoMlAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.automl_v1.types.ExportModelRequest, dict]):
+            request (Optional[Union[google.cloud.automl_v1.types.ExportModelRequest, dict]]):
                 The request object. Request message for
                 [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel].
                 Models need to be enabled for exporting, otherwise an
@@ -2292,11 +2302,11 @@ class AutoMlAsyncClient:
 
     async def get_model_evaluation(
         self,
-        request: Union[service.GetModelEvaluationRequest, dict] = None,
+        request: Optional[Union[service.GetModelEvaluationRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> model_evaluation.ModelEvaluation:
         r"""Gets a model evaluation.
@@ -2328,7 +2338,7 @@ class AutoMlAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.automl_v1.types.GetModelEvaluationRequest, dict]):
+            request (Optional[Union[google.cloud.automl_v1.types.GetModelEvaluationRequest, dict]]):
                 The request object. Request message for
                 [AutoMl.GetModelEvaluation][google.cloud.automl.v1.AutoMl.GetModelEvaluation].
             name (:class:`str`):
@@ -2402,12 +2412,12 @@ class AutoMlAsyncClient:
 
     async def list_model_evaluations(
         self,
-        request: Union[service.ListModelEvaluationsRequest, dict] = None,
+        request: Optional[Union[service.ListModelEvaluationsRequest, dict]] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListModelEvaluationsAsyncPager:
         r"""Lists model evaluations.
@@ -2441,7 +2451,7 @@ class AutoMlAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.automl_v1.types.ListModelEvaluationsRequest, dict]):
+            request (Optional[Union[google.cloud.automl_v1.types.ListModelEvaluationsRequest, dict]]):
                 The request object. Request message for
                 [AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations].
             parent (:class:`str`):

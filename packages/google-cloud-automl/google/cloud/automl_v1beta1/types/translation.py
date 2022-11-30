@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.automl_v1beta1.types import data_items
@@ -41,11 +43,11 @@ class TranslationDatasetMetadata(proto.Message):
             target language.
     """
 
-    source_language_code = proto.Field(
+    source_language_code: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    target_language_code = proto.Field(
+    target_language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -61,11 +63,11 @@ class TranslationEvaluationMetrics(proto.Message):
             Output only. BLEU score for base model.
     """
 
-    bleu_score = proto.Field(
+    bleu_score: float = proto.Field(
         proto.DOUBLE,
         number=1,
     )
-    base_bleu_score = proto.Field(
+    base_bleu_score: float = proto.Field(
         proto.DOUBLE,
         number=2,
     )
@@ -89,15 +91,15 @@ class TranslationModelMetadata(proto.Message):
             language code) that is used for training.
     """
 
-    base_model = proto.Field(
+    base_model: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    source_language_code = proto.Field(
+    source_language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    target_language_code = proto.Field(
+    target_language_code: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -111,7 +113,7 @@ class TranslationAnnotation(proto.Message):
             Output only . The translated content.
     """
 
-    translated_content = proto.Field(
+    translated_content: data_items.TextSnippet = proto.Field(
         proto.MESSAGE,
         number=1,
         message=data_items.TextSnippet,

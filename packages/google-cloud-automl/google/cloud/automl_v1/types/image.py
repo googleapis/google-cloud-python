@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.automl_v1.types import classification
@@ -39,7 +41,7 @@ class ImageClassificationDatasetMetadata(proto.Message):
             Required. Type of the classification problem.
     """
 
-    classification_type = proto.Field(
+    classification_type: classification.ClassificationType = proto.Field(
         proto.ENUM,
         number=1,
         enum=classification.ClassificationType,
@@ -143,31 +145,31 @@ class ImageClassificationModelMetadata(proto.Message):
             handle online prediction QPS as given in the node_qps field.
     """
 
-    base_model_id = proto.Field(
+    base_model_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    train_budget_milli_node_hours = proto.Field(
+    train_budget_milli_node_hours: int = proto.Field(
         proto.INT64,
         number=16,
     )
-    train_cost_milli_node_hours = proto.Field(
+    train_cost_milli_node_hours: int = proto.Field(
         proto.INT64,
         number=17,
     )
-    stop_reason = proto.Field(
+    stop_reason: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    model_type = proto.Field(
+    model_type: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    node_qps = proto.Field(
+    node_qps: float = proto.Field(
         proto.DOUBLE,
         number=13,
     )
-    node_count = proto.Field(
+    node_count: int = proto.Field(
         proto.INT64,
         number=14,
     )
@@ -248,27 +250,27 @@ class ImageObjectDetectionModelMetadata(proto.Message):
             budget.
     """
 
-    model_type = proto.Field(
+    model_type: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    node_count = proto.Field(
+    node_count: int = proto.Field(
         proto.INT64,
         number=3,
     )
-    node_qps = proto.Field(
+    node_qps: float = proto.Field(
         proto.DOUBLE,
         number=4,
     )
-    stop_reason = proto.Field(
+    stop_reason: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    train_budget_milli_node_hours = proto.Field(
+    train_budget_milli_node_hours: int = proto.Field(
         proto.INT64,
         number=6,
     )
-    train_cost_milli_node_hours = proto.Field(
+    train_cost_milli_node_hours: int = proto.Field(
         proto.INT64,
         number=7,
     )
@@ -286,7 +288,7 @@ class ImageClassificationModelDeploymentMetadata(proto.Message):
             Must be between 1 and 100, inclusive on both ends.
     """
 
-    node_count = proto.Field(
+    node_count: int = proto.Field(
         proto.INT64,
         number=1,
     )
@@ -304,7 +306,7 @@ class ImageObjectDetectionModelDeploymentMetadata(proto.Message):
             Must be between 1 and 100, inclusive on both ends.
     """
 
-    node_count = proto.Field(
+    node_count: int = proto.Field(
         proto.INT64,
         number=1,
     )

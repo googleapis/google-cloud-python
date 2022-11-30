@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -75,51 +77,51 @@ class DataStats(proto.Message):
             The number of values that are valid.
     """
 
-    float64_stats = proto.Field(
+    float64_stats: "Float64Stats" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="stats",
         message="Float64Stats",
     )
-    string_stats = proto.Field(
+    string_stats: "StringStats" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="stats",
         message="StringStats",
     )
-    timestamp_stats = proto.Field(
+    timestamp_stats: "TimestampStats" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="stats",
         message="TimestampStats",
     )
-    array_stats = proto.Field(
+    array_stats: "ArrayStats" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="stats",
         message="ArrayStats",
     )
-    struct_stats = proto.Field(
+    struct_stats: "StructStats" = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="stats",
         message="StructStats",
     )
-    category_stats = proto.Field(
+    category_stats: "CategoryStats" = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="stats",
         message="CategoryStats",
     )
-    distinct_value_count = proto.Field(
+    distinct_value_count: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    null_value_count = proto.Field(
+    null_value_count: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    valid_value_count = proto.Field(
+    valid_value_count: int = proto.Field(
         proto.INT64,
         number=9,
     )
@@ -133,12 +135,12 @@ class Float64Stats(proto.Message):
             The mean of the series.
         standard_deviation (float):
             The standard deviation of the series.
-        quantiles (Sequence[float]):
+        quantiles (MutableSequence[float]):
             Ordered from 0 to k k-quantile values of the data series of
             n values. The value at index i is, approximately, the
             i*n/k-th smallest value in the series; for i = 0 and i = k
             these are, respectively, the min and max values.
-        histogram_buckets (Sequence[google.cloud.automl_v1beta1.types.Float64Stats.HistogramBucket]):
+        histogram_buckets (MutableSequence[google.cloud.automl_v1beta1.types.Float64Stats.HistogramBucket]):
             Histogram buckets of the data series. Sorted by the min
             value of the bucket, ascendingly, and the number of the
             buckets is dynamically generated. The buckets are
@@ -161,32 +163,32 @@ class Float64Stats(proto.Message):
                 bucket, i.e. are between min and max values.
         """
 
-        min_ = proto.Field(
+        min_: float = proto.Field(
             proto.DOUBLE,
             number=1,
         )
-        max_ = proto.Field(
+        max_: float = proto.Field(
             proto.DOUBLE,
             number=2,
         )
-        count = proto.Field(
+        count: int = proto.Field(
             proto.INT64,
             number=3,
         )
 
-    mean = proto.Field(
+    mean: float = proto.Field(
         proto.DOUBLE,
         number=1,
     )
-    standard_deviation = proto.Field(
+    standard_deviation: float = proto.Field(
         proto.DOUBLE,
         number=2,
     )
-    quantiles = proto.RepeatedField(
+    quantiles: MutableSequence[float] = proto.RepeatedField(
         proto.DOUBLE,
         number=3,
     )
-    histogram_buckets = proto.RepeatedField(
+    histogram_buckets: MutableSequence[HistogramBucket] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=HistogramBucket,
@@ -197,7 +199,7 @@ class StringStats(proto.Message):
     r"""The data statistics of a series of STRING values.
 
     Attributes:
-        top_unigram_stats (Sequence[google.cloud.automl_v1beta1.types.StringStats.UnigramStats]):
+        top_unigram_stats (MutableSequence[google.cloud.automl_v1beta1.types.StringStats.UnigramStats]):
             The statistics of the top 20 unigrams, ordered by
             [count][google.cloud.automl.v1beta1.StringStats.UnigramStats.count].
     """
@@ -213,16 +215,16 @@ class StringStats(proto.Message):
                 the series.
         """
 
-        value = proto.Field(
+        value: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        count = proto.Field(
+        count: int = proto.Field(
             proto.INT64,
             number=2,
         )
 
-    top_unigram_stats = proto.RepeatedField(
+    top_unigram_stats: MutableSequence[UnigramStats] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=UnigramStats,
@@ -233,7 +235,7 @@ class TimestampStats(proto.Message):
     r"""The data statistics of a series of TIMESTAMP values.
 
     Attributes:
-        granular_stats (Mapping[str, google.cloud.automl_v1beta1.types.TimestampStats.GranularStats]):
+        granular_stats (MutableMapping[str, google.cloud.automl_v1beta1.types.TimestampStats.GranularStats]):
             The string key is the pre-defined granularity. Currently
             supported: hour_of_day, day_of_week, month_of_year.
             Granularities finer that the granularity of timestamp data
@@ -245,19 +247,19 @@ class TimestampStats(proto.Message):
         r"""Stats split by a defined in context granularity.
 
         Attributes:
-            buckets (Mapping[int, int]):
+            buckets (MutableMapping[int, int]):
                 A map from granularity key to example count for that key.
                 E.g. for hour_of_day ``13`` means 1pm, or for month_of_year
                 ``5`` means May).
         """
 
-        buckets = proto.MapField(
+        buckets: MutableMapping[int, int] = proto.MapField(
             proto.INT32,
             proto.INT64,
             number=1,
         )
 
-    granular_stats = proto.MapField(
+    granular_stats: MutableMapping[str, GranularStats] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,
@@ -275,7 +277,7 @@ class ArrayStats(proto.Message):
             depends on the element type of the array.
     """
 
-    member_stats = proto.Field(
+    member_stats: "DataStats" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="DataStats",
@@ -286,13 +288,13 @@ class StructStats(proto.Message):
     r"""The data statistics of a series of STRUCT values.
 
     Attributes:
-        field_stats (Mapping[str, google.cloud.automl_v1beta1.types.DataStats]):
+        field_stats (MutableMapping[str, google.cloud.automl_v1beta1.types.DataStats]):
             Map from a field name of the struct to data
             stats aggregated over series of all data in that
             field across all the structs.
     """
 
-    field_stats = proto.MapField(
+    field_stats: MutableMapping[str, "DataStats"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,
@@ -304,7 +306,7 @@ class CategoryStats(proto.Message):
     r"""The data statistics of a series of CATEGORY values.
 
     Attributes:
-        top_category_stats (Sequence[google.cloud.automl_v1beta1.types.CategoryStats.SingleCategoryStats]):
+        top_category_stats (MutableSequence[google.cloud.automl_v1beta1.types.CategoryStats.SingleCategoryStats]):
             The statistics of the top 20 CATEGORY values, ordered by
 
             [count][google.cloud.automl.v1beta1.CategoryStats.SingleCategoryStats.count].
@@ -321,16 +323,16 @@ class CategoryStats(proto.Message):
                 the series.
         """
 
-        value = proto.Field(
+        value: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        count = proto.Field(
+        count: int = proto.Field(
             proto.INT64,
             number=2,
         )
 
-    top_category_stats = proto.RepeatedField(
+    top_category_stats: MutableSequence[SingleCategoryStats] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=SingleCategoryStats,
@@ -348,7 +350,7 @@ class CorrelationStats(proto.Message):
             measure.
     """
 
-    cramers_v = proto.Field(
+    cramers_v: float = proto.Field(
         proto.DOUBLE,
         number=1,
     )

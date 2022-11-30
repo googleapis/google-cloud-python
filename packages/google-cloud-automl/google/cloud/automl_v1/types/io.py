@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -720,7 +722,7 @@ class InputConfig(proto.Message):
             [InputConfig][google.cloud.automl.v1.InputConfig].
 
             This field is a member of `oneof`_ ``source``.
-        params (Mapping[str, str]):
+        params (MutableMapping[str, str]):
             Additional domain-specific parameters describing the
             semantic of the imported data, any string must be up to
             25000 characters long.
@@ -735,13 +737,13 @@ class InputConfig(proto.Message):
             table. Allowed values: "1".
     """
 
-    gcs_source = proto.Field(
+    gcs_source: "GcsSource" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="source",
         message="GcsSource",
     )
-    params = proto.MapField(
+    params: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
@@ -1087,7 +1089,7 @@ class BatchPredictInputConfig(proto.Message):
             This field is a member of `oneof`_ ``source``.
     """
 
-    gcs_source = proto.Field(
+    gcs_source: "GcsSource" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="source",
@@ -1109,7 +1111,7 @@ class DocumentInputConfig(proto.Message):
             Supported extensions: .PDF.
     """
 
-    gcs_source = proto.Field(
+    gcs_source: "GcsSource" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="GcsSource",
@@ -1158,7 +1160,7 @@ class OutputConfig(proto.Message):
             This field is a member of `oneof`_ ``destination``.
     """
 
-    gcs_destination = proto.Field(
+    gcs_destination: "GcsDestination" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="destination",
@@ -1434,7 +1436,7 @@ class BatchPredictOutputConfig(proto.Message):
             This field is a member of `oneof`_ ``destination``.
     """
 
-    gcs_destination = proto.Field(
+    gcs_destination: "GcsDestination" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="destination",
@@ -1500,7 +1502,7 @@ class ModelExportOutputConfig(proto.Message):
                quickstart <https://cloud.google.com/vision/automl/docs/containers-gcs-quickstart>`__
 
             -  core_ml - Used for iOS mobile devices.
-        params (Mapping[str, str]):
+        params (MutableMapping[str, str]):
             Additional model-type and format specific parameters
             describing the requirements for the to be exported model
             files, any string must be up to 25000 characters long.
@@ -1510,17 +1512,17 @@ class ModelExportOutputConfig(proto.Message):
                "none" (default), "nvidia".
     """
 
-    gcs_destination = proto.Field(
+    gcs_destination: "GcsDestination" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="destination",
         message="GcsDestination",
     )
-    model_format = proto.Field(
+    model_format: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    params = proto.MapField(
+    params: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
@@ -1531,14 +1533,14 @@ class GcsSource(proto.Message):
     r"""The Google Cloud Storage location for the input content.
 
     Attributes:
-        input_uris (Sequence[str]):
+        input_uris (MutableSequence[str]):
             Required. Google Cloud Storage URIs to input files, up to
             2000 characters long. Accepted forms:
 
             -  Full object path, e.g. gs://bucket/directory/object.csv
     """
 
-    input_uris = proto.RepeatedField(
+    input_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -1558,7 +1560,7 @@ class GcsDestination(proto.Message):
                is created if it doesn't exist.
     """
 
-    output_uri_prefix = proto.Field(
+    output_uri_prefix: str = proto.Field(
         proto.STRING,
         number=1,
     )

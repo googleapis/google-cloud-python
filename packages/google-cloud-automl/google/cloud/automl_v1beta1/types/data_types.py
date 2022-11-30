@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -93,29 +95,29 @@ class DataType(proto.Message):
             ``NULL`` value is expressed as an empty string.
     """
 
-    list_element_type = proto.Field(
+    list_element_type: "DataType" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="details",
         message="DataType",
     )
-    struct_type = proto.Field(
+    struct_type: "StructType" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="details",
         message="StructType",
     )
-    time_format = proto.Field(
+    time_format: str = proto.Field(
         proto.STRING,
         number=5,
         oneof="details",
     )
-    type_code = proto.Field(
+    type_code: "TypeCode" = proto.Field(
         proto.ENUM,
         number=1,
         enum="TypeCode",
     )
-    nullable = proto.Field(
+    nullable: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -126,14 +128,14 @@ class StructType(proto.Message):
     [STRUCT][google.cloud.automl.v1beta1.TypeCode.STRUCT] type.
 
     Attributes:
-        fields (Mapping[str, google.cloud.automl_v1beta1.types.DataType]):
+        fields (MutableMapping[str, google.cloud.automl_v1beta1.types.DataType]):
             Unordered map of struct field names to their
             data types. Fields cannot be added or removed
             via Update. Their names and data types are still
             mutable.
     """
 
-    fields = proto.MapField(
+    fields: MutableMapping[str, "DataType"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.automl_v1beta1.types import column_spec as gca_column_spec
@@ -73,11 +75,11 @@ class CreateDatasetRequest(proto.Message):
             Required. The dataset to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    dataset = proto.Field(
+    dataset: gca_dataset.Dataset = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gca_dataset.Dataset,
@@ -94,7 +96,7 @@ class GetDatasetRequest(proto.Message):
             retrieve.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -130,19 +132,19 @@ class ListDatasetsRequest(proto.Message):
             call.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -153,7 +155,7 @@ class ListDatasetsResponse(proto.Message):
     [AutoMl.ListDatasets][google.cloud.automl.v1beta1.AutoMl.ListDatasets].
 
     Attributes:
-        datasets (Sequence[google.cloud.automl_v1beta1.types.Dataset]):
+        datasets (MutableSequence[google.cloud.automl_v1beta1.types.Dataset]):
             The datasets read.
         next_page_token (str):
             A token to retrieve next page of results. Pass to
@@ -165,12 +167,12 @@ class ListDatasetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    datasets = proto.RepeatedField(
+    datasets: MutableSequence[gca_dataset.Dataset] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gca_dataset.Dataset,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -188,12 +190,12 @@ class UpdateDatasetRequest(proto.Message):
             The update mask applies to the resource.
     """
 
-    dataset = proto.Field(
+    dataset: gca_dataset.Dataset = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gca_dataset.Dataset,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -210,7 +212,7 @@ class DeleteDatasetRequest(proto.Message):
             delete.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -230,11 +232,11 @@ class ImportDataRequest(proto.Message):
             domain specific semantics, if any.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    input_config = proto.Field(
+    input_config: io.InputConfig = proto.Field(
         proto.MESSAGE,
         number=3,
         message=io.InputConfig,
@@ -252,11 +254,11 @@ class ExportDataRequest(proto.Message):
             Required. The desired output location.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    output_config = proto.Field(
+    output_config: io.OutputConfig = proto.Field(
         proto.MESSAGE,
         number=3,
         message=io.OutputConfig,
@@ -273,7 +275,7 @@ class GetAnnotationSpecRequest(proto.Message):
             spec to retrieve.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -291,11 +293,11 @@ class GetTableSpecRequest(proto.Message):
             Mask specifying which fields to read.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    field_mask = proto.Field(
+    field_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -327,24 +329,24 @@ class ListTableSpecsRequest(proto.Message):
             call.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    field_mask = proto.Field(
+    field_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -355,7 +357,7 @@ class ListTableSpecsResponse(proto.Message):
     [AutoMl.ListTableSpecs][google.cloud.automl.v1beta1.AutoMl.ListTableSpecs].
 
     Attributes:
-        table_specs (Sequence[google.cloud.automl_v1beta1.types.TableSpec]):
+        table_specs (MutableSequence[google.cloud.automl_v1beta1.types.TableSpec]):
             The table specs read.
         next_page_token (str):
             A token to retrieve next page of results. Pass to
@@ -367,12 +369,12 @@ class ListTableSpecsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    table_specs = proto.RepeatedField(
+    table_specs: MutableSequence[gca_table_spec.TableSpec] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gca_table_spec.TableSpec,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -390,12 +392,12 @@ class UpdateTableSpecRequest(proto.Message):
             The update mask applies to the resource.
     """
 
-    table_spec = proto.Field(
+    table_spec: gca_table_spec.TableSpec = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gca_table_spec.TableSpec,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -414,11 +416,11 @@ class GetColumnSpecRequest(proto.Message):
             Mask specifying which fields to read.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    field_mask = proto.Field(
+    field_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -450,24 +452,24 @@ class ListColumnSpecsRequest(proto.Message):
             call.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    field_mask = proto.Field(
+    field_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -478,7 +480,7 @@ class ListColumnSpecsResponse(proto.Message):
     [AutoMl.ListColumnSpecs][google.cloud.automl.v1beta1.AutoMl.ListColumnSpecs].
 
     Attributes:
-        column_specs (Sequence[google.cloud.automl_v1beta1.types.ColumnSpec]):
+        column_specs (MutableSequence[google.cloud.automl_v1beta1.types.ColumnSpec]):
             The column specs read.
         next_page_token (str):
             A token to retrieve next page of results. Pass to
@@ -490,12 +492,12 @@ class ListColumnSpecsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    column_specs = proto.RepeatedField(
+    column_specs: MutableSequence[gca_column_spec.ColumnSpec] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gca_column_spec.ColumnSpec,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -513,12 +515,12 @@ class UpdateColumnSpecRequest(proto.Message):
             The update mask applies to the resource.
     """
 
-    column_spec = proto.Field(
+    column_spec: gca_column_spec.ColumnSpec = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gca_column_spec.ColumnSpec,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -537,11 +539,11 @@ class CreateModelRequest(proto.Message):
             Required. The model to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    model = proto.Field(
+    model: gca_model.Model = proto.Field(
         proto.MESSAGE,
         number=4,
         message=gca_model.Model,
@@ -557,7 +559,7 @@ class GetModelRequest(proto.Message):
             Required. Resource name of the model.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -596,19 +598,19 @@ class ListModelsRequest(proto.Message):
             call.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -619,7 +621,7 @@ class ListModelsResponse(proto.Message):
     [AutoMl.ListModels][google.cloud.automl.v1beta1.AutoMl.ListModels].
 
     Attributes:
-        model (Sequence[google.cloud.automl_v1beta1.types.Model]):
+        model (MutableSequence[google.cloud.automl_v1beta1.types.Model]):
             List of models in the requested page.
         next_page_token (str):
             A token to retrieve next page of results. Pass to
@@ -631,12 +633,12 @@ class ListModelsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    model = proto.RepeatedField(
+    model: MutableSequence[gca_model.Model] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gca_model.Model,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -652,7 +654,7 @@ class DeleteModelRequest(proto.Message):
             deleted.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -685,19 +687,19 @@ class DeployModelRequest(proto.Message):
             deploy.
     """
 
-    image_object_detection_model_deployment_metadata = proto.Field(
+    image_object_detection_model_deployment_metadata: image.ImageObjectDetectionModelDeploymentMetadata = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="model_deployment_metadata",
         message=image.ImageObjectDetectionModelDeploymentMetadata,
     )
-    image_classification_model_deployment_metadata = proto.Field(
+    image_classification_model_deployment_metadata: image.ImageClassificationModelDeploymentMetadata = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="model_deployment_metadata",
         message=image.ImageClassificationModelDeploymentMetadata,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -713,7 +715,7 @@ class UndeployModelRequest(proto.Message):
             undeploy.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -734,11 +736,11 @@ class ExportModelRequest(proto.Message):
             configuration.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    output_config = proto.Field(
+    output_config: io.ModelExportOutputConfig = proto.Field(
         proto.MESSAGE,
         number=3,
         message=io.ModelExportOutputConfig,
@@ -758,11 +760,11 @@ class ExportEvaluatedExamplesRequest(proto.Message):
             configuration.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    output_config = proto.Field(
+    output_config: io.ExportEvaluatedExamplesOutputConfig = proto.Field(
         proto.MESSAGE,
         number=3,
         message=io.ExportEvaluatedExamplesOutputConfig,
@@ -779,7 +781,7 @@ class GetModelEvaluationRequest(proto.Message):
             evaluation.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -818,19 +820,19 @@ class ListModelEvaluationsRequest(proto.Message):
             call.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -841,7 +843,7 @@ class ListModelEvaluationsResponse(proto.Message):
     [AutoMl.ListModelEvaluations][google.cloud.automl.v1beta1.AutoMl.ListModelEvaluations].
 
     Attributes:
-        model_evaluation (Sequence[google.cloud.automl_v1beta1.types.ModelEvaluation]):
+        model_evaluation (MutableSequence[google.cloud.automl_v1beta1.types.ModelEvaluation]):
             List of model evaluations in the requested
             page.
         next_page_token (str):
@@ -856,12 +858,14 @@ class ListModelEvaluationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    model_evaluation = proto.RepeatedField(
+    model_evaluation: MutableSequence[
+        gca_model_evaluation.ModelEvaluation
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gca_model_evaluation.ModelEvaluation,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )

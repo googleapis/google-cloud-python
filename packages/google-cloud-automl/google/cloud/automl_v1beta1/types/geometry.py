@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -40,11 +42,11 @@ class NormalizedVertex(proto.Message):
             Required. Vertical coordinate.
     """
 
-    x = proto.Field(
+    x: float = proto.Field(
         proto.FLOAT,
         number=1,
     )
-    y = proto.Field(
+    y: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
@@ -56,12 +58,12 @@ class BoundingPoly(proto.Message):
     by connecting vertices in the order they are listed.
 
     Attributes:
-        normalized_vertices (Sequence[google.cloud.automl_v1beta1.types.NormalizedVertex]):
+        normalized_vertices (MutableSequence[google.cloud.automl_v1beta1.types.NormalizedVertex]):
             Output only . The bounding polygon normalized
             vertices.
     """
 
-    normalized_vertices = proto.RepeatedField(
+    normalized_vertices: MutableSequence["NormalizedVertex"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="NormalizedVertex",
