@@ -158,6 +158,7 @@ __protobuf__ = proto.module(
         "ResourceUsageExportConfig",
         "ShieldedNodes",
         "VirtualNIC",
+        "FastSocket",
         "GetOpenIDConfigRequest",
         "GetOpenIDConfigResponse",
         "GetJSONWebKeysRequest",
@@ -510,6 +511,11 @@ class NodeConfig(proto.Message):
             Confidential nodes config.
             All the nodes in the node pool will be
             Confidential VM once enabled.
+        fast_socket (google.cloud.container_v1beta1.types.FastSocket):
+            Enable or disable NCCL fast socket for the
+            node pool.
+
+            This field is a member of `oneof`_ ``_fast_socket``.
         resource_labels (MutableMapping[str, str]):
             The resource labels for the node pool to use
             to annotate any related Google Compute Engine
@@ -644,6 +650,12 @@ class NodeConfig(proto.Message):
         proto.MESSAGE,
         number=35,
         message="ConfidentialNodes",
+    )
+    fast_socket: "FastSocket" = proto.Field(
+        proto.MESSAGE,
+        number=36,
+        optional=True,
+        message="FastSocket",
     )
     resource_labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
@@ -1906,9 +1918,8 @@ class BinaryAuthorization(proto.Message):
             EVALUATION_MODE_UNSPECIFIED, this field is ignored.
         evaluation_mode (google.cloud.container_v1beta1.types.BinaryAuthorization.EvaluationMode):
             Mode of operation for binauthz policy
-            evaluation. Currently the only options are
-            equivalent to enable/disable. If unspecified,
-            defaults to DISABLED.
+            evaluation. If unspecified, defaults to
+            DISABLED.
     """
 
     class EvaluationMode(proto.Enum):
@@ -3670,6 +3681,9 @@ class UpdateNodePoolRequest(proto.Message):
             Confidential VM once enabled.
         gvnic (google.cloud.container_v1beta1.types.VirtualNIC):
             Enable or disable gvnic on the node pool.
+        fast_socket (google.cloud.container_v1beta1.types.FastSocket):
+            Enable or disable NCCL fast socket for the
+            node pool.
         logging_config (google.cloud.container_v1beta1.types.NodePoolLoggingConfig):
             Logging configuration.
         resource_labels (google.cloud.container_v1beta1.types.ResourceLabels):
@@ -3764,6 +3778,11 @@ class UpdateNodePoolRequest(proto.Message):
         proto.MESSAGE,
         number=29,
         message="VirtualNIC",
+    )
+    fast_socket: "FastSocket" = proto.Field(
+        proto.MESSAGE,
+        number=31,
+        message="FastSocket",
     )
     logging_config: "NodePoolLoggingConfig" = proto.Field(
         proto.MESSAGE,
@@ -7240,6 +7259,21 @@ class VirtualNIC(proto.Message):
         enabled (bool):
             Whether gVNIC features are enabled in the
             node pool.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+
+
+class FastSocket(proto.Message):
+    r"""Configuration of Fast Socket feature.
+
+    Attributes:
+        enabled (bool):
+            Whether Fast Socket features are enabled in
+            the node pool.
     """
 
     enabled: bool = proto.Field(
