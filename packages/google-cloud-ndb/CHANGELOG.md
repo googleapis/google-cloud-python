@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [1.12.0](https://github.com/googleapis/python-ndb/compare/v1.11.2...v1.12.0) (2022-11-29)
+
+
+### Bug Fixes
+
+* Drop Python 2 support ([90efd77](https://github.com/googleapis/python-ndb/commit/90efd77633c97f530088dc3f079547ef4eefd796))
+* Drop Python 3.6 support ([#829](https://github.com/googleapis/python-ndb/issues/829)) ([b110199](https://github.com/googleapis/python-ndb/commit/b1101994a34f70804027ea0c8a1b9f276d260756))
+* **model:** Ensure repeated props have same kind when converting from ds ([#824](https://github.com/googleapis/python-ndb/issues/824)) ([29f5a85](https://github.com/googleapis/python-ndb/commit/29f5a853174857545e225fe2f0c682dfa0bc3884))
+
+
+### Documentation
+
+* Add note in Django middleware documentation that it is unimplemented ([#805](https://github.com/googleapis/python-ndb/issues/805)) ([aa7621d](https://github.com/googleapis/python-ndb/commit/aa7621dba3b5c32141cdcb1d07829a217bb8b0bd))
+* Add note that ProtoRPC message classes are unimplemented ([#819](https://github.com/googleapis/python-ndb/issues/819)) ([ae813e9](https://github.com/googleapis/python-ndb/commit/ae813e9995d103a45a0c7bc6b4c7bdc148c19c29))
+* **context:** Note that several methods are no longer implemented. ([#821](https://github.com/googleapis/python-ndb/issues/821)) ([34c2c38](https://github.com/googleapis/python-ndb/commit/34c2c389d02f4692840631d34b6249b88867d725))
+* **CONTRIBUTING:** Note the need for Redis/Memcached env vars in tests ([#838](https://github.com/googleapis/python-ndb/issues/838)) ([19f8415](https://github.com/googleapis/python-ndb/commit/19f84150ab06ae71e25ee48ba7f7285eb0402738)), closes [#836](https://github.com/googleapis/python-ndb/issues/836)
+* Fix bad import path in migration guide ([#827](https://github.com/googleapis/python-ndb/issues/827)) ([7b44961](https://github.com/googleapis/python-ndb/commit/7b449615629b5a08836ee17a8ab34eb8efbaed21))
+* Fix typo in begin_transaction docstring ([#822](https://github.com/googleapis/python-ndb/issues/822)) ([7fd3ed3](https://github.com/googleapis/python-ndb/commit/7fd3ed315d39a9a50746b00898b22edd3f7d1d0c))
+* **README:** Syncronize supported version text with python-datastore ([#837](https://github.com/googleapis/python-ndb/issues/837)) ([316f959](https://github.com/googleapis/python-ndb/commit/316f95913f2dca12f314e429bbe8bd2582bc1c0f))
+* **tasklets:** Fix Py2-style print statement ([#840](https://github.com/googleapis/python-ndb/issues/840)) ([0ebfaed](https://github.com/googleapis/python-ndb/commit/0ebfaedc48911b57d0cb23584a2a84c31a92d06a))
+
 ## [1.11.2](https://github.com/googleapis/python-ndb/compare/v1.11.1...v1.11.2) (2022-06-03)
 
 
