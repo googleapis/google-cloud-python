@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.4.0](https://github.com/googleapis/python-documentai/compare/v2.3.0...v2.4.0) (2022-11-27)
+
+
+### Features
+
+* Added field_mask field in DocumentOutputConfig.GcsOutputConfig in document_io.proto ([#415](https://github.com/googleapis/python-documentai/issues/415)) ([575121f](https://github.com/googleapis/python-documentai/commit/575121f2900f2f7245ebc0c87913fff844801326))
+
+
+### Documentation
+
+* **samples:** Fix Typos in Batch process & get processor Samples ([7bdedd1](https://github.com/googleapis/python-documentai/commit/7bdedd1eb6feb266ebf4f663ce572a185883f024))
+
 ## [2.3.0](https://github.com/googleapis/python-documentai/compare/v2.2.0...v2.3.0) (2022-11-14)
 
 
