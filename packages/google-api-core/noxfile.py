@@ -61,7 +61,7 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", "flake8-import-order", BLACK_VERSION)
+    session.install("flake8", BLACK_VERSION)
     session.install(".")
     session.run(
         "black",
@@ -171,7 +171,7 @@ def unit_wo_grpc(session):
     default(session, install_grpc=False)
 
 
-@nox.session(python="3.8")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
 
@@ -212,7 +212,7 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python="3.9")
 def docs(session):
     """Build the docs for this library."""
 
@@ -234,7 +234,7 @@ def docs(session):
     )
 
 
-@nox.session(python="3.8")
+@nox.session(python="3.9")
 def docfx(session):
     """Build the docfx yaml files for this library."""
 

@@ -14,14 +14,13 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from typing import Dict, Type
 
 from .base import OperationsTransport
 from .rest import OperationsRestTransport
 
 
 # Compile a registry of transports.
-_transport_registry = OrderedDict()  # type: Dict[str, Type[OperationsTransport]]
+_transport_registry = OrderedDict()
 _transport_registry["rest"] = OperationsRestTransport
 
 __all__ = (
