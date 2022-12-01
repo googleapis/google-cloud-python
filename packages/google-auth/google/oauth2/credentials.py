@@ -34,6 +34,7 @@ Authorization Code grant flow.
 from datetime import datetime
 import io
 import json
+import logging
 
 import six
 
@@ -42,6 +43,8 @@ from google.auth import _helpers
 from google.auth import credentials
 from google.auth import exceptions
 from google.oauth2 import reauth
+
+_LOGGER = logging.getLogger(__name__)
 
 
 # The Google OAuth 2.0 token endpoint. Used for authorized user credentials.
@@ -79,6 +82,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         rapt_token=None,
         refresh_handler=None,
         enable_reauth_refresh=False,
+        granted_scopes=None,
     ):
         """
         Args:
@@ -117,6 +121,9 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
                 retrieving downscoped tokens from a token broker.
             enable_reauth_refresh (Optional[bool]): Whether reauth refresh flow
                 should be used. This flag is for gcloud to use only.
+            granted_scopes (Optional[Sequence[str]]): The scopes that were consented/granted by the user.
+                This could be different from the requested scopes and it could be empty if granted
+                and requested scopes were same.
         """
         super(Credentials, self).__init__()
         self.token = token
@@ -125,6 +132,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         self._id_token = id_token
         self._scopes = scopes
         self._default_scopes = default_scopes
+        self._granted_scopes = granted_scopes
         self._token_uri = token_uri
         self._client_id = client_id
         self._client_secret = client_secret
@@ -155,6 +163,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         self._id_token = d.get("_id_token")
         self._scopes = d.get("_scopes")
         self._default_scopes = d.get("_default_scopes")
+        self._granted_scopes = d.get("_granted_scopes")
         self._token_uri = d.get("_token_uri")
         self._client_id = d.get("_client_id")
         self._client_secret = d.get("_client_secret")
@@ -173,6 +182,11 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
     def scopes(self):
         """Optional[str]: The OAuth 2.0 permission scopes."""
         return self._scopes
+
+    @property
+    def granted_scopes(self):
+        """Optional[Sequence[str]]: The OAuth 2.0 permission scopes that were granted by the user."""
+        return self._granted_scopes
 
     @property
     def token_uri(self):
@@ -249,6 +263,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
             client_secret=self.client_secret,
             scopes=self.scopes,
             default_scopes=self.default_scopes,
+            granted_scopes=self.granted_scopes,
             quota_project_id=quota_project_id,
             rapt_token=self.rapt_token,
             enable_reauth_refresh=self._enable_reauth_refresh,
@@ -266,6 +281,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
             client_secret=self.client_secret,
             scopes=self.scopes,
             default_scopes=self.default_scopes,
+            granted_scopes=self.granted_scopes,
             quota_project_id=self.quota_project_id,
             rapt_token=self.rapt_token,
             enable_reauth_refresh=self._enable_reauth_refresh,
@@ -335,10 +351,15 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
 
         if scopes and "scope" in grant_response:
             requested_scopes = frozenset(scopes)
-            granted_scopes = frozenset(grant_response["scope"].split())
+            self._granted_scopes = grant_response["scope"].split()
+            granted_scopes = frozenset(self._granted_scopes)
             scopes_requested_but_not_granted = requested_scopes - granted_scopes
             if scopes_requested_but_not_granted:
-                raise exceptions.RefreshError(
+                # User might be presented with unbundled scopes at the time of
+                # consent. So it is a valid scenario to not have all the requested
+                # scopes as part of granted scopes but log a warning in case the
+                # developer wants to debug the scenario.
+                _LOGGER.warning(
                     "Not all requested scopes were granted by the "
                     "authorization server, missing scopes {}.".format(
                         ", ".join(scopes_requested_but_not_granted)

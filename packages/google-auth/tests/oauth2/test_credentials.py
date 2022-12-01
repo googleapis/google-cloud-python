@@ -449,6 +449,7 @@ class TestCredentials(object):
         assert creds.id_token == mock.sentinel.id_token
         assert creds.has_scopes(scopes)
         assert creds.rapt_token == new_rapt_token
+        assert creds.granted_scopes == scopes
 
         # Check that the credentials are valid (have a token and are not
         # expired.)
@@ -466,7 +467,7 @@ class TestCredentials(object):
         token = "token"
         new_rapt_token = "new_rapt_token"
         expiry = _helpers.utcnow() + datetime.timedelta(seconds=500)
-        grant_response = {"id_token": mock.sentinel.id_token}
+        grant_response = {"id_token": mock.sentinel.id_token, "scope": "email profile"}
         refresh_grant.return_value = (
             # Access token
             token,
@@ -513,6 +514,7 @@ class TestCredentials(object):
         assert creds.id_token == mock.sentinel.id_token
         assert creds.has_scopes(default_scopes)
         assert creds.rapt_token == new_rapt_token
+        assert creds.granted_scopes == default_scopes
 
         # Check that the credentials are valid (have a token and are not
         # expired.)
@@ -530,9 +532,140 @@ class TestCredentials(object):
         token = "token"
         new_rapt_token = "new_rapt_token"
         expiry = _helpers.utcnow() + datetime.timedelta(seconds=500)
+        grant_response = {"id_token": mock.sentinel.id_token, "scope": " ".join(scopes)}
+        refresh_grant.return_value = (
+            # Access token
+            token,
+            # New refresh token
+            None,
+            # Expiry,
+            expiry,
+            # Extra data
+            grant_response,
+            # rapt token
+            new_rapt_token,
+        )
+
+        request = mock.create_autospec(transport.Request)
+        creds = credentials.Credentials(
+            token=None,
+            refresh_token=self.REFRESH_TOKEN,
+            token_uri=self.TOKEN_URI,
+            client_id=self.CLIENT_ID,
+            client_secret=self.CLIENT_SECRET,
+            scopes=scopes,
+            rapt_token=self.RAPT_TOKEN,
+            enable_reauth_refresh=True,
+        )
+
+        # Refresh credentials
+        creds.refresh(request)
+
+        # Check jwt grant call.
+        refresh_grant.assert_called_with(
+            request,
+            self.TOKEN_URI,
+            self.REFRESH_TOKEN,
+            self.CLIENT_ID,
+            self.CLIENT_SECRET,
+            scopes,
+            self.RAPT_TOKEN,
+            True,
+        )
+
+        # Check that the credentials have the token and expiry
+        assert creds.token == token
+        assert creds.expiry == expiry
+        assert creds.id_token == mock.sentinel.id_token
+        assert creds.has_scopes(scopes)
+        assert creds.rapt_token == new_rapt_token
+        assert creds.granted_scopes == scopes
+
+        # Check that the credentials are valid (have a token and are not
+        # expired.)
+        assert creds.valid
+
+    @mock.patch("google.oauth2.reauth.refresh_grant", autospec=True)
+    @mock.patch(
+        "google.auth._helpers.utcnow",
+        return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
+    )
+    def test_credentials_with_only_default_scopes_requested_different_granted_scopes(
+        self, unused_utcnow, refresh_grant
+    ):
+        default_scopes = ["email", "profile"]
+        token = "token"
+        new_rapt_token = "new_rapt_token"
+        expiry = _helpers.utcnow() + datetime.timedelta(seconds=500)
+        grant_response = {"id_token": mock.sentinel.id_token, "scope": "email"}
+        refresh_grant.return_value = (
+            # Access token
+            token,
+            # New refresh token
+            None,
+            # Expiry,
+            expiry,
+            # Extra data
+            grant_response,
+            # rapt token
+            new_rapt_token,
+        )
+
+        request = mock.create_autospec(transport.Request)
+        creds = credentials.Credentials(
+            token=None,
+            refresh_token=self.REFRESH_TOKEN,
+            token_uri=self.TOKEN_URI,
+            client_id=self.CLIENT_ID,
+            client_secret=self.CLIENT_SECRET,
+            default_scopes=default_scopes,
+            rapt_token=self.RAPT_TOKEN,
+            enable_reauth_refresh=True,
+        )
+
+        # Refresh credentials
+        creds.refresh(request)
+
+        # Check jwt grant call.
+        refresh_grant.assert_called_with(
+            request,
+            self.TOKEN_URI,
+            self.REFRESH_TOKEN,
+            self.CLIENT_ID,
+            self.CLIENT_SECRET,
+            default_scopes,
+            self.RAPT_TOKEN,
+            True,
+        )
+
+        # Check that the credentials have the token and expiry
+        assert creds.token == token
+        assert creds.expiry == expiry
+        assert creds.id_token == mock.sentinel.id_token
+        assert creds.has_scopes(default_scopes)
+        assert creds.rapt_token == new_rapt_token
+        assert creds.granted_scopes == ["email"]
+
+        # Check that the credentials are valid (have a token and are not
+        # expired.)
+        assert creds.valid
+
+    @mock.patch("google.oauth2.reauth.refresh_grant", autospec=True)
+    @mock.patch(
+        "google.auth._helpers.utcnow",
+        return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
+    )
+    def test_credentials_with_scopes_refresh_different_granted_scopes(
+        self, unused_utcnow, refresh_grant
+    ):
+        scopes = ["email", "profile"]
+        scopes_returned = ["email"]
+        token = "token"
+        new_rapt_token = "new_rapt_token"
+        expiry = _helpers.utcnow() + datetime.timedelta(seconds=500)
         grant_response = {
             "id_token": mock.sentinel.id_token,
-            "scopes": " ".join(scopes),
+            "scope": " ".join(scopes_returned),
         }
         refresh_grant.return_value = (
             # Access token
@@ -580,77 +713,7 @@ class TestCredentials(object):
         assert creds.id_token == mock.sentinel.id_token
         assert creds.has_scopes(scopes)
         assert creds.rapt_token == new_rapt_token
-
-        # Check that the credentials are valid (have a token and are not
-        # expired.)
-        assert creds.valid
-
-    @mock.patch("google.oauth2.reauth.refresh_grant", autospec=True)
-    @mock.patch(
-        "google.auth._helpers.utcnow",
-        return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
-    )
-    def test_credentials_with_scopes_refresh_failure_raises_refresh_error(
-        self, unused_utcnow, refresh_grant
-    ):
-        scopes = ["email", "profile"]
-        scopes_returned = ["email"]
-        token = "token"
-        new_rapt_token = "new_rapt_token"
-        expiry = _helpers.utcnow() + datetime.timedelta(seconds=500)
-        grant_response = {
-            "id_token": mock.sentinel.id_token,
-            "scope": " ".join(scopes_returned),
-        }
-        refresh_grant.return_value = (
-            # Access token
-            token,
-            # New refresh token
-            None,
-            # Expiry,
-            expiry,
-            # Extra data
-            grant_response,
-            # rapt token
-            new_rapt_token,
-        )
-
-        request = mock.create_autospec(transport.Request)
-        creds = credentials.Credentials(
-            token=None,
-            refresh_token=self.REFRESH_TOKEN,
-            token_uri=self.TOKEN_URI,
-            client_id=self.CLIENT_ID,
-            client_secret=self.CLIENT_SECRET,
-            scopes=scopes,
-            rapt_token=self.RAPT_TOKEN,
-            enable_reauth_refresh=True,
-        )
-
-        # Refresh credentials
-        with pytest.raises(
-            exceptions.RefreshError, match="Not all requested scopes were granted"
-        ):
-            creds.refresh(request)
-
-        # Check jwt grant call.
-        refresh_grant.assert_called_with(
-            request,
-            self.TOKEN_URI,
-            self.REFRESH_TOKEN,
-            self.CLIENT_ID,
-            self.CLIENT_SECRET,
-            scopes,
-            self.RAPT_TOKEN,
-            True,
-        )
-
-        # Check that the credentials have the token and expiry
-        assert creds.token == token
-        assert creds.expiry == expiry
-        assert creds.id_token == mock.sentinel.id_token
-        assert creds.has_scopes(scopes)
-        assert creds.rapt_token == new_rapt_token
+        assert creds.granted_scopes == scopes_returned
 
         # Check that the credentials are valid (have a token and are not
         # expired.)
