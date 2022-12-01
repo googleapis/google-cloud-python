@@ -23,11 +23,13 @@ See the `nox docs`_ for details on how this file works:
 """
 
 import os
+import pathlib
 import subprocess
+import shutil
+import tempfile
 
 from nox.command import which
 import nox
-import py.path
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 LIBRARY_DIR = os.path.abspath(os.path.dirname(HERE))
@@ -59,16 +61,18 @@ CLOUD_SDK_CONFIG_ENV = "CLOUDSDK_CONFIG"
 CLOUD_SDK_ROOT = os.environ.get("CLOUD_SDK_ROOT")
 
 if CLOUD_SDK_ROOT is not None:
-    CLOUD_SDK_ROOT = py.path.local(CLOUD_SDK_ROOT)
-    CLOUD_SDK_ROOT.ensure(dir=True)  # Makes sure the directory exists.
+    CLOUD_SDK_ROOT = pathlib.Path(CLOUD_SDK_ROOT)
+    if not CLOUD_SDK_ROOT.exists() or not CLOUD_SDK_ROOT.is_dir():
+        print("{} did not exist! Please set the CLOUD_SDK_ROOT environment variable to a directory that exists".format(CLOUD_SDK_ROOT))
+        exit(1)
 else:
-    CLOUD_SDK_ROOT = py.path.local.mkdtemp()
+    CLOUD_SDK_ROOT = pathlib.Path(tempfile.mkdtemp())
 
 # The full path the cloud sdk install directory
-CLOUD_SDK_INSTALL_DIR = CLOUD_SDK_ROOT.join("google-cloud-sdk")
+CLOUD_SDK_INSTALL_DIR = CLOUD_SDK_ROOT.joinpath("google-cloud-sdk")
 
 # The full path to the gcloud cli executable.
-GCLOUD = str(CLOUD_SDK_INSTALL_DIR.join("bin", "gcloud"))
+GCLOUD = str(CLOUD_SDK_INSTALL_DIR.joinpath("bin", "gcloud"))
 
 # gcloud requires Python 2 and doesn't work on 3, so we need to tell it
 # where to find 2 when we're running in a 3 environment.
@@ -90,26 +94,26 @@ def install_cloud_sdk(session):
     # This set the $PATH for the subprocesses so they can find the gcloud
     # executable.
     session.env["PATH"] = (
-        str(CLOUD_SDK_INSTALL_DIR.join("bin")) + os.pathsep + os.environ["PATH"]
+        str(CLOUD_SDK_INSTALL_DIR.joinpath("bin")) + os.pathsep + os.environ["PATH"]
     )
 
     # If gcloud cli executable already exists, just update it.
-    if py.path.local(GCLOUD).exists():
+    if pathlib.Path(GCLOUD).exists():
         session.run(GCLOUD, "components", "update", "-q")
         return
 
-    tar_path = CLOUD_SDK_ROOT.join(CLOUD_SDK_DIST_FILENAME)
+    tar_path = CLOUD_SDK_ROOT.joinpath(CLOUD_SDK_DIST_FILENAME)
 
     # Download the release.
     session.run("wget", CLOUD_SDK_DOWNLOAD_URL, "-O", str(tar_path), silent=True)
 
     # Extract the release.
     session.run("tar", "xzf", str(tar_path), "-C", str(CLOUD_SDK_ROOT))
-    session.run(tar_path.remove)
+    tar_path.unlink()
 
     # Run the install script.
     session.run(
-        str(CLOUD_SDK_INSTALL_DIR.join("install.sh")),
+        str(CLOUD_SDK_INSTALL_DIR.joinpath("install.sh")),
         "--usage-reporting",
         "false",
         "--path-update",
@@ -123,10 +127,10 @@ def install_cloud_sdk(session):
 def copy_credentials(credentials_path):
     """Copies credentials into the SDK root as the application default
     credentials."""
-    dest = CLOUD_SDK_ROOT.join("application_default_credentials.json")
+    dest = CLOUD_SDK_ROOT.joinpath("application_default_credentials.json")
     if dest.exists():
-        dest.remove()
-    py.path.local(credentials_path).copy(dest)
+        dest.unlink()
+    shutil.copyfile(pathlib.Path(credentials_path), dest)
 
 
 def configure_cloud_sdk(session, application_default_credentials, project=False):
