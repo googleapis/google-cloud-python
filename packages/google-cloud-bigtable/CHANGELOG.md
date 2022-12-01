@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.14.0](https://github.com/googleapis/python-bigtable/compare/v2.13.2...v2.14.0) (2022-11-30)
+
+
+### Features
+
+* Add typing to proto.Message based class attributes ([c1538d5](https://github.com/googleapis/python-bigtable/commit/c1538d5c5a001a9febb4b466d3d09fd1fd167f66))
+* remove enum value ReadRowsRequest.RequestStatsView.REQUEST_STATS_EFFICIENCY ([c1538d5](https://github.com/googleapis/python-bigtable/commit/c1538d5c5a001a9febb4b466d3d09fd1fd167f66))
+* remove field ReadIterationStats.deletes_seen ([c1538d5](https://github.com/googleapis/python-bigtable/commit/c1538d5c5a001a9febb4b466d3d09fd1fd167f66))
+* remove field RequestStats.read_efficiency_stats ([c1538d5](https://github.com/googleapis/python-bigtable/commit/c1538d5c5a001a9febb4b466d3d09fd1fd167f66))
+* remove proto ReadEfficiencyStats  ([c1538d5](https://github.com/googleapis/python-bigtable/commit/c1538d5c5a001a9febb4b466d3d09fd1fd167f66))
+* rename field RequestStats.all_read_stats to full_read_stats_view ([c1538d5](https://github.com/googleapis/python-bigtable/commit/c1538d5c5a001a9febb4b466d3d09fd1fd167f66))
+* rename proto AllReadStats to FullReadStatsView ([c1538d5](https://github.com/googleapis/python-bigtable/commit/c1538d5c5a001a9febb4b466d3d09fd1fd167f66))
+* rename proto ReadIteratorStats to ReadIterationStats ([c1538d5](https://github.com/googleapis/python-bigtable/commit/c1538d5c5a001a9febb4b466d3d09fd1fd167f66))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([c1538d5](https://github.com/googleapis/python-bigtable/commit/c1538d5c5a001a9febb4b466d3d09fd1fd167f66))
+
 ## [2.13.2](https://github.com/googleapis/python-bigtable/compare/v2.13.1...v2.13.2) (2022-10-20)
 
 
