@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.11.0](https://github.com/googleapis/python-datastore/compare/v2.10.0...v2.11.0) (2022-11-30)
+
+
+### Features
+
+* Support "limit" in count query. ([#384](https://github.com/googleapis/python-datastore/issues/384)) ([a4b666a](https://github.com/googleapis/python-datastore/commit/a4b666a4a11b04903cf7a48f74e525205d13250e))
+
 ## [2.10.0](https://github.com/googleapis/python-datastore/compare/v2.9.0...v2.10.0) (2022-11-01)
 
 
