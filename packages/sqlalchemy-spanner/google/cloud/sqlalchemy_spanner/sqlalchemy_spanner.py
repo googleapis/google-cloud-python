@@ -353,7 +353,7 @@ class SpannerDDLCompiler(DDLCompiler):
         if default is not None:
             colspec += " DEFAULT (" + default + ")"
 
-        if column.computed is not None:
+        if hasattr(column, "computed") and column.computed is not None:
             colspec += " " + self.process(column.computed)
 
         return colspec

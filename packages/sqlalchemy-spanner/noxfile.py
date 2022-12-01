@@ -223,6 +223,20 @@ def unit(session):
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def migration_test(session):
+    """Test migrations with SQLAlchemy v1.3.11+ and Alembic"""
+    session.run("pip", "install", "sqlalchemy>=1.3.11", "--force-reinstall")
+    _migration_test(session)
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def migration_test_1310(session):
+    """Test migrations with SQLAlchemy 1.3.10 or lower and Alembic"""
+    session.run("pip", "install", "sqlalchemy>=1.1.13,<=1.3.10", "--force-reinstall")
+    _migration_test(session)
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def _migration_test(session):
     """Migrate with SQLAlchemy and Alembic and check the result."""
     import glob
     import os
