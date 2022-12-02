@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.24.0](https://github.com/googleapis/python-spanner/compare/v3.23.0...v3.24.0) (2022-11-30)
+
+
+### Features
+
+* Add snippets for Spanner DML with returning clause ([#811](https://github.com/googleapis/python-spanner/issues/811)) ([62e55b5](https://github.com/googleapis/python-spanner/commit/62e55b5e98530e53483003a6729e1b69b7ee2d9c))
+* Add support and tests for DML returning clauses ([#805](https://github.com/googleapis/python-spanner/issues/805)) ([81505cd](https://github.com/googleapis/python-spanner/commit/81505cd221d74936c46755e81e9e04fce828f8a2))
+
 ## [3.23.0](https://github.com/googleapis/python-spanner/compare/v3.22.1...v3.23.0) (2022-11-07)
 
 
