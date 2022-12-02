@@ -217,7 +217,10 @@ def create_subscription_with_ordering(
 
 
 def create_subscription_with_filtering(
-    project_id: str, topic_id: str, subscription_id: str, filter: str,
+    project_id: str,
+    topic_id: str,
+    subscription_id: str,
+    filter: str,
 ) -> None:
     """Create a subscription with filtering enabled."""
     # [START pubsub_create_subscription_with_filter]
@@ -291,7 +294,9 @@ def create_bigquery_subscription(
     topic_path = publisher.topic_path(project_id, topic_id)
     subscription_path = subscriber.subscription_path(project_id, subscription_id)
 
-    bigquery_config = pubsub_v1.types.BigQueryConfig(table=bigquery_table_id, write_metadata=True)
+    bigquery_config = pubsub_v1.types.BigQueryConfig(
+        table=bigquery_table_id, write_metadata=True
+    )
 
     # Wrap the subscriber in a 'with' block to automatically call close() to
     # close the underlying gRPC channel when done.
@@ -421,7 +426,9 @@ def update_subscription_with_dead_letter_policy(
     # after the update. Here, values in the required fields (name, topic) help
     # identify the subscription.
     subscription = pubsub_v1.types.Subscription(
-        name=subscription_path, topic=topic_path, dead_letter_policy=dead_letter_policy,
+        name=subscription_path,
+        topic=topic_path,
+        dead_letter_policy=dead_letter_policy,
     )
 
     with subscriber:
@@ -626,7 +633,9 @@ def receive_messages_with_blocking_shutdown(
         print(f"Done processing the message {message.data!r}.")
 
     streaming_pull_future = subscriber.subscribe(
-        subscription_path, callback=callback, await_callbacks_on_shutdown=True,
+        subscription_path,
+        callback=callback,
+        await_callbacks_on_shutdown=True,
     )
     print(f"Listening for messages on {subscription_path}..\n")
 
@@ -900,7 +909,8 @@ def receive_messages_with_delivery_attempts(
 
 if __name__ == "__main__":  # noqa
     parser = argparse.ArgumentParser(
-        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("project_id", help="Your Google Cloud project ID")
 

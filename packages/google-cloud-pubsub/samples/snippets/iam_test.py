@@ -62,7 +62,8 @@ def subscriber_client() -> Generator[pubsub_v1.SubscriberClient, None, None]:
 
 @pytest.fixture(scope="module")
 def subscription_path(
-    subscriber_client: pubsub_v1.SubscriberClient, topic_path: str,
+    subscriber_client: pubsub_v1.SubscriberClient,
+    topic_path: str,
 ) -> Generator[str, None, None]:
     subscription_path = subscriber_client.subscription_path(PROJECT_ID, SUBSCRIPTION_ID)
     subscription = subscriber_client.create_subscription(
@@ -102,7 +103,8 @@ def test_set_topic_policy(
 
 
 def test_set_subscription_policy(
-    subscriber_client: pubsub_v1.SubscriberClient, subscription_path: str,
+    subscriber_client: pubsub_v1.SubscriberClient,
+    subscription_path: str,
 ) -> None:
     iam.set_subscription_policy(PROJECT_ID, SUBSCRIPTION_ID)
     policy = subscriber_client.get_iam_policy(request={"resource": subscription_path})
@@ -118,7 +120,8 @@ def test_check_topic_permissions(topic_path: str, capsys: CaptureFixture[str]) -
 
 
 def test_check_subscription_permissions(
-    subscription_path: str, capsys: CaptureFixture[str],
+    subscription_path: str,
+    capsys: CaptureFixture[str],
 ) -> None:
     iam.check_subscription_permissions(PROJECT_ID, SUBSCRIPTION_ID)
     out, _ = capsys.readouterr()

@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,37 +12,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""This script is used to synthesize generated parts of this library."""
-
+import json
+from pathlib import Path
 import re
+import shutil
 import textwrap
 
 import synthtool as s
-from synthtool import gcp
+import synthtool.gcp as gcp
 from synthtool.languages import python
 
-common = gcp.CommonTemplates()
+# ----------------------------------------------------------------------------
+# Copy the generated client from the owl-bot staging directory
+# ----------------------------------------------------------------------------
 
-default_version = "v1"
+clean_up_generated_samples = True
+
+# Load the default version defined in .repo-metadata.json.
+default_version = json.load(open(".repo-metadata.json", "rt")).get(
+    "default_version"
+)
 
 for library in s.get_staging_dirs(default_version):
-    # Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
-    s.replace(
-        library / f"google/pubsub_{library.name}/types/*.py",
-        r""".
-    Attributes:""",
-        r""".\n
-    Attributes:""",
-    )
-
-    # Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
-    s.replace(
-        library / f"google/pubsub_{library.name}/types/*.py",
-        r""".
-        Attributes:""",
-        r""".\n
-        Attributes:""",
-    )
+    if clean_up_generated_samples:
+        shutil.rmtree("samples/generated_samples", ignore_errors=True)
+        clean_up_generated_samples = False
 
     # DEFAULT SCOPES and SERVICE_ADDRESS are being used. so let's force them in.
     s.replace(
@@ -239,13 +233,16 @@ for library in s.get_staging_dirs(default_version):
     )
 
     # Allow timeout to be an instance of google.api_core.timeout.*
-    s.replace(
+    count = s.replace(
         library / f"google/pubsub_{library.name}/types/__init__.py",
         r"from \.pubsub import \(",
         "from typing import Union\n\n\g<0>",
     )
 
-    s.replace(
+    if count < 1:
+        raise Exception("Catch timeout replacement 1 failed.")
+
+    count = s.replace(
         library / f"google/pubsub_{library.name}/types/__init__.py",
         r"__all__ = \(\n",
         textwrap.dedent(
@@ -262,29 +259,44 @@ for library in s.get_staging_dirs(default_version):
         ),
     )
 
-    s.replace(
+    if count < 1:
+        raise Exception("Catch timeout replacement 2 failed.")
+
+    count = s.replace(
         library / f"google/pubsub_{library.name}/services/publisher/*client.py",
         r"from google.api_core import retry as retries.*\n",
         "\g<0>from google.api_core import timeout as timeouts  # type: ignore\n",
     )
 
-    s.replace(
+    if count < 1:
+        raise Exception("Catch timeout replacement 3 failed.")
+
+    count = s.replace(
         library / f"google/pubsub_{library.name}/services/publisher/*client.py",
         f"from google\.pubsub_{library.name}\.types import pubsub",
         f"\g<0>\nfrom google.pubsub_{library.name}.types import TimeoutType",
     )
 
-    s.replace(
+    if count < 1:
+        raise Exception("Catch timeout replacement 4 failed.")
+
+    count = s.replace(
         library / f"google/pubsub_{library.name}/services/publisher/*client.py",
-        r"(\s+)timeout: float = None.*\n",
+        r"(\s+)timeout: Optional\[float\] = None.*\n",
         f"\g<1>timeout: TimeoutType = gapic_{library.name}.method.DEFAULT,",
     )
 
-    s.replace(
+    if count < 1:
+        raise Exception("Catch timeout replacement 5 failed.")
+
+    count = s.replace(
         library / f"google/pubsub_{library.name}/services/publisher/*client.py",
         r"([^\S\r\n]+)timeout \(float\): (.*)\n",
         ("\g<1>timeout (TimeoutType):\n" "\g<1>    \g<2>\n"),
     )
+
+    if count < 1:
+        raise Exception("Catch timeout replacement 6 failed.")
 
     # Override the default max retry deadline for publisher methods.
     count = s.replace(
@@ -309,46 +321,23 @@ for library in s.get_staging_dirs(default_version):
     if count < 1:
         raise Exception(".coveragerc replacement failed.")
 
-    # fix the package name in samples/generated_samples to reflect
-    # the package on pypi. https://pypi.org/project/google-cloud-pubsub/
-    s.replace(
-        library / "samples/generated_samples/**/*.py",
-        "pip install google-pubsub",
-        "pip install google-cloud-pubsub",
-    )
-
-    # This line is required to move the generated code from the `owl-bot-staging` folder 
-    # to the destination folder `google/pubsub`
-    s.move(
-        library,
-        excludes=[
-            "docs/**/*",
-            "nox.py",
-            "README.rst",
-            "setup.py",
-            f"google/cloud/pubsub_{library.name}/__init__.py",
-            f"google/cloud/pubsub_{library.name}/types.py",
-        ],
-    )
+    s.move([library], excludes=["**/gapic_version.py", "README.rst", "docs/**/*", "setup.py", "testing/constraints-3.7.txt"])
 s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
+
 templated_files = gcp.CommonTemplates().py_library(
     microgenerator=True,
     samples=True,
     cov_level=100,
+    versions=gcp.common.detect_versions(path="./google", default_first=True),
     unit_test_python_versions=["3.7", "3.8", "3.9", "3.10"],
     system_test_python_versions=["3.10"],
     system_test_external_dependencies=["psutil"],
 )
-s.move(templated_files, excludes=["README.rst", ".coveragerc", ".github/CODEOWNERS"])
-python.configure_previous_major_version_branches()
-# ----------------------------------------------------------------------------
-# Samples templates
-# ----------------------------------------------------------------------------
-python.py_samples()
+s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml", "README.rst", "docs/index.rst"])
 
 # ----------------------------------------------------------------------------
 # Add mypy nox session.
@@ -438,5 +427,9 @@ s.replace(
     "noxfile.py", "--cov=google", "--cov=google/cloud",
 )
 
-# Final code style adjustments.
-s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+
+python.py_samples(skip_readmes=True)
+
+# run format session for all directories which have a noxfile
+for noxfile in Path(".").glob("**/noxfile.py"):
+    s.shell.run(["nox", "-s", "blacken"], cwd=noxfile.parent, hide_output=False)
