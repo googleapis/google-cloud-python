@@ -67,6 +67,8 @@ class OperationMetadata(proto.Message):
         DELETE = 2
         UPDATE = 3
         CHECK = 4
+        SAVE_SNAPSHOT = 5
+        LOAD_SNAPSHOT = 6
 
     state: State = proto.Field(
         proto.ENUM,

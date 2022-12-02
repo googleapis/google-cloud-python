@@ -153,6 +153,16 @@ class EnvironmentsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.save_snapshot: gapic_v1.method.wrap_method(
+                self.save_snapshot,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.load_snapshot: gapic_v1.method.wrap_method(
+                self.load_snapshot,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -213,6 +223,24 @@ class EnvironmentsTransport(abc.ABC):
         self,
     ) -> Callable[
         [environments.DeleteEnvironmentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def save_snapshot(
+        self,
+    ) -> Callable[
+        [environments.SaveSnapshotRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def load_snapshot(
+        self,
+    ) -> Callable[
+        [environments.LoadSnapshotRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

@@ -28,16 +28,26 @@ __protobuf__ = proto.module(
         "ListEnvironmentsResponse",
         "DeleteEnvironmentRequest",
         "UpdateEnvironmentRequest",
+        "SaveSnapshotRequest",
+        "SaveSnapshotResponse",
+        "LoadSnapshotRequest",
+        "LoadSnapshotResponse",
         "EnvironmentConfig",
         "WebServerNetworkAccessControl",
         "DatabaseConfig",
         "WebServerConfig",
         "EncryptionConfig",
+        "MaintenanceWindow",
         "SoftwareConfig",
         "IPAllocationPolicy",
         "NodeConfig",
         "PrivateClusterConfig",
+        "NetworkingConfig",
         "PrivateEnvironmentConfig",
+        "WorkloadsConfig",
+        "RecoveryConfig",
+        "ScheduledSnapshotsConfig",
+        "MasterAuthorizedNetworksConfig",
         "Environment",
         "CheckUpgradeResponse",
     },
@@ -276,19 +286,13 @@ class UpdateEnvironmentRequest(proto.Message):
                -  Horizontally scale the number of nodes in the
                   environment. An integer greater than or equal to 3
                   must be provided in the ``config.nodeCount`` field.
+                  Supported for Cloud Composer environments in versions
+                  composer-1.\ *.*-airflow-*.*.*.
 
             -  ``config.webServerNetworkAccessControl``
 
                -  Replace the environment's current
                   ``WebServerNetworkAccessControl``.
-
-            -  ``config.databaseConfig``
-
-               -  Replace the environment's current ``DatabaseConfig``.
-
-            -  ``config.webServerConfig``
-
-               -  Replace the environment's current ``WebServerConfig``.
 
             -  ``config.softwareConfig.airflowConfigOverrides``
 
@@ -314,9 +318,32 @@ class UpdateEnvironmentRequest(proto.Message):
                -  Replace all environment variables. If a replacement
                   environment variable map is not included in
                   ``environment``, all custom environment variables are
-                  cleared. It is an error to provide both this mask and
-                  a mask specifying one or more individual environment
-                  variables.
+                  cleared.
+
+            -  ``config.softwareConfig.schedulerCount``
+
+               -  Horizontally scale the number of schedulers in
+                  Airflow. A positive integer not greater than the
+                  number of nodes must be provided in the
+                  ``config.softwareConfig.schedulerCount`` field.
+                  Supported for Cloud Composer environments in versions
+                  composer-1.\ *.*-airflow-2.*.*.
+
+            -  ``config.databaseConfig.machineType``
+
+               -  Cloud SQL machine type used by Airflow database. It
+                  has to be one of: db-n1-standard-2, db-n1-standard-4,
+                  db-n1-standard-8 or db-n1-standard-16. Supported for
+                  Cloud Composer environments in versions
+                  composer-1.\ *.*-airflow-*.*.*.
+
+            -  ``config.webServerConfig.machineType``
+
+               -  Machine type on which Airflow web server is running.
+                  It has to be one of: composer-n1-webserver-2,
+                  composer-n1-webserver-4 or composer-n1-webserver-8.
+                  Supported for Cloud Composer environments in versions
+                  composer-1.\ *.*-airflow-*.*.*.
     """
 
     name: str = proto.Field(
@@ -335,6 +362,103 @@ class UpdateEnvironmentRequest(proto.Message):
     )
 
 
+class SaveSnapshotRequest(proto.Message):
+    r"""Request to create a snapshot of a Cloud Composer environment.
+
+    Attributes:
+        environment (str):
+            The resource name of the source environment
+            in the form:
+            "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
+        snapshot_location (str):
+            Location in a Cloud Storage where the
+            snapshot is going to be stored, e.g.:
+            "gs://my-bucket/snapshots".
+    """
+
+    environment: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    snapshot_location: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class SaveSnapshotResponse(proto.Message):
+    r"""Response to SaveSnapshotRequest.
+
+    Attributes:
+        snapshot_path (str):
+            The fully-resolved Cloud Storage path of the created
+            snapshot, e.g.:
+            "gs://my-bucket/snapshots/project_location_environment_timestamp".
+            This field is populated only if the snapshot creation was
+            successful.
+    """
+
+    snapshot_path: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class LoadSnapshotRequest(proto.Message):
+    r"""Request to load a snapshot into a Cloud Composer environment.
+
+    Attributes:
+        environment (str):
+            The resource name of the target environment
+            in the form:
+            "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
+        snapshot_path (str):
+            A Cloud Storage path to a snapshot to load, e.g.:
+            "gs://my-bucket/snapshots/project_location_environment_timestamp".
+        skip_pypi_packages_installation (bool):
+            Whether or not to skip installing Pypi
+            packages when loading the environment's state.
+        skip_environment_variables_setting (bool):
+            Whether or not to skip setting environment
+            variables when loading the environment's state.
+        skip_airflow_overrides_setting (bool):
+            Whether or not to skip setting Airflow
+            overrides when loading the environment's state.
+        skip_gcs_data_copying (bool):
+            Whether or not to skip copying Cloud Storage
+            data when loading the environment's state.
+    """
+
+    environment: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    snapshot_path: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    skip_pypi_packages_installation: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    skip_environment_variables_setting: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    skip_airflow_overrides_setting: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    skip_gcs_data_copying: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+
+
+class LoadSnapshotResponse(proto.Message):
+    r"""Response to LoadSnapshotRequest."""
+
+
 class EnvironmentConfig(proto.Message):
     r"""Configuration information for an environment.
 
@@ -351,9 +475,11 @@ class EnvironmentConfig(proto.Message):
             for this environment reside in a simulated
             directory with the given prefix.
         node_count (int):
-            The number of nodes in the Kubernetes Engine
-            cluster that will be used to run this
-            environment.
+            The number of nodes in the Kubernetes Engine cluster that
+            will be used to run this environment.
+
+            This field is supported for Cloud Composer environments in
+            versions composer-1.\ *.*-airflow-*.*.*.
         software_config (google.cloud.orchestration.airflow.service_v1.types.SoftwareConfig):
             The configuration settings for software
             inside the environment.
@@ -379,11 +505,64 @@ class EnvironmentConfig(proto.Message):
             Optional. The encryption options for the
             Cloud Composer environment and its dependencies.
             Cannot be updated.
+        maintenance_window (google.cloud.orchestration.airflow.service_v1.types.MaintenanceWindow):
+            Optional. The maintenance window is the
+            period when Cloud Composer components may
+            undergo maintenance. It is defined so that
+            maintenance is not executed during peak hours or
+            critical time periods.
+
+            The system will not be under maintenance for
+            every occurrence of this window, but when
+            maintenance is planned, it will be scheduled
+            during the window.
+
+            The maintenance window period must encompass at
+            least 12 hours per week. This may be split into
+            multiple chunks, each with a size of at least 4
+            hours.
+
+            If this value is omitted, the default value for
+            maintenance window will be applied. The default
+            value is Saturday and Sunday 00-06 GMT.
+        workloads_config (google.cloud.orchestration.airflow.service_v1.types.WorkloadsConfig):
+            Optional. The workloads configuration settings for the GKE
+            cluster associated with the Cloud Composer environment. The
+            GKE cluster runs Airflow scheduler, web server and workers
+            workloads.
+
+            This field is supported for Cloud Composer environments in
+            versions composer-2.\ *.*-airflow-*.*.\* and newer.
+        environment_size (google.cloud.orchestration.airflow.service_v1.types.EnvironmentConfig.EnvironmentSize):
+            Optional. The size of the Cloud Composer environment.
+
+            This field is supported for Cloud Composer environments in
+            versions composer-2.\ *.*-airflow-*.*.\* and newer.
         airflow_uri (str):
             Output only. The URI of the Apache Airflow Web UI hosted
             within this environment (see `Airflow web
             interface </composer/docs/how-to/accessing/airflow-web-interface>`__).
+        master_authorized_networks_config (google.cloud.orchestration.airflow.service_v1.types.MasterAuthorizedNetworksConfig):
+            Optional. The configuration options for GKE
+            cluster master authorized networks. By default
+            master authorized networks feature is: - in case
+            of private environment: enabled with no external
+            networks allowlisted.
+            - in case of public environment: disabled.
+        recovery_config (google.cloud.orchestration.airflow.service_v1.types.RecoveryConfig):
+            Optional. The Recovery settings configuration of an
+            environment.
+
+            This field is supported for Cloud Composer environments in
+            versions composer-2.\ *.*-airflow-*.*.\* and newer.
     """
+
+    class EnvironmentSize(proto.Enum):
+        r"""The size of the Cloud Composer environment."""
+        ENVIRONMENT_SIZE_UNSPECIFIED = 0
+        ENVIRONMENT_SIZE_SMALL = 1
+        ENVIRONMENT_SIZE_MEDIUM = 2
+        ENVIRONMENT_SIZE_LARGE = 3
 
     gke_cluster: str = proto.Field(
         proto.STRING,
@@ -432,9 +611,34 @@ class EnvironmentConfig(proto.Message):
         number=11,
         message="EncryptionConfig",
     )
+    maintenance_window: "MaintenanceWindow" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message="MaintenanceWindow",
+    )
+    workloads_config: "WorkloadsConfig" = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message="WorkloadsConfig",
+    )
+    environment_size: EnvironmentSize = proto.Field(
+        proto.ENUM,
+        number=16,
+        enum=EnvironmentSize,
+    )
     airflow_uri: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+    master_authorized_networks_config: "MasterAuthorizedNetworksConfig" = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        message="MasterAuthorizedNetworksConfig",
+    )
+    recovery_config: "RecoveryConfig" = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message="RecoveryConfig",
     )
 
 
@@ -489,11 +693,11 @@ class DatabaseConfig(proto.Message):
 
     Attributes:
         machine_type (str):
-            Optional. Cloud SQL machine type used by
-            Airflow database. It has to be one of:
-            db-n1-standard-2, db-n1-standard-4,
-            db-n1-standard-8 or db-n1-standard-16. If not
-            specified, db-n1-standard-2 will be used.
+            Optional. Cloud SQL machine type used by Airflow database.
+            It has to be one of: db-n1-standard-2, db-n1-standard-4,
+            db-n1-standard-8 or db-n1-standard-16. If not specified,
+            db-n1-standard-2 will be used. Supported for Cloud Composer
+            environments in versions composer-1.\ *.*-airflow-*.*.*.
     """
 
     machine_type: str = proto.Field(
@@ -503,8 +707,9 @@ class DatabaseConfig(proto.Message):
 
 
 class WebServerConfig(proto.Message):
-    r"""The configuration settings for the Airflow web server App
-    Engine instance.
+    r"""The configuration settings for the Airflow web server App Engine
+    instance. Supported for Cloud Composer environments in versions
+    composer-1.\ *.*-airflow-*.*.\*
 
     Attributes:
         machine_type (str):
@@ -525,8 +730,9 @@ class WebServerConfig(proto.Message):
 
 
 class EncryptionConfig(proto.Message):
-    r"""The encryption options for the Cloud Composer environment
-    and its dependencies.
+    r"""The encryption options for the Cloud Composer environment and its
+    dependencies.Supported for Cloud Composer environments in versions
+    composer-1.\ *.*-airflow-*.*.*.
 
     Attributes:
         kms_key_name (str):
@@ -542,6 +748,54 @@ class EncryptionConfig(proto.Message):
     )
 
 
+class MaintenanceWindow(proto.Message):
+    r"""The configuration settings for Cloud Composer maintenance window.
+    The following example:
+
+    ::
+
+          {
+            "startTime":"2019-08-01T01:00:00Z"
+            "endTime":"2019-08-01T07:00:00Z"
+            "recurrence":"FREQ=WEEKLY;BYDAY=TU,WE"
+          }
+
+    would define a maintenance window between 01 and 07 hours UTC during
+    each Tuesday and Wednesday.
+
+    Attributes:
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Required. Start time of the first recurrence
+            of the maintenance window.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Required. Maintenance window end time. It is used only to
+            calculate the duration of the maintenance window. The value
+            for end-time must be in the future, relative to
+            ``start_time``.
+        recurrence (str):
+            Required. Maintenance window recurrence. Format is a subset
+            of `RFC-5545 <https://tools.ietf.org/html/rfc5545>`__
+            ``RRULE``. The only allowed values for ``FREQ`` field are
+            ``FREQ=DAILY`` and ``FREQ=WEEKLY;BYDAY=...`` Example values:
+            ``FREQ=WEEKLY;BYDAY=TU,WE``, ``FREQ=DAILY``.
+    """
+
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    recurrence: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
 class SoftwareConfig(proto.Message):
     r"""Specifies the selection and configuration of software inside
     the environment.
@@ -552,25 +806,32 @@ class SoftwareConfig(proto.Message):
             encapsulates both the version of Cloud Composer
             functionality and the version of Apache Airflow. It must
             match the regular expression
-            ``composer-([0-9]+\.[0-9]+\.[0-9]+|latest)-airflow-[0-9]+\.[0-9]+(\.[0-9]+.*)?``.
+            ``composer-([0-9]+(\.[0-9]+\.[0-9]+(-preview\.[0-9]+)?)?|latest)-airflow-([0-9]+(\.[0-9]+(\.[0-9]+)?)?)``.
             When used as input, the server also checks if the provided
             version is supported and denies the request for an
             unsupported version.
 
-            The Cloud Composer portion of the version is a `semantic
-            version <https://semver.org>`__ or ``latest``. When the
-            patch version is omitted, the current Cloud Composer patch
-            version is selected. When ``latest`` is provided instead of
-            an explicit version number, the server replaces ``latest``
-            with the current Cloud Composer version and stores that
-            version number in the same field.
+            The Cloud Composer portion of the image version is a full
+            `semantic version <https://semver.org>`__, or an alias in
+            the form of major version number or ``latest``. When an
+            alias is provided, the server replaces it with the current
+            Cloud Composer version that satisfies the alias.
 
-            The portion of the image version that follows *airflow-* is
-            an official Apache Airflow repository `release
-            name <https://github.com/apache/incubator-airflow/releases>`__.
+            The Apache Airflow portion of the image version is a full
+            semantic version that points to one of the supported Apache
+            Airflow versions, or an alias in the form of only major or
+            major.minor versions specified. When an alias is provided,
+            the server replaces it with the latest Apache Airflow
+            version that satisfies the alias and is supported in the
+            given Cloud Composer version.
 
-            See also `Version
-            List </composer/docs/concepts/versioning/composer-versions>`__.
+            In all cases, the resolved image version is stored in the
+            same field.
+
+            See also `version
+            list </composer/docs/concepts/versioning/composer-versions>`__
+            and `versioning
+            overview </composer/docs/concepts/versioning/composer-versioning-overview>`__.
         airflow_config_overrides (MutableMapping[str, str]):
             Optional. Apache Airflow configuration properties to
             override.
@@ -624,11 +885,20 @@ class SoftwareConfig(proto.Message):
             -  ``SQL_REGION``
             -  ``SQL_USER``
         python_version (str):
-            Optional. The major version of Python used to
-            run the Apache Airflow scheduler, worker, and
-            webserver processes.
-            Can be set to '2' or '3'. If not specified, the
-            default is '3'. Cannot be updated.
+            Optional. The major version of Python used to run the Apache
+            Airflow scheduler, worker, and webserver processes.
+
+            Can be set to '2' or '3'. If not specified, the default is
+            '3'. Cannot be updated.
+
+            This field is only supported for Cloud Composer environments
+            in versions composer-1.\ *.*-airflow-*.*.*. Environments in
+            newer versions always use Python major version 3.
+        scheduler_count (int):
+            Optional. The number of schedulers for Airflow.
+
+            This field is supported for Cloud Composer environments in
+            versions composer-1.\ *.*-airflow-2.*.*.
     """
 
     image_version: str = proto.Field(
@@ -654,6 +924,10 @@ class SoftwareConfig(proto.Message):
         proto.STRING,
         number=6,
     )
+    scheduler_count: int = proto.Field(
+        proto.INT32,
+        number=7,
+    )
 
 
 class IPAllocationPolicy(proto.Message):
@@ -671,20 +945,26 @@ class IPAllocationPolicy(proto.Message):
         use_ip_aliases (bool):
             Optional. Whether or not to enable Alias IPs in the GKE
             cluster. If ``true``, a VPC-native cluster is created.
+
+            This field is only supported for Cloud Composer environments
+            in versions composer-1.\ *.*-airflow-*.*.*. Environments in
+            newer versions always use VPC-native GKE clusters.
         cluster_secondary_range_name (str):
             Optional. The name of the GKE cluster's secondary range used
             to allocate IP addresses to pods.
 
-            This field is applicable only when ``use_ip_aliases`` is
-            true.
+            For Cloud Composer environments in versions
+            composer-1.\ *.*-airflow-*.*.*, this field is applicable
+            only when ``use_ip_aliases`` is true.
 
             This field is a member of `oneof`_ ``cluster_ip_allocation``.
         cluster_ipv4_cidr_block (str):
             Optional. The IP address range used to allocate IP addresses
             to pods in the GKE cluster.
 
-            This field is applicable only when ``use_ip_aliases`` is
-            true.
+            For Cloud Composer environments in versions
+            composer-1.\ *.*-airflow-*.*.*, this field is applicable
+            only when ``use_ip_aliases`` is true.
 
             Set to blank to have GKE choose a range with the default
             size.
@@ -693,7 +973,7 @@ class IPAllocationPolicy(proto.Message):
             with a specific netmask.
 
             Set to a
-            `CIDR <http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
+            `CIDR <https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
             notation (e.g. ``10.96.0.0/14``) from the RFC-1918 private
             networks (e.g. ``10.0.0.0/8``, ``172.16.0.0/12``,
             ``192.168.0.0/16``) to pick a specific range to use.
@@ -703,16 +983,18 @@ class IPAllocationPolicy(proto.Message):
             Optional. The name of the services' secondary range used to
             allocate IP addresses to the GKE cluster.
 
-            This field is applicable only when ``use_ip_aliases`` is
-            true.
+            For Cloud Composer environments in versions
+            composer-1.\ *.*-airflow-*.*.*, this field is applicable
+            only when ``use_ip_aliases`` is true.
 
             This field is a member of `oneof`_ ``services_ip_allocation``.
         services_ipv4_cidr_block (str):
             Optional. The IP address range of the services IP addresses
             in this GKE cluster.
 
-            This field is applicable only when ``use_ip_aliases`` is
-            true.
+            For Cloud Composer environments in versions
+            composer-1.\ *.*-airflow-*.*.*, this field is applicable
+            only when ``use_ip_aliases`` is true.
 
             Set to blank to have GKE choose a range with the default
             size.
@@ -721,7 +1003,7 @@ class IPAllocationPolicy(proto.Message):
             with a specific netmask.
 
             Set to a
-            `CIDR <http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
+            `CIDR <https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
             notation (e.g. ``10.96.0.0/14``) from the RFC-1918 private
             networks (e.g. ``10.0.0.0/8``, ``172.16.0.0/12``,
             ``192.168.0.0/16``) to pick a specific range to use.
@@ -778,6 +1060,9 @@ class NodeConfig(proto.Message):
             one field (``location`` or ``nodeConfig.machineType``) is
             specified, the location information from the specified field
             will be propagated to the unspecified field.
+
+            This field is supported for Cloud Composer environments in
+            versions composer-1.\ *.*-airflow-*.*.*.
         machine_type (str):
             Optional. The Compute Engine `machine
             type </compute/docs/machine-types>`__ used for cluster
@@ -802,6 +1087,9 @@ class NodeConfig(proto.Message):
 
             If this field is unspecified, the ``machineTypeId`` defaults
             to "n1-standard-1".
+
+            This field is supported for Cloud Composer environments in
+            versions composer-1.\ *.*-airflow-*.*.*.
         network (str):
             Optional. The Compute Engine network to be used for machine
             communications, specified as a `relative resource
@@ -826,14 +1114,20 @@ class NodeConfig(proto.Message):
             also be provided, and the subnetwork must belong to the
             enclosing environment's project and location.
         disk_size_gb (int):
-            Optional. The disk size in GB used for node
-            VMs. Minimum size is 20GB. If unspecified,
-            defaults to 100GB. Cannot be updated.
+            Optional. The disk size in GB used for node VMs. Minimum
+            size is 30GB. If unspecified, defaults to 100GB. Cannot be
+            updated.
+
+            This field is supported for Cloud Composer environments in
+            versions composer-1.\ *.*-airflow-*.*.*.
         oauth_scopes (MutableSequence[str]):
             Optional. The set of Google API scopes to be made available
             on all node VMs. If ``oauth_scopes`` is empty, defaults to
             ["https://www.googleapis.com/auth/cloud-platform"]. Cannot
             be updated.
+
+            This field is supported for Cloud Composer environments in
+            versions composer-1.\ *.*-airflow-*.*.*.
         service_account (str):
             Optional. The Google Cloud Platform Service
             Account to be used by the node VMs. If a service
@@ -846,9 +1140,20 @@ class NodeConfig(proto.Message):
             network firewalls. Each tag within the list must comply with
             `RFC1035 <https://www.ietf.org/rfc/rfc1035.txt>`__. Cannot
             be updated.
+
+            This field is supported for Cloud Composer environments in
+            versions composer-1.\ *.*-airflow-*.*.*.
         ip_allocation_policy (google.cloud.orchestration.airflow.service_v1.types.IPAllocationPolicy):
             Optional. The configuration for controlling
             how IPs are allocated in the GKE cluster.
+        enable_ip_masq_agent (bool):
+            Optional. Deploys 'ip-masq-agent' daemon set
+            in the GKE cluster and defines
+            nonMasqueradeCIDRs equals to pod IP range so IP
+            masquerading is used for all destination
+            addresses, except between pods traffic.
+            See:
+            https://cloud.google.com/kubernetes-engine/docs/how-to/ip-masquerade-agent
     """
 
     location: str = proto.Field(
@@ -887,6 +1192,10 @@ class NodeConfig(proto.Message):
         proto.MESSAGE,
         number=9,
         message="IPAllocationPolicy",
+    )
+    enable_ip_masq_agent: bool = proto.Field(
+        proto.BOOL,
+        number=11,
     )
 
 
@@ -927,6 +1236,34 @@ class PrivateClusterConfig(proto.Message):
     )
 
 
+class NetworkingConfig(proto.Message):
+    r"""Configuration options for networking connections in the
+    Composer 2 environment.
+
+    Attributes:
+        connection_type (google.cloud.orchestration.airflow.service_v1.types.NetworkingConfig.ConnectionType):
+            Optional. Indicates the user requested
+            specifc connection type between Tenant and
+            Customer projects. You cannot set networking
+            connection type in public IP environment.
+    """
+
+    class ConnectionType(proto.Enum):
+        r"""Represents connection type between Composer environment in
+        Customer Project and the corresponding Tenant project, from a
+        predefined list of available connection modes.
+        """
+        CONNECTION_TYPE_UNSPECIFIED = 0
+        VPC_PEERING = 1
+        PRIVATE_SERVICE_CONNECT = 2
+
+    connection_type: ConnectionType = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=ConnectionType,
+    )
+
+
 class PrivateEnvironmentConfig(proto.Message):
     r"""The configuration information for configuring a Private IP
     Cloud Composer environment.
@@ -935,7 +1272,9 @@ class PrivateEnvironmentConfig(proto.Message):
         enable_private_environment (bool):
             Optional. If ``true``, a Private IP Cloud Composer
             environment is created. If this field is set to true,
-            ``IPAllocationPolicy.use_ip_aliases`` must be set to true.
+            ``IPAllocationPolicy.use_ip_aliases`` must be set to true
+            for Cloud Composer environments in versions
+            composer-1.\ *.*-airflow-*.*.*.
         private_cluster_config (google.cloud.orchestration.airflow.service_v1.types.PrivateClusterConfig):
             Optional. Configuration for the private GKE
             cluster for a Private IP Cloud Composer
@@ -945,13 +1284,49 @@ class PrivateEnvironmentConfig(proto.Message):
             will be reserved. Needs to be disjoint from
             ``private_cluster_config.master_ipv4_cidr_block`` and
             ``cloud_sql_ipv4_cidr_block``.
+
+            This field is supported for Cloud Composer environments in
+            versions composer-1.\ *.*-airflow-*.*.*.
         cloud_sql_ipv4_cidr_block (str):
             Optional. The CIDR block from which IP range in tenant
             project will be reserved for Cloud SQL. Needs to be disjoint
             from ``web_server_ipv4_cidr_block``.
         web_server_ipv4_reserved_range (str):
-            Output only. The IP range reserved for the
-            tenant project's App Engine VMs.
+            Output only. The IP range reserved for the tenant project's
+            App Engine VMs.
+
+            This field is supported for Cloud Composer environments in
+            versions composer-1.\ *.*-airflow-*.*.*.
+        cloud_composer_network_ipv4_cidr_block (str):
+            Optional. The CIDR block from which IP range for Cloud
+            Composer Network in tenant project will be reserved. Needs
+            to be disjoint from
+            private_cluster_config.master_ipv4_cidr_block and
+            cloud_sql_ipv4_cidr_block.
+
+            This field is supported for Cloud Composer environments in
+            versions composer-2.\ *.*-airflow-*.*.\* and newer.
+        cloud_composer_network_ipv4_reserved_range (str):
+            Output only. The IP range reserved for the tenant project's
+            Cloud Composer network.
+
+            This field is supported for Cloud Composer environments in
+            versions composer-2.\ *.*-airflow-*.*.\* and newer.
+        enable_privately_used_public_ips (bool):
+            Optional. When enabled, IPs from public (non-RFC1918) ranges
+            can be used for
+            ``IPAllocationPolicy.cluster_ipv4_cidr_block`` and
+            ``IPAllocationPolicy.service_ipv4_cidr_block``.
+        cloud_composer_connection_subnetwork (str):
+            Optional. When specified, the environment
+            will use Private Service Connect instead of VPC
+            peerings to connect to Cloud SQL in the Tenant
+            Project, and the PSC endpoint in the Customer
+            Project will use an IP address from this
+            subnetwork.
+        networking_config (google.cloud.orchestration.airflow.service_v1.types.NetworkingConfig):
+            Optional. Configuration for the network
+            connections configuration in the environment.
     """
 
     enable_private_environment: bool = proto.Field(
@@ -974,6 +1349,266 @@ class PrivateEnvironmentConfig(proto.Message):
     web_server_ipv4_reserved_range: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    cloud_composer_network_ipv4_cidr_block: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    cloud_composer_network_ipv4_reserved_range: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    enable_privately_used_public_ips: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    cloud_composer_connection_subnetwork: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    networking_config: "NetworkingConfig" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="NetworkingConfig",
+    )
+
+
+class WorkloadsConfig(proto.Message):
+    r"""The Kubernetes workloads configuration for GKE cluster associated
+    with the Cloud Composer environment. Supported for Cloud Composer
+    environments in versions composer-2.\ *.*-airflow-*.*.\* and newer.
+
+    Attributes:
+        scheduler (google.cloud.orchestration.airflow.service_v1.types.WorkloadsConfig.SchedulerResource):
+            Optional. Resources used by Airflow
+            schedulers.
+        web_server (google.cloud.orchestration.airflow.service_v1.types.WorkloadsConfig.WebServerResource):
+            Optional. Resources used by Airflow web
+            server.
+        worker (google.cloud.orchestration.airflow.service_v1.types.WorkloadsConfig.WorkerResource):
+            Optional. Resources used by Airflow workers.
+    """
+
+    class SchedulerResource(proto.Message):
+        r"""Configuration for resources used by Airflow schedulers.
+
+        Attributes:
+            cpu (float):
+                Optional. CPU request and limit for a single
+                Airflow scheduler replica.
+            memory_gb (float):
+                Optional. Memory (GB) request and limit for a
+                single Airflow scheduler replica.
+            storage_gb (float):
+                Optional. Storage (GB) request and limit for
+                a single Airflow scheduler replica.
+            count (int):
+                Optional. The number of schedulers.
+        """
+
+        cpu: float = proto.Field(
+            proto.FLOAT,
+            number=1,
+        )
+        memory_gb: float = proto.Field(
+            proto.FLOAT,
+            number=2,
+        )
+        storage_gb: float = proto.Field(
+            proto.FLOAT,
+            number=3,
+        )
+        count: int = proto.Field(
+            proto.INT32,
+            number=4,
+        )
+
+    class WebServerResource(proto.Message):
+        r"""Configuration for resources used by Airflow web server.
+
+        Attributes:
+            cpu (float):
+                Optional. CPU request and limit for Airflow
+                web server.
+            memory_gb (float):
+                Optional. Memory (GB) request and limit for
+                Airflow web server.
+            storage_gb (float):
+                Optional. Storage (GB) request and limit for
+                Airflow web server.
+        """
+
+        cpu: float = proto.Field(
+            proto.FLOAT,
+            number=1,
+        )
+        memory_gb: float = proto.Field(
+            proto.FLOAT,
+            number=2,
+        )
+        storage_gb: float = proto.Field(
+            proto.FLOAT,
+            number=3,
+        )
+
+    class WorkerResource(proto.Message):
+        r"""Configuration for resources used by Airflow workers.
+
+        Attributes:
+            cpu (float):
+                Optional. CPU request and limit for a single
+                Airflow worker replica.
+            memory_gb (float):
+                Optional. Memory (GB) request and limit for a
+                single Airflow worker replica.
+            storage_gb (float):
+                Optional. Storage (GB) request and limit for
+                a single Airflow worker replica.
+            min_count (int):
+                Optional. Minimum number of workers for
+                autoscaling.
+            max_count (int):
+                Optional. Maximum number of workers for
+                autoscaling.
+        """
+
+        cpu: float = proto.Field(
+            proto.FLOAT,
+            number=1,
+        )
+        memory_gb: float = proto.Field(
+            proto.FLOAT,
+            number=2,
+        )
+        storage_gb: float = proto.Field(
+            proto.FLOAT,
+            number=3,
+        )
+        min_count: int = proto.Field(
+            proto.INT32,
+            number=4,
+        )
+        max_count: int = proto.Field(
+            proto.INT32,
+            number=5,
+        )
+
+    scheduler: SchedulerResource = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=SchedulerResource,
+    )
+    web_server: WebServerResource = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=WebServerResource,
+    )
+    worker: WorkerResource = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=WorkerResource,
+    )
+
+
+class RecoveryConfig(proto.Message):
+    r"""The Recovery settings of an environment.
+
+    Attributes:
+        scheduled_snapshots_config (google.cloud.orchestration.airflow.service_v1.types.ScheduledSnapshotsConfig):
+            Optional. The configuration for scheduled
+            snapshot creation mechanism.
+    """
+
+    scheduled_snapshots_config: "ScheduledSnapshotsConfig" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="ScheduledSnapshotsConfig",
+    )
+
+
+class ScheduledSnapshotsConfig(proto.Message):
+    r"""The configuration for scheduled snapshot creation mechanism.
+
+    Attributes:
+        enabled (bool):
+            Optional. Whether scheduled snapshots
+            creation is enabled.
+        snapshot_location (str):
+            Optional. The Cloud Storage location for
+            storing automatically created snapshots.
+        snapshot_creation_schedule (str):
+            Optional. The cron expression representing
+            the time when snapshots creation mechanism runs.
+            This field is subject to additional validation
+            around frequency of execution.
+        time_zone (str):
+            Optional. Time zone that sets the context to interpret
+            snapshot_creation_schedule.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    snapshot_location: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    snapshot_creation_schedule: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    time_zone: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class MasterAuthorizedNetworksConfig(proto.Message):
+    r"""Configuration options for the master authorized networks
+    feature. Enabled master authorized networks will disallow all
+    external traffic to access Kubernetes master through HTTPS
+    except traffic from the given CIDR blocks, Google Compute Engine
+    Public IPs and Google Prod IPs.
+
+    Attributes:
+        enabled (bool):
+            Whether or not master authorized networks
+            feature is enabled.
+        cidr_blocks (MutableSequence[google.cloud.orchestration.airflow.service_v1.types.MasterAuthorizedNetworksConfig.CidrBlock]):
+            Up to 50 external networks that could access
+            Kubernetes master through HTTPS.
+    """
+
+    class CidrBlock(proto.Message):
+        r"""CIDR block with an optional name.
+
+        Attributes:
+            display_name (str):
+                User-defined name that identifies the CIDR
+                block.
+            cidr_block (str):
+                CIDR block that must be specified in CIDR
+                notation.
+        """
+
+        display_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        cidr_block: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    cidr_blocks: MutableSequence[CidrBlock] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=CidrBlock,
     )
 
 

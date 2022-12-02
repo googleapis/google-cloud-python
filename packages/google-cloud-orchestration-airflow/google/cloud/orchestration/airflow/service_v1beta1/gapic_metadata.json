@@ -35,9 +35,19 @@
                 "list_environments"
               ]
             },
+            "LoadSnapshot": {
+              "methods": [
+                "load_snapshot"
+              ]
+            },
             "RestartWebServer": {
               "methods": [
                 "restart_web_server"
+              ]
+            },
+            "SaveSnapshot": {
+              "methods": [
+                "save_snapshot"
               ]
             },
             "UpdateEnvironment": {
@@ -75,9 +85,19 @@
                 "list_environments"
               ]
             },
+            "LoadSnapshot": {
+              "methods": [
+                "load_snapshot"
+              ]
+            },
             "RestartWebServer": {
               "methods": [
                 "restart_web_server"
+              ]
+            },
+            "SaveSnapshot": {
+              "methods": [
+                "save_snapshot"
               ]
             },
             "UpdateEnvironment": {

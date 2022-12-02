@@ -449,6 +449,68 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
             )
         return self._stubs["check_upgrade"]
 
+    @property
+    def save_snapshot(
+        self,
+    ) -> Callable[
+        [environments.SaveSnapshotRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the save snapshot method over gRPC.
+
+        Creates a snapshots of a Cloud Composer environment.
+        As a result of this operation, snapshot of environment's
+        state is stored in a location specified in the
+        SaveSnapshotRequest.
+
+        Returns:
+            Callable[[~.SaveSnapshotRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "save_snapshot" not in self._stubs:
+            self._stubs["save_snapshot"] = self.grpc_channel.unary_unary(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/SaveSnapshot",
+                request_serializer=environments.SaveSnapshotRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["save_snapshot"]
+
+    @property
+    def load_snapshot(
+        self,
+    ) -> Callable[
+        [environments.LoadSnapshotRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the load snapshot method over gRPC.
+
+        Loads a snapshot of a Cloud Composer environment.
+        As a result of this operation, a snapshot of
+        environment's specified in LoadSnapshotRequest is loaded
+        into the environment.
+
+        Returns:
+            Callable[[~.LoadSnapshotRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "load_snapshot" not in self._stubs:
+            self._stubs["load_snapshot"] = self.grpc_channel.unary_unary(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/LoadSnapshot",
+                request_serializer=environments.LoadSnapshotRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["load_snapshot"]
+
     def close(self):
         return self.grpc_channel.close()
 

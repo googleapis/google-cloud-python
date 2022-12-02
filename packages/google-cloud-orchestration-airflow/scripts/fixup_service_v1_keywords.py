@@ -44,6 +44,8 @@ class serviceCallTransformer(cst.CSTTransformer):
         'get_environment': ('name', ),
         'list_environments': ('parent', 'page_size', 'page_token', ),
         'list_image_versions': ('parent', 'page_size', 'page_token', 'include_past_releases', ),
+        'load_snapshot': ('environment', 'snapshot_path', 'skip_pypi_packages_installation', 'skip_environment_variables_setting', 'skip_airflow_overrides_setting', 'skip_gcs_data_copying', ),
+        'save_snapshot': ('environment', 'snapshot_location', ),
         'update_environment': ('name', 'environment', 'update_mask', ),
     }
 

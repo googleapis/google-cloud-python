@@ -30,6 +30,16 @@
                 "list_environments"
               ]
             },
+            "LoadSnapshot": {
+              "methods": [
+                "load_snapshot"
+              ]
+            },
+            "SaveSnapshot": {
+              "methods": [
+                "save_snapshot"
+              ]
+            },
             "UpdateEnvironment": {
               "methods": [
                 "update_environment"
@@ -58,6 +68,16 @@
             "ListEnvironments": {
               "methods": [
                 "list_environments"
+              ]
+            },
+            "LoadSnapshot": {
+              "methods": [
+                "load_snapshot"
+              ]
+            },
+            "SaveSnapshot": {
+              "methods": [
+                "save_snapshot"
               ]
             },
             "UpdateEnvironment": {

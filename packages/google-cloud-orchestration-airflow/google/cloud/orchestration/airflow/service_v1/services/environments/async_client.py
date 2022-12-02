@@ -731,22 +731,13 @@ class EnvironmentsAsyncClient:
                    -  Horizontally scale the number of nodes in the
                       environment. An integer greater than or equal to 3
                       must be provided in the ``config.nodeCount``
-                      field.
+                      field. Supported for Cloud Composer environments
+                      in versions composer-1.\ *.*-airflow-*.*.*.
 
                 -  ``config.webServerNetworkAccessControl``
 
                    -  Replace the environment's current
                       ``WebServerNetworkAccessControl``.
-
-                -  ``config.databaseConfig``
-
-                   -  Replace the environment's current
-                      ``DatabaseConfig``.
-
-                -  ``config.webServerConfig``
-
-                   -  Replace the environment's current
-                      ``WebServerConfig``.
 
                 -  ``config.softwareConfig.airflowConfigOverrides``
 
@@ -775,9 +766,34 @@ class EnvironmentsAsyncClient:
                    -  Replace all environment variables. If a
                       replacement environment variable map is not
                       included in ``environment``, all custom
-                      environment variables are cleared. It is an error
-                      to provide both this mask and a mask specifying
-                      one or more individual environment variables.
+                      environment variables are cleared.
+
+                -  ``config.softwareConfig.schedulerCount``
+
+                   -  Horizontally scale the number of schedulers in
+                      Airflow. A positive integer not greater than the
+                      number of nodes must be provided in the
+                      ``config.softwareConfig.schedulerCount`` field.
+                      Supported for Cloud Composer environments in
+                      versions composer-1.\ *.*-airflow-2.*.*.
+
+                -  ``config.databaseConfig.machineType``
+
+                   -  Cloud SQL machine type used by Airflow database.
+                      It has to be one of: db-n1-standard-2,
+                      db-n1-standard-4, db-n1-standard-8 or
+                      db-n1-standard-16. Supported for Cloud Composer
+                      environments in versions
+                      composer-1.\ *.*-airflow-*.*.*.
+
+                -  ``config.webServerConfig.machineType``
+
+                   -  Machine type on which Airflow web server is
+                      running. It has to be one of:
+                      composer-n1-webserver-2, composer-n1-webserver-4
+                      or composer-n1-webserver-8. Supported for Cloud
+                      Composer environments in versions
+                      composer-1.\ *.*-airflow-*.*.*.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -968,6 +984,204 @@ class EnvironmentsAsyncClient:
             response,
             self._client._transport.operations_client,
             empty_pb2.Empty,
+            metadata_type=operations.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def save_snapshot(
+        self,
+        request: Optional[Union[environments.SaveSnapshotRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Creates a snapshots of a Cloud Composer environment.
+        As a result of this operation, snapshot of environment's
+        state is stored in a location specified in the
+        SaveSnapshotRequest.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.orchestration.airflow import service_v1
+
+            async def sample_save_snapshot():
+                # Create a client
+                client = service_v1.EnvironmentsAsyncClient()
+
+                # Initialize request argument(s)
+                request = service_v1.SaveSnapshotRequest(
+                )
+
+                # Make the request
+                operation = client.save_snapshot(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = await operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.orchestration.airflow.service_v1.types.SaveSnapshotRequest, dict]]):
+                The request object. Request to create a snapshot of a
+                Cloud Composer environment.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.orchestration.airflow.service_v1.types.SaveSnapshotResponse`
+                Response to SaveSnapshotRequest.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = environments.SaveSnapshotRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.save_snapshot,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("environment", request.environment),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            environments.SaveSnapshotResponse,
+            metadata_type=operations.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def load_snapshot(
+        self,
+        request: Optional[Union[environments.LoadSnapshotRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Loads a snapshot of a Cloud Composer environment.
+        As a result of this operation, a snapshot of
+        environment's specified in LoadSnapshotRequest is loaded
+        into the environment.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.orchestration.airflow import service_v1
+
+            async def sample_load_snapshot():
+                # Create a client
+                client = service_v1.EnvironmentsAsyncClient()
+
+                # Initialize request argument(s)
+                request = service_v1.LoadSnapshotRequest(
+                )
+
+                # Make the request
+                operation = client.load_snapshot(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = await operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.orchestration.airflow.service_v1.types.LoadSnapshotRequest, dict]]):
+                The request object. Request to load a snapshot into a
+                Cloud Composer environment.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.orchestration.airflow.service_v1.types.LoadSnapshotResponse`
+                Response to LoadSnapshotRequest.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = environments.LoadSnapshotRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.load_snapshot,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("environment", request.environment),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            environments.LoadSnapshotResponse,
             metadata_type=operations.OperationMetadata,
         )
 
