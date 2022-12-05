@@ -4,7 +4,7 @@ on:
       - main
 name: unittest-prerelease
 jobs:
-  unit:
+  unit-prerelease:
     runs-on: ubuntu-latest
     strategy:
       matrix:
