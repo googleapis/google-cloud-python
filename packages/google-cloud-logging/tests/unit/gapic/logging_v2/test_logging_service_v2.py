@@ -71,6 +71,22 @@ def modify_default_endpoint(client):
     )
 
 
+def test_logging_default_client_info_headers():
+    import re
+    import pkg_resources
+
+    # test that DEFAULT_CLIENT_INFO contains the expected gapic headers
+    gapic_header_regex = re.compile(
+        r"gapic\/[0-9]+\.[\w.-]+ gax\/[0-9]+\.[\w.-]+ gl-python\/[0-9]+\.[\w.-]+ grpc\/[0-9]+\.[\w.-]+"
+    )
+    detected_info = (
+        google.cloud.logging_v2.services.logging_service_v2.transports.base.DEFAULT_CLIENT_INFO
+    )
+    assert detected_info is not None
+    detected_agent = " ".join(sorted(detected_info.to_user_agent().split(" ")))
+    assert gapic_header_regex.match(detected_agent)
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
