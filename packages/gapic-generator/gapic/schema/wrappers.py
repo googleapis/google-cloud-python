@@ -1638,6 +1638,10 @@ class Service:
         return self.name + "Client"
 
     @property
+    def client_package_version(self) -> str:
+        return self.meta.address.package[-1] if self.meta.address.package else ""
+
+    @property
     def async_client_name(self) -> str:
         """Returns the name of the generated AsyncIO client class"""
         return self.name + "AsyncClient"

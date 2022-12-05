@@ -8,9 +8,9 @@
     class _{{ name }}({{service.name}}RestStub):
         def __call__(self,
             request: {{ sig.request_type }}, *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, str]]=(),
             ) -> {{ sig.response_type }}:
 
             r"""Call the {{- ' ' -}}

@@ -58,6 +58,7 @@ def test_service_properties():
     service = make_service(name='ThingDoer')
     assert service.name == 'ThingDoer'
     assert service.client_name == 'ThingDoerClient'
+    assert service.client_package_version == ''
     assert service.async_client_name == 'ThingDoerAsyncClient'
     assert service.transport_name == 'ThingDoerTransport'
     assert service.grpc_transport_name == 'ThingDoerGrpcTransport'

@@ -214,7 +214,7 @@ class CloudRedisAsyncClient:
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListInstancesAsyncPager:
         r"""Lists all Redis instances owned by a project in either the
@@ -339,7 +339,7 @@ class CloudRedisAsyncClient:
             *,
             name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> cloud_redis.Instance:
         r"""Gets the details of a specific Redis instance.
@@ -441,7 +441,7 @@ class CloudRedisAsyncClient:
             instance_id: Optional[str] = None,
             instance: Optional[cloud_redis.Instance] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation_async.AsyncOperation:
         r"""Creates a Redis instance based on the specified tier and memory
@@ -603,7 +603,7 @@ class CloudRedisAsyncClient:
             update_mask: Optional[field_mask_pb2.FieldMask] = None,
             instance: Optional[cloud_redis.Instance] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation_async.AsyncOperation:
         r"""Updates the metadata and configuration of a specific
@@ -746,7 +746,7 @@ class CloudRedisAsyncClient:
             name: Optional[str] = None,
             redis_version: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation_async.AsyncOperation:
         r"""Upgrades Redis instance to the newer Redis version
@@ -875,7 +875,7 @@ class CloudRedisAsyncClient:
             name: Optional[str] = None,
             input_config: Optional[cloud_redis.InputConfig] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation_async.AsyncOperation:
         r"""Import a Redis RDB snapshot file from Cloud Storage
@@ -1014,7 +1014,7 @@ class CloudRedisAsyncClient:
             name: Optional[str] = None,
             output_config: Optional[cloud_redis.OutputConfig] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation_async.AsyncOperation:
         r"""Export Redis instance data into a Redis RDB format
@@ -1149,7 +1149,7 @@ class CloudRedisAsyncClient:
             name: Optional[str] = None,
             data_protection_mode: Optional[cloud_redis.FailoverInstanceRequest.DataProtectionMode] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation_async.AsyncOperation:
         r"""Initiates a failover of the master node to current
@@ -1278,7 +1278,7 @@ class CloudRedisAsyncClient:
             *,
             name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation_async.AsyncOperation:
         r"""Deletes a specific Redis instance.  Instance stops

@@ -384,7 +384,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             *,
             log_name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> None:
         r"""Deletes all the log entries in a log. The log
@@ -491,7 +491,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             labels: Optional[MutableMapping[str, str]] = None,
             entries: Optional[MutableSequence[log_entry.LogEntry]] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging.WriteLogEntriesResponse:
         r"""Writes log entries to Logging. This API method is the
@@ -679,7 +679,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             filter: Optional[str] = None,
             order_by: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListLogEntriesPager:
         r"""Lists log entries. Use this method to retrieve log entries that
@@ -832,7 +832,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             request: Optional[Union[logging.ListMonitoredResourceDescriptorsRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListMonitoredResourceDescriptorsPager:
         r"""Lists the descriptors for monitored resource types
@@ -920,7 +920,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListLogsPager:
         r"""Lists the logs in projects, organizations, folders,
@@ -1039,7 +1039,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             requests: Optional[Iterator[logging.TailLogEntriesRequest]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> Iterable[logging.TailLogEntriesResponse]:
         r"""Streaming read of log entries as they are ingested.

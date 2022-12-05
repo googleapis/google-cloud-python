@@ -408,7 +408,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListInstancesPager:
         r"""Lists all Redis instances owned by a project in either the
@@ -533,7 +533,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             *,
             name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> cloud_redis.Instance:
         r"""Gets the details of a specific Redis instance.
@@ -635,7 +635,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             instance_id: Optional[str] = None,
             instance: Optional[cloud_redis.Instance] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation.Operation:
         r"""Creates a Redis instance based on the specified tier and memory
@@ -797,7 +797,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             update_mask: Optional[field_mask_pb2.FieldMask] = None,
             instance: Optional[cloud_redis.Instance] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation.Operation:
         r"""Updates the metadata and configuration of a specific
@@ -940,7 +940,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             name: Optional[str] = None,
             redis_version: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation.Operation:
         r"""Upgrades Redis instance to the newer Redis version
@@ -1069,7 +1069,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             name: Optional[str] = None,
             input_config: Optional[cloud_redis.InputConfig] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation.Operation:
         r"""Import a Redis RDB snapshot file from Cloud Storage
@@ -1208,7 +1208,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             name: Optional[str] = None,
             output_config: Optional[cloud_redis.OutputConfig] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation.Operation:
         r"""Export Redis instance data into a Redis RDB format
@@ -1343,7 +1343,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             name: Optional[str] = None,
             data_protection_mode: Optional[cloud_redis.FailoverInstanceRequest.DataProtectionMode] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation.Operation:
         r"""Initiates a failover of the master node to current
@@ -1472,7 +1472,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             *,
             name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation.Operation:
         r"""Deletes a specific Redis instance.  Instance stops

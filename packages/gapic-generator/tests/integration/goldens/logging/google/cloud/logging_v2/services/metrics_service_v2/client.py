@@ -385,7 +385,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListLogMetricsPager:
         r"""Lists logs-based metrics.
@@ -501,7 +501,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             *,
             metric_name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_metrics.LogMetric:
         r"""Gets a logs-based metric.
@@ -614,7 +614,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             parent: Optional[str] = None,
             metric: Optional[logging_metrics.LogMetric] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_metrics.LogMetric:
         r"""Creates a logs-based metric.
@@ -745,7 +745,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             metric_name: Optional[str] = None,
             metric: Optional[logging_metrics.LogMetric] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_metrics.LogMetric:
         r"""Creates or updates a logs-based metric.
@@ -874,7 +874,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             *,
             metric_name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> None:
         r"""Deletes a logs-based metric.

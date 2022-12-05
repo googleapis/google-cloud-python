@@ -119,18 +119,17 @@ py_gapic_library(
     transport = "grpc+rest",
 )
 
-# Uncomment once https://github.com/googleapis/gapic-generator-python/issues/1359 is fixed
-#py_test(
-#    name = "logging_py_gapic_test",
-#    srcs = [
-#        "logging_py_gapic_pytest.py",
-#        "logging_py_gapic_test.py",
-#    ],
-#    legacy_create_init = False,
-#    deps = [
-#        ":logging_py_gapic",
-#    ],
-#)
+py_test(
+    name = "logging_py_gapic_test",
+    srcs = [
+        "logging_py_gapic_pytest.py",
+        "logging_py_gapic_test.py",
+    ],
+    legacy_create_init = False,
+    deps = [
+        ":logging_py_gapic",
+    ],
+)
 
 py_gapic_library(
     name = "redis_py_gapic",

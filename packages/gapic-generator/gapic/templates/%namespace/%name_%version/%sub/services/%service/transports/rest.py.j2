@@ -287,7 +287,8 @@ class {{service.name}}RestTransport({{service.name}}Transport):
                     # use the credentials which are saved
                     credentials=self._credentials,
                     scopes=self._scopes,
-                    http_options=http_options)
+                    http_options=http_options,
+                    path_prefix="{{ service.client_package_version }}")
 
             self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
@@ -318,9 +319,9 @@ class {{service.name}}RestTransport({{service.name}}Transport):
 
         def __call__(self,
                 request: {{method.input.ident}}, *,
-                retry: OptionalRetry = gapic_v1.method.DEFAULT,
-                timeout: Optional[float] = None,
-                metadata: Sequence[Tuple[str, str]] = (),
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, str]]=(),
                 ){% if not method.void %} -> {% if not method.server_streaming %}{{method.output.ident}}{% else %}rest_streaming.ResponseIterator{% endif %}{% endif %}:
     {% if method.http_options and not method.client_streaming %}
             r"""Call the {{- ' ' -}}

@@ -290,9 +290,9 @@ class LoggingServiceV2RestTransport(LoggingServiceV2Transport):
 
         def __call__(self,
                 request: logging.DeleteLogRequest, *,
-                retry: OptionalRetry = gapic_v1.method.DEFAULT,
-                timeout: Optional[float] = None,
-                metadata: Sequence[Tuple[str, str]] = (),
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, str]]=(),
                 ):
             r"""Call the delete log method over HTTP.
 
@@ -370,9 +370,9 @@ class LoggingServiceV2RestTransport(LoggingServiceV2Transport):
 
         def __call__(self,
                 request: logging.ListLogEntriesRequest, *,
-                retry: OptionalRetry = gapic_v1.method.DEFAULT,
-                timeout: Optional[float] = None,
-                metadata: Sequence[Tuple[str, str]] = (),
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging.ListLogEntriesResponse:
             r"""Call the list log entries method over HTTP.
 
@@ -455,9 +455,9 @@ class LoggingServiceV2RestTransport(LoggingServiceV2Transport):
 
         def __call__(self,
                 request: logging.ListLogsRequest, *,
-                retry: OptionalRetry = gapic_v1.method.DEFAULT,
-                timeout: Optional[float] = None,
-                metadata: Sequence[Tuple[str, str]] = (),
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging.ListLogsResponse:
             r"""Call the list logs method over HTTP.
 
@@ -540,9 +540,9 @@ class LoggingServiceV2RestTransport(LoggingServiceV2Transport):
 
         def __call__(self,
                 request: logging.ListMonitoredResourceDescriptorsRequest, *,
-                retry: OptionalRetry = gapic_v1.method.DEFAULT,
-                timeout: Optional[float] = None,
-                metadata: Sequence[Tuple[str, str]] = (),
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging.ListMonitoredResourceDescriptorsResponse:
             r"""Call the list monitored resource
         descriptors method over HTTP.
@@ -613,9 +613,9 @@ class LoggingServiceV2RestTransport(LoggingServiceV2Transport):
 
         def __call__(self,
                 request: logging.TailLogEntriesRequest, *,
-                retry: OptionalRetry = gapic_v1.method.DEFAULT,
-                timeout: Optional[float] = None,
-                metadata: Sequence[Tuple[str, str]] = (),
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, str]]=(),
                 ) -> rest_streaming.ResponseIterator:
             raise NotImplementedError(
                 "Client streaming over REST is not yet defined for python client")
@@ -633,9 +633,9 @@ class LoggingServiceV2RestTransport(LoggingServiceV2Transport):
 
         def __call__(self,
                 request: logging.WriteLogEntriesRequest, *,
-                retry: OptionalRetry = gapic_v1.method.DEFAULT,
-                timeout: Optional[float] = None,
-                metadata: Sequence[Tuple[str, str]] = (),
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging.WriteLogEntriesResponse:
             r"""Call the write log entries method over HTTP.
 

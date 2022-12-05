@@ -413,7 +413,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
             *,
             name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> trigger.Trigger:
         r"""Get a single trigger.
@@ -514,7 +514,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListTriggersPager:
         r"""List triggers.
@@ -630,7 +630,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
             trigger: Optional[gce_trigger.Trigger] = None,
             trigger_id: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation.Operation:
         r"""Create a new trigger in a particular project and
@@ -775,7 +775,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
             update_mask: Optional[field_mask_pb2.FieldMask] = None,
             allow_missing: Optional[bool] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation.Operation:
         r"""Update a single trigger.
@@ -911,7 +911,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
             name: Optional[str] = None,
             allow_missing: Optional[bool] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation.Operation:
         r"""Delete a single trigger.
