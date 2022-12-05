@@ -35,6 +35,9 @@ from google.cloud.logging_v2._helpers import entry_from_resource
 from google.cloud.logging_v2.sink import Sink
 from google.cloud.logging_v2.metric import Metric
 
+from google.api_core import client_info
+from google.api_core import gapic_v1
+
 
 class _LoggingAPI(object):
     """Helper mapping logging-related APIs."""
@@ -562,6 +565,22 @@ def _log_entry_mapping_to_pb(mapping):
     return LogEntryPB(entry_pb)
 
 
+def _client_info_to_gapic(input_info):
+    """
+    Helper function to convert api_core.client_info to
+    api_core.gapic_v1.client_info subclass
+    """
+    return gapic_v1.client_info.ClientInfo(
+        python_version=input_info.python_version,
+        grpc_version=input_info.grpc_version,
+        api_core_version=input_info.api_core_version,
+        gapic_version=input_info.gapic_version,
+        client_library_version=input_info.client_library_version,
+        user_agent=input_info.user_agent,
+        rest_version=input_info.rest_version,
+    )
+
+
 def make_logging_api(client):
     """Create an instance of the Logging API adapter.
 
@@ -572,9 +591,14 @@ def make_logging_api(client):
     Returns:
         _LoggingAPI: A metrics API instance with the proper credentials.
     """
+    info = client._client_info
+    if type(info) == client_info.ClientInfo:
+        # convert into gapic-compatible subclass
+        info = _client_info_to_gapic(info)
+
     generated = LoggingServiceV2Client(
         credentials=client._credentials,
-        client_info=client._client_info,
+        client_info=info,
         client_options=client._client_options,
     )
     return _LoggingAPI(generated, client)
@@ -590,9 +614,14 @@ def make_metrics_api(client):
     Returns:
         _MetricsAPI: A metrics API instance with the proper credentials.
     """
+    info = client._client_info
+    if type(info) == client_info.ClientInfo:
+        # convert into gapic-compatible subclass
+        info = _client_info_to_gapic(info)
+
     generated = MetricsServiceV2Client(
         credentials=client._credentials,
-        client_info=client._client_info,
+        client_info=info,
         client_options=client._client_options,
     )
     return _MetricsAPI(generated, client)
@@ -608,9 +637,14 @@ def make_sinks_api(client):
     Returns:
         _SinksAPI: A metrics API instance with the proper credentials.
     """
+    info = client._client_info
+    if type(info) == client_info.ClientInfo:
+        # convert into gapic-compatible subclass
+        info = _client_info_to_gapic(info)
+
     generated = ConfigServiceV2Client(
         credentials=client._credentials,
-        client_info=client._client_info,
+        client_info=info,
         client_options=client._client_options,
     )
     return _SinksAPI(generated, client)

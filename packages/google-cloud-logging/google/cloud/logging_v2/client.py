@@ -137,6 +137,10 @@ class Client(ClientWithProject):
                 kw_args["api_endpoint"] = api_endpoint
 
         self._connection = Connection(self, **kw_args)
+        if client_info is None:
+            # if client info not passed in, use the discovered
+            # client info from _connection object
+            client_info = self._connection._client_info
 
         self._client_info = client_info
         self._client_options = client_options
