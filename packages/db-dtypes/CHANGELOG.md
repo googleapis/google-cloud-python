@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.5](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.0.4...v1.0.5) (2022-12-05)
+
+
+### Dependencies
+
+* remove upper bound on pyarrow version ([388e082](https://github.com/googleapis/python-db-dtypes-pandas/commit/388e082a47d9515a14e20ffd87705c71712087ab))
+
 ## [1.0.4](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.0.3...v1.0.4) (2022-09-19)
 
 
