@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.artifactregistry_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -639,7 +640,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDockerImagesPager:
         r"""Lists docker images.
@@ -754,7 +755,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> artifact.DockerImage:
         r"""Gets a docker image.
@@ -857,7 +858,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         request: Optional[Union[apt_artifact.ImportAptArtifactsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Imports Apt artifacts. The returned Operation will
@@ -956,7 +957,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         request: Optional[Union[yum_artifact.ImportYumArtifactsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Imports Yum (RPM) artifacts. The returned Operation
@@ -1056,7 +1057,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRepositoriesPager:
         r"""Lists repositories.
@@ -1171,7 +1172,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> repository.Repository:
         r"""Gets a repository.
@@ -1275,7 +1276,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         repository: Optional[gda_repository.Repository] = None,
         repository_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a repository. The returned Operation will
@@ -1413,7 +1414,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         repository: Optional[gda_repository.Repository] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gda_repository.Repository:
         r"""Updates a repository.
@@ -1525,7 +1526,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a repository and all of its contents. The
@@ -1651,7 +1652,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPackagesPager:
         r"""Lists packages.
@@ -1764,7 +1765,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> package.Package:
         r"""Gets a package.
@@ -1865,7 +1866,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a package and all of its versions and tags.
@@ -1990,7 +1991,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListVersionsPager:
         r"""Lists versions.
@@ -2102,7 +2103,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> version.Version:
         r"""Gets a version
@@ -2203,7 +2204,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a version and all of its content. The
@@ -2325,7 +2326,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListFilesPager:
         r"""Lists files.
@@ -2438,7 +2439,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> file.File:
         r"""Gets a file.
@@ -2537,7 +2538,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTagsPager:
         r"""Lists tags.
@@ -2649,7 +2650,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tag.Tag:
         r"""Gets a tag.
@@ -2750,7 +2751,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         tag: Optional[gda_tag.Tag] = None,
         tag_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gda_tag.Tag:
         r"""Creates a tag.
@@ -2868,7 +2869,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         tag: Optional[gda_tag.Tag] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gda_tag.Tag:
         r"""Updates a tag.
@@ -2980,7 +2981,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a tag.
@@ -3065,7 +3066,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Updates the IAM policy for a given resource.
@@ -3207,7 +3208,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM policy for a given resource.
@@ -3349,7 +3350,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests if the caller has a list of permissions on a
@@ -3433,7 +3434,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> settings.ProjectSettings:
         r"""Retrieves the Settings for the Project.
@@ -3536,7 +3537,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         project_settings: Optional[settings.ProjectSettings] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> settings.ProjectSettings:
         r"""Updates the Settings for the Project.
@@ -3653,14 +3654,9 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-artifact-registry",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ArtifactRegistryClient",)

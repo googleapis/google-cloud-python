@@ -27,8 +27,8 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
-import pkg_resources
 
+from google.cloud.artifactregistry_v1beta2 import gapic_version as package_version
 from google.cloud.artifactregistry_v1beta2.types import apt_artifact, file, package
 from google.cloud.artifactregistry_v1beta2.types import repository as gda_repository
 from google.cloud.artifactregistry_v1beta2.types import repository
@@ -37,14 +37,9 @@ from google.cloud.artifactregistry_v1beta2.types import tag
 from google.cloud.artifactregistry_v1beta2.types import tag as gda_tag
 from google.cloud.artifactregistry_v1beta2.types import version, yum_artifact
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-artifact-registry",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 class ArtifactRegistryTransport(abc.ABC):
