@@ -20,6 +20,7 @@ import json
 
 import six
 
+from google.auth import exceptions
 
 _JSON_FILE_PRIVATE_KEY = "private_key"
 _JSON_FILE_PRIVATE_KEY_ID = "private_key_id"
@@ -106,7 +107,7 @@ class FromServiceAccountMixin(object):
             ValueError: If the info is not in the expected format.
         """
         if _JSON_FILE_PRIVATE_KEY not in info:
-            raise ValueError(
+            raise exceptions.MalformedError(
                 "The private_key field was not found in the service account " "info."
             )
 

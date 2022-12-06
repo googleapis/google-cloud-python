@@ -122,7 +122,9 @@ def _decode_jwt_segment(encoded_section):
     try:
         return json.loads(section_bytes.decode("utf-8"))
     except ValueError as caught_exc:
-        new_exc = ValueError("Can't parse segment: {0}".format(section_bytes))
+        new_exc = exceptions.MalformedError(
+            "Can't parse segment: {0}".format(section_bytes)
+        )
         six.raise_from(new_exc, caught_exc)
 
 
@@ -137,13 +139,14 @@ def _unverified_decode(token):
             signature.
 
     Raises:
-        ValueError: if there are an incorrect amount of segments in the token or
-        segments of the wrong type.
+        google.auth.exceptions.MalformedError: if there are an incorrect amount of segments in the token or segments of the wrong type.
     """
     token = _helpers.to_bytes(token)
 
     if token.count(b".") != 2:
-        raise ValueError("Wrong number of segments in token: {0}".format(token))
+        raise exceptions.MalformedError(
+            "Wrong number of segments in token: {0}".format(token)
+        )
 
     encoded_header, encoded_payload, signature = token.split(b".")
     signed_section = encoded_header + b"." + encoded_payload
@@ -154,12 +157,12 @@ def _unverified_decode(token):
     payload = _decode_jwt_segment(encoded_payload)
 
     if not isinstance(header, Mapping):
-        raise ValueError(
+        raise exceptions.MalformedError(
             "Header segment should be a JSON object: {0}".format(encoded_header)
         )
 
     if not isinstance(payload, Mapping):
-        raise ValueError(
+        raise exceptions.MalformedError(
             "Payload segment should be a JSON object: {0}".format(encoded_payload)
         )
 
@@ -193,14 +196,17 @@ def _verify_iat_and_exp(payload, clock_skew_in_seconds=0):
             validation.
 
     Raises:
-        ValueError: if any checks failed.
+        google.auth.exceptions.InvalidValue: if value validation failed.
+        google.auth.exceptions.MalformedError: if schema validation failed.
     """
     now = _helpers.datetime_to_secs(_helpers.utcnow())
 
     # Make sure the iat and exp claims are present.
     for key in ("iat", "exp"):
         if key not in payload:
-            raise ValueError("Token does not contain required claim {}".format(key))
+            raise exceptions.MalformedError(
+                "Token does not contain required claim {}".format(key)
+            )
 
     # Make sure the token wasn't issued in the future.
     iat = payload["iat"]
@@ -208,7 +214,7 @@ def _verify_iat_and_exp(payload, clock_skew_in_seconds=0):
     # for clock skew.
     earliest = iat - clock_skew_in_seconds
     if now < earliest:
-        raise ValueError(
+        raise exceptions.InvalidValue(
             "Token used too early, {} < {}. Check that your computer's clock is set correctly.".format(
                 now, iat
             )
@@ -220,7 +226,7 @@ def _verify_iat_and_exp(payload, clock_skew_in_seconds=0):
     # to account for clow skew.
     latest = exp + clock_skew_in_seconds
     if latest < now:
-        raise ValueError("Token expired, {} < {}".format(latest, now))
+        raise exceptions.InvalidValue("Token expired, {} < {}".format(latest, now))
 
 
 def decode(token, certs=None, verify=True, audience=None, clock_skew_in_seconds=0):
@@ -246,7 +252,8 @@ def decode(token, certs=None, verify=True, audience=None, clock_skew_in_seconds=
         Mapping[str, str]: The deserialized JSON payload in the JWT.
 
     Raises:
-        ValueError: if any verification checks failed.
+        google.auth.exceptions.InvalidValue: if value validation failed.
+        google.auth.exceptions.MalformedError: if schema validation failed.
     """
     header, payload, signed_section, signature = _unverified_decode(token)
 
@@ -263,7 +270,7 @@ def decode(token, certs=None, verify=True, audience=None, clock_skew_in_seconds=
     except KeyError as exc:
         if key_alg in _CRYPTOGRAPHY_BASED_ALGORITHMS:
             six.raise_from(
-                ValueError(
+                exceptions.InvalidValue(
                     "The key algorithm {} requires the cryptography package "
                     "to be installed.".format(key_alg)
                 ),
@@ -271,7 +278,10 @@ def decode(token, certs=None, verify=True, audience=None, clock_skew_in_seconds=
             )
         else:
             six.raise_from(
-                ValueError("Unsupported signature algorithm {}".format(key_alg)), exc
+                exceptions.InvalidValue(
+                    "Unsupported signature algorithm {}".format(key_alg)
+                ),
+                exc,
             )
 
     # If certs is specified as a dictionary of key IDs to certificates, then
@@ -279,7 +289,9 @@ def decode(token, certs=None, verify=True, audience=None, clock_skew_in_seconds=
     if isinstance(certs, Mapping):
         if key_id:
             if key_id not in certs:
-                raise ValueError("Certificate for key id {} not found.".format(key_id))
+                raise exceptions.MalformedError(
+                    "Certificate for key id {} not found.".format(key_id)
+                )
             certs_to_check = [certs[key_id]]
         # If there's no key id in the header, check against all of the certs.
         else:
@@ -291,7 +303,7 @@ def decode(token, certs=None, verify=True, audience=None, clock_skew_in_seconds=
     if not crypt.verify_signature(
         signed_section, signature, certs_to_check, verifier_cls
     ):
-        raise ValueError("Could not verify token signature.")
+        raise exceptions.MalformedError("Could not verify token signature.")
 
     # Verify the issued at and created times in the payload.
     _verify_iat_and_exp(payload, clock_skew_in_seconds)
@@ -302,7 +314,7 @@ def decode(token, certs=None, verify=True, audience=None, clock_skew_in_seconds=
         if isinstance(audience, str):
             audience = [audience]
         if claim_audience not in audience:
-            raise ValueError(
+            raise exceptions.InvalidValue(
                 "Token has wrong audience {}, expected one of {}".format(
                     claim_audience, audience
                 )
@@ -414,7 +426,7 @@ class Credentials(
             google.auth.jwt.Credentials: The constructed credentials.
 
         Raises:
-            ValueError: If the info is not in the expected format.
+            google.auth.exceptions.MalformedError: If the info is not in the expected format.
         """
         kwargs.setdefault("subject", info["client_email"])
         kwargs.setdefault("issuer", info["client_email"])
@@ -433,7 +445,7 @@ class Credentials(
             google.auth.jwt.Credentials: The constructed credentials.
 
         Raises:
-            ValueError: If the info is not in the expected format.
+            google.auth.exceptions.MalformedError: If the info is not in the expected format.
         """
         signer = _service_account_info.from_dict(info, require=["client_email"])
         return cls._from_signer_and_info(signer, info, **kwargs)
@@ -651,7 +663,7 @@ class OnDemandCredentials(
             google.auth.jwt.OnDemandCredentials: The constructed credentials.
 
         Raises:
-            ValueError: If the info is not in the expected format.
+            google.auth.exceptions.MalformedError: If the info is not in the expected format.
         """
         kwargs.setdefault("subject", info["client_email"])
         kwargs.setdefault("issuer", info["client_email"])
@@ -670,7 +682,7 @@ class OnDemandCredentials(
             google.auth.jwt.OnDemandCredentials: The constructed credentials.
 
         Raises:
-            ValueError: If the info is not in the expected format.
+            google.auth.exceptions.MalformedError: If the info is not in the expected format.
         """
         signer = _service_account_info.from_dict(info, require=["client_email"])
         return cls._from_signer_and_info(signer, info, **kwargs)

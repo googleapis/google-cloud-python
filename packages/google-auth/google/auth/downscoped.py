@@ -54,6 +54,7 @@ import six
 
 from google.auth import _helpers
 from google.auth import credentials
+from google.auth import exceptions
 from google.oauth2 import sts
 
 # The maximum number of access boundary rules a Credential Access Boundary can
@@ -86,8 +87,8 @@ class CredentialAccessBoundary(object):
                 access boundary rules limiting the access that a downscoped credential
                 will have.
         Raises:
-            TypeError: If any of the rules are not a valid type.
-            ValueError: If the provided rules exceed the maximum allowed.
+            InvalidType: If any of the rules are not a valid type.
+            InvalidValue: If the provided rules exceed the maximum allowed.
         """
         self.rules = rules
 
@@ -113,18 +114,18 @@ class CredentialAccessBoundary(object):
                 access boundary rules limiting the access that a downscoped credential
                 will have.
         Raises:
-            TypeError: If any of the rules are not a valid type.
-            ValueError: If the provided rules exceed the maximum allowed.
+            InvalidType: If any of the rules are not a valid type.
+            InvalidValue: If the provided rules exceed the maximum allowed.
         """
         if len(value) > _MAX_ACCESS_BOUNDARY_RULES_COUNT:
-            raise ValueError(
+            raise exceptions.InvalidValue(
                 "Credential access boundary rules can have a maximum of {} rules.".format(
                     _MAX_ACCESS_BOUNDARY_RULES_COUNT
                 )
             )
         for access_boundary_rule in value:
             if not isinstance(access_boundary_rule, AccessBoundaryRule):
-                raise TypeError(
+                raise exceptions.InvalidType(
                     "List of rules provided do not contain a valid 'google.auth.downscoped.AccessBoundaryRule'."
                 )
         # Make a copy of the original list.
@@ -138,17 +139,17 @@ class CredentialAccessBoundary(object):
                 limiting the access that a downscoped credential will have, to be added to
                 the existing rules.
         Raises:
-            TypeError: If any of the rules are not a valid type.
-            ValueError: If the provided rules exceed the maximum allowed.
+            InvalidType: If any of the rules are not a valid type.
+            InvalidValue: If the provided rules exceed the maximum allowed.
         """
         if len(self.rules) == _MAX_ACCESS_BOUNDARY_RULES_COUNT:
-            raise ValueError(
+            raise exceptions.InvalidValue(
                 "Credential access boundary rules can have a maximum of {} rules.".format(
                     _MAX_ACCESS_BOUNDARY_RULES_COUNT
                 )
             )
         if not isinstance(rule, AccessBoundaryRule):
-            raise TypeError(
+            raise exceptions.InvalidType(
                 "The provided rule does not contain a valid 'google.auth.downscoped.AccessBoundaryRule'."
             )
         self._rules.append(rule)
@@ -197,8 +198,8 @@ class AccessBoundaryRule(object):
                 specific Cloud Storage objects.
 
         Raises:
-            TypeError: If any of the parameters are not of the expected types.
-            ValueError: If any of the parameters are not of the expected values.
+            InvalidType: If any of the parameters are not of the expected types.
+            InvalidValue: If any of the parameters are not of the expected values.
         """
         self.available_resource = available_resource
         self.available_permissions = available_permissions
@@ -221,10 +222,12 @@ class AccessBoundaryRule(object):
             value (str): The updated value of the available resource.
 
         Raises:
-            TypeError: If the value is not a string.
+            google.auth.exceptions.InvalidType: If the value is not a string.
         """
         if not isinstance(value, six.string_types):
-            raise TypeError("The provided available_resource is not a string.")
+            raise exceptions.InvalidType(
+                "The provided available_resource is not a string."
+            )
         self._available_resource = value
 
     @property
@@ -245,16 +248,16 @@ class AccessBoundaryRule(object):
             value (Sequence[str]): The updated value of the available permissions.
 
         Raises:
-            TypeError: If the value is not a list of strings.
-            ValueError: If the value is not valid.
+            InvalidType: If the value is not a list of strings.
+            InvalidValue: If the value is not valid.
         """
         for available_permission in value:
             if not isinstance(available_permission, six.string_types):
-                raise TypeError(
+                raise exceptions.InvalidType(
                     "Provided available_permissions are not a list of strings."
                 )
             if available_permission.find("inRole:") != 0:
-                raise ValueError(
+                raise exceptions.InvalidValue(
                     "available_permissions must be prefixed with 'inRole:'."
                 )
         # Make a copy of the original list.
@@ -279,11 +282,11 @@ class AccessBoundaryRule(object):
                 value of the availability condition.
 
         Raises:
-            TypeError: If the value is not of type google.auth.downscoped.AvailabilityCondition
+            google.auth.exceptions.InvalidType: If the value is not of type google.auth.downscoped.AvailabilityCondition
                 or None.
         """
         if not isinstance(value, AvailabilityCondition) and value is not None:
-            raise TypeError(
+            raise exceptions.InvalidType(
                 "The provided availability_condition is not a 'google.auth.downscoped.AvailabilityCondition' or None."
             )
         self._availability_condition = value
@@ -326,8 +329,8 @@ class AvailabilityCondition(object):
             description (Optional[str]): Optional details about the purpose of the condition.
 
         Raises:
-            TypeError: If any of the parameters are not of the expected types.
-            ValueError: If any of the parameters are not of the expected values.
+            InvalidType: If any of the parameters are not of the expected types.
+            InvalidValue: If any of the parameters are not of the expected values.
         """
         self.expression = expression
         self.title = title
@@ -350,10 +353,10 @@ class AvailabilityCondition(object):
             value (str): The updated value of the condition expression.
 
         Raises:
-            TypeError: If the value is not of type string.
+            google.auth.exceptions.InvalidType: If the value is not of type string.
         """
         if not isinstance(value, six.string_types):
-            raise TypeError("The provided expression is not a string.")
+            raise exceptions.InvalidType("The provided expression is not a string.")
         self._expression = value
 
     @property
@@ -373,10 +376,10 @@ class AvailabilityCondition(object):
             value (Optional[str]): The updated value of the title.
 
         Raises:
-            TypeError: If the value is not of type string or None.
+            google.auth.exceptions.InvalidType: If the value is not of type string or None.
         """
         if not isinstance(value, six.string_types) and value is not None:
-            raise TypeError("The provided title is not a string or None.")
+            raise exceptions.InvalidType("The provided title is not a string or None.")
         self._title = value
 
     @property
@@ -396,10 +399,12 @@ class AvailabilityCondition(object):
             value (Optional[str]): The updated value of the description.
 
         Raises:
-            TypeError: If the value is not of type string or None.
+            google.auth.exceptions.InvalidType: If the value is not of type string or None.
         """
         if not isinstance(value, six.string_types) and value is not None:
-            raise TypeError("The provided description is not a string or None.")
+            raise exceptions.InvalidType(
+                "The provided description is not a string or None."
+            )
         self._description = value
 
     def to_json(self):

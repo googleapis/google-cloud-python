@@ -221,7 +221,7 @@ class IDTokenCredentials(
 
         if use_metadata_identity_endpoint:
             if token_uri or additional_claims or service_account_email or signer:
-                raise ValueError(
+                raise exceptions.MalformedError(
                     "If use_metadata_identity_endpoint is set, token_uri, "
                     "additional_claims, service_account_email, signer arguments"
                     " must not be set"
@@ -312,7 +312,7 @@ class IDTokenCredentials(
         # since the signer is already instantiated,
         # the request is not needed
         if self._use_metadata_identity_endpoint:
-            raise ValueError(
+            raise exceptions.MalformedError(
                 "If use_metadata_identity_endpoint is set, token_uri" " must not be set"
             )
         else:
@@ -423,7 +423,7 @@ class IDTokenCredentials(
                 Signer is not available if metadata identity endpoint is used.
         """
         if self._use_metadata_identity_endpoint:
-            raise ValueError(
+            raise exceptions.InvalidOperation(
                 "Signer is not available if metadata identity endpoint is used"
             )
         return self._signer.sign(message)

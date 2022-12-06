@@ -122,11 +122,11 @@ class Credentials(external_account.Credentials):
             # environment_id is only supported in AWS or dedicated future external
             # account credentials.
             if "environment_id" in credential_source:
-                raise ValueError(
+                raise exceptions.MalformedError(
                     "Invalid Identity Pool credential_source field 'environment_id'"
                 )
             if self._credential_source_format_type not in ["text", "json"]:
-                raise ValueError(
+                raise exceptions.MalformedError(
                     "Invalid credential_source format '{}'".format(
                         self._credential_source_format_type
                     )
@@ -137,18 +137,18 @@ class Credentials(external_account.Credentials):
                     "subject_token_field_name"
                 )
                 if self._credential_source_field_name is None:
-                    raise ValueError(
+                    raise exceptions.MalformedError(
                         "Missing subject_token_field_name for JSON credential_source format"
                     )
             else:
                 self._credential_source_field_name = None
 
         if self._credential_source_file and self._credential_source_url:
-            raise ValueError(
+            raise exceptions.MalformedError(
                 "Ambiguous credential_source. 'file' is mutually exclusive with 'url'."
             )
         if not self._credential_source_file and not self._credential_source_url:
-            raise ValueError(
+            raise exceptions.MalformedError(
                 "Missing credential_source. A 'file' or 'url' must be provided."
             )
 

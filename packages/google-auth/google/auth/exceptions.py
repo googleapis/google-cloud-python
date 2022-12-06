@@ -74,3 +74,27 @@ class ReauthFailError(RefreshError):
 
 class ReauthSamlChallengeFailError(ReauthFailError):
     """An exception for SAML reauth challenge failures."""
+
+
+class MalformedError(DefaultCredentialsError, ValueError):
+    """An exception for malformed data."""
+
+
+class InvalidResource(DefaultCredentialsError, ValueError):
+    """An exception for URL error."""
+
+
+class InvalidOperation(DefaultCredentialsError, ValueError):
+    """An exception for invalid operation."""
+
+
+class InvalidValue(DefaultCredentialsError, ValueError):
+    """Used to wrap general ValueError of python."""
+
+
+class InvalidType(DefaultCredentialsError, TypeError):
+    """Used to wrap general TypeError of python."""
+
+
+class OSError(DefaultCredentialsError, EnvironmentError):
+    """Used to wrap EnvironmentError(OSError after python3.3)."""

@@ -29,6 +29,7 @@ import rsa  # type: ignore
 import six
 
 from google.auth import _helpers
+from google.auth import exceptions
 from google.auth.crypt import base
 
 _POW2 = (128, 64, 32, 16, 8, 4, 2, 1)
@@ -101,7 +102,7 @@ class RSAVerifier(base.Verifier):
             der = rsa.pem.load_pem(public_key, "CERTIFICATE")
             asn1_cert, remaining = decoder.decode(der, asn1Spec=Certificate())
             if remaining != b"":
-                raise ValueError("Unused bytes", remaining)
+                raise exceptions.InvalidValue("Unused bytes", remaining)
 
             cert_info = asn1_cert["tbsCertificate"]["subjectPublicKeyInfo"]
             key_bytes = _bit_list_to_bytes(cert_info["subjectPublicKey"])
@@ -162,12 +163,12 @@ class RSASigner(base.Signer, base.FromServiceAccountMixin):
         elif marker_id == 1:
             key_info, remaining = decoder.decode(key_bytes, asn1Spec=_PKCS8_SPEC)
             if remaining != b"":
-                raise ValueError("Unused bytes", remaining)
+                raise exceptions.InvalidValue("Unused bytes", remaining)
             private_key_info = key_info.getComponentByName("privateKey")
             private_key = rsa.key.PrivateKey.load_pkcs1(
                 private_key_info.asOctets(), format="DER"
             )
         else:
-            raise ValueError("No key could be detected.")
+            raise exceptions.MalformedError("No key could be detected.")
 
         return cls(private_key, key_id=key_id)

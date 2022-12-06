@@ -151,7 +151,7 @@ class Credentials(
 
         if not self.is_workforce_pool and self._workforce_pool_user_project:
             # Workload identity pools do not support workforce pool user projects.
-            raise ValueError(
+            raise exceptions.InvalidValue(
                 "workforce_pool_user_project should not be set for non-workforce pool "
                 "credentials"
             )
@@ -445,7 +445,9 @@ class Credentials(
         ]
 
         if not Credentials.is_valid_url(_TOKEN_URL_PATTERNS, token_url):
-            raise ValueError("The provided {} URL is invalid.".format(url_type))
+            raise exceptions.InvalidResource(
+                "The provided {} URL is invalid.".format(url_type)
+            )
 
     @staticmethod
     def validate_service_account_impersonation_url(url):
@@ -460,7 +462,7 @@ class Credentials(
         if not Credentials.is_valid_url(
             _SERVICE_ACCOUNT_IMPERSONATION_URL_PATTERNS, url
         ):
-            raise ValueError(
+            raise exceptions.InvalidResource(
                 "The provided service account impersonation URL is invalid."
             )
 
@@ -498,7 +500,7 @@ class Credentials(
                 credentials.
 
         Raises:
-            ValueError: For invalid parameters.
+            InvalidValue: For invalid parameters.
         """
         return cls(
             audience=info.get("audience"),

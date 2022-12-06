@@ -434,7 +434,7 @@ def _get_impersonated_service_account_credentials(filename, info, scopes):
                 filename, source_credentials_info
             )
         else:
-            raise ValueError(
+            raise exceptions.InvalidType(
                 "source credential of type {} is not supported.".format(
                     source_credentials_type
                 )
@@ -443,7 +443,7 @@ def _get_impersonated_service_account_credentials(filename, info, scopes):
         start_index = impersonation_url.rfind("/")
         end_index = impersonation_url.find(":generateAccessToken")
         if start_index == -1 or end_index == -1 or start_index > end_index:
-            raise ValueError(
+            raise exceptions.InvalidValue(
                 "Cannot extract target principal from {}".format(impersonation_url)
             )
         target_principal = impersonation_url[start_index + 1 : end_index]

@@ -118,7 +118,7 @@ class Credentials(
         self._scopes = scopes
 
         if not self.valid and not self.can_refresh:
-            raise ValueError(
+            raise exceptions.InvalidOperation(
                 "Token should be created with fields to make it valid (`token` and "
                 "`expiry`), or fields to allow it to refresh (`refresh_token`, "
                 "`token_url`, `client_id`, `client_secret`)."

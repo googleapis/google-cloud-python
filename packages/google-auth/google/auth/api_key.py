@@ -20,6 +20,7 @@ This module provides authentication using the `API key`_.
 
 from google.auth import _helpers
 from google.auth import credentials
+from google.auth import exceptions
 
 
 class Credentials(credentials.Credentials):
@@ -36,7 +37,7 @@ class Credentials(credentials.Credentials):
         """
         super(Credentials, self).__init__()
         if not token:
-            raise ValueError("Token must be a non-empty API key string")
+            raise exceptions.InvalidValue("Token must be a non-empty API key string")
         self.token = token
 
     @property

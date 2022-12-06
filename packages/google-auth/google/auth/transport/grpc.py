@@ -255,7 +255,7 @@ def secure_authorized_channel(
     google_auth_credentials = grpc.metadata_call_credentials(metadata_plugin)
 
     if ssl_credentials and client_cert_callback:
-        raise ValueError(
+        raise exceptions.MalformedError(
             "Received both ssl_credentials and client_cert_callback; "
             "these are mutually exclusive."
         )

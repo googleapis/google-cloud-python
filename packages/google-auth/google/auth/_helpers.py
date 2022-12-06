@@ -22,6 +22,7 @@ import sys
 import six
 from six.moves import urllib
 
+from google.auth import exceptions
 
 # Token server doesn't provide a new a token when doing refresh unless the
 # token is expiring within 30 seconds, so refresh threshold should not be
@@ -51,10 +52,10 @@ def copy_docstring(source_class):
             Callable: the same method passed in with an updated docstring.
 
         Raises:
-            ValueError: if the method already has a docstring.
+            google.auth.exceptions.InvalidOperation: if the method already has a docstring.
         """
         if method.__doc__:
-            raise ValueError("Method already has a docstring.")
+            raise exceptions.InvalidOperation("Method already has a docstring.")
 
         source_method = getattr(source_class, method.__name__)
         method.__doc__ = source_method.__doc__
@@ -101,13 +102,15 @@ def to_bytes(value, encoding="utf-8"):
             passed in if it started out as bytes.
 
     Raises:
-        ValueError: If the value could not be converted to bytes.
+        google.auth.exceptions.InvalidValue: If the value could not be converted to bytes.
     """
     result = value.encode(encoding) if isinstance(value, six.text_type) else value
     if isinstance(result, six.binary_type):
         return result
     else:
-        raise ValueError("{0!r} could not be converted to bytes".format(value))
+        raise exceptions.InvalidValue(
+            "{0!r} could not be converted to bytes".format(value)
+        )
 
 
 def from_bytes(value):
@@ -121,13 +124,15 @@ def from_bytes(value):
             if it started out as unicode.
 
     Raises:
-        ValueError: If the value could not be converted to unicode.
+        google.auth.exceptions.InvalidValue: If the value could not be converted to unicode.
     """
     result = value.decode("utf-8") if isinstance(value, six.binary_type) else value
     if isinstance(result, six.text_type):
         return result
     else:
-        raise ValueError("{0!r} could not be converted to unicode".format(value))
+        raise exceptions.InvalidValue(
+            "{0!r} could not be converted to unicode".format(value)
+        )
 
 
 def update_query(url, params, remove=None):

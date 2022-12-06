@@ -123,7 +123,7 @@ class RequestSigner(object):
         )
         # Validate provided URL.
         if not uri.hostname or uri.scheme != "https":
-            raise ValueError("Invalid AWS service URL")
+            raise exceptions.InvalidResource("Invalid AWS service URL")
 
         header_map = _generate_authentication_header_map(
             host=uri.hostname,
@@ -408,9 +408,11 @@ class Credentials(external_account.Credentials):
             env_id, env_version = (None, None)
 
         if env_id != "aws" or self._cred_verification_url is None:
-            raise ValueError("No valid AWS 'credential_source' provided")
+            raise exceptions.InvalidResource(
+                "No valid AWS 'credential_source' provided"
+            )
         elif int(env_version or "") != 1:
-            raise ValueError(
+            raise exceptions.InvalidValue(
                 "aws version '{}' is not supported in the current build.".format(
                     env_version
                 )
@@ -428,7 +430,7 @@ class Credentials(external_account.Credentials):
         if url_string:
             url = urlparse(url_string)
             if url.hostname != "169.254.169.254" and url.hostname != "fd00:ec2::254":
-                raise ValueError(
+                raise exceptions.InvalidResource(
                     "Invalid hostname '{}' for '{}'".format(url.hostname, name_of_data)
                 )
 

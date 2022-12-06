@@ -20,6 +20,7 @@ import json
 import six
 
 from google.auth import crypt
+from google.auth import exceptions
 
 
 def from_dict(data, require=None, use_rsa_signer=True):
@@ -40,7 +41,7 @@ def from_dict(data, require=None, use_rsa_signer=True):
             service account file.
 
     Raises:
-        ValueError: if the data was in the wrong format, or if one of the
+        MalformedError: if the data was in the wrong format, or if one of the
             required keys is missing.
     """
     keys_needed = set(require if require is not None else [])
@@ -48,7 +49,7 @@ def from_dict(data, require=None, use_rsa_signer=True):
     missing = keys_needed.difference(six.iterkeys(data))
 
     if missing:
-        raise ValueError(
+        raise exceptions.MalformedError(
             "Service account info was not in the expected format, missing "
             "fields {}.".format(", ".join(missing))
         )

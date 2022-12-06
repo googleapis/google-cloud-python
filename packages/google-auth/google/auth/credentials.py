@@ -21,6 +21,7 @@ import os
 import six
 
 from google.auth import _helpers, environment_vars
+from google.auth import exceptions
 
 
 @six.add_metaclass(abc.ABCMeta)
@@ -190,9 +191,9 @@ class AnonymousCredentials(Credentials):
         return True
 
     def refresh(self, request):
-        """Raises :class:`ValueError``, anonymous credentials cannot be
+        """Raises :class:``InvalidOperation``, anonymous credentials cannot be
         refreshed."""
-        raise ValueError("Anonymous credentials cannot be refreshed.")
+        raise exceptions.InvalidOperation("Anonymous credentials cannot be refreshed.")
 
     def apply(self, headers, token=None):
         """Anonymous credentials do nothing to the request.
@@ -200,10 +201,10 @@ class AnonymousCredentials(Credentials):
         The optional ``token`` argument is not supported.
 
         Raises:
-            ValueError: If a token was specified.
+            google.auth.exceptions.InvalidValue: If a token was specified.
         """
         if token is not None:
-            raise ValueError("Anonymous credentials don't support tokens.")
+            raise exceptions.InvalidValue("Anonymous credentials don't support tokens.")
 
     def before_request(self, request, method, url, headers):
         """Anonymous credentials do nothing to the request."""
