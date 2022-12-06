@@ -455,6 +455,7 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 credentials=self._credentials,
                 scopes=self._scopes,
                 http_options=http_options,
+                path_prefix="v1beta",
             )
 
             self._operations_client = operations_v1.AbstractOperationsClient(

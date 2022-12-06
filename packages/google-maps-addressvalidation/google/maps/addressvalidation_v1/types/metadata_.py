@@ -28,8 +28,6 @@ __protobuf__ = proto.module(
 class AddressMetadata(proto.Message):
     r"""The metadata for the address.
 
-    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
-
     Attributes:
         business (bool):
             Indicates that this is the address of a
