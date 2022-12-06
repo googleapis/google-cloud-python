@@ -46,7 +46,6 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.documentai.v1 import document_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.protobuf import timestamp_pb2  # type: ignore

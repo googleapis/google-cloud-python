@@ -559,6 +559,8 @@ class DeletePrivateCloudRequest(proto.Message):
     r"""Request message for
     [VmwareEngine.DeletePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.DeletePrivateCloud]
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Required. The resource name of the private cloud to delete.
