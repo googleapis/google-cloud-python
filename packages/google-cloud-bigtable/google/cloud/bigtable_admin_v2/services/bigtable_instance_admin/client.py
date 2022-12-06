@@ -28,7 +28,8 @@ from typing import (
     Union,
     cast,
 )
-import pkg_resources
+
+from google.cloud.bigtable_admin_v2 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -574,7 +575,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         instance: Optional[gba_instance.Instance] = None,
         clusters: Optional[MutableMapping[str, gba_instance.Cluster]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Create an instance within a project.
@@ -704,7 +705,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instance.Instance:
         r"""Gets information about an instance.
@@ -786,7 +787,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigtable_instance_admin.ListInstancesResponse:
         r"""Lists information about instances in a project.
@@ -862,7 +863,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         request: Optional[Union[instance.Instance, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instance.Instance:
         r"""Updates an instance within a project. This method
@@ -931,7 +932,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         instance: Optional[gba_instance.Instance] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Partially updates an instance within a project. This
@@ -1038,7 +1039,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Delete an instance from a project.
@@ -1110,7 +1111,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         cluster_id: Optional[str] = None,
         cluster: Optional[instance.Cluster] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a cluster within an instance.
@@ -1227,7 +1228,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instance.Cluster:
         r"""Gets information about a cluster.
@@ -1308,7 +1309,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigtable_instance_admin.ListClustersResponse:
         r"""Lists information about clusters in an instance.
@@ -1386,7 +1387,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         request: Optional[Union[instance.Cluster, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates a cluster within an instance.
@@ -1463,7 +1464,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         cluster: Optional[instance.Cluster] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Partially updates a cluster within a project. This method is the
@@ -1577,7 +1578,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a cluster from an instance.
@@ -1649,7 +1650,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         app_profile_id: Optional[str] = None,
         app_profile: Optional[instance.AppProfile] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instance.AppProfile:
         r"""Creates an app profile within an instance.
@@ -1749,7 +1750,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instance.AppProfile:
         r"""Gets information about an app profile.
@@ -1829,7 +1830,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAppProfilesPager:
         r"""Lists information about app profiles in an instance.
@@ -1924,7 +1925,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         app_profile: Optional[instance.AppProfile] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates an app profile within an instance.
@@ -2024,7 +2025,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an app profile from an instance.
@@ -2092,7 +2093,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         *,
         resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the access control policy for an instance
@@ -2230,7 +2231,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         *,
         resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the access control policy on an instance
@@ -2368,7 +2369,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         resource: Optional[str] = None,
         permissions: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns permissions that the caller has on the
@@ -2457,7 +2458,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListHotTabletsPager:
         r"""Lists hot tablets in a cluster, within the time range
@@ -2555,14 +2556,9 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-bigtable-admin",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("BigtableInstanceAdminClient",)

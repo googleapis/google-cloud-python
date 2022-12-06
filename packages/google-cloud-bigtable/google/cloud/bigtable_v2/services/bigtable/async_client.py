@@ -29,7 +29,8 @@ from typing import (
     Type,
     Union,
 )
-import pkg_resources
+
+from google.cloud.bigtable_v2 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -218,7 +219,7 @@ class BigtableAsyncClient:
         table_name: Optional[str] = None,
         app_profile_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[bigtable.ReadRowsResponse]]:
         r"""Streams back the contents of all requested rows in
@@ -312,7 +313,7 @@ class BigtableAsyncClient:
         table_name: Optional[str] = None,
         app_profile_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[bigtable.SampleRowKeysResponse]]:
         r"""Returns a sample of row keys in the table. The
@@ -409,7 +410,7 @@ class BigtableAsyncClient:
         mutations: Optional[MutableSequence[data.Mutation]] = None,
         app_profile_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigtable.MutateRowResponse:
         r"""Mutates a row atomically. Cells already present in the row are
@@ -534,7 +535,7 @@ class BigtableAsyncClient:
         entries: Optional[MutableSequence[bigtable.MutateRowsRequest.Entry]] = None,
         app_profile_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[bigtable.MutateRowsResponse]]:
         r"""Mutates multiple rows in a batch. Each individual row
@@ -647,7 +648,7 @@ class BigtableAsyncClient:
         false_mutations: Optional[MutableSequence[data.Mutation]] = None,
         app_profile_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigtable.CheckAndMutateRowResponse:
         r"""Mutates a row atomically based on the output of a
@@ -797,7 +798,7 @@ class BigtableAsyncClient:
         name: Optional[str] = None,
         app_profile_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigtable.PingAndWarmResponse:
         r"""Warm up associated instance metadata for this
@@ -891,7 +892,7 @@ class BigtableAsyncClient:
         rules: Optional[MutableSequence[data.ReadModifyWriteRule]] = None,
         app_profile_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigtable.ReadModifyWriteRowResponse:
         r"""Modifies a row atomically on the server. The method
@@ -1012,14 +1013,9 @@ class BigtableAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-bigtable",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("BigtableAsyncClient",)

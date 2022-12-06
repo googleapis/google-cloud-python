@@ -6,7 +6,9 @@
             "release-type": "python",
             "extra-files": [
                 "google/cloud/bigtable/gapic_version.py",
-                "google/cloud/bigtable_admin/gapic_version.py"
+                "google/cloud/bigtable_admin/gapic_version.py",
+                "google/cloud/bigtable_v2/gapic_version.py",
+                "google/cloud/bigtable_admin_v2/gapic_version.py"
             ]
         }
     },

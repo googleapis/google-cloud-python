@@ -15,7 +15,8 @@
 #
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
-import pkg_resources
+
+from google.cloud.bigtable_v2 import gapic_version as package_version
 
 import google.auth  # type: ignore
 import google.api_core
@@ -27,14 +28,9 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.bigtable_v2.types import bigtable
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-bigtable",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 class BigtableTransport(abc.ABC):
