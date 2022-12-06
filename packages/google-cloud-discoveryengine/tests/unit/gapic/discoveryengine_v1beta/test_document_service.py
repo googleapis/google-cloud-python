@@ -2383,7 +2383,7 @@ def test_get_document_rest_required_fields(
 
             response = client.get_document(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2662,7 +2662,7 @@ def test_list_documents_rest_required_fields(
 
             response = client.list_documents(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3039,6 +3039,7 @@ def test_create_document_rest_required_fields(
                     "documentId",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -3371,7 +3372,7 @@ def test_update_document_rest_required_fields(
 
             response = client.update_document(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3589,7 +3590,7 @@ def test_delete_document_rest_required_fields(
 
             response = client.delete_document(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3849,7 +3850,7 @@ def test_import_documents_rest_required_fields(
 
             response = client.import_documents(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
