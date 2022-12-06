@@ -119,7 +119,7 @@ def blacken(session):
     run_black(session)
 
 
-@nox.session(py=DEFAULT_INTERPRETER)
+@nox.session(py="3.9")
 def docs(session):
     """Build the docs for this library."""
 
@@ -143,7 +143,7 @@ def docs(session):
     )
 
 
-@nox.session(py=DEFAULT_INTERPRETER)
+@nox.session(py="3.9")
 def doctest(session):
     # Install all dependencies.
     session.install("Sphinx==4.0.1")
