@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [2.0.0](https://github.com/googleapis/python-ndb/compare/v1.12.0...v2.0.0) (2022-12-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* **dependencies:** Upgrade to google-cloud-datastore >= 2.7.2
+
+### Features
+
+* **dependencies:** Upgrade to google-cloud-datastore &gt;= 2.7.2 ([12bbcb5](https://github.com/googleapis/python-ndb/commit/12bbcb548c47803406246d6e3cf55cd947b1500a))
+
+
+### Bug Fixes
+
+* Correct access to SerializeToString, CopyFrom, and MergeFromString ([12bbcb5](https://github.com/googleapis/python-ndb/commit/12bbcb548c47803406246d6e3cf55cd947b1500a))
+* Fix enum namespaces ([12bbcb5](https://github.com/googleapis/python-ndb/commit/12bbcb548c47803406246d6e3cf55cd947b1500a))
+* Update API capitalization/casing ([12bbcb5](https://github.com/googleapis/python-ndb/commit/12bbcb548c47803406246d6e3cf55cd947b1500a))
+* Update datastore stub creation ([12bbcb5](https://github.com/googleapis/python-ndb/commit/12bbcb548c47803406246d6e3cf55cd947b1500a))
+* Update module imports ([12bbcb5](https://github.com/googleapis/python-ndb/commit/12bbcb548c47803406246d6e3cf55cd947b1500a))
+
 ## [1.12.0](https://github.com/googleapis/python-ndb/compare/v1.11.2...v1.12.0) (2022-11-29)
 
 
