@@ -2082,7 +2082,7 @@ def test_list_app_gateways_rest_required_fields(
 
             response = client.list_app_gateways(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2433,7 +2433,7 @@ def test_get_app_gateway_rest_required_fields(
 
             response = client.get_app_gateway(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2719,7 +2719,7 @@ def test_create_app_gateway_rest_required_fields(
 
             response = client.create_app_gateway(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3020,7 +3020,7 @@ def test_delete_app_gateway_rest_required_fields(
 
             response = client.delete_app_gateway(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
