@@ -1,6 +1,21 @@
 # Changelog
 
 
+## [1.7.0](https://github.com/googleapis/gapic-generator-python/compare/v1.6.2...v1.7.0) (2022-12-06)
+
+
+### Features
+
+* Add snippetgen config language and testing resource files ([#1504](https://github.com/googleapis/gapic-generator-python/issues/1504)) ([5b98659](https://github.com/googleapis/gapic-generator-python/commit/5b98659816b38ab5f376a5748b6275f1c2667aaf))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core &gt;=1.34.0, >=2.11.0 ([6de9e28](https://github.com/googleapis/gapic-generator-python/commit/6de9e2881171d873ab3d76bfa386667ae745f0d9))
+* Drop usage of pkg_resources ([#1471](https://github.com/googleapis/gapic-generator-python/issues/1471)) ([a50c290](https://github.com/googleapis/gapic-generator-python/commit/a50c2909b5eb14c16acaf16057944688891eb7af))
+* Fix timeout default values ([6de9e28](https://github.com/googleapis/gapic-generator-python/commit/6de9e2881171d873ab3d76bfa386667ae745f0d9))
+* Snippetgen should call await on the operation coroutine before calling result ([#1495](https://github.com/googleapis/gapic-generator-python/issues/1495)) ([69a49c6](https://github.com/googleapis/gapic-generator-python/commit/69a49c6b9e8a45c87e8f2a9d4b25f00b9a4b01be))
+
 ## [1.6.2](https://github.com/googleapis/gapic-generator-python/compare/v1.6.1...v1.6.2) (2022-11-15)
 
 
