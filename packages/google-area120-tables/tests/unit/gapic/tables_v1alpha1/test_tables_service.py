@@ -3636,7 +3636,7 @@ def test_get_table_rest_required_fields(request_type=tables.GetTableRequest):
 
             response = client.get_table(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4077,7 +4077,7 @@ def test_get_workspace_rest_required_fields(request_type=tables.GetWorkspaceRequ
 
             response = client.get_workspace(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4518,7 +4518,7 @@ def test_get_row_rest_required_fields(request_type=tables.GetRowRequest):
 
             response = client.get_row(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4787,7 +4787,7 @@ def test_list_rows_rest_required_fields(request_type=tables.ListRowsRequest):
 
             response = client.list_rows(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5118,7 +5118,7 @@ def test_create_row_rest_required_fields(request_type=tables.CreateRowRequest):
 
             response = client.create_row(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5389,7 +5389,7 @@ def test_batch_create_rows_rest_required_fields(
 
             response = client.batch_create_rows(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5609,7 +5609,7 @@ def test_update_row_rest_required_fields(request_type=tables.UpdateRowRequest):
 
             response = client.update_row(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5880,7 +5880,7 @@ def test_batch_update_rows_rest_required_fields(
 
             response = client.batch_update_rows(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -6090,7 +6090,7 @@ def test_delete_row_rest_required_fields(request_type=tables.DeleteRowRequest):
 
             response = client.delete_row(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -6344,7 +6344,7 @@ def test_batch_delete_rows_rest_required_fields(
 
             response = client.batch_delete_rows(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
