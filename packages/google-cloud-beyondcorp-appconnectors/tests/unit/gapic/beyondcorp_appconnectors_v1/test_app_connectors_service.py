@@ -2594,7 +2594,7 @@ def test_list_app_connectors_rest_required_fields(
 
             response = client.list_app_connectors(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2941,7 +2941,7 @@ def test_get_app_connector_rest_required_fields(
 
             response = client.get_app_connector(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3234,7 +3234,7 @@ def test_create_app_connector_rest_required_fields(
 
             response = client.create_app_connector(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3564,7 +3564,7 @@ def test_update_app_connector_rest_required_fields(
 
             response = client.update_app_connector(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3879,7 +3879,7 @@ def test_delete_app_connector_rest_required_fields(
 
             response = client.delete_app_connector(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4156,7 +4156,7 @@ def test_report_status_rest_required_fields(
 
             response = client.report_status(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
