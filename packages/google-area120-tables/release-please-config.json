@@ -5,6 +5,7 @@
       "release-type": "python",
       "extra-files": [
         "google/area120/tables/gapic_version.py",
+        "google/area120/tables_v1alpha1/gapic_version.py",
         {
           "type": "json",
           "path": "samples/generated_samples/snippet_metadata_google.area120.tables.v1alpha1.json",
