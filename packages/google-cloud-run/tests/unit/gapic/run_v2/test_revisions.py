@@ -1649,7 +1649,7 @@ def test_get_revision_rest_required_fields(request_type=revision.GetRevisionRequ
 
             response = client.get_revision(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1923,7 +1923,7 @@ def test_list_revisions_rest_required_fields(
 
             response = client.list_revisions(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2258,7 +2258,7 @@ def test_delete_revision_rest_required_fields(
 
             response = client.delete_revision(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 

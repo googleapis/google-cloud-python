@@ -1749,7 +1749,7 @@ def test_get_execution_rest_required_fields(request_type=execution.GetExecutionR
 
             response = client.get_execution(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2025,7 +2025,7 @@ def test_list_executions_rest_required_fields(
 
             response = client.list_executions(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2360,7 +2360,7 @@ def test_delete_execution_rest_required_fields(
 
             response = client.delete_execution(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 

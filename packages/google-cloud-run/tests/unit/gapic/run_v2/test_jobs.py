@@ -3033,6 +3033,7 @@ def test_create_job_rest_required_fields(request_type=gcr_job.CreateJobRequest):
                     "jobId",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -3449,7 +3450,7 @@ def test_get_job_rest_required_fields(request_type=job.GetJobRequest):
 
             response = client.get_job(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3716,7 +3717,7 @@ def test_list_jobs_rest_required_fields(request_type=job.ListJobsRequest):
 
             response = client.list_jobs(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4150,7 +4151,7 @@ def test_update_job_rest_required_fields(request_type=gcr_job.UpdateJobRequest):
 
             response = client.update_job(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4537,7 +4538,7 @@ def test_delete_job_rest_required_fields(request_type=job.DeleteJobRequest):
 
             response = client.delete_job(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4802,7 +4803,7 @@ def test_run_job_rest_required_fields(request_type=job.RunJobRequest):
 
             response = client.run_job(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5070,7 +5071,7 @@ def test_get_iam_policy_rest_required_fields(
 
             response = client.get_iam_policy(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5279,7 +5280,7 @@ def test_set_iam_policy_rest_required_fields(
 
             response = client.set_iam_policy(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5498,7 +5499,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             response = client.test_iam_permissions(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
