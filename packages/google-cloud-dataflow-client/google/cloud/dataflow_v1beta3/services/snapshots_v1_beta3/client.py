@@ -343,9 +343,6 @@ class SnapshotsV1Beta3Client(metaclass=SnapshotsV1Beta3ClientMeta):
             transport (Union[str, SnapshotsV1Beta3Transport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-                NOTE: "rest" transport functionality is currently in a
-                beta state (preview). We welcome your feedback via an
-                issue in this library's source repository.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
