@@ -4,7 +4,9 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/cloud/bigquery_migration_v2alpha/gapic_version.py",
         "google/cloud/bigquery_migration/gapic_version.py",
+        "google/cloud/bigquery_migration_v2/gapic_version.py",
         {
           "type": "json",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.migration.v2alpha.json",
