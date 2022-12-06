@@ -287,6 +287,7 @@ class TestBlobReaderBinary(unittest.TestCase, _BlobReaderBase):
         reader = self._make_blob_reader(blob)
 
         reader.close()
+        self.assertTrue(reader.closed)
 
         with self.assertRaises(ValueError):
             reader.read()
@@ -415,6 +416,8 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
         writer.close()
         # Close a second time to verify it successfully does nothing.
         writer.close()
+
+        self.assertTrue(writer.closed)
         # Try to write to closed file.
         with self.assertRaises(ValueError):
             writer.write(TEST_BINARY_DATA)
@@ -767,6 +770,7 @@ class Test_SlidingBuffer(unittest.TestCase):
     def test_close(self):
         buff = self._make_sliding_buffer()
         buff.close()
+        self.assertTrue(buff.closed)
         with self.assertRaises(ValueError):
             buff.read()
 
@@ -913,6 +917,7 @@ class TestBlobReaderText(unittest.TestCase, _BlobReaderBase):
         reader = self._make_blob_reader(blob)
 
         reader.close()
+        self.assertTrue(reader.closed)
 
         with self.assertRaises(ValueError):
             reader.read()

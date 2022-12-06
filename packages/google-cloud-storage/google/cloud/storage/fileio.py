@@ -211,9 +211,9 @@ class BlobReader(io.BufferedIOBase):
     def close(self):
         self._buffer.close()
 
-    def _checkClosed(self):
-        if self._buffer.closed:
-            raise ValueError("I/O operation on closed file.")
+    @property
+    def closed(self):
+        return self._buffer.closed
 
     def readable(self):
         return True
@@ -431,9 +431,9 @@ class BlobWriter(io.BufferedIOBase):
             self._upload_chunks_from_buffer(1)
         self._buffer.close()
 
-    def _checkClosed(self):
-        if self._buffer.closed:
-            raise ValueError("I/O operation on closed file.")
+    @property
+    def closed(self):
+        return self._buffer.closed
 
     def readable(self):
         return False
