@@ -47,7 +47,7 @@ async def sample_update_nfs_share():
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = (await operation).result()
 
     # Handle the response
     print(response)
