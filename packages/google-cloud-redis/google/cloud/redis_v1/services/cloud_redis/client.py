@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.redis_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -471,7 +472,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstancesPager:
         r"""Lists all Redis instances owned by a project in either the
@@ -597,7 +598,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_redis.Instance:
         r"""Gets the details of a specific Redis instance.
@@ -698,7 +699,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_redis.InstanceAuthString:
         r"""Gets the AUTH string for a Redis instance. If AUTH is
@@ -804,7 +805,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         instance_id: Optional[str] = None,
         instance: Optional[cloud_redis.Instance] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a Redis instance based on the specified tier and memory
@@ -967,7 +968,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         instance: Optional[cloud_redis.Instance] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the metadata and configuration of a specific
@@ -1114,7 +1115,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         name: Optional[str] = None,
         redis_version: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Upgrades Redis instance to the newer Redis version
@@ -1244,7 +1245,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         name: Optional[str] = None,
         input_config: Optional[cloud_redis.InputConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Import a Redis RDB snapshot file from Cloud Storage
@@ -1384,7 +1385,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         name: Optional[str] = None,
         output_config: Optional[cloud_redis.OutputConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Export Redis instance data into a Redis RDB format
@@ -1522,7 +1523,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             cloud_redis.FailoverInstanceRequest.DataProtectionMode
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Initiates a failover of the primary node to current
@@ -1652,7 +1653,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a specific Redis instance.  Instance stops
@@ -1782,7 +1783,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         ] = None,
         schedule_time: Optional[timestamp_pb2.Timestamp] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Reschedule maintenance for a given instance in a
@@ -1929,14 +1930,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-redis",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("CloudRedisClient",)
