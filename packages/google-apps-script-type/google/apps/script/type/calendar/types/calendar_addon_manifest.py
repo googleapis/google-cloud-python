@@ -69,10 +69,12 @@ class CalendarAddOnManifest(proto.Message):
         WRITE = 4
         READ_WRITE = 5
 
-    homepage_trigger: google.apps.script.type.types.HomepageExtensionPoint = proto.Field(
-        proto.MESSAGE,
-        number=6,
-        message=google.apps.script.type.types.HomepageExtensionPoint,
+    homepage_trigger: google.apps.script.type.types.HomepageExtensionPoint = (
+        proto.Field(
+            proto.MESSAGE,
+            number=6,
+            message=google.apps.script.type.types.HomepageExtensionPoint,
+        )
     )
     conference_solution: MutableSequence["ConferenceSolution"] = proto.RepeatedField(
         proto.MESSAGE,

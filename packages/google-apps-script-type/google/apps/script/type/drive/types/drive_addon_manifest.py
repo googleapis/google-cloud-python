@@ -41,10 +41,12 @@ class DriveAddOnManifest(proto.Message):
             (e.g. the My Drive Doclist).
     """
 
-    homepage_trigger: google.apps.script.type.types.HomepageExtensionPoint = proto.Field(
-        proto.MESSAGE,
-        number=1,
-        message=google.apps.script.type.types.HomepageExtensionPoint,
+    homepage_trigger: google.apps.script.type.types.HomepageExtensionPoint = (
+        proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=google.apps.script.type.types.HomepageExtensionPoint,
+        )
     )
     on_items_selected_trigger: "DriveExtensionPoint" = proto.Field(
         proto.MESSAGE,

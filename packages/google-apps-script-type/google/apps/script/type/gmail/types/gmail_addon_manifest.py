@@ -72,10 +72,12 @@ class GmailAddOnManifest(proto.Message):
             experience.
     """
 
-    homepage_trigger: google.apps.script.type.types.HomepageExtensionPoint = proto.Field(
-        proto.MESSAGE,
-        number=14,
-        message=google.apps.script.type.types.HomepageExtensionPoint,
+    homepage_trigger: google.apps.script.type.types.HomepageExtensionPoint = (
+        proto.Field(
+            proto.MESSAGE,
+            number=14,
+            message=google.apps.script.type.types.HomepageExtensionPoint,
+        )
     )
     contextual_triggers: MutableSequence["ContextualTrigger"] = proto.RepeatedField(
         proto.MESSAGE,
