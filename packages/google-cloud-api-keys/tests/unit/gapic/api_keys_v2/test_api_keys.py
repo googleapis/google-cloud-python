@@ -2665,7 +2665,7 @@ def test_create_key_rest_required_fields(request_type=apikeys.CreateKeyRequest):
 
             response = client.create_key(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2989,7 +2989,7 @@ def test_list_keys_rest_required_fields(request_type=apikeys.ListKeysRequest):
 
             response = client.list_keys(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3322,7 +3322,7 @@ def test_get_key_rest_required_fields(request_type=apikeys.GetKeyRequest):
 
             response = client.get_key(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3581,7 +3581,7 @@ def test_get_key_string_rest_required_fields(request_type=apikeys.GetKeyStringRe
 
             response = client.get_key_string(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3877,7 +3877,7 @@ def test_update_key_rest_required_fields(request_type=apikeys.UpdateKeyRequest):
 
             response = client.update_key(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4181,7 +4181,7 @@ def test_delete_key_rest_required_fields(request_type=apikeys.DeleteKeyRequest):
 
             response = client.delete_key(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4438,7 +4438,7 @@ def test_undelete_key_rest_required_fields(request_type=apikeys.UndeleteKeyReque
 
             response = client.undelete_key(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4658,6 +4658,7 @@ def test_lookup_key_rest_required_fields(request_type=apikeys.LookupKeyRequest):
                     "keyString",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
