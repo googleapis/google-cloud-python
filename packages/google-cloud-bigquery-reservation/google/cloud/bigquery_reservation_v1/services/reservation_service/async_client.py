@@ -35,7 +35,8 @@ from google.api_core import retry as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.bigquery_reservation_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -261,7 +262,7 @@ class ReservationServiceAsyncClient:
         reservation: Optional[gcbr_reservation.Reservation] = None,
         reservation_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcbr_reservation.Reservation:
         r"""Creates a new reservation resource.
@@ -384,7 +385,7 @@ class ReservationServiceAsyncClient:
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListReservationsAsyncPager:
         r"""Lists all the reservations for the project in the
@@ -510,7 +511,7 @@ class ReservationServiceAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.Reservation:
         r"""Returns information about the reservation.
@@ -623,7 +624,7 @@ class ReservationServiceAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a reservation. Returns
@@ -729,7 +730,7 @@ class ReservationServiceAsyncClient:
         reservation: Optional[gcbr_reservation.Reservation] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcbr_reservation.Reservation:
         r"""Updates an existing reservation resource.
@@ -842,7 +843,7 @@ class ReservationServiceAsyncClient:
         parent: Optional[str] = None,
         capacity_commitment: Optional[reservation.CapacityCommitment] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.CapacityCommitment:
         r"""Creates a new capacity commitment resource.
@@ -967,7 +968,7 @@ class ReservationServiceAsyncClient:
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCapacityCommitmentsAsyncPager:
         r"""Lists all the capacity commitments for the admin
@@ -1093,7 +1094,7 @@ class ReservationServiceAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.CapacityCommitment:
         r"""Returns information about the capacity commitment.
@@ -1220,7 +1221,7 @@ class ReservationServiceAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a capacity commitment. Attempting to delete capacity
@@ -1326,7 +1327,7 @@ class ReservationServiceAsyncClient:
         capacity_commitment: Optional[reservation.CapacityCommitment] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.CapacityCommitment:
         r"""Updates an existing capacity commitment.
@@ -1460,7 +1461,7 @@ class ReservationServiceAsyncClient:
         name: Optional[str] = None,
         slot_count: Optional[int] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.SplitCapacityCommitmentResponse:
         r"""Splits capacity commitment to two commitments of the same plan
@@ -1582,7 +1583,7 @@ class ReservationServiceAsyncClient:
         parent: Optional[str] = None,
         capacity_commitment_ids: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.CapacityCommitment:
         r"""Merges capacity commitments of the same plan into a single
@@ -1719,7 +1720,7 @@ class ReservationServiceAsyncClient:
         parent: Optional[str] = None,
         assignment: Optional[reservation.Assignment] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.Assignment:
         r"""Creates an assignment object which allows the given project to
@@ -1869,7 +1870,7 @@ class ReservationServiceAsyncClient:
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAssignmentsAsyncPager:
         r"""Lists assignments.
@@ -2020,7 +2021,7 @@ class ReservationServiceAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a assignment. No expansion will happen.
@@ -2138,7 +2139,7 @@ class ReservationServiceAsyncClient:
         parent: Optional[str] = None,
         query: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAssignmentsAsyncPager:
         r"""Deprecated: Looks up assignments for a specified resource for a
@@ -2310,7 +2311,7 @@ class ReservationServiceAsyncClient:
         parent: Optional[str] = None,
         query: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAllAssignmentsAsyncPager:
         r"""Looks up assignments for a specified resource for a particular
@@ -2465,7 +2466,7 @@ class ReservationServiceAsyncClient:
         name: Optional[str] = None,
         destination_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.Assignment:
         r"""Moves an assignment under a new reservation.
@@ -2588,7 +2589,7 @@ class ReservationServiceAsyncClient:
         assignment: Optional[reservation.Assignment] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.Assignment:
         r"""Updates an existing assignment.
@@ -2701,7 +2702,7 @@ class ReservationServiceAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.BiReservation:
         r"""Retrieves a BI reservation.
@@ -2813,7 +2814,7 @@ class ReservationServiceAsyncClient:
         bi_reservation: Optional[reservation.BiReservation] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.BiReservation:
         r"""Updates a BI reservation.
@@ -2929,14 +2930,9 @@ class ReservationServiceAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-bigquery-reservation",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ReservationServiceAsyncClient",)
