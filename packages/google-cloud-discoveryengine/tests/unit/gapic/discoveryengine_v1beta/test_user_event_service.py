@@ -1429,7 +1429,7 @@ def test_write_user_event_rest_required_fields(
 
             response = client.write_user_event(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1723,6 +1723,7 @@ def test_collect_user_event_rest_required_fields(
                     "userEvent",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -1942,7 +1943,7 @@ def test_import_user_events_rest_required_fields(
 
             response = client.import_user_events(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
