@@ -46,6 +46,7 @@ from google.cloud.securitycenter_v1.types.finding import Finding
 from google.cloud.securitycenter_v1.types.folder import Folder
 from google.cloud.securitycenter_v1.types.iam_binding import IamBinding
 from google.cloud.securitycenter_v1.types.indicator import Indicator
+from google.cloud.securitycenter_v1.types.kernel_rootkit import KernelRootkit
 from google.cloud.securitycenter_v1.types.kubernetes import Kubernetes
 from google.cloud.securitycenter_v1.types.label import Label
 from google.cloud.securitycenter_v1.types.mitre_attack import MitreAttack
@@ -138,6 +139,7 @@ __all__ = (
     "Folder",
     "IamBinding",
     "Indicator",
+    "KernelRootkit",
     "Kubernetes",
     "Label",
     "MitreAttack",

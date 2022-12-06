@@ -75,6 +75,7 @@ from google.cloud.securitycenter_v1.types import (
 from google.cloud.securitycenter_v1.types import (
     iam_binding,
     indicator,
+    kernel_rootkit,
     kubernetes,
     label,
     mitre_attack,

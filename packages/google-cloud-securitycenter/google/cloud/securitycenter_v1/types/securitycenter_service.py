@@ -228,8 +228,8 @@ class CreateNotificationConfigRequest(proto.Message):
             Required.
             Unique identifier provided by the client within
             the parent scope. It must be between 1 and 128
-            characters, and contains alphanumeric
-            characters, underscores or hyphens only.
+            characters and contain alphanumeric characters,
+            underscores, or hyphens only.
         notification_config (google.cloud.securitycenter_v1.types.NotificationConfig):
             Required. The notification config being
             created. The name and the service account will
@@ -300,7 +300,9 @@ class DeleteNotificationConfigRequest(proto.Message):
         name (str):
             Required. Name of the notification config to delete. Its
             format is
-            "organizations/[organization_id]/notificationConfigs/[config_id]".
+            "organizations/[organization_id]/notificationConfigs/[config_id]",
+            "folders/[folder_id]/notificationConfigs/[config_id]", or
+            "projects/[project_id]/notificationConfigs/[config_id]".
     """
 
     name: str = proto.Field(
@@ -310,11 +312,11 @@ class DeleteNotificationConfigRequest(proto.Message):
 
 
 class GetBigQueryExportRequest(proto.Message):
-    r"""Request message for retrieving a big query export.
+    r"""Request message for retrieving a BigQuery export.
 
     Attributes:
         name (str):
-            Required. Name of the big query export to retrieve. Its
+            Required. Name of the BigQuery export to retrieve. Its
             format is
             organizations/{organization}/bigQueryExports/{export_id},
             folders/{folder}/bigQueryExports/{export_id}, or
@@ -351,7 +353,9 @@ class GetNotificationConfigRequest(proto.Message):
         name (str):
             Required. Name of the notification config to get. Its format
             is
-            "organizations/[organization_id]/notificationConfigs/[config_id]".
+            "organizations/[organization_id]/notificationConfigs/[config_id]",
+            "folders/[folder_id]/notificationConfigs/[config_id]", or
+            "projects/[project_id]/notificationConfigs/[config_id]".
     """
 
     name: str = proto.Field(
@@ -396,9 +400,9 @@ class GroupAssetsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of the organization to groupBy. Its format is
-            "organizations/[organization_id], folders/[folder_id], or
-            projects/[project_id]".
+            Required. The name of the parent to group the assets by. Its
+            format is "organizations/[organization_id],
+            folders/[folder_id], or projects/[project_id]".
         filter (str):
             Expression that defines the filter to apply across assets.
             The expression is a list of zero or more restrictions
@@ -959,9 +963,10 @@ class ListNotificationConfigsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of the organization to list notification
-            configs. Its format is "organizations/[organization_id]",
-            "folders/[folder_id]", or "projects/[project_id]".
+            Required. The name of the parent in which to list the
+            notification configurations. Its format is
+            "organizations/[organization_id]", "folders/[folder_id]", or
+            "projects/[project_id]".
         page_token (str):
             The value returned by the last
             ``ListNotificationConfigsResponse``; indicates that this is
@@ -1080,8 +1085,8 @@ class ListAssetsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of the organization assets should belong to.
-            Its format is "organizations/[organization_id],
+            Required. The name of the parent that the listed assets
+            belong to. Its format is "organizations/[organization_id],
             folders/[folder_id], or projects/[project_id]".
         filter (str):
             Expression that defines the filter to apply across assets.
@@ -1702,10 +1707,12 @@ class SetFindingStateRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The relative resource name of the finding. See:
-            https://cloud.google.com/apis/design/resource_names#relative_resource_name
-            Example:
-            "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}".
+            Required. The `relative resource
+            name <https://cloud.google.com/apis/design/resource_names#relative_resource_name>`__
+            of the finding. Example:
+            "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
+            "folders/{folder_id}/sources/{source_id}/findings/{finding_id}",
+            "projects/{project_id}/sources/{source_id}/findings/{finding_id}".
         state (google.cloud.securitycenter_v1.types.Finding.State):
             Required. The desired State of the finding.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -1734,9 +1741,9 @@ class SetMuteRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The relative resource name of the finding. See:
-            https://cloud.google.com/apis/design/resource_names#relative_resource_name
-            Example:
+            Required. The `relative resource
+            name <https://cloud.google.com/apis/design/resource_names#relative_resource_name>`__
+            of the finding. Example:
             "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
             "folders/{folder_id}/sources/{source_id}/findings/{finding_id}",
             "projects/{project_id}/sources/{source_id}/findings/{finding_id}".
@@ -1967,15 +1974,16 @@ class UpdateSecurityMarksRequest(proto.Message):
 
 
 class CreateBigQueryExportRequest(proto.Message):
-    r"""Request message for creating a big query export.
+    r"""Request message for creating a BigQuery export.
 
     Attributes:
         parent (str):
-            Required. Resource name of the new big query export's
-            parent. Its format is "organizations/[organization_id]",
-            "folders/[folder_id]", or "projects/[project_id]".
+            Required. The name of the parent resource of the new
+            BigQuery export. Its format is
+            "organizations/[organization_id]", "folders/[folder_id]", or
+            "projects/[project_id]".
         big_query_export (google.cloud.securitycenter_v1.types.BigQueryExport):
-            Required. The big query export being created.
+            Required. The BigQuery export being created.
         big_query_export_id (str):
             Required. Unique identifier provided by the
             client within the parent scope. It must consist
@@ -2090,12 +2098,13 @@ class ListBigQueryExportsResponse(proto.Message):
 
 
 class DeleteBigQueryExportRequest(proto.Message):
-    r"""Request message for deleting a big query export.
+    r"""Request message for deleting a BigQuery export.
 
     Attributes:
         name (str):
-            Required. Name of the big query export to delete. Its format
-            is organizations/{organization}/bigQueryExports/{export_id},
+            Required. The name of the BigQuery export to delete. Its
+            format is
+            organizations/{organization}/bigQueryExports/{export_id},
             folders/{folder}/bigQueryExports/{export_id}, or
             projects/{project}/bigQueryExports/{export_id}
     """

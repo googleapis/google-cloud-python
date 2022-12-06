@@ -468,7 +468,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
     ]:
         r"""Return a callable for the get big query export method over gRPC.
 
-        Gets a big query export.
+        Gets a BigQuery export.
 
         Returns:
             Callable[[~.GetBigQueryExportRequest],
@@ -1189,7 +1189,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
     ]:
         r"""Return a callable for the create big query export method over gRPC.
 
-        Creates a big query export.
+        Creates a BigQuery export.
 
         Returns:
             Callable[[~.CreateBigQueryExportRequest],
@@ -1217,7 +1217,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
     ]:
         r"""Return a callable for the delete big query export method over gRPC.
 
-        Deletes an existing big query export.
+        Deletes an existing BigQuery export.
 
         Returns:
             Callable[[~.DeleteBigQueryExportRequest],

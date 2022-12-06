@@ -27,6 +27,7 @@ from google.cloud.securitycenter_v1.types import (
 )
 from google.cloud.securitycenter_v1.types import external_system, file, iam_binding
 from google.cloud.securitycenter_v1.types import exfiltration as gcs_exfiltration
+from google.cloud.securitycenter_v1.types import kernel_rootkit as gcs_kernel_rootkit
 from google.cloud.securitycenter_v1.types import mitre_attack as gcs_mitre_attack
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v1.types import vulnerability as gcs_vulnerability
@@ -133,8 +134,8 @@ class Finding(proto.Message):
             high confidence, indicates a computer intrusion. Reference:
             https://en.wikipedia.org/wiki/Indicator_of_compromise
         vulnerability (google.cloud.securitycenter_v1.types.Vulnerability):
-            Represents vulnerability specific fields like
-            cve, cvss scores etc. CVE stands for Common
+            Represents vulnerability-specific fields like
+            CVE and CVS scores. CVE stands for Common
             Vulnerabilities and Exposures
             (https://cve.mitre.org/about/)
         mute_update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -212,6 +213,8 @@ class Finding(proto.Message):
             Database associated with the finding.
         files (MutableSequence[google.cloud.securitycenter_v1.types.File]):
             File associated with the finding.
+        kernel_rootkit (google.cloud.securitycenter_v1.types.KernelRootkit):
+            Kernel Rootkit signature.
     """
 
     class State(proto.Enum):
@@ -408,6 +411,11 @@ class Finding(proto.Message):
         proto.MESSAGE,
         number=46,
         message=file.File,
+    )
+    kernel_rootkit: gcs_kernel_rootkit.KernelRootkit = proto.Field(
+        proto.MESSAGE,
+        number=50,
+        message=gcs_kernel_rootkit.KernelRootkit,
     )
 
 

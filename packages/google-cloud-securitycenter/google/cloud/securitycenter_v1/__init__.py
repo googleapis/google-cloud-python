@@ -34,6 +34,7 @@ from .types.finding import Finding
 from .types.folder import Folder
 from .types.iam_binding import IamBinding
 from .types.indicator import Indicator
+from .types.kernel_rootkit import KernelRootkit
 from .types.kubernetes import Kubernetes
 from .types.label import Label
 from .types.mitre_attack import MitreAttack
@@ -136,6 +137,7 @@ __all__ = (
     "GroupResult",
     "IamBinding",
     "Indicator",
+    "KernelRootkit",
     "Kubernetes",
     "Label",
     "ListAssetsRequest",

@@ -28,6 +28,7 @@ from .finding import Finding
 from .folder import Folder
 from .iam_binding import IamBinding
 from .indicator import Indicator
+from .kernel_rootkit import KernelRootkit
 from .kubernetes import Kubernetes
 from .label import Label
 from .mitre_attack import MitreAttack
@@ -107,6 +108,7 @@ __all__ = (
     "Folder",
     "IamBinding",
     "Indicator",
+    "KernelRootkit",
     "Kubernetes",
     "Label",
     "MitreAttack",

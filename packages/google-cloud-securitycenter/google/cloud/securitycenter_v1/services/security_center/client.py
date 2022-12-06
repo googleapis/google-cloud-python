@@ -66,6 +66,7 @@ from google.cloud.securitycenter_v1.types import (
 from google.cloud.securitycenter_v1.types import (
     iam_binding,
     indicator,
+    kernel_rootkit,
     kubernetes,
     mitre_attack,
 )
@@ -1244,9 +1245,9 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 Required.
                 Unique identifier provided by the client
                 within the parent scope. It must be
-                between 1 and 128 characters, and
-                contains alphanumeric characters,
-                underscores or hyphens only.
+                between 1 and 128 characters and contain
+                alphanumeric characters, underscores, or
+                hyphens only.
 
                 This corresponds to the ``config_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1463,7 +1464,10 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             name (str):
                 Required. Name of the notification config to delete. Its
                 format is
-                "organizations/[organization_id]/notificationConfigs/[config_id]".
+                "organizations/[organization_id]/notificationConfigs/[config_id]",
+                "folders/[folder_id]/notificationConfigs/[config_id]",
+                or
+                "projects/[project_id]/notificationConfigs/[config_id]".
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1528,7 +1532,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigquery_export.BigQueryExport:
-        r"""Gets a big query export.
+        r"""Gets a BigQuery export.
 
         .. code-block:: python
 
@@ -1558,10 +1562,10 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.GetBigQueryExportRequest, dict]):
-                The request object. Request message for retrieving a big
-                query export.
+                The request object. Request message for retrieving a
+                BigQuery export.
             name (str):
-                Required. Name of the big query export to retrieve. Its
+                Required. Name of the BigQuery export to retrieve. Its
                 format is
                 organizations/{organization}/bigQueryExports/{export_id},
                 folders/{folder}/bigQueryExports/{export_id}, or
@@ -1942,7 +1946,10 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             name (str):
                 Required. Name of the notification config to get. Its
                 format is
-                "organizations/[organization_id]/notificationConfigs/[config_id]".
+                "organizations/[organization_id]/notificationConfigs/[config_id]",
+                "folders/[folder_id]/notificationConfigs/[config_id]",
+                or
+                "projects/[project_id]/notificationConfigs/[config_id]".
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2831,8 +2838,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 The request object. Request message for listing
                 notification configs.
             parent (str):
-                Required. Name of the organization to list notification
-                configs. Its format is
+                Required. The name of the parent in which to list the
+                notification configurations. Its format is
                 "organizations/[organization_id]",
                 "folders/[folder_id]", or "projects/[project_id]".
 
@@ -3198,11 +3205,12 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 The request object. Request message for updating a
                 finding's state.
             name (str):
-                Required. The relative resource name of the finding.
-                See:
-                https://cloud.google.com/apis/design/resource_names#relative_resource_name
-                Example:
-                "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}".
+                Required. The `relative resource
+                name <https://cloud.google.com/apis/design/resource_names#relative_resource_name>`__
+                of the finding. Example:
+                "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
+                "folders/{folder_id}/sources/{source_id}/findings/{finding_id}",
+                "projects/{project_id}/sources/{source_id}/findings/{finding_id}".
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3330,10 +3338,9 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 The request object. Request message for updating a
                 finding's mute status.
             name (str):
-                Required. The relative resource name of the finding.
-                See:
-                https://cloud.google.com/apis/design/resource_names#relative_resource_name
-                Example:
+                Required. The `relative resource
+                name <https://cloud.google.com/apis/design/resource_names#relative_resource_name>`__
+                of the finding. Example:
                 "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
                 "folders/{folder_id}/sources/{source_id}/findings/{finding_id}",
                 "projects/{project_id}/sources/{source_id}/findings/{finding_id}".
@@ -4520,7 +4527,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigquery_export.BigQueryExport:
-        r"""Creates a big query export.
+        r"""Creates a BigQuery export.
 
         .. code-block:: python
 
@@ -4551,18 +4558,19 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.CreateBigQueryExportRequest, dict]):
-                The request object. Request message for creating a big
-                query export.
+                The request object. Request message for creating a
+                BigQuery export.
             parent (str):
-                Required. Resource name of the new big query export's
-                parent. Its format is "organizations/[organization_id]",
+                Required. The name of the parent resource of the new
+                BigQuery export. Its format is
+                "organizations/[organization_id]",
                 "folders/[folder_id]", or "projects/[project_id]".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             big_query_export (google.cloud.securitycenter_v1.types.BigQueryExport):
-                Required. The big query export being
+                Required. The BigQuery export being
                 created.
 
                 This corresponds to the ``big_query_export`` field
@@ -4648,7 +4656,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Deletes an existing big query export.
+        r"""Deletes an existing BigQuery export.
 
         .. code-block:: python
 
@@ -4675,10 +4683,10 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.DeleteBigQueryExportRequest, dict]):
-                The request object. Request message for deleting a big
-                query export.
+                The request object. Request message for deleting a
+                BigQuery export.
             name (str):
-                Required. Name of the big query export to delete. Its
+                Required. The name of the BigQuery export to delete. Its
                 format is
                 organizations/{organization}/bigQueryExports/{export_id},
                 folders/{folder}/bigQueryExports/{export_id}, or
