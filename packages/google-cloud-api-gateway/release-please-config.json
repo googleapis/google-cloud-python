@@ -4,6 +4,7 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/cloud/apigateway_v1/gapic_version.py",
         "google/cloud/apigateway/gapic_version.py",
         {
           "type": "json",

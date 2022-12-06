@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.apigateway_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -547,7 +548,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListGatewaysPager:
         r"""Lists Gateways in a given project and location.
@@ -662,7 +663,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> apigateway.Gateway:
         r"""Gets details of a single Gateway.
@@ -770,7 +771,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         gateway: Optional[apigateway.Gateway] = None,
         gateway_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new Gateway in a given project and
@@ -912,7 +913,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         gateway: Optional[apigateway.Gateway] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single Gateway.
@@ -1046,7 +1047,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single Gateway.
@@ -1170,7 +1171,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListApisPager:
         r"""Lists Apis in a given project and location.
@@ -1285,7 +1286,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> apigateway.Api:
         r"""Gets details of a single Api.
@@ -1389,7 +1390,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         api: Optional[apigateway.Api] = None,
         api_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new Api in a given project and location.
@@ -1525,7 +1526,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         api: Optional[apigateway.Api] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single Api.
@@ -1652,7 +1653,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single Api.
@@ -1776,7 +1777,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListApiConfigsPager:
         r"""Lists ApiConfigs in a given project and location.
@@ -1891,7 +1892,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> apigateway.ApiConfig:
         r"""Gets details of a single ApiConfig.
@@ -1996,7 +1997,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         api_config: Optional[apigateway.ApiConfig] = None,
         api_config_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new ApiConfig in a given project and
@@ -2132,7 +2133,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         api_config: Optional[apigateway.ApiConfig] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single ApiConfig.
@@ -2260,7 +2261,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single ApiConfig.
@@ -2392,14 +2393,9 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-api-gateway",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ApiGatewayServiceClient",)
