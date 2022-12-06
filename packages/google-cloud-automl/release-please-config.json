@@ -5,6 +5,8 @@
         "release-type": "python",
         "extra-files": [
           "google/cloud/automl/gapic_version.py",
+          "google/cloud/automl_v1beta1/gapic_version.py",
+          "google/cloud/automl_v1/gapic_version.py",
           {
             "type": "json",
             "path": "samples/generated_samples/snippet_metadata_google.cloud.automl.v1.json",
