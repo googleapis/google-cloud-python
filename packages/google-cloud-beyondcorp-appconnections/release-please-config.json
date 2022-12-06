@@ -4,6 +4,7 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/cloud/beyondcorp_appconnections_v1/gapic_version.py",
         "google/cloud/beyondcorp_appconnections/gapic_version.py",
         {
           "type": "json",
