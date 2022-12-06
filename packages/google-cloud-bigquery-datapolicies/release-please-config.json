@@ -4,7 +4,14 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/cloud/bigquery/datapolicies_v1/gapic_version.py",
+        "google/cloud/bigquery/datapolicies_v1beta1/gapic_version.py",
         "google/cloud/bigquery/datapolicies/gapic_version.py",
+        {
+          "type": "json",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.datapolicies.v1.json",
+          "jsonpath": "$.clientLibrary.version"
+        },
         {
           "type": "json",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.datapolicies.v1beta1.json",
