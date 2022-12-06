@@ -3297,7 +3297,7 @@ def test_create_entity_reconciliation_job_rest_required_fields(
 
             response = client.create_entity_reconciliation_job(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3621,7 +3621,7 @@ def test_get_entity_reconciliation_job_rest_required_fields(
 
             response = client.get_entity_reconciliation_job(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3907,7 +3907,7 @@ def test_list_entity_reconciliation_jobs_rest_required_fields(
 
             response = client.list_entity_reconciliation_jobs(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4246,7 +4246,7 @@ def test_cancel_entity_reconciliation_job_rest_required_fields(
 
             response = client.cancel_entity_reconciliation_job(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4508,7 +4508,7 @@ def test_delete_entity_reconciliation_job_rest_required_fields(
 
             response = client.delete_entity_reconciliation_job(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4788,6 +4788,7 @@ def test_lookup_rest_required_fields(request_type=service.LookupRequest):
                     "ids",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -5085,6 +5086,7 @@ def test_search_rest_required_fields(request_type=service.SearchRequest):
                     "query",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -5384,6 +5386,7 @@ def test_lookup_public_kg_rest_required_fields(
                     "ids",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -5685,6 +5688,7 @@ def test_search_public_kg_rest_required_fields(
                     "query",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
