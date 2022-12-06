@@ -2821,7 +2821,7 @@ def test_list_app_connections_rest_required_fields(
 
             response = client.list_app_connections(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3174,7 +3174,7 @@ def test_get_app_connection_rest_required_fields(
 
             response = client.get_app_connection(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3466,7 +3466,7 @@ def test_create_app_connection_rest_required_fields(
 
             response = client.create_app_connection(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3793,7 +3793,7 @@ def test_update_app_connection_rest_required_fields(
 
             response = client.update_app_connection(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4107,7 +4107,7 @@ def test_delete_app_connection_rest_required_fields(
 
             response = client.delete_app_connection(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4413,6 +4413,7 @@ def test_resolve_app_connections_rest_required_fields(
                     "appConnectorId",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
