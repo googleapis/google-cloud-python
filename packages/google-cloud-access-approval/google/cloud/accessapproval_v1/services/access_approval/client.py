@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.accessapproval_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -514,7 +515,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListApprovalRequestsPager:
         r"""Lists approval requests associated with a project,
@@ -632,7 +633,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.ApprovalRequest:
         r"""Gets an approval request. Returns NOT_FOUND if the request does
@@ -734,7 +735,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.ApprovalRequest:
         r"""Approves a request and returns the updated ApprovalRequest.
@@ -820,7 +821,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.ApprovalRequest:
         r"""Dismisses a request. Returns the updated ApprovalRequest.
@@ -911,7 +912,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.ApprovalRequest:
         r"""Invalidates an existing ApprovalRequest. Returns the updated
@@ -1004,7 +1005,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.AccessApprovalSettings:
         r"""Gets the settings associated with a project, folder,
@@ -1113,7 +1114,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         settings: Optional[accessapproval.AccessApprovalSettings] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.AccessApprovalSettings:
         r"""Updates the settings associated with a project, folder, or
@@ -1239,7 +1240,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the settings associated with a project,
@@ -1339,7 +1340,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.AccessApprovalServiceAccount:
         r"""Retrieves the service account that is used by Access
@@ -1456,14 +1457,9 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-access-approval",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("AccessApprovalClient",)
