@@ -95,7 +95,7 @@ class Document(proto.Message):
             Other document format, such as PPTX, XLXS
 
             This field is a member of `oneof`_ ``structured_content``.
-        cloud_ai_document (google.cloud.documentai.v1.types.Document):
+        cloud_ai_document (google.cloud.documentai_v1.types.Document):
             Document AI format to save the structured
             content, including OCR.
 
