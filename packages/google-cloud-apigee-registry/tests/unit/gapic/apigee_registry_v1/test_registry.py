@@ -10635,7 +10635,7 @@ def test_list_apis_rest_required_fields(request_type=registry_service.ListApisRe
 
             response = client.list_apis(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -10972,7 +10972,7 @@ def test_get_api_rest_required_fields(request_type=registry_service.GetApiReques
 
             response = client.get_api(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -11270,6 +11270,7 @@ def test_create_api_rest_required_fields(
                     "apiId",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -11583,7 +11584,7 @@ def test_update_api_rest_required_fields(
 
             response = client.update_api(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -11866,7 +11867,7 @@ def test_delete_api_rest_required_fields(
 
             response = client.delete_api(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -12130,7 +12131,7 @@ def test_list_api_versions_rest_required_fields(
 
             response = client.list_api_versions(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -12470,7 +12471,7 @@ def test_get_api_version_rest_required_fields(
 
             response = client.get_api_version(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -12771,6 +12772,7 @@ def test_create_api_version_rest_required_fields(
                     "apiVersionId",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -13083,7 +13085,7 @@ def test_update_api_version_rest_required_fields(
 
             response = client.update_api_version(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -13375,7 +13377,7 @@ def test_delete_api_version_rest_required_fields(
 
             response = client.delete_api_version(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -13646,7 +13648,7 @@ def test_list_api_specs_rest_required_fields(
 
             response = client.list_api_specs(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -14002,7 +14004,7 @@ def test_get_api_spec_rest_required_fields(
 
             response = client.get_api_spec(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -14276,7 +14278,7 @@ def test_get_api_spec_contents_rest_required_fields(
 
             response = client.get_api_spec_contents(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -14593,6 +14595,7 @@ def test_create_api_spec_rest_required_fields(
                     "apiSpecId",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -14931,7 +14934,7 @@ def test_update_api_spec_rest_required_fields(
 
             response = client.update_api_spec(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -15229,7 +15232,7 @@ def test_delete_api_spec_rest_required_fields(
 
             response = client.delete_api_spec(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -15513,7 +15516,7 @@ def test_tag_api_spec_revision_rest_required_fields(
 
             response = client.tag_api_spec_revision(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -15744,7 +15747,7 @@ def test_list_api_spec_revisions_rest_required_fields(
 
             response = client.list_api_spec_revisions(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -16048,7 +16051,7 @@ def test_rollback_api_spec_rest_required_fields(
 
             response = client.rollback_api_spec(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -16286,7 +16289,7 @@ def test_delete_api_spec_revision_rest_required_fields(
 
             response = client.delete_api_spec_revision(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -16566,7 +16569,7 @@ def test_list_api_deployments_rest_required_fields(
 
             response = client.list_api_deployments(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -16916,7 +16919,7 @@ def test_get_api_deployment_rest_required_fields(
 
             response = client.get_api_deployment(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -17233,6 +17236,7 @@ def test_create_api_deployment_rest_required_fields(
                     "apiDeploymentId",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -17567,7 +17571,7 @@ def test_update_api_deployment_rest_required_fields(
 
             response = client.update_api_deployment(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -17865,7 +17869,7 @@ def test_delete_api_deployment_rest_required_fields(
 
             response = client.delete_api_deployment(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -18149,7 +18153,7 @@ def test_tag_api_deployment_revision_rest_required_fields(
 
             response = client.tag_api_deployment_revision(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -18383,7 +18387,7 @@ def test_list_api_deployment_revisions_rest_required_fields(
 
             response = client.list_api_deployment_revisions(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -18691,7 +18695,7 @@ def test_rollback_api_deployment_rest_required_fields(
 
             response = client.rollback_api_deployment(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -18929,7 +18933,7 @@ def test_delete_api_deployment_revision_rest_required_fields(
 
             response = client.delete_api_deployment_revision(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -19210,7 +19214,7 @@ def test_list_artifacts_rest_required_fields(
 
             response = client.list_artifacts(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -19549,7 +19553,7 @@ def test_get_artifact_rest_required_fields(
 
             response = client.get_artifact(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -19818,7 +19822,7 @@ def test_get_artifact_contents_rest_required_fields(
 
             response = client.get_artifact_contents(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -20116,6 +20120,7 @@ def test_create_artifact_rest_required_fields(
                     "artifactId",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -20418,7 +20423,7 @@ def test_replace_artifact_rest_required_fields(
 
             response = client.replace_artifact(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -20691,7 +20696,7 @@ def test_delete_artifact_rest_required_fields(
 
             response = client.delete_artifact(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
