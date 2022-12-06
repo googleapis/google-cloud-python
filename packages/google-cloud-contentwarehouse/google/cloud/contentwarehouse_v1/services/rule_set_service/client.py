@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.contentwarehouse_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -490,7 +491,7 @@ class RuleSetServiceClient(metaclass=RuleSetServiceClientMeta):
         parent: Optional[str] = None,
         rule_set: Optional[rule_engine.RuleSet] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> rule_engine.RuleSet:
         r"""Creates a ruleset.
@@ -601,7 +602,7 @@ class RuleSetServiceClient(metaclass=RuleSetServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> rule_engine.RuleSet:
         r"""Gets a ruleset. Returns NOT_FOUND if the ruleset does not exist.
@@ -706,7 +707,7 @@ class RuleSetServiceClient(metaclass=RuleSetServiceClientMeta):
         name: Optional[str] = None,
         rule_set: Optional[rule_engine.RuleSet] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> rule_engine.RuleSet:
         r"""Updates a ruleset. Returns INVALID_ARGUMENT if the name of the
@@ -818,7 +819,7 @@ class RuleSetServiceClient(metaclass=RuleSetServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a ruleset. Returns NOT_FOUND if the document does not
@@ -911,7 +912,7 @@ class RuleSetServiceClient(metaclass=RuleSetServiceClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRuleSetsPager:
         r"""Lists rulesets.
@@ -1035,14 +1036,9 @@ class RuleSetServiceClient(metaclass=RuleSetServiceClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-contentwarehouse",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("RuleSetServiceClient",)

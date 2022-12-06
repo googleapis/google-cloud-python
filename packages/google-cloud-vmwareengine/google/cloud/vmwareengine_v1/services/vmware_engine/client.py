@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.vmwareengine_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -613,7 +614,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPrivateCloudsPager:
         r"""Lists ``PrivateCloud`` resources in a given project and
@@ -732,7 +733,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmwareengine.PrivateCloud:
         r"""Retrieves a ``PrivateCloud`` resource by its resource name.
@@ -840,7 +841,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         private_cloud: Optional[vmwareengine.PrivateCloud] = None,
         private_cloud_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new ``PrivateCloud`` resource in a given project and
@@ -1003,7 +1004,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         private_cloud: Optional[vmwareengine.PrivateCloud] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Modifies a ``PrivateCloud`` resource. Only the following fields
@@ -1145,7 +1146,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Schedules a ``PrivateCloud`` resource for deletion.
@@ -1284,7 +1285,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Restores a private cloud that was previously scheduled for
@@ -1410,7 +1411,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListClustersPager:
         r"""Lists ``Cluster`` resources in a given private cloud.
@@ -1529,7 +1530,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmwareengine.Cluster:
         r"""Retrieves a ``Cluster`` resource by its resource name.
@@ -1635,7 +1636,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         cluster: Optional[vmwareengine.Cluster] = None,
         cluster_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new cluster in a given private cloud. Creating a new
@@ -1791,7 +1792,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         cluster: Optional[vmwareengine.Cluster] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Modifies a ``Cluster`` resource. Only the following fields can
@@ -1929,7 +1930,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a ``Cluster`` resource. To avoid unintended data loss,
@@ -2060,7 +2061,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSubnetsPager:
         r"""Lists subnets in a given private cloud.
@@ -2179,7 +2180,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNodeTypesPager:
         r"""Lists node types
@@ -2297,7 +2298,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmwareengine.NodeType:
         r"""Gets details of a single ``NodeType``.
@@ -2401,7 +2402,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         *,
         private_cloud: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmwareengine.Credentials:
         r"""Gets details of credentials for NSX appliance.
@@ -2509,7 +2510,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         *,
         private_cloud: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmwareengine.Credentials:
         r"""Gets details of credentials for Vcenter appliance.
@@ -2615,7 +2616,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         *,
         private_cloud: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Resets credentials of the NSX appliance.
@@ -2741,7 +2742,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         *,
         private_cloud: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Resets credentials of the Vcenter appliance.
@@ -2871,7 +2872,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         hcx_activation_key: Optional[vmwareengine.HcxActivationKey] = None,
         hcx_activation_key_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new HCX activation key in a given private
@@ -3035,7 +3036,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListHcxActivationKeysPager:
         r"""Lists ``HcxActivationKey`` resources in a given private cloud.
@@ -3154,7 +3155,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmwareengine.HcxActivationKey:
         r"""Retrieves a ``HcxActivationKey`` resource by its resource name.
@@ -3266,7 +3267,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmwareengine.NetworkPolicy:
         r"""Retrieves a ``NetworkPolicy`` resource by its resource name.
@@ -3381,7 +3382,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNetworkPoliciesPager:
         r"""Lists ``NetworkPolicy`` resources in a specified project and
@@ -3502,7 +3503,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         network_policy: Optional[vmwareengine.NetworkPolicy] = None,
         network_policy_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new network policy in a given VMware Engine
@@ -3667,7 +3668,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         network_policy: Optional[vmwareengine.NetworkPolicy] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Modifies a ``NetworkPolicy`` resource. Only the following fields
@@ -3818,7 +3819,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a ``NetworkPolicy`` resource. A network policy cannot be
@@ -3952,7 +3953,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         vmware_engine_network: Optional[vmwareengine.VmwareEngineNetwork] = None,
         vmware_engine_network_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new VMware Engine network that can be used
@@ -4121,7 +4122,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         vmware_engine_network: Optional[vmwareengine.VmwareEngineNetwork] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Modifies a VMware Engine network resource. Only the following
@@ -4263,7 +4264,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a ``VmwareEngineNetwork`` resource. You can only delete
@@ -4398,7 +4399,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmwareengine.VmwareEngineNetwork:
         r"""Retrieves a ``VmwareEngineNetwork`` resource by its resource
@@ -4513,7 +4514,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListVmwareEngineNetworksPager:
         r"""Lists ``VmwareEngineNetwork`` resources in a given project and
@@ -4646,7 +4647,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -4700,7 +4701,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -4754,7 +4755,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -4809,7 +4810,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM access control policy on the specified function.
@@ -4929,7 +4930,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         request: Optional[iam_policy_pb2.GetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM access control policy for a function.
@@ -5050,7 +5051,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         request: Optional[iam_policy_pb2.TestIamPermissionsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests the specified IAM permissions against the IAM access control
@@ -5109,7 +5110,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -5163,7 +5164,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -5213,14 +5214,9 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         return response
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-vmwareengine",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("VmwareEngineClient",)

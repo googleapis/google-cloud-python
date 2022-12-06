@@ -15,7 +15,7 @@
 #
 from typing import MutableMapping, MutableSequence
 
-import google.geo.type.types  # type: ignore
+import google.geo.type.types
 from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
