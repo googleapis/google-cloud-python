@@ -50,8 +50,7 @@ jobs:
         # used to link the share library;  otherwise, our extension wouldn't
         # be able to link with it.
         CIBW_BEFORE_BUILD: >
-            python -m pip install --upgrade setuptools pip wheel &&
-            python -m pip install --only-binary cmake cmake &&
+            python -m pip install --only-binary --require-hashes -r scripts/requirements.txt &&
             cmake -S google_crc32c -B build \
                 -DCMAKE_BUILD_TYPE=Release \
                 -DCRC32C_BUILD_TESTS=no \
@@ -103,8 +102,7 @@ jobs:
         # used to link the share library;  otherwise, our extension wouldn't
         # be able to link with it.
         CIBW_BEFORE_BUILD: >
-            python -m pip install --upgrade setuptools pip wheel &&
-            python -m pip install cmake &&
+            python -m pip install --require-hashes -r scripts/requirements.txt &&
             cmake -S google_crc32c -B build \
                 -DCMAKE_BUILD_TYPE=Release \
                 -DCRC32C_BUILD_TESTS=no \
@@ -153,8 +151,7 @@ jobs:
     - name: Build C Library
       if: steps.load-cache.outputs.cache-hit != 'true'
       run: >
-        python -m pip install --upgrade setuptools pip wheel &&
-        python -m pip install cmake &&
+        python -m pip install --require-hashes -r scripts/requirements.txt &&
         cmake -S google_crc32c -B build \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 \
@@ -217,8 +214,7 @@ jobs:
     - name: Build C Library
       if: steps.load-cache.outputs.cache-hit != 'true'
       run: |
-        python -m pip install --upgrade setuptools pip wheel
-        python -m pip install cmake
+        python -m pip install --require-hashes -r scripts/requirements.txt
         cmake -S google_crc32c -B build -G "Visual Studio 16 2019" -A ${{ matrix.platform }} -DCRC32C_BUILD_BENCHMARKS=no -DCRC32C_BUILD_TESTS=no -DBUILD_SHARED_LIBS=no -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=yes -DCRC32C_USE_GLOG=0
         cmake --build build --verbose --config Release
         cmake --install build --verbose --config Release --prefix=${{ github.workspace }}\usr\
