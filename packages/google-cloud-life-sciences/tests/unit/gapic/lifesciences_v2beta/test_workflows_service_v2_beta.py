@@ -1004,7 +1004,7 @@ def test_run_pipeline_rest_required_fields(request_type=workflows.RunPipelineReq
 
             response = client.run_pipeline(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
