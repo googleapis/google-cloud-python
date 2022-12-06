@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.certificate_manager_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -603,7 +604,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCertificatesPager:
         r"""Lists Certificates in a given project and location.
@@ -720,7 +721,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate_manager.Certificate:
         r"""Gets details of a single Certificate.
@@ -824,7 +825,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         certificate: Optional[certificate_manager.Certificate] = None,
         certificate_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new Certificate in a given project and
@@ -964,7 +965,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         certificate: Optional[certificate_manager.Certificate] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates a Certificate.
@@ -1094,7 +1095,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single Certificate.
@@ -1220,7 +1221,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCertificateMapsPager:
         r"""Lists CertificateMaps in a given project and
@@ -1338,7 +1339,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate_manager.CertificateMap:
         r"""Gets details of a single CertificateMap.
@@ -1445,7 +1446,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         certificate_map: Optional[certificate_manager.CertificateMap] = None,
         certificate_map_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new CertificateMap in a given project and
@@ -1585,7 +1586,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         certificate_map: Optional[certificate_manager.CertificateMap] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates a CertificateMap.
@@ -1715,7 +1716,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single CertificateMap. A Certificate Map
@@ -1845,7 +1846,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCertificateMapEntriesPager:
         r"""Lists CertificateMapEntries in a given project and
@@ -1968,7 +1969,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate_manager.CertificateMapEntry:
         r"""Gets details of a single CertificateMapEntry.
@@ -2075,7 +2076,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         certificate_map_entry: Optional[certificate_manager.CertificateMapEntry] = None,
         certificate_map_entry_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new CertificateMapEntry in a given project
@@ -2226,7 +2227,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         certificate_map_entry: Optional[certificate_manager.CertificateMapEntry] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates a CertificateMapEntry.
@@ -2365,7 +2366,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single CertificateMapEntry.
@@ -2496,7 +2497,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDnsAuthorizationsPager:
         r"""Lists DnsAuthorizations in a given project and
@@ -2614,7 +2615,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate_manager.DnsAuthorization:
         r"""Gets details of a single DnsAuthorization.
@@ -2722,7 +2723,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         dns_authorization: Optional[certificate_manager.DnsAuthorization] = None,
         dns_authorization_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new DnsAuthorization in a given project and
@@ -2865,7 +2866,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         dns_authorization: Optional[certificate_manager.DnsAuthorization] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates a DnsAuthorization.
@@ -2998,7 +2999,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single DnsAuthorization.
@@ -3127,7 +3128,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCertificateIssuanceConfigsPager:
         r"""Lists CertificateIssuanceConfigs in a given project
@@ -3251,7 +3252,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate_issuance_config.CertificateIssuanceConfig:
         r"""Gets details of a single CertificateIssuanceConfig.
@@ -3369,7 +3370,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         ] = None,
         certificate_issuance_config_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new CertificateIssuanceConfig in a given
@@ -3529,7 +3530,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single CertificateIssuanceConfig.
@@ -3674,7 +3675,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -3728,7 +3729,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -3782,7 +3783,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -3837,7 +3838,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -3891,7 +3892,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -3945,7 +3946,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -3995,14 +3996,9 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         return response
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-certificate-manager",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("CertificateManagerClient",)
