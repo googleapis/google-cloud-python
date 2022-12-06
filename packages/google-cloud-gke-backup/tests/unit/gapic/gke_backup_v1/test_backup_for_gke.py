@@ -8022,6 +8022,7 @@ def test_create_backup_plan_rest_required_fields(
                     "backupPlanId",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -8349,7 +8350,7 @@ def test_list_backup_plans_rest_required_fields(
 
             response = client.list_backup_plans(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -8694,7 +8695,7 @@ def test_get_backup_plan_rest_required_fields(
 
             response = client.get_backup_plan(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -8992,7 +8993,7 @@ def test_update_backup_plan_rest_required_fields(
 
             response = client.update_backup_plan(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -9301,7 +9302,7 @@ def test_delete_backup_plan_rest_required_fields(
 
             response = client.delete_backup_plan(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -9606,7 +9607,7 @@ def test_create_backup_rest_required_fields(request_type=gkebackup.CreateBackupR
 
             response = client.create_backup(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -9925,7 +9926,7 @@ def test_list_backups_rest_required_fields(request_type=gkebackup.ListBackupsReq
 
             response = client.list_backups(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -10291,7 +10292,7 @@ def test_get_backup_rest_required_fields(request_type=gkebackup.GetBackupRequest
 
             response = client.get_backup(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -10592,7 +10593,7 @@ def test_update_backup_rest_required_fields(request_type=gkebackup.UpdateBackupR
 
             response = client.update_backup(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -10909,7 +10910,7 @@ def test_delete_backup_rest_required_fields(request_type=gkebackup.DeleteBackupR
 
             response = client.delete_backup(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -11199,7 +11200,7 @@ def test_list_volume_backups_rest_required_fields(
 
             response = client.list_volume_backups(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -11560,7 +11561,7 @@ def test_get_volume_backup_rest_required_fields(
 
             response = client.get_volume_backup(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -11884,6 +11885,7 @@ def test_create_restore_plan_rest_required_fields(
                     "restorePlanId",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -12222,7 +12224,7 @@ def test_list_restore_plans_rest_required_fields(
 
             response = client.list_restore_plans(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -12567,7 +12569,7 @@ def test_get_restore_plan_rest_required_fields(
 
             response = client.get_restore_plan(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -12878,7 +12880,7 @@ def test_update_restore_plan_rest_required_fields(
 
             response = client.update_restore_plan(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -13203,7 +13205,7 @@ def test_delete_restore_plan_rest_required_fields(
 
             response = client.delete_restore_plan(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -13543,6 +13545,7 @@ def test_create_restore_rest_required_fields(
                     "restoreId",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -13886,7 +13889,7 @@ def test_list_restores_rest_required_fields(request_type=gkebackup.ListRestoresR
 
             response = client.list_restores(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -14243,7 +14246,7 @@ def test_get_restore_rest_required_fields(request_type=gkebackup.GetRestoreReque
 
             response = client.get_restore(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -14559,7 +14562,7 @@ def test_update_restore_rest_required_fields(
 
             response = client.update_restore(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -14891,7 +14894,7 @@ def test_delete_restore_rest_required_fields(
 
             response = client.delete_restore(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -15181,7 +15184,7 @@ def test_list_volume_restores_rest_required_fields(
 
             response = client.list_volume_restores(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -15538,7 +15541,7 @@ def test_get_volume_restore_rest_required_fields(
 
             response = client.get_volume_restore(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
