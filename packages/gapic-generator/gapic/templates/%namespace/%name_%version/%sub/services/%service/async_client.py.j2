@@ -6,10 +6,12 @@ from collections import OrderedDict
 import functools
 import re
 from typing import Dict, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}AsyncIterable, Awaitable, {% endif %}{% if service.any_client_streaming %}AsyncIterator, {% endif %}Sequence, Tuple, Type, Union
-import pkg_resources
 {% if service.any_deprecated %}
 import warnings
 {% endif %}
+
+{% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
+from {{package_path}} import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -676,14 +678,7 @@ class {{ service.async_client_name }}:
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "{{ api.naming.warehouse_package_name }}",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 
 __all__ = (

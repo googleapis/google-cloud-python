@@ -86,7 +86,6 @@ def mypy(session):
     """Run the type checker."""
     session.install(
         'mypy',
-        'types-pkg_resources',
         'types-requests',
         'types-protobuf'
     )
