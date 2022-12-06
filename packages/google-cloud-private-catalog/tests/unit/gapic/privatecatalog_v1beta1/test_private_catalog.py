@@ -1835,7 +1835,7 @@ def test_search_catalogs_rest_required_fields(
 
             response = client.search_catalogs(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2121,7 +2121,7 @@ def test_search_products_rest_required_fields(
 
             response = client.search_products(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2419,6 +2419,7 @@ def test_search_versions_rest_required_fields(
                     "query",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
