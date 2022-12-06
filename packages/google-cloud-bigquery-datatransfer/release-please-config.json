@@ -4,6 +4,7 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/cloud/bigquery_datatransfer_v1/gapic_version.py",
         "google/cloud/bigquery_datatransfer/gapic_version.py",
         {
           "type": "json",

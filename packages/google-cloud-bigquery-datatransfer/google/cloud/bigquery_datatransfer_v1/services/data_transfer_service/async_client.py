@@ -35,7 +35,8 @@ from google.api_core import retry as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.bigquery_datatransfer_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -237,7 +238,7 @@ class DataTransferServiceAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datatransfer.DataSource:
         r"""Retrieves a supported data source and returns its
@@ -352,7 +353,7 @@ class DataTransferServiceAsyncClient:
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDataSourcesAsyncPager:
         r"""Lists supported data sources and returns their
@@ -481,7 +482,7 @@ class DataTransferServiceAsyncClient:
         parent: Optional[str] = None,
         transfer_config: Optional[transfer.TransferConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer.TransferConfig:
         r"""Creates a new data transfer configuration.
@@ -613,7 +614,7 @@ class DataTransferServiceAsyncClient:
         transfer_config: Optional[transfer.TransferConfig] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer.TransferConfig:
         r"""Updates a data transfer configuration.
@@ -737,7 +738,7 @@ class DataTransferServiceAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a data transfer configuration, including any
@@ -841,7 +842,7 @@ class DataTransferServiceAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer.TransferConfig:
         r"""Returns information about a data transfer config.
@@ -961,7 +962,7 @@ class DataTransferServiceAsyncClient:
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransferConfigsAsyncPager:
         r"""Returns information about all transfer configs owned
@@ -1090,7 +1091,7 @@ class DataTransferServiceAsyncClient:
         start_time: Optional[timestamp_pb2.Timestamp] = None,
         end_time: Optional[timestamp_pb2.Timestamp] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datatransfer.ScheduleTransferRunsResponse:
         r"""Creates transfer runs for a time range [start_time, end_time].
@@ -1221,7 +1222,7 @@ class DataTransferServiceAsyncClient:
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datatransfer.StartManualTransferRunsResponse:
         r"""Start manual transfer runs to be executed now with schedule_time
@@ -1304,7 +1305,7 @@ class DataTransferServiceAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer.TransferRun:
         r"""Returns information about the particular transfer
@@ -1418,7 +1419,7 @@ class DataTransferServiceAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified transfer run.
@@ -1521,7 +1522,7 @@ class DataTransferServiceAsyncClient:
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransferRunsAsyncPager:
         r"""Returns information about running and completed
@@ -1650,7 +1651,7 @@ class DataTransferServiceAsyncClient:
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransferLogsAsyncPager:
         r"""Returns log messages for the transfer run.
@@ -1777,7 +1778,7 @@ class DataTransferServiceAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datatransfer.CheckValidCredsResponse:
         r"""Returns true if valid credentials exist for the given
@@ -1897,7 +1898,7 @@ class DataTransferServiceAsyncClient:
         request: Optional[Union[datatransfer.EnrollDataSourcesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Enroll data sources in a user project. This allows users to
@@ -1975,14 +1976,9 @@ class DataTransferServiceAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-bigquery-datatransfer",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("DataTransferServiceAsyncClient",)
