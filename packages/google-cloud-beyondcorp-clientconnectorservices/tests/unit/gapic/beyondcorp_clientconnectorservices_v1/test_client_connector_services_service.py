@@ -2460,7 +2460,7 @@ def test_list_client_connector_services_rest_required_fields(
 
             response = client.list_client_connector_services(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2835,7 +2835,7 @@ def test_get_client_connector_service_rest_required_fields(
 
             response = client.get_client_connector_service(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3135,7 +3135,7 @@ def test_create_client_connector_service_rest_required_fields(
 
             response = client.create_client_connector_service(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3470,7 +3470,7 @@ def test_update_client_connector_service_rest_required_fields(
 
             response = client.update_client_connector_service(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3796,7 +3796,7 @@ def test_delete_client_connector_service_rest_required_fields(
 
             response = client.delete_client_connector_service(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
