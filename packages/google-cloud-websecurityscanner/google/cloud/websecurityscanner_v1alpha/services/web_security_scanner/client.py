@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.websecurityscanner_v1alpha import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -509,7 +510,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         parent: Optional[str] = None,
         scan_config: Optional[gcw_scan_config.ScanConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcw_scan_config.ScanConfig:
         r"""Creates a new ScanConfig.
@@ -630,7 +631,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an existing ScanConfig and its child
@@ -725,7 +726,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> scan_config.ScanConfig:
         r"""Gets a ScanConfig.
@@ -832,7 +833,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListScanConfigsPager:
         r"""Lists ScanConfigs under a given project.
@@ -950,7 +951,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         scan_config: Optional[gcw_scan_config.ScanConfig] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcw_scan_config.ScanConfig:
         r"""Updates a ScanConfig. This method support partial
@@ -1073,7 +1074,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> scan_run.ScanRun:
         r"""Start a ScanRun according to the given ScanConfig.
@@ -1177,7 +1178,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> scan_run.ScanRun:
         r"""Gets a ScanRun.
@@ -1280,7 +1281,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListScanRunsPager:
         r"""Lists ScanRuns under a given ScanConfig, in
@@ -1397,7 +1398,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> scan_run.ScanRun:
         r"""Stops a ScanRun. The stopped ScanRun is returned.
@@ -1503,7 +1504,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCrawledUrlsPager:
         r"""List CrawledUrls under a given ScanRun.
@@ -1619,7 +1620,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> finding.Finding:
         r"""Gets a Finding.
@@ -1724,7 +1725,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         parent: Optional[str] = None,
         filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListFindingsPager:
         r"""List Findings under a given ScanRun.
@@ -1853,7 +1854,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> web_security_scanner.ListFindingTypeStatsResponse:
         r"""List all FindingTypeStats under a given ScanRun.
@@ -1963,14 +1964,9 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-websecurityscanner",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("WebSecurityScannerClient",)
