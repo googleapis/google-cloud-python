@@ -1,0 +1,493 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.vmwareengine_v1",
+  "protoPackage": "google.cloud.vmwareengine.v1",
+  "schema": "1.0",
+  "services": {
+    "VmwareEngine": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "VmwareEngineClient",
+          "rpcs": {
+            "CreateCluster": {
+              "methods": [
+                "create_cluster"
+              ]
+            },
+            "CreateHcxActivationKey": {
+              "methods": [
+                "create_hcx_activation_key"
+              ]
+            },
+            "CreateNetworkPolicy": {
+              "methods": [
+                "create_network_policy"
+              ]
+            },
+            "CreatePrivateCloud": {
+              "methods": [
+                "create_private_cloud"
+              ]
+            },
+            "CreateVmwareEngineNetwork": {
+              "methods": [
+                "create_vmware_engine_network"
+              ]
+            },
+            "DeleteCluster": {
+              "methods": [
+                "delete_cluster"
+              ]
+            },
+            "DeleteNetworkPolicy": {
+              "methods": [
+                "delete_network_policy"
+              ]
+            },
+            "DeletePrivateCloud": {
+              "methods": [
+                "delete_private_cloud"
+              ]
+            },
+            "DeleteVmwareEngineNetwork": {
+              "methods": [
+                "delete_vmware_engine_network"
+              ]
+            },
+            "GetCluster": {
+              "methods": [
+                "get_cluster"
+              ]
+            },
+            "GetHcxActivationKey": {
+              "methods": [
+                "get_hcx_activation_key"
+              ]
+            },
+            "GetNetworkPolicy": {
+              "methods": [
+                "get_network_policy"
+              ]
+            },
+            "GetNodeType": {
+              "methods": [
+                "get_node_type"
+              ]
+            },
+            "GetPrivateCloud": {
+              "methods": [
+                "get_private_cloud"
+              ]
+            },
+            "GetVmwareEngineNetwork": {
+              "methods": [
+                "get_vmware_engine_network"
+              ]
+            },
+            "ListClusters": {
+              "methods": [
+                "list_clusters"
+              ]
+            },
+            "ListHcxActivationKeys": {
+              "methods": [
+                "list_hcx_activation_keys"
+              ]
+            },
+            "ListNetworkPolicies": {
+              "methods": [
+                "list_network_policies"
+              ]
+            },
+            "ListNodeTypes": {
+              "methods": [
+                "list_node_types"
+              ]
+            },
+            "ListPrivateClouds": {
+              "methods": [
+                "list_private_clouds"
+              ]
+            },
+            "ListSubnets": {
+              "methods": [
+                "list_subnets"
+              ]
+            },
+            "ListVmwareEngineNetworks": {
+              "methods": [
+                "list_vmware_engine_networks"
+              ]
+            },
+            "ResetNsxCredentials": {
+              "methods": [
+                "reset_nsx_credentials"
+              ]
+            },
+            "ResetVcenterCredentials": {
+              "methods": [
+                "reset_vcenter_credentials"
+              ]
+            },
+            "ShowNsxCredentials": {
+              "methods": [
+                "show_nsx_credentials"
+              ]
+            },
+            "ShowVcenterCredentials": {
+              "methods": [
+                "show_vcenter_credentials"
+              ]
+            },
+            "UndeletePrivateCloud": {
+              "methods": [
+                "undelete_private_cloud"
+              ]
+            },
+            "UpdateCluster": {
+              "methods": [
+                "update_cluster"
+              ]
+            },
+            "UpdateNetworkPolicy": {
+              "methods": [
+                "update_network_policy"
+              ]
+            },
+            "UpdatePrivateCloud": {
+              "methods": [
+                "update_private_cloud"
+              ]
+            },
+            "UpdateVmwareEngineNetwork": {
+              "methods": [
+                "update_vmware_engine_network"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "VmwareEngineAsyncClient",
+          "rpcs": {
+            "CreateCluster": {
+              "methods": [
+                "create_cluster"
+              ]
+            },
+            "CreateHcxActivationKey": {
+              "methods": [
+                "create_hcx_activation_key"
+              ]
+            },
+            "CreateNetworkPolicy": {
+              "methods": [
+                "create_network_policy"
+              ]
+            },
+            "CreatePrivateCloud": {
+              "methods": [
+                "create_private_cloud"
+              ]
+            },
+            "CreateVmwareEngineNetwork": {
+              "methods": [
+                "create_vmware_engine_network"
+              ]
+            },
+            "DeleteCluster": {
+              "methods": [
+                "delete_cluster"
+              ]
+            },
+            "DeleteNetworkPolicy": {
+              "methods": [
+                "delete_network_policy"
+              ]
+            },
+            "DeletePrivateCloud": {
+              "methods": [
+                "delete_private_cloud"
+              ]
+            },
+            "DeleteVmwareEngineNetwork": {
+              "methods": [
+                "delete_vmware_engine_network"
+              ]
+            },
+            "GetCluster": {
+              "methods": [
+                "get_cluster"
+              ]
+            },
+            "GetHcxActivationKey": {
+              "methods": [
+                "get_hcx_activation_key"
+              ]
+            },
+            "GetNetworkPolicy": {
+              "methods": [
+                "get_network_policy"
+              ]
+            },
+            "GetNodeType": {
+              "methods": [
+                "get_node_type"
+              ]
+            },
+            "GetPrivateCloud": {
+              "methods": [
+                "get_private_cloud"
+              ]
+            },
+            "GetVmwareEngineNetwork": {
+              "methods": [
+                "get_vmware_engine_network"
+              ]
+            },
+            "ListClusters": {
+              "methods": [
+                "list_clusters"
+              ]
+            },
+            "ListHcxActivationKeys": {
+              "methods": [
+                "list_hcx_activation_keys"
+              ]
+            },
+            "ListNetworkPolicies": {
+              "methods": [
+                "list_network_policies"
+              ]
+            },
+            "ListNodeTypes": {
+              "methods": [
+                "list_node_types"
+              ]
+            },
+            "ListPrivateClouds": {
+              "methods": [
+                "list_private_clouds"
+              ]
+            },
+            "ListSubnets": {
+              "methods": [
+                "list_subnets"
+              ]
+            },
+            "ListVmwareEngineNetworks": {
+              "methods": [
+                "list_vmware_engine_networks"
+              ]
+            },
+            "ResetNsxCredentials": {
+              "methods": [
+                "reset_nsx_credentials"
+              ]
+            },
+            "ResetVcenterCredentials": {
+              "methods": [
+                "reset_vcenter_credentials"
+              ]
+            },
+            "ShowNsxCredentials": {
+              "methods": [
+                "show_nsx_credentials"
+              ]
+            },
+            "ShowVcenterCredentials": {
+              "methods": [
+                "show_vcenter_credentials"
+              ]
+            },
+            "UndeletePrivateCloud": {
+              "methods": [
+                "undelete_private_cloud"
+              ]
+            },
+            "UpdateCluster": {
+              "methods": [
+                "update_cluster"
+              ]
+            },
+            "UpdateNetworkPolicy": {
+              "methods": [
+                "update_network_policy"
+              ]
+            },
+            "UpdatePrivateCloud": {
+              "methods": [
+                "update_private_cloud"
+              ]
+            },
+            "UpdateVmwareEngineNetwork": {
+              "methods": [
+                "update_vmware_engine_network"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "VmwareEngineClient",
+          "rpcs": {
+            "CreateCluster": {
+              "methods": [
+                "create_cluster"
+              ]
+            },
+            "CreateHcxActivationKey": {
+              "methods": [
+                "create_hcx_activation_key"
+              ]
+            },
+            "CreateNetworkPolicy": {
+              "methods": [
+                "create_network_policy"
+              ]
+            },
+            "CreatePrivateCloud": {
+              "methods": [
+                "create_private_cloud"
+              ]
+            },
+            "CreateVmwareEngineNetwork": {
+              "methods": [
+                "create_vmware_engine_network"
+              ]
+            },
+            "DeleteCluster": {
+              "methods": [
+                "delete_cluster"
+              ]
+            },
+            "DeleteNetworkPolicy": {
+              "methods": [
+                "delete_network_policy"
+              ]
+            },
+            "DeletePrivateCloud": {
+              "methods": [
+                "delete_private_cloud"
+              ]
+            },
+            "DeleteVmwareEngineNetwork": {
+              "methods": [
+                "delete_vmware_engine_network"
+              ]
+            },
+            "GetCluster": {
+              "methods": [
+                "get_cluster"
+              ]
+            },
+            "GetHcxActivationKey": {
+              "methods": [
+                "get_hcx_activation_key"
+              ]
+            },
+            "GetNetworkPolicy": {
+              "methods": [
+                "get_network_policy"
+              ]
+            },
+            "GetNodeType": {
+              "methods": [
+                "get_node_type"
+              ]
+            },
+            "GetPrivateCloud": {
+              "methods": [
+                "get_private_cloud"
+              ]
+            },
+            "GetVmwareEngineNetwork": {
+              "methods": [
+                "get_vmware_engine_network"
+              ]
+            },
+            "ListClusters": {
+              "methods": [
+                "list_clusters"
+              ]
+            },
+            "ListHcxActivationKeys": {
+              "methods": [
+                "list_hcx_activation_keys"
+              ]
+            },
+            "ListNetworkPolicies": {
+              "methods": [
+                "list_network_policies"
+              ]
+            },
+            "ListNodeTypes": {
+              "methods": [
+                "list_node_types"
+              ]
+            },
+            "ListPrivateClouds": {
+              "methods": [
+                "list_private_clouds"
+              ]
+            },
+            "ListSubnets": {
+              "methods": [
+                "list_subnets"
+              ]
+            },
+            "ListVmwareEngineNetworks": {
+              "methods": [
+                "list_vmware_engine_networks"
+              ]
+            },
+            "ResetNsxCredentials": {
+              "methods": [
+                "reset_nsx_credentials"
+              ]
+            },
+            "ResetVcenterCredentials": {
+              "methods": [
+                "reset_vcenter_credentials"
+              ]
+            },
+            "ShowNsxCredentials": {
+              "methods": [
+                "show_nsx_credentials"
+              ]
+            },
+            "ShowVcenterCredentials": {
+              "methods": [
+                "show_vcenter_credentials"
+              ]
+            },
+            "UndeletePrivateCloud": {
+              "methods": [
+                "undelete_private_cloud"
+              ]
+            },
+            "UpdateCluster": {
+              "methods": [
+                "update_cluster"
+              ]
+            },
+            "UpdateNetworkPolicy": {
+              "methods": [
+                "update_network_policy"
+              ]
+            },
+            "UpdatePrivateCloud": {
+              "methods": [
+                "update_private_cloud"
+              ]
+            },
+            "UpdateVmwareEngineNetwork": {
+              "methods": [
+                "update_vmware_engine_network"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
