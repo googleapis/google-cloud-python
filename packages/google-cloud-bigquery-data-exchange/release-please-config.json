@@ -5,6 +5,8 @@
       "release-type": "python",
       "extra-files": [
         "google/cloud/bigquery_data_exchange/gapic_version.py",
+        "google/cloud/bigquery_data_exchange_v1beta1/gapic_version.py",
+        "google/cloud/bigquery_data_exchange_v1beta1/common/gapic_version.py",
         {
           "type": "json",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.dataexchange.v1beta1.json",
