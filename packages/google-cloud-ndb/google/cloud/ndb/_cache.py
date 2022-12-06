@@ -738,4 +738,4 @@ def global_cache_key(key):
     Returns:
         bytes: The cache key.
     """
-    return _PREFIX + key.to_protobuf().SerializeToString()
+    return _PREFIX + key.to_protobuf()._pb.SerializeToString()

@@ -22,9 +22,9 @@ import os
 
 from google.cloud import environment_vars
 
-from google.cloud.datastore_v1.proto import datastore_pb2
-from google.cloud.datastore_v1.proto import entity_pb2
-from google.cloud.datastore_v1.proto import query_pb2
+from google.cloud.datastore_v1.types import datastore as datastore_pb2
+from google.cloud.datastore_v1.types import entity as entity_pb2
+from google.cloud.datastore_v1.types import query as query_pb2
 from google.cloud.datastore import helpers, Key
 
 from google.cloud.ndb import context as context_module
@@ -38,24 +38,24 @@ from google.cloud.ndb import utils
 log = logging.getLogger(__name__)
 
 MoreResultsType = query_pb2.QueryResultBatch.MoreResultsType
-NO_MORE_RESULTS = MoreResultsType.Value("NO_MORE_RESULTS")
-NOT_FINISHED = MoreResultsType.Value("NOT_FINISHED")
-MORE_RESULTS_AFTER_LIMIT = MoreResultsType.Value("MORE_RESULTS_AFTER_LIMIT")
+NO_MORE_RESULTS = MoreResultsType.NO_MORE_RESULTS
+NOT_FINISHED = MoreResultsType.NOT_FINISHED
+MORE_RESULTS_AFTER_LIMIT = MoreResultsType.MORE_RESULTS_AFTER_LIMIT
 
 ResultType = query_pb2.EntityResult.ResultType
-RESULT_TYPE_FULL = ResultType.Value("FULL")
-RESULT_TYPE_KEY_ONLY = ResultType.Value("KEY_ONLY")
-RESULT_TYPE_PROJECTION = ResultType.Value("PROJECTION")
+RESULT_TYPE_FULL = ResultType.FULL
+RESULT_TYPE_KEY_ONLY = ResultType.KEY_ONLY
+RESULT_TYPE_PROJECTION = ResultType.PROJECTION
 
-DOWN = query_pb2.PropertyOrder.DESCENDING
-UP = query_pb2.PropertyOrder.ASCENDING
+DOWN = query_pb2.PropertyOrder.Direction.DESCENDING
+UP = query_pb2.PropertyOrder.Direction.ASCENDING
 
 FILTER_OPERATORS = {
-    "=": query_pb2.PropertyFilter.EQUAL,
-    "<": query_pb2.PropertyFilter.LESS_THAN,
-    "<=": query_pb2.PropertyFilter.LESS_THAN_OR_EQUAL,
-    ">": query_pb2.PropertyFilter.GREATER_THAN,
-    ">=": query_pb2.PropertyFilter.GREATER_THAN_OR_EQUAL,
+    "=": query_pb2.PropertyFilter.Operator.EQUAL,
+    "<": query_pb2.PropertyFilter.Operator.LESS_THAN,
+    "<=": query_pb2.PropertyFilter.Operator.LESS_THAN_OR_EQUAL,
+    ">": query_pb2.PropertyFilter.Operator.GREATER_THAN,
+    ">=": query_pb2.PropertyFilter.Operator.GREATER_THAN_OR_EQUAL,
 }
 
 _KEY_NOT_IN_CACHE = object()
@@ -77,7 +77,7 @@ def make_filter(name, op, value):
         property=query_pb2.PropertyReference(name=name),
         op=FILTER_OPERATORS[op],
     )
-    helpers._set_protobuf_value(filter_pb.value, value)
+    helpers._set_protobuf_value(filter_pb.value._pb, value)
     return filter_pb
 
 
@@ -92,7 +92,7 @@ def make_composite_and_filter(filter_pbs):
         query_pb2.CompositeFilter: The new composite filter.
     """
     return query_pb2.CompositeFilter(
-        op=query_pb2.CompositeFilter.AND,
+        op=query_pb2.CompositeFilter.Operator.AND,
         filters=[_filter_pb(filter_pb) for filter_pb in filter_pbs],
     )
 
@@ -683,7 +683,7 @@ class _MultiQueryIteratorImpl(QueryIterator):
                 next_result = result_sets[0].next()
 
             # Check to see if it's a duplicate
-            hash_key = next_result.result_pb.entity.key.SerializeToString()
+            hash_key = next_result.result_pb.entity.key._pb.SerializeToString()
             if hash_key in self._seen_keys:
                 continue
 
@@ -811,9 +811,9 @@ class _Result(object):
                 ).flat_path
             else:
                 this_value_pb = self.result_pb.entity.properties[order.name]
-                this_value = helpers._get_value_from_value_pb(this_value_pb)
+                this_value = helpers._get_value_from_value_pb(this_value_pb._pb)
                 other_value_pb = other.result_pb.entity.properties[order.name]
-                other_value = helpers._get_value_from_value_pb(other_value_pb)
+                other_value = helpers._get_value_from_value_pb(other_value_pb._pb)
 
                 # Compare key paths if ordering by key property
                 if isinstance(this_value, Key):
@@ -935,19 +935,19 @@ def _query_to_protobuf(query):
         ancestor_pb = query.ancestor._key.to_protobuf()
         ancestor_filter_pb = query_pb2.PropertyFilter(
             property=query_pb2.PropertyReference(name="__key__"),
-            op=query_pb2.PropertyFilter.HAS_ANCESTOR,
+            op=query_pb2.PropertyFilter.Operator.HAS_ANCESTOR,
         )
-        ancestor_filter_pb.value.key_value.CopyFrom(ancestor_pb)
+        ancestor_filter_pb.value.key_value._pb.CopyFrom(ancestor_pb._pb)
 
         if filter_pb is None:
             filter_pb = ancestor_filter_pb
 
         elif isinstance(filter_pb, query_pb2.CompositeFilter):
-            filter_pb.filters.add(property_filter=ancestor_filter_pb)
+            filter_pb.filters._pb.add(property_filter=ancestor_filter_pb._pb)
 
         else:
             filter_pb = query_pb2.CompositeFilter(
-                op=query_pb2.CompositeFilter.AND,
+                op=query_pb2.CompositeFilter.Operator.AND,
                 filters=[
                     _filter_pb(filter_pb),
                     _filter_pb(ancestor_filter_pb),
@@ -969,7 +969,7 @@ def _query_to_protobuf(query):
         query_pb.offset = query.offset
 
     if query.limit:
-        query_pb.limit.value = query.limit
+        query_pb._pb.limit.value = query.limit
 
     return query_pb
 
@@ -1016,7 +1016,7 @@ def _datastore_run_query(query):
         read_options=read_options,
     )
     response = yield _datastore_api.make_call(
-        "RunQuery", request, timeout=query.timeout
+        "run_query", request, timeout=query.timeout
     )
     utils.logging_debug(log, response)
     raise tasklets.Return(response)

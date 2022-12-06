@@ -5,7 +5,8 @@
 #
 # e.g., if setup.py has "foo >= 1.14.0, < 2.0.0dev",
 # Then this file should have foo==1.14.0
-google-cloud-datastore==1.7.0
+google-cloud-datastore==2.7.2
+protobuf==3.19.5
 pymemcache==2.1.0
 redis==3.0.0
 pytz==2018.3

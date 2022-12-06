@@ -29,7 +29,7 @@ from google.cloud.datastore import entity as entity_module
 from google.cloud.datastore import key as ds_key_module
 from google.cloud.datastore import helpers
 from google.cloud.datastore_v1 import types as ds_types
-from google.cloud.datastore_v1.proto import entity_pb2
+from google.cloud.datastore_v1.types import entity as entity_pb2
 import pytest
 
 from google.cloud.ndb import _datastore_types
@@ -3627,7 +3627,7 @@ class TestLocalStructuredProperty:
         prop = model.LocalStructuredProperty(Simple, name="ent")
         value = Simple()
         entity = entity_module.Entity()
-        pb = helpers.entity_to_protobuf(entity)
+        pb = helpers.entity_to_protobuf(entity)._pb
         expected = pb.SerializePartialToString()
         assert prop._to_base_type(value) == expected
 
@@ -3657,7 +3657,7 @@ class TestLocalStructuredProperty:
             pass
 
         prop = model.LocalStructuredProperty(Simple, name="ent")
-        pb = helpers.entity_to_protobuf(entity_module.Entity())
+        pb = helpers.entity_to_protobuf(entity_module.Entity())._pb
         value = pb.SerializePartialToString()
         expected = Simple()
         assert prop._from_base_type(value) == expected
@@ -3722,7 +3722,7 @@ class TestLocalStructuredProperty:
 
         entity = SomeKind(foo=[SubKind(bar="baz")])
         data = {"_exclude_from_indexes": []}
-        protobuf = model._entity_to_protobuf(entity.foo[0], set_key=False)
+        protobuf = model._entity_to_protobuf(entity.foo[0], set_key=False)._pb
         protobuf = protobuf.SerializePartialToString()
         assert SomeKind.foo._to_datastore(entity, data, repeated=True) == ("foo",)
         assert data.pop("_exclude_from_indexes") == ["foo"]
@@ -3871,7 +3871,7 @@ class TestLocalStructuredProperty:
         assert child.foo == "bar"
 
         pb = entity_pb2.Entity()
-        pb.MergeFromString(value)
+        pb._pb.MergeFromString(value)
         value = helpers.entity_from_protobuf(pb)
         child = model._entity_from_ds_entity(value, model_class=Base)
         assert child._values["foo"].b_val == "bar"

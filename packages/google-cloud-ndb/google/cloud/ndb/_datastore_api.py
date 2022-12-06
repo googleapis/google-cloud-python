@@ -20,8 +20,8 @@ import logging
 
 from google.api_core import exceptions as core_exceptions
 from google.cloud.datastore import helpers
-from google.cloud.datastore_v1.proto import datastore_pb2
-from google.cloud.datastore_v1.proto import entity_pb2
+from google.cloud.datastore_v1.types import datastore as datastore_pb2
+from google.cloud.datastore_v1.types import entity as entity_pb2
 
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _batch
@@ -33,9 +33,9 @@ from google.cloud.ndb import _retry
 from google.cloud.ndb import tasklets
 from google.cloud.ndb import utils
 
-EVENTUAL = datastore_pb2.ReadOptions.EVENTUAL
+EVENTUAL = datastore_pb2.ReadOptions.ReadConsistency.EVENTUAL
 EVENTUAL_CONSISTENCY = EVENTUAL  # Legacy NDB
-STRONG = datastore_pb2.ReadOptions.STRONG
+STRONG = datastore_pb2.ReadOptions.ReadConsistency.STRONG
 
 _DEFAULT_TIMEOUT = None
 _NOT_FOUND = object()
@@ -144,7 +144,7 @@ def lookup(key, options):
         if not key_locked:
             if result:
                 entity_pb = entity_pb2.Entity()
-                entity_pb.MergeFromString(result)
+                entity_pb._pb.MergeFromString(result)
 
             elif use_datastore:
                 lock = yield _cache.global_lock_for_read(cache_key, result)
@@ -165,7 +165,7 @@ def lookup(key, options):
         if use_global_cache and not key_locked:
             if entity_pb is not _NOT_FOUND:
                 expires = context._global_cache_timeout(key, options)
-                serialized = entity_pb.SerializeToString()
+                serialized = entity_pb._pb.SerializeToString()
                 yield _cache.global_compare_and_swap(
                     cache_key, serialized, expires=expires
                 )
@@ -211,7 +211,7 @@ class _LookupBatch(object):
         Returns:
             tasklets.Future: A future for the eventual result.
         """
-        todo_key = key.to_protobuf().SerializeToString()
+        todo_key = key.to_protobuf()._pb.SerializeToString()
         future = tasklets.Future(info="Lookup({})".format(key))
         self.todo.setdefault(todo_key, []).append(future)
         return future
@@ -221,7 +221,7 @@ class _LookupBatch(object):
         keys = []
         for todo_key in self.todo.keys():
             key_pb = entity_pb2.Key()
-            key_pb.ParseFromString(todo_key)
+            key_pb._pb.ParseFromString(todo_key)
             keys.append(key_pb)
 
         read_options = get_read_options(self.options)
@@ -264,20 +264,20 @@ class _LookupBatch(object):
         if results.deferred:
             next_batch = _batch.get_batch(type(self), self.options)
             for key in results.deferred:
-                todo_key = key.SerializeToString()
+                todo_key = key._pb.SerializeToString()
                 next_batch.todo.setdefault(todo_key, []).extend(self.todo[todo_key])
 
         # For all missing keys, set result to _NOT_FOUND and let callers decide
         # how to handle
         for result in results.missing:
-            todo_key = result.entity.key.SerializeToString()
+            todo_key = result.entity.key._pb.SerializeToString()
             for future in self.todo[todo_key]:
                 future.set_result(_NOT_FOUND)
 
         # For all found entities, set the result on their corresponding futures
         for result in results.found:
             entity = result.entity
-            todo_key = entity.key.SerializeToString()
+            todo_key = entity.key._pb.SerializeToString()
             for future in self.todo[todo_key]:
                 future.set_result(entity)
 
@@ -306,7 +306,7 @@ def _datastore_lookup(keys, read_options, retries=None, timeout=None):
         read_options=read_options,
     )
 
-    return make_call("Lookup", request, retries=retries, timeout=timeout)
+    return make_call("lookup", request, retries=retries, timeout=timeout)
 
 
 def get_read_options(options, default_read_consistency=None):
@@ -375,7 +375,7 @@ def put(entity, options):
             lock = yield _cache.global_lock_for_write(cache_key)
         else:
             expires = context._global_cache_timeout(entity.key, options)
-            cache_value = entity_pb.SerializeToString()
+            cache_value = entity_pb._pb.SerializeToString()
             yield _cache.global_set(cache_key, cache_value, expires=expires)
 
     if use_datastore:
@@ -725,7 +725,7 @@ class _TransactionalCommitBatch(_NonTransactionalCommitBatch):
         # Update mutations with complete keys
         response = rpc.result()
         for mutation, key, future in zip(mutations, response.keys, futures):
-            mutation.upsert.key.CopyFrom(key)
+            mutation.upsert.key._pb.CopyFrom(key._pb)
             future.set_result(key)
 
     @tasklets.tasklet
@@ -863,9 +863,9 @@ def _datastore_commit(mutations, transaction, retries=None, timeout=None):
             :class:`google.cloud.datastore_v1.datastore_pb2.CommitResponse`
     """
     if transaction is None:
-        mode = datastore_pb2.CommitRequest.NON_TRANSACTIONAL
+        mode = datastore_pb2.CommitRequest.Mode.NON_TRANSACTIONAL
     else:
-        mode = datastore_pb2.CommitRequest.TRANSACTIONAL
+        mode = datastore_pb2.CommitRequest.Mode.TRANSACTIONAL
 
     client = context_module.get_context().client
     request = datastore_pb2.CommitRequest(
@@ -875,7 +875,7 @@ def _datastore_commit(mutations, transaction, retries=None, timeout=None):
         transaction=transaction,
     )
 
-    return make_call("Commit", request, retries=retries, timeout=timeout)
+    return make_call("commit", request, retries=retries, timeout=timeout)
 
 
 def allocate(keys, options):
@@ -992,7 +992,7 @@ def _datastore_allocate_ids(keys, retries=None, timeout=None):
     client = context_module.get_context().client
     request = datastore_pb2.AllocateIdsRequest(project_id=client.project, keys=keys)
 
-    return make_call("AllocateIds", request, retries=retries, timeout=timeout)
+    return make_call("allocate_ids", request, retries=retries, timeout=timeout)
 
 
 @tasklets.tasklet
@@ -1048,7 +1048,7 @@ def _datastore_begin_transaction(read_only, retries=None, timeout=None):
         project_id=client.project, transaction_options=options
     )
 
-    return make_call("BeginTransaction", request, retries=retries, timeout=timeout)
+    return make_call("begin_transaction", request, retries=retries, timeout=timeout)
 
 
 @tasklets.tasklet
@@ -1089,4 +1089,4 @@ def _datastore_rollback(transaction, retries=None, timeout=None):
         project_id=client.project, transaction=transaction
     )
 
-    return make_call("Rollback", request, retries=retries, timeout=timeout)
+    return make_call("rollback", request, retries=retries, timeout=timeout)

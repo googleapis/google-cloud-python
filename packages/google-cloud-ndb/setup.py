@@ -24,7 +24,8 @@ def main():
     with io.open(readme_filename, encoding="utf-8") as readme_file:
         readme = readme_file.read()
     dependencies = [
-        "google-cloud-datastore >= 1.7.0, < 2.0.0dev",
+        "google-cloud-datastore >= 2.7.2, <3.0.0dev",
+        "protobuf >= 3.19.5, <5.0.0dev,!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
         "pymemcache >= 2.1.0, < 5.0.0dev",
         "redis >= 3.0.0, < 5.0.0dev",
         "pytz >= 2018.3"

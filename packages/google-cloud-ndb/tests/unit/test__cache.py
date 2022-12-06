@@ -1134,10 +1134,10 @@ def test_is_locked_value():
 
 def test_global_cache_key():
     key = mock.Mock()
-    key.to_protobuf.return_value.SerializeToString.return_value = b"himom!"
+    key.to_protobuf.return_value._pb.SerializeToString.return_value = b"himom!"
     assert _cache.global_cache_key(key) == _cache._PREFIX + b"himom!"
     key.to_protobuf.assert_called_once_with()
-    key.to_protobuf.return_value.SerializeToString.assert_called_once_with()
+    key.to_protobuf.return_value._pb.SerializeToString.assert_called_once_with()
 
 
 def _future_result(result):

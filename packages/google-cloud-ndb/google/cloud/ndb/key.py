@@ -204,7 +204,7 @@ class Key(object):
         >>> reference
         app: "example"
         path {
-          Element {
+          element {
             type: "Kind"
             id: 1337
           }
@@ -681,13 +681,13 @@ class Key(object):
             >>> key = ndb.Key("Trampoline", 88, project="xy", namespace="zt")
             >>> key.reference()
             app: "xy"
+            name_space: "zt"
             path {
-              Element {
+              element {
                 type: "Trampoline"
                 id: 88
               }
             }
-            name_space: "zt"
             <BLANKLINE>
         """
         if self._reference is None:

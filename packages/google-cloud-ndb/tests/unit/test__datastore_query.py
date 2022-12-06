@@ -21,9 +21,9 @@ except ImportError:  # pragma: NO PY3 COVER
 
 import pytest
 
-from google.cloud.datastore_v1.proto import datastore_pb2
-from google.cloud.datastore_v1.proto import entity_pb2
-from google.cloud.datastore_v1.proto import query_pb2
+from google.cloud.datastore_v1.types import datastore as datastore_pb2
+from google.cloud.datastore_v1.types import entity as entity_pb2
+from google.cloud.datastore_v1.types import query as query_pb2
 
 from google.cloud.ndb import _datastore_query
 from google.cloud.ndb import context as context_module
@@ -39,7 +39,7 @@ from . import utils
 def test_make_filter():
     expected = query_pb2.PropertyFilter(
         property=query_pb2.PropertyReference(name="harry"),
-        op=query_pb2.PropertyFilter.EQUAL,
+        op=query_pb2.PropertyFilter.Operator.EQUAL,
         value=entity_pb2.Value(string_value="Harold"),
     )
     assert _datastore_query.make_filter("harry", "=", u"Harold") == expected
@@ -49,17 +49,17 @@ def test_make_composite_and_filter():
     filters = [
         query_pb2.PropertyFilter(
             property=query_pb2.PropertyReference(name="harry"),
-            op=query_pb2.PropertyFilter.EQUAL,
+            op=query_pb2.PropertyFilter.Operator.EQUAL,
             value=entity_pb2.Value(string_value="Harold"),
         ),
         query_pb2.PropertyFilter(
             property=query_pb2.PropertyReference(name="josie"),
-            op=query_pb2.PropertyFilter.EQUAL,
+            op=query_pb2.PropertyFilter.Operator.EQUAL,
             value=entity_pb2.Value(string_value="Josephine"),
         ),
     ]
     expected = query_pb2.CompositeFilter(
-        op=query_pb2.CompositeFilter.AND,
+        op=query_pb2.CompositeFilter.Operator.AND,
         filters=[
             query_pb2.Filter(property_filter=sub_filter) for sub_filter in filters
         ],
@@ -616,10 +616,10 @@ class Test_QueryIteratorImpl:
         _datastore_run_query.return_value = utils.future_result(
             mock.Mock(
                 batch=mock.Mock(
-                    entity_result_type=query_pb2.EntityResult.FULL,
+                    entity_result_type=query_pb2.EntityResult.ResultType.FULL,
                     entity_results=entity_results,
                     end_cursor=b"abc",
-                    more_results=query_pb2.QueryResultBatch.NO_MORE_RESULTS,
+                    more_results=query_pb2.QueryResultBatch.MoreResultsType.NO_MORE_RESULTS,
                 )
             )
         )
@@ -630,7 +630,7 @@ class Test_QueryIteratorImpl:
         assert iterator._index == 0
         assert len(iterator._batch) == 3
         assert iterator._batch[0].result_pb.entity == entity1
-        assert iterator._batch[0].result_type == query_pb2.EntityResult.FULL
+        assert iterator._batch[0].result_type == query_pb2.EntityResult.ResultType.FULL
         assert iterator._batch[0].order_by is None
         assert not iterator._has_next_batch
 
@@ -664,10 +664,10 @@ class Test_QueryIteratorImpl:
         _datastore_run_query.return_value = utils.future_result(
             mock.Mock(
                 batch=mock.Mock(
-                    entity_result_type=query_pb2.EntityResult.FULL,
+                    entity_result_type=query_pb2.EntityResult.ResultType.FULL,
                     entity_results=entity_results,
                     end_cursor=b"abc",
-                    more_results=query_pb2.QueryResultBatch.NO_MORE_RESULTS,
+                    more_results=query_pb2.QueryResultBatch.MoreResultsType.NO_MORE_RESULTS,
                 )
             )
         )
@@ -678,7 +678,7 @@ class Test_QueryIteratorImpl:
         assert iterator._index == 0
         assert len(iterator._batch) == 2
         assert iterator._batch[0].result_pb.entity == entity1
-        assert iterator._batch[0].result_type == query_pb2.EntityResult.FULL
+        assert iterator._batch[0].result_type == query_pb2.EntityResult.ResultType.FULL
         assert iterator._batch[0].order_by is None
         assert iterator._batch[1].result_pb.entity == entity3
         assert not iterator._has_next_batch
@@ -713,10 +713,10 @@ class Test_QueryIteratorImpl:
         _datastore_run_query.return_value = utils.future_result(
             mock.Mock(
                 batch=mock.Mock(
-                    entity_result_type=query_pb2.EntityResult.PROJECTION,
+                    entity_result_type=query_pb2.EntityResult.ResultType.PROJECTION,
                     entity_results=entity_results,
                     end_cursor=b"abc",
-                    more_results=query_pb2.QueryResultBatch.NOT_FINISHED,
+                    more_results=query_pb2.QueryResultBatch.MoreResultsType.NOT_FINISHED,
                 )
             )
         )
@@ -727,7 +727,10 @@ class Test_QueryIteratorImpl:
         assert iterator._index == 0
         assert len(iterator._batch) == 3
         assert iterator._batch[0].result_pb.entity == entity1
-        assert iterator._batch[0].result_type == query_pb2.EntityResult.PROJECTION
+        assert (
+            iterator._batch[0].result_type
+            == query_pb2.EntityResult.ResultType.PROJECTION
+        )
         assert iterator._batch[0].order_by is None
         assert iterator._has_next_batch
         assert iterator._query.start_cursor.cursor == b"abc"
@@ -766,11 +769,11 @@ class Test_QueryIteratorImpl:
         _datastore_run_query.return_value = utils.future_result(
             mock.Mock(
                 batch=mock.Mock(
-                    entity_result_type=query_pb2.EntityResult.FULL,
+                    entity_result_type=query_pb2.EntityResult.ResultType.FULL,
                     entity_results=entity_results,
                     end_cursor=b"abc",
                     skipped_results=5,
-                    more_results=query_pb2.QueryResultBatch.NOT_FINISHED,
+                    more_results=query_pb2.QueryResultBatch.MoreResultsType.NOT_FINISHED,
                 )
             )
         )
@@ -781,7 +784,7 @@ class Test_QueryIteratorImpl:
         assert iterator._index == 0
         assert len(iterator._batch) == 3
         assert iterator._batch[0].result_pb.entity == entity1
-        assert iterator._batch[0].result_type == query_pb2.EntityResult.FULL
+        assert iterator._batch[0].result_type == query_pb2.EntityResult.ResultType.FULL
         assert iterator._batch[0].order_by is None
         assert iterator._has_next_batch
         assert iterator._query.start_cursor.cursor == b"abc"
@@ -1467,6 +1470,12 @@ class MockResultPB:
         self.result = result
         self.entity = self
         self.key = self
+        self._pb = MockResultPB_pb(result)
+
+
+class MockResultPB_pb:
+    def __init__(self, result):
+        self.result = result
 
     def SerializeToString(self):
         return self.result
@@ -1754,12 +1763,12 @@ class Test__query_to_protobuf:
             filter=query_pb2.Filter(
                 property_filter=query_pb2.PropertyFilter(
                     property=query_pb2.PropertyReference(name="__key__"),
-                    op=query_pb2.PropertyFilter.HAS_ANCESTOR,
+                    op=query_pb2.PropertyFilter.Operator.HAS_ANCESTOR,
                 )
             )
         )
-        expected_pb.filter.property_filter.value.key_value.CopyFrom(
-            key._key.to_protobuf()
+        expected_pb.filter.property_filter.value.key_value._pb.CopyFrom(
+            key._key.to_protobuf()._pb
         )
         assert _datastore_query._query_to_protobuf(query) == expected_pb
 
@@ -1772,18 +1781,18 @@ class Test__query_to_protobuf:
 
         filter_pb = query_pb2.PropertyFilter(
             property=query_pb2.PropertyReference(name="foo"),
-            op=query_pb2.PropertyFilter.EQUAL,
+            op=query_pb2.PropertyFilter.Operator.EQUAL,
             value=entity_pb2.Value(string_value="bar"),
         )
         ancestor_pb = query_pb2.PropertyFilter(
             property=query_pb2.PropertyReference(name="__key__"),
-            op=query_pb2.PropertyFilter.HAS_ANCESTOR,
+            op=query_pb2.PropertyFilter.Operator.HAS_ANCESTOR,
         )
-        ancestor_pb.value.key_value.CopyFrom(key._key.to_protobuf())
+        ancestor_pb.value.key_value._pb.CopyFrom(key._key.to_protobuf()._pb)
         expected_pb = query_pb2.Query(
             filter=query_pb2.Filter(
                 composite_filter=query_pb2.CompositeFilter(
-                    op=query_pb2.CompositeFilter.AND,
+                    op=query_pb2.CompositeFilter.Operator.AND,
                     filters=[
                         query_pb2.Filter(property_filter=filter_pb),
                         query_pb2.Filter(property_filter=ancestor_pb),
@@ -1806,23 +1815,23 @@ class Test__query_to_protobuf:
 
         filter_pb1 = query_pb2.PropertyFilter(
             property=query_pb2.PropertyReference(name="foo"),
-            op=query_pb2.PropertyFilter.EQUAL,
+            op=query_pb2.PropertyFilter.Operator.EQUAL,
             value=entity_pb2.Value(string_value="bar"),
         )
         filter_pb2 = query_pb2.PropertyFilter(
             property=query_pb2.PropertyReference(name="food"),
-            op=query_pb2.PropertyFilter.EQUAL,
+            op=query_pb2.PropertyFilter.Operator.EQUAL,
             value=entity_pb2.Value(string_value="barn"),
         )
         ancestor_pb = query_pb2.PropertyFilter(
             property=query_pb2.PropertyReference(name="__key__"),
-            op=query_pb2.PropertyFilter.HAS_ANCESTOR,
+            op=query_pb2.PropertyFilter.Operator.HAS_ANCESTOR,
         )
-        ancestor_pb.value.key_value.CopyFrom(key._key.to_protobuf())
+        ancestor_pb.value.key_value._pb.CopyFrom(key._key.to_protobuf()._pb)
         expected_pb = query_pb2.Query(
             filter=query_pb2.Filter(
                 composite_filter=query_pb2.CompositeFilter(
-                    op=query_pb2.CompositeFilter.AND,
+                    op=query_pb2.CompositeFilter.Operator.AND,
                     filters=[
                         query_pb2.Filter(property_filter=filter_pb1),
                         query_pb2.Filter(property_filter=filter_pb2),
@@ -1867,11 +1876,11 @@ class Test__query_to_protobuf:
             order=[
                 query_pb2.PropertyOrder(
                     property=query_pb2.PropertyReference(name="a"),
-                    direction=query_pb2.PropertyOrder.ASCENDING,
+                    direction=query_pb2.PropertyOrder.Direction.ASCENDING,
                 ),
                 query_pb2.PropertyOrder(
                     property=query_pb2.PropertyReference(name="b"),
-                    direction=query_pb2.PropertyOrder.DESCENDING,
+                    direction=query_pb2.PropertyOrder.Direction.DESCENDING,
                 ),
             ]
         )
@@ -1885,7 +1894,7 @@ class Test__query_to_protobuf:
 
         filter_pb = query_pb2.PropertyFilter(
             property=query_pb2.PropertyReference(name="foo"),
-            op=query_pb2.PropertyFilter.EQUAL,
+            op=query_pb2.PropertyFilter.Operator.EQUAL,
             value=entity_pb2.Value(string_value="bar"),
         )
         expected_pb = query_pb2.Query(
@@ -1903,7 +1912,7 @@ class Test__query_to_protobuf:
     def test_limit():
         query = query_module.QueryOptions(limit=20)
         expected_pb = query_pb2.Query()
-        expected_pb.limit.value = 20
+        expected_pb._pb.limit.value = 20
         assert _datastore_query._query_to_protobuf(query) == expected_pb
 
     @staticmethod
@@ -1939,7 +1948,7 @@ class Test__datastore_run_query:
         _datastore_api.get_read_options.return_value = read_options
         assert _datastore_query._datastore_run_query(query).result() == "foo"
         _datastore_api.make_call.assert_called_once_with(
-            "RunQuery", request, timeout=None
+            "run_query", request, timeout=None
         )
         _datastore_api.get_read_options.assert_called_once_with(query)
 

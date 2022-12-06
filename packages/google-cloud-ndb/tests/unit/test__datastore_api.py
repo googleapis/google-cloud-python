@@ -25,8 +25,8 @@ from google.api_core import exceptions as core_exceptions
 from google.cloud.datastore import entity
 from google.cloud.datastore import helpers
 from google.cloud.datastore import key as ds_key_module
-from google.cloud.datastore_v1.proto import datastore_pb2
-from google.cloud.datastore_v1.proto import entity_pb2
+from google.cloud.datastore_v1.types import datastore as datastore_pb2
+from google.cloud.datastore_v1.types import entity as entity_pb2
 from google.cloud.ndb import _batch
 from google.cloud.ndb import _cache
 from google.cloud.ndb import context as context_module
@@ -181,8 +181,10 @@ class Test_make_call:
 
 def _mock_key(key_str):
     key = mock.Mock(kind="SomeKind", spec=("to_protobuf", "kind"))
-    key.to_protobuf.return_value = protobuf = mock.Mock(spec=("SerializeToString",))
-    protobuf.SerializeToString.return_value = key_str
+    key.to_protobuf.return_value = protobuf = mock.Mock(
+        _pb=mock.Mock(spec=("SerializeToString",))
+    )
+    protobuf._pb.SerializeToString.return_value = key_str
     return key
 
 
@@ -260,7 +262,7 @@ class Test_lookup_WithGlobalCache:
 
         entity = SomeKind(key=key)
         entity_pb = model._entity_to_protobuf(entity)
-        cache_value = entity_pb.SerializeToString()
+        cache_value = entity_pb._pb.SerializeToString()
 
         batch = _LookupBatch.return_value
         batch.add.return_value = future_result(entity_pb)
@@ -324,7 +326,7 @@ class Test_lookup_WithGlobalCache:
 
         entity = SomeKind(key=key)
         entity_pb = model._entity_to_protobuf(entity)
-        cache_value = entity_pb.SerializeToString()
+        cache_value = entity_pb._pb.SerializeToString()
 
         global_cache.set({cache_key: cache_value})
 
@@ -380,12 +382,19 @@ class Test_LookupBatch:
     @mock.patch("google.cloud.ndb._datastore_api.entity_pb2")
     @mock.patch("google.cloud.ndb._datastore_api._datastore_lookup")
     def test_idle_callback(_datastore_lookup, entity_pb2, context):
-        class MockKey:
-            def __init__(self, key=None):
+        class MockKeyPb:
+            def __init__(self, key=None, parent=None):
                 self.key = key
+                self.parent = parent
 
             def ParseFromString(self, key):
                 self.key = key
+                self.parent.key = key
+
+        class MockKey:
+            def __init__(self, key=None):
+                self.key = key
+                self._pb = MockKeyPb(key, self)
 
         rpc = tasklets.Future("_datastore_lookup")
         _datastore_lookup.return_value = rpc
@@ -424,8 +433,8 @@ class Test_LookupBatch:
     @staticmethod
     def test_found():
         def key_pb(key):
-            mock_key = mock.Mock(spec=("SerializeToString",))
-            mock_key.SerializeToString.return_value = key
+            mock_key = mock.Mock(_pb=mock.Mock(spec=("SerializeToString",)))
+            mock_key._pb.SerializeToString.return_value = key
             return mock_key
 
         future1, future2, future3 = (tasklets.Future() for _ in range(3))
@@ -455,8 +464,8 @@ class Test_LookupBatch:
     @staticmethod
     def test_missing():
         def key_pb(key):
-            mock_key = mock.Mock(spec=("SerializeToString",))
-            mock_key.SerializeToString.return_value = key
+            mock_key = mock.Mock(_pb=mock.Mock(spec=("SerializeToString",)))
+            mock_key._pb.SerializeToString.return_value = key
             return mock_key
 
         future1, future2, future3 = (tasklets.Future() for _ in range(3))
@@ -486,8 +495,8 @@ class Test_LookupBatch:
     @staticmethod
     def test_deferred(context):
         def key_pb(key):
-            mock_key = mock.Mock(spec=("SerializeToString",))
-            mock_key.SerializeToString.return_value = key
+            mock_key = mock.Mock(_pb=mock.Mock(spec=("SerializeToString",)))
+            mock_key._pb.SerializeToString.return_value = key
             return mock_key
 
         eventloop = mock.Mock(spec=("add_idle", "run"))
@@ -518,8 +527,8 @@ class Test_LookupBatch:
     @staticmethod
     def test_found_missing_deferred(context):
         def key_pb(key):
-            mock_key = mock.Mock(spec=("SerializeToString",))
-            mock_key.SerializeToString.return_value = key
+            mock_key = mock.Mock(_pb=mock.Mock(spec=("SerializeToString",)))
+            mock_key._pb.SerializeToString.return_value = key
             return mock_key
 
         eventloop = mock.Mock(spec=("add_idle", "run"))
@@ -554,20 +563,20 @@ class Test_LookupBatch:
 def test__datastore_lookup(datastore_pb2, context):
     client = mock.Mock(
         project="theproject",
-        stub=mock.Mock(spec=("Lookup",)),
+        stub=mock.Mock(spec=("lookup",)),
         spec=("project", "stub"),
     )
     with context.new(client=client).use() as context:
-        client.stub.Lookup = Lookup = mock.Mock(spec=("future",))
+        client.stub.lookup = lookup = mock.Mock(spec=("future",))
         future = tasklets.Future()
         future.set_result("response")
-        Lookup.future.return_value = future
+        lookup.future.return_value = future
         assert _api._datastore_lookup(["foo", "bar"], None).result() == "response"
 
         datastore_pb2.LookupRequest.assert_called_once_with(
             project_id="theproject", keys=["foo", "bar"], read_options=None
         )
-        client.stub.Lookup.future.assert_called_once_with(
+        client.stub.lookup.future.assert_called_once_with(
             datastore_pb2.LookupRequest.return_value,
             timeout=_api._DEFAULT_TIMEOUT,
         )
@@ -600,7 +609,7 @@ class Test_get_read_options:
             _options.ReadOptions(read_consistency=_api.EVENTUAL)
         )
         assert options == datastore_pb2.ReadOptions(
-            read_consistency=datastore_pb2.ReadOptions.EVENTUAL
+            read_consistency=datastore_pb2.ReadOptions.ReadConsistency.EVENTUAL
         )
 
     @staticmethod
@@ -773,7 +782,7 @@ class Test_put_WithGlobalCache:
         cache_key = _cache.global_cache_key(key._key)
 
         entity = SomeKind(key=key)
-        cache_value = model._entity_to_protobuf(entity).SerializeToString()
+        cache_value = model._entity_to_protobuf(entity)._pb.SerializeToString()
 
         batch = Batch.return_value
         batch.put.return_value = future_result(None)
@@ -1225,18 +1234,18 @@ class Test_datastore_commit:
         api = stub.return_value
         future = tasklets.Future()
         future.set_result("response")
-        api.Commit.future.return_value = future
+        api.commit.future.return_value = future
         assert _api._datastore_commit(mutations, None).result() == "response"
 
         datastore_pb2.CommitRequest.assert_called_once_with(
             project_id="testing",
-            mode=datastore_pb2.CommitRequest.NON_TRANSACTIONAL,
+            mode=datastore_pb2.CommitRequest.Mode.NON_TRANSACTIONAL,
             mutations=mutations,
             transaction=None,
         )
 
         request = datastore_pb2.CommitRequest.return_value
-        assert api.Commit.future.called_once_with(request)
+        assert api.commit.future.called_once_with(request)
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -1247,18 +1256,18 @@ class Test_datastore_commit:
         api = stub.return_value
         future = tasklets.Future()
         future.set_result("response")
-        api.Commit.future.return_value = future
+        api.commit.future.return_value = future
         assert _api._datastore_commit(mutations, b"tx123").result() == "response"
 
         datastore_pb2.CommitRequest.assert_called_once_with(
             project_id="testing",
-            mode=datastore_pb2.CommitRequest.TRANSACTIONAL,
+            mode=datastore_pb2.CommitRequest.Mode.TRANSACTIONAL,
             mutations=mutations,
             transaction=b"tx123",
         )
 
         request = datastore_pb2.CommitRequest.return_value
-        assert api.Commit.future.called_once_with(request)
+        assert api.commit.future.called_once_with(request)
 
 
 @pytest.mark.usefixtures("in_context")
@@ -1339,7 +1348,7 @@ def test__datastore_allocate_ids(stub, datastore_pb2):
     api = stub.return_value
     future = tasklets.Future()
     future.set_result("response")
-    api.AllocateIds.future.return_value = future
+    api.allocate_ids.future.return_value = future
     assert _api._datastore_allocate_ids(keys).result() == "response"
 
     datastore_pb2.AllocateIdsRequest.assert_called_once_with(
@@ -1347,7 +1356,7 @@ def test__datastore_allocate_ids(stub, datastore_pb2):
     )
 
     request = datastore_pb2.AllocateIdsRequest.return_value
-    assert api.AllocateIds.future.called_once_with(request)
+    assert api.allocate_ids.future.called_once_with(request)
 
 
 @pytest.mark.usefixtures("in_context")
@@ -1374,7 +1383,7 @@ class Test_datastore_begin_transaction:
         api = stub.return_value
         future = tasklets.Future()
         future.set_result("response")
-        api.BeginTransaction.future.return_value = future
+        api.begin_transaction.future.return_value = future
         assert _api._datastore_begin_transaction(True).result() == "response"
 
         datastore_pb2.TransactionOptions.assert_called_once_with(
@@ -1387,7 +1396,7 @@ class Test_datastore_begin_transaction:
         )
 
         request = datastore_pb2.BeginTransactionRequest.return_value
-        assert api.BeginTransaction.future.called_once_with(request)
+        assert api.begin_transaction.future.called_once_with(request)
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -1397,7 +1406,7 @@ class Test_datastore_begin_transaction:
         api = stub.return_value
         future = tasklets.Future()
         future.set_result("response")
-        api.BeginTransaction.future.return_value = future
+        api.begin_transaction.future.return_value = future
         assert _api._datastore_begin_transaction(False).result() == "response"
 
         datastore_pb2.TransactionOptions.assert_called_once_with(
@@ -1410,7 +1419,7 @@ class Test_datastore_begin_transaction:
         )
 
         request = datastore_pb2.BeginTransactionRequest.return_value
-        assert api.BeginTransaction.future.called_once_with(request)
+        assert api.begin_transaction.future.called_once_with(request)
 
 
 @pytest.mark.usefixtures("in_context")
@@ -1433,7 +1442,7 @@ def test__datastore_rollback(stub, datastore_pb2):
     api = stub.return_value
     future = tasklets.Future()
     future.set_result("response")
-    api.Rollback.future.return_value = future
+    api.rollback.future.return_value = future
     assert _api._datastore_rollback(b"tx123").result() == "response"
 
     datastore_pb2.RollbackRequest.assert_called_once_with(
@@ -1441,7 +1450,7 @@ def test__datastore_rollback(stub, datastore_pb2):
     )
 
     request = datastore_pb2.RollbackRequest.return_value
-    assert api.Rollback.future.called_once_with(request)
+    assert api.rollback.future.called_once_with(request)
 
 
 def test__complete():
