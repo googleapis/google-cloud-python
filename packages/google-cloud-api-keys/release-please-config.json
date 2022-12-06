@@ -5,6 +5,7 @@
       "release-type": "python",
       "extra-files": [
         "google/cloud/api_keys/gapic_version.py",
+        "google/cloud/api_keys_v2/gapic_version.py",
         {
           "type": "json",
           "path": "samples/generated_samples/snippet_metadata_google.api.apikeys.v2.json",
