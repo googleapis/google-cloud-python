@@ -6,6 +6,10 @@
       "extra-files": [
         "google/cloud/workflows/executions/gapic_version.py",
         "google/cloud/workflows/gapic_version.py",
+        "google/cloud/workflows_v1/gapic_version.py",
+        "google/cloud/workflows_v1beta/gapic_version.py",
+        "google/cloud/workflows/executions_v1/gapic_version.py",
+        "google/cloud/workflows/executions_v1beta/gapic_version.py",
         {
           "type": "json",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.workflows.v1beta.json",
