@@ -9892,7 +9892,7 @@ def test_list_private_clouds_rest_required_fields(
 
             response = client.list_private_clouds(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -10233,7 +10233,7 @@ def test_get_private_cloud_rest_required_fields(
 
             response = client.get_private_cloud(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -10556,6 +10556,7 @@ def test_create_private_cloud_rest_required_fields(
                     "privateCloudId",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -10921,7 +10922,7 @@ def test_update_private_cloud_rest_required_fields(
 
             response = client.update_private_cloud(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -11253,7 +11254,7 @@ def test_delete_private_cloud_rest_required_fields(
 
             response = client.delete_private_cloud(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -11528,7 +11529,7 @@ def test_undelete_private_cloud_rest_required_fields(
 
             response = client.undelete_private_cloud(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -11812,7 +11813,7 @@ def test_list_clusters_rest_required_fields(
 
             response = client.list_clusters(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -12157,7 +12158,7 @@ def test_get_cluster_rest_required_fields(request_type=vmwareengine.GetClusterRe
 
             response = client.get_cluster(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -12451,6 +12452,7 @@ def test_create_cluster_rest_required_fields(
                     "clusterId",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -12763,7 +12765,7 @@ def test_update_cluster_rest_required_fields(
 
             response = client.update_cluster(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -13063,7 +13065,7 @@ def test_delete_cluster_rest_required_fields(
 
             response = client.delete_cluster(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -13345,7 +13347,7 @@ def test_list_subnets_rest_required_fields(
 
             response = client.list_subnets(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -13692,7 +13694,7 @@ def test_list_node_types_rest_required_fields(
 
             response = client.list_node_types(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -14039,7 +14041,7 @@ def test_get_node_type_rest_required_fields(
 
             response = client.get_node_type(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -14312,7 +14314,7 @@ def test_show_nsx_credentials_rest_required_fields(
 
             response = client.show_nsx_credentials(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -14588,7 +14590,7 @@ def test_show_vcenter_credentials_rest_required_fields(
 
             response = client.show_vcenter_credentials(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -14857,7 +14859,7 @@ def test_reset_nsx_credentials_rest_required_fields(
 
             response = client.reset_nsx_credentials(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -15127,7 +15129,7 @@ def test_reset_vcenter_credentials_rest_required_fields(
 
             response = client.reset_vcenter_credentials(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -15425,6 +15427,7 @@ def test_create_hcx_activation_key_rest_required_fields(
                     "hcxActivationKeyId",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -15736,7 +15739,7 @@ def test_list_hcx_activation_keys_rest_required_fields(
 
             response = client.list_hcx_activation_keys(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -16083,7 +16086,7 @@ def test_get_hcx_activation_key_rest_required_fields(
 
             response = client.get_hcx_activation_key(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -16370,7 +16373,7 @@ def test_get_network_policy_rest_required_fields(
 
             response = client.get_network_policy(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -16653,7 +16656,7 @@ def test_list_network_policies_rest_required_fields(
 
             response = client.list_network_policies(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -17014,6 +17017,7 @@ def test_create_network_policy_rest_required_fields(
                     "networkPolicyId",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -17326,7 +17330,7 @@ def test_update_network_policy_rest_required_fields(
 
             response = client.update_network_policy(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -17628,7 +17632,7 @@ def test_delete_network_policy_rest_required_fields(
 
             response = client.delete_network_policy(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -17931,6 +17935,7 @@ def test_create_vmware_engine_network_rest_required_fields(
                     "vmwareEngineNetworkId",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -18241,7 +18246,7 @@ def test_update_vmware_engine_network_rest_required_fields(
 
             response = client.update_vmware_engine_network(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -18547,7 +18552,7 @@ def test_delete_vmware_engine_network_rest_required_fields(
 
             response = client.delete_vmware_engine_network(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -18840,7 +18845,7 @@ def test_get_vmware_engine_network_rest_required_fields(
 
             response = client.get_vmware_engine_network(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -19125,7 +19130,7 @@ def test_list_vmware_engine_networks_rest_required_fields(
 
             response = client.list_vmware_engine_networks(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
