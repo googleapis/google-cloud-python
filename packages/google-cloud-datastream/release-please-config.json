@@ -4,7 +4,9 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/cloud/datastream_v1/gapic_version.py",
         "google/cloud/datastream/gapic_version.py",
+        "google/cloud/datastream_v1alpha1/gapic_version.py",
         {
           "type": "json",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.datastream.v1.json",
