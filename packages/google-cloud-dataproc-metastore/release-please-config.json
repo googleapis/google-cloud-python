@@ -4,7 +4,10 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/cloud/metastore_v1/gapic_version.py",
+        "google/cloud/metastore_v1alpha/gapic_version.py",
         "google/cloud/metastore/gapic_version.py",
+        "google/cloud/metastore_v1beta/gapic_version.py",
         {
           "type": "json",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.metastore.v1.json",
