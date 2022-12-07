@@ -52,7 +52,7 @@ async def sample_transfer_entitlements_to_google():
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = (await operation).result()
 
     # Handle the response
     print(response)
