@@ -4,6 +4,7 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/cloud/data_fusion_v1/gapic_version.py",
         "google/cloud/data_fusion/gapic_version.py",
         {
           "type": "json",
