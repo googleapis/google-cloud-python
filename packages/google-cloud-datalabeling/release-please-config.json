@@ -4,6 +4,7 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/cloud/datalabeling_v1beta1/gapic_version.py",
         "google/cloud/datalabeling/gapic_version.py",
         {
           "type": "json",

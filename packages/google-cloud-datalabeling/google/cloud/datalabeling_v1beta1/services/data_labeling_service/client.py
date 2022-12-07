@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.datalabeling_v1beta1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -611,7 +612,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         parent: Optional[str] = None,
         dataset: Optional[gcd_dataset.Dataset] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_dataset.Dataset:
         r"""Creates dataset. If success return a Dataset
@@ -722,7 +723,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataset.Dataset:
         r"""Gets dataset by resource name.
@@ -828,7 +829,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         parent: Optional[str] = None,
         filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDatasetsPager:
         r"""Lists datasets under a project. Pagination is
@@ -954,7 +955,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a dataset by resource name.
@@ -1044,7 +1045,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         name: Optional[str] = None,
         input_config: Optional[dataset.InputConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Imports data into dataset based on source locations
@@ -1177,7 +1178,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         filter: Optional[str] = None,
         output_config: Optional[dataset.OutputConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Exports data and annotations from dataset.
@@ -1324,7 +1325,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataset.DataItem:
         r"""Gets a data item in a dataset by resource name. This
@@ -1429,7 +1430,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         parent: Optional[str] = None,
         filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDataItemsPager:
         r"""Lists data items in a dataset. This API can be called
@@ -1556,7 +1557,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataset.AnnotatedDataset:
         r"""Gets an annotated dataset by resource name.
@@ -1665,7 +1666,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         parent: Optional[str] = None,
         filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAnnotatedDatasetsPager:
         r"""Lists annotated datasets for a dataset. Pagination is
@@ -1792,7 +1793,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an annotated dataset by resource name.
@@ -1864,7 +1865,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         basic_config: Optional[human_annotation_config.HumanAnnotationConfig] = None,
         feature: Optional[data_labeling_service.LabelImageRequest.Feature] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Starts a labeling task for image. The type of image
@@ -2012,7 +2013,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         basic_config: Optional[human_annotation_config.HumanAnnotationConfig] = None,
         feature: Optional[data_labeling_service.LabelVideoRequest.Feature] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Starts a labeling task for video. The type of video
@@ -2159,7 +2160,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         basic_config: Optional[human_annotation_config.HumanAnnotationConfig] = None,
         feature: Optional[data_labeling_service.LabelTextRequest.Feature] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Starts a labeling task for text. The type of text
@@ -2305,7 +2306,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         name: Optional[str] = None,
         filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataset.Example:
         r"""Gets an example by resource name, including both data
@@ -2422,7 +2423,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         parent: Optional[str] = None,
         filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListExamplesPager:
         r"""Lists examples in an annotated dataset. Pagination is
@@ -2549,7 +2550,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         parent: Optional[str] = None,
         annotation_spec_set: Optional[gcd_annotation_spec_set.AnnotationSpecSet] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_annotation_spec_set.AnnotationSpecSet:
         r"""Creates an annotation spec set by providing a set of
@@ -2672,7 +2673,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> annotation_spec_set.AnnotationSpecSet:
         r"""Gets an annotation spec set by resource name.
@@ -2781,7 +2782,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         parent: Optional[str] = None,
         filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAnnotationSpecSetsPager:
         r"""Lists annotation spec sets for a project. Pagination
@@ -2910,7 +2911,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an annotation spec set by resource name.
@@ -3007,7 +3008,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         parent: Optional[str] = None,
         instruction: Optional[gcd_instruction.Instruction] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates an instruction for how data should be
@@ -3135,7 +3136,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instruction.Instruction:
         r"""Gets an instruction by resource name.
@@ -3241,7 +3242,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         parent: Optional[str] = None,
         filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstructionsPager:
         r"""Lists instructions for a project. Pagination is
@@ -3368,7 +3369,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an instruction object by resource name.
@@ -3460,7 +3461,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> evaluation.Evaluation:
         r"""Gets an evaluation by resource name (to search, use
@@ -3568,7 +3569,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         parent: Optional[str] = None,
         filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchEvaluationsPager:
         r"""Searches
@@ -3726,7 +3727,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchExampleComparisonsPager:
         r"""Searches example comparisons from an evaluation. The
@@ -3854,7 +3855,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         parent: Optional[str] = None,
         job: Optional[evaluation_job.EvaluationJob] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> evaluation_job.EvaluationJob:
         r"""Creates an evaluation job.
@@ -3972,7 +3973,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         evaluation_job: Optional[gcd_evaluation_job.EvaluationJob] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_evaluation_job.EvaluationJob:
         r"""Updates an evaluation job. You can only update certain fields of
@@ -4104,7 +4105,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> evaluation_job.EvaluationJob:
         r"""Gets an evaluation job by resource name.
@@ -4213,7 +4214,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Pauses an evaluation job. Pausing an evaluation job that is
@@ -4308,7 +4309,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Resumes a paused evaluation job. A deleted evaluation
@@ -4403,7 +4404,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Stops and deletes an evaluation job.
@@ -4497,7 +4498,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         parent: Optional[str] = None,
         filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEvaluationJobsPager:
         r"""Lists all evaluation jobs within a project with
@@ -4637,14 +4638,9 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-datalabeling",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("DataLabelingServiceClient",)
