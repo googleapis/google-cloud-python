@@ -5,6 +5,7 @@
       "release-type": "python",
       "extra-files": [
         "google/cloud/eventarc_publishing/gapic_version.py",
+        "google/cloud/eventarc_publishing_v1/gapic_version.py",
         {
           "type": "json",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.eventarc.publishing.v1.json",
