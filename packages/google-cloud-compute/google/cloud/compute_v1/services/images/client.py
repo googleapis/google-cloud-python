@@ -39,7 +39,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.compute_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -427,7 +428,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         project: Optional[str] = None,
         image: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified image.
@@ -514,7 +515,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         project: Optional[str] = None,
         image: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified image.
@@ -626,7 +627,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         image: Optional[str] = None,
         deprecation_status_resource: Optional[compute.DeprecationStatus] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets the deprecation status of an image. If an empty
@@ -724,7 +725,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         image: Optional[str] = None,
         deprecation_status_resource: Optional[compute.DeprecationStatus] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the deprecation status of an image. If an empty
@@ -845,7 +846,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         project: Optional[str] = None,
         image: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Image:
         r"""Returns the specified image. Gets a list of available
@@ -935,7 +936,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         project: Optional[str] = None,
         family: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Image:
         r"""Returns the latest image that is part of an image
@@ -1028,7 +1029,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         project: Optional[str] = None,
         resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Gets the access control policy for a resource. May be
@@ -1157,7 +1158,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         project: Optional[str] = None,
         image_resource: Optional[compute.Image] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates an image in the specified project using the
@@ -1240,7 +1241,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         project: Optional[str] = None,
         image_resource: Optional[compute.Image] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates an image in the specified project using the
@@ -1346,7 +1347,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         *,
         project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves the list of custom images available to the
@@ -1440,7 +1441,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         image: Optional[str] = None,
         image_resource: Optional[compute.Image] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Patches the specified image with the data included in
@@ -1537,7 +1538,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         image: Optional[str] = None,
         image_resource: Optional[compute.Image] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified image with the data included in
@@ -1660,7 +1661,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
             compute.GlobalSetPolicyRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Sets the access control policy on the specified
@@ -1803,7 +1804,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
             compute.GlobalSetLabelsRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets the labels on an image. To learn more about
@@ -1908,7 +1909,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
             compute.GlobalSetLabelsRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the labels on an image. To learn more about
@@ -2037,7 +2038,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
             compute.TestPermissionsRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
         r"""Returns permissions that a caller has on the
@@ -2144,14 +2145,9 @@ class ImagesClient(metaclass=ImagesClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-compute",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ImagesClient",)

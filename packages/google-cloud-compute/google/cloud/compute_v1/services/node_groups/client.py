@@ -39,7 +39,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.compute_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -431,7 +432,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
             compute.NodeGroupsAddNodesRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Adds specified number of nodes to the node group.
@@ -544,7 +545,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
             compute.NodeGroupsAddNodesRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Adds specified number of nodes to the node group.
@@ -677,7 +678,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         *,
         project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of node groups. Note:
@@ -766,7 +767,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         zone: Optional[str] = None,
         node_group: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified NodeGroup resource.
@@ -867,7 +868,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         zone: Optional[str] = None,
         node_group: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified NodeGroup resource.
@@ -996,7 +997,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
             compute.NodeGroupsDeleteNodesRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes specified nodes from the node group.
@@ -1111,7 +1112,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
             compute.NodeGroupsDeleteNodesRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes specified nodes from the node group.
@@ -1248,7 +1249,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         zone: Optional[str] = None,
         node_group: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.NodeGroup:
         r"""Returns the specified NodeGroup. Get a list of
@@ -1358,7 +1359,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         zone: Optional[str] = None,
         resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Gets the access control policy for a resource. May be
@@ -1499,7 +1500,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         initial_node_count: Optional[int] = None,
         node_group_resource: Optional[compute.NodeGroup] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates a NodeGroup resource in the specified project
@@ -1610,7 +1611,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         initial_node_count: Optional[int] = None,
         node_group_resource: Optional[compute.NodeGroup] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a NodeGroup resource in the specified project
@@ -1744,7 +1745,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         project: Optional[str] = None,
         zone: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves a list of node groups available to the
@@ -1847,7 +1848,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         zone: Optional[str] = None,
         node_group: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNodesPager:
         r"""Lists nodes in the node group.
@@ -1959,7 +1960,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         node_group: Optional[str] = None,
         node_group_resource: Optional[compute.NodeGroup] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Updates the specified node group.
@@ -2068,7 +2069,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         node_group: Optional[str] = None,
         node_group_resource: Optional[compute.NodeGroup] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the specified node group.
@@ -2202,7 +2203,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         resource: Optional[str] = None,
         zone_set_policy_request_resource: Optional[compute.ZoneSetPolicyRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Sets the access control policy on the specified
@@ -2356,7 +2357,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
             compute.NodeGroupsSetNodeTemplateRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Updates the node template of the node group.
@@ -2471,7 +2472,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
             compute.NodeGroupsSetNodeTemplateRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the node template of the node group.
@@ -2613,7 +2614,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
             compute.TestPermissionsRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
         r"""Returns permissions that a caller has on the
@@ -2730,14 +2731,9 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-compute",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("NodeGroupsClient",)

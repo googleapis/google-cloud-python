@@ -39,7 +39,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.compute_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -430,7 +431,7 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
         region: Optional[str] = None,
         instance_group: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.InstanceGroup:
         r"""Returns the specified instance group resource.
@@ -542,7 +543,7 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
         project: Optional[str] = None,
         region: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves the list of instance group resources
@@ -651,7 +652,7 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
             compute.RegionInstanceGroupsListInstancesRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstancesPager:
         r"""Lists the instances in the specified instance group
@@ -787,7 +788,7 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
             compute.RegionInstanceGroupsSetNamedPortsRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets the named ports for the specified regional
@@ -910,7 +911,7 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
             compute.RegionInstanceGroupsSetNamedPortsRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the named ports for the specified regional
@@ -1059,14 +1060,9 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-compute",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("RegionInstanceGroupsClient",)

@@ -39,7 +39,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.compute_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -426,7 +427,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         *,
         project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of routers.
@@ -514,7 +515,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         region: Optional[str] = None,
         router: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified Router resource.
@@ -612,7 +613,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         region: Optional[str] = None,
         router: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified Router resource.
@@ -735,7 +736,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         region: Optional[str] = None,
         router: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Router:
         r"""Returns the specified Router resource. Gets a list of
@@ -835,7 +836,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         region: Optional[str] = None,
         router: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.GetNatMappingInfoPager:
         r"""Retrieves runtime Nat mapping information of VM
@@ -948,7 +949,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         region: Optional[str] = None,
         router: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.RouterStatusResponse:
         r"""Retrieves runtime information of the specified
@@ -1044,7 +1045,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         region: Optional[str] = None,
         router_resource: Optional[compute.Router] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates a Router resource in the specified project
@@ -1140,7 +1141,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         region: Optional[str] = None,
         router_resource: Optional[compute.Router] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a Router resource in the specified project
@@ -1260,7 +1261,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         project: Optional[str] = None,
         region: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves a list of Router resources available to the
@@ -1361,7 +1362,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         router: Optional[str] = None,
         router_resource: Optional[compute.Router] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Patches the specified Router resource with the data
@@ -1468,7 +1469,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         router: Optional[str] = None,
         router_resource: Optional[compute.Router] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified Router resource with the data
@@ -1600,7 +1601,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         router: Optional[str] = None,
         router_resource: Optional[compute.Router] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.RoutersPreviewResponse:
         r"""Preview fields auto-generated during router create
@@ -1704,7 +1705,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         router: Optional[str] = None,
         router_resource: Optional[compute.Router] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Updates the specified Router resource with the data
@@ -1815,7 +1816,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         router: Optional[str] = None,
         router_resource: Optional[compute.Router] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the specified Router resource with the data
@@ -1956,14 +1957,9 @@ class RoutersClient(metaclass=RoutersClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-compute",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("RoutersClient",)

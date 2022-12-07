@@ -39,7 +39,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.compute_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -427,7 +428,7 @@ class LicensesClient(metaclass=LicensesClientMeta):
         project: Optional[str] = None,
         license_: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified license. *Caution* This resource is
@@ -518,7 +519,7 @@ class LicensesClient(metaclass=LicensesClientMeta):
         project: Optional[str] = None,
         license_: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified license. *Caution* This resource is
@@ -633,7 +634,7 @@ class LicensesClient(metaclass=LicensesClientMeta):
         project: Optional[str] = None,
         license_: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.License:
         r"""Returns the specified License resource. *Caution* This resource
@@ -727,7 +728,7 @@ class LicensesClient(metaclass=LicensesClientMeta):
         project: Optional[str] = None,
         resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Gets the access control policy for a resource. May be empty if
@@ -858,7 +859,7 @@ class LicensesClient(metaclass=LicensesClientMeta):
         project: Optional[str] = None,
         license_resource: Optional[compute.License] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Create a License resource in the specified project. *Caution*
@@ -942,7 +943,7 @@ class LicensesClient(metaclass=LicensesClientMeta):
         project: Optional[str] = None,
         license_resource: Optional[compute.License] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Create a License resource in the specified project. *Caution*
@@ -1049,7 +1050,7 @@ class LicensesClient(metaclass=LicensesClientMeta):
         *,
         project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves the list of licenses available in the specified
@@ -1145,7 +1146,7 @@ class LicensesClient(metaclass=LicensesClientMeta):
             compute.GlobalSetPolicyRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Sets the access control policy on the specified resource.
@@ -1290,7 +1291,7 @@ class LicensesClient(metaclass=LicensesClientMeta):
             compute.TestPermissionsRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
         r"""Returns permissions that a caller has on the specified resource.
@@ -1398,14 +1399,9 @@ class LicensesClient(metaclass=LicensesClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-compute",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("LicensesClient",)

@@ -39,7 +39,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.compute_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -432,7 +433,7 @@ class RegionTargetHttpsProxiesClient(metaclass=RegionTargetHttpsProxiesClientMet
         region: Optional[str] = None,
         target_https_proxy: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified TargetHttpsProxy resource.
@@ -535,7 +536,7 @@ class RegionTargetHttpsProxiesClient(metaclass=RegionTargetHttpsProxiesClientMet
         region: Optional[str] = None,
         target_https_proxy: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified TargetHttpsProxy resource.
@@ -661,7 +662,7 @@ class RegionTargetHttpsProxiesClient(metaclass=RegionTargetHttpsProxiesClientMet
         region: Optional[str] = None,
         target_https_proxy: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TargetHttpsProxy:
         r"""Returns the specified TargetHttpsProxy resource in
@@ -776,7 +777,7 @@ class RegionTargetHttpsProxiesClient(metaclass=RegionTargetHttpsProxiesClientMet
         region: Optional[str] = None,
         target_https_proxy_resource: Optional[compute.TargetHttpsProxy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates a TargetHttpsProxy resource in the specified
@@ -878,7 +879,7 @@ class RegionTargetHttpsProxiesClient(metaclass=RegionTargetHttpsProxiesClientMet
         region: Optional[str] = None,
         target_https_proxy_resource: Optional[compute.TargetHttpsProxy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a TargetHttpsProxy resource in the specified
@@ -1004,7 +1005,7 @@ class RegionTargetHttpsProxiesClient(metaclass=RegionTargetHttpsProxiesClientMet
         project: Optional[str] = None,
         region: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves the list of TargetHttpsProxy resources
@@ -1112,7 +1113,7 @@ class RegionTargetHttpsProxiesClient(metaclass=RegionTargetHttpsProxiesClientMet
         target_https_proxy: Optional[str] = None,
         target_https_proxy_resource: Optional[compute.TargetHttpsProxy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Patches the specified regional TargetHttpsProxy
@@ -1226,7 +1227,7 @@ class RegionTargetHttpsProxiesClient(metaclass=RegionTargetHttpsProxiesClientMet
         target_https_proxy: Optional[str] = None,
         target_https_proxy_resource: Optional[compute.TargetHttpsProxy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified regional TargetHttpsProxy
@@ -1367,7 +1368,7 @@ class RegionTargetHttpsProxiesClient(metaclass=RegionTargetHttpsProxiesClientMet
             compute.RegionTargetHttpsProxiesSetSslCertificatesRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Replaces SslCertificates for TargetHttpsProxy.
@@ -1494,7 +1495,7 @@ class RegionTargetHttpsProxiesClient(metaclass=RegionTargetHttpsProxiesClientMet
             compute.RegionTargetHttpsProxiesSetSslCertificatesRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Replaces SslCertificates for TargetHttpsProxy.
@@ -1644,7 +1645,7 @@ class RegionTargetHttpsProxiesClient(metaclass=RegionTargetHttpsProxiesClientMet
         target_https_proxy: Optional[str] = None,
         url_map_reference_resource: Optional[compute.UrlMapReference] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Changes the URL map for TargetHttpsProxy.
@@ -1757,7 +1758,7 @@ class RegionTargetHttpsProxiesClient(metaclass=RegionTargetHttpsProxiesClientMet
         target_https_proxy: Optional[str] = None,
         url_map_reference_resource: Optional[compute.UrlMapReference] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Changes the URL map for TargetHttpsProxy.
@@ -1898,14 +1899,9 @@ class RegionTargetHttpsProxiesClient(metaclass=RegionTargetHttpsProxiesClientMet
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-compute",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("RegionTargetHttpsProxiesClient",)

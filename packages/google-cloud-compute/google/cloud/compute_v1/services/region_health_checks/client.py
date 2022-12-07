@@ -39,7 +39,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.compute_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -430,7 +431,7 @@ class RegionHealthChecksClient(metaclass=RegionHealthChecksClientMeta):
         region: Optional[str] = None,
         health_check: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified HealthCheck resource.
@@ -531,7 +532,7 @@ class RegionHealthChecksClient(metaclass=RegionHealthChecksClientMeta):
         region: Optional[str] = None,
         health_check: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified HealthCheck resource.
@@ -657,7 +658,7 @@ class RegionHealthChecksClient(metaclass=RegionHealthChecksClientMeta):
         region: Optional[str] = None,
         health_check: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.HealthCheck:
         r"""Returns the specified HealthCheck resource. Gets a
@@ -777,7 +778,7 @@ class RegionHealthChecksClient(metaclass=RegionHealthChecksClientMeta):
         region: Optional[str] = None,
         health_check_resource: Optional[compute.HealthCheck] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates a HealthCheck resource in the specified
@@ -876,7 +877,7 @@ class RegionHealthChecksClient(metaclass=RegionHealthChecksClientMeta):
         region: Optional[str] = None,
         health_check_resource: Optional[compute.HealthCheck] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a HealthCheck resource in the specified
@@ -999,7 +1000,7 @@ class RegionHealthChecksClient(metaclass=RegionHealthChecksClientMeta):
         project: Optional[str] = None,
         region: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves the list of HealthCheck resources available
@@ -1104,7 +1105,7 @@ class RegionHealthChecksClient(metaclass=RegionHealthChecksClientMeta):
         health_check: Optional[str] = None,
         health_check_resource: Optional[compute.HealthCheck] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Updates a HealthCheck resource in the specified
@@ -1218,7 +1219,7 @@ class RegionHealthChecksClient(metaclass=RegionHealthChecksClientMeta):
         health_check: Optional[str] = None,
         health_check_resource: Optional[compute.HealthCheck] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates a HealthCheck resource in the specified
@@ -1357,7 +1358,7 @@ class RegionHealthChecksClient(metaclass=RegionHealthChecksClientMeta):
         health_check: Optional[str] = None,
         health_check_resource: Optional[compute.HealthCheck] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Updates a HealthCheck resource in the specified
@@ -1469,7 +1470,7 @@ class RegionHealthChecksClient(metaclass=RegionHealthChecksClientMeta):
         health_check: Optional[str] = None,
         health_check_resource: Optional[compute.HealthCheck] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates a HealthCheck resource in the specified
@@ -1611,14 +1612,9 @@ class RegionHealthChecksClient(metaclass=RegionHealthChecksClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-compute",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("RegionHealthChecksClient",)

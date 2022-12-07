@@ -39,7 +39,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.compute_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -433,7 +434,7 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
             compute.RegionDisksAddResourcePoliciesRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Adds existing resource policies to a regional disk.
@@ -550,7 +551,7 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
             compute.RegionDisksAddResourcePoliciesRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Adds existing resource policies to a regional disk.
@@ -688,7 +689,7 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         disk: Optional[str] = None,
         snapshot_resource: Optional[compute.Snapshot] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates a snapshot of a specified persistent disk.
@@ -799,7 +800,7 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         disk: Optional[str] = None,
         snapshot_resource: Optional[compute.Snapshot] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a snapshot of a specified persistent disk.
@@ -934,7 +935,7 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         region: Optional[str] = None,
         disk: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified regional persistent disk.
@@ -1037,7 +1038,7 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         region: Optional[str] = None,
         disk: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified regional persistent disk.
@@ -1165,7 +1166,7 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         region: Optional[str] = None,
         disk: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Disk:
         r"""Returns a specified regional persistent disk.
@@ -1273,7 +1274,7 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         region: Optional[str] = None,
         resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Gets the access control policy for a resource. May be
@@ -1413,7 +1414,7 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         region: Optional[str] = None,
         disk_resource: Optional[compute.Disk] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates a persistent regional disk in the specified
@@ -1510,7 +1511,7 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         region: Optional[str] = None,
         disk_resource: Optional[compute.Disk] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a persistent regional disk in the specified
@@ -1631,7 +1632,7 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         project: Optional[str] = None,
         region: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves the list of persistent disks contained
@@ -1737,7 +1738,7 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
             compute.RegionDisksRemoveResourcePoliciesRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Removes resource policies from a regional disk.
@@ -1857,7 +1858,7 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
             compute.RegionDisksRemoveResourcePoliciesRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Removes resource policies from a regional disk.
@@ -2000,7 +2001,7 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
             compute.RegionDisksResizeRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Resizes the specified regional persistent disk.
@@ -2111,7 +2112,7 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
             compute.RegionDisksResizeRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Resizes the specified regional persistent disk.
@@ -2247,7 +2248,7 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
             compute.RegionSetPolicyRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Sets the access control policy on the specified
@@ -2401,7 +2402,7 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
             compute.RegionSetLabelsRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets the labels on the target regional disk.
@@ -2514,7 +2515,7 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
             compute.RegionSetLabelsRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the labels on the target regional disk.
@@ -2654,7 +2655,7 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
             compute.TestPermissionsRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
         r"""Returns permissions that a caller has on the
@@ -2771,14 +2772,9 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-compute",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("RegionDisksClient",)

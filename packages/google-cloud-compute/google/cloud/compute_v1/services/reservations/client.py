@@ -39,7 +39,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.compute_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -428,7 +429,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         *,
         project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of reservations.
@@ -516,7 +517,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         zone: Optional[str] = None,
         reservation: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified reservation.
@@ -613,7 +614,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         zone: Optional[str] = None,
         reservation: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified reservation.
@@ -735,7 +736,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         zone: Optional[str] = None,
         reservation: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Reservation:
         r"""Retrieves information about the specified
@@ -837,7 +838,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         zone: Optional[str] = None,
         resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Gets the access control policy for a resource. May be
@@ -977,7 +978,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         zone: Optional[str] = None,
         reservation_resource: Optional[compute.Reservation] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates a new reservation. For more information, read
@@ -1074,7 +1075,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         zone: Optional[str] = None,
         reservation_resource: Optional[compute.Reservation] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a new reservation. For more information, read
@@ -1195,7 +1196,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         project: Optional[str] = None,
         zone: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""A list of all the reservations that have been
@@ -1298,7 +1299,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
             compute.ReservationsResizeRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Resizes the reservation (applicable to standalone
@@ -1411,7 +1412,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
             compute.ReservationsResizeRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Resizes the reservation (applicable to standalone
@@ -1547,7 +1548,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         resource: Optional[str] = None,
         zone_set_policy_request_resource: Optional[compute.ZoneSetPolicyRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Sets the access control policy on the specified
@@ -1703,7 +1704,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
             compute.TestPermissionsRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
         r"""Returns permissions that a caller has on the
@@ -1815,7 +1816,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         reservation: Optional[str] = None,
         reservation_resource: Optional[compute.Reservation] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Update share settings of the reservation.
@@ -1920,7 +1921,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         reservation: Optional[str] = None,
         reservation_resource: Optional[compute.Reservation] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Update share settings of the reservation.
@@ -2055,14 +2056,9 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-compute",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ReservationsClient",)

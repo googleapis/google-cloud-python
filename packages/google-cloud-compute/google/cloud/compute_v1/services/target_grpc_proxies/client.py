@@ -39,7 +39,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.compute_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -429,7 +430,7 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         project: Optional[str] = None,
         target_grpc_proxy: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified TargetGrpcProxy in the given
@@ -520,7 +521,7 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         project: Optional[str] = None,
         target_grpc_proxy: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified TargetGrpcProxy in the given
@@ -635,7 +636,7 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         project: Optional[str] = None,
         target_grpc_proxy: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TargetGrpcProxy:
         r"""Returns the specified TargetGrpcProxy resource in the
@@ -731,7 +732,7 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         project: Optional[str] = None,
         target_grpc_proxy_resource: Optional[compute.TargetGrpcProxy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates a TargetGrpcProxy in the specified project in
@@ -816,7 +817,7 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         project: Optional[str] = None,
         target_grpc_proxy_resource: Optional[compute.TargetGrpcProxy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a TargetGrpcProxy in the specified project in
@@ -924,7 +925,7 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         *,
         project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Lists the TargetGrpcProxies for a project in the
@@ -1012,7 +1013,7 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         target_grpc_proxy: Optional[str] = None,
         target_grpc_proxy_resource: Optional[compute.TargetGrpcProxy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Patches the specified TargetGrpcProxy resource with
@@ -1115,7 +1116,7 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         target_grpc_proxy: Optional[str] = None,
         target_grpc_proxy_resource: Optional[compute.TargetGrpcProxy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified TargetGrpcProxy resource with
@@ -1248,14 +1249,9 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-compute",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("TargetGrpcProxiesClient",)

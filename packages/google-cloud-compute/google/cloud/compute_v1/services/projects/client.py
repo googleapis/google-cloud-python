@@ -39,7 +39,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.compute_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -426,7 +427,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         *,
         project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Disable this project as a shared VPC host project.
@@ -501,7 +502,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         *,
         project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Disable this project as a shared VPC host project.
@@ -603,7 +604,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
             compute.ProjectsDisableXpnResourceRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Disable a service resource (also known as service
@@ -693,7 +694,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
             compute.ProjectsDisableXpnResourceRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Disable a service resource (also known as service
@@ -804,7 +805,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         *,
         project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Enable this project as a shared VPC host project.
@@ -879,7 +880,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         *,
         project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Enable this project as a shared VPC host project.
@@ -981,7 +982,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
             compute.ProjectsEnableXpnResourceRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Enable service resource (a.k.a service project) for a
@@ -1072,7 +1073,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
             compute.ProjectsEnableXpnResourceRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Enable service resource (a.k.a service project) for a
@@ -1184,7 +1185,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         *,
         project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Project:
         r"""Returns the specified Project resource. To decrease latency for
@@ -1269,7 +1270,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         *,
         project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Project:
         r"""Gets the shared VPC host project that this project
@@ -1348,7 +1349,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         *,
         project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.GetXpnResourcesPager:
         r"""Gets service resources (a.k.a service project)
@@ -1437,7 +1438,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
             compute.ProjectsListXpnHostsRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListXpnHostsPager:
         r"""Lists all shared VPC host projects visible to the
@@ -1533,7 +1534,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         project: Optional[str] = None,
         disk_move_request_resource: Optional[compute.DiskMoveRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Moves a persistent disk from one zone to another.
@@ -1616,7 +1617,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         project: Optional[str] = None,
         disk_move_request_resource: Optional[compute.DiskMoveRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Moves a persistent disk from one zone to another.
@@ -1723,7 +1724,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         project: Optional[str] = None,
         instance_move_request_resource: Optional[compute.InstanceMoveRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Moves an instance and its attached persistent disks from one
@@ -1810,7 +1811,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         project: Optional[str] = None,
         instance_move_request_resource: Optional[compute.InstanceMoveRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Moves an instance and its attached persistent disks from one
@@ -1923,7 +1924,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         project: Optional[str] = None,
         metadata_resource: Optional[compute.Metadata] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets metadata common to all instances within the
@@ -2012,7 +2013,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         project: Optional[str] = None,
         metadata_resource: Optional[compute.Metadata] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets metadata common to all instances within the
@@ -2127,7 +2128,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
             compute.ProjectsSetDefaultNetworkTierRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets the default network tier of the project. The
@@ -2221,7 +2222,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
             compute.ProjectsSetDefaultNetworkTierRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the default network tier of the project. The
@@ -2337,7 +2338,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         project: Optional[str] = None,
         usage_export_location_resource: Optional[compute.UsageExportLocation] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Enables the usage export feature and sets the usage
@@ -2425,7 +2426,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         project: Optional[str] = None,
         usage_export_location_resource: Optional[compute.UsageExportLocation] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Enables the usage export feature and sets the usage
@@ -2542,14 +2543,9 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-compute",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ProjectsClient",)

@@ -39,7 +39,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.compute_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -428,7 +429,7 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         region: Optional[str] = None,
         url_map: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified UrlMap resource.
@@ -529,7 +530,7 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         region: Optional[str] = None,
         url_map: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified UrlMap resource.
@@ -655,7 +656,7 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         region: Optional[str] = None,
         url_map: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.UrlMap:
         r"""Returns the specified UrlMap resource. Gets a list of
@@ -776,7 +777,7 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         region: Optional[str] = None,
         url_map_resource: Optional[compute.UrlMap] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates a UrlMap resource in the specified project
@@ -875,7 +876,7 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         region: Optional[str] = None,
         url_map_resource: Optional[compute.UrlMap] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a UrlMap resource in the specified project
@@ -998,7 +999,7 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         project: Optional[str] = None,
         region: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves the list of UrlMap resources available to
@@ -1102,7 +1103,7 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         url_map: Optional[str] = None,
         url_map_resource: Optional[compute.UrlMap] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Patches the specified UrlMap resource with the data
@@ -1212,7 +1213,7 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         url_map: Optional[str] = None,
         url_map_resource: Optional[compute.UrlMap] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified UrlMap resource with the data
@@ -1347,7 +1348,7 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         url_map: Optional[str] = None,
         url_map_resource: Optional[compute.UrlMap] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Updates the specified UrlMap resource with the data
@@ -1457,7 +1458,7 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         url_map: Optional[str] = None,
         url_map_resource: Optional[compute.UrlMap] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the specified UrlMap resource with the data
@@ -1594,7 +1595,7 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
             compute.RegionUrlMapsValidateRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.UrlMapsValidateResponse:
         r"""Runs static validation for the UrlMap. In particular,
@@ -1712,14 +1713,9 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-compute",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("RegionUrlMapsClient",)

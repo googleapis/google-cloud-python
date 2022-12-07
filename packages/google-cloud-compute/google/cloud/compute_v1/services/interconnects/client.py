@@ -39,7 +39,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.compute_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -427,7 +428,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         project: Optional[str] = None,
         interconnect: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified interconnect.
@@ -515,7 +516,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         project: Optional[str] = None,
         interconnect: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified interconnect.
@@ -627,7 +628,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         project: Optional[str] = None,
         interconnect: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Interconnect:
         r"""Returns the specified interconnect. Get a list of
@@ -722,7 +723,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         project: Optional[str] = None,
         interconnect: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.InterconnectsGetDiagnosticsResponse:
         r"""Returns the interconnectDiagnostics for the specified
@@ -813,7 +814,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         project: Optional[str] = None,
         interconnect_resource: Optional[compute.Interconnect] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates a Interconnect in the specified project using
@@ -897,7 +898,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         project: Optional[str] = None,
         interconnect_resource: Optional[compute.Interconnect] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a Interconnect in the specified project using
@@ -1004,7 +1005,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         *,
         project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves the list of interconnect available to the
@@ -1094,7 +1095,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         interconnect: Optional[str] = None,
         interconnect_resource: Optional[compute.Interconnect] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Updates the specified interconnect with the data
@@ -1193,7 +1194,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         interconnect: Optional[str] = None,
         interconnect_resource: Optional[compute.Interconnect] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the specified interconnect with the data
@@ -1318,7 +1319,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             compute.GlobalSetLabelsRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets the labels on an Interconnect. To learn more
@@ -1423,7 +1424,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             compute.GlobalSetLabelsRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the labels on an Interconnect. To learn more
@@ -1556,14 +1557,9 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-compute",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("InterconnectsClient",)
