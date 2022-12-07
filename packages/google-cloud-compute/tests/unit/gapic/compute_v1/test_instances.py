@@ -23135,7 +23135,12 @@ def test_stop_rest_required_fields(request_type=compute.StopInstanceRequest):
         credentials=ga_credentials.AnonymousCredentials()
     ).stop._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "discard_local_ssd",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -23193,7 +23198,12 @@ def test_stop_rest_unset_required_fields():
 
     unset_fields = transport.stop._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "discardLocalSsd",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instance",
@@ -23442,7 +23452,12 @@ def test_stop_unary_rest_required_fields(request_type=compute.StopInstanceReques
         credentials=ga_credentials.AnonymousCredentials()
     ).stop._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "discard_local_ssd",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -23500,7 +23515,12 @@ def test_stop_unary_rest_unset_required_fields():
 
     unset_fields = transport.stop._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "discardLocalSsd",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instance",
@@ -23771,7 +23791,12 @@ def test_suspend_rest_required_fields(request_type=compute.SuspendInstanceReques
         credentials=ga_credentials.AnonymousCredentials()
     ).suspend._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "discard_local_ssd",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -23829,7 +23854,12 @@ def test_suspend_rest_unset_required_fields():
 
     unset_fields = transport.suspend._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "discardLocalSsd",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instance",
@@ -24080,7 +24110,12 @@ def test_suspend_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).suspend._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "discard_local_ssd",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -24138,7 +24173,12 @@ def test_suspend_unary_rest_unset_required_fields():
 
     unset_fields = transport.suspend._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "discardLocalSsd",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instance",

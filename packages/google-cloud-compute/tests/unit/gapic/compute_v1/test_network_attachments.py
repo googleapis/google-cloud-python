@@ -49,8 +49,8 @@ import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
-from google.cloud.compute_v1.services.region_commitments import (
-    RegionCommitmentsClient,
+from google.cloud.compute_v1.services.network_attachments import (
+    NetworkAttachmentsClient,
     pagers,
     transports,
 )
@@ -79,25 +79,25 @@ def test__get_default_mtls_endpoint():
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
 
-    assert RegionCommitmentsClient._get_default_mtls_endpoint(None) is None
+    assert NetworkAttachmentsClient._get_default_mtls_endpoint(None) is None
     assert (
-        RegionCommitmentsClient._get_default_mtls_endpoint(api_endpoint)
+        NetworkAttachmentsClient._get_default_mtls_endpoint(api_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        RegionCommitmentsClient._get_default_mtls_endpoint(api_mtls_endpoint)
+        NetworkAttachmentsClient._get_default_mtls_endpoint(api_mtls_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        RegionCommitmentsClient._get_default_mtls_endpoint(sandbox_endpoint)
+        NetworkAttachmentsClient._get_default_mtls_endpoint(sandbox_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        RegionCommitmentsClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
+        NetworkAttachmentsClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        RegionCommitmentsClient._get_default_mtls_endpoint(non_googleapi)
+        NetworkAttachmentsClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
     )
 
@@ -105,10 +105,10 @@ def test__get_default_mtls_endpoint():
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (RegionCommitmentsClient, "rest"),
+        (NetworkAttachmentsClient, "rest"),
     ],
 )
-def test_region_commitments_client_from_service_account_info(
+def test_network_attachments_client_from_service_account_info(
     client_class, transport_name
 ):
     creds = ga_credentials.AnonymousCredentials()
@@ -131,10 +131,10 @@ def test_region_commitments_client_from_service_account_info(
 @pytest.mark.parametrize(
     "transport_class,transport_name",
     [
-        (transports.RegionCommitmentsRestTransport, "rest"),
+        (transports.NetworkAttachmentsRestTransport, "rest"),
     ],
 )
-def test_region_commitments_client_service_account_always_use_jwt(
+def test_network_attachments_client_service_account_always_use_jwt(
     transport_class, transport_name
 ):
     with mock.patch.object(
@@ -155,10 +155,10 @@ def test_region_commitments_client_service_account_always_use_jwt(
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (RegionCommitmentsClient, "rest"),
+        (NetworkAttachmentsClient, "rest"),
     ],
 )
-def test_region_commitments_client_from_service_account_file(
+def test_network_attachments_client_from_service_account_file(
     client_class, transport_name
 ):
     creds = ga_credentials.AnonymousCredentials()
@@ -185,39 +185,39 @@ def test_region_commitments_client_from_service_account_file(
         )
 
 
-def test_region_commitments_client_get_transport_class():
-    transport = RegionCommitmentsClient.get_transport_class()
+def test_network_attachments_client_get_transport_class():
+    transport = NetworkAttachmentsClient.get_transport_class()
     available_transports = [
-        transports.RegionCommitmentsRestTransport,
+        transports.NetworkAttachmentsRestTransport,
     ]
     assert transport in available_transports
 
-    transport = RegionCommitmentsClient.get_transport_class("rest")
-    assert transport == transports.RegionCommitmentsRestTransport
+    transport = NetworkAttachmentsClient.get_transport_class("rest")
+    assert transport == transports.NetworkAttachmentsRestTransport
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (RegionCommitmentsClient, transports.RegionCommitmentsRestTransport, "rest"),
+        (NetworkAttachmentsClient, transports.NetworkAttachmentsRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
-    RegionCommitmentsClient,
+    NetworkAttachmentsClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(RegionCommitmentsClient),
+    modify_default_endpoint(NetworkAttachmentsClient),
 )
-def test_region_commitments_client_client_options(
+def test_network_attachments_client_client_options(
     client_class, transport_class, transport_name
 ):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(RegionCommitmentsClient, "get_transport_class") as gtc:
+    with mock.patch.object(NetworkAttachmentsClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(RegionCommitmentsClient, "get_transport_class") as gtc:
+    with mock.patch.object(NetworkAttachmentsClient, "get_transport_class") as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
@@ -327,26 +327,26 @@ def test_region_commitments_client_client_options(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
         (
-            RegionCommitmentsClient,
-            transports.RegionCommitmentsRestTransport,
+            NetworkAttachmentsClient,
+            transports.NetworkAttachmentsRestTransport,
             "rest",
             "true",
         ),
         (
-            RegionCommitmentsClient,
-            transports.RegionCommitmentsRestTransport,
+            NetworkAttachmentsClient,
+            transports.NetworkAttachmentsRestTransport,
             "rest",
             "false",
         ),
     ],
 )
 @mock.patch.object(
-    RegionCommitmentsClient,
+    NetworkAttachmentsClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(RegionCommitmentsClient),
+    modify_default_endpoint(NetworkAttachmentsClient),
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_region_commitments_client_mtls_env_auto(
+def test_network_attachments_client_mtls_env_auto(
     client_class, transport_class, transport_name, use_client_cert_env
 ):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -442,13 +442,13 @@ def test_region_commitments_client_mtls_env_auto(
                 )
 
 
-@pytest.mark.parametrize("client_class", [RegionCommitmentsClient])
+@pytest.mark.parametrize("client_class", [NetworkAttachmentsClient])
 @mock.patch.object(
-    RegionCommitmentsClient,
+    NetworkAttachmentsClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(RegionCommitmentsClient),
+    modify_default_endpoint(NetworkAttachmentsClient),
 )
-def test_region_commitments_client_get_mtls_endpoint_and_cert_source(client_class):
+def test_network_attachments_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
@@ -519,10 +519,10 @@ def test_region_commitments_client_get_mtls_endpoint_and_cert_source(client_clas
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (RegionCommitmentsClient, transports.RegionCommitmentsRestTransport, "rest"),
+        (NetworkAttachmentsClient, transports.NetworkAttachmentsRestTransport, "rest"),
     ],
 )
-def test_region_commitments_client_client_options_scopes(
+def test_network_attachments_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
@@ -549,14 +549,14 @@ def test_region_commitments_client_client_options_scopes(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            RegionCommitmentsClient,
-            transports.RegionCommitmentsRestTransport,
+            NetworkAttachmentsClient,
+            transports.NetworkAttachmentsRestTransport,
             "rest",
             None,
         ),
     ],
 )
-def test_region_commitments_client_client_options_credentials_file(
+def test_network_attachments_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -581,12 +581,12 @@ def test_region_commitments_client_client_options_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        compute.AggregatedListRegionCommitmentsRequest,
+        compute.AggregatedListNetworkAttachmentsRequest,
         dict,
     ],
 )
 def test_aggregated_list_rest(request_type):
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -598,18 +598,17 @@ def test_aggregated_list_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = compute.CommitmentAggregatedList(
+        return_value = compute.NetworkAttachmentAggregatedList(
             id="id_value",
             kind="kind_value",
             next_page_token="next_page_token_value",
             self_link="self_link_value",
-            unreachables=["unreachables_value"],
         )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.CommitmentAggregatedList.pb(return_value)
+        pb_return_value = compute.NetworkAttachmentAggregatedList.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -622,13 +621,12 @@ def test_aggregated_list_rest(request_type):
     assert response.kind == "kind_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.self_link == "self_link_value"
-    assert response.unreachables == ["unreachables_value"]
 
 
 def test_aggregated_list_rest_required_fields(
-    request_type=compute.AggregatedListRegionCommitmentsRequest,
+    request_type=compute.AggregatedListNetworkAttachmentsRequest,
 ):
-    transport_class = transports.RegionCommitmentsRestTransport
+    transport_class = transports.NetworkAttachmentsRestTransport
 
     request_init = {}
     request_init["project"] = ""
@@ -673,14 +671,14 @@ def test_aggregated_list_rest_required_fields(
     assert "project" in jsonified_request
     assert jsonified_request["project"] == "project_value"
 
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = compute.CommitmentAggregatedList()
+    return_value = compute.NetworkAttachmentAggregatedList()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -700,7 +698,7 @@ def test_aggregated_list_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.CommitmentAggregatedList.pb(return_value)
+            pb_return_value = compute.NetworkAttachmentAggregatedList.pb(return_value)
             json_return_value = json_format.MessageToJson(pb_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -714,7 +712,7 @@ def test_aggregated_list_rest_required_fields(
 
 
 def test_aggregated_list_rest_unset_required_fields():
-    transport = transports.RegionCommitmentsRestTransport(
+    transport = transports.NetworkAttachmentsRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
@@ -736,26 +734,26 @@ def test_aggregated_list_rest_unset_required_fields():
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_aggregated_list_rest_interceptors(null_interceptor):
-    transport = transports.RegionCommitmentsRestTransport(
+    transport = transports.NetworkAttachmentsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.RegionCommitmentsRestInterceptor(),
+        else transports.NetworkAttachmentsRestInterceptor(),
     )
-    client = RegionCommitmentsClient(transport=transport)
+    client = NetworkAttachmentsClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.RegionCommitmentsRestInterceptor, "post_aggregated_list"
+        transports.NetworkAttachmentsRestInterceptor, "post_aggregated_list"
     ) as post, mock.patch.object(
-        transports.RegionCommitmentsRestInterceptor, "pre_aggregated_list"
+        transports.NetworkAttachmentsRestInterceptor, "pre_aggregated_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = compute.AggregatedListRegionCommitmentsRequest.pb(
-            compute.AggregatedListRegionCommitmentsRequest()
+        pb_message = compute.AggregatedListNetworkAttachmentsRequest.pb(
+            compute.AggregatedListNetworkAttachmentsRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -767,17 +765,17 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.CommitmentAggregatedList.to_json(
-            compute.CommitmentAggregatedList()
+        req.return_value._content = compute.NetworkAttachmentAggregatedList.to_json(
+            compute.NetworkAttachmentAggregatedList()
         )
 
-        request = compute.AggregatedListRegionCommitmentsRequest()
+        request = compute.AggregatedListNetworkAttachmentsRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.CommitmentAggregatedList()
+        post.return_value = compute.NetworkAttachmentAggregatedList()
 
         client.aggregated_list(
             request,
@@ -792,9 +790,10 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
 
 
 def test_aggregated_list_rest_bad_request(
-    transport: str = "rest", request_type=compute.AggregatedListRegionCommitmentsRequest
+    transport: str = "rest",
+    request_type=compute.AggregatedListNetworkAttachmentsRequest,
 ):
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -816,7 +815,7 @@ def test_aggregated_list_rest_bad_request(
 
 
 def test_aggregated_list_rest_flattened():
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -824,7 +823,7 @@ def test_aggregated_list_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = compute.CommitmentAggregatedList()
+        return_value = compute.NetworkAttachmentAggregatedList()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {"project": "sample1"}
@@ -838,7 +837,7 @@ def test_aggregated_list_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.CommitmentAggregatedList.pb(return_value)
+        pb_return_value = compute.NetworkAttachmentAggregatedList.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -850,14 +849,14 @@ def test_aggregated_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/aggregated/commitments"
+            "%s/compute/v1/projects/{project}/aggregated/networkAttachments"
             % client.transport._host,
             args[1],
         )
 
 
 def test_aggregated_list_rest_flattened_error(transport: str = "rest"):
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -866,13 +865,13 @@ def test_aggregated_list_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.aggregated_list(
-            compute.AggregatedListRegionCommitmentsRequest(),
+            compute.AggregatedListNetworkAttachmentsRequest(),
             project="project_value",
         )
 
 
 def test_aggregated_list_rest_pager(transport: str = "rest"):
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -883,28 +882,28 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
         # with mock.patch.object(path_template, 'transcode') as transcode:
         # Set the response as a series of pages
         response = (
-            compute.CommitmentAggregatedList(
+            compute.NetworkAttachmentAggregatedList(
                 items={
-                    "a": compute.CommitmentsScopedList(),
-                    "b": compute.CommitmentsScopedList(),
-                    "c": compute.CommitmentsScopedList(),
+                    "a": compute.NetworkAttachmentsScopedList(),
+                    "b": compute.NetworkAttachmentsScopedList(),
+                    "c": compute.NetworkAttachmentsScopedList(),
                 },
                 next_page_token="abc",
             ),
-            compute.CommitmentAggregatedList(
+            compute.NetworkAttachmentAggregatedList(
                 items={},
                 next_page_token="def",
             ),
-            compute.CommitmentAggregatedList(
+            compute.NetworkAttachmentAggregatedList(
                 items={
-                    "g": compute.CommitmentsScopedList(),
+                    "g": compute.NetworkAttachmentsScopedList(),
                 },
                 next_page_token="ghi",
             ),
-            compute.CommitmentAggregatedList(
+            compute.NetworkAttachmentAggregatedList(
                 items={
-                    "h": compute.CommitmentsScopedList(),
-                    "i": compute.CommitmentsScopedList(),
+                    "h": compute.NetworkAttachmentsScopedList(),
+                    "i": compute.NetworkAttachmentsScopedList(),
                 },
             ),
         )
@@ -912,7 +911,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
         response = response + response
 
         # Wrap the values into proper Response objs
-        response = tuple(compute.CommitmentAggregatedList.to_json(x) for x in response)
+        response = tuple(
+            compute.NetworkAttachmentAggregatedList.to_json(x) for x in response
+        )
         return_values = tuple(Response() for i in response)
         for return_val, response_val in zip(return_values, response):
             return_val._content = response_val.encode("UTF-8")
@@ -923,7 +924,7 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
 
         pager = client.aggregated_list(request=sample_request)
 
-        assert isinstance(pager.get("a"), compute.CommitmentsScopedList)
+        assert isinstance(pager.get("a"), compute.NetworkAttachmentsScopedList)
         assert pager.get("h") is None
 
         results = list(pager)
@@ -933,11 +934,11 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
             assert isinstance(result, tuple)
             assert tuple(type(t) for t in result) == (
                 str,
-                compute.CommitmentsScopedList,
+                compute.NetworkAttachmentsScopedList,
             )
 
         assert pager.get("a") is None
-        assert isinstance(pager.get("h"), compute.CommitmentsScopedList)
+        assert isinstance(pager.get("h"), compute.NetworkAttachmentsScopedList)
 
         pages = list(client.aggregated_list(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
@@ -947,47 +948,712 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
 @pytest.mark.parametrize(
     "request_type",
     [
-        compute.GetRegionCommitmentRequest,
+        compute.DeleteNetworkAttachmentRequest,
         dict,
     ],
 )
-def test_get_rest(request_type):
-    client = RegionCommitmentsClient(
+def test_delete_rest(request_type):
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2", "commitment": "sample3"}
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "network_attachment": "sample3",
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = compute.Commitment(
-            auto_renew=True,
-            category="category_value",
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
             creation_timestamp="creation_timestamp_value",
             description="description_value",
-            end_timestamp="end_timestamp_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
             id=205,
+            insert_time="insert_time_value",
             kind="kind_value",
-            merge_source_commitments=["merge_source_commitments_value"],
             name="name_value",
-            plan="plan_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
             region="region_value",
             self_link="self_link_value",
-            split_source_commitment="split_source_commitment_value",
-            start_timestamp="start_timestamp_value",
-            status="status_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            type_="type__value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Commitment.pb(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+def test_delete_rest_required_fields(
+    request_type=compute.DeleteNetworkAttachmentRequest,
+):
+    transport_class = transports.NetworkAttachmentsRestTransport
+
+    request_init = {}
+    request_init["network_attachment"] = ""
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["networkAttachment"] = "network_attachment_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "networkAttachment" in jsonified_request
+    assert jsonified_request["networkAttachment"] == "network_attachment_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+
+    client = NetworkAttachmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_rest_unset_required_fields():
+    transport = transports.NetworkAttachmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "networkAttachment",
+                "project",
+                "region",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_rest_interceptors(null_interceptor):
+    transport = transports.NetworkAttachmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.NetworkAttachmentsRestInterceptor(),
+    )
+    client = NetworkAttachmentsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.NetworkAttachmentsRestInterceptor, "post_delete"
+    ) as post, mock.patch.object(
+        transports.NetworkAttachmentsRestInterceptor, "pre_delete"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.DeleteNetworkAttachmentRequest.pb(
+            compute.DeleteNetworkAttachmentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.DeleteNetworkAttachmentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.delete(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_rest_bad_request(
+    transport: str = "rest", request_type=compute.DeleteNetworkAttachmentRequest
+):
+    client = NetworkAttachmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "network_attachment": "sample3",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete(request)
+
+
+def test_delete_rest_flattened():
+    client = NetworkAttachmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "network_attachment": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            network_attachment="network_attachment_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/networkAttachments/{network_attachment}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_rest_flattened_error(transport: str = "rest"):
+    client = NetworkAttachmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete(
+            compute.DeleteNetworkAttachmentRequest(),
+            project="project_value",
+            region="region_value",
+            network_attachment="network_attachment_value",
+        )
+
+
+def test_delete_rest_error():
+    client = NetworkAttachmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.DeleteNetworkAttachmentRequest,
+        dict,
+    ],
+)
+def test_delete_unary_rest(request_type):
+    client = NetworkAttachmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "network_attachment": "sample3",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_unary(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.Operation)
+
+
+def test_delete_unary_rest_required_fields(
+    request_type=compute.DeleteNetworkAttachmentRequest,
+):
+    transport_class = transports.NetworkAttachmentsRestTransport
+
+    request_init = {}
+    request_init["network_attachment"] = ""
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["networkAttachment"] = "network_attachment_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "networkAttachment" in jsonified_request
+    assert jsonified_request["networkAttachment"] == "network_attachment_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+
+    client = NetworkAttachmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_unary_rest_unset_required_fields():
+    transport = transports.NetworkAttachmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "networkAttachment",
+                "project",
+                "region",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_unary_rest_interceptors(null_interceptor):
+    transport = transports.NetworkAttachmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.NetworkAttachmentsRestInterceptor(),
+    )
+    client = NetworkAttachmentsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.NetworkAttachmentsRestInterceptor, "post_delete"
+    ) as post, mock.patch.object(
+        transports.NetworkAttachmentsRestInterceptor, "pre_delete"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.DeleteNetworkAttachmentRequest.pb(
+            compute.DeleteNetworkAttachmentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.DeleteNetworkAttachmentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.delete_unary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_unary_rest_bad_request(
+    transport: str = "rest", request_type=compute.DeleteNetworkAttachmentRequest
+):
+    client = NetworkAttachmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "network_attachment": "sample3",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_unary(request)
+
+
+def test_delete_unary_rest_flattened():
+    client = NetworkAttachmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "network_attachment": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            network_attachment="network_attachment_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_unary(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/networkAttachments/{network_attachment}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_unary_rest_flattened_error(transport: str = "rest"):
+    client = NetworkAttachmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_unary(
+            compute.DeleteNetworkAttachmentRequest(),
+            project="project_value",
+            region="region_value",
+            network_attachment="network_attachment_value",
+        )
+
+
+def test_delete_unary_rest_error():
+    client = NetworkAttachmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.GetNetworkAttachmentRequest,
+        dict,
+    ],
+)
+def test_get_rest(request_type):
+    client = NetworkAttachmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "network_attachment": "sample3",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.NetworkAttachment(
+            connection_preference="connection_preference_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            fingerprint="fingerprint_value",
+            id=205,
+            kind="kind_value",
+            name="name_value",
+            network="network_value",
+            producer_accept_lists=["producer_accept_lists_value"],
+            producer_reject_lists=["producer_reject_lists_value"],
+            region="region_value",
+            self_link="self_link_value",
+            self_link_with_id="self_link_with_id_value",
+            subnetworks=["subnetworks_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.NetworkAttachment.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -995,31 +1661,28 @@ def test_get_rest(request_type):
         response = client.get(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, compute.Commitment)
-    assert response.auto_renew is True
-    assert response.category == "category_value"
+    assert isinstance(response, compute.NetworkAttachment)
+    assert response.connection_preference == "connection_preference_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
-    assert response.end_timestamp == "end_timestamp_value"
+    assert response.fingerprint == "fingerprint_value"
     assert response.id == 205
     assert response.kind == "kind_value"
-    assert response.merge_source_commitments == ["merge_source_commitments_value"]
     assert response.name == "name_value"
-    assert response.plan == "plan_value"
+    assert response.network == "network_value"
+    assert response.producer_accept_lists == ["producer_accept_lists_value"]
+    assert response.producer_reject_lists == ["producer_reject_lists_value"]
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
-    assert response.split_source_commitment == "split_source_commitment_value"
-    assert response.start_timestamp == "start_timestamp_value"
-    assert response.status == "status_value"
-    assert response.status_message == "status_message_value"
-    assert response.type_ == "type__value"
+    assert response.self_link_with_id == "self_link_with_id_value"
+    assert response.subnetworks == ["subnetworks_value"]
 
 
-def test_get_rest_required_fields(request_type=compute.GetRegionCommitmentRequest):
-    transport_class = transports.RegionCommitmentsRestTransport
+def test_get_rest_required_fields(request_type=compute.GetNetworkAttachmentRequest):
+    transport_class = transports.NetworkAttachmentsRestTransport
 
     request_init = {}
-    request_init["commitment"] = ""
+    request_init["network_attachment"] = ""
     request_init["project"] = ""
     request_init["region"] = ""
     request = request_type(**request_init)
@@ -1041,7 +1704,7 @@ def test_get_rest_required_fields(request_type=compute.GetRegionCommitmentReques
 
     # verify required fields with default values are now present
 
-    jsonified_request["commitment"] = "commitment_value"
+    jsonified_request["networkAttachment"] = "network_attachment_value"
     jsonified_request["project"] = "project_value"
     jsonified_request["region"] = "region_value"
 
@@ -1051,21 +1714,21 @@ def test_get_rest_required_fields(request_type=compute.GetRegionCommitmentReques
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
-    assert "commitment" in jsonified_request
-    assert jsonified_request["commitment"] == "commitment_value"
+    assert "networkAttachment" in jsonified_request
+    assert jsonified_request["networkAttachment"] == "network_attachment_value"
     assert "project" in jsonified_request
     assert jsonified_request["project"] == "project_value"
     assert "region" in jsonified_request
     assert jsonified_request["region"] == "region_value"
 
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = compute.Commitment()
+    return_value = compute.NetworkAttachment()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -1085,7 +1748,7 @@ def test_get_rest_required_fields(request_type=compute.GetRegionCommitmentReques
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Commitment.pb(return_value)
+            pb_return_value = compute.NetworkAttachment.pb(return_value)
             json_return_value = json_format.MessageToJson(pb_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -1099,7 +1762,7 @@ def test_get_rest_required_fields(request_type=compute.GetRegionCommitmentReques
 
 
 def test_get_rest_unset_required_fields():
-    transport = transports.RegionCommitmentsRestTransport(
+    transport = transports.NetworkAttachmentsRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
@@ -1108,7 +1771,7 @@ def test_get_rest_unset_required_fields():
         set(())
         & set(
             (
-                "commitment",
+                "networkAttachment",
                 "project",
                 "region",
             )
@@ -1118,26 +1781,26 @@ def test_get_rest_unset_required_fields():
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_rest_interceptors(null_interceptor):
-    transport = transports.RegionCommitmentsRestTransport(
+    transport = transports.NetworkAttachmentsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.RegionCommitmentsRestInterceptor(),
+        else transports.NetworkAttachmentsRestInterceptor(),
     )
-    client = RegionCommitmentsClient(transport=transport)
+    client = NetworkAttachmentsClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.RegionCommitmentsRestInterceptor, "post_get"
+        transports.NetworkAttachmentsRestInterceptor, "post_get"
     ) as post, mock.patch.object(
-        transports.RegionCommitmentsRestInterceptor, "pre_get"
+        transports.NetworkAttachmentsRestInterceptor, "pre_get"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = compute.GetRegionCommitmentRequest.pb(
-            compute.GetRegionCommitmentRequest()
+        pb_message = compute.GetNetworkAttachmentRequest.pb(
+            compute.GetNetworkAttachmentRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -1149,15 +1812,17 @@ def test_get_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Commitment.to_json(compute.Commitment())
+        req.return_value._content = compute.NetworkAttachment.to_json(
+            compute.NetworkAttachment()
+        )
 
-        request = compute.GetRegionCommitmentRequest()
+        request = compute.GetNetworkAttachmentRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Commitment()
+        post.return_value = compute.NetworkAttachment()
 
         client.get(
             request,
@@ -1172,15 +1837,19 @@ def test_get_rest_interceptors(null_interceptor):
 
 
 def test_get_rest_bad_request(
-    transport: str = "rest", request_type=compute.GetRegionCommitmentRequest
+    transport: str = "rest", request_type=compute.GetNetworkAttachmentRequest
 ):
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2", "commitment": "sample3"}
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "network_attachment": "sample3",
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -1196,7 +1865,7 @@ def test_get_rest_bad_request(
 
 
 def test_get_rest_flattened():
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -1204,27 +1873,27 @@ def test_get_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = compute.Commitment()
+        return_value = compute.NetworkAttachment()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
             "region": "sample2",
-            "commitment": "sample3",
+            "network_attachment": "sample3",
         }
 
         # get truthy value for each flattened field
         mock_args = dict(
             project="project_value",
             region="region_value",
-            commitment="commitment_value",
+            network_attachment="network_attachment_value",
         )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Commitment.pb(return_value)
+        pb_return_value = compute.NetworkAttachment.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1236,14 +1905,14 @@ def test_get_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/regions/{region}/commitments/{commitment}"
+            "%s/compute/v1/projects/{project}/regions/{region}/networkAttachments/{network_attachment}"
             % client.transport._host,
             args[1],
         )
 
 
 def test_get_rest_flattened_error(transport: str = "rest"):
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1252,15 +1921,15 @@ def test_get_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.get(
-            compute.GetRegionCommitmentRequest(),
+            compute.GetNetworkAttachmentRequest(),
             project="project_value",
             region="region_value",
-            commitment="commitment_value",
+            network_attachment="network_attachment_value",
         )
 
 
 def test_get_rest_error():
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
@@ -1268,87 +1937,348 @@ def test_get_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
-        compute.InsertRegionCommitmentRequest,
+        compute.GetIamPolicyNetworkAttachmentRequest,
+        dict,
+    ],
+)
+def test_get_iam_policy_rest(request_type):
+    client = NetworkAttachmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "resource": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Policy(
+            etag="etag_value",
+            iam_owned=True,
+            version=774,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.Policy)
+    assert response.etag == "etag_value"
+    assert response.iam_owned is True
+    assert response.version == 774
+
+
+def test_get_iam_policy_rest_required_fields(
+    request_type=compute.GetIamPolicyNetworkAttachmentRequest,
+):
+    transport_class = transports.NetworkAttachmentsRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request_init["resource"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+    jsonified_request["resource"] = "resource_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_iam_policy._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("options_requested_policy_version",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+
+    client = NetworkAttachmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Policy()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = compute.Policy.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_iam_policy(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_iam_policy_rest_unset_required_fields():
+    transport = transports.NetworkAttachmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_iam_policy._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("optionsRequestedPolicyVersion",))
+        & set(
+            (
+                "project",
+                "region",
+                "resource",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.NetworkAttachmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.NetworkAttachmentsRestInterceptor(),
+    )
+    client = NetworkAttachmentsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.NetworkAttachmentsRestInterceptor, "post_get_iam_policy"
+    ) as post, mock.patch.object(
+        transports.NetworkAttachmentsRestInterceptor, "pre_get_iam_policy"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.GetIamPolicyNetworkAttachmentRequest.pb(
+            compute.GetIamPolicyNetworkAttachmentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Policy.to_json(compute.Policy())
+
+        request = compute.GetIamPolicyNetworkAttachmentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Policy()
+
+        client.get_iam_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=compute.GetIamPolicyNetworkAttachmentRequest
+):
+    client = NetworkAttachmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "resource": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_iam_policy(request)
+
+
+def test_get_iam_policy_rest_flattened():
+    client = NetworkAttachmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Policy()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "resource": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            resource="resource_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_iam_policy(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/networkAttachments/{resource}/getIamPolicy"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_iam_policy_rest_flattened_error(transport: str = "rest"):
+    client = NetworkAttachmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_iam_policy(
+            compute.GetIamPolicyNetworkAttachmentRequest(),
+            project="project_value",
+            region="region_value",
+            resource="resource_value",
+        )
+
+
+def test_get_iam_policy_rest_error():
+    client = NetworkAttachmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.InsertNetworkAttachmentRequest,
         dict,
     ],
 )
 def test_insert_rest(request_type):
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request_init["commitment_resource"] = {
-        "auto_renew": True,
-        "category": "category_value",
+    request_init["network_attachment_resource"] = {
+        "connection_endpoints": [
+            {
+                "ip_address": "ip_address_value",
+                "project_id_or_num": "project_id_or_num_value",
+                "secondary_ip_cidr_ranges": [
+                    "secondary_ip_cidr_ranges_value1",
+                    "secondary_ip_cidr_ranges_value2",
+                ],
+                "status": "status_value",
+                "subnetwork": "subnetwork_value",
+            }
+        ],
+        "connection_preference": "connection_preference_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
-        "end_timestamp": "end_timestamp_value",
+        "fingerprint": "fingerprint_value",
         "id": 205,
         "kind": "kind_value",
-        "license_resource": {
-            "amount": 660,
-            "cores_per_license": "cores_per_license_value",
-            "license_": "license__value",
-        },
-        "merge_source_commitments": [
-            "merge_source_commitments_value1",
-            "merge_source_commitments_value2",
-        ],
         "name": "name_value",
-        "plan": "plan_value",
+        "network": "network_value",
+        "producer_accept_lists": [
+            "producer_accept_lists_value1",
+            "producer_accept_lists_value2",
+        ],
+        "producer_reject_lists": [
+            "producer_reject_lists_value1",
+            "producer_reject_lists_value2",
+        ],
         "region": "region_value",
-        "reservations": [
-            {
-                "commitment": "commitment_value",
-                "creation_timestamp": "creation_timestamp_value",
-                "description": "description_value",
-                "id": 205,
-                "kind": "kind_value",
-                "name": "name_value",
-                "resource_policies": {},
-                "satisfies_pzs": True,
-                "self_link": "self_link_value",
-                "share_settings": {"project_map": {}, "share_type": "share_type_value"},
-                "specific_reservation": {
-                    "assured_count": 1407,
-                    "count": 553,
-                    "in_use_count": 1291,
-                    "instance_properties": {
-                        "guest_accelerators": [
-                            {
-                                "accelerator_count": 1805,
-                                "accelerator_type": "accelerator_type_value",
-                            }
-                        ],
-                        "local_ssds": [
-                            {"disk_size_gb": 1261, "interface": "interface_value"}
-                        ],
-                        "location_hint": "location_hint_value",
-                        "machine_type": "machine_type_value",
-                        "min_cpu_platform": "min_cpu_platform_value",
-                    },
-                },
-                "specific_reservation_required": True,
-                "status": "status_value",
-                "zone": "zone_value",
-            }
-        ],
-        "resources": [
-            {
-                "accelerator_type": "accelerator_type_value",
-                "amount": 660,
-                "type_": "type__value",
-            }
-        ],
         "self_link": "self_link_value",
-        "split_source_commitment": "split_source_commitment_value",
-        "start_timestamp": "start_timestamp_value",
-        "status": "status_value",
-        "status_message": "status_message_value",
-        "type_": "type__value",
+        "self_link_with_id": "self_link_with_id_value",
+        "subnetworks": ["subnetworks_value1", "subnetworks_value2"],
     }
     request = request_type(**request_init)
 
@@ -1417,9 +2347,9 @@ def test_insert_rest(request_type):
 
 
 def test_insert_rest_required_fields(
-    request_type=compute.InsertRegionCommitmentRequest,
+    request_type=compute.InsertNetworkAttachmentRequest,
 ):
-    transport_class = transports.RegionCommitmentsRestTransport
+    transport_class = transports.NetworkAttachmentsRestTransport
 
     request_init = {}
     request_init["project"] = ""
@@ -1459,7 +2389,7 @@ def test_insert_rest_required_fields(
     assert "region" in jsonified_request
     assert jsonified_request["region"] == "region_value"
 
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -1501,7 +2431,7 @@ def test_insert_rest_required_fields(
 
 
 def test_insert_rest_unset_required_fields():
-    transport = transports.RegionCommitmentsRestTransport(
+    transport = transports.NetworkAttachmentsRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
@@ -1510,7 +2440,7 @@ def test_insert_rest_unset_required_fields():
         set(("requestId",))
         & set(
             (
-                "commitmentResource",
+                "networkAttachmentResource",
                 "project",
                 "region",
             )
@@ -1520,26 +2450,26 @@ def test_insert_rest_unset_required_fields():
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_insert_rest_interceptors(null_interceptor):
-    transport = transports.RegionCommitmentsRestTransport(
+    transport = transports.NetworkAttachmentsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.RegionCommitmentsRestInterceptor(),
+        else transports.NetworkAttachmentsRestInterceptor(),
     )
-    client = RegionCommitmentsClient(transport=transport)
+    client = NetworkAttachmentsClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.RegionCommitmentsRestInterceptor, "post_insert"
+        transports.NetworkAttachmentsRestInterceptor, "post_insert"
     ) as post, mock.patch.object(
-        transports.RegionCommitmentsRestInterceptor, "pre_insert"
+        transports.NetworkAttachmentsRestInterceptor, "pre_insert"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = compute.InsertRegionCommitmentRequest.pb(
-            compute.InsertRegionCommitmentRequest()
+        pb_message = compute.InsertNetworkAttachmentRequest.pb(
+            compute.InsertNetworkAttachmentRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -1553,7 +2483,7 @@ def test_insert_rest_interceptors(null_interceptor):
         req.return_value.request = PreparedRequest()
         req.return_value._content = compute.Operation.to_json(compute.Operation())
 
-        request = compute.InsertRegionCommitmentRequest()
+        request = compute.InsertNetworkAttachmentRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
@@ -1574,84 +2504,48 @@ def test_insert_rest_interceptors(null_interceptor):
 
 
 def test_insert_rest_bad_request(
-    transport: str = "rest", request_type=compute.InsertRegionCommitmentRequest
+    transport: str = "rest", request_type=compute.InsertNetworkAttachmentRequest
 ):
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request_init["commitment_resource"] = {
-        "auto_renew": True,
-        "category": "category_value",
+    request_init["network_attachment_resource"] = {
+        "connection_endpoints": [
+            {
+                "ip_address": "ip_address_value",
+                "project_id_or_num": "project_id_or_num_value",
+                "secondary_ip_cidr_ranges": [
+                    "secondary_ip_cidr_ranges_value1",
+                    "secondary_ip_cidr_ranges_value2",
+                ],
+                "status": "status_value",
+                "subnetwork": "subnetwork_value",
+            }
+        ],
+        "connection_preference": "connection_preference_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
-        "end_timestamp": "end_timestamp_value",
+        "fingerprint": "fingerprint_value",
         "id": 205,
         "kind": "kind_value",
-        "license_resource": {
-            "amount": 660,
-            "cores_per_license": "cores_per_license_value",
-            "license_": "license__value",
-        },
-        "merge_source_commitments": [
-            "merge_source_commitments_value1",
-            "merge_source_commitments_value2",
-        ],
         "name": "name_value",
-        "plan": "plan_value",
+        "network": "network_value",
+        "producer_accept_lists": [
+            "producer_accept_lists_value1",
+            "producer_accept_lists_value2",
+        ],
+        "producer_reject_lists": [
+            "producer_reject_lists_value1",
+            "producer_reject_lists_value2",
+        ],
         "region": "region_value",
-        "reservations": [
-            {
-                "commitment": "commitment_value",
-                "creation_timestamp": "creation_timestamp_value",
-                "description": "description_value",
-                "id": 205,
-                "kind": "kind_value",
-                "name": "name_value",
-                "resource_policies": {},
-                "satisfies_pzs": True,
-                "self_link": "self_link_value",
-                "share_settings": {"project_map": {}, "share_type": "share_type_value"},
-                "specific_reservation": {
-                    "assured_count": 1407,
-                    "count": 553,
-                    "in_use_count": 1291,
-                    "instance_properties": {
-                        "guest_accelerators": [
-                            {
-                                "accelerator_count": 1805,
-                                "accelerator_type": "accelerator_type_value",
-                            }
-                        ],
-                        "local_ssds": [
-                            {"disk_size_gb": 1261, "interface": "interface_value"}
-                        ],
-                        "location_hint": "location_hint_value",
-                        "machine_type": "machine_type_value",
-                        "min_cpu_platform": "min_cpu_platform_value",
-                    },
-                },
-                "specific_reservation_required": True,
-                "status": "status_value",
-                "zone": "zone_value",
-            }
-        ],
-        "resources": [
-            {
-                "accelerator_type": "accelerator_type_value",
-                "amount": 660,
-                "type_": "type__value",
-            }
-        ],
         "self_link": "self_link_value",
-        "split_source_commitment": "split_source_commitment_value",
-        "start_timestamp": "start_timestamp_value",
-        "status": "status_value",
-        "status_message": "status_message_value",
-        "type_": "type__value",
+        "self_link_with_id": "self_link_with_id_value",
+        "subnetworks": ["subnetworks_value1", "subnetworks_value2"],
     }
     request = request_type(**request_init)
 
@@ -1668,7 +2562,7 @@ def test_insert_rest_bad_request(
 
 
 def test_insert_rest_flattened():
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -1685,7 +2579,13 @@ def test_insert_rest_flattened():
         mock_args = dict(
             project="project_value",
             region="region_value",
-            commitment_resource=compute.Commitment(auto_renew=True),
+            network_attachment_resource=compute.NetworkAttachment(
+                connection_endpoints=[
+                    compute.NetworkAttachmentConnectedEndpoint(
+                        ip_address="ip_address_value"
+                    )
+                ]
+            ),
         )
         mock_args.update(sample_request)
 
@@ -1704,14 +2604,14 @@ def test_insert_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/regions/{region}/commitments"
+            "%s/compute/v1/projects/{project}/regions/{region}/networkAttachments"
             % client.transport._host,
             args[1],
         )
 
 
 def test_insert_rest_flattened_error(transport: str = "rest"):
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1720,15 +2620,21 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.insert(
-            compute.InsertRegionCommitmentRequest(),
+            compute.InsertNetworkAttachmentRequest(),
             project="project_value",
             region="region_value",
-            commitment_resource=compute.Commitment(auto_renew=True),
+            network_attachment_resource=compute.NetworkAttachment(
+                connection_endpoints=[
+                    compute.NetworkAttachmentConnectedEndpoint(
+                        ip_address="ip_address_value"
+                    )
+                ]
+            ),
         )
 
 
 def test_insert_rest_error():
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
@@ -1736,87 +2642,51 @@ def test_insert_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
-        compute.InsertRegionCommitmentRequest,
+        compute.InsertNetworkAttachmentRequest,
         dict,
     ],
 )
 def test_insert_unary_rest(request_type):
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request_init["commitment_resource"] = {
-        "auto_renew": True,
-        "category": "category_value",
+    request_init["network_attachment_resource"] = {
+        "connection_endpoints": [
+            {
+                "ip_address": "ip_address_value",
+                "project_id_or_num": "project_id_or_num_value",
+                "secondary_ip_cidr_ranges": [
+                    "secondary_ip_cidr_ranges_value1",
+                    "secondary_ip_cidr_ranges_value2",
+                ],
+                "status": "status_value",
+                "subnetwork": "subnetwork_value",
+            }
+        ],
+        "connection_preference": "connection_preference_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
-        "end_timestamp": "end_timestamp_value",
+        "fingerprint": "fingerprint_value",
         "id": 205,
         "kind": "kind_value",
-        "license_resource": {
-            "amount": 660,
-            "cores_per_license": "cores_per_license_value",
-            "license_": "license__value",
-        },
-        "merge_source_commitments": [
-            "merge_source_commitments_value1",
-            "merge_source_commitments_value2",
-        ],
         "name": "name_value",
-        "plan": "plan_value",
+        "network": "network_value",
+        "producer_accept_lists": [
+            "producer_accept_lists_value1",
+            "producer_accept_lists_value2",
+        ],
+        "producer_reject_lists": [
+            "producer_reject_lists_value1",
+            "producer_reject_lists_value2",
+        ],
         "region": "region_value",
-        "reservations": [
-            {
-                "commitment": "commitment_value",
-                "creation_timestamp": "creation_timestamp_value",
-                "description": "description_value",
-                "id": 205,
-                "kind": "kind_value",
-                "name": "name_value",
-                "resource_policies": {},
-                "satisfies_pzs": True,
-                "self_link": "self_link_value",
-                "share_settings": {"project_map": {}, "share_type": "share_type_value"},
-                "specific_reservation": {
-                    "assured_count": 1407,
-                    "count": 553,
-                    "in_use_count": 1291,
-                    "instance_properties": {
-                        "guest_accelerators": [
-                            {
-                                "accelerator_count": 1805,
-                                "accelerator_type": "accelerator_type_value",
-                            }
-                        ],
-                        "local_ssds": [
-                            {"disk_size_gb": 1261, "interface": "interface_value"}
-                        ],
-                        "location_hint": "location_hint_value",
-                        "machine_type": "machine_type_value",
-                        "min_cpu_platform": "min_cpu_platform_value",
-                    },
-                },
-                "specific_reservation_required": True,
-                "status": "status_value",
-                "zone": "zone_value",
-            }
-        ],
-        "resources": [
-            {
-                "accelerator_type": "accelerator_type_value",
-                "amount": 660,
-                "type_": "type__value",
-            }
-        ],
         "self_link": "self_link_value",
-        "split_source_commitment": "split_source_commitment_value",
-        "start_timestamp": "start_timestamp_value",
-        "status": "status_value",
-        "status_message": "status_message_value",
-        "type_": "type__value",
+        "self_link_with_id": "self_link_with_id_value",
+        "subnetworks": ["subnetworks_value1", "subnetworks_value2"],
     }
     request = request_type(**request_init)
 
@@ -1863,9 +2733,9 @@ def test_insert_unary_rest(request_type):
 
 
 def test_insert_unary_rest_required_fields(
-    request_type=compute.InsertRegionCommitmentRequest,
+    request_type=compute.InsertNetworkAttachmentRequest,
 ):
-    transport_class = transports.RegionCommitmentsRestTransport
+    transport_class = transports.NetworkAttachmentsRestTransport
 
     request_init = {}
     request_init["project"] = ""
@@ -1905,7 +2775,7 @@ def test_insert_unary_rest_required_fields(
     assert "region" in jsonified_request
     assert jsonified_request["region"] == "region_value"
 
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -1947,7 +2817,7 @@ def test_insert_unary_rest_required_fields(
 
 
 def test_insert_unary_rest_unset_required_fields():
-    transport = transports.RegionCommitmentsRestTransport(
+    transport = transports.NetworkAttachmentsRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
@@ -1956,7 +2826,7 @@ def test_insert_unary_rest_unset_required_fields():
         set(("requestId",))
         & set(
             (
-                "commitmentResource",
+                "networkAttachmentResource",
                 "project",
                 "region",
             )
@@ -1966,26 +2836,26 @@ def test_insert_unary_rest_unset_required_fields():
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_insert_unary_rest_interceptors(null_interceptor):
-    transport = transports.RegionCommitmentsRestTransport(
+    transport = transports.NetworkAttachmentsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.RegionCommitmentsRestInterceptor(),
+        else transports.NetworkAttachmentsRestInterceptor(),
     )
-    client = RegionCommitmentsClient(transport=transport)
+    client = NetworkAttachmentsClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.RegionCommitmentsRestInterceptor, "post_insert"
+        transports.NetworkAttachmentsRestInterceptor, "post_insert"
     ) as post, mock.patch.object(
-        transports.RegionCommitmentsRestInterceptor, "pre_insert"
+        transports.NetworkAttachmentsRestInterceptor, "pre_insert"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = compute.InsertRegionCommitmentRequest.pb(
-            compute.InsertRegionCommitmentRequest()
+        pb_message = compute.InsertNetworkAttachmentRequest.pb(
+            compute.InsertNetworkAttachmentRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -1999,7 +2869,7 @@ def test_insert_unary_rest_interceptors(null_interceptor):
         req.return_value.request = PreparedRequest()
         req.return_value._content = compute.Operation.to_json(compute.Operation())
 
-        request = compute.InsertRegionCommitmentRequest()
+        request = compute.InsertNetworkAttachmentRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
@@ -2020,84 +2890,48 @@ def test_insert_unary_rest_interceptors(null_interceptor):
 
 
 def test_insert_unary_rest_bad_request(
-    transport: str = "rest", request_type=compute.InsertRegionCommitmentRequest
+    transport: str = "rest", request_type=compute.InsertNetworkAttachmentRequest
 ):
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request_init["commitment_resource"] = {
-        "auto_renew": True,
-        "category": "category_value",
+    request_init["network_attachment_resource"] = {
+        "connection_endpoints": [
+            {
+                "ip_address": "ip_address_value",
+                "project_id_or_num": "project_id_or_num_value",
+                "secondary_ip_cidr_ranges": [
+                    "secondary_ip_cidr_ranges_value1",
+                    "secondary_ip_cidr_ranges_value2",
+                ],
+                "status": "status_value",
+                "subnetwork": "subnetwork_value",
+            }
+        ],
+        "connection_preference": "connection_preference_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
-        "end_timestamp": "end_timestamp_value",
+        "fingerprint": "fingerprint_value",
         "id": 205,
         "kind": "kind_value",
-        "license_resource": {
-            "amount": 660,
-            "cores_per_license": "cores_per_license_value",
-            "license_": "license__value",
-        },
-        "merge_source_commitments": [
-            "merge_source_commitments_value1",
-            "merge_source_commitments_value2",
-        ],
         "name": "name_value",
-        "plan": "plan_value",
+        "network": "network_value",
+        "producer_accept_lists": [
+            "producer_accept_lists_value1",
+            "producer_accept_lists_value2",
+        ],
+        "producer_reject_lists": [
+            "producer_reject_lists_value1",
+            "producer_reject_lists_value2",
+        ],
         "region": "region_value",
-        "reservations": [
-            {
-                "commitment": "commitment_value",
-                "creation_timestamp": "creation_timestamp_value",
-                "description": "description_value",
-                "id": 205,
-                "kind": "kind_value",
-                "name": "name_value",
-                "resource_policies": {},
-                "satisfies_pzs": True,
-                "self_link": "self_link_value",
-                "share_settings": {"project_map": {}, "share_type": "share_type_value"},
-                "specific_reservation": {
-                    "assured_count": 1407,
-                    "count": 553,
-                    "in_use_count": 1291,
-                    "instance_properties": {
-                        "guest_accelerators": [
-                            {
-                                "accelerator_count": 1805,
-                                "accelerator_type": "accelerator_type_value",
-                            }
-                        ],
-                        "local_ssds": [
-                            {"disk_size_gb": 1261, "interface": "interface_value"}
-                        ],
-                        "location_hint": "location_hint_value",
-                        "machine_type": "machine_type_value",
-                        "min_cpu_platform": "min_cpu_platform_value",
-                    },
-                },
-                "specific_reservation_required": True,
-                "status": "status_value",
-                "zone": "zone_value",
-            }
-        ],
-        "resources": [
-            {
-                "accelerator_type": "accelerator_type_value",
-                "amount": 660,
-                "type_": "type__value",
-            }
-        ],
         "self_link": "self_link_value",
-        "split_source_commitment": "split_source_commitment_value",
-        "start_timestamp": "start_timestamp_value",
-        "status": "status_value",
-        "status_message": "status_message_value",
-        "type_": "type__value",
+        "self_link_with_id": "self_link_with_id_value",
+        "subnetworks": ["subnetworks_value1", "subnetworks_value2"],
     }
     request = request_type(**request_init)
 
@@ -2114,7 +2948,7 @@ def test_insert_unary_rest_bad_request(
 
 
 def test_insert_unary_rest_flattened():
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -2131,7 +2965,13 @@ def test_insert_unary_rest_flattened():
         mock_args = dict(
             project="project_value",
             region="region_value",
-            commitment_resource=compute.Commitment(auto_renew=True),
+            network_attachment_resource=compute.NetworkAttachment(
+                connection_endpoints=[
+                    compute.NetworkAttachmentConnectedEndpoint(
+                        ip_address="ip_address_value"
+                    )
+                ]
+            ),
         )
         mock_args.update(sample_request)
 
@@ -2150,14 +2990,14 @@ def test_insert_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/regions/{region}/commitments"
+            "%s/compute/v1/projects/{project}/regions/{region}/networkAttachments"
             % client.transport._host,
             args[1],
         )
 
 
 def test_insert_unary_rest_flattened_error(transport: str = "rest"):
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2166,15 +3006,21 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.insert_unary(
-            compute.InsertRegionCommitmentRequest(),
+            compute.InsertNetworkAttachmentRequest(),
             project="project_value",
             region="region_value",
-            commitment_resource=compute.Commitment(auto_renew=True),
+            network_attachment_resource=compute.NetworkAttachment(
+                connection_endpoints=[
+                    compute.NetworkAttachmentConnectedEndpoint(
+                        ip_address="ip_address_value"
+                    )
+                ]
+            ),
         )
 
 
 def test_insert_unary_rest_error():
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
@@ -2182,12 +3028,12 @@ def test_insert_unary_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
-        compute.ListRegionCommitmentsRequest,
+        compute.ListNetworkAttachmentsRequest,
         dict,
     ],
 )
 def test_list_rest(request_type):
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -2199,7 +3045,7 @@ def test_list_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = compute.CommitmentList(
+        return_value = compute.NetworkAttachmentList(
             id="id_value",
             kind="kind_value",
             next_page_token="next_page_token_value",
@@ -2209,7 +3055,7 @@ def test_list_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.CommitmentList.pb(return_value)
+        pb_return_value = compute.NetworkAttachmentList.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -2224,8 +3070,8 @@ def test_list_rest(request_type):
     assert response.self_link == "self_link_value"
 
 
-def test_list_rest_required_fields(request_type=compute.ListRegionCommitmentsRequest):
-    transport_class = transports.RegionCommitmentsRestTransport
+def test_list_rest_required_fields(request_type=compute.ListNetworkAttachmentsRequest):
+    transport_class = transports.NetworkAttachmentsRestTransport
 
     request_init = {}
     request_init["project"] = ""
@@ -2273,14 +3119,14 @@ def test_list_rest_required_fields(request_type=compute.ListRegionCommitmentsReq
     assert "region" in jsonified_request
     assert jsonified_request["region"] == "region_value"
 
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = compute.CommitmentList()
+    return_value = compute.NetworkAttachmentList()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -2300,7 +3146,7 @@ def test_list_rest_required_fields(request_type=compute.ListRegionCommitmentsReq
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.CommitmentList.pb(return_value)
+            pb_return_value = compute.NetworkAttachmentList.pb(return_value)
             json_return_value = json_format.MessageToJson(pb_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -2314,7 +3160,7 @@ def test_list_rest_required_fields(request_type=compute.ListRegionCommitmentsReq
 
 
 def test_list_rest_unset_required_fields():
-    transport = transports.RegionCommitmentsRestTransport(
+    transport = transports.NetworkAttachmentsRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
@@ -2340,26 +3186,26 @@ def test_list_rest_unset_required_fields():
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_rest_interceptors(null_interceptor):
-    transport = transports.RegionCommitmentsRestTransport(
+    transport = transports.NetworkAttachmentsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.RegionCommitmentsRestInterceptor(),
+        else transports.NetworkAttachmentsRestInterceptor(),
     )
-    client = RegionCommitmentsClient(transport=transport)
+    client = NetworkAttachmentsClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.RegionCommitmentsRestInterceptor, "post_list"
+        transports.NetworkAttachmentsRestInterceptor, "post_list"
     ) as post, mock.patch.object(
-        transports.RegionCommitmentsRestInterceptor, "pre_list"
+        transports.NetworkAttachmentsRestInterceptor, "pre_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = compute.ListRegionCommitmentsRequest.pb(
-            compute.ListRegionCommitmentsRequest()
+        pb_message = compute.ListNetworkAttachmentsRequest.pb(
+            compute.ListNetworkAttachmentsRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -2371,17 +3217,17 @@ def test_list_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.CommitmentList.to_json(
-            compute.CommitmentList()
+        req.return_value._content = compute.NetworkAttachmentList.to_json(
+            compute.NetworkAttachmentList()
         )
 
-        request = compute.ListRegionCommitmentsRequest()
+        request = compute.ListNetworkAttachmentsRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.CommitmentList()
+        post.return_value = compute.NetworkAttachmentList()
 
         client.list(
             request,
@@ -2396,9 +3242,9 @@ def test_list_rest_interceptors(null_interceptor):
 
 
 def test_list_rest_bad_request(
-    transport: str = "rest", request_type=compute.ListRegionCommitmentsRequest
+    transport: str = "rest", request_type=compute.ListNetworkAttachmentsRequest
 ):
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2420,7 +3266,7 @@ def test_list_rest_bad_request(
 
 
 def test_list_rest_flattened():
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -2428,7 +3274,7 @@ def test_list_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = compute.CommitmentList()
+        return_value = compute.NetworkAttachmentList()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {"project": "sample1", "region": "sample2"}
@@ -2443,7 +3289,7 @@ def test_list_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.CommitmentList.pb(return_value)
+        pb_return_value = compute.NetworkAttachmentList.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2455,14 +3301,14 @@ def test_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/regions/{region}/commitments"
+            "%s/compute/v1/projects/{project}/regions/{region}/networkAttachments"
             % client.transport._host,
             args[1],
         )
 
 
 def test_list_rest_flattened_error(transport: str = "rest"):
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2471,14 +3317,14 @@ def test_list_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.list(
-            compute.ListRegionCommitmentsRequest(),
+            compute.ListNetworkAttachmentsRequest(),
             project="project_value",
             region="region_value",
         )
 
 
 def test_list_rest_pager(transport: str = "rest"):
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2489,28 +3335,28 @@ def test_list_rest_pager(transport: str = "rest"):
         # with mock.patch.object(path_template, 'transcode') as transcode:
         # Set the response as a series of pages
         response = (
-            compute.CommitmentList(
+            compute.NetworkAttachmentList(
                 items=[
-                    compute.Commitment(),
-                    compute.Commitment(),
-                    compute.Commitment(),
+                    compute.NetworkAttachment(),
+                    compute.NetworkAttachment(),
+                    compute.NetworkAttachment(),
                 ],
                 next_page_token="abc",
             ),
-            compute.CommitmentList(
+            compute.NetworkAttachmentList(
                 items=[],
                 next_page_token="def",
             ),
-            compute.CommitmentList(
+            compute.NetworkAttachmentList(
                 items=[
-                    compute.Commitment(),
+                    compute.NetworkAttachment(),
                 ],
                 next_page_token="ghi",
             ),
-            compute.CommitmentList(
+            compute.NetworkAttachmentList(
                 items=[
-                    compute.Commitment(),
-                    compute.Commitment(),
+                    compute.NetworkAttachment(),
+                    compute.NetworkAttachment(),
                 ],
             ),
         )
@@ -2518,7 +3364,7 @@ def test_list_rest_pager(transport: str = "rest"):
         response = response + response
 
         # Wrap the values into proper Response objs
-        response = tuple(compute.CommitmentList.to_json(x) for x in response)
+        response = tuple(compute.NetworkAttachmentList.to_json(x) for x in response)
         return_values = tuple(Response() for i in response)
         for return_val, response_val in zip(return_values, response):
             return_val._content = response_val.encode("UTF-8")
@@ -2531,7 +3377,7 @@ def test_list_rest_pager(transport: str = "rest"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, compute.Commitment) for i in results)
+        assert all(isinstance(i, compute.NetworkAttachment) for i in results)
 
         pages = list(client.list(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
@@ -2541,163 +3387,132 @@ def test_list_rest_pager(transport: str = "rest"):
 @pytest.mark.parametrize(
     "request_type",
     [
-        compute.UpdateRegionCommitmentRequest,
+        compute.SetIamPolicyNetworkAttachmentRequest,
         dict,
     ],
 )
-def test_update_rest(request_type):
-    client = RegionCommitmentsClient(
+def test_set_iam_policy_rest(request_type):
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2", "commitment": "sample3"}
-    request_init["commitment_resource"] = {
-        "auto_renew": True,
-        "category": "category_value",
-        "creation_timestamp": "creation_timestamp_value",
-        "description": "description_value",
-        "end_timestamp": "end_timestamp_value",
-        "id": 205,
-        "kind": "kind_value",
-        "license_resource": {
-            "amount": 660,
-            "cores_per_license": "cores_per_license_value",
-            "license_": "license__value",
-        },
-        "merge_source_commitments": [
-            "merge_source_commitments_value1",
-            "merge_source_commitments_value2",
-        ],
-        "name": "name_value",
-        "plan": "plan_value",
-        "region": "region_value",
-        "reservations": [
+    request_init = {"project": "sample1", "region": "sample2", "resource": "sample3"}
+    request_init["region_set_policy_request_resource"] = {
+        "bindings": [
             {
-                "commitment": "commitment_value",
-                "creation_timestamp": "creation_timestamp_value",
-                "description": "description_value",
-                "id": 205,
-                "kind": "kind_value",
-                "name": "name_value",
-                "resource_policies": {},
-                "satisfies_pzs": True,
-                "self_link": "self_link_value",
-                "share_settings": {"project_map": {}, "share_type": "share_type_value"},
-                "specific_reservation": {
-                    "assured_count": 1407,
-                    "count": 553,
-                    "in_use_count": 1291,
-                    "instance_properties": {
-                        "guest_accelerators": [
-                            {
-                                "accelerator_count": 1805,
-                                "accelerator_type": "accelerator_type_value",
-                            }
-                        ],
-                        "local_ssds": [
-                            {"disk_size_gb": 1261, "interface": "interface_value"}
-                        ],
-                        "location_hint": "location_hint_value",
-                        "machine_type": "machine_type_value",
-                        "min_cpu_platform": "min_cpu_platform_value",
-                    },
+                "binding_id": "binding_id_value",
+                "condition": {
+                    "description": "description_value",
+                    "expression": "expression_value",
+                    "location": "location_value",
+                    "title": "title_value",
                 },
-                "specific_reservation_required": True,
-                "status": "status_value",
-                "zone": "zone_value",
+                "members": ["members_value1", "members_value2"],
+                "role": "role_value",
             }
         ],
-        "resources": [
-            {
-                "accelerator_type": "accelerator_type_value",
-                "amount": 660,
-                "type_": "type__value",
-            }
-        ],
-        "self_link": "self_link_value",
-        "split_source_commitment": "split_source_commitment_value",
-        "start_timestamp": "start_timestamp_value",
-        "status": "status_value",
-        "status_message": "status_message_value",
-        "type_": "type__value",
+        "etag": "etag_value",
+        "policy": {
+            "audit_configs": [
+                {
+                    "audit_log_configs": [
+                        {
+                            "exempted_members": [
+                                "exempted_members_value1",
+                                "exempted_members_value2",
+                            ],
+                            "ignore_child_exemptions": True,
+                            "log_type": "log_type_value",
+                        }
+                    ],
+                    "exempted_members": [
+                        "exempted_members_value1",
+                        "exempted_members_value2",
+                    ],
+                    "service": "service_value",
+                }
+            ],
+            "bindings": {},
+            "etag": "etag_value",
+            "iam_owned": True,
+            "rules": [
+                {
+                    "action": "action_value",
+                    "conditions": [
+                        {
+                            "iam": "iam_value",
+                            "op": "op_value",
+                            "svc": "svc_value",
+                            "sys": "sys_value",
+                            "values": ["values_value1", "values_value2"],
+                        }
+                    ],
+                    "description": "description_value",
+                    "ins": ["ins_value1", "ins_value2"],
+                    "log_configs": [
+                        {
+                            "cloud_audit": {
+                                "authorization_logging_options": {
+                                    "permission_type": "permission_type_value"
+                                },
+                                "log_name": "log_name_value",
+                            },
+                            "counter": {
+                                "custom_fields": [
+                                    {"name": "name_value", "value": "value_value"}
+                                ],
+                                "field": "field_value",
+                                "metric": "metric_value",
+                            },
+                            "data_access": {"log_mode": "log_mode_value"},
+                        }
+                    ],
+                    "not_ins": ["not_ins_value1", "not_ins_value2"],
+                    "permissions": ["permissions_value1", "permissions_value2"],
+                }
+            ],
+            "version": 774,
+        },
     }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
+        return_value = compute.Policy(
+            etag="etag_value",
+            iam_owned=True,
+            version=774,
         )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
+        pb_return_value = compute.Policy.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.update(request)
+        response = client.set_iam_policy(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, extended_operation.ExtendedOperation)
-    assert response.client_operation_id == "client_operation_id_value"
-    assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.description == "description_value"
-    assert response.end_time == "end_time_value"
-    assert response.http_error_message == "http_error_message_value"
-    assert response.http_error_status_code == 2374
-    assert response.id == 205
-    assert response.insert_time == "insert_time_value"
-    assert response.kind == "kind_value"
-    assert response.name == "name_value"
-    assert response.operation_group_id == "operation_group_id_value"
-    assert response.operation_type == "operation_type_value"
-    assert response.progress == 885
-    assert response.region == "region_value"
-    assert response.self_link == "self_link_value"
-    assert response.start_time == "start_time_value"
-    assert response.status == compute.Operation.Status.DONE
-    assert response.status_message == "status_message_value"
-    assert response.target_id == 947
-    assert response.target_link == "target_link_value"
-    assert response.user == "user_value"
-    assert response.zone == "zone_value"
+    assert isinstance(response, compute.Policy)
+    assert response.etag == "etag_value"
+    assert response.iam_owned is True
+    assert response.version == 774
 
 
-def test_update_rest_required_fields(
-    request_type=compute.UpdateRegionCommitmentRequest,
+def test_set_iam_policy_rest_required_fields(
+    request_type=compute.SetIamPolicyNetworkAttachmentRequest,
 ):
-    transport_class = transports.RegionCommitmentsRestTransport
+    transport_class = transports.NetworkAttachmentsRestTransport
 
     request_init = {}
-    request_init["commitment"] = ""
     request_init["project"] = ""
     request_init["region"] = ""
+    request_init["resource"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -2712,44 +3527,36 @@ def test_update_rest_required_fields(
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).update._get_unset_required_fields(jsonified_request)
+    ).set_iam_policy._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    jsonified_request["commitment"] = "commitment_value"
     jsonified_request["project"] = "project_value"
     jsonified_request["region"] = "region_value"
+    jsonified_request["resource"] = "resource_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).update._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "paths",
-            "request_id",
-            "update_mask",
-        )
-    )
+    ).set_iam_policy._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
-    assert "commitment" in jsonified_request
-    assert jsonified_request["commitment"] == "commitment_value"
     assert "project" in jsonified_request
     assert jsonified_request["project"] == "project_value"
     assert "region" in jsonified_request
     assert jsonified_request["region"] == "region_value"
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
 
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = compute.Operation()
+    return_value = compute.Policy()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -2761,7 +3568,7 @@ def test_update_rest_required_fields(
             pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
-                "method": "patch",
+                "method": "post",
                 "query_params": pb_request,
             }
             transcode_result["body"] = pb_request
@@ -2770,66 +3577,60 @@ def test_update_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
+            pb_return_value = compute.Policy.pb(return_value)
             json_return_value = json_format.MessageToJson(pb_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
-            response = client.update(request)
+            response = client.set_iam_policy(request)
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_update_rest_unset_required_fields():
-    transport = transports.RegionCommitmentsRestTransport(
+def test_set_iam_policy_rest_unset_required_fields():
+    transport = transports.NetworkAttachmentsRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.update._get_unset_required_fields({})
+    unset_fields = transport.set_iam_policy._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(
-            (
-                "paths",
-                "requestId",
-                "updateMask",
-            )
-        )
+        set(())
         & set(
             (
-                "commitment",
-                "commitmentResource",
                 "project",
                 "region",
+                "regionSetPolicyRequestResource",
+                "resource",
             )
         )
     )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_rest_interceptors(null_interceptor):
-    transport = transports.RegionCommitmentsRestTransport(
+def test_set_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.NetworkAttachmentsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.RegionCommitmentsRestInterceptor(),
+        else transports.NetworkAttachmentsRestInterceptor(),
     )
-    client = RegionCommitmentsClient(transport=transport)
+    client = NetworkAttachmentsClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.RegionCommitmentsRestInterceptor, "post_update"
+        transports.NetworkAttachmentsRestInterceptor, "post_set_iam_policy"
     ) as post, mock.patch.object(
-        transports.RegionCommitmentsRestInterceptor, "pre_update"
+        transports.NetworkAttachmentsRestInterceptor, "pre_set_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = compute.UpdateRegionCommitmentRequest.pb(
-            compute.UpdateRegionCommitmentRequest()
+        pb_message = compute.SetIamPolicyNetworkAttachmentRequest.pb(
+            compute.SetIamPolicyNetworkAttachmentRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -2841,17 +3642,17 @@ def test_update_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
+        req.return_value._content = compute.Policy.to_json(compute.Policy())
 
-        request = compute.UpdateRegionCommitmentRequest()
+        request = compute.SetIamPolicyNetworkAttachmentRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation()
+        post.return_value = compute.Policy()
 
-        client.update(
+        client.set_iam_policy(
             request,
             metadata=[
                 ("key", "val"),
@@ -2863,85 +3664,92 @@ def test_update_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_update_rest_bad_request(
-    transport: str = "rest", request_type=compute.UpdateRegionCommitmentRequest
+def test_set_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=compute.SetIamPolicyNetworkAttachmentRequest
 ):
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2", "commitment": "sample3"}
-    request_init["commitment_resource"] = {
-        "auto_renew": True,
-        "category": "category_value",
-        "creation_timestamp": "creation_timestamp_value",
-        "description": "description_value",
-        "end_timestamp": "end_timestamp_value",
-        "id": 205,
-        "kind": "kind_value",
-        "license_resource": {
-            "amount": 660,
-            "cores_per_license": "cores_per_license_value",
-            "license_": "license__value",
-        },
-        "merge_source_commitments": [
-            "merge_source_commitments_value1",
-            "merge_source_commitments_value2",
-        ],
-        "name": "name_value",
-        "plan": "plan_value",
-        "region": "region_value",
-        "reservations": [
+    request_init = {"project": "sample1", "region": "sample2", "resource": "sample3"}
+    request_init["region_set_policy_request_resource"] = {
+        "bindings": [
             {
-                "commitment": "commitment_value",
-                "creation_timestamp": "creation_timestamp_value",
-                "description": "description_value",
-                "id": 205,
-                "kind": "kind_value",
-                "name": "name_value",
-                "resource_policies": {},
-                "satisfies_pzs": True,
-                "self_link": "self_link_value",
-                "share_settings": {"project_map": {}, "share_type": "share_type_value"},
-                "specific_reservation": {
-                    "assured_count": 1407,
-                    "count": 553,
-                    "in_use_count": 1291,
-                    "instance_properties": {
-                        "guest_accelerators": [
-                            {
-                                "accelerator_count": 1805,
-                                "accelerator_type": "accelerator_type_value",
-                            }
-                        ],
-                        "local_ssds": [
-                            {"disk_size_gb": 1261, "interface": "interface_value"}
-                        ],
-                        "location_hint": "location_hint_value",
-                        "machine_type": "machine_type_value",
-                        "min_cpu_platform": "min_cpu_platform_value",
-                    },
+                "binding_id": "binding_id_value",
+                "condition": {
+                    "description": "description_value",
+                    "expression": "expression_value",
+                    "location": "location_value",
+                    "title": "title_value",
                 },
-                "specific_reservation_required": True,
-                "status": "status_value",
-                "zone": "zone_value",
+                "members": ["members_value1", "members_value2"],
+                "role": "role_value",
             }
         ],
-        "resources": [
-            {
-                "accelerator_type": "accelerator_type_value",
-                "amount": 660,
-                "type_": "type__value",
-            }
-        ],
-        "self_link": "self_link_value",
-        "split_source_commitment": "split_source_commitment_value",
-        "start_timestamp": "start_timestamp_value",
-        "status": "status_value",
-        "status_message": "status_message_value",
-        "type_": "type__value",
+        "etag": "etag_value",
+        "policy": {
+            "audit_configs": [
+                {
+                    "audit_log_configs": [
+                        {
+                            "exempted_members": [
+                                "exempted_members_value1",
+                                "exempted_members_value2",
+                            ],
+                            "ignore_child_exemptions": True,
+                            "log_type": "log_type_value",
+                        }
+                    ],
+                    "exempted_members": [
+                        "exempted_members_value1",
+                        "exempted_members_value2",
+                    ],
+                    "service": "service_value",
+                }
+            ],
+            "bindings": {},
+            "etag": "etag_value",
+            "iam_owned": True,
+            "rules": [
+                {
+                    "action": "action_value",
+                    "conditions": [
+                        {
+                            "iam": "iam_value",
+                            "op": "op_value",
+                            "svc": "svc_value",
+                            "sys": "sys_value",
+                            "values": ["values_value1", "values_value2"],
+                        }
+                    ],
+                    "description": "description_value",
+                    "ins": ["ins_value1", "ins_value2"],
+                    "log_configs": [
+                        {
+                            "cloud_audit": {
+                                "authorization_logging_options": {
+                                    "permission_type": "permission_type_value"
+                                },
+                                "log_name": "log_name_value",
+                            },
+                            "counter": {
+                                "custom_fields": [
+                                    {"name": "name_value", "value": "value_value"}
+                                ],
+                                "field": "field_value",
+                                "metric": "metric_value",
+                            },
+                            "data_access": {"log_mode": "log_mode_value"},
+                        }
+                    ],
+                    "not_ins": ["not_ins_value1", "not_ins_value2"],
+                    "permissions": ["permissions_value1", "permissions_value2"],
+                }
+            ],
+            "version": 774,
+        },
     }
     request = request_type(**request_init)
 
@@ -2954,11 +3762,11 @@ def test_update_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.update(request)
+        client.set_iam_policy(request)
 
 
-def test_update_rest_flattened():
-    client = RegionCommitmentsClient(
+def test_set_iam_policy_rest_flattened():
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -2966,47 +3774,49 @@ def test_update_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = compute.Operation()
+        return_value = compute.Policy()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
             "region": "sample2",
-            "commitment": "sample3",
+            "resource": "sample3",
         }
 
         # get truthy value for each flattened field
         mock_args = dict(
             project="project_value",
             region="region_value",
-            commitment="commitment_value",
-            commitment_resource=compute.Commitment(auto_renew=True),
+            resource="resource_value",
+            region_set_policy_request_resource=compute.RegionSetPolicyRequest(
+                bindings=[compute.Binding(binding_id="binding_id_value")]
+            ),
         )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
+        pb_return_value = compute.Policy.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        client.update(**mock_args)
+        client.set_iam_policy(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/regions/{region}/commitments/{commitment}"
+            "%s/compute/v1/projects/{project}/regions/{region}/networkAttachments/{resource}/setIamPolicy"
             % client.transport._host,
             args[1],
         )
 
 
-def test_update_rest_flattened_error(transport: str = "rest"):
-    client = RegionCommitmentsClient(
+def test_set_iam_policy_rest_flattened_error(transport: str = "rest"):
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -3014,17 +3824,19 @@ def test_update_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.update(
-            compute.UpdateRegionCommitmentRequest(),
+        client.set_iam_policy(
+            compute.SetIamPolicyNetworkAttachmentRequest(),
             project="project_value",
             region="region_value",
-            commitment="commitment_value",
-            commitment_resource=compute.Commitment(auto_renew=True),
+            resource="resource_value",
+            region_set_policy_request_resource=compute.RegionSetPolicyRequest(
+                bindings=[compute.Binding(binding_id="binding_id_value")]
+            ),
         )
 
 
-def test_update_rest_error():
-    client = RegionCommitmentsClient(
+def test_set_iam_policy_rest_error():
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
@@ -3032,141 +3844,54 @@ def test_update_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
-        compute.UpdateRegionCommitmentRequest,
+        compute.TestIamPermissionsNetworkAttachmentRequest,
         dict,
     ],
 )
-def test_update_unary_rest(request_type):
-    client = RegionCommitmentsClient(
+def test_test_iam_permissions_rest(request_type):
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2", "commitment": "sample3"}
-    request_init["commitment_resource"] = {
-        "auto_renew": True,
-        "category": "category_value",
-        "creation_timestamp": "creation_timestamp_value",
-        "description": "description_value",
-        "end_timestamp": "end_timestamp_value",
-        "id": 205,
-        "kind": "kind_value",
-        "license_resource": {
-            "amount": 660,
-            "cores_per_license": "cores_per_license_value",
-            "license_": "license__value",
-        },
-        "merge_source_commitments": [
-            "merge_source_commitments_value1",
-            "merge_source_commitments_value2",
-        ],
-        "name": "name_value",
-        "plan": "plan_value",
-        "region": "region_value",
-        "reservations": [
-            {
-                "commitment": "commitment_value",
-                "creation_timestamp": "creation_timestamp_value",
-                "description": "description_value",
-                "id": 205,
-                "kind": "kind_value",
-                "name": "name_value",
-                "resource_policies": {},
-                "satisfies_pzs": True,
-                "self_link": "self_link_value",
-                "share_settings": {"project_map": {}, "share_type": "share_type_value"},
-                "specific_reservation": {
-                    "assured_count": 1407,
-                    "count": 553,
-                    "in_use_count": 1291,
-                    "instance_properties": {
-                        "guest_accelerators": [
-                            {
-                                "accelerator_count": 1805,
-                                "accelerator_type": "accelerator_type_value",
-                            }
-                        ],
-                        "local_ssds": [
-                            {"disk_size_gb": 1261, "interface": "interface_value"}
-                        ],
-                        "location_hint": "location_hint_value",
-                        "machine_type": "machine_type_value",
-                        "min_cpu_platform": "min_cpu_platform_value",
-                    },
-                },
-                "specific_reservation_required": True,
-                "status": "status_value",
-                "zone": "zone_value",
-            }
-        ],
-        "resources": [
-            {
-                "accelerator_type": "accelerator_type_value",
-                "amount": 660,
-                "type_": "type__value",
-            }
-        ],
-        "self_link": "self_link_value",
-        "split_source_commitment": "split_source_commitment_value",
-        "start_timestamp": "start_timestamp_value",
-        "status": "status_value",
-        "status_message": "status_message_value",
-        "type_": "type__value",
+    request_init = {"project": "sample1", "region": "sample2", "resource": "sample3"}
+    request_init["test_permissions_request_resource"] = {
+        "permissions": ["permissions_value1", "permissions_value2"]
     }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
+        return_value = compute.TestPermissionsResponse(
+            permissions=["permissions_value"],
         )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
+        pb_return_value = compute.TestPermissionsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.update_unary(request)
+        response = client.test_iam_permissions(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, compute.Operation)
+    assert isinstance(response, compute.TestPermissionsResponse)
+    assert response.permissions == ["permissions_value"]
 
 
-def test_update_unary_rest_required_fields(
-    request_type=compute.UpdateRegionCommitmentRequest,
+def test_test_iam_permissions_rest_required_fields(
+    request_type=compute.TestIamPermissionsNetworkAttachmentRequest,
 ):
-    transport_class = transports.RegionCommitmentsRestTransport
+    transport_class = transports.NetworkAttachmentsRestTransport
 
     request_init = {}
-    request_init["commitment"] = ""
     request_init["project"] = ""
     request_init["region"] = ""
+    request_init["resource"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -3181,44 +3906,36 @@ def test_update_unary_rest_required_fields(
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).update._get_unset_required_fields(jsonified_request)
+    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    jsonified_request["commitment"] = "commitment_value"
     jsonified_request["project"] = "project_value"
     jsonified_request["region"] = "region_value"
+    jsonified_request["resource"] = "resource_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).update._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "paths",
-            "request_id",
-            "update_mask",
-        )
-    )
+    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
-    assert "commitment" in jsonified_request
-    assert jsonified_request["commitment"] == "commitment_value"
     assert "project" in jsonified_request
     assert jsonified_request["project"] == "project_value"
     assert "region" in jsonified_request
     assert jsonified_request["region"] == "region_value"
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
 
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = compute.Operation()
+    return_value = compute.TestPermissionsResponse()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -3230,7 +3947,7 @@ def test_update_unary_rest_required_fields(
             pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
-                "method": "patch",
+                "method": "post",
                 "query_params": pb_request,
             }
             transcode_result["body"] = pb_request
@@ -3239,66 +3956,60 @@ def test_update_unary_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
+            pb_return_value = compute.TestPermissionsResponse.pb(return_value)
             json_return_value = json_format.MessageToJson(pb_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
-            response = client.update_unary(request)
+            response = client.test_iam_permissions(request)
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_update_unary_rest_unset_required_fields():
-    transport = transports.RegionCommitmentsRestTransport(
+def test_test_iam_permissions_rest_unset_required_fields():
+    transport = transports.NetworkAttachmentsRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.update._get_unset_required_fields({})
+    unset_fields = transport.test_iam_permissions._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(
-            (
-                "paths",
-                "requestId",
-                "updateMask",
-            )
-        )
+        set(())
         & set(
             (
-                "commitment",
-                "commitmentResource",
                 "project",
                 "region",
+                "resource",
+                "testPermissionsRequestResource",
             )
         )
     )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_unary_rest_interceptors(null_interceptor):
-    transport = transports.RegionCommitmentsRestTransport(
+def test_test_iam_permissions_rest_interceptors(null_interceptor):
+    transport = transports.NetworkAttachmentsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.RegionCommitmentsRestInterceptor(),
+        else transports.NetworkAttachmentsRestInterceptor(),
     )
-    client = RegionCommitmentsClient(transport=transport)
+    client = NetworkAttachmentsClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.RegionCommitmentsRestInterceptor, "post_update"
+        transports.NetworkAttachmentsRestInterceptor, "post_test_iam_permissions"
     ) as post, mock.patch.object(
-        transports.RegionCommitmentsRestInterceptor, "pre_update"
+        transports.NetworkAttachmentsRestInterceptor, "pre_test_iam_permissions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = compute.UpdateRegionCommitmentRequest.pb(
-            compute.UpdateRegionCommitmentRequest()
+        pb_message = compute.TestIamPermissionsNetworkAttachmentRequest.pb(
+            compute.TestIamPermissionsNetworkAttachmentRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -3310,17 +4021,19 @@ def test_update_unary_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
+        req.return_value._content = compute.TestPermissionsResponse.to_json(
+            compute.TestPermissionsResponse()
+        )
 
-        request = compute.UpdateRegionCommitmentRequest()
+        request = compute.TestIamPermissionsNetworkAttachmentRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation()
+        post.return_value = compute.TestPermissionsResponse()
 
-        client.update_unary(
+        client.test_iam_permissions(
             request,
             metadata=[
                 ("key", "val"),
@@ -3332,85 +4045,19 @@ def test_update_unary_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_update_unary_rest_bad_request(
-    transport: str = "rest", request_type=compute.UpdateRegionCommitmentRequest
+def test_test_iam_permissions_rest_bad_request(
+    transport: str = "rest",
+    request_type=compute.TestIamPermissionsNetworkAttachmentRequest,
 ):
-    client = RegionCommitmentsClient(
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2", "commitment": "sample3"}
-    request_init["commitment_resource"] = {
-        "auto_renew": True,
-        "category": "category_value",
-        "creation_timestamp": "creation_timestamp_value",
-        "description": "description_value",
-        "end_timestamp": "end_timestamp_value",
-        "id": 205,
-        "kind": "kind_value",
-        "license_resource": {
-            "amount": 660,
-            "cores_per_license": "cores_per_license_value",
-            "license_": "license__value",
-        },
-        "merge_source_commitments": [
-            "merge_source_commitments_value1",
-            "merge_source_commitments_value2",
-        ],
-        "name": "name_value",
-        "plan": "plan_value",
-        "region": "region_value",
-        "reservations": [
-            {
-                "commitment": "commitment_value",
-                "creation_timestamp": "creation_timestamp_value",
-                "description": "description_value",
-                "id": 205,
-                "kind": "kind_value",
-                "name": "name_value",
-                "resource_policies": {},
-                "satisfies_pzs": True,
-                "self_link": "self_link_value",
-                "share_settings": {"project_map": {}, "share_type": "share_type_value"},
-                "specific_reservation": {
-                    "assured_count": 1407,
-                    "count": 553,
-                    "in_use_count": 1291,
-                    "instance_properties": {
-                        "guest_accelerators": [
-                            {
-                                "accelerator_count": 1805,
-                                "accelerator_type": "accelerator_type_value",
-                            }
-                        ],
-                        "local_ssds": [
-                            {"disk_size_gb": 1261, "interface": "interface_value"}
-                        ],
-                        "location_hint": "location_hint_value",
-                        "machine_type": "machine_type_value",
-                        "min_cpu_platform": "min_cpu_platform_value",
-                    },
-                },
-                "specific_reservation_required": True,
-                "status": "status_value",
-                "zone": "zone_value",
-            }
-        ],
-        "resources": [
-            {
-                "accelerator_type": "accelerator_type_value",
-                "amount": 660,
-                "type_": "type__value",
-            }
-        ],
-        "self_link": "self_link_value",
-        "split_source_commitment": "split_source_commitment_value",
-        "start_timestamp": "start_timestamp_value",
-        "status": "status_value",
-        "status_message": "status_message_value",
-        "type_": "type__value",
+    request_init = {"project": "sample1", "region": "sample2", "resource": "sample3"}
+    request_init["test_permissions_request_resource"] = {
+        "permissions": ["permissions_value1", "permissions_value2"]
     }
     request = request_type(**request_init)
 
@@ -3423,11 +4070,11 @@ def test_update_unary_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.update_unary(request)
+        client.test_iam_permissions(request)
 
 
-def test_update_unary_rest_flattened():
-    client = RegionCommitmentsClient(
+def test_test_iam_permissions_rest_flattened():
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -3435,47 +4082,49 @@ def test_update_unary_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = compute.Operation()
+        return_value = compute.TestPermissionsResponse()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
             "region": "sample2",
-            "commitment": "sample3",
+            "resource": "sample3",
         }
 
         # get truthy value for each flattened field
         mock_args = dict(
             project="project_value",
             region="region_value",
-            commitment="commitment_value",
-            commitment_resource=compute.Commitment(auto_renew=True),
+            resource="resource_value",
+            test_permissions_request_resource=compute.TestPermissionsRequest(
+                permissions=["permissions_value"]
+            ),
         )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
+        pb_return_value = compute.TestPermissionsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        client.update_unary(**mock_args)
+        client.test_iam_permissions(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/regions/{region}/commitments/{commitment}"
+            "%s/compute/v1/projects/{project}/regions/{region}/networkAttachments/{resource}/testIamPermissions"
             % client.transport._host,
             args[1],
         )
 
 
-def test_update_unary_rest_flattened_error(transport: str = "rest"):
-    client = RegionCommitmentsClient(
+def test_test_iam_permissions_rest_flattened_error(transport: str = "rest"):
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -3483,50 +4132,52 @@ def test_update_unary_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.update_unary(
-            compute.UpdateRegionCommitmentRequest(),
+        client.test_iam_permissions(
+            compute.TestIamPermissionsNetworkAttachmentRequest(),
             project="project_value",
             region="region_value",
-            commitment="commitment_value",
-            commitment_resource=compute.Commitment(auto_renew=True),
+            resource="resource_value",
+            test_permissions_request_resource=compute.TestPermissionsRequest(
+                permissions=["permissions_value"]
+            ),
         )
 
 
-def test_update_unary_rest_error():
-    client = RegionCommitmentsClient(
+def test_test_iam_permissions_rest_error():
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
-    transport = transports.RegionCommitmentsRestTransport(
+    transport = transports.NetworkAttachmentsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = RegionCommitmentsClient(
+        client = NetworkAttachmentsClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
-    transport = transports.RegionCommitmentsRestTransport(
+    transport = transports.NetworkAttachmentsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = RegionCommitmentsClient(
+        client = NetworkAttachmentsClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
         )
 
     # It is an error to provide an api_key and a transport instance.
-    transport = transports.RegionCommitmentsRestTransport(
+    transport = transports.NetworkAttachmentsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = RegionCommitmentsClient(
+        client = NetworkAttachmentsClient(
             client_options=options,
             transport=transport,
         )
@@ -3535,16 +4186,16 @@ def test_credentials_transport_error():
     options = mock.Mock()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = RegionCommitmentsClient(
+        client = NetworkAttachmentsClient(
             client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
-    transport = transports.RegionCommitmentsRestTransport(
+    transport = transports.NetworkAttachmentsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = RegionCommitmentsClient(
+        client = NetworkAttachmentsClient(
             client_options={"scopes": ["1", "2"]},
             transport=transport,
         )
@@ -3552,17 +4203,17 @@ def test_credentials_transport_error():
 
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.RegionCommitmentsRestTransport(
+    transport = transports.NetworkAttachmentsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    client = RegionCommitmentsClient(transport=transport)
+    client = NetworkAttachmentsClient(transport=transport)
     assert client.transport is transport
 
 
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.RegionCommitmentsRestTransport,
+        transports.NetworkAttachmentsRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -3580,28 +4231,28 @@ def test_transport_adc(transport_class):
     ],
 )
 def test_transport_kind(transport_name):
-    transport = RegionCommitmentsClient.get_transport_class(transport_name)(
+    transport = NetworkAttachmentsClient.get_transport_class(transport_name)(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert transport.kind == transport_name
 
 
-def test_region_commitments_base_transport_error():
+def test_network_attachments_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.RegionCommitmentsTransport(
+        transport = transports.NetworkAttachmentsTransport(
             credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
 
-def test_region_commitments_base_transport():
+def test_network_attachments_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.compute_v1.services.region_commitments.transports.RegionCommitmentsTransport.__init__"
+        "google.cloud.compute_v1.services.network_attachments.transports.NetworkAttachmentsTransport.__init__"
     ) as Transport:
         Transport.return_value = None
-        transport = transports.RegionCommitmentsTransport(
+        transport = transports.NetworkAttachmentsTransport(
             credentials=ga_credentials.AnonymousCredentials(),
         )
 
@@ -3609,10 +4260,13 @@ def test_region_commitments_base_transport():
     # raise NotImplementedError.
     methods = (
         "aggregated_list",
+        "delete",
         "get",
+        "get_iam_policy",
         "insert",
         "list",
-        "update",
+        "set_iam_policy",
+        "test_iam_permissions",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -3630,16 +4284,16 @@ def test_region_commitments_base_transport():
             getattr(transport, r)()
 
 
-def test_region_commitments_base_transport_with_credentials_file():
+def test_network_attachments_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.compute_v1.services.region_commitments.transports.RegionCommitmentsTransport._prep_wrapped_messages"
+        "google.cloud.compute_v1.services.network_attachments.transports.NetworkAttachmentsTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.RegionCommitmentsTransport(
+        transport = transports.NetworkAttachmentsTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
         )
@@ -3654,22 +4308,22 @@ def test_region_commitments_base_transport_with_credentials_file():
         )
 
 
-def test_region_commitments_base_transport_with_adc():
+def test_network_attachments_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.compute_v1.services.region_commitments.transports.RegionCommitmentsTransport._prep_wrapped_messages"
+        "google.cloud.compute_v1.services.network_attachments.transports.NetworkAttachmentsTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.RegionCommitmentsTransport()
+        transport = transports.NetworkAttachmentsTransport()
         adc.assert_called_once()
 
 
-def test_region_commitments_auth_adc():
+def test_network_attachments_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        RegionCommitmentsClient()
+        NetworkAttachmentsClient()
         adc.assert_called_once_with(
             scopes=None,
             default_scopes=(
@@ -3680,12 +4334,12 @@ def test_region_commitments_auth_adc():
         )
 
 
-def test_region_commitments_http_transport_client_cert_source_for_mtls():
+def test_network_attachments_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
-        transports.RegionCommitmentsRestTransport(
+        transports.NetworkAttachmentsRestTransport(
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
@@ -3697,8 +4351,8 @@ def test_region_commitments_http_transport_client_cert_source_for_mtls():
         "rest",
     ],
 )
-def test_region_commitments_host_no_port(transport_name):
-    client = RegionCommitmentsClient(
+def test_network_attachments_host_no_port(transport_name):
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com"
@@ -3718,8 +4372,8 @@ def test_region_commitments_host_no_port(transport_name):
         "rest",
     ],
 )
-def test_region_commitments_host_with_port(transport_name):
-    client = RegionCommitmentsClient(
+def test_network_attachments_host_with_port(transport_name):
+    client = NetworkAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com:8000"
@@ -3739,22 +4393,28 @@ def test_region_commitments_host_with_port(transport_name):
         "rest",
     ],
 )
-def test_region_commitments_client_transport_session_collision(transport_name):
+def test_network_attachments_client_transport_session_collision(transport_name):
     creds1 = ga_credentials.AnonymousCredentials()
     creds2 = ga_credentials.AnonymousCredentials()
-    client1 = RegionCommitmentsClient(
+    client1 = NetworkAttachmentsClient(
         credentials=creds1,
         transport=transport_name,
     )
-    client2 = RegionCommitmentsClient(
+    client2 = NetworkAttachmentsClient(
         credentials=creds2,
         transport=transport_name,
     )
     session1 = client1.transport.aggregated_list._session
     session2 = client2.transport.aggregated_list._session
     assert session1 != session2
+    session1 = client1.transport.delete._session
+    session2 = client2.transport.delete._session
+    assert session1 != session2
     session1 = client1.transport.get._session
     session2 = client2.transport.get._session
+    assert session1 != session2
+    session1 = client1.transport.get_iam_policy._session
+    session2 = client2.transport.get_iam_policy._session
     assert session1 != session2
     session1 = client1.transport.insert._session
     session2 = client2.transport.insert._session
@@ -3762,8 +4422,11 @@ def test_region_commitments_client_transport_session_collision(transport_name):
     session1 = client1.transport.list._session
     session2 = client2.transport.list._session
     assert session1 != session2
-    session1 = client1.transport.update._session
-    session2 = client2.transport.update._session
+    session1 = client1.transport.set_iam_policy._session
+    session2 = client2.transport.set_iam_policy._session
+    assert session1 != session2
+    session1 = client1.transport.test_iam_permissions._session
+    session2 = client2.transport.test_iam_permissions._session
     assert session1 != session2
 
 
@@ -3772,7 +4435,7 @@ def test_common_billing_account_path():
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
-    actual = RegionCommitmentsClient.common_billing_account_path(billing_account)
+    actual = NetworkAttachmentsClient.common_billing_account_path(billing_account)
     assert expected == actual
 
 
@@ -3780,10 +4443,10 @@ def test_parse_common_billing_account_path():
     expected = {
         "billing_account": "clam",
     }
-    path = RegionCommitmentsClient.common_billing_account_path(**expected)
+    path = NetworkAttachmentsClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = RegionCommitmentsClient.parse_common_billing_account_path(path)
+    actual = NetworkAttachmentsClient.parse_common_billing_account_path(path)
     assert expected == actual
 
 
@@ -3792,7 +4455,7 @@ def test_common_folder_path():
     expected = "folders/{folder}".format(
         folder=folder,
     )
-    actual = RegionCommitmentsClient.common_folder_path(folder)
+    actual = NetworkAttachmentsClient.common_folder_path(folder)
     assert expected == actual
 
 
@@ -3800,10 +4463,10 @@ def test_parse_common_folder_path():
     expected = {
         "folder": "octopus",
     }
-    path = RegionCommitmentsClient.common_folder_path(**expected)
+    path = NetworkAttachmentsClient.common_folder_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = RegionCommitmentsClient.parse_common_folder_path(path)
+    actual = NetworkAttachmentsClient.parse_common_folder_path(path)
     assert expected == actual
 
 
@@ -3812,7 +4475,7 @@ def test_common_organization_path():
     expected = "organizations/{organization}".format(
         organization=organization,
     )
-    actual = RegionCommitmentsClient.common_organization_path(organization)
+    actual = NetworkAttachmentsClient.common_organization_path(organization)
     assert expected == actual
 
 
@@ -3820,10 +4483,10 @@ def test_parse_common_organization_path():
     expected = {
         "organization": "nudibranch",
     }
-    path = RegionCommitmentsClient.common_organization_path(**expected)
+    path = NetworkAttachmentsClient.common_organization_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = RegionCommitmentsClient.parse_common_organization_path(path)
+    actual = NetworkAttachmentsClient.parse_common_organization_path(path)
     assert expected == actual
 
 
@@ -3832,7 +4495,7 @@ def test_common_project_path():
     expected = "projects/{project}".format(
         project=project,
     )
-    actual = RegionCommitmentsClient.common_project_path(project)
+    actual = NetworkAttachmentsClient.common_project_path(project)
     assert expected == actual
 
 
@@ -3840,10 +4503,10 @@ def test_parse_common_project_path():
     expected = {
         "project": "mussel",
     }
-    path = RegionCommitmentsClient.common_project_path(**expected)
+    path = NetworkAttachmentsClient.common_project_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = RegionCommitmentsClient.parse_common_project_path(path)
+    actual = NetworkAttachmentsClient.parse_common_project_path(path)
     assert expected == actual
 
 
@@ -3854,7 +4517,7 @@ def test_common_location_path():
         project=project,
         location=location,
     )
-    actual = RegionCommitmentsClient.common_location_path(project, location)
+    actual = NetworkAttachmentsClient.common_location_path(project, location)
     assert expected == actual
 
 
@@ -3863,10 +4526,10 @@ def test_parse_common_location_path():
         "project": "scallop",
         "location": "abalone",
     }
-    path = RegionCommitmentsClient.common_location_path(**expected)
+    path = NetworkAttachmentsClient.common_location_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = RegionCommitmentsClient.parse_common_location_path(path)
+    actual = NetworkAttachmentsClient.parse_common_location_path(path)
     assert expected == actual
 
 
@@ -3874,18 +4537,18 @@ def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
-        transports.RegionCommitmentsTransport, "_prep_wrapped_messages"
+        transports.NetworkAttachmentsTransport, "_prep_wrapped_messages"
     ) as prep:
-        client = RegionCommitmentsClient(
+        client = NetworkAttachmentsClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
     with mock.patch.object(
-        transports.RegionCommitmentsTransport, "_prep_wrapped_messages"
+        transports.NetworkAttachmentsTransport, "_prep_wrapped_messages"
     ) as prep:
-        transport_class = RegionCommitmentsClient.get_transport_class()
+        transport_class = NetworkAttachmentsClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
@@ -3899,7 +4562,7 @@ def test_transport_close():
     }
 
     for transport, close_name in transports.items():
-        client = RegionCommitmentsClient(
+        client = NetworkAttachmentsClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         with mock.patch.object(
@@ -3915,7 +4578,7 @@ def test_client_ctx():
         "rest",
     ]
     for transport in transports:
-        client = RegionCommitmentsClient(
+        client = NetworkAttachmentsClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
@@ -3929,7 +4592,7 @@ def test_client_ctx():
 @pytest.mark.parametrize(
     "client_class,transport_class",
     [
-        (RegionCommitmentsClient, transports.RegionCommitmentsRestTransport),
+        (NetworkAttachmentsClient, transports.NetworkAttachmentsRestTransport),
     ],
 )
 def test_api_key_credentials(client_class, transport_class):

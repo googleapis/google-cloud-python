@@ -2260,7 +2260,11 @@ def test_insert_rest(request_type):
         ],
         "connection_preference": "connection_preference_value",
         "consumer_accept_lists": [
-            {"connection_limit": 1710, "project_id_or_num": "project_id_or_num_value"}
+            {
+                "connection_limit": 1710,
+                "network_url": "network_url_value",
+                "project_id_or_num": "project_id_or_num_value",
+            }
         ],
         "consumer_reject_lists": [
             "consumer_reject_lists_value1",
@@ -2524,7 +2528,11 @@ def test_insert_rest_bad_request(
         ],
         "connection_preference": "connection_preference_value",
         "consumer_accept_lists": [
-            {"connection_limit": 1710, "project_id_or_num": "project_id_or_num_value"}
+            {
+                "connection_limit": 1710,
+                "network_url": "network_url_value",
+                "project_id_or_num": "project_id_or_num_value",
+            }
         ],
         "consumer_reject_lists": [
             "consumer_reject_lists_value1",
@@ -2662,7 +2670,11 @@ def test_insert_unary_rest(request_type):
         ],
         "connection_preference": "connection_preference_value",
         "consumer_accept_lists": [
-            {"connection_limit": 1710, "project_id_or_num": "project_id_or_num_value"}
+            {
+                "connection_limit": 1710,
+                "network_url": "network_url_value",
+                "project_id_or_num": "project_id_or_num_value",
+            }
         ],
         "consumer_reject_lists": [
             "consumer_reject_lists_value1",
@@ -2904,7 +2916,11 @@ def test_insert_unary_rest_bad_request(
         ],
         "connection_preference": "connection_preference_value",
         "consumer_accept_lists": [
-            {"connection_limit": 1710, "project_id_or_num": "project_id_or_num_value"}
+            {
+                "connection_limit": 1710,
+                "network_url": "network_url_value",
+                "project_id_or_num": "project_id_or_num_value",
+            }
         ],
         "consumer_reject_lists": [
             "consumer_reject_lists_value1",
@@ -3405,7 +3421,11 @@ def test_patch_rest(request_type):
         ],
         "connection_preference": "connection_preference_value",
         "consumer_accept_lists": [
-            {"connection_limit": 1710, "project_id_or_num": "project_id_or_num_value"}
+            {
+                "connection_limit": 1710,
+                "network_url": "network_url_value",
+                "project_id_or_num": "project_id_or_num_value",
+            }
         ],
         "consumer_reject_lists": [
             "consumer_reject_lists_value1",
@@ -3676,7 +3696,11 @@ def test_patch_rest_bad_request(
         ],
         "connection_preference": "connection_preference_value",
         "consumer_accept_lists": [
-            {"connection_limit": 1710, "project_id_or_num": "project_id_or_num_value"}
+            {
+                "connection_limit": 1710,
+                "network_url": "network_url_value",
+                "project_id_or_num": "project_id_or_num_value",
+            }
         ],
         "consumer_reject_lists": [
             "consumer_reject_lists_value1",
@@ -3824,7 +3848,11 @@ def test_patch_unary_rest(request_type):
         ],
         "connection_preference": "connection_preference_value",
         "consumer_accept_lists": [
-            {"connection_limit": 1710, "project_id_or_num": "project_id_or_num_value"}
+            {
+                "connection_limit": 1710,
+                "network_url": "network_url_value",
+                "project_id_or_num": "project_id_or_num_value",
+            }
         ],
         "consumer_reject_lists": [
             "consumer_reject_lists_value1",
@@ -4075,7 +4103,11 @@ def test_patch_unary_rest_bad_request(
         ],
         "connection_preference": "connection_preference_value",
         "consumer_accept_lists": [
-            {"connection_limit": 1710, "project_id_or_num": "project_id_or_num_value"}
+            {
+                "connection_limit": 1710,
+                "network_url": "network_url_value",
+                "project_id_or_num": "project_id_or_num_value",
+            }
         ],
         "consumer_reject_lists": [
             "consumer_reject_lists_value1",

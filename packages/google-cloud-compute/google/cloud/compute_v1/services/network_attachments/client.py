@@ -49,28 +49,30 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import extended_operation  # type: ignore
 
-from google.cloud.compute_v1.services.interconnects import pagers
+from google.cloud.compute_v1.services.network_attachments import pagers
 from google.cloud.compute_v1.types import compute
 
-from .transports.base import DEFAULT_CLIENT_INFO, InterconnectsTransport
-from .transports.rest import InterconnectsRestTransport
+from .transports.base import DEFAULT_CLIENT_INFO, NetworkAttachmentsTransport
+from .transports.rest import NetworkAttachmentsRestTransport
 
 
-class InterconnectsClientMeta(type):
-    """Metaclass for the Interconnects client.
+class NetworkAttachmentsClientMeta(type):
+    """Metaclass for the NetworkAttachments client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
 
-    _transport_registry = OrderedDict()  # type: Dict[str, Type[InterconnectsTransport]]
-    _transport_registry["rest"] = InterconnectsRestTransport
+    _transport_registry = (
+        OrderedDict()
+    )  # type: Dict[str, Type[NetworkAttachmentsTransport]]
+    _transport_registry["rest"] = NetworkAttachmentsRestTransport
 
     def get_transport_class(
         cls,
         label: Optional[str] = None,
-    ) -> Type[InterconnectsTransport]:
+    ) -> Type[NetworkAttachmentsTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -89,8 +91,8 @@ class InterconnectsClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class InterconnectsClient(metaclass=InterconnectsClientMeta):
-    """The Interconnects API."""
+class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
+    """The NetworkAttachments API."""
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
@@ -138,7 +140,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            InterconnectsClient: The constructed client.
+            NetworkAttachmentsClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -156,7 +158,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            InterconnectsClient: The constructed client.
+            NetworkAttachmentsClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -165,11 +167,11 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> InterconnectsTransport:
+    def transport(self) -> NetworkAttachmentsTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            InterconnectsTransport: The transport used by the client
+            NetworkAttachmentsTransport: The transport used by the client
                 instance.
         """
         return self._transport
@@ -322,11 +324,11 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, InterconnectsTransport]] = None,
+        transport: Optional[Union[str, NetworkAttachmentsTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the interconnects client.
+        """Instantiates the network attachments client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -334,7 +336,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, InterconnectsTransport]): The
+            transport (Union[str, NetworkAttachmentsTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
                 NOTE: "rest" transport functionality is currently in a
@@ -385,8 +387,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        if isinstance(transport, InterconnectsTransport):
-            # transport is a InterconnectsTransport instance.
+        if isinstance(transport, NetworkAttachmentsTransport):
+            # transport is a NetworkAttachmentsTransport instance.
             if credentials or client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -421,31 +423,131 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                 api_audience=client_options.api_audience,
             )
 
-    def delete_unary(
+    def aggregated_list(
         self,
-        request: Optional[Union[compute.DeleteInterconnectRequest, dict]] = None,
+        request: Optional[
+            Union[compute.AggregatedListNetworkAttachmentsRequest, dict]
+        ] = None,
         *,
         project: Optional[str] = None,
-        interconnect: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.Operation:
-        r"""Deletes the specified Interconnect.
+    ) -> pagers.AggregatedListPager:
+        r"""Retrieves the list of all NetworkAttachment
+        resources, regional and global, available to the
+        specified project.
 
         Args:
-            request (Union[google.cloud.compute_v1.types.DeleteInterconnectRequest, dict]):
+            request (Union[google.cloud.compute_v1.types.AggregatedListNetworkAttachmentsRequest, dict]):
                 The request object. A request message for
-                Interconnects.Delete. See the method description for
-                details.
+                NetworkAttachments.AggregatedList. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            interconnect (str):
-                Name of the interconnect to delete.
-                This corresponds to the ``interconnect`` field
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.compute_v1.services.network_attachments.pagers.AggregatedListPager:
+                Contains a list of
+                NetworkAttachmentsScopedList.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.AggregatedListNetworkAttachmentsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.AggregatedListNetworkAttachmentsRequest):
+            request = compute.AggregatedListNetworkAttachmentsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.aggregated_list]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.AggregatedListPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_unary(
+        self,
+        request: Optional[Union[compute.DeleteNetworkAttachmentRequest, dict]] = None,
+        *,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        network_attachment: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> compute.Operation:
+        r"""Deletes the specified NetworkAttachment in the given
+        scope
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.DeleteNetworkAttachmentRequest, dict]):
+                The request object. A request message for
+                NetworkAttachments.Delete. See the method description
+                for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region of this request.
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            network_attachment (str):
+                Name of the NetworkAttachment
+                resource to delete.
+
+                This corresponds to the ``network_attachment`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -463,7 +565,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, interconnect])
+        has_flattened_params = any([project, region, network_attachment])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -471,17 +573,19 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteInterconnectRequest.
+        # in a compute.DeleteNetworkAttachmentRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, compute.DeleteInterconnectRequest):
-            request = compute.DeleteInterconnectRequest(request)
+        if not isinstance(request, compute.DeleteNetworkAttachmentRequest):
+            request = compute.DeleteNetworkAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
                 request.project = project
-            if interconnect is not None:
-                request.interconnect = interconnect
+            if region is not None:
+                request.region = region
+            if network_attachment is not None:
+                request.network_attachment = network_attachment
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -493,7 +597,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (
                     ("project", request.project),
-                    ("interconnect", request.interconnect),
+                    ("region", request.region),
+                    ("network_attachment", request.network_attachment),
                 )
             ),
         )
@@ -511,29 +616,38 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
 
     def delete(
         self,
-        request: Optional[Union[compute.DeleteInterconnectRequest, dict]] = None,
+        request: Optional[Union[compute.DeleteNetworkAttachmentRequest, dict]] = None,
         *,
         project: Optional[str] = None,
-        interconnect: Optional[str] = None,
+        region: Optional[str] = None,
+        network_attachment: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Deletes the specified Interconnect.
+        r"""Deletes the specified NetworkAttachment in the given
+        scope
 
         Args:
-            request (Union[google.cloud.compute_v1.types.DeleteInterconnectRequest, dict]):
+            request (Union[google.cloud.compute_v1.types.DeleteNetworkAttachmentRequest, dict]):
                 The request object. A request message for
-                Interconnects.Delete. See the method description for
-                details.
+                NetworkAttachments.Delete. See the method description
+                for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            interconnect (str):
-                Name of the interconnect to delete.
-                This corresponds to the ``interconnect`` field
+            region (str):
+                Name of the region of this request.
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            network_attachment (str):
+                Name of the NetworkAttachment
+                resource to delete.
+
+                This corresponds to the ``network_attachment`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -551,7 +665,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, interconnect])
+        has_flattened_params = any([project, region, network_attachment])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -559,17 +673,19 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteInterconnectRequest.
+        # in a compute.DeleteNetworkAttachmentRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, compute.DeleteInterconnectRequest):
-            request = compute.DeleteInterconnectRequest(request)
+        if not isinstance(request, compute.DeleteNetworkAttachmentRequest):
+            request = compute.DeleteNetworkAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
                 request.project = project
-            if interconnect is not None:
-                request.interconnect = interconnect
+            if region is not None:
+                request.region = region
+            if network_attachment is not None:
+                request.network_attachment = network_attachment
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -581,7 +697,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (
                     ("project", request.project),
-                    ("interconnect", request.interconnect),
+                    ("region", request.region),
+                    ("network_attachment", request.network_attachment),
                 )
             ),
         )
@@ -594,9 +711,10 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             metadata=metadata,
         )
 
-        operation_service = self._transport._global_operations_client
-        operation_request = compute.GetGlobalOperationRequest()
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
         operation_request.project = request.project
+        operation_request.region = request.region
         operation_request.operation = response.name
 
         get_operation = functools.partial(operation_service.get, operation_request)
@@ -623,30 +741,38 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
 
     def get(
         self,
-        request: Optional[Union[compute.GetInterconnectRequest, dict]] = None,
+        request: Optional[Union[compute.GetNetworkAttachmentRequest, dict]] = None,
         *,
         project: Optional[str] = None,
-        interconnect: Optional[str] = None,
+        region: Optional[str] = None,
+        network_attachment: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.Interconnect:
-        r"""Returns the specified Interconnect. Get a list of
-        available Interconnects by making a list() request.
+    ) -> compute.NetworkAttachment:
+        r"""Returns the specified NetworkAttachment resource in
+        the given scope.
 
         Args:
-            request (Union[google.cloud.compute_v1.types.GetInterconnectRequest, dict]):
+            request (Union[google.cloud.compute_v1.types.GetNetworkAttachmentRequest, dict]):
                 The request object. A request message for
-                Interconnects.Get. See the method description for
+                NetworkAttachments.Get. See the method description for
                 details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            interconnect (str):
-                Name of the interconnect to return.
-                This corresponds to the ``interconnect`` field
+            region (str):
+                Name of the region of this request.
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            network_attachment (str):
+                Name of the NetworkAttachment
+                resource to return.
+
+                This corresponds to the ``network_attachment`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -656,19 +782,15 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Interconnect:
-                Represents an Interconnect resource.
-                An Interconnect resource is a dedicated
-                connection between the GCP network and
-                your on-premises network. For more
-                information, read the Dedicated
-                Interconnect Overview.
+            google.cloud.compute_v1.types.NetworkAttachment:
+                NetworkAttachments A network
+                attachment resource ...
 
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, interconnect])
+        has_flattened_params = any([project, region, network_attachment])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -676,17 +798,19 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetInterconnectRequest.
+        # in a compute.GetNetworkAttachmentRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, compute.GetInterconnectRequest):
-            request = compute.GetInterconnectRequest(request)
+        if not isinstance(request, compute.GetNetworkAttachmentRequest):
+            request = compute.GetNetworkAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
                 request.project = project
-            if interconnect is not None:
-                request.interconnect = interconnect
+            if region is not None:
+                request.region = region
+            if network_attachment is not None:
+                request.network_attachment = network_attachment
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -698,7 +822,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (
                     ("project", request.project),
-                    ("interconnect", request.interconnect),
+                    ("region", request.region),
+                    ("network_attachment", request.network_attachment),
                 )
             ),
         )
@@ -714,36 +839,44 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         # Done; return the response.
         return response
 
-    def get_diagnostics(
+    def get_iam_policy(
         self,
         request: Optional[
-            Union[compute.GetDiagnosticsInterconnectRequest, dict]
+            Union[compute.GetIamPolicyNetworkAttachmentRequest, dict]
         ] = None,
         *,
         project: Optional[str] = None,
-        interconnect: Optional[str] = None,
+        region: Optional[str] = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.InterconnectsGetDiagnosticsResponse:
-        r"""Returns the interconnectDiagnostics for the specified
-        Interconnect.
+    ) -> compute.Policy:
+        r"""Gets the access control policy for a resource. May be
+        empty if no such policy or resource exists.
 
         Args:
-            request (Union[google.cloud.compute_v1.types.GetDiagnosticsInterconnectRequest, dict]):
+            request (Union[google.cloud.compute_v1.types.GetIamPolicyNetworkAttachmentRequest, dict]):
                 The request object. A request message for
-                Interconnects.GetDiagnostics. See the method description
-                for details.
+                NetworkAttachments.GetIamPolicy. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            interconnect (str):
-                Name of the interconnect resource to
-                query.
+            region (str):
+                The name of the region for this
+                request.
 
-                This corresponds to the ``interconnect`` field
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            resource (str):
+                Name or id of the resource for this
+                request.
+
+                This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -753,15 +886,53 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.InterconnectsGetDiagnosticsResponse:
-                Response for the
-                InterconnectsGetDiagnosticsRequest.
+            google.cloud.compute_v1.types.Policy:
+                An Identity and Access Management (IAM) policy, which
+                specifies access controls for Google Cloud resources. A
+                Policy is a collection of bindings. A binding binds one
+                or more members, or principals, to a single role.
+                Principals can be user accounts, service accounts,
+                Google groups, and domains (such as G Suite). A role is
+                a named list of permissions; each role can be an IAM
+                predefined role or a user-created custom role. For some
+                types of Google Cloud resources, a binding can also
+                specify a condition, which is a logical expression that
+                allows access to a resource only if the expression
+                evaluates to true. A condition can add constraints based
+                on attributes of the request, the resource, or both. To
+                learn which resources support conditions in their IAM
+                policies, see the [IAM
+                documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+                **JSON example:** { "bindings": [ { "role":
+                "roles/resourcemanager.organizationAdmin", "members": [
+                "user:mike@example.com", "group:admins@example.com",
+                "domain:google.com",
+                "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                ] }, { "role":
+                "roles/resourcemanager.organizationViewer", "members": [
+                "user:eve@example.com" ], "condition": { "title":
+                "expirable access", "description": "Does not grant
+                access after Sep 2020", "expression": "request.time <
+                timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag":
+                "BwWWja0YfJA=", "version": 3 } **YAML example:**
+                bindings: - members: - user:\ mike@example.com -
+                group:\ admins@example.com - domain:google.com -
+                serviceAccount:\ my-project-id@appspot.gserviceaccount.com
+                role: roles/resourcemanager.organizationAdmin - members:
+                - user:\ eve@example.com role:
+                roles/resourcemanager.organizationViewer condition:
+                title: expirable access description: Does not grant
+                access after Sep 2020 expression: request.time <
+                timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA=
+                version: 3 For a description of IAM and its features,
+                see the [IAM
+                documentation](\ https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, interconnect])
+        has_flattened_params = any([project, region, resource])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -769,21 +940,23 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetDiagnosticsInterconnectRequest.
+        # in a compute.GetIamPolicyNetworkAttachmentRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, compute.GetDiagnosticsInterconnectRequest):
-            request = compute.GetDiagnosticsInterconnectRequest(request)
+        if not isinstance(request, compute.GetIamPolicyNetworkAttachmentRequest):
+            request = compute.GetIamPolicyNetworkAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
                 request.project = project
-            if interconnect is not None:
-                request.interconnect = interconnect
+            if region is not None:
+                request.region = region
+            if resource is not None:
+                request.resource = resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_diagnostics]
+        rpc = self._transport._wrapped_methods[self._transport.get_iam_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -791,7 +964,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (
                     ("project", request.project),
-                    ("interconnect", request.interconnect),
+                    ("region", request.region),
+                    ("resource", request.resource),
                 )
             ),
         )
@@ -809,30 +983,37 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
 
     def insert_unary(
         self,
-        request: Optional[Union[compute.InsertInterconnectRequest, dict]] = None,
+        request: Optional[Union[compute.InsertNetworkAttachmentRequest, dict]] = None,
         *,
         project: Optional[str] = None,
-        interconnect_resource: Optional[compute.Interconnect] = None,
+        region: Optional[str] = None,
+        network_attachment_resource: Optional[compute.NetworkAttachment] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
-        r"""Creates an Interconnect in the specified project
-        using the data included in the request.
+        r"""Creates a NetworkAttachment in the specified project
+        in the given scope using the parameters that are
+        included in the request.
 
         Args:
-            request (Union[google.cloud.compute_v1.types.InsertInterconnectRequest, dict]):
+            request (Union[google.cloud.compute_v1.types.InsertNetworkAttachmentRequest, dict]):
                 The request object. A request message for
-                Interconnects.Insert. See the method description for
-                details.
+                NetworkAttachments.Insert. See the method description
+                for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            interconnect_resource (google.cloud.compute_v1.types.Interconnect):
+            region (str):
+                Name of the region of this request.
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            network_attachment_resource (google.cloud.compute_v1.types.NetworkAttachment):
                 The body resource for this request
-                This corresponds to the ``interconnect_resource`` field
+                This corresponds to the ``network_attachment_resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -850,7 +1031,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, interconnect_resource])
+        has_flattened_params = any([project, region, network_attachment_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -858,17 +1039,19 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertInterconnectRequest.
+        # in a compute.InsertNetworkAttachmentRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, compute.InsertInterconnectRequest):
-            request = compute.InsertInterconnectRequest(request)
+        if not isinstance(request, compute.InsertNetworkAttachmentRequest):
+            request = compute.InsertNetworkAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
                 request.project = project
-            if interconnect_resource is not None:
-                request.interconnect_resource = interconnect_resource
+            if region is not None:
+                request.region = region
+            if network_attachment_resource is not None:
+                request.network_attachment_resource = network_attachment_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -877,7 +1060,12 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                )
+            ),
         )
 
         # Send the request.
@@ -893,30 +1081,37 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
 
     def insert(
         self,
-        request: Optional[Union[compute.InsertInterconnectRequest, dict]] = None,
+        request: Optional[Union[compute.InsertNetworkAttachmentRequest, dict]] = None,
         *,
         project: Optional[str] = None,
-        interconnect_resource: Optional[compute.Interconnect] = None,
+        region: Optional[str] = None,
+        network_attachment_resource: Optional[compute.NetworkAttachment] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Creates an Interconnect in the specified project
-        using the data included in the request.
+        r"""Creates a NetworkAttachment in the specified project
+        in the given scope using the parameters that are
+        included in the request.
 
         Args:
-            request (Union[google.cloud.compute_v1.types.InsertInterconnectRequest, dict]):
+            request (Union[google.cloud.compute_v1.types.InsertNetworkAttachmentRequest, dict]):
                 The request object. A request message for
-                Interconnects.Insert. See the method description for
-                details.
+                NetworkAttachments.Insert. See the method description
+                for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            interconnect_resource (google.cloud.compute_v1.types.Interconnect):
+            region (str):
+                Name of the region of this request.
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            network_attachment_resource (google.cloud.compute_v1.types.NetworkAttachment):
                 The body resource for this request
-                This corresponds to the ``interconnect_resource`` field
+                This corresponds to the ``network_attachment_resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -934,7 +1129,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, interconnect_resource])
+        has_flattened_params = any([project, region, network_attachment_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -942,17 +1137,19 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertInterconnectRequest.
+        # in a compute.InsertNetworkAttachmentRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, compute.InsertInterconnectRequest):
-            request = compute.InsertInterconnectRequest(request)
+        if not isinstance(request, compute.InsertNetworkAttachmentRequest):
+            request = compute.InsertNetworkAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
                 request.project = project
-            if interconnect_resource is not None:
-                request.interconnect_resource = interconnect_resource
+            if region is not None:
+                request.region = region
+            if network_attachment_resource is not None:
+                request.network_attachment_resource = network_attachment_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -961,7 +1158,12 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                )
+            ),
         )
 
         # Send the request.
@@ -972,9 +1174,10 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             metadata=metadata,
         )
 
-        operation_service = self._transport._global_operations_client
-        operation_request = compute.GetGlobalOperationRequest()
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
         operation_request.project = request.project
+        operation_request.region = request.region
         operation_request.operation = response.name
 
         get_operation = functools.partial(operation_service.get, operation_request)
@@ -1001,24 +1204,30 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
 
     def list(
         self,
-        request: Optional[Union[compute.ListInterconnectsRequest, dict]] = None,
+        request: Optional[Union[compute.ListNetworkAttachmentsRequest, dict]] = None,
         *,
         project: Optional[str] = None,
+        region: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
-        r"""Retrieves the list of Interconnects available to the
-        specified project.
+        r"""Lists the NetworkAttachments for a project in the
+        given scope.
 
         Args:
-            request (Union[google.cloud.compute_v1.types.ListInterconnectsRequest, dict]):
+            request (Union[google.cloud.compute_v1.types.ListNetworkAttachmentsRequest, dict]):
                 The request object. A request message for
-                Interconnects.List. See the method description for
+                NetworkAttachments.List. See the method description for
                 details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region of this request.
+                This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1028,9 +1237,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.services.interconnects.pagers.ListPager:
-                Response to the list request, and
-                contains a list of interconnects.
+            google.cloud.compute_v1.services.network_attachments.pagers.ListPager:
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1039,7 +1246,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project])
+        has_flattened_params = any([project, region])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1047,15 +1254,17 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListInterconnectsRequest.
+        # in a compute.ListNetworkAttachmentsRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, compute.ListInterconnectsRequest):
-            request = compute.ListInterconnectsRequest(request)
+        if not isinstance(request, compute.ListNetworkAttachmentsRequest):
+            request = compute.ListNetworkAttachmentsRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
                 request.project = project
+            if region is not None:
+                request.region = region
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1064,7 +1273,12 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                )
+            ),
         )
 
         # Send the request.
@@ -1087,252 +1301,40 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         # Done; return the response.
         return response
 
-    def patch_unary(
+    def set_iam_policy(
         self,
-        request: Optional[Union[compute.PatchInterconnectRequest, dict]] = None,
+        request: Optional[
+            Union[compute.SetIamPolicyNetworkAttachmentRequest, dict]
+        ] = None,
         *,
         project: Optional[str] = None,
-        interconnect: Optional[str] = None,
-        interconnect_resource: Optional[compute.Interconnect] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.Operation:
-        r"""Updates the specified Interconnect with the data
-        included in the request. This method supports PATCH
-        semantics and uses the JSON merge patch format and
-        processing rules.
-
-        Args:
-            request (Union[google.cloud.compute_v1.types.PatchInterconnectRequest, dict]):
-                The request object. A request message for
-                Interconnects.Patch. See the method description for
-                details.
-            project (str):
-                Project ID for this request.
-                This corresponds to the ``project`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            interconnect (str):
-                Name of the interconnect to update.
-                This corresponds to the ``interconnect`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            interconnect_resource (google.cloud.compute_v1.types.Interconnect):
-                The body resource for this request
-                This corresponds to the ``interconnect_resource`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.extended_operation.ExtendedOperation:
-                An object representing a extended
-                long-running operation.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, interconnect, interconnect_resource])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchInterconnectRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, compute.PatchInterconnectRequest):
-            request = compute.PatchInterconnectRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if project is not None:
-                request.project = project
-            if interconnect is not None:
-                request.interconnect = interconnect
-            if interconnect_resource is not None:
-                request.interconnect_resource = interconnect_resource
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.patch]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    ("project", request.project),
-                    ("interconnect", request.interconnect),
-                )
-            ),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def patch(
-        self,
-        request: Optional[Union[compute.PatchInterconnectRequest, dict]] = None,
-        *,
-        project: Optional[str] = None,
-        interconnect: Optional[str] = None,
-        interconnect_resource: Optional[compute.Interconnect] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> extended_operation.ExtendedOperation:
-        r"""Updates the specified Interconnect with the data
-        included in the request. This method supports PATCH
-        semantics and uses the JSON merge patch format and
-        processing rules.
-
-        Args:
-            request (Union[google.cloud.compute_v1.types.PatchInterconnectRequest, dict]):
-                The request object. A request message for
-                Interconnects.Patch. See the method description for
-                details.
-            project (str):
-                Project ID for this request.
-                This corresponds to the ``project`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            interconnect (str):
-                Name of the interconnect to update.
-                This corresponds to the ``interconnect`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            interconnect_resource (google.cloud.compute_v1.types.Interconnect):
-                The body resource for this request
-                This corresponds to the ``interconnect_resource`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.extended_operation.ExtendedOperation:
-                An object representing a extended
-                long-running operation.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, interconnect, interconnect_resource])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchInterconnectRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, compute.PatchInterconnectRequest):
-            request = compute.PatchInterconnectRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if project is not None:
-                request.project = project
-            if interconnect is not None:
-                request.interconnect = interconnect
-            if interconnect_resource is not None:
-                request.interconnect_resource = interconnect_resource
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.patch]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    ("project", request.project),
-                    ("interconnect", request.interconnect),
-                )
-            ),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        operation_service = self._transport._global_operations_client
-        operation_request = compute.GetGlobalOperationRequest()
-        operation_request.project = request.project
-        operation_request.operation = response.name
-
-        get_operation = functools.partial(operation_service.get, operation_request)
-        # Cancel is not part of extended operations yet.
-        cancel_operation = lambda: None
-
-        # Note: this class is an implementation detail to provide a uniform
-        # set of names for certain fields in the extended operation proto message.
-        # See google.api_core.extended_operation.ExtendedOperation for details
-        # on these properties and the  expected interface.
-        class _CustomOperation(extended_operation.ExtendedOperation):
-            @property
-            def error_message(self):
-                return self._extended_operation.http_error_message
-
-            @property
-            def error_code(self):
-                return self._extended_operation.http_error_status_code
-
-        response = _CustomOperation.make(get_operation, cancel_operation, response)
-
-        # Done; return the response.
-        return response
-
-    def set_labels_unary(
-        self,
-        request: Optional[Union[compute.SetLabelsInterconnectRequest, dict]] = None,
-        *,
-        project: Optional[str] = None,
+        region: Optional[str] = None,
         resource: Optional[str] = None,
-        global_set_labels_request_resource: Optional[
-            compute.GlobalSetLabelsRequest
+        region_set_policy_request_resource: Optional[
+            compute.RegionSetPolicyRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.Operation:
-        r"""Sets the labels on an Interconnect. To learn more
-        about labels, read the Labeling Resources documentation.
+    ) -> compute.Policy:
+        r"""Sets the access control policy on the specified
+        resource. Replaces any existing policy.
 
         Args:
-            request (Union[google.cloud.compute_v1.types.SetLabelsInterconnectRequest, dict]):
+            request (Union[google.cloud.compute_v1.types.SetIamPolicyNetworkAttachmentRequest, dict]):
                 The request object. A request message for
-                Interconnects.SetLabels. See the method description for
-                details.
+                NetworkAttachments.SetIamPolicy. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                The name of the region for this
+                request.
+
+                This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             resource (str):
@@ -1342,9 +1344,9 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            global_set_labels_request_resource (google.cloud.compute_v1.types.GlobalSetLabelsRequest):
+            region_set_policy_request_resource (google.cloud.compute_v1.types.RegionSetPolicyRequest):
                 The body resource for this request
-                This corresponds to the ``global_set_labels_request_resource`` field
+                This corresponds to the ``region_set_policy_request_resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1354,16 +1356,54 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.extended_operation.ExtendedOperation:
-                An object representing a extended
-                long-running operation.
+            google.cloud.compute_v1.types.Policy:
+                An Identity and Access Management (IAM) policy, which
+                specifies access controls for Google Cloud resources. A
+                Policy is a collection of bindings. A binding binds one
+                or more members, or principals, to a single role.
+                Principals can be user accounts, service accounts,
+                Google groups, and domains (such as G Suite). A role is
+                a named list of permissions; each role can be an IAM
+                predefined role or a user-created custom role. For some
+                types of Google Cloud resources, a binding can also
+                specify a condition, which is a logical expression that
+                allows access to a resource only if the expression
+                evaluates to true. A condition can add constraints based
+                on attributes of the request, the resource, or both. To
+                learn which resources support conditions in their IAM
+                policies, see the [IAM
+                documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+                **JSON example:** { "bindings": [ { "role":
+                "roles/resourcemanager.organizationAdmin", "members": [
+                "user:mike@example.com", "group:admins@example.com",
+                "domain:google.com",
+                "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                ] }, { "role":
+                "roles/resourcemanager.organizationViewer", "members": [
+                "user:eve@example.com" ], "condition": { "title":
+                "expirable access", "description": "Does not grant
+                access after Sep 2020", "expression": "request.time <
+                timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag":
+                "BwWWja0YfJA=", "version": 3 } **YAML example:**
+                bindings: - members: - user:\ mike@example.com -
+                group:\ admins@example.com - domain:google.com -
+                serviceAccount:\ my-project-id@appspot.gserviceaccount.com
+                role: roles/resourcemanager.organizationAdmin - members:
+                - user:\ eve@example.com role:
+                roles/resourcemanager.organizationViewer condition:
+                title: expirable access description: Does not grant
+                access after Sep 2020 expression: request.time <
+                timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA=
+                version: 3 For a description of IAM and its features,
+                see the [IAM
+                documentation](\ https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
-            [project, resource, global_set_labels_request_resource]
+            [project, region, resource, region_set_policy_request_resource]
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1372,25 +1412,27 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetLabelsInterconnectRequest.
+        # in a compute.SetIamPolicyNetworkAttachmentRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, compute.SetLabelsInterconnectRequest):
-            request = compute.SetLabelsInterconnectRequest(request)
+        if not isinstance(request, compute.SetIamPolicyNetworkAttachmentRequest):
+            request = compute.SetIamPolicyNetworkAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
                 request.project = project
+            if region is not None:
+                request.region = region
             if resource is not None:
                 request.resource = resource
-            if global_set_labels_request_resource is not None:
-                request.global_set_labels_request_resource = (
-                    global_set_labels_request_resource
+            if region_set_policy_request_resource is not None:
+                request.region_set_policy_request_resource = (
+                    region_set_policy_request_resource
                 )
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.set_labels]
+        rpc = self._transport._wrapped_methods[self._transport.set_iam_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1398,6 +1440,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (
                     ("project", request.project),
+                    ("region", request.region),
                     ("resource", request.resource),
                 )
             ),
@@ -1414,30 +1457,40 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         # Done; return the response.
         return response
 
-    def set_labels(
+    def test_iam_permissions(
         self,
-        request: Optional[Union[compute.SetLabelsInterconnectRequest, dict]] = None,
+        request: Optional[
+            Union[compute.TestIamPermissionsNetworkAttachmentRequest, dict]
+        ] = None,
         *,
         project: Optional[str] = None,
+        region: Optional[str] = None,
         resource: Optional[str] = None,
-        global_set_labels_request_resource: Optional[
-            compute.GlobalSetLabelsRequest
+        test_permissions_request_resource: Optional[
+            compute.TestPermissionsRequest
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> extended_operation.ExtendedOperation:
-        r"""Sets the labels on an Interconnect. To learn more
-        about labels, read the Labeling Resources documentation.
+    ) -> compute.TestPermissionsResponse:
+        r"""Returns permissions that a caller has on the
+        specified resource.
 
         Args:
-            request (Union[google.cloud.compute_v1.types.SetLabelsInterconnectRequest, dict]):
+            request (Union[google.cloud.compute_v1.types.TestIamPermissionsNetworkAttachmentRequest, dict]):
                 The request object. A request message for
-                Interconnects.SetLabels. See the method description for
-                details.
+                NetworkAttachments.TestIamPermissions. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                The name of the region for this
+                request.
+
+                This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             resource (str):
@@ -1447,9 +1500,9 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            global_set_labels_request_resource (google.cloud.compute_v1.types.GlobalSetLabelsRequest):
+            test_permissions_request_resource (google.cloud.compute_v1.types.TestPermissionsRequest):
                 The body resource for this request
-                This corresponds to the ``global_set_labels_request_resource`` field
+                This corresponds to the ``test_permissions_request_resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1459,16 +1512,14 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.extended_operation.ExtendedOperation:
-                An object representing a extended
-                long-running operation.
+            google.cloud.compute_v1.types.TestPermissionsResponse:
 
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
-            [project, resource, global_set_labels_request_resource]
+            [project, region, resource, test_permissions_request_resource]
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1477,25 +1528,27 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetLabelsInterconnectRequest.
+        # in a compute.TestIamPermissionsNetworkAttachmentRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, compute.SetLabelsInterconnectRequest):
-            request = compute.SetLabelsInterconnectRequest(request)
+        if not isinstance(request, compute.TestIamPermissionsNetworkAttachmentRequest):
+            request = compute.TestIamPermissionsNetworkAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
                 request.project = project
+            if region is not None:
+                request.region = region
             if resource is not None:
                 request.resource = resource
-            if global_set_labels_request_resource is not None:
-                request.global_set_labels_request_resource = (
-                    global_set_labels_request_resource
+            if test_permissions_request_resource is not None:
+                request.test_permissions_request_resource = (
+                    test_permissions_request_resource
                 )
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.set_labels]
+        rpc = self._transport._wrapped_methods[self._transport.test_iam_permissions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1503,6 +1556,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (
                     ("project", request.project),
+                    ("region", request.region),
                     ("resource", request.resource),
                 )
             ),
@@ -1515,30 +1569,6 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
-
-        operation_service = self._transport._global_operations_client
-        operation_request = compute.GetGlobalOperationRequest()
-        operation_request.project = request.project
-        operation_request.operation = response.name
-
-        get_operation = functools.partial(operation_service.get, operation_request)
-        # Cancel is not part of extended operations yet.
-        cancel_operation = lambda: None
-
-        # Note: this class is an implementation detail to provide a uniform
-        # set of names for certain fields in the extended operation proto message.
-        # See google.api_core.extended_operation.ExtendedOperation for details
-        # on these properties and the  expected interface.
-        class _CustomOperation(extended_operation.ExtendedOperation):
-            @property
-            def error_message(self):
-                return self._extended_operation.http_error_message
-
-            @property
-            def error_code(self):
-                return self._extended_operation.http_error_status_code
-
-        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -1562,4 +1592,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("InterconnectsClient",)
+__all__ = ("NetworkAttachmentsClient",)

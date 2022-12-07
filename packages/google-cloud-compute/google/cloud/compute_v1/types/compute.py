@@ -66,6 +66,7 @@ __protobuf__ = proto.module(
         "AggregatedListInstancesRequest",
         "AggregatedListInterconnectAttachmentsRequest",
         "AggregatedListMachineTypesRequest",
+        "AggregatedListNetworkAttachmentsRequest",
         "AggregatedListNetworkEdgeSecurityServicesRequest",
         "AggregatedListNetworkEndpointGroupsRequest",
         "AggregatedListNodeGroupsRequest",
@@ -201,6 +202,7 @@ __protobuf__ = proto.module(
         "DeleteInterconnectRequest",
         "DeleteLicenseRequest",
         "DeleteMachineImageRequest",
+        "DeleteNetworkAttachmentRequest",
         "DeleteNetworkEdgeSecurityServiceRequest",
         "DeleteNetworkEndpointGroupRequest",
         "DeleteNetworkFirewallPolicyRequest",
@@ -353,6 +355,7 @@ __protobuf__ = proto.module(
         "GetIamPolicyInstanceTemplateRequest",
         "GetIamPolicyLicenseRequest",
         "GetIamPolicyMachineImageRequest",
+        "GetIamPolicyNetworkAttachmentRequest",
         "GetIamPolicyNetworkFirewallPolicyRequest",
         "GetIamPolicyNodeGroupRequest",
         "GetIamPolicyNodeTemplateRequest",
@@ -378,6 +381,7 @@ __protobuf__ = proto.module(
         "GetMachineImageRequest",
         "GetMachineTypeRequest",
         "GetNatMappingInfoRoutersRequest",
+        "GetNetworkAttachmentRequest",
         "GetNetworkEdgeSecurityServiceRequest",
         "GetNetworkEndpointGroupRequest",
         "GetNetworkFirewallPolicyRequest",
@@ -509,6 +513,7 @@ __protobuf__ = proto.module(
         "InsertInterconnectRequest",
         "InsertLicenseRequest",
         "InsertMachineImageRequest",
+        "InsertNetworkAttachmentRequest",
         "InsertNetworkEdgeSecurityServiceRequest",
         "InsertNetworkEndpointGroupRequest",
         "InsertNetworkFirewallPolicyRequest",
@@ -683,6 +688,7 @@ __protobuf__ = proto.module(
         "ListMachineTypesRequest",
         "ListManagedInstancesInstanceGroupManagersRequest",
         "ListManagedInstancesRegionInstanceGroupManagersRequest",
+        "ListNetworkAttachmentsRequest",
         "ListNetworkEndpointGroupsRequest",
         "ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest",
         "ListNetworkEndpointsNetworkEndpointGroupsRequest",
@@ -774,6 +780,11 @@ __protobuf__ = proto.module(
         "MoveInstanceProjectRequest",
         "NamedPort",
         "Network",
+        "NetworkAttachment",
+        "NetworkAttachmentAggregatedList",
+        "NetworkAttachmentConnectedEndpoint",
+        "NetworkAttachmentList",
+        "NetworkAttachmentsScopedList",
         "NetworkEdgeSecurityService",
         "NetworkEdgeSecurityServiceAggregatedList",
         "NetworkEdgeSecurityServicesScopedList",
@@ -1077,6 +1088,7 @@ __protobuf__ = proto.module(
         "SetIamPolicyInstanceTemplateRequest",
         "SetIamPolicyLicenseRequest",
         "SetIamPolicyMachineImageRequest",
+        "SetIamPolicyNetworkAttachmentRequest",
         "SetIamPolicyNetworkFirewallPolicyRequest",
         "SetIamPolicyNodeGroupRequest",
         "SetIamPolicyNodeTemplateRequest",
@@ -1233,6 +1245,7 @@ __protobuf__ = proto.module(
         "TestIamPermissionsLicenseCodeRequest",
         "TestIamPermissionsLicenseRequest",
         "TestIamPermissionsMachineImageRequest",
+        "TestIamPermissionsNetworkAttachmentRequest",
         "TestIamPermissionsNetworkEndpointGroupRequest",
         "TestIamPermissionsNetworkFirewallPolicyRequest",
         "TestIamPermissionsNodeGroupRequest",
@@ -5330,6 +5343,142 @@ class AggregatedListInterconnectAttachmentsRequest(proto.Message):
 class AggregatedListMachineTypesRequest(proto.Message):
     r"""A request message for MachineTypes.AggregatedList. See the
     method description for details.
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
+            fields. For example, you could specify
+            ``scheduling.automaticRestart = false`` to include instances
+            only if they are not scheduled for automatic restarts. You
+            can use filtering on nested fields to filter based on
+            resource labels. To filter on multiple expressions, provide
+            each separate expression within parentheses. For example:
+            ``(scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake")``
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+            ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
+
+            This field is a member of `oneof`_ ``_filter``.
+        include_all_scopes (bool):
+            Indicates whether every visible scope for
+            each scope type (zone, region, global) should be
+            included in the response. For new resource types
+            added after this field, the flag has no effect
+            as new resource types will always include every
+            visible scope for each scope type in response.
+            For resource types which predate this field, if
+            this flag is omitted or false, only scopes of
+            the scope types where the resource type is
+            expected to be found will be included.
+
+            This field is a member of `oneof`_ ``_include_all_scopes``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name. You can also sort results in descending order based on
+            the creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first. Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for this request.
+        return_partial_success (bool):
+            Opt-in for partial success behavior which
+            provides partial results in case of failure. The
+            default value is false.
+
+            This field is a member of `oneof`_ ``_return_partial_success``.
+    """
+
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
+        optional=True,
+    )
+    include_all_scopes: bool = proto.Field(
+        proto.BOOL,
+        number=391327988,
+        optional=True,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=517198390,
+        optional=True,
+    )
+
+
+class AggregatedListNetworkAttachmentsRequest(proto.Message):
+    r"""A request message for NetworkAttachments.AggregatedList. See
+    the method description for details.
 
     Attributes:
         filter (str):
@@ -10972,7 +11121,10 @@ class Backend(proto.Message):
             capacity. The valid ranges are 0.0 and [0.1,1.0]. You cannot
             configure a setting larger than 0 and smaller than 0.1. You
             cannot configure a setting of 0 when there is only one
-            backend attached to the backend service.
+            backend attached to the backend service. Not available with
+            backends that don't support using a balancingMode. This
+            includes backends such as global internet NEGs, regional
+            serverless NEGs, and PSC NEGs.
 
             This field is a member of `oneof`_ ``_capacity_scaler``.
         description (str):
@@ -16778,6 +16930,55 @@ class DeleteMachineImageRequest(proto.Message):
     )
 
 
+class DeleteNetworkAttachmentRequest(proto.Message):
+    r"""A request message for NetworkAttachments.Delete. See the
+    method description for details.
+
+    Attributes:
+        network_attachment (str):
+            Name of the NetworkAttachment resource to
+            delete.
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region of this request.
+        request_id (str):
+            An optional request ID to identify requests. Specify a
+            unique request ID so that if you must retry your request,
+            the server will know to ignore the request if it has already
+            been completed. For example, consider a situation where you
+            make an initial request and the request times out. If you
+            make the request again with the same request ID, the server
+            can check if original operation with the same request ID was
+            received, and if so, will ignore the second request. This
+            prevents clients from accidentally creating duplicate
+            commitments. The request ID must be a valid UUID with the
+            exception that zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000). end_interface:
+            MixerMutationRequestBuilder
+
+            This field is a member of `oneof`_ ``_request_id``.
+    """
+
+    network_attachment: str = proto.Field(
+        proto.STRING,
+        number=224644052,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+
+
 class DeleteNetworkEdgeSecurityServiceRequest(proto.Message):
     r"""A request message for NetworkEdgeSecurityServices.Delete. See
     the method description for details.
@@ -21247,7 +21448,8 @@ class ErrorInfo(proto.Message):
             The reason of the error. This is a constant value that
             identifies the proximate cause of the error. Error reasons
             are unique within a particular domain of errors. This should
-            be at most 63 characters and match `[A-Z0-9_]+`.
+            be at most 63 characters and match a regular expression of
+            ``A-Z+[A-Z0-9]``, which represents UPPER_SNAKE_CASE.
 
             This field is a member of `oneof`_ ``_reason``.
     """
@@ -22350,8 +22552,8 @@ class FirewallPolicy(proto.Message):
             This field is a member of `oneof`_ ``_kind``.
         name (str):
             Name of the resource. For Organization Firewall Policies
-            it's a [Output Only] numeric ID allocated by GCP which
-            uniquely identifies the Organization Firewall Policy.
+            it's a [Output Only] numeric ID allocated by Google Cloud
+            which uniquely identifies the Organization Firewall Policy.
 
             This field is a member of `oneof`_ ``_name``.
         parent (str):
@@ -22986,13 +23188,15 @@ class ForwardingRule(proto.Message):
 
             This field is a member of `oneof`_ ``_I_p_protocol``.
         all_ports (bool):
-            This field is used along with the backend_service field for
-            Internal TCP/UDP Load Balancing or Network Load Balancing,
-            or with the target field for internal and external
-            TargetInstance. You can only use one of ports and
-            port_range, or allPorts. The three are mutually exclusive.
-            For TCP, UDP and SCTP traffic, packets addressed to any
-            ports will be forwarded to the target or backendService.
+            This field can only be used: - If IPProtocol is one of TCP,
+            UDP, or SCTP. - By internal TCP/UDP load balancers, backend
+            service-based network load balancers, and internal and
+            external protocol forwarding. Set this field to true to
+            allow packets addressed to any port or packets lacking
+            destination port information (for example, UDP fragments
+            after the first fragment) to be forwarded to the backends
+            configured with this forwarding rule. The ports, port_range,
+            and allPorts fields are mutually exclusive.
 
             This field is a member of `oneof`_ ``_all_ports``.
         allow_global_access (bool):
@@ -23158,31 +23362,41 @@ class ForwardingRule(proto.Message):
 
             This field is a member of `oneof`_ ``_no_automate_dns_zone``.
         port_range (str):
-            This field can be used only if: - Load balancing scheme is
-            one of EXTERNAL, INTERNAL_SELF_MANAGED or INTERNAL_MANAGED -
-            IPProtocol is one of TCP, UDP, or SCTP. Packets addressed to
-            ports in the specified range will be forwarded to target or
-            backend_service. You can only use one of ports, port_range,
-            or allPorts. The three are mutually exclusive. Forwarding
-            rules with the same [IPAddress, IPProtocol] pair must have
-            disjoint ports. Some types of forwarding target have
-            constraints on the acceptable ports. For more information,
-            see `Port
-            specifications <https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts#port_specifications>`__.
+            This field can only be used: - If IPProtocol is one of TCP,
+            UDP, or SCTP. - By backend service-based network load
+            balancers, target pool-based network load balancers,
+            internal proxy load balancers, external proxy load
+            balancers, Traffic Director, external protocol forwarding,
+            and Classic VPN. Some products have restrictions on what
+            ports can be used. See port specifications for details. Only
+            packets addressed to ports in the specified range will be
+            forwarded to the backends configured with this forwarding
+            rule. The ports, port_range, and allPorts fields are
+            mutually exclusive. For external forwarding rules, two or
+            more forwarding rules cannot use the same [IPAddress,
+            IPProtocol] pair, and cannot have overlapping portRanges.
+            For internal forwarding rules within the same VPC network,
+            two or more forwarding rules cannot use the same [IPAddress,
+            IPProtocol] pair, and cannot have overlapping portRanges.
             @pattern: \\d+(?:-\d+)?
 
             This field is a member of `oneof`_ ``_port_range``.
         ports (MutableSequence[str]):
-            The ports field is only supported when the forwarding rule
-            references a backend_service directly. Only packets
-            addressed to the `specified list of
-            ports <(https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts#port_specifications)>`__
-            are forwarded to backends. You can only use one of ports and
-            port_range, or allPorts. The three are mutually exclusive.
-            You can specify a list of up to five ports, which can be
-            non-contiguous. Forwarding rules with the same [IPAddress,
-            IPProtocol] pair must have disjoint ports. @pattern:
-            \\d+(?:-\d+)?
+            This field can only be used: - If IPProtocol is one of TCP,
+            UDP, or SCTP. - By internal TCP/UDP load balancers, backend
+            service-based network load balancers, and internal protocol
+            forwarding. You can specify a list of up to five ports by
+            number, separated by commas. The ports can be contiguous or
+            discontiguous. Only packets addressed to these ports will be
+            forwarded to the backends configured with this forwarding
+            rule. For external forwarding rules, two or more forwarding
+            rules cannot use the same [IPAddress, IPProtocol] pair, and
+            cannot share any values defined in ports. For internal
+            forwarding rules within the same VPC network, two or more
+            forwarding rules cannot use the same [IPAddress, IPProtocol]
+            pair, and cannot share any values defined in ports. The
+            ports, port_range, and allPorts fields are mutually
+            exclusive. @pattern: \\d+(?:-\d+)?
         psc_connection_id (int):
             [Output Only] The PSC connection id of the PSC Forwarding
             Rule.
@@ -24849,6 +25063,42 @@ class GetIamPolicyMachineImageRequest(proto.Message):
     )
 
 
+class GetIamPolicyNetworkAttachmentRequest(proto.Message):
+    r"""A request message for NetworkAttachments.GetIamPolicy. See
+    the method description for details.
+
+    Attributes:
+        options_requested_policy_version (int):
+            Requested IAM Policy version.
+
+            This field is a member of `oneof`_ ``_options_requested_policy_version``.
+        project (str):
+            Project ID for this request.
+        region (str):
+            The name of the region for this request.
+        resource (str):
+            Name or id of the resource for this request.
+    """
+
+    options_requested_policy_version: int = proto.Field(
+        proto.INT32,
+        number=499220029,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=195806222,
+    )
+
+
 class GetIamPolicyNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for NetworkFirewallPolicies.GetIamPolicy.
     See the method description for details.
@@ -25675,6 +25925,34 @@ class GetNatMappingInfoRoutersRequest(proto.Message):
     router: str = proto.Field(
         proto.STRING,
         number=148608841,
+    )
+
+
+class GetNetworkAttachmentRequest(proto.Message):
+    r"""A request message for NetworkAttachments.Get. See the method
+    description for details.
+
+    Attributes:
+        network_attachment (str):
+            Name of the NetworkAttachment resource to
+            return.
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region of this request.
+    """
+
+    network_attachment: str = proto.Field(
+        proto.STRING,
+        number=224644052,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
     )
 
 
@@ -28648,15 +28926,22 @@ class HealthCheckService(proto.Message):
             This field is a member of `oneof`_ ``_fingerprint``.
         health_checks (MutableSequence[str]):
             A list of URLs to the HealthCheck resources. Must have at
-            least one HealthCheck, and not more than 10. HealthCheck
-            resources must have portSpecification=USE_SERVING_PORT or
+            least one HealthCheck, and not more than 10 for regional
+            HealthCheckService, and not more than 1 for global
+            HealthCheckService. HealthCheck resources must have
+            portSpecification=USE_SERVING_PORT or
             portSpecification=USE_FIXED_PORT. For regional
             HealthCheckService, the HealthCheck must be regional and in
             the same region. For global HealthCheckService, HealthCheck
             must be global. Mix of regional and global HealthChecks is
             not supported. Multiple regional HealthChecks must belong to
             the same region. Regional HealthChecks must belong to the
-            same region as zones of NEGs.
+            same region as zones of NetworkEndpointGroups. For global
+            HealthCheckService using global INTERNET_IP_PORT
+            NetworkEndpointGroups, the global HealthChecks must specify
+            sourceRegions, and HealthChecks that specify sourceRegions
+            can only be used with global INTERNET_IP_PORT
+            NetworkEndpointGroups.
         health_status_aggregation_policy (str):
             Optional. Policy for how the results from multiple health
             checks for the same endpoint are aggregated. Defaults to
@@ -28665,9 +28950,10 @@ class HealthCheckService(proto.Message):
             health check service. - AND. If any health check of an
             endpoint reports UNHEALTHY, then UNHEALTHY is the
             HealthState of the endpoint. If all health checks report
-            HEALTHY, the HealthState of the endpoint is HEALTHY. . Check
-            the HealthStatusAggregationPolicy enum for the list of
-            possible values.
+            HEALTHY, the HealthState of the endpoint is HEALTHY. . This
+            is only allowed with regional HealthCheckService. Check the
+            HealthStatusAggregationPolicy enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_health_status_aggregation_policy``.
         id (int):
@@ -28691,10 +28977,11 @@ class HealthCheckService(proto.Message):
 
             This field is a member of `oneof`_ ``_name``.
         network_endpoint_groups (MutableSequence[str]):
-            A list of URLs to the NetworkEndpointGroup
-            resources. Must not have more than 100. For
-            regional HealthCheckService, NEGs must be in
-            zones in the region of the HealthCheckService.
+            A list of URLs to the NetworkEndpointGroup resources. Must
+            not have more than 100. For regional HealthCheckService,
+            NEGs must be in zones in the region of the
+            HealthCheckService. For global HealthCheckServices, the
+            NetworkEndpointGroups must be global INTERNET_IP_PORT.
         notification_endpoints (MutableSequence[str]):
             A list of URLs to the NotificationEndpoint
             resources. Must not have more than 10. A list of
@@ -28725,7 +29012,8 @@ class HealthCheckService(proto.Message):
         for each pair in the health check service. - AND. If any health
         check of an endpoint reports UNHEALTHY, then UNHEALTHY is the
         HealthState of the endpoint. If all health checks report HEALTHY,
-        the HealthState of the endpoint is HEALTHY. .
+        the HealthState of the endpoint is HEALTHY. . This is only allowed
+        with regional HealthCheckService.
         """
         UNDEFINED_HEALTH_STATUS_AGGREGATION_POLICY = 0
         AND = 64951
@@ -31926,6 +32214,55 @@ class InsertMachineImageRequest(proto.Message):
     source_instance: str = proto.Field(
         proto.STRING,
         number=396315705,
+        optional=True,
+    )
+
+
+class InsertNetworkAttachmentRequest(proto.Message):
+    r"""A request message for NetworkAttachments.Insert. See the
+    method description for details.
+
+    Attributes:
+        network_attachment_resource (google.cloud.compute_v1.types.NetworkAttachment):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region of this request.
+        request_id (str):
+            An optional request ID to identify requests. Specify a
+            unique request ID so that if you must retry your request,
+            the server will know to ignore the request if it has already
+            been completed. For example, consider a situation where you
+            make an initial request and the request times out. If you
+            make the request again with the same request ID, the server
+            can check if original operation with the same request ID was
+            received, and if so, will ignore the second request. This
+            prevents clients from accidentally creating duplicate
+            commitments. The request ID must be a valid UUID with the
+            exception that zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000). end_interface:
+            MixerMutationRequestBuilder
+
+            This field is a member of `oneof`_ ``_request_id``.
+    """
+
+    network_attachment_resource: "NetworkAttachment" = proto.Field(
+        proto.MESSAGE,
+        number=210974745,
+        message="NetworkAttachment",
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
         optional=True,
     )
 
@@ -39345,6 +39682,18 @@ class InterconnectDiagnostics(proto.Message):
             currently seen by the Google router in the ARP
             cache for the Interconnect. This will be empty
             when the Interconnect is not bundled.
+        bundle_aggregation_type (str):
+            The aggregation type of the bundle interface.
+            Check the BundleAggregationType enum for the
+            list of possible values.
+
+            This field is a member of `oneof`_ ``_bundle_aggregation_type``.
+        bundle_operational_status (str):
+            The operational status of the bundle
+            interface. Check the BundleOperationalStatus
+            enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_bundle_operational_status``.
         links (MutableSequence[google.cloud.compute_v1.types.InterconnectDiagnosticsLinkStatus]):
             A list of InterconnectDiagnostics.LinkStatus
             objects, describing the status for each link on
@@ -39356,12 +39705,34 @@ class InterconnectDiagnostics(proto.Message):
             This field is a member of `oneof`_ ``_mac_address``.
     """
 
+    class BundleAggregationType(proto.Enum):
+        r"""The aggregation type of the bundle interface."""
+        UNDEFINED_BUNDLE_AGGREGATION_TYPE = 0
+        BUNDLE_AGGREGATION_TYPE_LACP = 27758925
+        BUNDLE_AGGREGATION_TYPE_STATIC = 50678873
+
+    class BundleOperationalStatus(proto.Enum):
+        r"""The operational status of the bundle interface."""
+        UNDEFINED_BUNDLE_OPERATIONAL_STATUS = 0
+        BUNDLE_OPERATIONAL_STATUS_DOWN = 453842693
+        BUNDLE_OPERATIONAL_STATUS_UP = 161366462
+
     arp_caches: MutableSequence[
         "InterconnectDiagnosticsARPEntry"
     ] = proto.RepeatedField(
         proto.MESSAGE,
         number=414591761,
         message="InterconnectDiagnosticsARPEntry",
+    )
+    bundle_aggregation_type: str = proto.Field(
+        proto.STRING,
+        number=434939028,
+        optional=True,
+    )
+    bundle_operational_status: str = proto.Field(
+        proto.STRING,
+        number=106433500,
+        optional=True,
     )
     links: MutableSequence["InterconnectDiagnosticsLinkStatus"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -39533,6 +39904,12 @@ class InterconnectDiagnosticsLinkStatus(proto.Message):
         lacp_status (google.cloud.compute_v1.types.InterconnectDiagnosticsLinkLACPStatus):
 
             This field is a member of `oneof`_ ``_lacp_status``.
+        operational_status (str):
+            The operational status of the link.
+            Check the OperationalStatus enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_operational_status``.
         receiving_optical_power (google.cloud.compute_v1.types.InterconnectDiagnosticsLinkOpticalPower):
             An InterconnectDiagnostics.LinkOpticalPower
             object, describing the current value and status
@@ -39546,6 +39923,12 @@ class InterconnectDiagnosticsLinkStatus(proto.Message):
 
             This field is a member of `oneof`_ ``_transmitting_optical_power``.
     """
+
+    class OperationalStatus(proto.Enum):
+        r"""The operational status of the link."""
+        UNDEFINED_OPERATIONAL_STATUS = 0
+        LINK_OPERATIONAL_STATUS_DOWN = 281653885
+        LINK_OPERATIONAL_STATUS_UP = 305879862
 
     arp_caches: MutableSequence[
         "InterconnectDiagnosticsARPEntry"
@@ -39569,6 +39952,11 @@ class InterconnectDiagnosticsLinkStatus(proto.Message):
         number=361210415,
         optional=True,
         message="InterconnectDiagnosticsLinkLACPStatus",
+    )
+    operational_status: str = proto.Field(
+        proto.STRING,
+        number=201070847,
+        optional=True,
     )
     receiving_optical_power: "InterconnectDiagnosticsLinkOpticalPower" = proto.Field(
         proto.MESSAGE,
@@ -45145,6 +45533,130 @@ class ListManagedInstancesRegionInstanceGroupManagersRequest(proto.Message):
     instance_group_manager: str = proto.Field(
         proto.STRING,
         number=249363395,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=517198390,
+        optional=True,
+    )
+
+
+class ListNetworkAttachmentsRequest(proto.Message):
+    r"""A request message for NetworkAttachments.List. See the method
+    description for details.
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
+            fields. For example, you could specify
+            ``scheduling.automaticRestart = false`` to include instances
+            only if they are not scheduled for automatic restarts. You
+            can use filtering on nested fields to filter based on
+            resource labels. To filter on multiple expressions, provide
+            each separate expression within parentheses. For example:
+            ``(scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake")``
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+            ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
+
+            This field is a member of `oneof`_ ``_filter``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name. You can also sort results in descending order based on
+            the creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first. Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region of this request.
+        return_partial_success (bool):
+            Opt-in for partial success behavior which
+            provides partial results in case of failure. The
+            default value is false.
+
+            This field is a member of `oneof`_ ``_return_partial_success``.
+    """
+
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
+        optional=True,
     )
     max_results: int = proto.Field(
         proto.UINT32,
@@ -54745,6 +55257,411 @@ class Network(proto.Message):
     )
 
 
+class NetworkAttachment(proto.Message):
+    r"""NetworkAttachments A network attachment resource ...
+
+    Attributes:
+        connection_endpoints (MutableSequence[google.cloud.compute_v1.types.NetworkAttachmentConnectedEndpoint]):
+            [Output Only] An array of connections for all the producers
+            connected to this network attachment.
+        connection_preference (str):
+            Check the ConnectionPreference enum for the
+            list of possible values.
+
+            This field is a member of `oneof`_ ``_connection_preference``.
+        creation_timestamp (str):
+            [Output Only] Creation timestamp in RFC3339 text format.
+
+            This field is a member of `oneof`_ ``_creation_timestamp``.
+        description (str):
+            An optional description of this resource.
+            Provide this property when you create the
+            resource.
+
+            This field is a member of `oneof`_ ``_description``.
+        fingerprint (str):
+            [Output Only] Fingerprint of this resource. A hash of the
+            contents stored in this object. This field is used in
+            optimistic locking. An up-to-date fingerprint must be
+            provided in order to patch.
+
+            This field is a member of `oneof`_ ``_fingerprint``.
+        id (int):
+            [Output Only] The unique identifier for the resource type.
+            The server generates this identifier.
+
+            This field is a member of `oneof`_ ``_id``.
+        kind (str):
+            [Output Only] Type of the resource.
+
+            This field is a member of `oneof`_ ``_kind``.
+        name (str):
+            Name of the resource. Provided by the client when the
+            resource is created. The name must be 1-63 characters long,
+            and comply with RFC1035. Specifically, the name must be 1-63
+            characters long and match the regular expression
+            ``[a-z]([-a-z0-9]*[a-z0-9])?`` which means the first
+            character must be a lowercase letter, and all following
+            characters must be a dash, lowercase letter, or digit,
+            except the last character, which cannot be a dash.
+
+            This field is a member of `oneof`_ ``_name``.
+        network (str):
+            [Output Only] The URL of the network which the Network
+            Attachment belongs to.
+
+            This field is a member of `oneof`_ ``_network``.
+        producer_accept_lists (MutableSequence[str]):
+            Projects that are allowed to connect to this
+            network attachment. The project can be specified
+            using its id or number.
+        producer_reject_lists (MutableSequence[str]):
+            Projects that are not allowed to connect to
+            this network attachment. The project can be
+            specified using its id or number.
+        region (str):
+            [Output Only] URL of the region where the network attachment
+            resides. This field applies only to the region resource. You
+            must specify this field as part of the HTTP request URL. It
+            is not settable as a field in the request body.
+
+            This field is a member of `oneof`_ ``_region``.
+        self_link (str):
+            [Output Only] Server-defined URL for the resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        self_link_with_id (str):
+            [Output Only] Server-defined URL for this resource's
+            resource id.
+
+            This field is a member of `oneof`_ ``_self_link_with_id``.
+        subnetworks (MutableSequence[str]):
+            An array of URLs where each entry is the URL
+            of a subnet provided by the service consumer to
+            use for endpoints in the producers that connect
+            to this network attachment.
+    """
+
+    class ConnectionPreference(proto.Enum):
+        r""""""
+        UNDEFINED_CONNECTION_PREFERENCE = 0
+        ACCEPT_AUTOMATIC = 75250580
+        ACCEPT_MANUAL = 373061341
+        INVALID = 530283991
+
+    connection_endpoints: MutableSequence[
+        "NetworkAttachmentConnectedEndpoint"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=326078813,
+        message="NetworkAttachmentConnectedEndpoint",
+    )
+    connection_preference: str = proto.Field(
+        proto.STRING,
+        number=285818076,
+        optional=True,
+    )
+    creation_timestamp: str = proto.Field(
+        proto.STRING,
+        number=30525366,
+        optional=True,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=422937596,
+        optional=True,
+    )
+    fingerprint: str = proto.Field(
+        proto.STRING,
+        number=234678500,
+        optional=True,
+    )
+    id: int = proto.Field(
+        proto.UINT64,
+        number=3355,
+        optional=True,
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=3373707,
+        optional=True,
+    )
+    network: str = proto.Field(
+        proto.STRING,
+        number=232872494,
+        optional=True,
+    )
+    producer_accept_lists: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=202804523,
+    )
+    producer_reject_lists: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4112002,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    self_link_with_id: str = proto.Field(
+        proto.STRING,
+        number=44520962,
+        optional=True,
+    )
+    subnetworks: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=415853125,
+    )
+
+
+class NetworkAttachmentAggregatedList(proto.Message):
+    r"""Contains a list of NetworkAttachmentsScopedList.
+
+    Attributes:
+        id (str):
+            [Output Only] Unique identifier for the resource; defined by
+            the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        items (MutableMapping[str, google.cloud.compute_v1.types.NetworkAttachmentsScopedList]):
+            A list of NetworkAttachmentsScopedList
+            resources.
+        kind (str):
+
+            This field is a member of `oneof`_ ``_kind``.
+        next_page_token (str):
+            [Output Only] This token allows you to get the next page of
+            results for list requests. If the number of results is
+            larger than maxResults, use the nextPageToken as a value for
+            the query parameter pageToken in the next list request.
+            Subsequent list requests will have their own nextPageToken
+            to continue paging through the results.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+        self_link (str):
+            [Output Only] Server-defined URL for this resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning message.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    id: str = proto.Field(
+        proto.STRING,
+        number=3355,
+        optional=True,
+    )
+    items: MutableMapping[str, "NetworkAttachmentsScopedList"] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=100526016,
+        message="NetworkAttachmentsScopedList",
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=79797525,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
+    )
+
+
+class NetworkAttachmentConnectedEndpoint(proto.Message):
+    r"""[Output Only] A connection connected to this network attachment.
+
+    Attributes:
+        ip_address (str):
+            The IP address assigned to the producer
+            instance network interface. This value will be a
+            range in case of Serverless.
+
+            This field is a member of `oneof`_ ``_ip_address``.
+        project_id_or_num (str):
+            The project id or number of the interface to
+            which the IP was assigned.
+
+            This field is a member of `oneof`_ ``_project_id_or_num``.
+        secondary_ip_cidr_ranges (MutableSequence[str]):
+            Alias IP ranges from the same subnetwork
+        status (str):
+            The status of a connected endpoint to this
+            network attachment. Check the Status enum for
+            the list of possible values.
+
+            This field is a member of `oneof`_ ``_status``.
+        subnetwork (str):
+            The subnetwork used to assign the IP to the
+            producer instance network interface.
+
+            This field is a member of `oneof`_ ``_subnetwork``.
+    """
+
+    class Status(proto.Enum):
+        r"""The status of a connected endpoint to this network
+        attachment.
+        """
+        UNDEFINED_STATUS = 0
+        ACCEPTED = 246714279
+        CLOSED = 380163436
+        NEEDS_ATTENTION = 344491452
+        PENDING = 35394935
+        REJECTED = 174130302
+        STATUS_UNSPECIFIED = 42133066
+
+    ip_address: str = proto.Field(
+        proto.STRING,
+        number=406272220,
+        optional=True,
+    )
+    project_id_or_num: str = proto.Field(
+        proto.STRING,
+        number=349783336,
+        optional=True,
+    )
+    secondary_ip_cidr_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=117184788,
+    )
+    status: str = proto.Field(
+        proto.STRING,
+        number=181260274,
+        optional=True,
+    )
+    subnetwork: str = proto.Field(
+        proto.STRING,
+        number=307827694,
+        optional=True,
+    )
+
+
+class NetworkAttachmentList(proto.Message):
+    r"""
+
+    Attributes:
+        id (str):
+            [Output Only] Unique identifier for the resource; defined by
+            the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        items (MutableSequence[google.cloud.compute_v1.types.NetworkAttachment]):
+            A list of NetworkAttachment resources.
+        kind (str):
+
+            This field is a member of `oneof`_ ``_kind``.
+        next_page_token (str):
+            [Output Only] This token allows you to get the next page of
+            results for list requests. If the number of results is
+            larger than maxResults, use the nextPageToken as a value for
+            the query parameter pageToken in the next list request.
+            Subsequent list requests will have their own nextPageToken
+            to continue paging through the results.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+        self_link (str):
+            [Output Only] Server-defined URL for this resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning message.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    id: str = proto.Field(
+        proto.STRING,
+        number=3355,
+        optional=True,
+    )
+    items: MutableSequence["NetworkAttachment"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=100526016,
+        message="NetworkAttachment",
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=79797525,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
+    )
+
+
+class NetworkAttachmentsScopedList(proto.Message):
+    r"""
+
+    Attributes:
+        network_attachments (MutableSequence[google.cloud.compute_v1.types.NetworkAttachment]):
+            A list of NetworkAttachments contained in
+            this scope.
+        warning (google.cloud.compute_v1.types.Warning):
+            Informational warning which replaces the list
+            of network attachments when the list is empty.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    network_attachments: MutableSequence["NetworkAttachment"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=521514783,
+        message="NetworkAttachment",
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
+    )
+
+
 class NetworkEdgeSecurityService(proto.Message):
     r"""Represents a Google Cloud Armor network edge security service
     resource.
@@ -58127,7 +59044,8 @@ class NotificationEndpointGrpcSettings(proto.Message):
             backends. If unspecified, full updates are not
             sent. If specified, must be in the range between
             600 seconds to 3600 seconds. Nanos are
-            disallowed.
+            disallowed. Can only be set for regional
+            notification endpoints.
 
             This field is a member of `oneof`_ ``_resend_interval``.
         retry_duration_sec (int):
@@ -62662,6 +63580,12 @@ class Project(proto.Message):
             stored.
 
             This field is a member of `oneof`_ ``_usage_export_location``.
+        vm_dns_setting (str):
+            [Output Only] Default internal DNS setting used by VMs
+            running in this project. Check the VmDnsSetting enum for the
+            list of possible values.
+
+            This field is a member of `oneof`_ ``_vm_dns_setting``.
         xpn_project_status (str):
             [Output Only] The role this project has in a shared VPC
             configuration. Currently, only projects with the host role,
@@ -62683,6 +63607,16 @@ class Project(proto.Message):
         PREMIUM = 399530551
         STANDARD = 484642493
         STANDARD_OVERRIDES_FIXED_STANDARD = 465847234
+
+    class VmDnsSetting(proto.Enum):
+        r"""[Output Only] Default internal DNS setting used by VMs running in
+        this project.
+        """
+        UNDEFINED_VM_DNS_SETTING = 0
+        GLOBAL_DEFAULT = 345419141
+        UNSPECIFIED_VM_DNS_SETTING = 35691930
+        ZONAL_DEFAULT = 368475782
+        ZONAL_ONLY = 521198951
 
     class XpnProjectStatus(proto.Enum):
         r"""[Output Only] The role this project has in a shared VPC
@@ -62753,6 +63687,11 @@ class Project(proto.Message):
         number=347543874,
         optional=True,
         message="UsageExportLocation",
+    )
+    vm_dns_setting: str = proto.Field(
+        proto.STRING,
+        number=58856370,
+        optional=True,
     )
     xpn_project_status: str = proto.Field(
         proto.STRING,
@@ -63712,8 +64651,12 @@ class Quota(proto.Message):
         EXTERNAL_VPN_GATEWAYS = 272457134
         FIREWALLS = 374485843
         FORWARDING_RULES = 432668949
+        GLOBAL_EXTERNAL_MANAGED_BACKEND_SERVICES = 164566753
         GLOBAL_EXTERNAL_MANAGED_FORWARDING_RULES = 327611949
+        GLOBAL_EXTERNAL_PROXY_LB_BACKEND_SERVICES = 400256169
         GLOBAL_INTERNAL_ADDRESSES = 42738332
+        GLOBAL_INTERNAL_MANAGED_BACKEND_SERVICES = 256608303
+        GLOBAL_INTERNAL_TRAFFIC_DIRECTOR_BACKEND_SERVICES = 323514196
         GPUS_ALL_REGIONS = 39387177
         HEALTH_CHECKS = 289347502
         IMAGES = 15562360
@@ -63773,7 +64716,11 @@ class Quota(proto.Message):
         PUBLIC_ADVERTISED_PREFIXES = 471371980
         PUBLIC_DELEGATED_PREFIXES = 532465974
         REGIONAL_AUTOSCALERS = 29363772
+        REGIONAL_EXTERNAL_MANAGED_BACKEND_SERVICES = 4240989
+        REGIONAL_EXTERNAL_NETWORK_LB_BACKEND_SERVICES = 409564525
         REGIONAL_INSTANCE_GROUP_MANAGERS = 37543696
+        REGIONAL_INTERNAL_LB_BACKEND_SERVICES = 137983760
+        REGIONAL_INTERNAL_MANAGED_BACKEND_SERVICES = 96282539
         RESERVATIONS = 32644647
         RESOURCE_POLICIES = 83955297
         ROUTERS = 493018666
@@ -66160,6 +67107,11 @@ class Reservation(proto.Message):
             digit, except the last character, which cannot be a dash.
 
             This field is a member of `oneof`_ ``_name``.
+        resource_policies (MutableMapping[str, str]):
+            Resource policies to be added to this
+            reservation. The key is defined by user, and the
+            value is resource policy url. This is to define
+            placement policy with reservation.
         satisfies_pzs (bool):
             [Output Only] Reserved for future use.
 
@@ -66241,6 +67193,11 @@ class Reservation(proto.Message):
         proto.STRING,
         number=3373707,
         optional=True,
+    )
+    resource_policies: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=22220385,
     )
     satisfies_pzs: bool = proto.Field(
         proto.BOOL,
@@ -66891,17 +67848,16 @@ class ResourceCommitment(proto.Message):
 
             This field is a member of `oneof`_ ``_amount``.
         type_ (str):
-            Type of resource for which this commitment
-            applies. Possible values are VCPU and MEMORY
-            Check the Type enum for the list of possible
-            values.
+            Type of resource for which this commitment applies. Possible
+            values are VCPU, MEMORY, LOCAL_SSD, and ACCELERATOR. Check
+            the Type enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_type``.
     """
 
     class Type(proto.Enum):
-        r"""Type of resource for which this commitment applies. Possible
-        values are VCPU and MEMORY
+        r"""Type of resource for which this commitment applies. Possible values
+        are VCPU, MEMORY, LOCAL_SSD, and ACCELERATOR.
         """
         UNDEFINED_TYPE = 0
         ACCELERATOR = 429815371
@@ -72456,6 +73412,11 @@ class ServiceAttachmentConsumerProjectLimit(proto.Message):
             The value of the limit to set.
 
             This field is a member of `oneof`_ ``_connection_limit``.
+        network_url (str):
+            The network URL for the network to set the
+            limit for.
+
+            This field is a member of `oneof`_ ``_network_url``.
         project_id_or_num (str):
             The project id or number for the project to
             set the limit for.
@@ -72466,6 +73427,11 @@ class ServiceAttachmentConsumerProjectLimit(proto.Message):
     connection_limit: int = proto.Field(
         proto.UINT32,
         number=131403546,
+        optional=True,
+    )
+    network_url: str = proto.Field(
+        proto.STRING,
+        number=207194078,
         optional=True,
     )
     project_id_or_num: str = proto.Field(
@@ -73395,6 +74361,40 @@ class SetIamPolicyMachineImageRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=195806222,
+    )
+
+
+class SetIamPolicyNetworkAttachmentRequest(proto.Message):
+    r"""A request message for NetworkAttachments.SetIamPolicy. See
+    the method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        region (str):
+            The name of the region for this request.
+        region_set_policy_request_resource (google.cloud.compute_v1.types.RegionSetPolicyRequest):
+            The body resource for this request
+        resource (str):
+            Name or id of the resource for this request.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    region_set_policy_request_resource: "RegionSetPolicyRequest" = proto.Field(
+        proto.MESSAGE,
+        number=276489091,
+        message="RegionSetPolicyRequest",
     )
     resource: str = proto.Field(
         proto.STRING,
@@ -78203,6 +79203,11 @@ class StopInstanceRequest(proto.Message):
     description for details.
 
     Attributes:
+        discard_local_ssd (bool):
+            If true, discard the contents of any attached
+            localSSD partitions. Default value is false.
+
+            This field is a member of `oneof`_ ``_discard_local_ssd``.
         instance (str):
             Name of the instance resource to stop.
         project (str):
@@ -78229,6 +79234,11 @@ class StopInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
+    discard_local_ssd: bool = proto.Field(
+        proto.BOOL,
+        number=319517903,
+        optional=True,
+    )
     instance: str = proto.Field(
         proto.STRING,
         number=18257045,
@@ -79034,6 +80044,11 @@ class SuspendInstanceRequest(proto.Message):
     description for details.
 
     Attributes:
+        discard_local_ssd (bool):
+            If true, discard the contents of any attached
+            localSSD partitions. Default value is false.
+
+            This field is a member of `oneof`_ ``_discard_local_ssd``.
         instance (str):
             Name of the instance resource to suspend.
         project (str):
@@ -79060,6 +80075,11 @@ class SuspendInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
+    discard_local_ssd: bool = proto.Field(
+        proto.BOOL,
+        number=319517903,
+        optional=True,
+    )
     instance: str = proto.Field(
         proto.STRING,
         number=18257045,
@@ -82408,6 +83428,40 @@ class TestIamPermissionsMachineImageRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=195806222,
+    )
+    test_permissions_request_resource: "TestPermissionsRequest" = proto.Field(
+        proto.MESSAGE,
+        number=439214758,
+        message="TestPermissionsRequest",
+    )
+
+
+class TestIamPermissionsNetworkAttachmentRequest(proto.Message):
+    r"""A request message for NetworkAttachments.TestIamPermissions.
+    See the method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        region (str):
+            The name of the region for this request.
+        resource (str):
+            Name or id of the resource for this request.
+        test_permissions_request_resource (google.cloud.compute_v1.types.TestPermissionsRequest):
+            The body resource for this request
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
     )
     resource: str = proto.Field(
         proto.STRING,

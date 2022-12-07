@@ -3027,6 +3027,7 @@ def test_get_rest(request_type):
             kind="kind_value",
             name="name_value",
             self_link="self_link_value",
+            vm_dns_setting="vm_dns_setting_value",
             xpn_project_status="xpn_project_status_value",
         )
 
@@ -3051,6 +3052,7 @@ def test_get_rest(request_type):
     assert response.kind == "kind_value"
     assert response.name == "name_value"
     assert response.self_link == "self_link_value"
+    assert response.vm_dns_setting == "vm_dns_setting_value"
     assert response.xpn_project_status == "xpn_project_status_value"
 
 
@@ -3303,6 +3305,7 @@ def test_get_xpn_host_rest(request_type):
             kind="kind_value",
             name="name_value",
             self_link="self_link_value",
+            vm_dns_setting="vm_dns_setting_value",
             xpn_project_status="xpn_project_status_value",
         )
 
@@ -3327,6 +3330,7 @@ def test_get_xpn_host_rest(request_type):
     assert response.kind == "kind_value"
     assert response.name == "name_value"
     assert response.self_link == "self_link_value"
+    assert response.vm_dns_setting == "vm_dns_setting_value"
     assert response.xpn_project_status == "xpn_project_status_value"
 
 

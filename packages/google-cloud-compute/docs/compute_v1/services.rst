@@ -34,6 +34,7 @@ Services for Google Cloud Compute v1 API
     licenses
     machine_images
     machine_types
+    network_attachments
     network_edge_security_services
     network_endpoint_groups
     network_firewall_policies
