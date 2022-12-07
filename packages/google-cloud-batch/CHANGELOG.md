@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/python-batch/compare/v0.4.1...v0.5.0) (2022-12-07)
+
+
+### Features
+
+* add support for `google.cloud.batch.__version__` ([2f6bdca](https://github.com/googleapis/python-batch/commit/2f6bdcace12b0401e239b08e83a7cb381005d275))
+* Add typing to proto.Message based class attributes ([2f6bdca](https://github.com/googleapis/python-batch/commit/2f6bdcace12b0401e239b08e83a7cb381005d275))
+* Adds named reservation to InstancePolicy ([9414457](https://github.com/googleapis/python-batch/commit/9414457a16f80cb546b19db1d8f4260883e6f21f))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([2f6bdca](https://github.com/googleapis/python-batch/commit/2f6bdcace12b0401e239b08e83a7cb381005d275))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([1b70819](https://github.com/googleapis/python-batch/commit/1b708191b9dc978930ac38870a994777979f84bf))
+* Drop usage of pkg_resources ([1b70819](https://github.com/googleapis/python-batch/commit/1b708191b9dc978930ac38870a994777979f84bf))
+* Fix timeout default values ([1b70819](https://github.com/googleapis/python-batch/commit/1b708191b9dc978930ac38870a994777979f84bf))
+
+
+### Documentation
+
+* Remove "not yet implemented" for Accelerator & Refine Volume API docs ([9414457](https://github.com/googleapis/python-batch/commit/9414457a16f80cb546b19db1d8f4260883e6f21f))
+* **samples:** Snippetgen handling of repeated enum field ([2f6bdca](https://github.com/googleapis/python-batch/commit/2f6bdcace12b0401e239b08e83a7cb381005d275))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([1b70819](https://github.com/googleapis/python-batch/commit/1b708191b9dc978930ac38870a994777979f84bf))
+* update the job id format requirement ([9414457](https://github.com/googleapis/python-batch/commit/9414457a16f80cb546b19db1d8f4260883e6f21f))
+
 ## [0.4.1](https://github.com/googleapis/python-batch/compare/v0.4.0...v0.4.1) (2022-10-27)
 
 
