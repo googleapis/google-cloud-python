@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.14.1](https://github.com/googleapis/python-bigtable/compare/v2.14.0...v2.14.1) (2022-12-06)
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([e5875cb](https://github.com/googleapis/python-bigtable/commit/e5875cbe8551329fbb64f273ca21d6b7ada641ec))
+* Drop usage of pkg_resources ([e5875cb](https://github.com/googleapis/python-bigtable/commit/e5875cbe8551329fbb64f273ca21d6b7ada641ec))
+* Fix timeout default values ([e5875cb](https://github.com/googleapis/python-bigtable/commit/e5875cbe8551329fbb64f273ca21d6b7ada641ec))
+
+
+### Documentation
+
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([e5875cb](https://github.com/googleapis/python-bigtable/commit/e5875cbe8551329fbb64f273ca21d6b7ada641ec))
+
 ## [2.14.0](https://github.com/googleapis/python-bigtable/compare/v2.13.2...v2.14.0) (2022-11-30)
 
 
