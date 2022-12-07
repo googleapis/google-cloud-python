@@ -466,8 +466,12 @@ class Credentials(external_account.Credentials):
         Returns:
             str: The retrieved subject token.
         """
-        # Fetch the session token required to make meta data endpoint calls to aws
-        if request is not None and self._imdsv2_session_token_url is not None:
+        # Fetch the session token required to make meta data endpoint calls to aws.
+        if (
+            request is not None
+            and self._imdsv2_session_token_url is not None
+            and self._should_use_metadata_server()
+        ):
             headers = {"X-aws-ec2-metadata-token-ttl-seconds": "300"}
 
             imdsv2_session_token_response = request(
@@ -737,6 +741,25 @@ class Credentials(external_account.Credentials):
             )
 
         return response_body
+
+    def _should_use_metadata_server(self):
+        # The AWS region can be provided through AWS_REGION or AWS_DEFAULT_REGION.
+        # The metadata server should be used if it cannot be retrieved from one of
+        # these environment variables.
+        if not os.environ.get(environment_vars.AWS_REGION) and not os.environ.get(
+            environment_vars.AWS_DEFAULT_REGION
+        ):
+            return True
+
+        # AWS security credentials can be retrieved from the AWS_ACCESS_KEY_ID
+        # and AWS_SECRET_ACCESS_KEY environment variables. The metadata server
+        # should be used if either of these are not available.
+        if not os.environ.get(environment_vars.AWS_ACCESS_KEY_ID) or not os.environ.get(
+            environment_vars.AWS_SECRET_ACCESS_KEY
+        ):
+            return True
+
+        return False
 
     @classmethod
     def from_info(cls, info, **kwargs):
