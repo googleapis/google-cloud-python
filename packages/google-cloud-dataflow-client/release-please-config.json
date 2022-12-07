@@ -4,6 +4,7 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/cloud/dataflow_v1beta3/gapic_version.py",
         "google/cloud/dataflow/gapic_version.py",
         {
           "type": "json",
