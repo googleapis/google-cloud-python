@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.gkeconnect.gateway_v1beta1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -429,7 +430,7 @@ class GatewayServiceClient(metaclass=GatewayServiceClientMeta):
         request: Optional[Union[httpbody_pb2.HttpBody, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> httpbody_pb2.HttpBody:
         r"""GetResource performs an HTTP GET request on the
@@ -593,7 +594,7 @@ class GatewayServiceClient(metaclass=GatewayServiceClientMeta):
         request: Optional[Union[httpbody_pb2.HttpBody, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> httpbody_pb2.HttpBody:
         r"""PostResource performs an HTTP POST on the Kubernetes
@@ -757,7 +758,7 @@ class GatewayServiceClient(metaclass=GatewayServiceClientMeta):
         request: Optional[Union[httpbody_pb2.HttpBody, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> httpbody_pb2.HttpBody:
         r"""DeleteResource performs an HTTP DELETE on the
@@ -921,7 +922,7 @@ class GatewayServiceClient(metaclass=GatewayServiceClientMeta):
         request: Optional[Union[httpbody_pb2.HttpBody, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> httpbody_pb2.HttpBody:
         r"""PutResource performs an HTTP PUT on the Kubernetes
@@ -1085,7 +1086,7 @@ class GatewayServiceClient(metaclass=GatewayServiceClientMeta):
         request: Optional[Union[httpbody_pb2.HttpBody, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> httpbody_pb2.HttpBody:
         r"""PatchResource performs an HTTP PATCH on the
@@ -1258,14 +1259,9 @@ class GatewayServiceClient(metaclass=GatewayServiceClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-gke-connect-gateway",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("GatewayServiceClient",)
