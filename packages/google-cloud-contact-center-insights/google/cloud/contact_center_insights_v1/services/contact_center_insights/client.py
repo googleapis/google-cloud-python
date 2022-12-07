@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.contact_center_insights_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -621,7 +622,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         conversation: Optional[resources.Conversation] = None,
         conversation_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Conversation:
         r"""Creates a conversation.
@@ -747,7 +748,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         conversation: Optional[resources.Conversation] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Conversation:
         r"""Updates a conversation.
@@ -857,7 +858,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Conversation:
         r"""Gets a conversation.
@@ -958,7 +959,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConversationsPager:
         r"""Lists conversations.
@@ -1074,7 +1075,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a conversation.
@@ -1167,7 +1168,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         parent: Optional[str] = None,
         analysis: Optional[resources.Analysis] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates an analysis. The long running operation is
@@ -1293,7 +1294,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Analysis:
         r"""Gets an analysis.
@@ -1394,7 +1395,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAnalysesPager:
         r"""Lists analyses.
@@ -1509,7 +1510,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an analysis.
@@ -1600,7 +1601,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Export insights data to a destination defined in the
@@ -1724,7 +1725,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         parent: Optional[str] = None,
         issue_model: Optional[resources.IssueModel] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates an issue model.
@@ -1851,7 +1852,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         issue_model: Optional[resources.IssueModel] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.IssueModel:
         r"""Updates an issue model.
@@ -1961,7 +1962,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.IssueModel:
         r"""Gets an issue model.
@@ -2062,7 +2063,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> contact_center_insights.ListIssueModelsResponse:
         r"""Lists issue models.
@@ -2163,7 +2164,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes an issue model.
@@ -2289,7 +2290,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deploys an issue model. Returns an error if a model
@@ -2408,7 +2409,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Undeploys an issue model.
@@ -2527,7 +2528,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Issue:
         r"""Gets an issue.
@@ -2628,7 +2629,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> contact_center_insights.ListIssuesResponse:
         r"""Lists issues.
@@ -2730,7 +2731,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         issue: Optional[resources.Issue] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Issue:
         r"""Updates an issue.
@@ -2839,7 +2840,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         issue_model: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> contact_center_insights.CalculateIssueModelStatsResponse:
         r"""Gets an issue model's statistics.
@@ -2950,7 +2951,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         parent: Optional[str] = None,
         phrase_matcher: Optional[resources.PhraseMatcher] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.PhraseMatcher:
         r"""Creates a phrase matcher.
@@ -3067,7 +3068,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.PhraseMatcher:
         r"""Gets a phrase matcher.
@@ -3169,7 +3170,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPhraseMatchersPager:
         r"""Lists phrase matchers.
@@ -3285,7 +3286,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a phrase matcher.
@@ -3378,7 +3379,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         phrase_matcher: Optional[resources.PhraseMatcher] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.PhraseMatcher:
         r"""Updates a phrase matcher.
@@ -3492,7 +3493,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         location: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> contact_center_insights.CalculateStatsResponse:
         r"""Gets conversation statistics.
@@ -3596,7 +3597,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Settings:
         r"""Gets project-level settings.
@@ -3699,7 +3700,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         settings: Optional[resources.Settings] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Settings:
         r"""Updates project-level settings.
@@ -3810,7 +3811,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         parent: Optional[str] = None,
         view: Optional[resources.View] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.View:
         r"""Creates a view.
@@ -3920,7 +3921,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.View:
         r"""Gets a view.
@@ -4019,7 +4020,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListViewsPager:
         r"""Lists views.
@@ -4135,7 +4136,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         view: Optional[resources.View] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.View:
         r"""Updates a view.
@@ -4242,7 +4243,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a view.
@@ -4339,14 +4340,9 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-contact-center-insights",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ContactCenterInsightsClient",)

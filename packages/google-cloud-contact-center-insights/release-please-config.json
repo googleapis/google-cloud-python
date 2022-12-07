@@ -4,6 +4,7 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/cloud/contact_center_insights_v1/gapic_version.py",
         "google/cloud/contact_center_insights/gapic_version.py",
         {
           "type": "json",
