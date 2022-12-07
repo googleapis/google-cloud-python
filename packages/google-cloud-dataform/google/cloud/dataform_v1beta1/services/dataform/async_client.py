@@ -34,7 +34,8 @@ from google.api_core import retry as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.dataform_v1beta1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -231,7 +232,7 @@ class DataformAsyncClient:
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRepositoriesAsyncPager:
         r"""Lists Repositories in a given project and location.
@@ -344,7 +345,7 @@ class DataformAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataform.Repository:
         r"""Fetches a single Repository.
@@ -443,7 +444,7 @@ class DataformAsyncClient:
         repository: Optional[dataform.Repository] = None,
         repository_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataform.Repository:
         r"""Creates a new Repository in a given project and
@@ -564,7 +565,7 @@ class DataformAsyncClient:
         repository: Optional[dataform.Repository] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataform.Repository:
         r"""Updates a single Repository.
@@ -672,7 +673,7 @@ class DataformAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a single Repository.
@@ -758,7 +759,7 @@ class DataformAsyncClient:
         request: Optional[Union[dataform.FetchRemoteBranchesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataform.FetchRemoteBranchesResponse:
         r"""Fetches a Repository's remote branches.
@@ -837,7 +838,7 @@ class DataformAsyncClient:
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListWorkspacesAsyncPager:
         r"""Lists Workspaces in a given Repository.
@@ -951,7 +952,7 @@ class DataformAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataform.Workspace:
         r"""Fetches a single Workspace.
@@ -1050,7 +1051,7 @@ class DataformAsyncClient:
         workspace: Optional[dataform.Workspace] = None,
         workspace_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataform.Workspace:
         r"""Creates a new Workspace in a given Repository.
@@ -1169,7 +1170,7 @@ class DataformAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a single Workspace.
@@ -1257,7 +1258,7 @@ class DataformAsyncClient:
         request: Optional[Union[dataform.InstallNpmPackagesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataform.InstallNpmPackagesResponse:
         r"""Installs dependency NPM packages (inside a
@@ -1338,7 +1339,7 @@ class DataformAsyncClient:
         request: Optional[Union[dataform.PullGitCommitsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Pulls Git commits from the Repository's remote into a
@@ -1411,7 +1412,7 @@ class DataformAsyncClient:
         request: Optional[Union[dataform.PushGitCommitsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Pushes Git commits from a Workspace to the
@@ -1479,7 +1480,7 @@ class DataformAsyncClient:
         request: Optional[Union[dataform.FetchFileGitStatusesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataform.FetchFileGitStatusesResponse:
         r"""Fetches Git statuses for the files in a Workspace.
@@ -1557,7 +1558,7 @@ class DataformAsyncClient:
         request: Optional[Union[dataform.FetchGitAheadBehindRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataform.FetchGitAheadBehindResponse:
         r"""Fetches Git ahead/behind against a remote branch.
@@ -1635,7 +1636,7 @@ class DataformAsyncClient:
         request: Optional[Union[dataform.CommitWorkspaceChangesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Applies a Git commit for uncommitted files in a
@@ -1709,7 +1710,7 @@ class DataformAsyncClient:
         request: Optional[Union[dataform.ResetWorkspaceChangesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Performs a Git reset for uncommitted files in a
@@ -1778,7 +1779,7 @@ class DataformAsyncClient:
         request: Optional[Union[dataform.FetchFileDiffRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataform.FetchFileDiffResponse:
         r"""Fetches Git diff for an uncommitted file in a
@@ -1859,7 +1860,7 @@ class DataformAsyncClient:
         request: Optional[Union[dataform.QueryDirectoryContentsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.QueryDirectoryContentsAsyncPager:
         r"""Returns the contents of a given Workspace directory.
@@ -1953,7 +1954,7 @@ class DataformAsyncClient:
         request: Optional[Union[dataform.MakeDirectoryRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataform.MakeDirectoryResponse:
         r"""Creates a directory inside a Workspace.
@@ -2033,7 +2034,7 @@ class DataformAsyncClient:
         request: Optional[Union[dataform.RemoveDirectoryRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a directory (inside a Workspace) and all of
@@ -2104,7 +2105,7 @@ class DataformAsyncClient:
         request: Optional[Union[dataform.MoveDirectoryRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataform.MoveDirectoryResponse:
         r"""Moves a directory (inside a Workspace), and all of
@@ -2186,7 +2187,7 @@ class DataformAsyncClient:
         request: Optional[Union[dataform.ReadFileRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataform.ReadFileResponse:
         r"""Returns the contents of a file (inside a Workspace).
@@ -2266,7 +2267,7 @@ class DataformAsyncClient:
         request: Optional[Union[dataform.RemoveFileRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a file (inside a Workspace).
@@ -2336,7 +2337,7 @@ class DataformAsyncClient:
         request: Optional[Union[dataform.MoveFileRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataform.MoveFileResponse:
         r"""Moves a file (inside a Workspace) to a new location.
@@ -2417,7 +2418,7 @@ class DataformAsyncClient:
         request: Optional[Union[dataform.WriteFileRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataform.WriteFileResponse:
         r"""Writes to a file (inside a Workspace).
@@ -2499,7 +2500,7 @@ class DataformAsyncClient:
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCompilationResultsAsyncPager:
         r"""Lists CompilationResults in a given Repository.
@@ -2614,7 +2615,7 @@ class DataformAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataform.CompilationResult:
         r"""Fetches a single CompilationResult.
@@ -2717,7 +2718,7 @@ class DataformAsyncClient:
         parent: Optional[str] = None,
         compilation_result: Optional[dataform.CompilationResult] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataform.CompilationResult:
         r"""Creates a new CompilationResult in a given project
@@ -2835,7 +2836,7 @@ class DataformAsyncClient:
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.QueryCompilationResultActionsAsyncPager:
         r"""Returns CompilationResultActions in a given
@@ -2929,7 +2930,7 @@ class DataformAsyncClient:
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListWorkflowInvocationsAsyncPager:
         r"""Lists WorkflowInvocations in a given Repository.
@@ -3044,7 +3045,7 @@ class DataformAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataform.WorkflowInvocation:
         r"""Fetches a single WorkflowInvocation.
@@ -3147,7 +3148,7 @@ class DataformAsyncClient:
         parent: Optional[str] = None,
         workflow_invocation: Optional[dataform.WorkflowInvocation] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataform.WorkflowInvocation:
         r"""Creates a new WorkflowInvocation in a given
@@ -3260,7 +3261,7 @@ class DataformAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a single WorkflowInvocation.
@@ -3349,7 +3350,7 @@ class DataformAsyncClient:
         request: Optional[Union[dataform.CancelWorkflowInvocationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Requests cancellation of a running
@@ -3420,7 +3421,7 @@ class DataformAsyncClient:
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.QueryWorkflowInvocationActionsAsyncPager:
         r"""Returns WorkflowInvocationActions in a given
@@ -3513,7 +3514,7 @@ class DataformAsyncClient:
         request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -3567,7 +3568,7 @@ class DataformAsyncClient:
         request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -3623,14 +3624,9 @@ class DataformAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dataform",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("DataformAsyncClient",)
