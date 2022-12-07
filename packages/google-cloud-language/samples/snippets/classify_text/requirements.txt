@@ -1,3 +1,0 @@
-google-cloud-language==2.6.1
-numpy==1.23.5; python_version > '3.7'
-numpy===1.21.4; python_version == '3.7'
