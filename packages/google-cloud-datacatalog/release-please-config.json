@@ -5,6 +5,8 @@
       "release-type": "python",
       "extra-files": [
         "google/cloud/datacatalog/gapic_version.py",
+        "google/cloud/datacatalog_v1beta1/gapic_version.py",
+        "google/cloud/datacatalog_v1/gapic_version.py",
         {
           "type": "json",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.datacatalog.v1beta1.json",
