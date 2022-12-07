@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.essential_contacts_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -447,7 +448,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         parent: Optional[str] = None,
         contact: Optional[service.Contact] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.Contact:
         r"""Adds a new contact for a resource.
@@ -561,7 +562,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         contact: Optional[service.Contact] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.Contact:
         r"""Updates a contact.
@@ -677,7 +678,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListContactsPager:
         r"""Lists the contacts that have been set on a resource.
@@ -793,7 +794,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.Contact:
         r"""Gets a single contact.
@@ -897,7 +898,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a contact.
@@ -988,7 +989,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         request: Optional[Union[service.ComputeContactsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ComputeContactsPager:
         r"""Lists all contacts for the resource that are
@@ -1084,7 +1085,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         request: Optional[Union[service.SendTestMessageRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Allows a contact admin to send a test message to
@@ -1165,14 +1166,9 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-essential-contacts",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("EssentialContactsServiceClient",)
