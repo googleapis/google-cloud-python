@@ -29,7 +29,8 @@ from typing import (
     Type,
     Union,
 )
-import pkg_resources
+
+from google.cloud.bigquery_storage_v1beta2 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -229,7 +230,7 @@ class BigQueryReadAsyncClient:
         read_session: Optional[stream.ReadSession] = None,
         max_stream_count: Optional[int] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> stream.ReadSession:
         r"""Creates a new read session. A read session divides
@@ -392,7 +393,7 @@ class BigQueryReadAsyncClient:
         read_stream: Optional[str] = None,
         offset: Optional[int] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[storage.ReadRowsResponse]]:
         r"""Reads rows from the stream in the format prescribed
@@ -521,7 +522,7 @@ class BigQueryReadAsyncClient:
         request: Optional[Union[storage.SplitReadStreamRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> storage.SplitReadStreamResponse:
         r"""Splits a given ``ReadStream`` into two ``ReadStream`` objects.
@@ -623,14 +624,9 @@ class BigQueryReadAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-bigquery-storage",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("BigQueryReadAsyncClient",)

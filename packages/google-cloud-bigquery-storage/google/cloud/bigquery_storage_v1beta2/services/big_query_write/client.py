@@ -30,7 +30,8 @@ from typing import (
     Union,
     cast,
 )
-import pkg_resources
+
+from google.cloud.bigquery_storage_v1beta2 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -475,7 +476,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         parent: Optional[str] = None,
         write_stream: Optional[stream.WriteStream] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> stream.WriteStream:
         r"""Creates a write stream to the given table. Additionally, every
@@ -591,7 +592,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         requests: Optional[Iterator[storage.AppendRowsRequest]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[storage.AppendRowsResponse]:
         r"""Appends data to the given stream.
@@ -692,7 +693,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> stream.WriteStream:
         r"""Gets a write stream.
@@ -795,7 +796,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> storage.FinalizeWriteStreamResponse:
         r"""Finalize a write stream so that no new data can be appended to
@@ -896,7 +897,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> storage.BatchCommitWriteStreamsResponse:
         r"""Atomically commits a group of ``PENDING`` streams that belong to
@@ -1004,7 +1005,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         *,
         write_stream: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> storage.FlushRowsResponse:
         r"""Flushes rows to a BUFFERED stream. If users are appending rows
@@ -1118,14 +1119,9 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-bigquery-storage",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("BigQueryWriteClient",)
