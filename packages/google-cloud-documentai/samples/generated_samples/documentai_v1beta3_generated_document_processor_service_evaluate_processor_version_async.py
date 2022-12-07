@@ -48,7 +48,7 @@ async def sample_evaluate_processor_version():
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = (await operation).result()
 
     # Handle the response
     print(response)

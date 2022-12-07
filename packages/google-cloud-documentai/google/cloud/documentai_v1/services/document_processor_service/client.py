@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.documentai_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -535,7 +536,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document_processor_service.ProcessResponse:
         r"""Processes a single document.
@@ -652,7 +653,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""LRO endpoint to batch process many documents. The output is
@@ -777,7 +778,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document_processor_service.FetchProcessorTypesResponse:
         r"""Fetches processor types. Note that we do not use
@@ -886,7 +887,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListProcessorTypesPager:
         r"""Lists the processor types that exist.
@@ -1007,7 +1008,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListProcessorsPager:
         r"""Lists all processors which belong to this project.
@@ -1124,7 +1125,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> processor.Processor:
         r"""Gets a processor detail.
@@ -1229,7 +1230,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> processor.ProcessorVersion:
         r"""Gets a processor version detail.
@@ -1342,7 +1343,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListProcessorVersionsPager:
         r"""Lists all versions of a processor.
@@ -1461,7 +1462,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes the processor version, all artifacts under
@@ -1590,7 +1591,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deploys the processor version.
@@ -1712,7 +1713,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Undeploys the processor version.
@@ -1839,7 +1840,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         parent: Optional[str] = None,
         processor: Optional[gcd_processor.Processor] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_processor.Processor:
         r"""Creates a processor from the type processor that the
@@ -1960,7 +1961,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes the processor, unloads all deployed model
@@ -2087,7 +2088,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Enables a processor
@@ -2185,7 +2186,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Disables a processor
@@ -2283,7 +2284,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Set the default (active) version of a
@@ -2397,7 +2398,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         *,
         human_review_config: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Send a document for Human Review. The input document
@@ -2534,7 +2535,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -2588,7 +2589,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -2642,7 +2643,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -2696,7 +2697,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -2750,7 +2751,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -2800,14 +2801,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         return response
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-documentai",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("DocumentProcessorServiceClient",)
