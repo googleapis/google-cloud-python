@@ -28,7 +28,8 @@ from typing import (
     Union,
     cast,
 )
-import pkg_resources
+
+from google.cloud.datastore_v1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -434,7 +435,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         read_options: Optional[datastore.ReadOptions] = None,
         keys: Optional[MutableSequence[entity.Key]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.LookupResponse:
         r"""Looks up entities by key.
@@ -553,7 +554,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         request: Optional[Union[datastore.RunQueryRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.RunQueryResponse:
         r"""Queries for entities.
@@ -636,7 +637,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         request: Optional[Union[datastore.RunAggregationQueryRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.RunAggregationQueryResponse:
         r"""Runs an aggregation query.
@@ -720,7 +721,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         *,
         project_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.BeginTransactionResponse:
         r"""Begins a new transaction.
@@ -827,7 +828,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         transaction: Optional[bytes] = None,
         mutations: Optional[MutableSequence[datastore.Mutation]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.CommitResponse:
         r"""Commits a transaction, optionally creating, deleting
@@ -975,7 +976,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         project_id: Optional[str] = None,
         transaction: Optional[bytes] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.RollbackResponse:
         r"""Rolls back a transaction.
@@ -1091,7 +1092,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         project_id: Optional[str] = None,
         keys: Optional[MutableSequence[entity.Key]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.AllocateIdsResponse:
         r"""Allocates IDs for the given keys, which is useful for
@@ -1208,7 +1209,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         project_id: Optional[str] = None,
         keys: Optional[MutableSequence[entity.Key]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.ReserveIdsResponse:
         r"""Prevents the supplied keys' IDs from being
@@ -1335,7 +1336,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1389,7 +1390,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1443,7 +1444,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -1498,7 +1499,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -1548,14 +1549,9 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         )
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-datastore",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("DatastoreClient",)

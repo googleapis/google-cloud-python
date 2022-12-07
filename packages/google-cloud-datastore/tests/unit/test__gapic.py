@@ -92,3 +92,14 @@ def test_emulator(make_chan, mock_transport, mock_klass):
     mock_klass.assert_called_once_with(
         transport=mock.sentinel.transport, client_info=mock.sentinel.client_info
     )
+
+
+def test_version_from_gapic_version_matches_datastore_version():
+    from google.cloud.datastore import gapic_version
+    from google.cloud.datastore_v1 import gapic_version as gapic_version_v1
+    from google.cloud.datastore_admin import gapic_version as gapic_version_admin
+    from google.cloud.datastore_admin_v1 import gapic_version as gapic_version_admin_v1
+
+    assert gapic_version.__version__ == gapic_version_admin.__version__
+    assert gapic_version.__version__ == gapic_version_v1.__version__
+    assert gapic_version.__version__ == gapic_version_admin_v1.__version__

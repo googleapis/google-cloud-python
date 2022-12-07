@@ -28,7 +28,8 @@ from typing import (
     Union,
     cast,
 )
-import pkg_resources
+
+from google.cloud.datastore_admin_v1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -485,7 +486,7 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
         entity_filter: Optional[datastore_admin.EntityFilter] = None,
         output_url_prefix: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Exports a copy of all or a subset of entities from
@@ -665,7 +666,7 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
         input_url: Optional[str] = None,
         entity_filter: Optional[datastore_admin.EntityFilter] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Imports entities into Google Cloud Datastore.
@@ -839,7 +840,7 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
         request: Optional[Union[datastore_admin.CreateIndexRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates the specified index. A newly created index's initial
@@ -950,7 +951,7 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
         request: Optional[Union[datastore_admin.DeleteIndexRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes an existing index. An index can only be deleted if it is
@@ -1063,7 +1064,7 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
         request: Optional[Union[datastore_admin.GetIndexRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> index.Index:
         r"""Gets an index.
@@ -1146,7 +1147,7 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
         request: Optional[Union[datastore_admin.ListIndexesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListIndexesPager:
         r"""Lists the indexes that match the specified filters.
@@ -1253,14 +1254,9 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-datastore-admin",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("DatastoreAdminClient",)

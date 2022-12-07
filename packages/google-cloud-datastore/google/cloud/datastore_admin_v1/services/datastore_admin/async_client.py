@@ -27,7 +27,8 @@ from typing import (
     Type,
     Union,
 )
-import pkg_resources
+
+from google.cloud.datastore_admin_v1 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -281,7 +282,7 @@ class DatastoreAdminAsyncClient:
         entity_filter: Optional[datastore_admin.EntityFilter] = None,
         output_url_prefix: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Exports a copy of all or a subset of entities from
@@ -321,7 +322,7 @@ class DatastoreAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -462,7 +463,7 @@ class DatastoreAdminAsyncClient:
         input_url: Optional[str] = None,
         entity_filter: Optional[datastore_admin.EntityFilter] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Imports entities into Google Cloud Datastore.
@@ -499,7 +500,7 @@ class DatastoreAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -637,7 +638,7 @@ class DatastoreAdminAsyncClient:
         request: Optional[Union[datastore_admin.CreateIndexRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates the specified index. A newly created index's initial
@@ -680,7 +681,7 @@ class DatastoreAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -747,7 +748,7 @@ class DatastoreAdminAsyncClient:
         request: Optional[Union[datastore_admin.DeleteIndexRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes an existing index. An index can only be deleted if it is
@@ -789,7 +790,7 @@ class DatastoreAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -859,7 +860,7 @@ class DatastoreAdminAsyncClient:
         request: Optional[Union[datastore_admin.GetIndexRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> index.Index:
         r"""Gets an index.
@@ -951,7 +952,7 @@ class DatastoreAdminAsyncClient:
         request: Optional[Union[datastore_admin.ListIndexesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListIndexesAsyncPager:
         r"""Lists the indexes that match the specified filters.
@@ -1060,14 +1061,9 @@ class DatastoreAdminAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-datastore-admin",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("DatastoreAdminAsyncClient",)

@@ -68,7 +68,7 @@ datastore_default_version = "v1"
 datastore_admin_default_version = "v1"
 
 for library in get_staging_dirs(datastore_default_version, "datastore"):
-    s.move(library / f"google/cloud/datastore_{library.name}")
+    s.move(library / f"google/cloud/datastore_{library.name}", excludes=["**/gapic_version.py"])
     s.move(library / "tests/")
     s.move(library / "scripts")
 
@@ -87,7 +87,7 @@ for library in get_staging_dirs(datastore_admin_default_version, "datastore_admi
     )
 
     s.move(library / f"google/cloud/datastore_admin", excludes=["**/gapic_version.py"])
-    s.move(library / f"google/cloud/datastore_admin_{library.name}")
+    s.move(library / f"google/cloud/datastore_admin_{library.name}", excludes=["**/gapic_version.py"])
     s.move(library / "tests")
     s.move(library / "scripts")
 
