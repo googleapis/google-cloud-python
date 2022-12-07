@@ -34,7 +34,8 @@ from google.api_core import retry as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.iap_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -229,7 +230,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         request: Optional[Union[service.ListBrandsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.ListBrandsResponse:
         r"""Lists the existing brands for the project.
@@ -306,7 +307,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         request: Optional[Union[service.CreateBrandRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.Brand:
         r"""Constructs a new OAuth brand for the project if one
@@ -395,7 +396,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         request: Optional[Union[service.GetBrandRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.Brand:
         r"""Retrieves the OAuth brand of the project.
@@ -477,7 +478,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.IdentityAwareProxyClient:
         r"""Creates an Identity Aware Proxy (IAP) OAuth client.
@@ -562,7 +563,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListIdentityAwareProxyClientsAsyncPager:
         r"""Lists the existing clients for the brand.
@@ -657,7 +658,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.IdentityAwareProxyClient:
         r"""Retrieves an Identity Aware Proxy (IAP) OAuth client.
@@ -740,7 +741,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.IdentityAwareProxyClient:
         r"""Resets an Identity Aware Proxy (IAP) OAuth client
@@ -824,7 +825,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an Identity Aware Proxy (IAP) OAuth client.
@@ -897,14 +898,9 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-iap",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("IdentityAwareProxyOAuthServiceAsyncClient",)
