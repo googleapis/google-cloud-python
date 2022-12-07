@@ -27,7 +27,8 @@ from typing import (
     Type,
     Union,
 )
-import pkg_resources
+
+from google.cloud.devtools.cloudbuild_v1 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -245,7 +246,7 @@ class CloudBuildAsyncClient:
         project_id: Optional[str] = None,
         build: Optional[cloudbuild.Build] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Starts a build with the specified configuration.
@@ -279,7 +280,7 @@ class CloudBuildAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -395,7 +396,7 @@ class CloudBuildAsyncClient:
         project_id: Optional[str] = None,
         id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.Build:
         r"""Returns information about a previously requested build.
@@ -543,7 +544,7 @@ class CloudBuildAsyncClient:
         project_id: Optional[str] = None,
         filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBuildsAsyncPager:
         r"""Lists previously requested builds.
@@ -678,7 +679,7 @@ class CloudBuildAsyncClient:
         project_id: Optional[str] = None,
         id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.Build:
         r"""Cancels a build in progress.
@@ -812,7 +813,7 @@ class CloudBuildAsyncClient:
         project_id: Optional[str] = None,
         id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new build based on the specified build.
@@ -872,7 +873,7 @@ class CloudBuildAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -993,7 +994,7 @@ class CloudBuildAsyncClient:
         name: Optional[str] = None,
         approval_result: Optional[cloudbuild.ApprovalResult] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Approves or rejects a pending build.
@@ -1027,7 +1028,7 @@ class CloudBuildAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -1144,7 +1145,7 @@ class CloudBuildAsyncClient:
         project_id: Optional[str] = None,
         trigger: Optional[cloudbuild.BuildTrigger] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.BuildTrigger:
         r"""Creates a new ``BuildTrigger``.
@@ -1263,7 +1264,7 @@ class CloudBuildAsyncClient:
         project_id: Optional[str] = None,
         trigger_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.BuildTrigger:
         r"""Returns information about a ``BuildTrigger``.
@@ -1393,7 +1394,7 @@ class CloudBuildAsyncClient:
         *,
         project_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBuildTriggersAsyncPager:
         r"""Lists existing ``BuildTrigger``\ s.
@@ -1522,7 +1523,7 @@ class CloudBuildAsyncClient:
         project_id: Optional[str] = None,
         trigger_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a ``BuildTrigger`` by its project ID and trigger ID.
@@ -1638,7 +1639,7 @@ class CloudBuildAsyncClient:
         trigger_id: Optional[str] = None,
         trigger: Optional[cloudbuild.BuildTrigger] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.BuildTrigger:
         r"""Updates a ``BuildTrigger`` by its project ID and trigger ID.
@@ -1769,7 +1770,7 @@ class CloudBuildAsyncClient:
         trigger_id: Optional[str] = None,
         source: Optional[cloudbuild.RepoSource] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Runs a ``BuildTrigger`` at a particular source revision.
@@ -1800,7 +1801,7 @@ class CloudBuildAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -1925,7 +1926,7 @@ class CloudBuildAsyncClient:
         request: Optional[Union[cloudbuild.ReceiveTriggerWebhookRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.ReceiveTriggerWebhookResponse:
         r"""ReceiveTriggerWebhook [Experimental] is called when the API
@@ -2014,7 +2015,7 @@ class CloudBuildAsyncClient:
         worker_pool: Optional[cloudbuild.WorkerPool] = None,
         worker_pool_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a ``WorkerPool``.
@@ -2045,7 +2046,7 @@ class CloudBuildAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -2167,7 +2168,7 @@ class CloudBuildAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.WorkerPool:
         r"""Returns details of a ``WorkerPool``.
@@ -2293,7 +2294,7 @@ class CloudBuildAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a ``WorkerPool``.
@@ -2323,7 +2324,7 @@ class CloudBuildAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -2418,7 +2419,7 @@ class CloudBuildAsyncClient:
         worker_pool: Optional[cloudbuild.WorkerPool] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates a ``WorkerPool``.
@@ -2447,7 +2448,7 @@ class CloudBuildAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -2561,7 +2562,7 @@ class CloudBuildAsyncClient:
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListWorkerPoolsAsyncPager:
         r"""Lists ``WorkerPool``\ s.
@@ -2686,14 +2687,9 @@ class CloudBuildAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-build",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("CloudBuildAsyncClient",)
