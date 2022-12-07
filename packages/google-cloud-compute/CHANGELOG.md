@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-compute/compare/v1.6.1...v1.7.0) (2022-12-07)
+
+
+### Features
+
+* add support for `google.cloud.compute.__version__` ([a6193cf](https://github.com/googleapis/python-compute/commit/a6193cfa1b6ae7d3115e0f9c2a2c54be7dcacb7d))
+* Add typing to proto.Message based class attributes ([a6193cf](https://github.com/googleapis/python-compute/commit/a6193cfa1b6ae7d3115e0f9c2a2c54be7dcacb7d))
+* Update Compute Engine API to revision 20221101 ([6bdf59e](https://github.com/googleapis/python-compute/commit/6bdf59e5792fa63e2f1f9d8718dc74dc8eb9f98c))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([a6193cf](https://github.com/googleapis/python-compute/commit/a6193cfa1b6ae7d3115e0f9c2a2c54be7dcacb7d))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([12a72b6](https://github.com/googleapis/python-compute/commit/12a72b6809e10decd83afbf58f2b4b16263d410a))
+* Drop usage of pkg_resources ([12a72b6](https://github.com/googleapis/python-compute/commit/12a72b6809e10decd83afbf58f2b4b16263d410a))
+* Fix timeout default values ([12a72b6](https://github.com/googleapis/python-compute/commit/12a72b6809e10decd83afbf58f2b4b16263d410a))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([a6193cf](https://github.com/googleapis/python-compute/commit/a6193cfa1b6ae7d3115e0f9c2a2c54be7dcacb7d))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([12a72b6](https://github.com/googleapis/python-compute/commit/12a72b6809e10decd83afbf58f2b4b16263d410a))
+
 ## [1.6.1](https://github.com/googleapis/python-compute/compare/v1.6.0...v1.6.1) (2022-10-10)
 
 
