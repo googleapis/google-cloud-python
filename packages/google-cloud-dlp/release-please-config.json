@@ -4,6 +4,7 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/cloud/dlp_v2/gapic_version.py",
         "google/cloud/dlp/gapic_version.py",
         {
           "type": "json",

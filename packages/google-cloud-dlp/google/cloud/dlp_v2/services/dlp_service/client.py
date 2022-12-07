@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.dlp_v2 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -569,7 +570,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         request: Optional[Union[dlp.InspectContentRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.InspectContentResponse:
         r"""Finds potentially sensitive info in content.
@@ -656,7 +657,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         request: Optional[Union[dlp.RedactImageRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.RedactImageResponse:
         r"""Redacts potentially sensitive info from an image.
@@ -744,7 +745,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         request: Optional[Union[dlp.DeidentifyContentRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.DeidentifyContentResponse:
         r"""De-identifies potentially sensitive info from a
@@ -833,7 +834,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         request: Optional[Union[dlp.ReidentifyContentRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.ReidentifyContentResponse:
         r"""Re-identifies content that has been de-identified. See
@@ -914,7 +915,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.ListInfoTypesResponse:
         r"""Returns a list of the sensitive information types
@@ -1017,7 +1018,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         parent: Optional[str] = None,
         inspect_template: Optional[dlp.InspectTemplate] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.InspectTemplate:
         r"""Creates an InspectTemplate for reusing frequently
@@ -1161,7 +1162,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         inspect_template: Optional[dlp.InspectTemplate] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.InspectTemplate:
         r"""Updates the InspectTemplate.
@@ -1288,7 +1289,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.InspectTemplate:
         r"""Gets an InspectTemplate.
@@ -1399,7 +1400,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInspectTemplatesPager:
         r"""Lists InspectTemplates.
@@ -1538,7 +1539,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an InspectTemplate.
@@ -1633,7 +1634,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         parent: Optional[str] = None,
         deidentify_template: Optional[dlp.DeidentifyTemplate] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.DeidentifyTemplate:
         r"""Creates a DeidentifyTemplate for reusing frequently
@@ -1777,7 +1778,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         deidentify_template: Optional[dlp.DeidentifyTemplate] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.DeidentifyTemplate:
         r"""Updates the DeidentifyTemplate.
@@ -1905,7 +1906,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.DeidentifyTemplate:
         r"""Gets a DeidentifyTemplate.
@@ -2015,7 +2016,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDeidentifyTemplatesPager:
         r"""Lists DeidentifyTemplates.
@@ -2157,7 +2158,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a DeidentifyTemplate.
@@ -2255,7 +2256,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         parent: Optional[str] = None,
         job_trigger: Optional[dlp.JobTrigger] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.JobTrigger:
         r"""Creates a job trigger to run DLP actions such as
@@ -2393,7 +2394,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         job_trigger: Optional[dlp.JobTrigger] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.JobTrigger:
         r"""Updates a job trigger.
@@ -2517,7 +2518,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.HybridInspectResponse:
         r"""Inspect hybrid content and store findings to a
@@ -2625,7 +2626,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.JobTrigger:
         r"""Gets a job trigger.
@@ -2732,7 +2733,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobTriggersPager:
         r"""Lists job triggers.
@@ -2865,7 +2866,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a job trigger.
@@ -2958,7 +2959,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         request: Optional[Union[dlp.ActivateJobTriggerRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.DlpJob:
         r"""Activate a job trigger. Causes the immediate execute
@@ -3044,7 +3045,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         inspect_job: Optional[dlp.InspectJobConfig] = None,
         risk_job: Optional[dlp.RiskAnalysisJobConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.DlpJob:
         r"""Creates a new job to inspect storage or calculate
@@ -3192,7 +3193,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDlpJobsPager:
         r"""Lists DlpJobs that match the specified filter in the
@@ -3328,7 +3329,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.DlpJob:
         r"""Gets the latest state of a long-running DlpJob.
@@ -3434,7 +3435,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running DlpJob. This method indicates
@@ -3529,7 +3530,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         request: Optional[Union[dlp.CancelDlpJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running
@@ -3606,7 +3607,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         parent: Optional[str] = None,
         config: Optional[dlp.StoredInfoTypeConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.StoredInfoType:
         r"""Creates a pre-built stored infoType to be used for
@@ -3745,7 +3746,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         config: Optional[dlp.StoredInfoTypeConfig] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.StoredInfoType:
         r"""Updates the stored infoType by creating a new
@@ -3874,7 +3875,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.StoredInfoType:
         r"""Gets a stored infoType.
@@ -3982,7 +3983,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListStoredInfoTypesPager:
         r"""Lists stored infoTypes.
@@ -4118,7 +4119,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a stored infoType.
@@ -4213,7 +4214,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.HybridInspectResponse:
         r"""Inspect hybrid content and store findings to a job.
@@ -4317,7 +4318,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         request: Optional[Union[dlp.FinishDlpJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Finish a running hybrid DlpJob. Triggers the
@@ -4397,14 +4398,9 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dlp",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("DlpServiceClient",)
