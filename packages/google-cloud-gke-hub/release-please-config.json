@@ -4,7 +4,11 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/cloud/gkehub_v1beta1/gapic_version.py",
         "google/cloud/gkehub/gapic_version.py",
+        "google/cloud/gkehub_v1/configmanagement_v1/gapic_version.py",
+        "google/cloud/gkehub_v1/gapic_version.py",
+        "google/cloud/gkehub_v1/multiclusteringress_v1/gapic_version.py",
         {
           "type": "json",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.gkehub.v1.json",
