@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [2.7.0](https://github.com/googleapis/python-storage/compare/v2.6.0...v2.7.0) (2022-12-07)
+
+
+### Features
+
+* Add "transfer_manager" module for concurrent uploads and downloads, as a preview feature ([#943](https://github.com/googleapis/python-storage/issues/943)) ([9998a5e](https://github.com/googleapis/python-storage/commit/9998a5e1c9e9e8920c4d40e13e39095585de657a))
+* Add use_auth_w_custom_endpoint support ([#941](https://github.com/googleapis/python-storage/issues/941)) ([5291c08](https://github.com/googleapis/python-storage/commit/5291c08cc76a7dbd853e51c19c944f6336c14d26))
+
+
+### Bug Fixes
+
+* Implement closed property on fileio.py classes ([#907](https://github.com/googleapis/python-storage/issues/907)) ([64406ca](https://github.com/googleapis/python-storage/commit/64406ca70cef98a81f6bb9da6e602196f4235178))
+
 ## [2.6.0](https://github.com/googleapis/python-storage/compare/v2.5.0...v2.6.0) (2022-11-07)
 
 
