@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.3.1](https://github.com/googleapis/python-logging/compare/v3.3.0...v3.3.1) (2022-12-05)
+
+
+### Bug Fixes
+
+* Client_info default values ([#681](https://github.com/googleapis/python-logging/issues/681)) ([b74d2a8](https://github.com/googleapis/python-logging/commit/b74d2a8c4f34aece5dc851de0e7542b3229751ba))
+
 ## [3.3.0](https://github.com/googleapis/python-logging/compare/v3.2.4...v3.3.0) (2022-11-26)
 
 
