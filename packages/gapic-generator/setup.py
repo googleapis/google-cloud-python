@@ -34,6 +34,7 @@ dependencies = [
     "pypandoc >= 1.4",
     "PyYAML >= 5.1.1",
     "grpc-google-iam-v1 >= 0.12.4, < 1.0.0dev",
+    "libcst >= 0.4.9",
 ]
 
 package_root = os.path.abspath(os.path.dirname(__file__))

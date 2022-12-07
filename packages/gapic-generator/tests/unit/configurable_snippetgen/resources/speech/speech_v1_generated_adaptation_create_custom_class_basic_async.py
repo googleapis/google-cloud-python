@@ -20,11 +20,11 @@
 # To install the latest published package dependency, execute the following:
 #   python3 -m pip install google-cloud-speech
 
-# [START speech_v1_generated_Adaptation_CreateCustomClass_Basic_async]
+# [START speech_v1_config_Adaptation_CreateCustomClass_Basic_async]
 from google.cloud import speech_v1
 
 
-async def sample_create_custom_class_basic(
+async def sample_create_custom_class_Basic(
     parent: str = "projects/[PROJECT]/locations/us",
     custom_class_id: str = "passengerships",
 ) -> speech_v1.CustomClass:
@@ -69,4 +69,4 @@ async def sample_create_custom_class_basic(
     return created_custom_class
 
 
-# [END speech_v1_generated_Adaptation_CreateCustomClass_Basic_async]
+# [END speech_v1_config_Adaptation_CreateCustomClass_Basic_async]
