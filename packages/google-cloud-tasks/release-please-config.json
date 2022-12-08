@@ -4,7 +4,10 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/cloud/tasks_v2/gapic_version.py",
         "google/cloud/tasks/gapic_version.py",
+        "google/cloud/tasks_v2beta3/gapic_version.py",
+        "google/cloud/tasks_v2beta2/gapic_version.py",
         {
           "type": "json",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.tasks.v2beta2.json",
