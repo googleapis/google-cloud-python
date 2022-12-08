@@ -4,6 +4,7 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/cloud/policytroubleshooter_v1/gapic_version.py",
         "google/cloud/policytroubleshooter/gapic_version.py",
         {
           "type": "json",
