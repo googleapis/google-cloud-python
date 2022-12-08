@@ -58,7 +58,7 @@ async def sample_create_os_policy_assignment():
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = (await operation).result()
 
     # Handle the response
     print(response)

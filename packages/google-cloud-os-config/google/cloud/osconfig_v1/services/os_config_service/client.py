@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.osconfig_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -490,7 +491,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         request: Optional[Union[patch_jobs.ExecutePatchJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> patch_jobs.PatchJob:
         r"""Patch VM instances by creating and running a patch
@@ -581,7 +582,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> patch_jobs.PatchJob:
         r"""Get the patch job. This can be used to track the
@@ -692,7 +693,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         request: Optional[Union[patch_jobs.CancelPatchJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> patch_jobs.PatchJob:
         r"""Cancel a patch job. The patch job must be active.
@@ -782,7 +783,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPatchJobsPager:
         r"""Get a list of patch jobs.
@@ -897,7 +898,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPatchJobInstanceDetailsPager:
         r"""Get a list of instance details for a given patch job.
@@ -1018,7 +1019,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         patch_deployment: Optional[patch_deployments.PatchDeployment] = None,
         patch_deployment_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> patch_deployments.PatchDeployment:
         r"""Create an OS Config patch deployment.
@@ -1152,7 +1153,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> patch_deployments.PatchDeployment:
         r"""Get an OS Config patch deployment.
@@ -1260,7 +1261,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPatchDeploymentsPager:
         r"""Get a page of OS Config patch deployments.
@@ -1377,7 +1378,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Delete an OS Config patch deployment.
@@ -1470,7 +1471,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         patch_deployment: Optional[patch_deployments.PatchDeployment] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> patch_deployments.PatchDeployment:
         r"""Update an OS Config patch deployment.
@@ -1589,7 +1590,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> patch_deployments.PatchDeployment:
         r"""Change state of patch deployment to "PAUSED".
@@ -1699,7 +1700,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> patch_deployments.PatchDeployment:
         r"""Change state of patch deployment back to "ACTIVE".
@@ -1815,14 +1816,9 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-os-config",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("OsConfigServiceClient",)
