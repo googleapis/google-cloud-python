@@ -38,6 +38,14 @@ from .hub import (
     UpdateHubRequest,
     UpdateSpokeRequest,
 )
+from .policy_based_routing import (
+    CreatePolicyBasedRouteRequest,
+    DeletePolicyBasedRouteRequest,
+    GetPolicyBasedRouteRequest,
+    ListPolicyBasedRoutesRequest,
+    ListPolicyBasedRoutesResponse,
+    PolicyBasedRoute,
+)
 
 __all__ = (
     "OperationMetadata",
@@ -63,4 +71,10 @@ __all__ = (
     "UpdateSpokeRequest",
     "LocationFeature",
     "State",
+    "CreatePolicyBasedRouteRequest",
+    "DeletePolicyBasedRouteRequest",
+    "GetPolicyBasedRouteRequest",
+    "ListPolicyBasedRoutesRequest",
+    "ListPolicyBasedRoutesResponse",
+    "PolicyBasedRoute",
 )

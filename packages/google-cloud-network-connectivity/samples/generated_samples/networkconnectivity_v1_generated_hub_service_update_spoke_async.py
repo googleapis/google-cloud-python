@@ -20,7 +20,7 @@
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-networkconnectivity
+#   python3 -m pip install google-cloud-network-connectivity
 
 
 # [START networkconnectivity_v1_generated_HubService_UpdateSpoke_async]
@@ -47,7 +47,7 @@ async def sample_update_spoke():
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = (await operation).result()
 
     # Handle the response
     print(response)

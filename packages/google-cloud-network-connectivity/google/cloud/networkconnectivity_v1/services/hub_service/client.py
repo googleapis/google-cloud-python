@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -27,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.networkconnectivity_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -64,7 +76,7 @@ class HubServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[HubServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -447,8 +459,8 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, HubServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, HubServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the hub service client.
@@ -462,7 +474,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
             transport (Union[str, HubServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -492,6 +504,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -544,14 +557,15 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
     def list_hubs(
         self,
-        request: Union[hub.ListHubsRequest, dict] = None,
+        request: Optional[Union[hub.ListHubsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListHubsPager:
-        r"""Lists hubs in a given project.
+        r"""Lists the Network Connectivity Center hubs associated
+        with a given project.
 
         .. code-block:: python
 
@@ -599,8 +613,8 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         Returns:
             google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListHubsPager:
                 Response for
-                [HubService.ListHubs][google.cloud.networkconnectivity.v1.HubService.ListHubs]
-                method.
+                   [HubService.ListHubs][google.cloud.networkconnectivity.v1.HubService.ListHubs]
+                   method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -659,14 +673,14 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
     def get_hub(
         self,
-        request: Union[hub.GetHubRequest, dict] = None,
+        request: Optional[Union[hub.GetHubRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> hub.Hub:
-        r"""Gets details about the specified hub.
+        r"""Gets details about a Network Connectivity Center hub.
 
         .. code-block:: python
 
@@ -714,15 +728,16 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
         Returns:
             google.cloud.networkconnectivity_v1.types.Hub:
-                A hub is a collection of spokes. A
-                single hub can contain spokes from
-                multiple regions. However, if any of a
-                hub's spokes use the data transfer
-                feature, the resources associated with
-                those spokes must all reside in the same
-                VPC network. Spokes that do not use data
-                transfer can be associated with any VPC
-                network in your project.
+                A Network Connectivity Center hub is
+                a collection of spokes. A single hub can
+                contain spokes from multiple regions.
+                However, if any of a hub's spokes use
+                the data transfer feature, the resources
+                associated with those spokes must all
+                reside in the same VPC network. Spokes
+                that do not use data transfer can be
+                associated with any VPC network in your
+                project.
 
         """
         # Create or coerce a protobuf request object.
@@ -769,16 +784,17 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
     def create_hub(
         self,
-        request: Union[gcn_hub.CreateHubRequest, dict] = None,
+        request: Optional[Union[gcn_hub.CreateHubRequest, dict]] = None,
         *,
-        parent: str = None,
-        hub: gcn_hub.Hub = None,
-        hub_id: str = None,
+        parent: Optional[str] = None,
+        hub: Optional[gcn_hub.Hub] = None,
+        hub_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Creates a new hub in the specified project.
+        r"""Creates a new Network Connectivity Center hub in the
+        specified project.
 
         .. code-block:: python
 
@@ -845,13 +861,13 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Hub` A hub is a collection of spokes. A single hub can contain spokes from
-                   multiple regions. However, if any of a hub's spokes
-                   use the data transfer feature, the resources
-                   associated with those spokes must all reside in the
-                   same VPC network. Spokes that do not use data
-                   transfer can be associated with any VPC network in
-                   your project.
+                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Hub` A Network Connectivity Center hub is a collection of spokes. A single hub
+                   can contain spokes from multiple regions. However, if
+                   any of a hub's spokes use the data transfer feature,
+                   the resources associated with those spokes must all
+                   reside in the same VPC network. Spokes that do not
+                   use data transfer can be associated with any VPC
+                   network in your project.
 
         """
         # Create or coerce a protobuf request object.
@@ -910,16 +926,16 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
     def update_hub(
         self,
-        request: Union[gcn_hub.UpdateHubRequest, dict] = None,
+        request: Optional[Union[gcn_hub.UpdateHubRequest, dict]] = None,
         *,
-        hub: gcn_hub.Hub = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        hub: Optional[gcn_hub.Hub] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Updates the description and/or labels of the
-        specified hub.
+        r"""Updates the description and/or labels of a Network
+        Connectivity Center hub.
 
         .. code-block:: python
 
@@ -983,13 +999,13 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Hub` A hub is a collection of spokes. A single hub can contain spokes from
-                   multiple regions. However, if any of a hub's spokes
-                   use the data transfer feature, the resources
-                   associated with those spokes must all reside in the
-                   same VPC network. Spokes that do not use data
-                   transfer can be associated with any VPC network in
-                   your project.
+                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Hub` A Network Connectivity Center hub is a collection of spokes. A single hub
+                   can contain spokes from multiple regions. However, if
+                   any of a hub's spokes use the data transfer feature,
+                   the resources associated with those spokes must all
+                   reside in the same VPC network. Spokes that do not
+                   use data transfer can be associated with any VPC
+                   network in your project.
 
         """
         # Create or coerce a protobuf request object.
@@ -1046,14 +1062,14 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
     def delete_hub(
         self,
-        request: Union[hub.DeleteHubRequest, dict] = None,
+        request: Optional[Union[hub.DeleteHubRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Deletes the specified hub.
+        r"""Deletes a Network Connectivity Center hub.
 
         .. code-block:: python
 
@@ -1170,15 +1186,15 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
     def list_spokes(
         self,
-        request: Union[hub.ListSpokesRequest, dict] = None,
+        request: Optional[Union[hub.ListSpokesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSpokesPager:
-        r"""Lists the spokes in the specified project and
-        location.
+        r"""Lists the Network Connectivity Center spokes in a
+        specified project and location.
 
         .. code-block:: python
 
@@ -1225,7 +1241,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         Returns:
             google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListSpokesPager:
                 The response for
-                [HubService.ListSpokes][google.cloud.networkconnectivity.v1.HubService.ListSpokes].
+                   [HubService.ListSpokes][google.cloud.networkconnectivity.v1.HubService.ListSpokes].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1284,14 +1300,15 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
     def get_spoke(
         self,
-        request: Union[hub.GetSpokeRequest, dict] = None,
+        request: Optional[Union[hub.GetSpokeRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> hub.Spoke:
-        r"""Gets details about the specified spoke.
+        r"""Gets details about a Network Connectivity Center
+        spoke.
 
         .. code-block:: python
 
@@ -1338,8 +1355,9 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
         Returns:
             google.cloud.networkconnectivity_v1.types.Spoke:
-                A spoke represents a connection between your Google Cloud network resources
-                   and a non-Google-Cloud network.
+                A Network Connectivity Center spoke represents a connection between your
+                   Google Cloud network resources and a non-Google-Cloud
+                   network.
 
                    When you create a spoke, you associate it with a hub.
                    You must also identify a value for exactly one of the
@@ -1394,17 +1412,16 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
     def create_spoke(
         self,
-        request: Union[hub.CreateSpokeRequest, dict] = None,
+        request: Optional[Union[hub.CreateSpokeRequest, dict]] = None,
         *,
-        parent: str = None,
-        spoke: hub.Spoke = None,
-        spoke_id: str = None,
+        parent: Optional[str] = None,
+        spoke: Optional[hub.Spoke] = None,
+        spoke_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Creates a spoke in the specified project and
-        location.
+        r"""Creates a Network Connectivity Center spoke.
 
         .. code-block:: python
 
@@ -1470,8 +1487,9 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Spoke` A spoke represents a connection between your Google Cloud network resources
-                   and a non-Google-Cloud network.
+                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Spoke` A Network Connectivity Center spoke represents a connection between your
+                   Google Cloud network resources and a non-Google-Cloud
+                   network.
 
                    When you create a spoke, you associate it with a hub.
                    You must also identify a value for exactly one of the
@@ -1538,15 +1556,16 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
     def update_spoke(
         self,
-        request: Union[hub.UpdateSpokeRequest, dict] = None,
+        request: Optional[Union[hub.UpdateSpokeRequest, dict]] = None,
         *,
-        spoke: hub.Spoke = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        spoke: Optional[hub.Spoke] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Updates the parameters of the specified spoke.
+        r"""Updates the parameters of a Network Connectivity
+        Center spoke.
 
         .. code-block:: python
 
@@ -1610,8 +1629,9 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Spoke` A spoke represents a connection between your Google Cloud network resources
-                   and a non-Google-Cloud network.
+                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Spoke` A Network Connectivity Center spoke represents a connection between your
+                   Google Cloud network resources and a non-Google-Cloud
+                   network.
 
                    When you create a spoke, you associate it with a hub.
                    You must also identify a value for exactly one of the
@@ -1678,14 +1698,14 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
     def delete_spoke(
         self,
-        request: Union[hub.DeleteSpokeRequest, dict] = None,
+        request: Optional[Union[hub.DeleteSpokeRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Deletes the specified spoke.
+        r"""Deletes a Network Connectivity Center spoke.
 
         .. code-block:: python
 
@@ -1814,14 +1834,9 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-networkconnectivity",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("HubServiceClient",)

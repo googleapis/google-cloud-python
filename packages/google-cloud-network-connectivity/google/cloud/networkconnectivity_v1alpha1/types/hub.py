@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -64,11 +66,11 @@ class Hub(proto.Message):
             Time when the Hub was created.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Time when the Hub was updated.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             User-defined labels.
         description (str):
             Short description of the hub resource.
-        spokes (Sequence[str]):
+        spokes (MutableSequence[str]):
             Output only. A list of the URIs of all
             attached spokes
         unique_id (str):
@@ -81,38 +83,38 @@ class Hub(proto.Message):
             this Hub.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    spokes = proto.RepeatedField(
+    spokes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    unique_id = proto.Field(
+    unique_id: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    state = proto.Field(
+    state: "State" = proto.Field(
         proto.ENUM,
         number=9,
         enum="State",
@@ -131,19 +133,19 @@ class Spoke(proto.Message):
             The time when the Spoke was created.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the Spoke was updated.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             User-defined labels.
         description (str):
             Short description of the spoke resource
         hub (str):
             The resource URL of the hub resource that the
             spoke is attached to
-        linked_vpn_tunnels (Sequence[str]):
+        linked_vpn_tunnels (MutableSequence[str]):
             The URIs of linked VPN tunnel resources
-        linked_interconnect_attachments (Sequence[str]):
+        linked_interconnect_attachments (MutableSequence[str]):
             The URIs of linked interconnect attachment
             resources
-        linked_router_appliance_instances (Sequence[google.cloud.networkconnectivity_v1alpha1.types.RouterApplianceInstance]):
+        linked_router_appliance_instances (MutableSequence[google.cloud.networkconnectivity_v1alpha1.types.RouterApplianceInstance]):
             The URIs of linked Router appliance resources
         unique_id (str):
             Output only. Google-generated UUID for this resource. This
@@ -155,51 +157,53 @@ class Spoke(proto.Message):
             this Hub.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    hub = proto.Field(
+    hub: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    linked_vpn_tunnels = proto.RepeatedField(
+    linked_vpn_tunnels: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=12,
     )
-    linked_interconnect_attachments = proto.RepeatedField(
+    linked_interconnect_attachments: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=13,
     )
-    linked_router_appliance_instances = proto.RepeatedField(
+    linked_router_appliance_instances: MutableSequence[
+        "RouterApplianceInstance"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=14,
         message="RouterApplianceInstance",
     )
-    unique_id = proto.Field(
+    unique_id: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    state = proto.Field(
+    state: "State" = proto.Field(
         proto.ENUM,
         number=15,
         enum="State",
@@ -226,23 +230,23 @@ class ListHubsRequest(proto.Message):
             Sort the results by a certain order.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -254,13 +258,13 @@ class ListHubsResponse(proto.Message):
     method.
 
     Attributes:
-        hubs (Sequence[google.cloud.networkconnectivity_v1alpha1.types.Hub]):
+        hubs (MutableSequence[google.cloud.networkconnectivity_v1alpha1.types.Hub]):
             Hubs to be returned.
         next_page_token (str):
             The next pagination token in the List response. It should be
             used as page_token for the following request. An empty value
             means no more result.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -268,16 +272,16 @@ class ListHubsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    hubs = proto.RepeatedField(
+    hubs: MutableSequence["Hub"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Hub",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -293,7 +297,7 @@ class GetHubRequest(proto.Message):
             Required. Name of the Hub resource to get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -332,20 +336,20 @@ class CreateHubRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    hub_id = proto.Field(
+    hub_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    hub = proto.Field(
+    hub: "Hub" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Hub",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -387,17 +391,17 @@ class UpdateHubRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    hub = proto.Field(
+    hub: "Hub" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Hub",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -430,11 +434,11 @@ class DeleteHubRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -459,23 +463,23 @@ class ListSpokesRequest(proto.Message):
             Sort the results by a certain order.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -486,13 +490,13 @@ class ListSpokesResponse(proto.Message):
     [HubService.ListSpokes][google.cloud.networkconnectivity.v1alpha1.HubService.ListSpokes].
 
     Attributes:
-        spokes (Sequence[google.cloud.networkconnectivity_v1alpha1.types.Spoke]):
+        spokes (MutableSequence[google.cloud.networkconnectivity_v1alpha1.types.Spoke]):
             Spokes to be returned.
         next_page_token (str):
             The next pagination token in the List response. It should be
             used as page_token for the following request. An empty value
             means no more result.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -500,16 +504,16 @@ class ListSpokesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    spokes = proto.RepeatedField(
+    spokes: MutableSequence["Spoke"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Spoke",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -524,7 +528,7 @@ class GetSpokeRequest(proto.Message):
             Required. The name of Spoke resource.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -562,20 +566,20 @@ class CreateSpokeRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    spoke_id = proto.Field(
+    spoke_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    spoke = proto.Field(
+    spoke: "Spoke" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Spoke",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -617,17 +621,17 @@ class UpdateSpokeRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    spoke = proto.Field(
+    spoke: "Spoke" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Spoke",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -660,11 +664,11 @@ class DeleteSpokeRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -684,15 +688,15 @@ class RouterApplianceInstance(proto.Message):
 
     """
 
-    virtual_machine = proto.Field(
+    virtual_machine: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    ip_address = proto.Field(
+    ip_address: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    network_interface = proto.Field(
+    network_interface: str = proto.Field(
         proto.STRING,
         number=2,
     )

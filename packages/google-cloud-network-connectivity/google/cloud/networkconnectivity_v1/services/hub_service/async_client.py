@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -24,7 +34,8 @@ from google.api_core import retry as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.networkconnectivity_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -179,9 +190,9 @@ class HubServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, HubServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the hub service client.
@@ -225,14 +236,15 @@ class HubServiceAsyncClient:
 
     async def list_hubs(
         self,
-        request: Union[hub.ListHubsRequest, dict] = None,
+        request: Optional[Union[hub.ListHubsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListHubsAsyncPager:
-        r"""Lists hubs in a given project.
+        r"""Lists the Network Connectivity Center hubs associated
+        with a given project.
 
         .. code-block:: python
 
@@ -262,7 +274,7 @@ class HubServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.networkconnectivity_v1.types.ListHubsRequest, dict]):
+            request (Optional[Union[google.cloud.networkconnectivity_v1.types.ListHubsRequest, dict]]):
                 The request object. Request for
                 [HubService.ListHubs][google.cloud.networkconnectivity.v1.HubService.ListHubs]
                 method.
@@ -280,8 +292,8 @@ class HubServiceAsyncClient:
         Returns:
             google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListHubsAsyncPager:
                 Response for
-                [HubService.ListHubs][google.cloud.networkconnectivity.v1.HubService.ListHubs]
-                method.
+                   [HubService.ListHubs][google.cloud.networkconnectivity.v1.HubService.ListHubs]
+                   method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -340,14 +352,14 @@ class HubServiceAsyncClient:
 
     async def get_hub(
         self,
-        request: Union[hub.GetHubRequest, dict] = None,
+        request: Optional[Union[hub.GetHubRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> hub.Hub:
-        r"""Gets details about the specified hub.
+        r"""Gets details about a Network Connectivity Center hub.
 
         .. code-block:: python
 
@@ -376,7 +388,7 @@ class HubServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.networkconnectivity_v1.types.GetHubRequest, dict]):
+            request (Optional[Union[google.cloud.networkconnectivity_v1.types.GetHubRequest, dict]]):
                 The request object. Request for
                 [HubService.GetHub][google.cloud.networkconnectivity.v1.HubService.GetHub]
                 method.
@@ -395,15 +407,16 @@ class HubServiceAsyncClient:
 
         Returns:
             google.cloud.networkconnectivity_v1.types.Hub:
-                A hub is a collection of spokes. A
-                single hub can contain spokes from
-                multiple regions. However, if any of a
-                hub's spokes use the data transfer
-                feature, the resources associated with
-                those spokes must all reside in the same
-                VPC network. Spokes that do not use data
-                transfer can be associated with any VPC
-                network in your project.
+                A Network Connectivity Center hub is
+                a collection of spokes. A single hub can
+                contain spokes from multiple regions.
+                However, if any of a hub's spokes use
+                the data transfer feature, the resources
+                associated with those spokes must all
+                reside in the same VPC network. Spokes
+                that do not use data transfer can be
+                associated with any VPC network in your
+                project.
 
         """
         # Create or coerce a protobuf request object.
@@ -450,16 +463,17 @@ class HubServiceAsyncClient:
 
     async def create_hub(
         self,
-        request: Union[gcn_hub.CreateHubRequest, dict] = None,
+        request: Optional[Union[gcn_hub.CreateHubRequest, dict]] = None,
         *,
-        parent: str = None,
-        hub: gcn_hub.Hub = None,
-        hub_id: str = None,
+        parent: Optional[str] = None,
+        hub: Optional[gcn_hub.Hub] = None,
+        hub_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Creates a new hub in the specified project.
+        r"""Creates a new Network Connectivity Center hub in the
+        specified project.
 
         .. code-block:: python
 
@@ -487,13 +501,13 @@ class HubServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.networkconnectivity_v1.types.CreateHubRequest, dict]):
+            request (Optional[Union[google.cloud.networkconnectivity_v1.types.CreateHubRequest, dict]]):
                 The request object. Request for
                 [HubService.CreateHub][google.cloud.networkconnectivity.v1.HubService.CreateHub]
                 method.
@@ -526,13 +540,13 @@ class HubServiceAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Hub` A hub is a collection of spokes. A single hub can contain spokes from
-                   multiple regions. However, if any of a hub's spokes
-                   use the data transfer feature, the resources
-                   associated with those spokes must all reside in the
-                   same VPC network. Spokes that do not use data
-                   transfer can be associated with any VPC network in
-                   your project.
+                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Hub` A Network Connectivity Center hub is a collection of spokes. A single hub
+                   can contain spokes from multiple regions. However, if
+                   any of a hub's spokes use the data transfer feature,
+                   the resources associated with those spokes must all
+                   reside in the same VPC network. Spokes that do not
+                   use data transfer can be associated with any VPC
+                   network in your project.
 
         """
         # Create or coerce a protobuf request object.
@@ -591,16 +605,16 @@ class HubServiceAsyncClient:
 
     async def update_hub(
         self,
-        request: Union[gcn_hub.UpdateHubRequest, dict] = None,
+        request: Optional[Union[gcn_hub.UpdateHubRequest, dict]] = None,
         *,
-        hub: gcn_hub.Hub = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        hub: Optional[gcn_hub.Hub] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Updates the description and/or labels of the
-        specified hub.
+        r"""Updates the description and/or labels of a Network
+        Connectivity Center hub.
 
         .. code-block:: python
 
@@ -626,13 +640,13 @@ class HubServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.networkconnectivity_v1.types.UpdateHubRequest, dict]):
+            request (Optional[Union[google.cloud.networkconnectivity_v1.types.UpdateHubRequest, dict]]):
                 The request object. Request for
                 [HubService.UpdateHub][google.cloud.networkconnectivity.v1.HubService.UpdateHub]
                 method.
@@ -664,13 +678,13 @@ class HubServiceAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Hub` A hub is a collection of spokes. A single hub can contain spokes from
-                   multiple regions. However, if any of a hub's spokes
-                   use the data transfer feature, the resources
-                   associated with those spokes must all reside in the
-                   same VPC network. Spokes that do not use data
-                   transfer can be associated with any VPC network in
-                   your project.
+                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Hub` A Network Connectivity Center hub is a collection of spokes. A single hub
+                   can contain spokes from multiple regions. However, if
+                   any of a hub's spokes use the data transfer feature,
+                   the resources associated with those spokes must all
+                   reside in the same VPC network. Spokes that do not
+                   use data transfer can be associated with any VPC
+                   network in your project.
 
         """
         # Create or coerce a protobuf request object.
@@ -727,14 +741,14 @@ class HubServiceAsyncClient:
 
     async def delete_hub(
         self,
-        request: Union[hub.DeleteHubRequest, dict] = None,
+        request: Optional[Union[hub.DeleteHubRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Deletes the specified hub.
+        r"""Deletes a Network Connectivity Center hub.
 
         .. code-block:: python
 
@@ -761,13 +775,13 @@ class HubServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.networkconnectivity_v1.types.DeleteHubRequest, dict]):
+            request (Optional[Union[google.cloud.networkconnectivity_v1.types.DeleteHubRequest, dict]]):
                 The request object. The request for
                 [HubService.DeleteHub][google.cloud.networkconnectivity.v1.HubService.DeleteHub].
             name (:class:`str`):
@@ -851,15 +865,15 @@ class HubServiceAsyncClient:
 
     async def list_spokes(
         self,
-        request: Union[hub.ListSpokesRequest, dict] = None,
+        request: Optional[Union[hub.ListSpokesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSpokesAsyncPager:
-        r"""Lists the spokes in the specified project and
-        location.
+        r"""Lists the Network Connectivity Center spokes in a
+        specified project and location.
 
         .. code-block:: python
 
@@ -889,7 +903,7 @@ class HubServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.networkconnectivity_v1.types.ListSpokesRequest, dict]):
+            request (Optional[Union[google.cloud.networkconnectivity_v1.types.ListSpokesRequest, dict]]):
                 The request object. The request for
                 [HubService.ListSpokes][google.cloud.networkconnectivity.v1.HubService.ListSpokes].
             parent (:class:`str`):
@@ -906,7 +920,7 @@ class HubServiceAsyncClient:
         Returns:
             google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListSpokesAsyncPager:
                 The response for
-                [HubService.ListSpokes][google.cloud.networkconnectivity.v1.HubService.ListSpokes].
+                   [HubService.ListSpokes][google.cloud.networkconnectivity.v1.HubService.ListSpokes].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -965,14 +979,15 @@ class HubServiceAsyncClient:
 
     async def get_spoke(
         self,
-        request: Union[hub.GetSpokeRequest, dict] = None,
+        request: Optional[Union[hub.GetSpokeRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> hub.Spoke:
-        r"""Gets details about the specified spoke.
+        r"""Gets details about a Network Connectivity Center
+        spoke.
 
         .. code-block:: python
 
@@ -1001,7 +1016,7 @@ class HubServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.networkconnectivity_v1.types.GetSpokeRequest, dict]):
+            request (Optional[Union[google.cloud.networkconnectivity_v1.types.GetSpokeRequest, dict]]):
                 The request object. The request for
                 [HubService.GetSpoke][google.cloud.networkconnectivity.v1.HubService.GetSpoke].
             name (:class:`str`):
@@ -1019,8 +1034,9 @@ class HubServiceAsyncClient:
 
         Returns:
             google.cloud.networkconnectivity_v1.types.Spoke:
-                A spoke represents a connection between your Google Cloud network resources
-                   and a non-Google-Cloud network.
+                A Network Connectivity Center spoke represents a connection between your
+                   Google Cloud network resources and a non-Google-Cloud
+                   network.
 
                    When you create a spoke, you associate it with a hub.
                    You must also identify a value for exactly one of the
@@ -1075,17 +1091,16 @@ class HubServiceAsyncClient:
 
     async def create_spoke(
         self,
-        request: Union[hub.CreateSpokeRequest, dict] = None,
+        request: Optional[Union[hub.CreateSpokeRequest, dict]] = None,
         *,
-        parent: str = None,
-        spoke: hub.Spoke = None,
-        spoke_id: str = None,
+        parent: Optional[str] = None,
+        spoke: Optional[hub.Spoke] = None,
+        spoke_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Creates a spoke in the specified project and
-        location.
+        r"""Creates a Network Connectivity Center spoke.
 
         .. code-block:: python
 
@@ -1113,13 +1128,13 @@ class HubServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.networkconnectivity_v1.types.CreateSpokeRequest, dict]):
+            request (Optional[Union[google.cloud.networkconnectivity_v1.types.CreateSpokeRequest, dict]]):
                 The request object. The request for
                 [HubService.CreateSpoke][google.cloud.networkconnectivity.v1.HubService.CreateSpoke].
             parent (:class:`str`):
@@ -1151,8 +1166,9 @@ class HubServiceAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Spoke` A spoke represents a connection between your Google Cloud network resources
-                   and a non-Google-Cloud network.
+                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Spoke` A Network Connectivity Center spoke represents a connection between your
+                   Google Cloud network resources and a non-Google-Cloud
+                   network.
 
                    When you create a spoke, you associate it with a hub.
                    You must also identify a value for exactly one of the
@@ -1219,15 +1235,16 @@ class HubServiceAsyncClient:
 
     async def update_spoke(
         self,
-        request: Union[hub.UpdateSpokeRequest, dict] = None,
+        request: Optional[Union[hub.UpdateSpokeRequest, dict]] = None,
         *,
-        spoke: hub.Spoke = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        spoke: Optional[hub.Spoke] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Updates the parameters of the specified spoke.
+        r"""Updates the parameters of a Network Connectivity
+        Center spoke.
 
         .. code-block:: python
 
@@ -1253,13 +1270,13 @@ class HubServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.networkconnectivity_v1.types.UpdateSpokeRequest, dict]):
+            request (Optional[Union[google.cloud.networkconnectivity_v1.types.UpdateSpokeRequest, dict]]):
                 The request object. Request for
                 [HubService.UpdateSpoke][google.cloud.networkconnectivity.v1.HubService.UpdateSpoke]
                 method.
@@ -1291,8 +1308,9 @@ class HubServiceAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Spoke` A spoke represents a connection between your Google Cloud network resources
-                   and a non-Google-Cloud network.
+                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Spoke` A Network Connectivity Center spoke represents a connection between your
+                   Google Cloud network resources and a non-Google-Cloud
+                   network.
 
                    When you create a spoke, you associate it with a hub.
                    You must also identify a value for exactly one of the
@@ -1359,14 +1377,14 @@ class HubServiceAsyncClient:
 
     async def delete_spoke(
         self,
-        request: Union[hub.DeleteSpokeRequest, dict] = None,
+        request: Optional[Union[hub.DeleteSpokeRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Deletes the specified spoke.
+        r"""Deletes a Network Connectivity Center spoke.
 
         .. code-block:: python
 
@@ -1393,13 +1411,13 @@ class HubServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.networkconnectivity_v1.types.DeleteSpokeRequest, dict]):
+            request (Optional[Union[google.cloud.networkconnectivity_v1.types.DeleteSpokeRequest, dict]]):
                 The request object. The request for
                 [HubService.DeleteSpoke][google.cloud.networkconnectivity.v1.HubService.DeleteSpoke].
             name (:class:`str`):
@@ -1488,14 +1506,9 @@ class HubServiceAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-networkconnectivity",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("HubServiceAsyncClient",)

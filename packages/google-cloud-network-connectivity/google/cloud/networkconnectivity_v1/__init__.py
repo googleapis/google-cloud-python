@@ -13,8 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.networkconnectivity import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from .services.hub_service import HubServiceAsyncClient, HubServiceClient
+from .services.policy_based_routing_service import (
+    PolicyBasedRoutingServiceAsyncClient,
+    PolicyBasedRoutingServiceClient,
+)
 from .types.common import OperationMetadata
 from .types.hub import (
     CreateHubRequest,
@@ -40,14 +48,26 @@ from .types.hub import (
     UpdateHubRequest,
     UpdateSpokeRequest,
 )
+from .types.policy_based_routing import (
+    CreatePolicyBasedRouteRequest,
+    DeletePolicyBasedRouteRequest,
+    GetPolicyBasedRouteRequest,
+    ListPolicyBasedRoutesRequest,
+    ListPolicyBasedRoutesResponse,
+    PolicyBasedRoute,
+)
 
 __all__ = (
     "HubServiceAsyncClient",
+    "PolicyBasedRoutingServiceAsyncClient",
     "CreateHubRequest",
+    "CreatePolicyBasedRouteRequest",
     "CreateSpokeRequest",
     "DeleteHubRequest",
+    "DeletePolicyBasedRouteRequest",
     "DeleteSpokeRequest",
     "GetHubRequest",
+    "GetPolicyBasedRouteRequest",
     "GetSpokeRequest",
     "Hub",
     "HubServiceClient",
@@ -56,11 +76,15 @@ __all__ = (
     "LinkedVpnTunnels",
     "ListHubsRequest",
     "ListHubsResponse",
+    "ListPolicyBasedRoutesRequest",
+    "ListPolicyBasedRoutesResponse",
     "ListSpokesRequest",
     "ListSpokesResponse",
     "LocationFeature",
     "LocationMetadata",
     "OperationMetadata",
+    "PolicyBasedRoute",
+    "PolicyBasedRoutingServiceClient",
     "RouterApplianceInstance",
     "RoutingVPC",
     "Spoke",

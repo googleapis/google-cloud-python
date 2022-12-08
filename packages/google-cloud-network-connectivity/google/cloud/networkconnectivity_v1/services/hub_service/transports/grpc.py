@@ -51,14 +51,14 @@ class HubServiceGrpcTransport(HubServiceTransport):
         self,
         *,
         host: str = "networkconnectivity.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Sequence[str] = None,
-        channel: grpc.Channel = None,
-        api_mtls_endpoint: str = None,
-        client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
-        ssl_channel_credentials: grpc.ChannelCredentials = None,
-        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        channel: Optional[grpc.Channel] = None,
+        api_mtls_endpoint: Optional[str] = None,
+        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
@@ -186,8 +186,8 @@ class HubServiceGrpcTransport(HubServiceTransport):
     def create_channel(
         cls,
         host: str = "networkconnectivity.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
         **kwargs,
@@ -252,7 +252,8 @@ class HubServiceGrpcTransport(HubServiceTransport):
     def list_hubs(self) -> Callable[[hub.ListHubsRequest], hub.ListHubsResponse]:
         r"""Return a callable for the list hubs method over gRPC.
 
-        Lists hubs in a given project.
+        Lists the Network Connectivity Center hubs associated
+        with a given project.
 
         Returns:
             Callable[[~.ListHubsRequest],
@@ -276,7 +277,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
     def get_hub(self) -> Callable[[hub.GetHubRequest], hub.Hub]:
         r"""Return a callable for the get hub method over gRPC.
 
-        Gets details about the specified hub.
+        Gets details about a Network Connectivity Center hub.
 
         Returns:
             Callable[[~.GetHubRequest],
@@ -302,7 +303,8 @@ class HubServiceGrpcTransport(HubServiceTransport):
     ) -> Callable[[gcn_hub.CreateHubRequest], operations_pb2.Operation]:
         r"""Return a callable for the create hub method over gRPC.
 
-        Creates a new hub in the specified project.
+        Creates a new Network Connectivity Center hub in the
+        specified project.
 
         Returns:
             Callable[[~.CreateHubRequest],
@@ -328,8 +330,8 @@ class HubServiceGrpcTransport(HubServiceTransport):
     ) -> Callable[[gcn_hub.UpdateHubRequest], operations_pb2.Operation]:
         r"""Return a callable for the update hub method over gRPC.
 
-        Updates the description and/or labels of the
-        specified hub.
+        Updates the description and/or labels of a Network
+        Connectivity Center hub.
 
         Returns:
             Callable[[~.UpdateHubRequest],
@@ -353,7 +355,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
     def delete_hub(self) -> Callable[[hub.DeleteHubRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete hub method over gRPC.
 
-        Deletes the specified hub.
+        Deletes a Network Connectivity Center hub.
 
         Returns:
             Callable[[~.DeleteHubRequest],
@@ -377,8 +379,8 @@ class HubServiceGrpcTransport(HubServiceTransport):
     def list_spokes(self) -> Callable[[hub.ListSpokesRequest], hub.ListSpokesResponse]:
         r"""Return a callable for the list spokes method over gRPC.
 
-        Lists the spokes in the specified project and
-        location.
+        Lists the Network Connectivity Center spokes in a
+        specified project and location.
 
         Returns:
             Callable[[~.ListSpokesRequest],
@@ -402,7 +404,8 @@ class HubServiceGrpcTransport(HubServiceTransport):
     def get_spoke(self) -> Callable[[hub.GetSpokeRequest], hub.Spoke]:
         r"""Return a callable for the get spoke method over gRPC.
 
-        Gets details about the specified spoke.
+        Gets details about a Network Connectivity Center
+        spoke.
 
         Returns:
             Callable[[~.GetSpokeRequest],
@@ -428,8 +431,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
     ) -> Callable[[hub.CreateSpokeRequest], operations_pb2.Operation]:
         r"""Return a callable for the create spoke method over gRPC.
 
-        Creates a spoke in the specified project and
-        location.
+        Creates a Network Connectivity Center spoke.
 
         Returns:
             Callable[[~.CreateSpokeRequest],
@@ -455,7 +457,8 @@ class HubServiceGrpcTransport(HubServiceTransport):
     ) -> Callable[[hub.UpdateSpokeRequest], operations_pb2.Operation]:
         r"""Return a callable for the update spoke method over gRPC.
 
-        Updates the parameters of the specified spoke.
+        Updates the parameters of a Network Connectivity
+        Center spoke.
 
         Returns:
             Callable[[~.UpdateSpokeRequest],
@@ -481,7 +484,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
     ) -> Callable[[hub.DeleteSpokeRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete spoke method over gRPC.
 
-        Deletes the specified spoke.
+        Deletes a Network Connectivity Center spoke.
 
         Returns:
             Callable[[~.DeleteSpokeRequest],
