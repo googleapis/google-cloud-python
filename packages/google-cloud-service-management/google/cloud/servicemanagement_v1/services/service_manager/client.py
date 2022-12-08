@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.servicemanagement_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -455,7 +456,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         producer_project_id: Optional[str] = None,
         consumer_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServicesPager:
         r"""Lists managed services.
@@ -578,7 +579,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         *,
         service_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.ManagedService:
         r"""Gets a managed service. Authentication is required
@@ -685,7 +686,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         *,
         service: Optional[resources.ManagedService] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new managed service.
@@ -804,7 +805,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         *,
         service_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a managed service. This method will change the service
@@ -939,7 +940,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         *,
         service_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Revives a previously deleted managed service. The
@@ -1066,7 +1067,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         *,
         service_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServiceConfigsPager:
         r"""Lists the history of the service configuration for a
@@ -1188,7 +1189,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         config_id: Optional[str] = None,
         view: Optional[servicemanager.GetServiceConfigRequest.ConfigView] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service_pb2.Service:
         r"""Gets a service configuration (version) for a managed
@@ -1350,7 +1351,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         service_name: Optional[str] = None,
         service_config: Optional[service_pb2.Service] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service_pb2.Service:
         r"""Creates a new service configuration (version) for a managed
@@ -1502,7 +1503,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         config_source: Optional[resources.ConfigSource] = None,
         validate_only: Optional[bool] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new service configuration (version) for a managed
@@ -1658,7 +1659,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         service_name: Optional[str] = None,
         filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServiceRolloutsPager:
         r"""Lists the history of the service configuration
@@ -1797,7 +1798,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         service_name: Optional[str] = None,
         rollout_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Rollout:
         r"""Gets a service configuration
@@ -1924,7 +1925,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         service_name: Optional[str] = None,
         rollout: Optional[resources.Rollout] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new service configuration rollout. Based on
@@ -2074,7 +2075,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         new_config: Optional[any_pb2.Any] = None,
         old_config: Optional[any_pb2.Any] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> servicemanager.GenerateConfigReportResponse:
         r"""Generates and returns a report (errors, warnings and changes
@@ -2205,14 +2206,9 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-service-management",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ServiceManagerClient",)

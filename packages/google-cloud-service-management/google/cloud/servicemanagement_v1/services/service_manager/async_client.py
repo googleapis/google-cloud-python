@@ -34,7 +34,8 @@ from google.api_core import retry as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.servicemanagement_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -248,7 +249,7 @@ class ServiceManagerAsyncClient:
         producer_project_id: Optional[str] = None,
         consumer_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServicesAsyncPager:
         r"""Lists managed services.
@@ -371,7 +372,7 @@ class ServiceManagerAsyncClient:
         *,
         service_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.ManagedService:
         r"""Gets a managed service. Authentication is required
@@ -478,7 +479,7 @@ class ServiceManagerAsyncClient:
         *,
         service: Optional[resources.ManagedService] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new managed service.
@@ -517,7 +518,7 @@ class ServiceManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -597,7 +598,7 @@ class ServiceManagerAsyncClient:
         *,
         service_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a managed service. This method will change the service
@@ -634,7 +635,7 @@ class ServiceManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -732,7 +733,7 @@ class ServiceManagerAsyncClient:
         *,
         service_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Revives a previously deleted managed service. The
@@ -768,7 +769,7 @@ class ServiceManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -859,7 +860,7 @@ class ServiceManagerAsyncClient:
         *,
         service_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServiceConfigsAsyncPager:
         r"""Lists the history of the service configuration for a
@@ -981,7 +982,7 @@ class ServiceManagerAsyncClient:
         config_id: Optional[str] = None,
         view: Optional[servicemanager.GetServiceConfigRequest.ConfigView] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service_pb2.Service:
         r"""Gets a service configuration (version) for a managed
@@ -1143,7 +1144,7 @@ class ServiceManagerAsyncClient:
         service_name: Optional[str] = None,
         service_config: Optional[service_pb2.Service] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service_pb2.Service:
         r"""Creates a new service configuration (version) for a managed
@@ -1295,7 +1296,7 @@ class ServiceManagerAsyncClient:
         config_source: Optional[resources.ConfigSource] = None,
         validate_only: Optional[bool] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new service configuration (version) for a managed
@@ -1337,7 +1338,7 @@ class ServiceManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -1451,7 +1452,7 @@ class ServiceManagerAsyncClient:
         service_name: Optional[str] = None,
         filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServiceRolloutsAsyncPager:
         r"""Lists the history of the service configuration
@@ -1590,7 +1591,7 @@ class ServiceManagerAsyncClient:
         service_name: Optional[str] = None,
         rollout_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Rollout:
         r"""Gets a service configuration
@@ -1717,7 +1718,7 @@ class ServiceManagerAsyncClient:
         service_name: Optional[str] = None,
         rollout: Optional[resources.Rollout] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new service configuration rollout. Based on
@@ -1763,7 +1764,7 @@ class ServiceManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -1867,7 +1868,7 @@ class ServiceManagerAsyncClient:
         new_config: Optional[any_pb2.Any] = None,
         old_config: Optional[any_pb2.Any] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> servicemanager.GenerateConfigReportResponse:
         r"""Generates and returns a report (errors, warnings and changes
@@ -1991,14 +1992,9 @@ class ServiceManagerAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-service-management",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ServiceManagerAsyncClient",)
