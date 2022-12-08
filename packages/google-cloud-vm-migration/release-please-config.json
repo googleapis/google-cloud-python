@@ -5,6 +5,7 @@
       "release-type": "python",
       "extra-files": [
         "google/cloud/vmmigration/gapic_version.py",
+        "google/cloud/vmmigration_v1/gapic_version.py",
         {
           "type": "json",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.vmmigration.v1.json",

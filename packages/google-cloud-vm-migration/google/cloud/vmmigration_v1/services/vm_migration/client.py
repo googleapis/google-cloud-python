@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.vmmigration_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -619,7 +620,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSourcesPager:
         r"""Lists Sources in a given project and location.
@@ -735,7 +736,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.Source:
         r"""Gets details of a single Source.
@@ -839,7 +840,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         source: Optional[vmmigration.Source] = None,
         source_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new Source in a given project and location.
@@ -969,7 +970,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         source: Optional[vmmigration.Source] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single Source.
@@ -1097,7 +1098,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single Source.
@@ -1219,7 +1220,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         source: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.FetchInventoryResponse:
         r"""List remote source's inventory of VMs.
@@ -1327,7 +1328,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListUtilizationReportsPager:
         r"""Lists Utilization Reports of the given Source.
@@ -1443,7 +1444,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.UtilizationReport:
         r"""Gets a single Utilization Report.
@@ -1550,7 +1551,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         utilization_report: Optional[vmmigration.UtilizationReport] = None,
         utilization_report_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new UtilizationReport.
@@ -1692,7 +1693,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single Utilization Report.
@@ -1820,7 +1821,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDatacenterConnectorsPager:
         r"""Lists DatacenterConnectors in a given Source.
@@ -1940,7 +1941,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.DatacenterConnector:
         r"""Gets details of a single DatacenterConnector.
@@ -2050,7 +2051,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         datacenter_connector: Optional[vmmigration.DatacenterConnector] = None,
         datacenter_connector_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new DatacenterConnector in a given Source.
@@ -2193,7 +2194,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single DatacenterConnector.
@@ -2318,7 +2319,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         request: Optional[Union[vmmigration.UpgradeApplianceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Upgrades the appliance relate to this
@@ -2420,7 +2421,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         migrating_vm: Optional[vmmigration.MigratingVm] = None,
         migrating_vm_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new MigratingVm in a given Source.
@@ -2549,7 +2550,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMigratingVmsPager:
         r"""Lists MigratingVms in a given Source.
@@ -2665,7 +2666,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.MigratingVm:
         r"""Gets details of a single MigratingVm.
@@ -2769,7 +2770,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         migrating_vm: Optional[vmmigration.MigratingVm] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single MigratingVm.
@@ -2897,7 +2898,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single MigratingVm.
@@ -3021,7 +3022,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         migrating_vm: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Starts migration for a VM. Starts the process of
@@ -3141,7 +3142,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         request: Optional[Union[vmmigration.ResumeMigrationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Resumes a migration for a VM. When called on a paused
@@ -3244,7 +3245,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         request: Optional[Union[vmmigration.PauseMigrationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Pauses a migration for a VM. If cycle tasks are
@@ -3346,7 +3347,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         migrating_vm: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Marks a migration as completed, deleting migration
@@ -3469,7 +3470,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         clone_job: Optional[vmmigration.CloneJob] = None,
         clone_job_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Initiates a Clone of a specific migrating VM.
@@ -3610,7 +3611,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Initiates the cancellation of a running clone job.
@@ -3725,7 +3726,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCloneJobsPager:
         r"""Lists CloneJobs of a given migrating VM.
@@ -3841,7 +3842,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.CloneJob:
         r"""Gets details of a single CloneJob.
@@ -3955,7 +3956,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         cutover_job: Optional[vmmigration.CutoverJob] = None,
         cutover_job_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Initiates a Cutover of a specific migrating VM.
@@ -4088,7 +4089,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Initiates the cancellation of a running cutover job.
@@ -4203,7 +4204,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCutoverJobsPager:
         r"""Lists CutoverJobs of a given migrating VM.
@@ -4319,7 +4320,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.CutoverJob:
         r"""Gets details of a single CutoverJob.
@@ -4423,7 +4424,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListGroupsPager:
         r"""Lists Groups in a given project and location.
@@ -4539,7 +4540,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.Group:
         r"""Gets details of a single Group.
@@ -4642,7 +4643,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         group: Optional[vmmigration.Group] = None,
         group_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new Group in a given project and location.
@@ -4772,7 +4773,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         group: Optional[vmmigration.Group] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single Group.
@@ -4900,7 +4901,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single Group.
@@ -5022,7 +5023,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         group: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Adds a MigratingVm to a Group.
@@ -5139,7 +5140,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         group: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Removes a MigratingVm from a Group.
@@ -5254,7 +5255,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTargetProjectsPager:
         r"""Lists TargetProjects in a given project.
@@ -5373,7 +5374,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.TargetProject:
         r"""Gets details of a single TargetProject.
@@ -5479,7 +5480,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         target_project: Optional[vmmigration.TargetProject] = None,
         target_project_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new TargetProject in a given project.
@@ -5612,7 +5613,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         target_project: Optional[vmmigration.TargetProject] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single TargetProject.
@@ -5743,7 +5744,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single TargetProject.
@@ -5876,14 +5877,9 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-vm-migration",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("VmMigrationClient",)

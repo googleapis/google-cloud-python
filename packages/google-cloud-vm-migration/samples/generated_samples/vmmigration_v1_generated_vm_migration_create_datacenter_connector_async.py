@@ -49,7 +49,7 @@ async def sample_create_datacenter_connector():
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = (await operation).result()
 
     # Handle the response
     print(response)
