@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.memcache_v1beta2 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -471,7 +472,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstancesPager:
         r"""Lists Instances in a given location.
@@ -588,7 +589,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_memcache.Instance:
         r"""Gets details of a single Instance.
@@ -692,7 +693,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         instance_id: Optional[str] = None,
         resource: Optional[cloud_memcache.Instance] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new Instance in a given location.
@@ -846,7 +847,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         resource: Optional[cloud_memcache.Instance] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates an existing Instance in a given project and
@@ -984,7 +985,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         parameters: Optional[cloud_memcache.MemcacheParameters] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the defined Memcached parameters for an existing
@@ -1121,7 +1122,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single Instance.
@@ -1249,7 +1250,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         node_ids: Optional[MutableSequence[str]] = None,
         apply_all: Optional[bool] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""``ApplyParameters`` restarts the set of specified nodes in order
@@ -1393,7 +1394,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         node_ids: Optional[MutableSequence[str]] = None,
         apply_all: Optional[bool] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates software on the selected nodes of the
@@ -1541,7 +1542,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         ] = None,
         schedule_time: Optional[timestamp_pb2.Timestamp] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Performs the apply phase of the RescheduleMaintenance
@@ -1693,7 +1694,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1747,7 +1748,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1801,7 +1802,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -1856,7 +1857,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -1910,7 +1911,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1964,7 +1965,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -2014,14 +2015,9 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         return response
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-memcache",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("CloudMemcacheClient",)
