@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,30 +13,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import abc
-import typing
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
-from google.api_core import exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
-from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
-from google.protobuf import empty_pb2 as empty  # type: ignore
-import pkg_resources
+import google.api_core
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
+import google.auth  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.oauth2 import service_account  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 
-from google import auth  # type: ignore
+from google.cloud.secretmanager_v1beta1 import gapic_version as package_version
 from google.cloud.secretmanager_v1beta1.types import resources, service
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-secret-manager",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 class SecretManagerServiceTransport(abc.ABC):
@@ -45,21 +40,26 @@ class SecretManagerServiceTransport(abc.ABC):
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
+    DEFAULT_HOST: str = "secretmanager.googleapis.com"
+
     def __init__(
         self,
         *,
-        host: str = "secretmanager.googleapis.com",
-        credentials: credentials.Credentials = None,
-        credentials_file: typing.Optional[str] = None,
-        scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
-        quota_project_id: typing.Optional[str] = None,
+        host: str = DEFAULT_HOST,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+        api_audience: Optional[str] = None,
         **kwargs,
     ) -> None:
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -68,7 +68,7 @@ class SecretManagerServiceTransport(abc.ABC):
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is mutually exclusive with credentials.
-            scope (Optional[Sequence[str]]): A list of scopes.
+            scopes (Optional[Sequence[str]]): A list of scopes.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
@@ -76,34 +76,51 @@ class SecretManagerServiceTransport(abc.ABC):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                be used for service account credentials.
         """
-        # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ":" not in host:
-            host += ":443"
-        self._host = host
+
+        scopes_kwargs = {"scopes": scopes, "default_scopes": self.AUTH_SCOPES}
 
         # Save the scopes.
-        self._scopes = scopes or self.AUTH_SCOPES
+        self._scopes = scopes
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise exceptions.DuplicateCredentialArgs(
+            raise core_exceptions.DuplicateCredentialArgs(
                 "'credentials_file' and 'credentials' are mutually exclusive"
             )
 
         if credentials_file is not None:
-            credentials, _ = auth.load_credentials_from_file(
-                credentials_file, scopes=self._scopes, quota_project_id=quota_project_id
+            credentials, _ = google.auth.load_credentials_from_file(
+                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
             )
-
         elif credentials is None:
-            credentials, _ = auth.default(
-                scopes=self._scopes, quota_project_id=quota_project_id
+            credentials, _ = google.auth.default(
+                **scopes_kwargs, quota_project_id=quota_project_id
             )
+            # Don't apply audience if the credentials file passed from user.
+            if hasattr(credentials, "with_gdch_audience"):
+                credentials = credentials.with_gdch_audience(
+                    api_audience if api_audience else host
+                )
+
+        # If the credentials are service account credentials, then always try to use self signed JWT.
+        if (
+            always_use_jwt_access
+            and isinstance(credentials, service_account.Credentials)
+            and hasattr(service_account.Credentials, "with_always_use_jwt_access")
+        ):
+            credentials = credentials.with_always_use_jwt_access(True)
 
         # Save the credentials.
         self._credentials = credentials
+
+        # Save the hostname. Default to port 443 (HTTPS) if none is specified.
+        if ":" not in host:
+            host += ":443"
+        self._host = host
 
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
@@ -155,8 +172,8 @@ class SecretManagerServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.ServiceUnavailable,
-                        exceptions.Unknown,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
                     ),
                     deadline=60.0,
                 ),
@@ -195,72 +212,76 @@ class SecretManagerServiceTransport(abc.ABC):
             ),
         }
 
+    def close(self):
+        """Closes resources associated with the transport.
+
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
+        """
+        raise NotImplementedError()
+
     @property
     def list_secrets(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.ListSecretsRequest],
-        typing.Union[
-            service.ListSecretsResponse, typing.Awaitable[service.ListSecretsResponse]
-        ],
+        Union[service.ListSecretsResponse, Awaitable[service.ListSecretsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_secret(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.CreateSecretRequest],
-        typing.Union[resources.Secret, typing.Awaitable[resources.Secret]],
+        Union[resources.Secret, Awaitable[resources.Secret]],
     ]:
         raise NotImplementedError()
 
     @property
     def add_secret_version(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.AddSecretVersionRequest],
-        typing.Union[
-            resources.SecretVersion, typing.Awaitable[resources.SecretVersion]
-        ],
+        Union[resources.SecretVersion, Awaitable[resources.SecretVersion]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_secret(
         self,
-    ) -> typing.Callable[
-        [service.GetSecretRequest],
-        typing.Union[resources.Secret, typing.Awaitable[resources.Secret]],
+    ) -> Callable[
+        [service.GetSecretRequest], Union[resources.Secret, Awaitable[resources.Secret]]
     ]:
         raise NotImplementedError()
 
     @property
     def update_secret(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.UpdateSecretRequest],
-        typing.Union[resources.Secret, typing.Awaitable[resources.Secret]],
+        Union[resources.Secret, Awaitable[resources.Secret]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_secret(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.DeleteSecretRequest],
-        typing.Union[empty.Empty, typing.Awaitable[empty.Empty]],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 
     @property
     def list_secret_versions(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.ListSecretVersionsRequest],
-        typing.Union[
+        Union[
             service.ListSecretVersionsResponse,
-            typing.Awaitable[service.ListSecretVersionsResponse],
+            Awaitable[service.ListSecretVersionsResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -268,22 +289,20 @@ class SecretManagerServiceTransport(abc.ABC):
     @property
     def get_secret_version(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.GetSecretVersionRequest],
-        typing.Union[
-            resources.SecretVersion, typing.Awaitable[resources.SecretVersion]
-        ],
+        Union[resources.SecretVersion, Awaitable[resources.SecretVersion]],
     ]:
         raise NotImplementedError()
 
     @property
     def access_secret_version(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.AccessSecretVersionRequest],
-        typing.Union[
+        Union[
             service.AccessSecretVersionResponse,
-            typing.Awaitable[service.AccessSecretVersionResponse],
+            Awaitable[service.AccessSecretVersionResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -291,64 +310,62 @@ class SecretManagerServiceTransport(abc.ABC):
     @property
     def disable_secret_version(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.DisableSecretVersionRequest],
-        typing.Union[
-            resources.SecretVersion, typing.Awaitable[resources.SecretVersion]
-        ],
+        Union[resources.SecretVersion, Awaitable[resources.SecretVersion]],
     ]:
         raise NotImplementedError()
 
     @property
     def enable_secret_version(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.EnableSecretVersionRequest],
-        typing.Union[
-            resources.SecretVersion, typing.Awaitable[resources.SecretVersion]
-        ],
+        Union[resources.SecretVersion, Awaitable[resources.SecretVersion]],
     ]:
         raise NotImplementedError()
 
     @property
     def destroy_secret_version(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.DestroySecretVersionRequest],
-        typing.Union[
-            resources.SecretVersion, typing.Awaitable[resources.SecretVersion]
-        ],
+        Union[resources.SecretVersion, Awaitable[resources.SecretVersion]],
     ]:
         raise NotImplementedError()
 
     @property
     def set_iam_policy(
         self,
-    ) -> typing.Callable[
-        [iam_policy.SetIamPolicyRequest],
-        typing.Union[policy.Policy, typing.Awaitable[policy.Policy]],
+    ) -> Callable[
+        [iam_policy_pb2.SetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> typing.Callable[
-        [iam_policy.GetIamPolicyRequest],
-        typing.Union[policy.Policy, typing.Awaitable[policy.Policy]],
+    ) -> Callable[
+        [iam_policy_pb2.GetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
     ]:
         raise NotImplementedError()
 
     @property
     def test_iam_permissions(
         self,
-    ) -> typing.Callable[
-        [iam_policy.TestIamPermissionsRequest],
-        typing.Union[
-            iam_policy.TestIamPermissionsResponse,
-            typing.Awaitable[iam_policy.TestIamPermissionsResponse],
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        Union[
+            iam_policy_pb2.TestIamPermissionsResponse,
+            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
         ],
     ]:
+        raise NotImplementedError()
+
+    @property
+    def kind(self) -> str:
         raise NotImplementedError()
 
 

@@ -21,6 +21,9 @@ deep-remove-regex:
 deep-copy-regex:
   - source: /google/cloud/secretmanager/(v.*)/.*-py/(.*)
     dest: /owl-bot-staging/$1/$2
+  - source: /google/cloud/secrets/(v.*)/.*-py/(.*)
+    dest: /owl-bot-staging/$1/$2
+
 
 begin-after-commit-hash: 219c70cd9e899bc85b467a0557b3237d4c0a41ca
 

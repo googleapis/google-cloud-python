@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.secretmanager import gapic_version as package_version
 
-from .services.secret_manager_service import SecretManagerServiceClient
+__version__ = package_version.__version__
+
+
+from .services.secret_manager_service import (
+    SecretManagerServiceAsyncClient,
+    SecretManagerServiceClient,
+)
 from .types.resources import Replication, Secret, SecretPayload, SecretVersion
 from .types.service import (
     AccessSecretVersionRequest,
@@ -36,6 +42,7 @@ from .types.service import (
 )
 
 __all__ = (
+    "SecretManagerServiceAsyncClient",
     "AccessSecretVersionRequest",
     "AccessSecretVersionResponse",
     "AddSecretVersionRequest",
@@ -52,8 +59,8 @@ __all__ = (
     "ListSecretsResponse",
     "Replication",
     "Secret",
+    "SecretManagerServiceClient",
     "SecretPayload",
     "SecretVersion",
     "UpdateSecretRequest",
-    "SecretManagerServiceClient",
 )

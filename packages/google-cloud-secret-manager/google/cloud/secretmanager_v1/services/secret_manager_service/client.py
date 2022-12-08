@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.secretmanager_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -493,7 +494,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSecretsPager:
         r"""Lists [Secrets][google.cloud.secretmanager.v1.Secret].
@@ -612,7 +613,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         secret_id: Optional[str] = None,
         secret: Optional[resources.Secret] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Secret:
         r"""Creates a new [Secret][google.cloud.secretmanager.v1.Secret]
@@ -747,7 +748,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         parent: Optional[str] = None,
         payload: Optional[resources.SecretPayload] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.SecretVersion:
         r"""Creates a new
@@ -864,7 +865,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Secret:
         r"""Gets metadata for a given
@@ -974,7 +975,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         secret: Optional[resources.Secret] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Secret:
         r"""Updates metadata of an existing
@@ -1092,7 +1093,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a [Secret][google.cloud.secretmanager.v1.Secret].
@@ -1183,7 +1184,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSecretVersionsPager:
         r"""Lists
@@ -1303,7 +1304,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.SecretVersion:
         r"""Gets metadata for a
@@ -1415,7 +1416,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.AccessSecretVersionResponse:
         r"""Accesses a
@@ -1528,7 +1529,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.SecretVersion:
         r"""Disables a
@@ -1639,7 +1640,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.SecretVersion:
         r"""Enables a
@@ -1750,7 +1751,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.SecretVersion:
         r"""Destroys a
@@ -1861,7 +1862,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the access control policy on the specified secret. Replaces
@@ -2009,7 +2010,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the access control policy for a secret.
@@ -2153,7 +2154,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns permissions that a caller has for the specified secret.
@@ -2251,14 +2252,9 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-secret-manager",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("SecretManagerServiceClient",)

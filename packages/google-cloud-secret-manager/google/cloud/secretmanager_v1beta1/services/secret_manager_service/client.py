@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,27 +13,43 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-import pkg_resources
+
+from google.cloud.secretmanager_v1beta1 import gapic_version as package_version
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.secretmanager_v1beta1.services.secret_manager_service import pagers
 from google.cloud.secretmanager_v1beta1.types import resources, service
@@ -60,9 +75,9 @@ class SecretManagerServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[SecretManagerServiceTransport]:
-        """Return an appropriate transport class.
+        """Returns an appropriate transport class.
 
         Args:
             label: The name of the desired transport. If none is
@@ -92,7 +107,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
+        """Converts api endpoint to mTLS endpoint.
+
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
         "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
         Args:
@@ -126,7 +142,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -143,7 +160,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -162,10 +179,11 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     @property
     def transport(self) -> SecretManagerServiceTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
-            SecretManagerServiceTransport: The transport used by the client instance.
+            SecretManagerServiceTransport: The transport used by the client
+                instance.
         """
         return self._transport
 
@@ -174,7 +192,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         project: str,
         secret: str,
     ) -> str:
-        """Return a fully-qualified secret string."""
+        """Returns a fully-qualified secret string."""
         return "projects/{project}/secrets/{secret}".format(
             project=project,
             secret=secret,
@@ -182,7 +200,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     @staticmethod
     def parse_secret_path(path: str) -> Dict[str, str]:
-        """Parse a secret path into its component segments."""
+        """Parses a secret path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/secrets/(?P<secret>.+?)$", path)
         return m.groupdict() if m else {}
 
@@ -192,7 +210,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         secret: str,
         secret_version: str,
     ) -> str:
-        """Return a fully-qualified secret_version string."""
+        """Returns a fully-qualified secret_version string."""
         return "projects/{project}/secrets/{secret}/versions/{secret_version}".format(
             project=project,
             secret=secret,
@@ -201,7 +219,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     @staticmethod
     def parse_secret_version_path(path: str) -> Dict[str, str]:
-        """Parse a secret_version path into its component segments."""
+        """Parses a secret_version path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/secrets/(?P<secret>.+?)/versions/(?P<secret_version>.+?)$",
             path,
@@ -212,7 +230,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
     def common_billing_account_path(
         billing_account: str,
     ) -> str:
-        """Return a fully-qualified billing_account string."""
+        """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
         )
@@ -227,7 +245,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
     def common_folder_path(
         folder: str,
     ) -> str:
-        """Return a fully-qualified folder string."""
+        """Returns a fully-qualified folder string."""
         return "folders/{folder}".format(
             folder=folder,
         )
@@ -242,7 +260,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
     def common_organization_path(
         organization: str,
     ) -> str:
-        """Return a fully-qualified organization string."""
+        """Returns a fully-qualified organization string."""
         return "organizations/{organization}".format(
             organization=organization,
         )
@@ -257,7 +275,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
     def common_project_path(
         project: str,
     ) -> str:
-        """Return a fully-qualified project string."""
+        """Returns a fully-qualified project string."""
         return "projects/{project}".format(
             project=project,
         )
@@ -273,7 +291,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         project: str,
         location: str,
     ) -> str:
-        """Return a fully-qualified location string."""
+        """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
             project=project,
             location=location,
@@ -285,15 +303,82 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
         return m.groupdict() if m else {}
 
+    @classmethod
+    def get_mtls_endpoint_and_cert_source(
+        cls, client_options: Optional[client_options_lib.ClientOptions] = None
+    ):
+        """Return the API endpoint and client cert source for mutual TLS.
+
+        The client cert source is determined in the following order:
+        (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
+        client cert source is None.
+        (2) if `client_options.client_cert_source` is provided, use the provided one; if the
+        default client cert source exists, use the default one; otherwise the client cert
+        source is None.
+
+        The API endpoint is determined in the following order:
+        (1) if `client_options.api_endpoint` if provided, use the provided one.
+        (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
+        default mTLS endpoint; if the environment variabel is "never", use the default API
+        endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
+        use the default API endpoint.
+
+        More details can be found at https://google.aip.dev/auth/4114.
+
+        Args:
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+                client. Only the `api_endpoint` and `client_cert_source` properties may be used
+                in this method.
+
+        Returns:
+            Tuple[str, Callable[[], Tuple[bytes, bytes]]]: returns the API endpoint and the
+                client cert source to use.
+
+        Raises:
+            google.auth.exceptions.MutualTLSChannelError: If any errors happen.
+        """
+        if client_options is None:
+            client_options = client_options_lib.ClientOptions()
+        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
+        if use_client_cert not in ("true", "false"):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        if use_mtls_endpoint not in ("auto", "never", "always"):
+            raise MutualTLSChannelError(
+                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+            )
+
+        # Figure out the client cert source to use.
+        client_cert_source = None
+        if use_client_cert == "true":
+            if client_options.client_cert_source:
+                client_cert_source = client_options.client_cert_source
+            elif mtls.has_default_client_cert_source():
+                client_cert_source = mtls.default_client_cert_source()
+
+        # Figure out which api endpoint to use.
+        if client_options.api_endpoint is not None:
+            api_endpoint = client_options.api_endpoint
+        elif use_mtls_endpoint == "always" or (
+            use_mtls_endpoint == "auto" and client_cert_source
+        ):
+            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
+        else:
+            api_endpoint = cls.DEFAULT_ENDPOINT
+
+        return api_endpoint, client_cert_source
+
     def __init__(
         self,
         *,
-        credentials: Optional[credentials.Credentials] = None,
-        transport: Union[str, SecretManagerServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        transport: Optional[Union[str, SecretManagerServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the secret manager service client.
+        """Instantiates the secret manager service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -304,7 +389,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
             transport (Union[str, SecretManagerServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -334,59 +419,44 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
-        # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
+            client_options
         )
 
-        client_cert_source_func = None
-        is_mtls = False
-        if use_client_cert:
-            if client_options.client_cert_source:
-                is_mtls = True
-                client_cert_source_func = client_options.client_cert_source
-            else:
-                is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source_func = (
-                    mtls.default_client_cert_source() if is_mtls else None
-                )
-
-        # Figure out which api endpoint to use.
-        if client_options.api_endpoint is not None:
-            api_endpoint = client_options.api_endpoint
-        else:
-            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
-            if use_mtls_env == "never":
-                api_endpoint = self.DEFAULT_ENDPOINT
-            elif use_mtls_env == "always":
-                api_endpoint = self.DEFAULT_MTLS_ENDPOINT
-            elif use_mtls_env == "auto":
-                api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
-                )
-            else:
-                raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
-                )
+        api_key_value = getattr(client_options, "api_key", None)
+        if api_key_value and credentials:
+            raise ValueError(
+                "client_options.api_key and credentials are mutually exclusive"
+            )
 
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
         if isinstance(transport, SecretManagerServiceTransport):
             # transport is a SecretManagerServiceTransport instance.
-            if credentials or client_options.credentials_file:
+            if credentials or client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
                     "provide its credentials directly."
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its scopes directly."
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
                 )
             self._transport = transport
         else:
+            import google.auth._default  # type: ignore
+
+            if api_key_value and hasattr(
+                google.auth._default, "get_api_key_credentials"
+            ):
+                credentials = google.auth._default.get_api_key_credentials(
+                    api_key_value
+                )
+
             Transport = type(self).get_transport_class(transport)
             self._transport = Transport(
                 credentials=credentials,
@@ -396,21 +466,50 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
+                api_audience=client_options.api_audience,
             )
 
     def list_secrets(
         self,
-        request: Union[service.ListSecretsRequest, dict] = None,
+        request: Optional[Union[service.ListSecretsRequest, dict]] = None,
         *,
-        parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSecretsPager:
         r"""Lists [Secrets][google.cloud.secrets.v1beta1.Secret].
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import secretmanager_v1beta1
+
+            def sample_list_secrets():
+                # Create a client
+                client = secretmanager_v1beta1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1beta1.ListSecretsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_secrets(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
-            request (google.cloud.secretmanager_v1beta1.types.ListSecretsRequest):
+            request (Union[google.cloud.secretmanager_v1beta1.types.ListSecretsRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.ListSecrets][google.cloud.secrets.v1beta1.SecretManagerService.ListSecrets].
             parent (str):
@@ -421,7 +520,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -438,7 +536,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -453,10 +551,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.ListSecretsRequest):
             request = service.ListSecretsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -492,21 +588,48 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     def create_secret(
         self,
-        request: Union[service.CreateSecretRequest, dict] = None,
+        request: Optional[Union[service.CreateSecretRequest, dict]] = None,
         *,
-        parent: str = None,
-        secret_id: str = None,
-        secret: resources.Secret = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        parent: Optional[str] = None,
+        secret_id: Optional[str] = None,
+        secret: Optional[resources.Secret] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Secret:
         r"""Creates a new [Secret][google.cloud.secrets.v1beta1.Secret]
         containing no
         [SecretVersions][google.cloud.secrets.v1beta1.SecretVersion].
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import secretmanager_v1beta1
+
+            def sample_create_secret():
+                # Create a client
+                client = secretmanager_v1beta1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1beta1.CreateSecretRequest(
+                    parent="parent_value",
+                    secret_id="secret_id_value",
+                )
+
+                # Make the request
+                response = client.create_secret(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
-            request (google.cloud.secretmanager_v1beta1.types.CreateSecretRequest):
+            request (Union[google.cloud.secretmanager_v1beta1.types.CreateSecretRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.CreateSecret][google.cloud.secrets.v1beta1.SecretManagerService.CreateSecret].
             parent (str):
@@ -536,7 +659,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``secret`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -555,7 +677,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, secret_id, secret])
         if request is not None and has_flattened_params:
@@ -570,10 +692,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.CreateSecretRequest):
             request = service.CreateSecretRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if secret_id is not None:
@@ -604,12 +724,12 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     def add_secret_version(
         self,
-        request: Union[service.AddSecretVersionRequest, dict] = None,
+        request: Optional[Union[service.AddSecretVersionRequest, dict]] = None,
         *,
-        parent: str = None,
-        payload: resources.SecretPayload = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        parent: Optional[str] = None,
+        payload: Optional[resources.SecretPayload] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.SecretVersion:
         r"""Creates a new
@@ -617,8 +737,34 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         containing secret data and attaches it to an existing
         [Secret][google.cloud.secrets.v1beta1.Secret].
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import secretmanager_v1beta1
+
+            def sample_add_secret_version():
+                # Create a client
+                client = secretmanager_v1beta1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1beta1.AddSecretVersionRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.add_secret_version(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
-            request (google.cloud.secretmanager_v1beta1.types.AddSecretVersionRequest):
+            request (Union[google.cloud.secretmanager_v1beta1.types.AddSecretVersionRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.AddSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.AddSecretVersion].
             parent (str):
@@ -638,7 +784,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``payload`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -652,7 +797,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, payload])
         if request is not None and has_flattened_params:
@@ -667,10 +812,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.AddSecretVersionRequest):
             request = service.AddSecretVersionRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if payload is not None:
@@ -699,18 +842,44 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     def get_secret(
         self,
-        request: Union[service.GetSecretRequest, dict] = None,
+        request: Optional[Union[service.GetSecretRequest, dict]] = None,
         *,
-        name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Secret:
         r"""Gets metadata for a given
         [Secret][google.cloud.secrets.v1beta1.Secret].
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import secretmanager_v1beta1
+
+            def sample_get_secret():
+                # Create a client
+                client = secretmanager_v1beta1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1beta1.GetSecretRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_secret(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
-            request (google.cloud.secretmanager_v1beta1.types.GetSecretRequest):
+            request (Union[google.cloud.secretmanager_v1beta1.types.GetSecretRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.GetSecret][google.cloud.secrets.v1beta1.SecretManagerService.GetSecret].
             name (str):
@@ -721,7 +890,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -740,7 +908,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -755,10 +923,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.GetSecretRequest):
             request = service.GetSecretRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -785,19 +951,44 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     def update_secret(
         self,
-        request: service.UpdateSecretRequest = None,
+        request: Optional[Union[service.UpdateSecretRequest, dict]] = None,
         *,
-        secret: resources.Secret = None,
-        update_mask: field_mask.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        secret: Optional[resources.Secret] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Secret:
         r"""Updates metadata of an existing
         [Secret][google.cloud.secrets.v1beta1.Secret].
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import secretmanager_v1beta1
+
+            def sample_update_secret():
+                # Create a client
+                client = secretmanager_v1beta1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1beta1.UpdateSecretRequest(
+                )
+
+                # Make the request
+                response = client.update_secret(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
-            request (google.cloud.secretmanager_v1beta1.types.UpdateSecretRequest):
+            request (Union[google.cloud.secretmanager_v1beta1.types.UpdateSecretRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.UpdateSecret][google.cloud.secrets.v1beta1.SecretManagerService.UpdateSecret].
             secret (google.cloud.secretmanager_v1beta1.types.Secret):
@@ -814,7 +1005,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -833,7 +1023,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([secret, update_mask])
         if request is not None and has_flattened_params:
@@ -848,10 +1038,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.UpdateSecretRequest):
             request = service.UpdateSecretRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if secret is not None:
                 request.secret = secret
             if update_mask is not None:
@@ -882,17 +1070,40 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     def delete_secret(
         self,
-        request: Union[service.DeleteSecretRequest, dict] = None,
+        request: Optional[Union[service.DeleteSecretRequest, dict]] = None,
         *,
-        name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a [Secret][google.cloud.secrets.v1beta1.Secret].
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import secretmanager_v1beta1
+
+            def sample_delete_secret():
+                # Create a client
+                client = secretmanager_v1beta1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1beta1.DeleteSecretRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_secret(request=request)
+
         Args:
-            request (google.cloud.secretmanager_v1beta1.types.DeleteSecretRequest):
+            request (Union[google.cloud.secretmanager_v1beta1.types.DeleteSecretRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.DeleteSecret][google.cloud.secrets.v1beta1.SecretManagerService.DeleteSecret].
             name (str):
@@ -903,7 +1114,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -911,7 +1121,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -926,10 +1136,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.DeleteSecretRequest):
             request = service.DeleteSecretRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -953,19 +1161,46 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     def list_secret_versions(
         self,
-        request: Union[service.ListSecretVersionsRequest, dict] = None,
+        request: Optional[Union[service.ListSecretVersionsRequest, dict]] = None,
         *,
-        parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSecretVersionsPager:
         r"""Lists
         [SecretVersions][google.cloud.secrets.v1beta1.SecretVersion].
         This call does not return secret data.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import secretmanager_v1beta1
+
+            def sample_list_secret_versions():
+                # Create a client
+                client = secretmanager_v1beta1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1beta1.ListSecretVersionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_secret_versions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
-            request (google.cloud.secretmanager_v1beta1.types.ListSecretVersionsRequest):
+            request (Union[google.cloud.secretmanager_v1beta1.types.ListSecretVersionsRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.ListSecretVersions][google.cloud.secrets.v1beta1.SecretManagerService.ListSecretVersions].
             parent (str):
@@ -978,7 +1213,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -995,7 +1229,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1010,10 +1244,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.ListSecretVersionsRequest):
             request = service.ListSecretVersionsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -1049,11 +1281,11 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     def get_secret_version(
         self,
-        request: Union[service.GetSecretVersionRequest, dict] = None,
+        request: Optional[Union[service.GetSecretVersionRequest, dict]] = None,
         *,
-        name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.SecretVersion:
         r"""Gets metadata for a
@@ -1063,8 +1295,34 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         ``latest``
         [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion].
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import secretmanager_v1beta1
+
+            def sample_get_secret_version():
+                # Create a client
+                client = secretmanager_v1beta1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1beta1.GetSecretVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_secret_version(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
-            request (google.cloud.secretmanager_v1beta1.types.GetSecretVersionRequest):
+            request (Union[google.cloud.secretmanager_v1beta1.types.GetSecretVersionRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.GetSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.GetSecretVersion].
             name (str):
@@ -1078,7 +1336,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1092,7 +1349,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1107,10 +1364,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.GetSecretVersionRequest):
             request = service.GetSecretVersionRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1137,11 +1392,11 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     def access_secret_version(
         self,
-        request: Union[service.AccessSecretVersionRequest, dict] = None,
+        request: Optional[Union[service.AccessSecretVersionRequest, dict]] = None,
         *,
-        name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.AccessSecretVersionResponse:
         r"""Accesses a
@@ -1152,8 +1407,34 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         ``latest``
         [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion].
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import secretmanager_v1beta1
+
+            def sample_access_secret_version():
+                # Create a client
+                client = secretmanager_v1beta1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1beta1.AccessSecretVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.access_secret_version(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
-            request (google.cloud.secretmanager_v1beta1.types.AccessSecretVersionRequest):
+            request (Union[google.cloud.secretmanager_v1beta1.types.AccessSecretVersionRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.AccessSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.AccessSecretVersion].
             name (str):
@@ -1164,7 +1445,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1178,7 +1458,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1193,10 +1473,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.AccessSecretVersionRequest):
             request = service.AccessSecretVersionRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1223,11 +1501,11 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     def disable_secret_version(
         self,
-        request: Union[service.DisableSecretVersionRequest, dict] = None,
+        request: Optional[Union[service.DisableSecretVersionRequest, dict]] = None,
         *,
-        name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.SecretVersion:
         r"""Disables a
@@ -1238,8 +1516,34 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion] to
         [DISABLED][google.cloud.secrets.v1beta1.SecretVersion.State.DISABLED].
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import secretmanager_v1beta1
+
+            def sample_disable_secret_version():
+                # Create a client
+                client = secretmanager_v1beta1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1beta1.DisableSecretVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.disable_secret_version(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
-            request (google.cloud.secretmanager_v1beta1.types.DisableSecretVersionRequest):
+            request (Union[google.cloud.secretmanager_v1beta1.types.DisableSecretVersionRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.DisableSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.DisableSecretVersion].
             name (str):
@@ -1251,7 +1555,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1265,7 +1568,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1280,10 +1583,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.DisableSecretVersionRequest):
             request = service.DisableSecretVersionRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1310,11 +1611,11 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     def enable_secret_version(
         self,
-        request: Union[service.EnableSecretVersionRequest, dict] = None,
+        request: Optional[Union[service.EnableSecretVersionRequest, dict]] = None,
         *,
-        name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.SecretVersion:
         r"""Enables a
@@ -1325,8 +1626,34 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion] to
         [ENABLED][google.cloud.secrets.v1beta1.SecretVersion.State.ENABLED].
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import secretmanager_v1beta1
+
+            def sample_enable_secret_version():
+                # Create a client
+                client = secretmanager_v1beta1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1beta1.EnableSecretVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.enable_secret_version(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
-            request (google.cloud.secretmanager_v1beta1.types.EnableSecretVersionRequest):
+            request (Union[google.cloud.secretmanager_v1beta1.types.EnableSecretVersionRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.EnableSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.EnableSecretVersion].
             name (str):
@@ -1338,7 +1665,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1352,7 +1678,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1367,10 +1693,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.EnableSecretVersionRequest):
             request = service.EnableSecretVersionRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1397,11 +1721,11 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     def destroy_secret_version(
         self,
-        request: Union[service.DestroySecretVersionRequest, dict] = None,
+        request: Optional[Union[service.DestroySecretVersionRequest, dict]] = None,
         *,
-        name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.SecretVersion:
         r"""Destroys a
@@ -1413,8 +1737,34 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         [DESTROYED][google.cloud.secrets.v1beta1.SecretVersion.State.DESTROYED]
         and irrevocably destroys the secret data.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import secretmanager_v1beta1
+
+            def sample_destroy_secret_version():
+                # Create a client
+                client = secretmanager_v1beta1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1beta1.DestroySecretVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.destroy_secret_version(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
-            request (google.cloud.secretmanager_v1beta1.types.DestroySecretVersionRequest):
+            request (Union[google.cloud.secretmanager_v1beta1.types.DestroySecretVersionRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.DestroySecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.DestroySecretVersion].
             name (str):
@@ -1426,7 +1776,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1440,7 +1789,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1455,10 +1804,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.DestroySecretVersionRequest):
             request = service.DestroySecretVersionRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1485,12 +1832,12 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     def set_iam_policy(
         self,
-        request: Union[iam_policy.SetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    ) -> policy_pb2.Policy:
         r"""Sets the access control policy on the specified secret. Replaces
         any existing policy.
 
@@ -1499,11 +1846,37 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         enforced according to the policy set on the associated
         [Secret][google.cloud.secrets.v1beta1.Secret].
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import secretmanager_v1beta1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = secretmanager_v1beta1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = iam_policy_pb2.SetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
-            request (google.iam.v1.iam_policy_pb2.SetIamPolicyRequest):
+            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
                 method.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1512,21 +1885,26 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         Returns:
             google.iam.v1.policy_pb2.Policy:
-                Defines an Identity and Access Management (IAM) policy. It is used to
-                   specify access control policies for Cloud Platform
-                   resources.
+                An Identity and Access Management (IAM) policy, which specifies access
+                   controls for Google Cloud resources.
 
                    A Policy is a collection of bindings. A binding binds
-                   one or more members to a single role. Members can be
-                   user accounts, service accounts, Google groups, and
-                   domains (such as G Suite). A role is a named list of
-                   permissions (defined by IAM or configured by users).
-                   A binding can optionally specify a condition, which
-                   is a logic expression that further constrains the
-                   role binding based on attributes about the request
-                   and/or target resource.
+                   one or more members, or principals, to a single role.
+                   Principals can be user accounts, service accounts,
+                   Google groups, and domains (such as G Suite). A role
+                   is a named list of permissions; each role can be an
+                   IAM predefined role or a user-created custom role.
 
-                   **JSON Example**
+                   For some types of Google Cloud resources, a binding
+                   can also specify a condition, which is a logical
+                   expression that allows access to a resource only if
+                   the expression evaluates to true. A condition can add
+                   constraints based on attributes of the request, the
+                   resource, or both. To learn which resources support
+                   conditions in their IAM policies, see the [IAM
+                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+
+                   **JSON example:**
 
                       {
                          "bindings": [
@@ -1541,17 +1919,17 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
                             }, { "role":
                             "roles/resourcemanager.organizationViewer",
-                            "members": ["user:eve@example.com"],
+                            "members": [ "user:eve@example.com" ],
                             "condition": { "title": "expirable access",
                             "description": "Does not grant access after
                             Sep 2020", "expression": "request.time <
                             timestamp('2020-10-01T00:00:00.000Z')", } }
 
-                         ]
+                         ], "etag": "BwWWja0YfJA=", "version": 3
 
                       }
 
-                   **YAML Example**
+                   **YAML example:**
 
                       bindings: - members: - user:\ mike@example.com -
                       group:\ admins@example.com - domain:google.com -
@@ -1562,22 +1940,22 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                       condition: title: expirable access description:
                       Does not grant access after Sep 2020 expression:
                       request.time <
-                      timestamp('2020-10-01T00:00:00.000Z')
+                      timestamp('2020-10-01T00:00:00.000Z') etag:
+                      BwWWja0YfJA= version: 3
 
                    For a description of IAM and its features, see the
-                   [IAM developer's
-                   guide](\ https://cloud.google.com/iam/docs).
+                   [IAM
+                   documentation](\ https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
-
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.SetIamPolicyRequest(**request)
+            request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.SetIamPolicyRequest()
+            request = iam_policy_pb2.SetIamPolicyRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1602,21 +1980,47 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     def get_iam_policy(
         self,
-        request: Union[iam_policy.GetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    ) -> policy_pb2.Policy:
         r"""Gets the access control policy for a secret.
         Returns empty policy if the secret exists and does not
         have a policy set.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import secretmanager_v1beta1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = secretmanager_v1beta1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = iam_policy_pb2.GetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
-            request (google.iam.v1.iam_policy_pb2.GetIamPolicyRequest):
+            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
                 The request object. Request message for `GetIamPolicy`
                 method.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1625,21 +2029,26 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         Returns:
             google.iam.v1.policy_pb2.Policy:
-                Defines an Identity and Access Management (IAM) policy. It is used to
-                   specify access control policies for Cloud Platform
-                   resources.
+                An Identity and Access Management (IAM) policy, which specifies access
+                   controls for Google Cloud resources.
 
                    A Policy is a collection of bindings. A binding binds
-                   one or more members to a single role. Members can be
-                   user accounts, service accounts, Google groups, and
-                   domains (such as G Suite). A role is a named list of
-                   permissions (defined by IAM or configured by users).
-                   A binding can optionally specify a condition, which
-                   is a logic expression that further constrains the
-                   role binding based on attributes about the request
-                   and/or target resource.
+                   one or more members, or principals, to a single role.
+                   Principals can be user accounts, service accounts,
+                   Google groups, and domains (such as G Suite). A role
+                   is a named list of permissions; each role can be an
+                   IAM predefined role or a user-created custom role.
 
-                   **JSON Example**
+                   For some types of Google Cloud resources, a binding
+                   can also specify a condition, which is a logical
+                   expression that allows access to a resource only if
+                   the expression evaluates to true. A condition can add
+                   constraints based on attributes of the request, the
+                   resource, or both. To learn which resources support
+                   conditions in their IAM policies, see the [IAM
+                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+
+                   **JSON example:**
 
                       {
                          "bindings": [
@@ -1654,17 +2063,17 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
                             }, { "role":
                             "roles/resourcemanager.organizationViewer",
-                            "members": ["user:eve@example.com"],
+                            "members": [ "user:eve@example.com" ],
                             "condition": { "title": "expirable access",
                             "description": "Does not grant access after
                             Sep 2020", "expression": "request.time <
                             timestamp('2020-10-01T00:00:00.000Z')", } }
 
-                         ]
+                         ], "etag": "BwWWja0YfJA=", "version": 3
 
                       }
 
-                   **YAML Example**
+                   **YAML example:**
 
                       bindings: - members: - user:\ mike@example.com -
                       group:\ admins@example.com - domain:google.com -
@@ -1675,22 +2084,22 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                       condition: title: expirable access description:
                       Does not grant access after Sep 2020 expression:
                       request.time <
-                      timestamp('2020-10-01T00:00:00.000Z')
+                      timestamp('2020-10-01T00:00:00.000Z') etag:
+                      BwWWja0YfJA= version: 3
 
                    For a description of IAM and its features, see the
-                   [IAM developer's
-                   guide](\ https://cloud.google.com/iam/docs).
+                   [IAM
+                   documentation](\ https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
-
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.GetIamPolicyRequest(**request)
+            request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.GetIamPolicyRequest()
+            request = iam_policy_pb2.GetIamPolicyRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1715,12 +2124,12 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     def test_iam_permissions(
         self,
-        request: Union[iam_policy.TestIamPermissionsRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> iam_policy.TestIamPermissionsResponse:
+    ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns permissions that a caller has for the specified secret.
         If the secret does not exist, this call returns an empty set of
         permissions, not a NOT_FOUND error.
@@ -1730,11 +2139,38 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         authorization checking. This operation may "fail open" without
         warning.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import secretmanager_v1beta1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = secretmanager_v1beta1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = iam_policy_pb2.TestIamPermissionsRequest(
+                    resource="resource_value",
+                    permissions=['permissions_value1', 'permissions_value2'],
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
-            request (google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest):
+            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for
                 `TestIamPermissions` method.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1746,14 +2182,13 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 Response message for TestIamPermissions method.
         """
         # Create or coerce a protobuf request object.
-
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.TestIamPermissionsRequest(**request)
+            request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.TestIamPermissionsRequest()
+            request = iam_policy_pb2.TestIamPermissionsRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1776,15 +2211,23 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # Done; return the response.
         return response
 
+    def __enter__(self):
+        return self
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-secret-manager",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
+
+
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("SecretManagerServiceClient",)

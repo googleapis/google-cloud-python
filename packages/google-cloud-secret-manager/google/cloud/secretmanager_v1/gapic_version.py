@@ -13,10 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import SecretManagerServiceAsyncClient
-from .client import SecretManagerServiceClient
-
-__all__ = (
-    "SecretManagerServiceClient",
-    "SecretManagerServiceAsyncClient",
-)
+__version__ = "2.12.6"  # {x-release-please-version}
