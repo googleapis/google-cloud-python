@@ -96,6 +96,31 @@ def test_credentials_from_session(session):
     assert credentials._client_secret == CLIENT_SECRETS_INFO["web"]["client_secret"]
     assert credentials._token_uri == CLIENT_SECRETS_INFO["web"]["token_uri"]
     assert credentials.scopes == session.scope
+    assert credentials.granted_scopes is None
+
+
+def test_credentials_from_session_granted_scopes(session):
+    granted_scopes = ["scope1", "scope2"]
+    session.token = {
+        "access_token": mock.sentinel.access_token,
+        "refresh_token": mock.sentinel.refresh_token,
+        "id_token": mock.sentinel.id_token,
+        "expires_at": 643969200.0,
+        "scope": granted_scopes,
+    }
+
+    credentials = helpers.credentials_from_session(session, CLIENT_SECRETS_INFO["web"])
+
+    assert isinstance(credentials, google.oauth2.credentials.Credentials)
+    assert credentials.token == mock.sentinel.access_token
+    assert credentials.expiry == datetime.datetime(1990, 5, 29, 8, 20, 0)
+    assert credentials._refresh_token == mock.sentinel.refresh_token
+    assert credentials.id_token == mock.sentinel.id_token
+    assert credentials._client_id == CLIENT_SECRETS_INFO["web"]["client_id"]
+    assert credentials._client_secret == CLIENT_SECRETS_INFO["web"]["client_secret"]
+    assert credentials._token_uri == CLIENT_SECRETS_INFO["web"]["token_uri"]
+    assert credentials.scopes == session.scope
+    assert credentials.granted_scopes == granted_scopes
 
 
 def test_credentials_from_session_3pi(session):

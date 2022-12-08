@@ -145,6 +145,7 @@ def credentials_from_session(session, client_config=None):
             client_id=client_config.get("client_id"),
             client_secret=client_config.get("client_secret"),
             scopes=session.scope,
+            granted_scopes=session.token.get("scope"),
         )
     credentials.expiry = datetime.datetime.utcfromtimestamp(session.token["expires_at"])
     return credentials

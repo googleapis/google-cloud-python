@@ -20,7 +20,7 @@ from setuptools import setup
 
 TOOL_DEPENDENCIES = "click>=6.0.0"
 
-DEPENDENCIES = ("google-auth>=2.14.0", "requests-oauthlib>=0.7.0")
+DEPENDENCIES = ("google-auth>=2.15.0", "requests-oauthlib>=0.7.0")
 
 
 with io.open("README.rst", "r") as fh:

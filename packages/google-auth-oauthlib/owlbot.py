@@ -14,7 +14,8 @@ templated_files = common.py_library(
 )
 s.move(templated_files, excludes=[
     "docs/multiprocessing.rst",
-    "README.rst"
+    "README.rst",
+    ".github/workflows/unittest.yml" #remove this exclusion when removing 3.6 from unit test
 ])
 
 # Change black paths
