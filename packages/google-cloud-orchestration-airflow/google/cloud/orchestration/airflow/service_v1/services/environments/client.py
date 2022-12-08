@@ -38,7 +38,10 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.orchestration.airflow.service_v1 import (
+    gapic_version as package_version,
+)
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -453,7 +456,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         parent: Optional[str] = None,
         environment: Optional[environments.Environment] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Create a new environment.
@@ -575,7 +578,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> environments.Environment:
         r"""Get an existing environment.
@@ -676,7 +679,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEnvironmentsPager:
         r"""List environments.
@@ -793,7 +796,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         environment: Optional[environments.Environment] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Update an environment.
@@ -1104,7 +1107,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Delete an environment.
@@ -1226,7 +1229,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         request: Optional[Union[environments.SaveSnapshotRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a snapshots of a Cloud Composer environment.
@@ -1326,7 +1329,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         request: Optional[Union[environments.LoadSnapshotRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Loads a snapshot of a Cloud Composer environment.
@@ -1435,14 +1438,9 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-orchestration-airflow",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("EnvironmentsClient",)

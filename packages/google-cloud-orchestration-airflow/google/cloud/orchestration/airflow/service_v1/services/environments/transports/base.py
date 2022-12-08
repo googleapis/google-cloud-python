@@ -24,18 +24,15 @@ import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
 
+from google.cloud.orchestration.airflow.service_v1 import (
+    gapic_version as package_version,
+)
 from google.cloud.orchestration.airflow.service_v1.types import environments
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-orchestration-airflow",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 class EnvironmentsTransport(abc.ABC):
