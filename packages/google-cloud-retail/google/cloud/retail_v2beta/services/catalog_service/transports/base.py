@@ -24,20 +24,15 @@ import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
-import pkg_resources
 
+from google.cloud.retail_v2beta import gapic_version as package_version
 from google.cloud.retail_v2beta.types import catalog
 from google.cloud.retail_v2beta.types import catalog as gcr_catalog
 from google.cloud.retail_v2beta.types import catalog_service
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-retail",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 class CatalogServiceTransport(abc.ABC):

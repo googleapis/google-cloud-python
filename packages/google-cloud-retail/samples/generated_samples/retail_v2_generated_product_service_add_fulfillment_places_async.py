@@ -50,7 +50,7 @@ async def sample_add_fulfillment_places():
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = (await operation).result()
 
     # Handle the response
     print(response)

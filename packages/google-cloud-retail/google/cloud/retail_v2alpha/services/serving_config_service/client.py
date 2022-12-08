@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.retail_v2alpha import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -479,7 +480,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         serving_config: Optional[gcr_serving_config.ServingConfig] = None,
         serving_config_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_serving_config.ServingConfig:
         r"""Creates a ServingConfig.
@@ -619,7 +620,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a ServingConfig.
@@ -715,7 +716,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         serving_config: Optional[gcr_serving_config.ServingConfig] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_serving_config.ServingConfig:
         r"""Updates a ServingConfig.
@@ -842,7 +843,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> serving_config.ServingConfig:
         r"""Gets a ServingConfig.
@@ -951,7 +952,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServingConfigsPager:
         r"""Lists all ServingConfigs linked to this catalog.
@@ -1066,7 +1067,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         *,
         serving_config: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_serving_config.ServingConfig:
         r"""Enables a Control on the specified ServingConfig. The control is
@@ -1182,7 +1183,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         *,
         serving_config: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_serving_config.ServingConfig:
         r"""Disables a Control on the specified ServingConfig. The control
@@ -1300,14 +1301,9 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-retail",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ServingConfigServiceClient",)
