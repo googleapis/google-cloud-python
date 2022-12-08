@@ -26,8 +26,8 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
-import pkg_resources
 
+from google.cloud.servicedirectory_v1beta1 import gapic_version as package_version
 from google.cloud.servicedirectory_v1beta1.types import endpoint as gcs_endpoint
 from google.cloud.servicedirectory_v1beta1.types import namespace as gcs_namespace
 from google.cloud.servicedirectory_v1beta1.types import endpoint
@@ -36,14 +36,9 @@ from google.cloud.servicedirectory_v1beta1.types import registration_service
 from google.cloud.servicedirectory_v1beta1.types import service
 from google.cloud.servicedirectory_v1beta1.types import service as gcs_service
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-service-directory",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 class RegistrationServiceTransport(abc.ABC):
