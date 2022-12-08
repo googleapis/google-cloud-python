@@ -139,7 +139,7 @@ for library in s.get_staging_dirs(default_version):
     # Emit deprecation warning if return_immediately flag is set with synchronous pull.
     s.replace(
         library / f"google/pubsub_{library.name}/services/subscriber/*client.py",
-        r"import pkg_resources",
+        r"from google.pubsub_v1 import gapic_version as package_version",
         "import warnings\n\g<0>",
     )
 
@@ -210,7 +210,7 @@ for library in s.get_staging_dirs(default_version):
         raise Exception("Catch warnings replacement failed.")
 
     # Make sure that client library version is present in user agent header.
-    s.replace(
+    count = s.replace(
         [
             library
             / f"google/pubsub_{library.name}/services/publisher/async_client.py",
@@ -228,9 +228,12 @@ for library in s.get_staging_dirs(default_version):
             library
             / f"google/pubsub_{library.name}/services/subscriber/transports/base.py",
         ],
-        r"""gapic_version=(pkg_resources\.get_distribution\(\s+)['"]google-cloud-pubsub['"]""",
-        "client_library_version=\g<1>'google-cloud-pubsub'",
+        r"""gapic_version=package_version.__version__""",
+        "client_library_version=package_version.__version__",
     )
+
+    if count < 1:
+        raise Exception("client_library_version replacement failed.")
 
     # Allow timeout to be an instance of google.api_core.timeout.*
     count = s.replace(
@@ -282,7 +285,7 @@ for library in s.get_staging_dirs(default_version):
 
     count = s.replace(
         library / f"google/pubsub_{library.name}/services/publisher/*client.py",
-        r"(\s+)timeout: Optional\[float\] = None.*\n",
+        r"(\s+)timeout: Union\[float, object\] = gapic_v1.method.DEFAULT.*\n",
         f"\g<1>timeout: TimeoutType = gapic_{library.name}.method.DEFAULT,",
     )
 

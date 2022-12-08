@@ -15,7 +15,6 @@
 from __future__ import absolute_import
 
 import os
-import pkg_resources
 import typing
 from typing import cast, Any, Callable, Optional, Sequence, Union
 import warnings
@@ -27,6 +26,7 @@ from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import futures
 from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
 from google.pubsub_v1.services.subscriber import client as subscriber_client
+from google.pubsub_v1 import gapic_version as package_version
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.pubsub_v1 import subscriber
@@ -34,13 +34,7 @@ if typing.TYPE_CHECKING:  # pragma: NO COVER
         SubscriberGrpcTransport,
     )
 
-
-try:
-    __version__ = pkg_resources.get_distribution("google-cloud-pubsub").version
-except pkg_resources.DistributionNotFound:
-    # Distribution might not be available if we are not running from within
-    # a PIP package.
-    __version__ = "0.0"
+__version__ = package_version.__version__
 
 
 class Client(subscriber_client.SubscriberClient):

@@ -17,7 +17,6 @@ from __future__ import absolute_import
 import copy
 import logging
 import os
-import pkg_resources
 import threading
 import time
 import typing
@@ -35,15 +34,11 @@ from google.cloud.pubsub_v1.publisher._batch import thread
 from google.cloud.pubsub_v1.publisher._sequencer import ordered_sequencer
 from google.cloud.pubsub_v1.publisher._sequencer import unordered_sequencer
 from google.cloud.pubsub_v1.publisher.flow_controller import FlowController
+from google.pubsub_v1 import gapic_version as package_version
 from google.pubsub_v1 import types as gapic_types
 from google.pubsub_v1.services.publisher import client as publisher_client
 
-try:
-    __version__ = pkg_resources.get_distribution("google-cloud-pubsub").version
-except pkg_resources.DistributionNotFound:
-    # Distribution might not be available if we are not running from within a
-    # PIP package.
-    __version__ = "0.0"
+__version__ = package_version.__version__
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud import pubsub_v1
