@@ -4,6 +4,7 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/cloud/monitoring_metrics_scope_v1/gapic_version.py",
         "google/cloud/monitoring_metrics_scope/gapic_version.py",
         {
           "type": "json",
