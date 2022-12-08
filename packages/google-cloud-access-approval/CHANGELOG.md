@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.9.1](https://github.com/googleapis/python-access-approval/compare/v1.9.0...v1.9.1) (2022-12-06)
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([22f6b87](https://github.com/googleapis/python-access-approval/commit/22f6b87ae2712ecbe30fb035ffb51c370ef22dd6))
+* Drop usage of pkg_resources ([22f6b87](https://github.com/googleapis/python-access-approval/commit/22f6b87ae2712ecbe30fb035ffb51c370ef22dd6))
+* Fix timeout default values ([22f6b87](https://github.com/googleapis/python-access-approval/commit/22f6b87ae2712ecbe30fb035ffb51c370ef22dd6))
+
+
+### Documentation
+
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([22f6b87](https://github.com/googleapis/python-access-approval/commit/22f6b87ae2712ecbe30fb035ffb51c370ef22dd6))
+
 ## [1.9.0](https://github.com/googleapis/python-access-approval/compare/v1.8.0...v1.9.0) (2022-11-14)
 
 
