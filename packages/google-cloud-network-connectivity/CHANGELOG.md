@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-network-connectivity/compare/v1.4.4...v1.5.0) (2022-12-08)
+
+
+### Features
+
+* add policy based routing ([bb5fdce](https://github.com/googleapis/python-network-connectivity/commit/bb5fdce0d9feb7302965f89b5537092151c75525))
+* add support for `google.cloud.networkconnectivity.__version__` ([bb5fdce](https://github.com/googleapis/python-network-connectivity/commit/bb5fdce0d9feb7302965f89b5537092151c75525))
+* Add typing to proto.Message based class attributes ([bb5fdce](https://github.com/googleapis/python-network-connectivity/commit/bb5fdce0d9feb7302965f89b5537092151c75525))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([bb5fdce](https://github.com/googleapis/python-network-connectivity/commit/bb5fdce0d9feb7302965f89b5537092151c75525))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([bb5fdce](https://github.com/googleapis/python-network-connectivity/commit/bb5fdce0d9feb7302965f89b5537092151c75525))
+* Drop usage of pkg_resources ([bb5fdce](https://github.com/googleapis/python-network-connectivity/commit/bb5fdce0d9feb7302965f89b5537092151c75525))
+* Fix timeout default values ([bb5fdce](https://github.com/googleapis/python-network-connectivity/commit/bb5fdce0d9feb7302965f89b5537092151c75525))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([bb5fdce](https://github.com/googleapis/python-network-connectivity/commit/bb5fdce0d9feb7302965f89b5537092151c75525))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([bb5fdce](https://github.com/googleapis/python-network-connectivity/commit/bb5fdce0d9feb7302965f89b5537092151c75525))
+
 ## [1.4.4](https://github.com/googleapis/python-network-connectivity/compare/v1.4.3...v1.4.4) (2022-10-07)
 
 
