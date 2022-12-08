@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.network_services_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -720,7 +721,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEndpointPoliciesPager:
         r"""Lists EndpointPolicies in a given project and
@@ -837,7 +838,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> endpoint_policy.EndpointPolicy:
         r"""Gets details of a single EndpointPolicy.
@@ -948,7 +949,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         endpoint_policy: Optional[gcn_endpoint_policy.EndpointPolicy] = None,
         endpoint_policy_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new EndpointPolicy in a given project and
@@ -1096,7 +1097,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         endpoint_policy: Optional[gcn_endpoint_policy.EndpointPolicy] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single EndpointPolicy.
@@ -1237,7 +1238,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single EndpointPolicy.
@@ -1362,7 +1363,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListGatewaysPager:
         r"""Lists Gateways in a given project and location.
@@ -1478,7 +1479,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gateway.Gateway:
         r"""Gets details of a single Gateway.
@@ -1588,7 +1589,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         gateway: Optional[gcn_gateway.Gateway] = None,
         gateway_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new Gateway in a given project and
@@ -1735,7 +1736,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         gateway: Optional[gcn_gateway.Gateway] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single Gateway.
@@ -1873,7 +1874,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single Gateway.
@@ -1997,7 +1998,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListGrpcRoutesPager:
         r"""Lists GrpcRoutes in a given project and location.
@@ -2113,7 +2114,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> grpc_route.GrpcRoute:
         r"""Gets details of a single GrpcRoute.
@@ -2218,7 +2219,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         grpc_route: Optional[gcn_grpc_route.GrpcRoute] = None,
         grpc_route_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new GrpcRoute in a given project and
@@ -2360,7 +2361,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         grpc_route: Optional[gcn_grpc_route.GrpcRoute] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single GrpcRoute.
@@ -2493,7 +2494,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single GrpcRoute.
@@ -2617,7 +2618,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListHttpRoutesPager:
         r"""Lists HttpRoute in a given project and location.
@@ -2733,7 +2734,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> http_route.HttpRoute:
         r"""Gets details of a single HttpRoute.
@@ -2838,7 +2839,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         http_route: Optional[gcn_http_route.HttpRoute] = None,
         http_route_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new HttpRoute in a given project and
@@ -2980,7 +2981,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         http_route: Optional[gcn_http_route.HttpRoute] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single HttpRoute.
@@ -3113,7 +3114,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single HttpRoute.
@@ -3237,7 +3238,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTcpRoutesPager:
         r"""Lists TcpRoute in a given project and location.
@@ -3353,7 +3354,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tcp_route.TcpRoute:
         r"""Gets details of a single TcpRoute.
@@ -3458,7 +3459,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         tcp_route: Optional[gcn_tcp_route.TcpRoute] = None,
         tcp_route_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new TcpRoute in a given project and
@@ -3599,7 +3600,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         tcp_route: Optional[gcn_tcp_route.TcpRoute] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single TcpRoute.
@@ -3731,7 +3732,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single TcpRoute.
@@ -3855,7 +3856,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTlsRoutesPager:
         r"""Lists TlsRoute in a given project and location.
@@ -3971,7 +3972,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tls_route.TlsRoute:
         r"""Gets details of a single TlsRoute.
@@ -4076,7 +4077,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         tls_route: Optional[gcn_tls_route.TlsRoute] = None,
         tls_route_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new TlsRoute in a given project and
@@ -4218,7 +4219,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         tls_route: Optional[gcn_tls_route.TlsRoute] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single TlsRoute.
@@ -4351,7 +4352,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single TlsRoute.
@@ -4477,7 +4478,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServiceBindingsPager:
         r"""Lists ServiceBinding in a given project and location.
@@ -4593,7 +4594,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service_binding.ServiceBinding:
         r"""Gets details of a single ServiceBinding.
@@ -4701,7 +4702,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         service_binding: Optional[gcn_service_binding.ServiceBinding] = None,
         service_binding_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new ServiceBinding in a given project and
@@ -4844,7 +4845,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single ServiceBinding.
@@ -4969,7 +4970,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMeshesPager:
         r"""Lists Meshes in a given project and location.
@@ -5085,7 +5086,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> mesh.Mesh:
         r"""Gets details of a single Mesh.
@@ -5192,7 +5193,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         mesh: Optional[gcn_mesh.Mesh] = None,
         mesh_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new Mesh in a given project and location.
@@ -5334,7 +5335,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         mesh: Optional[gcn_mesh.Mesh] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single Mesh.
@@ -5468,7 +5469,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single Mesh.
@@ -5604,7 +5605,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -5658,7 +5659,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -5712,7 +5713,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -5767,7 +5768,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -5821,7 +5822,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM access control policy on the specified function.
@@ -5941,7 +5942,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         request: Optional[iam_policy_pb2.GetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM access control policy for a function.
@@ -6062,7 +6063,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         request: Optional[iam_policy_pb2.TestIamPermissionsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests the specified IAM permissions against the IAM access control
@@ -6121,7 +6122,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -6175,7 +6176,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -6225,14 +6226,9 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         return response
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-network-services",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("NetworkServicesClient",)

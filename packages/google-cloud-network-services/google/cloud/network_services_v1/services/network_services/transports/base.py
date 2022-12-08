@@ -27,8 +27,8 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
 
+from google.cloud.network_services_v1 import gapic_version as package_version
 from google.cloud.network_services_v1.types import (
     endpoint_policy as gcn_endpoint_policy,
 )
@@ -50,14 +50,9 @@ from google.cloud.network_services_v1.types import tcp_route as gcn_tcp_route
 from google.cloud.network_services_v1.types import tls_route
 from google.cloud.network_services_v1.types import tls_route as gcn_tls_route
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-network-services",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 class NetworkServicesTransport(abc.ABC):
