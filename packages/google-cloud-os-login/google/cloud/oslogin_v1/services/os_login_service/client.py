@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.oslogin_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -465,7 +466,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         parent: Optional[str] = None,
         ssh_public_key: Optional[common.SshPublicKey] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.SshPublicKey:
         r"""Create an SSH public key
@@ -576,7 +577,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a POSIX account.
@@ -668,7 +669,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an SSH public key.
@@ -760,7 +761,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> oslogin.LoginProfile:
         r"""Retrieves the profile information used for logging in
@@ -864,7 +865,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.SshPublicKey:
         r"""Retrieves an SSH public key.
@@ -970,7 +971,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         ssh_public_key: Optional[common.SshPublicKey] = None,
         project_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> oslogin.ImportSshPublicKeyResponse:
         r"""Adds an SSH public key and returns the profile
@@ -1095,7 +1096,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         ssh_public_key: Optional[common.SshPublicKey] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.SshPublicKey:
         r"""Updates an SSH public key and returns the profile
@@ -1226,14 +1227,9 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-os-login",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("OsLoginServiceClient",)
