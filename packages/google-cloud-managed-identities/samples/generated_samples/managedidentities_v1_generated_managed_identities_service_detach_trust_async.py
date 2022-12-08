@@ -56,7 +56,7 @@ async def sample_detach_trust():
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = (await operation).result()
 
     # Handle the response
     print(response)
