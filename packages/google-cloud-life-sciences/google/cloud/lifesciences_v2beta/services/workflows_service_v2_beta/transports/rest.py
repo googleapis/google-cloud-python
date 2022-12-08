@@ -362,6 +362,7 @@ class WorkflowsServiceV2BetaRestTransport(WorkflowsServiceV2BetaTransport):
                 credentials=self._credentials,
                 scopes=self._scopes,
                 http_options=http_options,
+                path_prefix="v2beta",
             )
 
             self._operations_client = operations_v1.AbstractOperationsClient(

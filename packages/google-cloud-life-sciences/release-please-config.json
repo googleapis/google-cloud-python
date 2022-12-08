@@ -5,6 +5,7 @@
       "release-type": "python",
       "extra-files": [
         "google/cloud/lifesciences/gapic_version.py",
+        "google/cloud/lifesciences_v2beta/gapic_version.py",
         {
           "type": "json",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.lifesciences.v2beta.json",
