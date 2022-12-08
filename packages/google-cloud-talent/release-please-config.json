@@ -4,6 +4,8 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/cloud/talent_v4beta1/gapic_version.py",
+        "google/cloud/talent_v4/gapic_version.py",
         "google/cloud/talent/gapic_version.py",
         {
           "type": "json",
