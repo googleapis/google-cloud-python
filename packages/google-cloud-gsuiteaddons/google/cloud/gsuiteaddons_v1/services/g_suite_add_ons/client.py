@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.gsuiteaddons_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -506,7 +507,7 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gsuiteaddons.Authorization:
         r"""Gets the authorization information for deployments in
@@ -613,7 +614,7 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
         deployment: Optional[gsuiteaddons.Deployment] = None,
         deployment_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gsuiteaddons.Deployment:
         r"""Creates a deployment with the specified name and
@@ -736,7 +737,7 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
         *,
         deployment: Optional[gsuiteaddons.Deployment] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gsuiteaddons.Deployment:
         r"""Creates or replaces a deployment with the specified
@@ -838,7 +839,7 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gsuiteaddons.Deployment:
         r"""Gets the deployment with the specified name.
@@ -940,7 +941,7 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDeploymentsPager:
         r"""Lists all deployments in a particular project.
@@ -1056,7 +1057,7 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the deployment with the given name.
@@ -1149,7 +1150,7 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Installs a deployment in developer mode.
@@ -1244,7 +1245,7 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Uninstalls a developer mode deployment.
@@ -1339,7 +1340,7 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gsuiteaddons.InstallStatus:
         r"""Fetches the install status of a developer mode
@@ -1452,14 +1453,9 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-gsuiteaddons",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("GSuiteAddOnsClient",)
