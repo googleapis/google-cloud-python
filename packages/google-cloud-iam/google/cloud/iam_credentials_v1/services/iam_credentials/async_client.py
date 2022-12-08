@@ -34,7 +34,8 @@ from google.api_core import retry as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.iam_credentials_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -236,7 +237,7 @@ class IAMCredentialsAsyncClient:
         scope: Optional[MutableSequence[str]] = None,
         lifetime: Optional[duration_pb2.Duration] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.GenerateAccessTokenResponse:
         r"""Generates an OAuth 2.0 access token for a service
@@ -400,7 +401,7 @@ class IAMCredentialsAsyncClient:
         audience: Optional[str] = None,
         include_email: Optional[bool] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.GenerateIdTokenResponse:
         r"""Generates an OpenID Connect ID token for a service
@@ -557,7 +558,7 @@ class IAMCredentialsAsyncClient:
         delegates: Optional[MutableSequence[str]] = None,
         payload: Optional[bytes] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.SignBlobResponse:
         r"""Signs a blob using a service account's system-managed
@@ -701,7 +702,7 @@ class IAMCredentialsAsyncClient:
         delegates: Optional[MutableSequence[str]] = None,
         payload: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.SignJwtResponse:
         r"""Signs a JWT using a service account's system-managed
@@ -847,14 +848,9 @@ class IAMCredentialsAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-iam",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("IAMCredentialsAsyncClient",)
