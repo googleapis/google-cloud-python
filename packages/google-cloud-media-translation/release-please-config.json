@@ -4,6 +4,7 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/cloud/mediatranslation_v1beta1/gapic_version.py",
         "google/cloud/mediatranslation/gapic_version.py",
         {
           "type": "json",
