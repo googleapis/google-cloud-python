@@ -23,8 +23,8 @@ from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
 
+from google.cloud.recommender_v1beta1 import gapic_version as package_version
 from google.cloud.recommender_v1beta1.types import (
     insight_type_config as gcr_insight_type_config,
 )
@@ -37,14 +37,9 @@ from google.cloud.recommender_v1beta1.types import recommendation
 from google.cloud.recommender_v1beta1.types import recommender_config
 from google.cloud.recommender_v1beta1.types import recommender_service
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-recommender",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 class RecommenderTransport(abc.ABC):

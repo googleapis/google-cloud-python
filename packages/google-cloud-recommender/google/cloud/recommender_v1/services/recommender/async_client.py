@@ -34,7 +34,8 @@ from google.api_core import retry as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.recommender_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -251,7 +252,7 @@ class RecommenderAsyncClient:
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInsightsAsyncPager:
         r"""Lists insights for the specified Cloud Resource. Requires the
@@ -392,7 +393,7 @@ class RecommenderAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> insight.Insight:
         r"""Gets the requested insight. Requires the recommender.*.get IAM
@@ -508,7 +509,7 @@ class RecommenderAsyncClient:
         state_metadata: Optional[MutableMapping[str, str]] = None,
         etag: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> insight.Insight:
         r"""Marks the Insight State as Accepted. Users can use this method
@@ -640,7 +641,7 @@ class RecommenderAsyncClient:
         parent: Optional[str] = None,
         filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRecommendationsAsyncPager:
         r"""Lists recommendations for the specified Cloud Resource. Requires
@@ -811,7 +812,7 @@ class RecommenderAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recommendation.Recommendation:
         r"""Gets the requested recommendation. Requires the
@@ -928,7 +929,7 @@ class RecommenderAsyncClient:
         state_metadata: Optional[MutableMapping[str, str]] = None,
         etag: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recommendation.Recommendation:
         r"""Marks the Recommendation State as Claimed. Users can use this
@@ -1067,7 +1068,7 @@ class RecommenderAsyncClient:
         state_metadata: Optional[MutableMapping[str, str]] = None,
         etag: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recommendation.Recommendation:
         r"""Marks the Recommendation State as Succeeded. Users can use this
@@ -1206,7 +1207,7 @@ class RecommenderAsyncClient:
         state_metadata: Optional[MutableMapping[str, str]] = None,
         etag: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recommendation.Recommendation:
         r"""Marks the Recommendation State as Failed. Users can use this
@@ -1343,7 +1344,7 @@ class RecommenderAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recommender_config.RecommenderConfig:
         r"""Gets the requested Recommender Config. There is only
@@ -1454,7 +1455,7 @@ class RecommenderAsyncClient:
         recommender_config: Optional[gcr_recommender_config.RecommenderConfig] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_recommender_config.RecommenderConfig:
         r"""Updates a Recommender Config. This will create a new
@@ -1565,7 +1566,7 @@ class RecommenderAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> insight_type_config.InsightTypeConfig:
         r"""Gets the requested InsightTypeConfig. There is only
@@ -1676,7 +1677,7 @@ class RecommenderAsyncClient:
         insight_type_config: Optional[gcr_insight_type_config.InsightTypeConfig] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_insight_type_config.InsightTypeConfig:
         r"""Updates an InsightTypeConfig change. This will create
@@ -1786,14 +1787,9 @@ class RecommenderAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-recommender",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("RecommenderAsyncClient",)
