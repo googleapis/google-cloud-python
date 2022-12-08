@@ -27,7 +27,7 @@ import pkg_resources
 import pytest
 
 from google.cloud import bigquery
-from google.cloud import bigquery_storage
+
 from google.cloud.bigquery import enums
 
 from . import helpers
@@ -36,6 +36,9 @@ from . import helpers
 pandas = pytest.importorskip("pandas", minversion="0.23.0")
 numpy = pytest.importorskip("numpy")
 
+bigquery_storage = pytest.importorskip(
+    "google.cloud.bigquery_storage", minversion="2.0.0"
+)
 
 PANDAS_INSTALLED_VERSION = pkg_resources.get_distribution("pandas").parsed_version
 PANDAS_INT64_VERSION = pkg_resources.parse_version("1.0.0")
@@ -373,10 +376,10 @@ def test_load_table_from_dataframe_w_nulls(bigquery_client, dataset_id):
         bigquery.SchemaField("geo_col", "GEOGRAPHY"),
         bigquery.SchemaField("int_col", "INTEGER"),
         bigquery.SchemaField("num_col", "NUMERIC"),
-        bigquery.SchemaField("bignum_col", "BIGNUMERIC"),
         bigquery.SchemaField("str_col", "STRING"),
         bigquery.SchemaField("time_col", "TIME"),
         bigquery.SchemaField("ts_col", "TIMESTAMP"),
+        bigquery.SchemaField("bignum_col", "BIGNUMERIC"),
     )
 
     num_rows = 100
@@ -390,10 +393,10 @@ def test_load_table_from_dataframe_w_nulls(bigquery_client, dataset_id):
         ("geo_col", nulls),
         ("int_col", nulls),
         ("num_col", nulls),
-        ("bignum_col", nulls),
         ("str_col", nulls),
         ("time_col", nulls),
         ("ts_col", nulls),
+        ("bignum_col", nulls),
     ]
     df_data = collections.OrderedDict(df_data)
     dataframe = pandas.DataFrame(df_data, columns=df_data.keys())
@@ -469,10 +472,10 @@ def test_load_table_from_dataframe_w_explicit_schema(bigquery_client, dataset_id
         bigquery.SchemaField("geo_col", "GEOGRAPHY"),
         bigquery.SchemaField("int_col", "INTEGER"),
         bigquery.SchemaField("num_col", "NUMERIC"),
-        bigquery.SchemaField("bignum_col", "BIGNUMERIC"),
         bigquery.SchemaField("str_col", "STRING"),
         bigquery.SchemaField("time_col", "TIME"),
         bigquery.SchemaField("ts_col", "TIMESTAMP"),
+        bigquery.SchemaField("bignum_col", "BIGNUMERIC"),
     )
 
     df_data = [
@@ -502,14 +505,6 @@ def test_load_table_from_dataframe_w_explicit_schema(bigquery_client, dataset_id
                 decimal.Decimal("99999999999999999999999999999.999999999"),
             ],
         ),
-        (
-            "bignum_col",
-            [
-                decimal.Decimal("-{d38}.{d38}".format(d38="9" * 38)),
-                None,
-                decimal.Decimal("{d38}.{d38}".format(d38="9" * 38)),
-            ],
-        ),
         ("str_col", ["abc", None, "def"]),
         (
             "time_col",
@@ -523,6 +518,14 @@ def test_load_table_from_dataframe_w_explicit_schema(bigquery_client, dataset_id
                 datetime.datetime(
                     9999, 12, 31, 23, 59, 59, 999999, tzinfo=datetime.timezone.utc
                 ),
+            ],
+        ),
+        (
+            "bignum_col",
+            [
+                decimal.Decimal("-{d38}.{d38}".format(d38="9" * 38)),
+                None,
+                decimal.Decimal("{d38}.{d38}".format(d38="9" * 38)),
             ],
         ),
     ]

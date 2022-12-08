@@ -16,12 +16,12 @@ import datetime
 import decimal
 from unittest import mock
 
-import pyarrow
 import pytest
 
 from google.cloud import bigquery
 
 pandas = pytest.importorskip("pandas")
+pyarrow = pytest.importorskip("pyarrow", minversion="3.0.0")
 
 
 TEST_PATH = "/v1/project/test-proj/dataset/test-dset/table/test-tbl/data"

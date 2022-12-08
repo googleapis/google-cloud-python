@@ -748,6 +748,17 @@ def _make_bqstorage_client(client, use_bqstorage_api, client_options):
         return None
 
     try:
+        from google.cloud import bigquery_storage  # type: ignore # noqa: F401
+    except ImportError as err:
+        customized_error = ImportError(
+            "The default BigQuery Storage API client cannot be used, install "
+            "the missing google-cloud-bigquery-storage and pyarrow packages "
+            "to use it. Alternatively, use the classic REST API by specifying "
+            "the --use_rest_api magic option."
+        )
+        raise customized_error from err
+
+    try:
         from google.api_core.gapic_v1 import client_info as gapic_client_info
     except ImportError as err:
         customized_error = ImportError(

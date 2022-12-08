@@ -31,6 +31,11 @@ try:
 except (ImportError, AttributeError):
     pandas = None
 
+try:
+    import pyarrow
+except (ImportError, AttributeError):
+    pyarrow = None
+
 from google.api_core.exceptions import InternalServerError
 from google.api_core.exceptions import ServiceUnavailable
 from google.api_core.exceptions import TooManyRequests

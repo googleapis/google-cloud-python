@@ -1593,6 +1593,10 @@ class QueryJob(_AsyncJob):
                 headers from the query results. The column headers are derived
                 from the destination table's schema.
 
+        Raises:
+            ValueError:
+                If the :mod:`pyarrow` library cannot be imported.
+
         .. versionadded:: 1.17.0
         """
         query_result = wait_for_query(self, progress_bar_type, max_results=max_results)
@@ -1694,7 +1698,7 @@ class QueryJob(_AsyncJob):
     # that should only exist here in the QueryJob method.
     def to_geodataframe(
         self,
-        bqstorage_client: "bigquery_storage.BigQueryReadClient" = None,
+        bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"] = None,
         dtypes: Dict[str, Any] = None,
         progress_bar_type: str = None,
         create_bqstorage_client: bool = True,

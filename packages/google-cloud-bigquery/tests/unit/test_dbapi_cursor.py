@@ -18,8 +18,17 @@ import unittest
 
 import pytest
 
+try:
+    import pyarrow
+except ImportError:  # pragma: NO COVER
+    pyarrow = None
+
 from google.api_core import exceptions
-from google.cloud import bigquery_storage
+
+try:
+    from google.cloud import bigquery_storage
+except ImportError:  # pragma: NO COVER
+    bigquery_storage = None
 
 from tests.unit.helpers import _to_pyarrow
 
@@ -269,6 +278,10 @@ class TestCursor(unittest.TestCase):
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0], (1,))
 
+    @unittest.skipIf(
+        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_fetchall_w_bqstorage_client_fetch_success(self):
         from google.cloud.bigquery import dbapi
         from google.cloud.bigquery import table
@@ -322,6 +335,9 @@ class TestCursor(unittest.TestCase):
 
         self.assertEqual(sorted_row_data, expected_row_data)
 
+    @unittest.skipIf(
+        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
+    )
     def test_fetchall_w_bqstorage_client_fetch_no_rows(self):
         from google.cloud.bigquery import dbapi
 
@@ -344,6 +360,9 @@ class TestCursor(unittest.TestCase):
         # check the data returned
         self.assertEqual(rows, [])
 
+    @unittest.skipIf(
+        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
+    )
     def test_fetchall_w_bqstorage_client_fetch_error_no_fallback(self):
         from google.cloud.bigquery import dbapi
         from google.cloud.bigquery import table
@@ -375,6 +394,10 @@ class TestCursor(unittest.TestCase):
         # the default client was not used
         mock_client.list_rows.assert_not_called()
 
+    @unittest.skipIf(
+        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_fetchall_w_bqstorage_client_no_arrow_compression(self):
         from google.cloud.bigquery import dbapi
         from google.cloud.bigquery import table

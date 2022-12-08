@@ -23,6 +23,6 @@ protobuf==3.19.5
 pyarrow==3.0.0
 python-dateutil==2.7.3
 requests==2.21.0
-Shapely==1.6.4.post2
+Shapely==1.8.4
 six==1.13.0
 tqdm==4.7.4

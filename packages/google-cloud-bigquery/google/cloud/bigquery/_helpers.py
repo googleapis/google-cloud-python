@@ -20,7 +20,7 @@ import decimal
 import math
 import re
 import os
-from typing import Optional, Union
+from typing import Any, Optional, Union
 
 from dateutil import relativedelta
 from google.cloud._helpers import UTC  # type: ignore
@@ -31,6 +31,11 @@ from google.cloud._helpers import _RFC3339_NO_FRACTION
 from google.cloud._helpers import _to_bytes
 
 import packaging.version
+
+from google.cloud.bigquery.exceptions import (
+    LegacyBigQueryStorageError,
+    LegacyPyarrowError,
+)
 
 _RFC3339_MICROS_NO_ZULU = "%Y-%m-%dT%H:%M:%S.%f"
 _TIMEONLY_WO_MICROS = "%H:%M:%S"
@@ -49,6 +54,10 @@ _INTERVAL_PATTERN = re.compile(
     r"(?P<days>-?\d+) "
     r"(?P<time_sign>-?)(?P<hours>\d+):(?P<minutes>\d+):(?P<seconds>\d+)\.?(?P<fraction>\d*)?$"
 )
+
+_MIN_BQ_STORAGE_VERSION = packaging.version.Version("2.0.0")
+
+_MIN_PYARROW_VERSION = packaging.version.Version("3.0.0")
 
 _BQ_STORAGE_OPTIONAL_READ_SESSION_VERSION = packaging.version.Version("2.6.0")
 
@@ -83,7 +92,7 @@ class BQStorageVersions:
                 getattr(bigquery_storage, "__version__", "0.0.0")
             )
 
-        return self._installed_version
+        return self._installed_version  # type: ignore
 
     @property
     def is_read_session_optional(self) -> bool:
@@ -92,6 +101,29 @@ class BQStorageVersions:
         See: https://github.com/googleapis/python-bigquery-storage/pull/228
         """
         return self.installed_version >= _BQ_STORAGE_OPTIONAL_READ_SESSION_VERSION
+
+    def verify_version(self):
+        """Verify that a recent enough version of BigQuery Storage extra is
+        installed.
+
+        The function assumes that google-cloud-bigquery-storage extra is
+        installed, and should thus be used in places where this assumption
+        holds.
+
+        Because `pip` can install an outdated version of this extra despite the
+        constraints in `setup.py`, the calling code can use this helper to
+        verify the version compatibility at runtime.
+
+        Raises:
+            LegacyBigQueryStorageError:
+                If the google-cloud-bigquery-storage package is outdated.
+        """
+        if self.installed_version < _MIN_BQ_STORAGE_VERSION:
+            msg = (
+                "Dependency google-cloud-bigquery-storage is outdated, please upgrade "
+                f"it to version >= {_MIN_BQ_STORAGE_VERSION} (version found: {self.installed_version})."
+            )
+            raise LegacyBigQueryStorageError(msg)
 
 
 class PyarrowVersions:
@@ -119,6 +151,44 @@ class PyarrowVersions:
     @property
     def use_compliant_nested_type(self) -> bool:
         return self.installed_version.major >= 4
+
+    def try_import(self, raise_if_error: bool = False) -> Any:
+        """Verify that a recent enough version of pyarrow extra is
+        installed.
+
+        The function assumes that pyarrow extra is installed, and should thus
+        be used in places where this assumption holds.
+
+        Because `pip` can install an outdated version of this extra despite the
+        constraints in `setup.py`, the calling code can use this helper to
+        verify the version compatibility at runtime.
+
+        Returns:
+            The ``pyarrow`` module or ``None``.
+
+        Raises:
+            LegacyPyarrowError:
+                If the pyarrow package is outdated and ``raise_if_error`` is ``True``.
+        """
+        try:
+            import pyarrow
+        except ImportError as exc:  # pragma: NO COVER
+            if raise_if_error:
+                raise LegacyPyarrowError(
+                    f"pyarrow package not found. Install pyarrow version >= {_MIN_PYARROW_VERSION}."
+                ) from exc
+            return None
+
+        if self.installed_version < _MIN_PYARROW_VERSION:
+            if raise_if_error:
+                msg = (
+                    "Dependency pyarrow is outdated, please upgrade "
+                    f"it to version >= {_MIN_PYARROW_VERSION} (version found: {self.installed_version})."
+                )
+                raise LegacyPyarrowError(msg)
+            return None
+
+        return pyarrow
 
 
 BQ_STORAGE_VERSIONS = BQStorageVersions()

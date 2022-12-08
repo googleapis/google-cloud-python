@@ -77,6 +77,19 @@ def ipython_ns_cleanup():
 
 
 @pytest.fixture(scope="session")
+def missing_bq_storage():
+    """Provide a patcher that can make the bigquery storage import to fail."""
+
+    def fail_if(name, globals, locals, fromlist, level):
+        # NOTE: *very* simplified, assuming a straightforward absolute import
+        return "bigquery_storage" in name or (
+            fromlist is not None and "bigquery_storage" in fromlist
+        )
+
+    return maybe_fail_import(predicate=fail_if)
+
+
+@pytest.fixture(scope="session")
 def missing_grpcio_lib():
     """Provide a patcher that can make the gapic library import to fail."""
 
@@ -310,6 +323,9 @@ def test__make_bqstorage_client_false():
     assert got is None
 
 
+@pytest.mark.skipif(
+    bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
+)
 def test__make_bqstorage_client_true():
     credentials_mock = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -321,6 +337,53 @@ def test__make_bqstorage_client_true():
     assert isinstance(got, bigquery_storage.BigQueryReadClient)
 
 
+def test__make_bqstorage_client_true_raises_import_error(missing_bq_storage):
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    test_client = bigquery.Client(
+        project="test_project", credentials=credentials_mock, location="test_location"
+    )
+
+    with pytest.raises(ImportError) as exc_context, missing_bq_storage:
+        magics._make_bqstorage_client(test_client, True, {})
+
+    error_msg = str(exc_context.value)
+    assert "google-cloud-bigquery-storage" in error_msg
+    assert "pyarrow" in error_msg
+
+
+@pytest.mark.skipif(
+    bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
+)
+def test__make_bqstorage_client_true_obsolete_dependency():
+    from google.cloud.bigquery.exceptions import LegacyBigQueryStorageError
+
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    test_client = bigquery.Client(
+        project="test_project", credentials=credentials_mock, location="test_location"
+    )
+
+    patcher = mock.patch(
+        "google.cloud.bigquery.client.BQ_STORAGE_VERSIONS.verify_version",
+        side_effect=LegacyBigQueryStorageError("BQ Storage too old"),
+    )
+    with patcher, warnings.catch_warnings(record=True) as warned:
+        got = magics._make_bqstorage_client(test_client, True, {})
+
+    assert got is None
+
+    matching_warnings = [
+        warning for warning in warned if "BQ Storage too old" in str(warning)
+    ]
+    assert matching_warnings, "Obsolete dependency warning not raised."
+
+
+@pytest.mark.skipif(
+    bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
+)
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test__make_bqstorage_client_true_missing_gapic(missing_grpcio_lib):
     credentials_mock = mock.create_autospec(
@@ -376,6 +439,9 @@ def test_extension_load():
 
 @pytest.mark.usefixtures("ipython_interactive")
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(
+    bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
+)
 def test_bigquery_magic_without_optional_arguments(monkeypatch):
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
@@ -538,9 +604,10 @@ def test_bigquery_magic_clears_display_in_non_verbose_mode():
 
 
 @pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(
+    bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
+)
 def test_bigquery_magic_with_bqstorage_from_argument(monkeypatch):
-    pandas = pytest.importorskip("pandas")
-
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
     mock_credentials = mock.create_autospec(
@@ -603,6 +670,9 @@ def test_bigquery_magic_with_bqstorage_from_argument(monkeypatch):
 
 
 @pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(
+    bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
+)
 def test_bigquery_magic_with_rest_client_requested(monkeypatch):
     pandas = pytest.importorskip("pandas")
 
@@ -830,6 +900,9 @@ def test_bigquery_magic_w_table_id_and_destination_var(ipython_ns_cleanup):
 
 
 @pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(
+    bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
+)
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_bigquery_magic_w_table_id_and_bqstorage_client():
     ip = IPython.get_ipython()

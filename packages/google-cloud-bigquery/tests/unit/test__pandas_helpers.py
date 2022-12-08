@@ -30,9 +30,6 @@ try:
 except ImportError:  # pragma: NO COVER
     pandas = None
 
-import pyarrow
-import pyarrow.types
-
 try:
     import geopandas
 except ImportError:  # pragma: NO COVER
@@ -41,10 +38,28 @@ except ImportError:  # pragma: NO COVER
 import pytest
 
 from google import api_core
-from google.cloud import bigquery_storage
+
+from google.cloud.bigquery import exceptions
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery import schema
+from google.cloud.bigquery._pandas_helpers import _BIGNUMERIC_SUPPORT
 
+pyarrow = _helpers.PYARROW_VERSIONS.try_import()
+
+if pyarrow:
+    import pyarrow.parquet
+    import pyarrow.types
+else:  # pragma: NO COVER
+    # Mock out pyarrow when missing, because methods from pyarrow.types are
+    # used in test parameterization.
+    pyarrow = mock.Mock()
+
+try:
+    from google.cloud import bigquery_storage
+
+    _helpers.BQ_STORAGE_VERSIONS.verify_version()
+except ImportError:  # pragma: NO COVER
+    bigquery_storage = None
 
 PANDAS_MINIUM_VERSION = pkg_resources.parse_version("1.0.0")
 
@@ -53,6 +68,12 @@ if pandas is not None:
 else:
     # Set to less than MIN version.
     PANDAS_INSTALLED_VERSION = pkg_resources.parse_version("0.0.0")
+
+
+skip_if_no_bignumeric = pytest.mark.skipif(
+    not _BIGNUMERIC_SUPPORT,
+    reason="BIGNUMERIC support requires pyarrow>=3.0.0",
+)
 
 
 @pytest.fixture
@@ -110,6 +131,7 @@ def all_(*functions):
     return functools.partial(do_all, functions)
 
 
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_is_datetime():
     assert is_datetime(pyarrow.timestamp("us", tz=None))
     assert not is_datetime(pyarrow.timestamp("ms", tz=None))
@@ -142,7 +164,12 @@ def test_all_():
         ("FLOAT", "NULLABLE", pyarrow.types.is_float64),
         ("FLOAT64", "NULLABLE", pyarrow.types.is_float64),
         ("NUMERIC", "NULLABLE", is_numeric),
-        ("BIGNUMERIC", "NULLABLE", is_bignumeric),
+        pytest.param(
+            "BIGNUMERIC",
+            "NULLABLE",
+            is_bignumeric,
+            marks=skip_if_no_bignumeric,
+        ),
         ("BOOLEAN", "NULLABLE", pyarrow.types.is_boolean),
         ("BOOL", "NULLABLE", pyarrow.types.is_boolean),
         ("TIMESTAMP", "NULLABLE", is_timestamp),
@@ -221,10 +248,11 @@ def test_all_():
             "REPEATED",
             all_(pyarrow.types.is_list, lambda type_: is_numeric(type_.value_type)),
         ),
-        (
+        pytest.param(
             "BIGNUMERIC",
             "REPEATED",
             all_(pyarrow.types.is_list, lambda type_: is_bignumeric(type_.value_type)),
+            marks=skip_if_no_bignumeric,
         ),
         (
             "BOOLEAN",
@@ -280,6 +308,7 @@ def test_all_():
         ("UNKNOWN_TYPE", "REPEATED", is_none),
     ],
 )
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_bq_to_arrow_data_type(module_under_test, bq_type, bq_mode, is_correct_type):
     field = schema.SchemaField("ignored_name", bq_type, mode=bq_mode)
     actual = module_under_test.bq_to_arrow_data_type(field)
@@ -287,6 +316,7 @@ def test_bq_to_arrow_data_type(module_under_test, bq_type, bq_mode, is_correct_t
 
 
 @pytest.mark.parametrize("bq_type", ["RECORD", "record", "STRUCT", "struct"])
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_bq_to_arrow_data_type_w_struct(module_under_test, bq_type):
     fields = (
         schema.SchemaField("field01", "STRING"),
@@ -334,6 +364,7 @@ def test_bq_to_arrow_data_type_w_struct(module_under_test, bq_type):
 
 
 @pytest.mark.parametrize("bq_type", ["RECORD", "record", "STRUCT", "struct"])
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_bq_to_arrow_data_type_w_array_struct(module_under_test, bq_type):
     fields = (
         schema.SchemaField("field01", "STRING"),
@@ -381,6 +412,7 @@ def test_bq_to_arrow_data_type_w_array_struct(module_under_test, bq_type):
     assert actual.value_type.equals(expected_value_type)
 
 
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_bq_to_arrow_data_type_w_struct_unknown_subfield(module_under_test):
     fields = (
         schema.SchemaField("field1", "STRING"),
@@ -417,7 +449,7 @@ def test_bq_to_arrow_data_type_w_struct_unknown_subfield(module_under_test):
                 decimal.Decimal("999.123456789"),
             ],
         ),
-        (
+        pytest.param(
             "BIGNUMERIC",
             [
                 decimal.Decimal("-{d38}.{d38}".format(d38="9" * 38)),
@@ -479,6 +511,7 @@ def test_bq_to_arrow_data_type_w_struct_unknown_subfield(module_under_test):
     ],
 )
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_bq_to_arrow_array_w_nullable_scalars(module_under_test, bq_type, rows):
     series = pandas.Series(rows, dtype="object")
     bq_field = schema.SchemaField("field_name", bq_type)
@@ -513,6 +546,7 @@ def test_bq_to_arrow_array_w_nullable_scalars(module_under_test, bq_type, rows):
     ],
 )
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_bq_to_arrow_array_w_pandas_timestamp(module_under_test, bq_type, rows):
     rows = [pandas.Timestamp(row) for row in rows]
     series = pandas.Series(rows)
@@ -523,6 +557,7 @@ def test_bq_to_arrow_array_w_pandas_timestamp(module_under_test, bq_type, rows):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_bq_to_arrow_array_w_arrays(module_under_test):
     rows = [[1, 2, 3], [], [4, 5, 6]]
     series = pandas.Series(rows, dtype="object")
@@ -534,6 +569,7 @@ def test_bq_to_arrow_array_w_arrays(module_under_test):
 
 @pytest.mark.parametrize("bq_type", ["RECORD", "record", "STRUCT", "struct"])
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_bq_to_arrow_array_w_structs(module_under_test, bq_type):
     rows = [
         {"int_col": 123, "string_col": "abc"},
@@ -555,6 +591,7 @@ def test_bq_to_arrow_array_w_structs(module_under_test, bq_type):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_bq_to_arrow_array_w_special_floats(module_under_test):
     bq_field = schema.SchemaField("field_name", "FLOAT64")
     rows = [float("-inf"), float("nan"), float("inf"), None]
@@ -622,6 +659,7 @@ def test_bq_to_arrow_array_w_geography_type_wkb_data(module_under_test):
     assert array.to_pylist() == list(series)
 
 
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_bq_to_arrow_schema_w_unknown_type(module_under_test):
     fields = (
         schema.SchemaField("field1", "STRING"),
@@ -647,6 +685,7 @@ def test_get_column_or_index_not_found(module_under_test):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_get_column_or_index_with_multiindex_not_found(module_under_test):
     dataframe = pandas.DataFrame(
         {"column_name": [1, 2, 3, 4, 5, 6]},
@@ -984,6 +1023,7 @@ def test_dataframe_to_arrow_with_multiindex(module_under_test):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_dataframe_to_arrow_with_required_fields(module_under_test):
     bq_schema = (
         schema.SchemaField("field01", "STRING", mode="REQUIRED"),
@@ -1040,6 +1080,7 @@ def test_dataframe_to_arrow_with_required_fields(module_under_test):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_dataframe_to_arrow_with_unknown_type(module_under_test):
     bq_schema = (
         schema.SchemaField("field00", "UNKNOWN_TYPE"),
@@ -1072,6 +1113,7 @@ def test_dataframe_to_arrow_with_unknown_type(module_under_test):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_dataframe_to_arrow_dict_sequence_schema(module_under_test):
     dict_schema = [
         {"name": "field01", "type": "STRING", "mode": "REQUIRED"},
@@ -1093,6 +1135,19 @@ def test_dataframe_to_arrow_dict_sequence_schema(module_under_test):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_dataframe_to_parquet_without_pyarrow(module_under_test, monkeypatch):
+    mock_pyarrow_import = mock.Mock()
+    mock_pyarrow_import.side_effect = exceptions.LegacyPyarrowError(
+        "pyarrow not installed"
+    )
+    monkeypatch.setattr(_helpers.PYARROW_VERSIONS, "try_import", mock_pyarrow_import)
+
+    with pytest.raises(exceptions.LegacyPyarrowError):
+        module_under_test.dataframe_to_parquet(pandas.DataFrame(), (), None)
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_dataframe_to_parquet_w_extra_fields(module_under_test):
     with pytest.raises(ValueError) as exc_context:
         module_under_test.dataframe_to_parquet(
@@ -1104,6 +1159,7 @@ def test_dataframe_to_parquet_w_extra_fields(module_under_test):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_dataframe_to_parquet_w_missing_fields(module_under_test):
     with pytest.raises(ValueError) as exc_context:
         module_under_test.dataframe_to_parquet(
@@ -1115,6 +1171,7 @@ def test_dataframe_to_parquet_w_missing_fields(module_under_test):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_dataframe_to_parquet_compression_method(module_under_test):
     bq_schema = (schema.SchemaField("field00", "STRING"),)
     dataframe = pandas.DataFrame({"field00": ["foo", "bar"]})
@@ -1134,6 +1191,34 @@ def test_dataframe_to_parquet_compression_method(module_under_test):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_dataframe_to_bq_schema_fallback_needed_wo_pyarrow(module_under_test):
+    dataframe = pandas.DataFrame(
+        data=[
+            {"id": 10, "status": "FOO", "execution_date": datetime.date(2019, 5, 10)},
+            {"id": 20, "status": "BAR", "created_at": datetime.date(2018, 9, 12)},
+        ]
+    )
+
+    no_pyarrow_patch = mock.patch(module_under_test.__name__ + ".pyarrow", None)
+
+    with no_pyarrow_patch, warnings.catch_warnings(record=True) as warned:
+        detected_schema = module_under_test.dataframe_to_bq_schema(
+            dataframe, bq_schema=[]
+        )
+
+    assert detected_schema is None
+
+    # a warning should also be issued
+    expected_warnings = [
+        warning for warning in warned if "could not determine" in str(warning).lower()
+    ]
+    assert len(expected_warnings) == 1
+    msg = str(expected_warnings[0])
+    assert "execution_date" in msg and "created_at" in msg
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_dataframe_to_bq_schema_fallback_needed_w_pyarrow(module_under_test):
     dataframe = pandas.DataFrame(
         data=[
@@ -1163,6 +1248,7 @@ def test_dataframe_to_bq_schema_fallback_needed_w_pyarrow(module_under_test):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_dataframe_to_bq_schema_pyarrow_fallback_fails(module_under_test):
     dataframe = pandas.DataFrame(
         data=[
@@ -1249,6 +1335,7 @@ def test__first_array_valid_no_arrays_with_valid_items(module_under_test):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_augment_schema_type_detection_succeeds(module_under_test):
     dataframe = pandas.DataFrame(
         data=[
@@ -1315,6 +1402,7 @@ def test_augment_schema_type_detection_succeeds(module_under_test):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_augment_schema_repeated_fields(module_under_test):
     dataframe = pandas.DataFrame(
         data=[
@@ -1427,6 +1515,7 @@ def test_augment_schema_type_detection_fails_array_data(module_under_test):
     assert "all_none_array" in warning_msg and "empty_array" in warning_msg
 
 
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_dataframe_to_parquet_dict_sequence_schema(module_under_test):
     pandas = pytest.importorskip("pandas")
 
@@ -1457,6 +1546,9 @@ def test_dataframe_to_parquet_dict_sequence_schema(module_under_test):
     assert schema_arg == expected_schema_arg
 
 
+@pytest.mark.skipif(
+    bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
+)
 def test__download_table_bqstorage_stream_includes_read_session(
     monkeypatch, module_under_test
 ):
@@ -1487,7 +1579,8 @@ def test__download_table_bqstorage_stream_includes_read_session(
 
 
 @pytest.mark.skipif(
-    not _helpers.BQ_STORAGE_VERSIONS.is_read_session_optional,
+    bigquery_storage is None
+    or not _helpers.BQ_STORAGE_VERSIONS.is_read_session_optional,
     reason="Requires `google-cloud-bigquery-storage` >= 2.6.0",
 )
 def test__download_table_bqstorage_stream_omits_read_session(
@@ -1526,6 +1619,9 @@ def test__download_table_bqstorage_stream_omits_read_session(
         (4, {}, 4, 4),  # default queue size
         (7, {"max_queue_size": None}, 7, 0),  # infinite queue size
     ],
+)
+@pytest.mark.skipif(
+    bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
 )
 def test__download_table_bqstorage(
     module_under_test,
@@ -1577,6 +1673,7 @@ def test__download_table_bqstorage(
     assert queue_used.maxsize == expected_maxsize
 
 
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_download_arrow_row_iterator_unknown_field_type(module_under_test):
     fake_page = api_core.page_iterator.Page(
         parent=mock.Mock(),
@@ -1612,6 +1709,7 @@ def test_download_arrow_row_iterator_unknown_field_type(module_under_test):
     assert col.to_pylist() == [2.2, 22.22, 222.222]
 
 
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_download_arrow_row_iterator_known_field_type(module_under_test):
     fake_page = api_core.page_iterator.Page(
         parent=mock.Mock(),
@@ -1646,6 +1744,7 @@ def test_download_arrow_row_iterator_known_field_type(module_under_test):
     assert col.to_pylist() == ["2.2", "22.22", "222.222"]
 
 
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_download_arrow_row_iterator_dict_sequence_schema(module_under_test):
     fake_page = api_core.page_iterator.Page(
         parent=mock.Mock(),
@@ -1712,6 +1811,7 @@ def test_table_data_listpage_to_dataframe_skips_stop_iteration(module_under_test
     assert isinstance(dataframe, pandas.DataFrame)
 
 
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_bq_to_arrow_field_type_override(module_under_test):
     # When loading pandas data, we may need to override the type
     # decision based on data contents, because GEOGRAPHY data can be
@@ -1744,6 +1844,7 @@ def test_bq_to_arrow_field_type_override(module_under_test):
         ),
     ],
 )
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_bq_to_arrow_field_metadata(module_under_test, field_type, metadata):
     assert (
         module_under_test.bq_to_arrow_field(
