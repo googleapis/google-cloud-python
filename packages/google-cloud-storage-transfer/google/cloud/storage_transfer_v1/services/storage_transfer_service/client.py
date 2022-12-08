@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.storage_transfer_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -451,7 +452,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         request: Optional[Union[transfer.GetGoogleServiceAccountRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.GoogleServiceAccount:
         r"""Returns the Google service account that is used by
@@ -543,7 +544,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         request: Optional[Union[transfer.CreateTransferJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.TransferJob:
         r"""Creates a transfer job that runs periodically.
@@ -617,7 +618,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         request: Optional[Union[transfer.UpdateTransferJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.TransferJob:
         r"""Updates a transfer job. Updating a job's transfer spec does not
@@ -709,7 +710,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         request: Optional[Union[transfer.GetTransferJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.TransferJob:
         r"""Gets a transfer job.
@@ -791,7 +792,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         request: Optional[Union[transfer.ListTransferJobsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransferJobsPager:
         r"""Lists transfer jobs.
@@ -879,7 +880,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         request: Optional[Union[transfer.PauseTransferOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Pauses a transfer operation.
@@ -948,7 +949,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         request: Optional[Union[transfer.ResumeTransferOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Resumes a transfer operation that is paused.
@@ -1019,7 +1020,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         request: Optional[Union[transfer.RunTransferJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Attempts to start a new TransferOperation for the
@@ -1126,7 +1127,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         request: Optional[Union[transfer.DeleteTransferJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a transfer job. Deleting a transfer job sets its status
@@ -1200,7 +1201,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         agent_pool: Optional[transfer_types.AgentPool] = None,
         agent_pool_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.AgentPool:
         r"""Creates an agent pool resource.
@@ -1339,7 +1340,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         agent_pool: Optional[transfer_types.AgentPool] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.AgentPool:
         r"""Updates an existing agent pool resource.
@@ -1469,7 +1470,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.AgentPool:
         r"""Gets an agent pool.
@@ -1569,7 +1570,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         *,
         project_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAgentPoolsPager:
         r"""Lists agent pools.
@@ -1685,7 +1686,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an agent pool.
@@ -1783,14 +1784,9 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-storage-transfer",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("StorageTransferServiceClient",)

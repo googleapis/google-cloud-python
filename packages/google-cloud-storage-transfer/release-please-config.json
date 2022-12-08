@@ -4,6 +4,7 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/cloud/storage_transfer_v1/gapic_version.py",
         "google/cloud/storage_transfer/gapic_version.py",
         {
           "type": "json",
