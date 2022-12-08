@@ -76,36 +76,31 @@ def _make_configured_snippet(
     )
 
 
-def test_region_tag():
-    snippet = _make_configured_snippet(
+@pytest.fixture
+def snippet():
+    return _make_configured_snippet(
         SPEECH_V1_REQUEST_PATH,
         CONFIG_JSON_PATH,
         api_version="v1",
         is_sync=True)
 
+
+def test_region_tag(snippet):
     assert (
         snippet.region_tag
         == "speech_v1_config_Adaptation_CreateCustomClass_Basic_sync"
     )
 
 
-def test_sample_function_name():
-    snippet = _make_configured_snippet(
-        SPEECH_V1_REQUEST_PATH,
-        CONFIG_JSON_PATH,
-        api_version="v1",
-        is_sync=True)
-
+def test_sample_function_name(snippet):
     assert snippet.sample_function_name == "sample_create_custom_class_Basic"
 
 
-def test_code():
-    snippet = _make_configured_snippet(
-        SPEECH_V1_REQUEST_PATH,
-        CONFIG_JSON_PATH,
-        api_version="v1",
-        is_sync=True)
+def test_filename(snippet):
+    assert snippet.filename == "speech_v1_generated_Adaptation_create_custom_class_Basic_sync.py"
 
+
+def test_code(snippet):
     # https://github.com/googleapis/gapic-generator-python/issues/1522
     # Placeholder code.  We will gradually add to the ConfiguredSnippet class
     # until the generated code is the same as that of the golden file.

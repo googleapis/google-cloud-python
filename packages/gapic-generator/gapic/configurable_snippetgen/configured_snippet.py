@@ -14,6 +14,7 @@
 
 import dataclasses
 
+import inflection
 import libcst
 
 from gapic.configurable_snippetgen import snippet_config_language_pb2
@@ -58,8 +59,22 @@ class ConfiguredSnippet:
         """The sample function's name.
 
         For example:
-            "sample_create_custom_class_basic"
+            "sample_create_custom_class_Basic"
         """
         snippet_method_name = self.config.signature.snippet_method_name
         config_id = self.config.metadata.config_id
         return f"sample_{snippet_method_name}_{config_id}"
+
+    @property
+    def filename(self) -> str:
+        """The snippet's file name.
+
+        For example:
+            "speech_v1_generated_Adaptation_create_custom_class_Basic_async.py"
+        """
+        module_name = self.config.rpc.proto_package.split(".")[-1]
+        service_name = self.config.rpc.service_name
+        snake_case_rpc_name = inflection.underscore(self.config.rpc.rpc_name)
+        config_id = self.config.metadata.config_id
+        sync_or_async = "sync" if self.is_sync else "async"
+        return f"{module_name}_{self.api_version}_generated_{service_name}_{snake_case_rpc_name}_{config_id}_{sync_or_async}.py"
