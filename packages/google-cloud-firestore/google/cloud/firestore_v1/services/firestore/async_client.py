@@ -30,7 +30,8 @@ from typing import (
     Type,
     Union,
 )
-import pkg_resources
+
+from google.cloud.firestore_v1 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -230,7 +231,7 @@ class FirestoreAsyncClient:
         request: Optional[Union[firestore.GetDocumentRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document.Document:
         r"""Gets a single document.
@@ -323,7 +324,7 @@ class FirestoreAsyncClient:
         request: Optional[Union[firestore.ListDocumentsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDocumentsAsyncPager:
         r"""Lists documents.
@@ -437,7 +438,7 @@ class FirestoreAsyncClient:
         document: Optional[gf_document.Document] = None,
         update_mask: Optional[common.DocumentMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gf_document.Document:
         r"""Updates or inserts a document.
@@ -567,7 +568,7 @@ class FirestoreAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a document.
@@ -669,7 +670,7 @@ class FirestoreAsyncClient:
         request: Optional[Union[firestore.BatchGetDocumentsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[firestore.BatchGetDocumentsResponse]]:
         r"""Gets multiple documents.
@@ -766,7 +767,7 @@ class FirestoreAsyncClient:
         *,
         database: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> firestore.BeginTransactionResponse:
         r"""Starts a new transaction.
@@ -881,7 +882,7 @@ class FirestoreAsyncClient:
         database: Optional[str] = None,
         writes: Optional[MutableSequence[gf_write.Write]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> firestore.CommitResponse:
         r"""Commits a transaction, while optionally updating
@@ -1004,7 +1005,7 @@ class FirestoreAsyncClient:
         database: Optional[str] = None,
         transaction: Optional[bytes] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Rolls back a transaction.
@@ -1115,7 +1116,7 @@ class FirestoreAsyncClient:
         request: Optional[Union[firestore.RunQueryRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[firestore.RunQueryResponse]]:
         r"""Runs a query.
@@ -1209,7 +1210,7 @@ class FirestoreAsyncClient:
         request: Optional[Union[firestore.RunAggregationQueryRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[firestore.RunAggregationQueryResponse]]:
         r"""Runs an aggregation query.
@@ -1317,7 +1318,7 @@ class FirestoreAsyncClient:
         request: Optional[Union[firestore.PartitionQueryRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.PartitionQueryAsyncPager:
         r"""Partitions a query by returning partition cursors
@@ -1426,7 +1427,7 @@ class FirestoreAsyncClient:
         requests: Optional[AsyncIterator[firestore.WriteRequest]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[firestore.WriteResponse]]:
         r"""Streams batches of document updates and deletes, in
@@ -1524,7 +1525,7 @@ class FirestoreAsyncClient:
         requests: Optional[AsyncIterator[firestore.ListenRequest]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[firestore.ListenResponse]]:
         r"""Listens to changes.
@@ -1628,7 +1629,7 @@ class FirestoreAsyncClient:
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCollectionIdsAsyncPager:
         r"""Lists all the collection IDs underneath a document.
@@ -1756,7 +1757,7 @@ class FirestoreAsyncClient:
         request: Optional[Union[firestore.BatchWriteRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> firestore.BatchWriteResponse:
         r"""Applies a batch of write operations.
@@ -1857,7 +1858,7 @@ class FirestoreAsyncClient:
         request: Optional[Union[firestore.CreateDocumentRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document.Document:
         r"""Creates a new document.
@@ -1953,7 +1954,7 @@ class FirestoreAsyncClient:
         request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -2007,7 +2008,7 @@ class FirestoreAsyncClient:
         request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -2061,7 +2062,7 @@ class FirestoreAsyncClient:
         request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -2116,7 +2117,7 @@ class FirestoreAsyncClient:
         request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -2172,14 +2173,9 @@ class FirestoreAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-firestore",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("FirestoreAsyncClient",)

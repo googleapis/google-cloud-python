@@ -28,7 +28,8 @@ from typing import (
     Union,
     cast,
 )
-import pkg_resources
+
+from google.cloud.firestore_admin_v1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -555,7 +556,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         parent: Optional[str] = None,
         index: Optional[gfa_index.Index] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gac_operation.Operation:
         r"""Creates a composite index. This returns a
@@ -684,7 +685,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListIndexesPager:
         r"""Lists composite indexes.
@@ -799,7 +800,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> index.Index:
         r"""Gets a composite index.
@@ -902,7 +903,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a composite index.
@@ -992,7 +993,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> field.Field:
         r"""Gets the metadata and configuration for a Field.
@@ -1097,7 +1098,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         *,
         field: Optional[gfa_field.Field] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gac_operation.Operation:
         r"""Updates a field configuration. Currently, field updates apply
@@ -1236,7 +1237,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListFieldsPager:
         r"""Lists the field configuration and metadata for this database.
@@ -1359,7 +1360,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gac_operation.Operation:
         r"""Exports a copy of all or a subset of documents from
@@ -1491,7 +1492,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gac_operation.Operation:
         r"""Imports documents into Google Cloud Firestore.
@@ -1621,7 +1622,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> database.Database:
         r"""Gets information about a database.
@@ -1725,7 +1726,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> firestore_admin.ListDatabasesResponse:
         r"""List all the databases in the project.
@@ -1826,7 +1827,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         database: Optional[gfa_database.Database] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gac_operation.Operation:
         r"""Updates a database.
@@ -1962,7 +1963,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -2016,7 +2017,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -2070,7 +2071,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -2125,7 +2126,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -2175,14 +2176,9 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         )
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-firestore-admin",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("FirestoreAdminClient",)

@@ -7,7 +7,8 @@
             "extra-files": [
                 "google/cloud/firestore/gapic_version.py",
                 "google/cloud/firestore_v1/gapic_version.py",
-                "google/cloud/firestore_admin/gapic_version.py"
+                "google/cloud/firestore_admin_v1/gapic_version.py",
+                "google/cloud/firestore_bundle/gapic_version.py"
             ]
         }
     },
