@@ -26,6 +26,7 @@ from google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.c
 )
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     AccountDefenderAssessment,
+    AccountVerificationInfo,
     AndroidKeySettings,
     AnnotateAssessmentRequest,
     AnnotateAssessmentResponse,
@@ -34,6 +35,7 @@ from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     CreateAssessmentRequest,
     CreateKeyRequest,
     DeleteKeyRequest,
+    EndpointVerificationInfo,
     Event,
     GetKeyRequest,
     GetMetricsRequest,
@@ -68,6 +70,7 @@ __all__ = (
     "RecaptchaEnterpriseServiceClient",
     "RecaptchaEnterpriseServiceAsyncClient",
     "AccountDefenderAssessment",
+    "AccountVerificationInfo",
     "AndroidKeySettings",
     "AnnotateAssessmentRequest",
     "AnnotateAssessmentResponse",
@@ -76,6 +79,7 @@ __all__ = (
     "CreateAssessmentRequest",
     "CreateKeyRequest",
     "DeleteKeyRequest",
+    "EndpointVerificationInfo",
     "Event",
     "GetKeyRequest",
     "GetMetricsRequest",

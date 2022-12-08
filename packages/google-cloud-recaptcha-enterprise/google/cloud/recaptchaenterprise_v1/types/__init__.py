@@ -15,6 +15,7 @@
 #
 from .recaptchaenterprise import (
     AccountDefenderAssessment,
+    AccountVerificationInfo,
     AndroidKeySettings,
     AnnotateAssessmentRequest,
     AnnotateAssessmentResponse,
@@ -23,6 +24,7 @@ from .recaptchaenterprise import (
     CreateAssessmentRequest,
     CreateKeyRequest,
     DeleteKeyRequest,
+    EndpointVerificationInfo,
     Event,
     GetKeyRequest,
     GetMetricsRequest,
@@ -55,6 +57,7 @@ from .recaptchaenterprise import (
 
 __all__ = (
     "AccountDefenderAssessment",
+    "AccountVerificationInfo",
     "AndroidKeySettings",
     "AnnotateAssessmentRequest",
     "AnnotateAssessmentResponse",
@@ -63,6 +66,7 @@ __all__ = (
     "CreateAssessmentRequest",
     "CreateKeyRequest",
     "DeleteKeyRequest",
+    "EndpointVerificationInfo",
     "Event",
     "GetKeyRequest",
     "GetMetricsRequest",

@@ -34,7 +34,8 @@ from google.api_core import retry as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.recaptchaenterprise_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -253,7 +254,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
         parent: Optional[str] = None,
         assessment: Optional[recaptchaenterprise.Assessment] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recaptchaenterprise.Assessment:
         r"""Creates an Assessment of the likelihood an event is
@@ -367,7 +368,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
             recaptchaenterprise.AnnotateAssessmentRequest.Annotation
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recaptchaenterprise.AnnotateAssessmentResponse:
         r"""Annotates a previously created Assessment to provide
@@ -483,7 +484,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
         request: Optional[Union[recaptchaenterprise.CreateKeyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recaptchaenterprise.Key:
         r"""Creates a new reCAPTCHA Enterprise key.
@@ -567,7 +568,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
         request: Optional[Union[recaptchaenterprise.ListKeysRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListKeysAsyncPager:
         r"""Returns the list of all keys that belong to a
@@ -663,7 +664,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
         *,
         key: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recaptchaenterprise.RetrieveLegacySecretKeyResponse:
         r"""Returns the secret key related to the specified
@@ -768,7 +769,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
         request: Optional[Union[recaptchaenterprise.GetKeyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recaptchaenterprise.Key:
         r"""Returns the specified key.
@@ -848,7 +849,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
         request: Optional[Union[recaptchaenterprise.UpdateKeyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recaptchaenterprise.Key:
         r"""Updates the specified key.
@@ -931,7 +932,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
         request: Optional[Union[recaptchaenterprise.DeleteKeyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified key.
@@ -998,7 +999,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
         request: Optional[Union[recaptchaenterprise.MigrateKeyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recaptchaenterprise.Key:
         r"""Migrates an existing key from reCAPTCHA to reCAPTCHA
@@ -1085,7 +1086,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recaptchaenterprise.Metrics:
         r"""Get some aggregated metrics for a Key. This data can
@@ -1188,7 +1189,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRelatedAccountGroupsAsyncPager:
         r"""List groups of related accounts.
@@ -1305,7 +1306,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRelatedAccountGroupMembershipsAsyncPager:
         r"""Get memberships in a group of related accounts.
@@ -1424,7 +1425,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
         project: Optional[str] = None,
         hashed_account_id: Optional[bytes] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchRelatedAccountGroupMembershipsAsyncPager:
         r"""Search group memberships related to a given account.
@@ -1556,14 +1557,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-recaptcha-enterprise",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("RecaptchaEnterpriseServiceAsyncClient",)

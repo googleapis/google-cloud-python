@@ -24,6 +24,7 @@ from .services.recaptcha_enterprise_service import (
 )
 from .types.recaptchaenterprise import (
     AccountDefenderAssessment,
+    AccountVerificationInfo,
     AndroidKeySettings,
     AnnotateAssessmentRequest,
     AnnotateAssessmentResponse,
@@ -32,6 +33,7 @@ from .types.recaptchaenterprise import (
     CreateAssessmentRequest,
     CreateKeyRequest,
     DeleteKeyRequest,
+    EndpointVerificationInfo,
     Event,
     GetKeyRequest,
     GetMetricsRequest,
@@ -65,6 +67,7 @@ from .types.recaptchaenterprise import (
 __all__ = (
     "RecaptchaEnterpriseServiceAsyncClient",
     "AccountDefenderAssessment",
+    "AccountVerificationInfo",
     "AndroidKeySettings",
     "AnnotateAssessmentRequest",
     "AnnotateAssessmentResponse",
@@ -73,6 +76,7 @@ __all__ = (
     "CreateAssessmentRequest",
     "CreateKeyRequest",
     "DeleteKeyRequest",
+    "EndpointVerificationInfo",
     "Event",
     "GetKeyRequest",
     "GetMetricsRequest",

@@ -25,6 +25,8 @@ __protobuf__ = proto.module(
         "CreateAssessmentRequest",
         "AnnotateAssessmentRequest",
         "AnnotateAssessmentResponse",
+        "EndpointVerificationInfo",
+        "AccountVerificationInfo",
         "PrivatePasswordLeakVerification",
         "Assessment",
         "Event",
@@ -164,6 +166,114 @@ class AnnotateAssessmentResponse(proto.Message):
     r"""Empty response for AnnotateAssessment."""
 
 
+class EndpointVerificationInfo(proto.Message):
+    r"""Information about a verification endpoint that can be used
+    for 2FA.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        email_address (str):
+            Email address for which to trigger a
+            verification request.
+
+            This field is a member of `oneof`_ ``endpoint``.
+        phone_number (str):
+            Phone number for which to trigger a
+            verification request. Should be given in E.164
+            format.
+
+            This field is a member of `oneof`_ ``endpoint``.
+        request_token (str):
+            Output only. Token to provide to the client
+            to trigger endpoint verification. It must be
+            used within 15 minutes.
+        last_verification_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Timestamp of the last successful
+            verification for the endpoint, if any.
+    """
+
+    email_address: str = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="endpoint",
+    )
+    phone_number: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="endpoint",
+    )
+    request_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    last_verification_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class AccountVerificationInfo(proto.Message):
+    r"""Information about account verification, used for identity
+    verification.
+
+    Attributes:
+        endpoints (MutableSequence[google.cloud.recaptchaenterprise_v1.types.EndpointVerificationInfo]):
+            Endpoints that can be used for identity
+            verification.
+        language_code (str):
+            Language code preference for the verification
+            message, set as a IETF BCP 47 language code.
+        latest_verification_result (google.cloud.recaptchaenterprise_v1.types.AccountVerificationInfo.Result):
+            Output only. Result of the latest account
+            verification challenge.
+        username (str):
+            Username of the account that is being
+            verified. Deprecated. Customers should now
+            provide the hashed account ID field in Event.
+    """
+
+    class Result(proto.Enum):
+        r"""Result of the account verification as contained in the
+        verdict token issued at the end of the verification flow.
+        """
+        RESULT_UNSPECIFIED = 0
+        SUCCESS_USER_VERIFIED = 1
+        ERROR_USER_NOT_VERIFIED = 2
+        ERROR_SITE_ONBOARDING_INCOMPLETE = 3
+        ERROR_RECIPIENT_NOT_ALLOWED = 4
+        ERROR_RECIPIENT_ABUSE_LIMIT_EXHAUSTED = 5
+        ERROR_CRITICAL_INTERNAL = 6
+        ERROR_CUSTOMER_QUOTA_EXHAUSTED = 7
+        ERROR_VERIFICATION_BYPASSED = 8
+        ERROR_VERDICT_MISMATCH = 9
+
+    endpoints: MutableSequence["EndpointVerificationInfo"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="EndpointVerificationInfo",
+    )
+    language_code: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    latest_verification_result: Result = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=Result,
+    )
+    username: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class PrivatePasswordLeakVerification(proto.Message):
     r"""Private password leak verification info.
 
@@ -223,6 +333,10 @@ class Assessment(proto.Message):
         token_properties (google.cloud.recaptchaenterprise_v1.types.TokenProperties):
             Output only. Properties of the provided event
             token.
+        account_verification (google.cloud.recaptchaenterprise_v1.types.AccountVerificationInfo):
+            Account verification information for identity
+            verification. The assessment event must include
+            a token and site key to use this feature.
         account_defender_assessment (google.cloud.recaptchaenterprise_v1.types.AccountDefenderAssessment):
             Assessment returned by account defender when a
             hashed_account_id is provided.
@@ -251,6 +365,11 @@ class Assessment(proto.Message):
         proto.MESSAGE,
         number=4,
         message="TokenProperties",
+    )
+    account_verification: "AccountVerificationInfo" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="AccountVerificationInfo",
     )
     account_defender_assessment: "AccountDefenderAssessment" = proto.Field(
         proto.MESSAGE,
@@ -374,6 +493,12 @@ class TokenProperties(proto.Message):
         hostname (str):
             The hostname of the page on which the token
             was generated (Web keys only).
+        android_package_name (str):
+            The name of the Android package with which
+            the token was generated (Android keys only).
+        ios_bundle_id (str):
+            The ID of the iOS bundle with which the token
+            was generated (iOS keys only).
         action (str):
             Action name provided at token generation.
     """
@@ -405,6 +530,14 @@ class TokenProperties(proto.Message):
     hostname: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    android_package_name: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    ios_bundle_id: str = proto.Field(
+        proto.STRING,
+        number=9,
     )
     action: str = proto.Field(
         proto.STRING,
@@ -592,11 +725,26 @@ class MigrateKeyRequest(proto.Message):
         name (str):
             Required. The name of the key to be migrated,
             in the format "projects/{project}/keys/{key}".
+        skip_billing_check (bool):
+            Optional. If true, skips the billing check. A reCAPTCHA
+            Enterprise key or migrated key behaves differently than a
+            reCAPTCHA (non-Enterprise version) key when you reach a
+            quota limit (see
+            https://cloud.google.com/recaptcha-enterprise/quotas#quota_limit).
+            To avoid any disruption of your usage, we check that a
+            billing account is present. If your usage of reCAPTCHA is
+            under the free quota, you can safely skip the billing check
+            and proceed with the migration. See
+            https://cloud.google.com/recaptcha-enterprise/docs/billing-information.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    skip_billing_check: bool = proto.Field(
+        proto.BOOL,
+        number=2,
     )
 
 
@@ -944,7 +1092,6 @@ class ScoreMetrics(proto.Message):
             Action-based metrics. The map key is the
             action name which specified by the site owners
             at time of the "execute" client-side call.
-            Populated only for SCORE keys.
     """
 
     overall_metrics: "ScoreDistribution" = proto.Field(
