@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.run_v2 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -586,7 +587,7 @@ class TasksClient(metaclass=TasksClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> task.Task:
         r"""Gets information about a Task.
@@ -689,7 +690,7 @@ class TasksClient(metaclass=TasksClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTasksPager:
         r"""Lists Tasks from an Execution of a Job.
@@ -821,7 +822,7 @@ class TasksClient(metaclass=TasksClientMeta):
         request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -875,7 +876,7 @@ class TasksClient(metaclass=TasksClientMeta):
         request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -929,7 +930,7 @@ class TasksClient(metaclass=TasksClientMeta):
         request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -980,14 +981,9 @@ class TasksClient(metaclass=TasksClientMeta):
         )
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-run",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("TasksClient",)

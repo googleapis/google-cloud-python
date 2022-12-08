@@ -4,6 +4,7 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/cloud/run_v2/gapic_version.py",
         "google/cloud/run/gapic_version.py",
         {
           "type": "json",

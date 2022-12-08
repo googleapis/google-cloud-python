@@ -517,6 +517,7 @@ class ServicesRestTransport(ServicesTransport):
                 credentials=self._credentials,
                 scopes=self._scopes,
                 http_options=http_options,
+                path_prefix="v2",
             )
 
             self._operations_client = operations_v1.AbstractOperationsClient(
