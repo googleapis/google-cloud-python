@@ -5,6 +5,22 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.7.3](https://github.com/googleapis/python-firestore/compare/v2.7.2...v2.7.3) (2022-12-08)
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([626710f](https://github.com/googleapis/python-firestore/commit/626710f62a7615b83f0a2aed21d95950492762f8))
+* Drop usage of pkg_resources ([626710f](https://github.com/googleapis/python-firestore/commit/626710f62a7615b83f0a2aed21d95950492762f8))
+* Fix timeout default values ([626710f](https://github.com/googleapis/python-firestore/commit/626710f62a7615b83f0a2aed21d95950492762f8))
+* Fix typehint on AsyncDocumentReference.get()  ([#649](https://github.com/googleapis/python-firestore/issues/649)) ([a8d79c8](https://github.com/googleapis/python-firestore/commit/a8d79c8521d767e159952010f1ded66c3e5cf9bc))
+
+
+### Documentation
+
+* **async_client:** Fix typo in get_mtls_endpoint_and_cert_source doc ([#662](https://github.com/googleapis/python-firestore/issues/662)) ([b431b4a](https://github.com/googleapis/python-firestore/commit/b431b4a68365c728e49a99a0adf20ecabf0b186e))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([626710f](https://github.com/googleapis/python-firestore/commit/626710f62a7615b83f0a2aed21d95950492762f8))
+
 ## [2.7.2](https://github.com/googleapis/python-firestore/compare/v2.7.1...v2.7.2) (2022-10-10)
 
 
