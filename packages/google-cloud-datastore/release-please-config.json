@@ -6,7 +6,9 @@
             "release-type": "python",
             "extra-files": [
                 "google/cloud/datastore/gapic_version.py",
-                "google/cloud/datastore_admin/gapic_version.py"
+                "google/cloud/datastore_admin/gapic_version.py",
+                "google/cloud/datastore_admin_v1/gapic_version.py",
+                "google/cloud/datastore_v1/gapic_version.py"
             ]
         }
     },
