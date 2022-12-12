@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.4.1](https://github.com/googleapis/python-bigquery/compare/v3.4.0...v3.4.1) (2022-12-09)
+
+
+### Documentation
+
+* Add info about streaming quota limits to `insert_rows*` methods ([#1409](https://github.com/googleapis/python-bigquery/issues/1409)) ([0f08e9a](https://github.com/googleapis/python-bigquery/commit/0f08e9a8ff638e78006d71acd974de2dff89b5d9))
+
+
+### Dependencies
+
+* make pyarrow and BQ Storage optional dependencies ([e1aa921](https://github.com/googleapis/python-bigquery/commit/e1aa9218ad22f85c9a6cab8b61d013779376a582))
+
 ## [3.4.0](https://github.com/googleapis/python-bigquery/compare/v3.3.6...v3.4.0) (2022-11-17)
 
 
