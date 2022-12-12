@@ -334,10 +334,14 @@ __all__ = [
 _MEANING_PREDEFINED_ENTITY_USER = 20
 _MEANING_COMPRESSED = 22
 
-# As produced by zlib. Indicates compressed byte sequence using DEFLATE at
-# default compression level, with a 32K window size.
-# From https://github.com/madler/zlib/blob/master/doc/rfc1950.txt
-_ZLIB_COMPRESSION_MARKER = b"x\x9c"
+_ZLIB_COMPRESSION_MARKERS = (
+    # As produced by zlib. Indicates compressed byte sequence using DEFLATE at
+    # default compression level, with a 32K window size.
+    # From https://github.com/madler/zlib/blob/master/doc/rfc1950.txt
+    b"x\x9c",
+    # Other compression levels produce the following marker.
+    b"x^",
+)
 
 _MAX_STRING_LENGTH = 1500
 Key = key_module.Key
@@ -2619,7 +2623,7 @@ class BlobProperty(Property):
             return
 
         if self._compressed and not isinstance(value, _CompressedValue):
-            if not value.startswith(_ZLIB_COMPRESSION_MARKER):
+            if not value.startswith(_ZLIB_COMPRESSION_MARKERS):
                 return value
             value = _CompressedValue(value)
 
@@ -2645,13 +2649,13 @@ class BlobProperty(Property):
             if self._repeated:
                 compressed_value = []
                 for rval in value:
-                    if rval and not rval.startswith(_ZLIB_COMPRESSION_MARKER):
+                    if rval and not rval.startswith(_ZLIB_COMPRESSION_MARKERS):
                         rval = zlib.compress(rval)
                     compressed_value.append(rval)
                 value = compressed_value
                 data[key] = value
             if not self._repeated:
-                if value and not value.startswith(_ZLIB_COMPRESSION_MARKER):
+                if value and not value.startswith(_ZLIB_COMPRESSION_MARKERS):
                     value = zlib.compress(value)
                     data[key] = value
 
