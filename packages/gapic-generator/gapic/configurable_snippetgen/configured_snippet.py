@@ -17,23 +17,23 @@ import dataclasses
 import inflection
 import libcst
 
+from gapic.configurable_snippetgen import libcst_utils
 from gapic.configurable_snippetgen import snippet_config_language_pb2
 from gapic.schema import api
 
 
-def _make_empty_module() -> libcst.Module:
-    return libcst.Module(body=[])
-
-
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass
 class ConfiguredSnippet:
     api_schema: api.API
     config: snippet_config_language_pb2.SnippetConfig
     api_version: str
     is_sync: bool
-    _module: libcst.Module = dataclasses.field(
-        default_factory=_make_empty_module, init=False
-    )
+
+    def __post_init__(self):
+        self._module: libcst.Module = libcst_utils.empty_module()
+        self._sample_function_def: libcst.FunctionDef = libcst_utils.base_function_def(
+            function_name=self.sample_function_name, is_sync=self.is_sync
+        )
 
     @property
     def code(self) -> str:
@@ -78,3 +78,26 @@ class ConfiguredSnippet:
         config_id = self.config.metadata.config_id
         sync_or_async = "sync" if self.is_sync else "async"
         return f"{module_name}_{self.api_version}_generated_{service_name}_{snake_case_rpc_name}_{config_id}_{sync_or_async}.py"
+
+    def _build_sample_function(self) -> None:
+        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1536, add return type.
+        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1537, add sample function parameters.
+        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1538, add docstring.
+        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1539, add sample function body.
+        pass
+
+    def _add_sample_function(self) -> None:
+        self._module = self._module.with_changes(
+            body=[self._sample_function_def])
+
+    def generate(self) -> None:
+        """Generates the snippet.
+
+        This is the main entrypoint of a ConfiguredSnippet instance, calling
+        other methods to update self._module.
+        """
+        self._build_sample_function()
+        self._add_sample_function()
+        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1535, add imports.
+        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1534, add region tag.
+        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1533, add header.

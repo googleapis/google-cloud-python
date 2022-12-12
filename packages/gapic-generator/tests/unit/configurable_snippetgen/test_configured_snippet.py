@@ -26,13 +26,11 @@ from gapic.schema import api
 
 
 CURRENT_DIRECTORY = Path(__file__).parent.absolute()
-SPEECH_V1_REQUEST_PATH = (CURRENT_DIRECTORY /
-    "resources" / "speech" / "request.desc")
+SPEECH_V1_REQUEST_PATH = CURRENT_DIRECTORY / \
+    "resources" / "speech" / "request.desc"
 CONFIG_JSON_PATH = (
-    CURRENT_DIRECTORY /
-    "resources" /
-    "speech" /
-    "speech_createCustomClass.json")
+    CURRENT_DIRECTORY / "resources" / "speech" / "speech_createCustomClass.json"
+)
 
 
 def _load_api_schema(request_path: Path) -> api.API:
@@ -79,16 +77,13 @@ def _make_configured_snippet(
 @pytest.fixture
 def snippet():
     return _make_configured_snippet(
-        SPEECH_V1_REQUEST_PATH,
-        CONFIG_JSON_PATH,
-        api_version="v1",
-        is_sync=True)
+        SPEECH_V1_REQUEST_PATH, CONFIG_JSON_PATH, api_version="v1", is_sync=True
+    )
 
 
 def test_region_tag(snippet):
     assert (
-        snippet.region_tag
-        == "speech_v1_config_Adaptation_CreateCustomClass_Basic_sync"
+        snippet.region_tag == "speech_v1_config_Adaptation_CreateCustomClass_Basic_sync"
     )
 
 
@@ -97,13 +92,19 @@ def test_sample_function_name(snippet):
 
 
 def test_filename(snippet):
-    assert snippet.filename == "speech_v1_generated_Adaptation_create_custom_class_Basic_sync.py"
+    assert (
+        snippet.filename
+        == "speech_v1_generated_Adaptation_create_custom_class_Basic_sync.py"
+    )
 
 
 def test_code(snippet):
+    snippet.generate()
+
     # https://github.com/googleapis/gapic-generator-python/issues/1522
     # Placeholder code.  We will gradually add to the ConfiguredSnippet class
     # until the generated code is the same as that of the golden file.
-    expected_code = "\n"
-
+    expected_code = """def sample_create_custom_class_Basic():
+    \"\"
+"""
     assert snippet.code == expected_code
