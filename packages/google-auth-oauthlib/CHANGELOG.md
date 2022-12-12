@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-auth-oauthlib/#history
 
+## [0.8.0](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.7.1...v0.8.0) (2022-12-08)
+
+
+### Features
+
+* Add support for Python 3.11 ([#253](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/253)) ([85fd1da](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/85fd1dab50a6cb387f11a4f00ad9ec6c49f7994c))
+* Introduce granted scopes to credentials ([#257](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/257)) ([51fef3b](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/51fef3b9703a292f39054f80d9bf9780d115db6c))
+
 ## [0.7.1](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.7.0...v0.7.1) (2022-11-03)
 
 
