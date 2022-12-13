@@ -402,6 +402,8 @@ def test_{{ method_name }}_flattened():
         assert DurationRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
         {% elif (field.ident|string()).startswith('wrappers_pb2.') %}
         assert wrappers.{{ (field.ident|string())[13:] }}Rule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
+        {% elif field.field_pb.type == 2 %}{# Use approx eq for floats #}
+        assert math.isclose(args[0].{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
         {% else %}
         arg = args[0].{{ key }}
         mock_val = {{ field.mock_value }}
@@ -497,6 +499,8 @@ async def test_{{ method_name }}_flattened_async():
         assert DurationRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
         {% elif (field.ident|string()).startswith('wrappers_pb2.') %}
         assert wrappers.{{ (field.ident|string())[13:] }}Rule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
+        {% elif field.field_pb.type == 2 %}{# Use approx eq for floats #}
+        assert math.isclose(args[0].{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
         {% else %}
         arg = args[0].{{ key }}
         mock_val = {{ field.mock_value }}
