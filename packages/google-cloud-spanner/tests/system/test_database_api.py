@@ -18,7 +18,9 @@ import uuid
 import pytest
 
 from google.api_core import exceptions
+from google.iam.v1 import policy_pb2
 from google.cloud import spanner_v1
+from google.type import expr_pb2
 from . import _helpers
 from . import _sample_data
 
@@ -164,6 +166,53 @@ def test_create_database_with_default_leader_success(
             assert result[0] == default_leader
 
 
+def test_iam_policy(
+    not_emulator,
+    shared_instance,
+    databases_to_delete,
+    not_postgres,
+):
+    pool = spanner_v1.BurstyPool(labels={"testcase": "iam_policy"})
+    temp_db_id = _helpers.unique_id("iam_db", separator="_")
+    create_table = (
+        "CREATE TABLE policy (\n"
+        + "    Id      STRING(36) NOT NULL,\n"
+        + "    Field1  STRING(36) NOT NULL\n"
+        + ") PRIMARY KEY (Id)"
+    )
+    create_role = "CREATE ROLE parent"
+
+    temp_db = shared_instance.database(
+        temp_db_id,
+        ddl_statements=[create_table, create_role],
+        pool=pool,
+    )
+    create_op = temp_db.create()
+    databases_to_delete.append(temp_db)
+    create_op.result(DBAPI_OPERATION_TIMEOUT)
+    policy = temp_db.get_iam_policy(3)
+
+    assert policy.version == 0
+    assert policy.etag == b"\x00 \x01"
+
+    new_binding = policy_pb2.Binding(
+        role="roles/spanner.fineGrainedAccessUser",
+        members=["user:asthamohta@google.com"],
+        condition=expr_pb2.Expr(
+            title="condition title",
+            expression='resource.name.endsWith("/databaseRoles/parent")',
+        ),
+    )
+
+    policy.version = 3
+    policy.bindings.append(new_binding)
+    temp_db.set_iam_policy(policy)
+
+    new_policy = temp_db.get_iam_policy(3)
+    assert new_policy.version == 3
+    assert new_policy.bindings == [new_binding]
+
+
 def test_table_not_found(shared_instance):
     temp_db_id = _helpers.unique_id("tbl_not_found", separator="_")
 
@@ -299,6 +348,87 @@ def test_update_ddl_w_default_leader_success(
     temp_db.reload()
     assert temp_db.default_leader == default_leader
     assert len(temp_db.ddl_statements) == len(ddl_statements)
+
+
+def test_create_role_grant_access_success(
+    not_emulator,
+    shared_instance,
+    databases_to_delete,
+    not_postgres,
+):
+    creator_role_parent = _helpers.unique_id("role_parent", separator="_")
+    creator_role_orphan = _helpers.unique_id("role_orphan", separator="_")
+
+    temp_db_id = _helpers.unique_id("dfl_ldrr_upd_ddl", separator="_")
+    temp_db = shared_instance.database(temp_db_id)
+
+    create_op = temp_db.create()
+    databases_to_delete.append(temp_db)
+    create_op.result(DBAPI_OPERATION_TIMEOUT)  # raises on failure / timeout.
+
+    # Create role and grant select permission on table contacts for parent role.
+    ddl_statements = _helpers.DDL_STATEMENTS + [
+        f"CREATE ROLE {creator_role_parent}",
+        f"CREATE ROLE {creator_role_orphan}",
+        f"GRANT SELECT ON TABLE contacts TO ROLE {creator_role_parent}",
+    ]
+    operation = temp_db.update_ddl(ddl_statements)
+    operation.result(DBAPI_OPERATION_TIMEOUT)  # raises on failure / timeout.
+
+    # Perform select with orphan role on table contacts.
+    # Expect PermissionDenied exception.
+    temp_db = shared_instance.database(temp_db_id, database_role=creator_role_orphan)
+    with pytest.raises(exceptions.PermissionDenied):
+        with temp_db.snapshot() as snapshot:
+            results = snapshot.execute_sql("SELECT * FROM contacts")
+            for row in results:
+                pass
+
+    # Perform select with parent role on table contacts. Expect success.
+    temp_db = shared_instance.database(temp_db_id, database_role=creator_role_parent)
+    with temp_db.snapshot() as snapshot:
+        snapshot.execute_sql("SELECT * FROM contacts")
+
+    ddl_remove_roles = [
+        f"REVOKE SELECT ON TABLE contacts FROM ROLE {creator_role_parent}",
+        f"DROP ROLE {creator_role_parent}",
+        f"DROP ROLE {creator_role_orphan}",
+    ]
+    # Revoke permission and Delete roles.
+    operation = temp_db.update_ddl(ddl_remove_roles)
+    operation.result(DBAPI_OPERATION_TIMEOUT)  # raises on failure / timeout.
+
+
+def test_list_database_role_success(
+    not_emulator,
+    shared_instance,
+    databases_to_delete,
+    not_postgres,
+):
+    creator_role_parent = _helpers.unique_id("role_parent", separator="_")
+    creator_role_orphan = _helpers.unique_id("role_orphan", separator="_")
+
+    temp_db_id = _helpers.unique_id("dfl_ldrr_upd_ddl", separator="_")
+    temp_db = shared_instance.database(temp_db_id)
+
+    create_op = temp_db.create()
+    databases_to_delete.append(temp_db)
+    create_op.result(DBAPI_OPERATION_TIMEOUT)  # raises on failure / timeout.
+
+    # Create role and grant select permission on table contacts for parent role.
+    ddl_statements = _helpers.DDL_STATEMENTS + [
+        f"CREATE ROLE {creator_role_parent}",
+        f"CREATE ROLE {creator_role_orphan}",
+    ]
+    operation = temp_db.update_ddl(ddl_statements)
+    operation.result(DBAPI_OPERATION_TIMEOUT)  # raises on failure / timeout.
+
+    # List database roles.
+    roles_list = []
+    for role in temp_db.list_database_roles():
+        roles_list.append(role.name.split("/")[-1])
+    assert creator_role_parent in roles_list
+    assert creator_role_orphan in roles_list
 
 
 def test_db_batch_insert_then_db_snapshot_read(shared_database):

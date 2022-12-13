@@ -54,6 +54,10 @@ class TestParseUtils(unittest.TestCase):
                 "CREATE INDEX AlbumsByAlbumTitle2 ON Albums(AlbumTitle) STORING (MarketingBudget)",
                 STMT_DDL,
             ),
+            ("CREATE ROLE parent", STMT_DDL),
+            ("GRANT SELECT ON TABLE Singers TO ROLE parent", STMT_DDL),
+            ("REVOKE SELECT ON TABLE Singers TO ROLE parent", STMT_DDL),
+            ("GRANT ROLE parent TO ROLE child", STMT_DDL),
             ("INSERT INTO table (col1) VALUES (1)", STMT_INSERT),
             ("UPDATE table SET col1 = 1 WHERE col1 = NULL", STMT_UPDATING),
         )

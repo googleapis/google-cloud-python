@@ -31,6 +31,8 @@ import time
 from google.cloud import spanner
 from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
 from google.cloud.spanner_v1 import param_types
+from google.type import expr_pb2
+from google.iam.v1 import policy_pb2
 from google.cloud.spanner_v1.data_types import JsonObject
 from google.protobuf import field_mask_pb2  # type: ignore
 OPERATION_TIMEOUT_SECONDS = 240
@@ -2310,6 +2312,122 @@ def list_instance_config_operations():
 # [END spanner_list_instance_config_operations]
 
 
+def add_and_drop_database_roles(instance_id, database_id):
+    """Showcases how to manage a user defined database role."""
+    # [START spanner_add_and_drop_database_roles]
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+    role_parent = "new_parent"
+    role_child = "new_child"
+
+    operation = database.update_ddl(
+        [
+            "CREATE ROLE {}".format(role_parent),
+            "GRANT SELECT ON TABLE Singers TO ROLE {}".format(role_parent),
+            "CREATE ROLE {}".format(role_child),
+            "GRANT ROLE {} TO ROLE {}".format(role_parent, role_child),
+        ]
+    )
+    operation.result(OPERATION_TIMEOUT_SECONDS)
+    print(
+        "Created roles {} and {} and granted privileges".format(role_parent, role_child)
+    )
+
+    operation = database.update_ddl(
+        [
+            "REVOKE ROLE {} FROM ROLE {}".format(role_parent, role_child),
+            "DROP ROLE {}".format(role_child),
+        ]
+    )
+    operation.result(OPERATION_TIMEOUT_SECONDS)
+    print("Revoked privileges and dropped role {}".format(role_child))
+
+    # [END spanner_add_and_drop_database_roles]
+
+
+def read_data_with_database_role(instance_id, database_id):
+    """Showcases how a user defined database role is used by member."""
+    # [START spanner_read_data_with_database_role]
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    role = "new_parent"
+    database = instance.database(database_id, database_role=role)
+
+    with database.snapshot() as snapshot:
+        results = snapshot.execute_sql("SELECT * FROM Singers")
+        for row in results:
+            print("SingerId: {}, FirstName: {}, LastName: {}".format(*row))
+
+    # [END spanner_read_data_with_database_role]
+
+
+def list_database_roles(instance_id, database_id):
+    """Showcases how to list Database Roles."""
+    # [START spanner_list_database_roles]
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    # List database roles.
+    print("Database Roles are:")
+    for role in database.list_database_roles():
+        print(role.name.split("/")[-1])
+    # [END spanner_list_database_roles]
+
+
+def enable_fine_grained_access(
+    instance_id,
+    database_id,
+    iam_member="user:alice@example.com",
+    database_role="new_parent",
+    title="condition title",
+):
+    """Showcases how to enable fine grained access control."""
+    # [START spanner_enable_fine_grained_access]
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+    # iam_member = "user:alice@example.com"
+    # database_role = "new_parent"
+    # title = "condition title"
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    # The policy in the response from getDatabaseIAMPolicy might use the policy version
+    # that you specified, or it might use a lower policy version. For example, if you
+    # specify version 3, but the policy has no conditional role bindings, the response
+    # uses version 1. Valid values are 0, 1, and 3.
+    policy = database.get_iam_policy(3)
+    if policy.version < 3:
+        policy.version = 3
+
+    new_binding = policy_pb2.Binding(
+        role="roles/spanner.fineGrainedAccessUser",
+        members=[iam_member],
+        condition=expr_pb2.Expr(
+            title=title,
+            expression=f'resource.name.endsWith("/databaseRoles/{database_role}")',
+        ),
+    )
+
+    policy.version = 3
+    policy.bindings.append(new_binding)
+    database.set_iam_policy(policy)
+
+    new_policy = database.get_iam_policy(3)
+    print(
+        f"Enabled fine-grained access in IAM. New policy has version {new_policy.version}"
+    )
+    # [END spanner_enable_fine_grained_access]
+
+
 if __name__ == "__main__":  # noqa: C901
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
@@ -2419,6 +2537,23 @@ if __name__ == "__main__":  # noqa: C901
         "create_client_with_query_options",
         help=create_client_with_query_options.__doc__,
     )
+    subparsers.add_parser(
+        "add_and_drop_database_roles", help=add_and_drop_database_roles.__doc__
+    )
+    subparsers.add_parser(
+        "read_data_with_database_role", help=read_data_with_database_role.__doc__
+    )
+    subparsers.add_parser("list_database_roles", help=list_database_roles.__doc__)
+    enable_fine_grained_access_parser = subparsers.add_parser(
+        "enable_fine_grained_access", help=enable_fine_grained_access.__doc__
+    )
+    enable_fine_grained_access_parser.add_argument(
+        "--iam_member", default="user:alice@example.com"
+    )
+    enable_fine_grained_access_parser.add_argument(
+        "--database_role", default="new_parent"
+    )
+    enable_fine_grained_access_parser.add_argument("--title", default="condition title")
 
     args = parser.parse_args()
 
@@ -2534,3 +2669,17 @@ if __name__ == "__main__":  # noqa: C901
         query_data_with_query_options(args.instance_id, args.database_id)
     elif args.command == "create_client_with_query_options":
         create_client_with_query_options(args.instance_id, args.database_id)
+    elif args.command == "add_and_drop_database_roles":
+        add_and_drop_database_roles(args.instance_id, args.database_id)
+    elif args.command == "read_data_with_database_role":
+        read_data_with_database_role(args.instance_id, args.database_id)
+    elif args.command == "list_database_roles":
+        list_database_roles(args.instance_id, args.database_id)
+    elif args.command == "enable_fine_grained_access":
+        enable_fine_grained_access(
+            args.instance_id,
+            args.database_id,
+            args.iam_member,
+            args.database_role,
+            args.title,
+        )

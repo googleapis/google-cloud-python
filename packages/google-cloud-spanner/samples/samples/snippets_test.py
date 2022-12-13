@@ -759,3 +759,25 @@ def test_set_request_tag(capsys, instance_id, sample_database):
     snippets.set_request_tag(instance_id, sample_database.database_id)
     out, _ = capsys.readouterr()
     assert "SingerId: 1, AlbumId: 1, AlbumTitle: Total Junk" in out
+
+
+@pytest.mark.dependency(name="add_and_drop_database_roles", depends=["insert_data"])
+def test_add_and_drop_database_roles(capsys, instance_id, sample_database):
+    snippets.add_and_drop_database_roles(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert "Created roles new_parent and new_child and granted privileges" in out
+    assert "Revoked privileges and dropped role new_child" in out
+
+
+@pytest.mark.dependency(depends=["add_and_drop_database_roles"])
+def test_read_data_with_database_role(capsys, instance_id, sample_database):
+    snippets.read_data_with_database_role(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert "ingerId: 1, FirstName: Marc, LastName: Richards" in out
+
+
+@pytest.mark.dependency(depends=["add_and_drop_database_roles"])
+def test_list_database_roles(capsys, instance_id, sample_database):
+    snippets.list_database_roles(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert "new_parent" in out

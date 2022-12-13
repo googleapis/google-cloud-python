@@ -61,6 +61,7 @@ class _BaseTest(unittest.TestCase):
     BACKUP_ID = "backup_id"
     BACKUP_NAME = INSTANCE_NAME + "/backups/" + BACKUP_ID
     TRANSACTION_TAG = "transaction-tag"
+    DATABASE_ROLE = "dummy-role"
 
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
@@ -112,6 +113,7 @@ class TestDatabase(_BaseTest):
         self.assertIsNone(database._logger)
         # BurstyPool does not create sessions during 'bind()'.
         self.assertTrue(database._pool._sessions.empty())
+        self.assertIsNone(database.database_role)
 
     def test_ctor_w_explicit_pool(self):
         instance = _Instance(self.INSTANCE_NAME)
@@ -122,6 +124,15 @@ class TestDatabase(_BaseTest):
         self.assertEqual(list(database.ddl_statements), [])
         self.assertIs(database._pool, pool)
         self.assertIs(pool._bound, database)
+
+    def test_ctor_w_database_role(self):
+        instance = _Instance(self.INSTANCE_NAME)
+        database = self._make_one(
+            self.DATABASE_ID, instance, database_role=self.DATABASE_ROLE
+        )
+        self.assertEqual(database.database_id, self.DATABASE_ID)
+        self.assertIs(database._instance, instance)
+        self.assertIs(database.database_role, self.DATABASE_ROLE)
 
     def test_ctor_w_ddl_statements_non_string(self):
 
@@ -1526,6 +1537,51 @@ class TestDatabase(_BaseTest):
         instance.list_database_operations.assert_called_once_with(
             filter_=expected_filter_, page_size=page_size
         )
+
+    def test_list_database_roles_grpc_error(self):
+        from google.api_core.exceptions import Unknown
+        from google.cloud.spanner_admin_database_v1 import ListDatabaseRolesRequest
+
+        client = _Client()
+        api = client.database_admin_api = self._make_database_admin_api()
+        api.list_database_roles.side_effect = Unknown("testing")
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        with self.assertRaises(Unknown):
+            database.list_database_roles()
+
+        expected_request = ListDatabaseRolesRequest(
+            parent=database.name,
+        )
+
+        api.list_database_roles.assert_called_once_with(
+            request=expected_request,
+            metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+
+    def test_list_database_roles_defaults(self):
+        from google.cloud.spanner_admin_database_v1 import ListDatabaseRolesRequest
+
+        client = _Client()
+        api = client.database_admin_api = self._make_database_admin_api()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        instance.list_database_roles = mock.MagicMock(return_value=[])
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        resp = database.list_database_roles()
+
+        expected_request = ListDatabaseRolesRequest(
+            parent=database.name,
+        )
+
+        api.list_database_roles.assert_called_once_with(
+            request=expected_request,
+            metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+        self.assertIsNotNone(resp)
 
     def test_table_factory_defaults(self):
         from google.cloud.spanner_v1.table import Table

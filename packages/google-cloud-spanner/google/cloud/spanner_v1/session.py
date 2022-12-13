@@ -52,16 +52,20 @@ class Session(object):
 
     :type labels: dict (str -> str)
     :param labels: (Optional) User-assigned labels for the session.
+
+    :type database_role: str
+    :param database_role: (Optional) user-assigned database_role for the session.
     """
 
     _session_id = None
     _transaction = None
 
-    def __init__(self, database, labels=None):
+    def __init__(self, database, labels=None, database_role=None):
         self._database = database
         if labels is None:
             labels = {}
         self._labels = labels
+        self._database_role = database_role
 
     def __lt__(self, other):
         return self._session_id < other._session_id
@@ -70,6 +74,14 @@ class Session(object):
     def session_id(self):
         """Read-only ID, set by the back-end during :meth:`create`."""
         return self._session_id
+
+    @property
+    def database_role(self):
+        """User-assigned database-role for the session.
+
+        :rtype: str
+        :returns: the database role str (None if no database role were assigned)."""
+        return self._database_role
 
     @property
     def labels(self):
@@ -115,6 +127,8 @@ class Session(object):
         metadata = _metadata_with_prefix(self._database.name)
 
         request = CreateSessionRequest(database=self._database.name)
+        if self._database.database_role is not None:
+            request.session.creator_role = self._database.database_role
 
         if self._labels:
             request.session.labels = self._labels
