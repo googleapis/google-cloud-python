@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-notebooks/compare/v1.4.4...v1.5.0) (2022-12-13)
+
+
+### Features
+
+* Add Instance.reservation_affinity, nic_type, can_ip_forward to v1beta1 API ([05d9b23](https://github.com/googleapis/python-notebooks/commit/05d9b2393136fa296e8def0ec017ca27a8e78497))
+* Add IsInstanceUpgradeableResponse.upgrade_image to v1beta1 API ([05d9b23](https://github.com/googleapis/python-notebooks/commit/05d9b2393136fa296e8def0ec017ca27a8e78497))
+* Add support for `google.cloud.notebooks.__version__` ([05d9b23](https://github.com/googleapis/python-notebooks/commit/05d9b2393136fa296e8def0ec017ca27a8e78497))
+* Add typing to proto.Message based class attributes ([05d9b23](https://github.com/googleapis/python-notebooks/commit/05d9b2393136fa296e8def0ec017ca27a8e78497))
+* Add typing to proto.Message based class attributes ([05d9b23](https://github.com/googleapis/python-notebooks/commit/05d9b2393136fa296e8def0ec017ca27a8e78497))
+* Added Location and IAM methods ([05d9b23](https://github.com/googleapis/python-notebooks/commit/05d9b2393136fa296e8def0ec017ca27a8e78497))
+* Added UpdateRuntime, UpgradeRuntime, DiagnoseRuntime, DiagnoseInstance to v1 API ([05d9b23](https://github.com/googleapis/python-notebooks/commit/05d9b2393136fa296e8def0ec017ca27a8e78497))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([05d9b23](https://github.com/googleapis/python-notebooks/commit/05d9b2393136fa296e8def0ec017ca27a8e78497))
+* Deprecate AcceleratorType.NVIDIA_TESLA_K80 ([05d9b23](https://github.com/googleapis/python-notebooks/commit/05d9b2393136fa296e8def0ec017ca27a8e78497))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([05d9b23](https://github.com/googleapis/python-notebooks/commit/05d9b2393136fa296e8def0ec017ca27a8e78497))
+* Drop usage of pkg_resources ([05d9b23](https://github.com/googleapis/python-notebooks/commit/05d9b2393136fa296e8def0ec017ca27a8e78497))
+* Fix timeout default values ([05d9b23](https://github.com/googleapis/python-notebooks/commit/05d9b2393136fa296e8def0ec017ca27a8e78497))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([05d9b23](https://github.com/googleapis/python-notebooks/commit/05d9b2393136fa296e8def0ec017ca27a8e78497))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([05d9b23](https://github.com/googleapis/python-notebooks/commit/05d9b2393136fa296e8def0ec017ca27a8e78497))
+
 ## [1.4.4](https://github.com/googleapis/python-notebooks/compare/v1.4.3...v1.4.4) (2022-10-07)
 
 
