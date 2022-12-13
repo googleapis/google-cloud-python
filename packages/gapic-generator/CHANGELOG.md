@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.7.1](https://github.com/googleapis/gapic-generator-python/compare/v1.7.0...v1.7.1) (2022-12-13)
+
+
+### Bug Fixes
+
+* Fix unit test with float comparison ([#1541](https://github.com/googleapis/gapic-generator-python/issues/1541)) ([c5741ff](https://github.com/googleapis/gapic-generator-python/commit/c5741ff2f0658800210060392727016d1a5b4a8b))
+
 ## [1.7.0](https://github.com/googleapis/gapic-generator-python/compare/v1.6.2...v1.7.0) (2022-12-06)
 
 
