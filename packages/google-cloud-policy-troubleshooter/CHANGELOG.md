@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-policy-troubleshooter/compare/v1.5.4...v1.6.0) (2022-12-13)
+
+
+### Features
+
+* Add support for `google.cloud.policytroubleshooter.__version__` ([448ec75](https://github.com/googleapis/python-policy-troubleshooter/commit/448ec753569b459ba318abed7e7246f794fe1634))
+* Add typing to proto.Message based class attributes ([448ec75](https://github.com/googleapis/python-policy-troubleshooter/commit/448ec753569b459ba318abed7e7246f794fe1634))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([448ec75](https://github.com/googleapis/python-policy-troubleshooter/commit/448ec753569b459ba318abed7e7246f794fe1634))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([4398da3](https://github.com/googleapis/python-policy-troubleshooter/commit/4398da3d16460efa0abdedbb50079e825b901233))
+* Drop usage of pkg_resources ([4398da3](https://github.com/googleapis/python-policy-troubleshooter/commit/4398da3d16460efa0abdedbb50079e825b901233))
+* Fix timeout default values ([4398da3](https://github.com/googleapis/python-policy-troubleshooter/commit/4398da3d16460efa0abdedbb50079e825b901233))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([448ec75](https://github.com/googleapis/python-policy-troubleshooter/commit/448ec753569b459ba318abed7e7246f794fe1634))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([4398da3](https://github.com/googleapis/python-policy-troubleshooter/commit/4398da3d16460efa0abdedbb50079e825b901233))
+
 ## [1.5.4](https://github.com/googleapis/python-policy-troubleshooter/compare/v1.5.3...v1.5.4) (2022-10-07)
 
 
