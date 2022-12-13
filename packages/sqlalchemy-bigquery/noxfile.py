@@ -57,8 +57,6 @@ UNIT_TEST_EXTRAS_BY_PYTHON = {
     ],
 }
 
-
-# We're using two Python versions to test with sqlalchemy 1.3 and 1.4.
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.8", "3.10"]
 SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "mock",
@@ -418,13 +416,17 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python="3.9")
 def docs(session):
     """Build the docs for this library."""
 
     session.install("-e", ".")
     session.install(
-        "sphinx==4.0.1", "alabaster", "geoalchemy2", "shapely", "recommonmark"
+        "sphinx==4.0.1",
+        "alabaster",
+        "geoalchemy2",
+        "shapely",
+        "recommonmark",
     )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
@@ -442,7 +444,7 @@ def docs(session):
     )
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python="3.9")
 def docfx(session):
     """Build the docfx yaml files for this library."""
 
