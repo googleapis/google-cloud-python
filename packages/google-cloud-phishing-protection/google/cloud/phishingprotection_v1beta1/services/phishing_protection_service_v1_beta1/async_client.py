@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -24,7 +34,8 @@ from google.api_core import retry as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.phishingprotection_v1beta1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -168,11 +179,11 @@ class PhishingProtectionServiceV1Beta1AsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[
             str, PhishingProtectionServiceV1Beta1Transport
         ] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the phishing protection service v1 beta1 client.
@@ -216,12 +227,12 @@ class PhishingProtectionServiceV1Beta1AsyncClient:
 
     async def report_phishing(
         self,
-        request: Union[phishingprotection.ReportPhishingRequest, dict] = None,
+        request: Optional[Union[phishingprotection.ReportPhishingRequest, dict]] = None,
         *,
-        parent: str = None,
-        uri: str = None,
+        parent: Optional[str] = None,
+        uri: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> phishingprotection.ReportPhishingResponse:
         r"""Reports a URI suspected of containing phishing content to be
@@ -262,7 +273,7 @@ class PhishingProtectionServiceV1Beta1AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.phishingprotection_v1beta1.types.ReportPhishingRequest, dict]):
+            request (Optional[Union[google.cloud.phishingprotection_v1beta1.types.ReportPhishingRequest, dict]]):
                 The request object. The ReportPhishing request message.
             parent (:class:`str`):
                 Required. The name of the project for which the report
@@ -343,14 +354,9 @@ class PhishingProtectionServiceV1Beta1AsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-phishingprotection",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("PhishingProtectionServiceV1Beta1AsyncClient",)

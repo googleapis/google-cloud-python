@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.phishingprotection import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.phishingprotection_v1beta1.services.phishing_protection_service_v1_beta1.async_client import (
     PhishingProtectionServiceV1Beta1AsyncClient,

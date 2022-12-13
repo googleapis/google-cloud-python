@@ -13,20 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.phishingprotection import gapic_version as package_version
-
-__version__ = package_version.__version__
-
-
-from .services.phishing_protection_service_v1_beta1 import (
-    PhishingProtectionServiceV1Beta1AsyncClient,
-    PhishingProtectionServiceV1Beta1Client,
-)
-from .types.phishingprotection import ReportPhishingRequest, ReportPhishingResponse
-
-__all__ = (
-    "PhishingProtectionServiceV1Beta1AsyncClient",
-    "PhishingProtectionServiceV1Beta1Client",
-    "ReportPhishingRequest",
-    "ReportPhishingResponse",
-)
+__version__ = "1.6.4"  # {x-release-please-version}
