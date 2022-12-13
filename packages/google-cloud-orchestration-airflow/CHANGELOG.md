@@ -1,5 +1,32 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-orchestration-airflow/compare/v1.4.4...v1.5.0) (2022-12-13)
+
+
+### Features
+
+* add support for `google.cloud.orchestration.airflow.service.__version__` ([8edf594](https://github.com/googleapis/python-orchestration-airflow/commit/8edf5948c6a59e5172c042faf5c40d98066b52a0))
+* Add typing to proto.Message based class attributes ([8edf594](https://github.com/googleapis/python-orchestration-airflow/commit/8edf5948c6a59e5172c042faf5c40d98066b52a0))
+* added field enable_ip_masq_agent to NodeConfig ([6c8a0bf](https://github.com/googleapis/python-orchestration-airflow/commit/6c8a0bf722793353ca9311410f245451bbdf437c))
+* added field scheduler_count to SoftwareConfig ([6c8a0bf](https://github.com/googleapis/python-orchestration-airflow/commit/6c8a0bf722793353ca9311410f245451bbdf437c))
+* added fields cloud_composer_network_ipv4_cidr_block, cloud_composer_network_ipv4_reserved_range, enable_privately_used_public_ips, cloud_composer_connection_subnetwork, networking_config to PrivateEnvironmentConfig ([6c8a0bf](https://github.com/googleapis/python-orchestration-airflow/commit/6c8a0bf722793353ca9311410f245451bbdf437c))
+* added fields maintenance_window, workloads_config, environment_size, master_authorized_networks_config, recovery_config to EnvironmentConfig ([6c8a0bf](https://github.com/googleapis/python-orchestration-airflow/commit/6c8a0bf722793353ca9311410f245451bbdf437c))
+* Added LoadSnapshot, SaveSnapshot RPCs ([#150](https://github.com/googleapis/python-orchestration-airflow/issues/150)) ([6c8a0bf](https://github.com/googleapis/python-orchestration-airflow/commit/6c8a0bf722793353ca9311410f245451bbdf437c))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([8edf594](https://github.com/googleapis/python-orchestration-airflow/commit/8edf5948c6a59e5172c042faf5c40d98066b52a0))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([9b1d61e](https://github.com/googleapis/python-orchestration-airflow/commit/9b1d61e4cb24023ca831e83799ccc61fc398d335))
+* Drop usage of pkg_resources ([9b1d61e](https://github.com/googleapis/python-orchestration-airflow/commit/9b1d61e4cb24023ca831e83799ccc61fc398d335))
+* Fix timeout default values ([9b1d61e](https://github.com/googleapis/python-orchestration-airflow/commit/9b1d61e4cb24023ca831e83799ccc61fc398d335))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([8edf594](https://github.com/googleapis/python-orchestration-airflow/commit/8edf5948c6a59e5172c042faf5c40d98066b52a0))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([9b1d61e](https://github.com/googleapis/python-orchestration-airflow/commit/9b1d61e4cb24023ca831e83799ccc61fc398d335))
+
 ## [1.4.4](https://github.com/googleapis/python-orchestration-airflow/compare/v1.4.3...v1.4.4) (2022-10-07)
 
 
