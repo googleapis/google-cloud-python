@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.8.0](https://github.com/googleapis/python-private-catalog/compare/v0.7.2...v0.8.0) (2022-12-13)
+
+
+### Features
+
+* Add support for `google.cloud.privatecatalog.__version___` ([30ff73e](https://github.com/googleapis/python-private-catalog/commit/30ff73ea75f698e308e42cef47b3d12d9dd3b667))
+* Add typing to proto.Message based class attributes ([30ff73e](https://github.com/googleapis/python-private-catalog/commit/30ff73ea75f698e308e42cef47b3d12d9dd3b667))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([30ff73e](https://github.com/googleapis/python-private-catalog/commit/30ff73ea75f698e308e42cef47b3d12d9dd3b667))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([59a97e8](https://github.com/googleapis/python-private-catalog/commit/59a97e81e78416995f53acebf945c115289188c8))
+* Drop usage of pkg_resources ([59a97e8](https://github.com/googleapis/python-private-catalog/commit/59a97e81e78416995f53acebf945c115289188c8))
+* Fix timeout default values ([59a97e8](https://github.com/googleapis/python-private-catalog/commit/59a97e81e78416995f53acebf945c115289188c8))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([30ff73e](https://github.com/googleapis/python-private-catalog/commit/30ff73ea75f698e308e42cef47b3d12d9dd3b667))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([59a97e8](https://github.com/googleapis/python-private-catalog/commit/59a97e81e78416995f53acebf945c115289188c8))
+
 ## [0.7.2](https://github.com/googleapis/python-private-catalog/compare/v0.7.1...v0.7.2) (2022-10-10)
 
 
