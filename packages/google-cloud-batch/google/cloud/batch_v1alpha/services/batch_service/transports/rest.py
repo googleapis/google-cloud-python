@@ -62,10 +62,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class BatchServiceRestInterceptor:
     """Interceptor for BatchService.
@@ -82,47 +78,53 @@ class BatchServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomBatchServiceInterceptor(BatchServiceRestInterceptor):
-            def pre_create_job(request, metadata):
+            def pre_create_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_job(response):
+            def post_create_job(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_job(request, metadata):
+            def pre_delete_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_job(response):
+            def post_delete_job(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_job(request, metadata):
+            def pre_get_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_job(response):
+            def post_get_job(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_task(request, metadata):
+            def pre_get_task(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_task(response):
+            def post_get_task(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_jobs(request, metadata):
+            def pre_list_jobs(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_jobs(response):
+            def post_list_jobs(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_tasks(request, metadata):
+            def pre_list_tasks(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_tasks(response):
+            def post_list_tasks(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = BatchServiceRestTransport(interceptor=MyCustomBatchServiceInterceptor())
         client = BatchServiceClient(transport=transport)
