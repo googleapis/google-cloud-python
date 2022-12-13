@@ -26,7 +26,12 @@ __protobuf__ = proto.module(
 
 
 class RouteTravelMode(proto.Enum):
-    r"""A set of values used to specify the mode of travel."""
+    r"""A set of values used to specify the mode of travel. NOTE: WALK,
+    BICYCLE, and TWO_WHEELER routes are in beta and might sometimes be
+    missing clear sidewalks, pedestrian paths, or bicycling paths. You
+    must display this warning to the user for all walking, bicycling,
+    and two-wheel routes that you display in your app.
+    """
     TRAVEL_MODE_UNSPECIFIED = 0
     DRIVE = 1
     BICYCLE = 2
