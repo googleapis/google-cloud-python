@@ -5,6 +5,28 @@
 [1]: https://pypi.org/project/google-cloud-phishing-protection/#history
 
 
+## [1.7.0](https://github.com/googleapis/python-phishingprotection/compare/v1.6.4...v1.7.0) (2022-12-13)
+
+
+### Features
+
+* Add support for `google.cloud.phishingprotection.__version__` ([66635b6](https://github.com/googleapis/python-phishingprotection/commit/66635b61ffbc23a9db50e9cacc1ccf571180d3b5))
+* Add typing to proto.Message based class attributes ([66635b6](https://github.com/googleapis/python-phishingprotection/commit/66635b61ffbc23a9db50e9cacc1ccf571180d3b5))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([66635b6](https://github.com/googleapis/python-phishingprotection/commit/66635b61ffbc23a9db50e9cacc1ccf571180d3b5))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([66635b6](https://github.com/googleapis/python-phishingprotection/commit/66635b61ffbc23a9db50e9cacc1ccf571180d3b5))
+* Drop usage of pkg_resources ([66635b6](https://github.com/googleapis/python-phishingprotection/commit/66635b61ffbc23a9db50e9cacc1ccf571180d3b5))
+* Fix timeout default values ([66635b6](https://github.com/googleapis/python-phishingprotection/commit/66635b61ffbc23a9db50e9cacc1ccf571180d3b5))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([66635b6](https://github.com/googleapis/python-phishingprotection/commit/66635b61ffbc23a9db50e9cacc1ccf571180d3b5))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([66635b6](https://github.com/googleapis/python-phishingprotection/commit/66635b61ffbc23a9db50e9cacc1ccf571180d3b5))
+
 ## [1.6.4](https://github.com/googleapis/python-phishingprotection/compare/v1.6.3...v1.6.4) (2022-10-07)
 
 
