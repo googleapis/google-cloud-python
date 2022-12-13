@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -65,35 +67,35 @@ class Environment(proto.Message):
             environment was created.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    vm_image = proto.Field(
+    vm_image: "VmImage" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="image_type",
         message="VmImage",
     )
-    container_image = proto.Field(
+    container_image: "ContainerImage" = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="image_type",
         message="ContainerImage",
     )
-    post_startup_script = proto.Field(
+    post_startup_script: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
@@ -127,16 +129,16 @@ class VmImage(proto.Message):
             This field is a member of `oneof`_ ``image``.
     """
 
-    project = proto.Field(
+    project: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    image_name = proto.Field(
+    image_name: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="image",
     )
-    image_family = proto.Field(
+    image_family: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="image",
@@ -156,11 +158,11 @@ class ContainerImage(proto.Message):
             specified, this defaults to the latest tag.
     """
 
-    repository = proto.Field(
+    repository: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    tag = proto.Field(
+    tag: str = proto.Field(
         proto.STRING,
         number=2,
     )

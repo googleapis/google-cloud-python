@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.notebooks import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.notebooks_v1.services.managed_notebook_service.async_client import (
     ManagedNotebookServiceAsyncClient,
@@ -26,6 +30,7 @@ from google.cloud.notebooks_v1.services.notebook_service.async_client import (
 from google.cloud.notebooks_v1.services.notebook_service.client import (
     NotebookServiceClient,
 )
+from google.cloud.notebooks_v1.types.diagnostic_config import DiagnosticConfig
 from google.cloud.notebooks_v1.types.environment import (
     ContainerImage,
     Environment,
@@ -38,6 +43,7 @@ from google.cloud.notebooks_v1.types.instance_config import InstanceConfig
 from google.cloud.notebooks_v1.types.managed_service import (
     CreateRuntimeRequest,
     DeleteRuntimeRequest,
+    DiagnoseRuntimeRequest,
     GetRuntimeRequest,
     ListRuntimesRequest,
     ListRuntimesResponse,
@@ -48,6 +54,8 @@ from google.cloud.notebooks_v1.types.managed_service import (
     StartRuntimeRequest,
     StopRuntimeRequest,
     SwitchRuntimeRequest,
+    UpdateRuntimeRequest,
+    UpgradeRuntimeRequest,
 )
 from google.cloud.notebooks_v1.types.runtime import (
     EncryptionConfig,
@@ -72,6 +80,7 @@ from google.cloud.notebooks_v1.types.service import (
     DeleteExecutionRequest,
     DeleteInstanceRequest,
     DeleteScheduleRequest,
+    DiagnoseInstanceRequest,
     GetEnvironmentRequest,
     GetExecutionRequest,
     GetInstanceHealthRequest,
@@ -113,6 +122,7 @@ __all__ = (
     "ManagedNotebookServiceAsyncClient",
     "NotebookServiceClient",
     "NotebookServiceAsyncClient",
+    "DiagnosticConfig",
     "ContainerImage",
     "Environment",
     "VmImage",
@@ -124,6 +134,7 @@ __all__ = (
     "InstanceConfig",
     "CreateRuntimeRequest",
     "DeleteRuntimeRequest",
+    "DiagnoseRuntimeRequest",
     "GetRuntimeRequest",
     "ListRuntimesRequest",
     "ListRuntimesResponse",
@@ -134,6 +145,8 @@ __all__ = (
     "StartRuntimeRequest",
     "StopRuntimeRequest",
     "SwitchRuntimeRequest",
+    "UpdateRuntimeRequest",
+    "UpgradeRuntimeRequest",
     "EncryptionConfig",
     "LocalDisk",
     "LocalDiskInitializeParams",
@@ -154,6 +167,7 @@ __all__ = (
     "DeleteExecutionRequest",
     "DeleteInstanceRequest",
     "DeleteScheduleRequest",
+    "DiagnoseInstanceRequest",
     "GetEnvironmentRequest",
     "GetExecutionRequest",
     "GetInstanceHealthRequest",

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -21,9 +23,48 @@ from google.cloud.notebooks_v1beta1.types import environment
 __protobuf__ = proto.module(
     package="google.cloud.notebooks.v1beta1",
     manifest={
+        "ReservationAffinity",
         "Instance",
     },
 )
+
+
+class ReservationAffinity(proto.Message):
+    r"""Reservation Affinity for consuming Zonal reservation.
+
+    Attributes:
+        consume_reservation_type (google.cloud.notebooks_v1beta1.types.ReservationAffinity.Type):
+            Optional. Type of reservation to consume
+        key (str):
+            Optional. Corresponds to the label key of
+            reservation resource.
+        values (MutableSequence[str]):
+            Optional. Corresponds to the label values of
+            reservation resource.
+    """
+
+    class Type(proto.Enum):
+        r"""Indicates whether to consume capacity from an reservation or
+        not.
+        """
+        TYPE_UNSPECIFIED = 0
+        NO_RESERVATION = 1
+        ANY_RESERVATION = 2
+        SPECIFIC_RESERVATION = 3
+
+    consume_reservation_type: Type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Type,
+    )
+    key: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    values: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class Instance(proto.Message):
@@ -51,13 +92,14 @@ class Instance(proto.Message):
 
             This field is a member of `oneof`_ ``environment``.
         post_startup_script (str):
-            Path to a Bash script that automatically runs after a
-            notebook instance fully boots up. The path must be a URL or
-            Cloud Storage path (``gs://path-to-file/file-name``).
+            Path to a Bash script that automatically runs
+            after a notebook instance fully boots up. The
+            path must be a URL or Cloud Storage path
+            (gs://path-to-file/file-name).
         proxy_uri (str):
             Output only. The proxy endpoint that is used
             to access the Jupyter notebook.
-        instance_owners (Sequence[str]):
+        instance_owners (MutableSequence[str]):
             Input only. The owner of this instance after creation.
             Format: ``alias@example.com``
 
@@ -75,13 +117,12 @@ class Instance(proto.Message):
             is used.
         machine_type (str):
             Required. The `Compute Engine machine
-            type <https://cloud.google.com/compute/docs/machine-types>`__
-            of this instance.
+            type </compute/docs/machine-types>`__ of this instance.
         accelerator_config (google.cloud.notebooks_v1beta1.types.Instance.AcceleratorConfig):
             The hardware accelerator used on this instance. If you use
             accelerators, make sure that your configuration has `enough
             vCPUs and memory to support the ``machine_type`` you have
-            selected <https://cloud.google.com/compute/docs/gpus/#gpus-list>`__.
+            selected </compute/docs/gpus/#gpus-list>`__.
         state (google.cloud.notebooks_v1beta1.types.Instance.State):
             Output only. The state of this instance.
         install_gpu_driver (bool):
@@ -127,7 +168,7 @@ class Instance(proto.Message):
             ``projects/{project_id}/locations/{location}/keyRings/{key_ring_id}/cryptoKeys/{key_id}``
 
             Learn more about `using your own encryption
-            keys <https://cloud.google.com/kms/docs/quickstart>`__.
+            keys </kms/docs/quickstart>`__.
         no_public_ip (bool):
             If true, no public IP will be assigned to
             this instance.
@@ -140,12 +181,24 @@ class Instance(proto.Message):
         subnet (str):
             The name of the subnet that this instance is in. Format:
             ``projects/{project_id}/regions/{region}/subnetworks/{subnetwork_id}``
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels to apply to this instance.
             These can be later modified by the setLabels
             method.
-        metadata (Mapping[str, str]):
+        metadata (MutableMapping[str, str]):
             Custom metadata to apply to this instance.
+        nic_type (google.cloud.notebooks_v1beta1.types.Instance.NicType):
+            Optional. The type of vNIC to be used on this
+            interface. This may be gVNIC or VirtioNet.
+        reservation_affinity (google.cloud.notebooks_v1beta1.types.ReservationAffinity):
+            Optional. The optional reservation affinity. Setting this
+            field will apply the specified `Zonal Compute
+            Reservation <https://cloud.google.com/compute/docs/instances/reserving-zonal-resources>`__
+            to this notebook instance.
+        can_ip_forward (bool):
+            Optional. Flag to enable ip forwarding or
+            not, default false/off.
+            https://cloud.google.com/vpc/docs/using-routes#canipforward
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Instance creation time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -180,6 +233,8 @@ class Instance(proto.Message):
         UPGRADING = 7
         INITIALIZING = 8
         REGISTERING = 9
+        SUSPENDING = 10
+        SUSPENDED = 11
 
     class DiskType(proto.Enum):
         r"""Possible disk types for notebook instances."""
@@ -194,6 +249,12 @@ class Instance(proto.Message):
         GMEK = 1
         CMEK = 2
 
+    class NicType(proto.Enum):
+        r"""The type of vNIC driver."""
+        UNSPECIFIED_NIC_TYPE = 0
+        VIRTIO_NET = 1
+        GVNIC = 2
+
     class AcceleratorConfig(proto.Message):
         r"""Definition of a hardware accelerator. Note that not all combinations
         of ``type`` and ``core_count`` are valid. Check `GPUs on Compute
@@ -207,133 +268,147 @@ class Instance(proto.Message):
                 Count of cores of this accelerator.
         """
 
-        type_ = proto.Field(
+        type_: "Instance.AcceleratorType" = proto.Field(
             proto.ENUM,
             number=1,
             enum="Instance.AcceleratorType",
         )
-        core_count = proto.Field(
+        core_count: int = proto.Field(
             proto.INT64,
             number=2,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    vm_image = proto.Field(
+    vm_image: environment.VmImage = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="environment",
         message=environment.VmImage,
     )
-    container_image = proto.Field(
+    container_image: environment.ContainerImage = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="environment",
         message=environment.ContainerImage,
     )
-    post_startup_script = proto.Field(
+    post_startup_script: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    proxy_uri = proto.Field(
+    proxy_uri: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    instance_owners = proto.RepeatedField(
+    instance_owners: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    service_account = proto.Field(
+    service_account: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    machine_type = proto.Field(
+    machine_type: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    accelerator_config = proto.Field(
+    accelerator_config: AcceleratorConfig = proto.Field(
         proto.MESSAGE,
         number=9,
         message=AcceleratorConfig,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=10,
         enum=State,
     )
-    install_gpu_driver = proto.Field(
+    install_gpu_driver: bool = proto.Field(
         proto.BOOL,
         number=11,
     )
-    custom_gpu_driver_path = proto.Field(
+    custom_gpu_driver_path: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    boot_disk_type = proto.Field(
+    boot_disk_type: DiskType = proto.Field(
         proto.ENUM,
         number=13,
         enum=DiskType,
     )
-    boot_disk_size_gb = proto.Field(
+    boot_disk_size_gb: int = proto.Field(
         proto.INT64,
         number=14,
     )
-    data_disk_type = proto.Field(
+    data_disk_type: DiskType = proto.Field(
         proto.ENUM,
         number=25,
         enum=DiskType,
     )
-    data_disk_size_gb = proto.Field(
+    data_disk_size_gb: int = proto.Field(
         proto.INT64,
         number=26,
     )
-    no_remove_data_disk = proto.Field(
+    no_remove_data_disk: bool = proto.Field(
         proto.BOOL,
         number=27,
     )
-    disk_encryption = proto.Field(
+    disk_encryption: DiskEncryption = proto.Field(
         proto.ENUM,
         number=15,
         enum=DiskEncryption,
     )
-    kms_key = proto.Field(
+    kms_key: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    no_public_ip = proto.Field(
+    no_public_ip: bool = proto.Field(
         proto.BOOL,
         number=17,
     )
-    no_proxy_access = proto.Field(
+    no_proxy_access: bool = proto.Field(
         proto.BOOL,
         number=18,
     )
-    network = proto.Field(
+    network: str = proto.Field(
         proto.STRING,
         number=19,
     )
-    subnet = proto.Field(
+    subnet: str = proto.Field(
         proto.STRING,
         number=20,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=21,
     )
-    metadata = proto.MapField(
+    metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=22,
     )
-    create_time = proto.Field(
+    nic_type: NicType = proto.Field(
+        proto.ENUM,
+        number=28,
+        enum=NicType,
+    )
+    reservation_affinity: "ReservationAffinity" = proto.Field(
+        proto.MESSAGE,
+        number=29,
+        message="ReservationAffinity",
+    )
+    can_ip_forward: bool = proto.Field(
+        proto.BOOL,
+        number=31,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=23,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=24,
         message=timestamp_pb2.Timestamp,

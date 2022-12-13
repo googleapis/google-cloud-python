@@ -13,10 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.notebooks import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from .services.notebook_service import NotebookServiceAsyncClient, NotebookServiceClient
 from .types.environment import ContainerImage, Environment, VmImage
-from .types.instance import Instance
+from .types.instance import Instance, ReservationAffinity
 from .types.service import (
     CreateEnvironmentRequest,
     CreateInstanceRequest,
@@ -64,6 +68,7 @@ __all__ = (
     "OperationMetadata",
     "RegisterInstanceRequest",
     "ReportInstanceInfoRequest",
+    "ReservationAffinity",
     "ResetInstanceRequest",
     "SetInstanceAcceleratorRequest",
     "SetInstanceLabelsRequest",

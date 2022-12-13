@@ -20,6 +20,11 @@
                 "delete_runtime"
               ]
             },
+            "DiagnoseRuntime": {
+              "methods": [
+                "diagnose_runtime"
+              ]
+            },
             "GetRuntime": {
               "methods": [
                 "get_runtime"
@@ -58,6 +63,16 @@
             "SwitchRuntime": {
               "methods": [
                 "switch_runtime"
+              ]
+            },
+            "UpdateRuntime": {
+              "methods": [
+                "update_runtime"
+              ]
+            },
+            "UpgradeRuntime": {
+              "methods": [
+                "upgrade_runtime"
               ]
             }
           }
@@ -75,6 +90,11 @@
                 "delete_runtime"
               ]
             },
+            "DiagnoseRuntime": {
+              "methods": [
+                "diagnose_runtime"
+              ]
+            },
             "GetRuntime": {
               "methods": [
                 "get_runtime"
@@ -113,6 +133,16 @@
             "SwitchRuntime": {
               "methods": [
                 "switch_runtime"
+              ]
+            },
+            "UpdateRuntime": {
+              "methods": [
+                "update_runtime"
+              ]
+            },
+            "UpgradeRuntime": {
+              "methods": [
+                "upgrade_runtime"
               ]
             }
           }
@@ -162,6 +192,11 @@
             "DeleteSchedule": {
               "methods": [
                 "delete_schedule"
+              ]
+            },
+            "DiagnoseInstance": {
+              "methods": [
+                "diagnose_instance"
               ]
             },
             "GetEnvironment": {
@@ -332,6 +367,11 @@
             "DeleteSchedule": {
               "methods": [
                 "delete_schedule"
+              ]
+            },
+            "DiagnoseInstance": {
+              "methods": [
+                "diagnose_instance"
               ]
             },
             "GetEnvironment": {

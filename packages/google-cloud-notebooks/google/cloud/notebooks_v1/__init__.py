@@ -13,12 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.notebooks import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from .services.managed_notebook_service import (
     ManagedNotebookServiceAsyncClient,
     ManagedNotebookServiceClient,
 )
 from .services.notebook_service import NotebookServiceAsyncClient, NotebookServiceClient
+from .types.diagnostic_config import DiagnosticConfig
 from .types.environment import ContainerImage, Environment, VmImage
 from .types.event import Event
 from .types.execution import Execution, ExecutionTemplate
@@ -27,6 +32,7 @@ from .types.instance_config import InstanceConfig
 from .types.managed_service import (
     CreateRuntimeRequest,
     DeleteRuntimeRequest,
+    DiagnoseRuntimeRequest,
     GetRuntimeRequest,
     ListRuntimesRequest,
     ListRuntimesResponse,
@@ -37,6 +43,8 @@ from .types.managed_service import (
     StartRuntimeRequest,
     StopRuntimeRequest,
     SwitchRuntimeRequest,
+    UpdateRuntimeRequest,
+    UpgradeRuntimeRequest,
 )
 from .types.runtime import (
     EncryptionConfig,
@@ -61,6 +69,7 @@ from .types.service import (
     DeleteExecutionRequest,
     DeleteInstanceRequest,
     DeleteScheduleRequest,
+    DiagnoseInstanceRequest,
     GetEnvironmentRequest,
     GetExecutionRequest,
     GetInstanceHealthRequest,
@@ -111,6 +120,9 @@ __all__ = (
     "DeleteInstanceRequest",
     "DeleteRuntimeRequest",
     "DeleteScheduleRequest",
+    "DiagnoseInstanceRequest",
+    "DiagnoseRuntimeRequest",
+    "DiagnosticConfig",
     "EncryptionConfig",
     "Environment",
     "Event",
@@ -170,9 +182,11 @@ __all__ = (
     "UpdateInstanceConfigRequest",
     "UpdateInstanceMetadataItemsRequest",
     "UpdateInstanceMetadataItemsResponse",
+    "UpdateRuntimeRequest",
     "UpdateShieldedInstanceConfigRequest",
     "UpgradeInstanceInternalRequest",
     "UpgradeInstanceRequest",
+    "UpgradeRuntimeRequest",
     "UpgradeType",
     "VirtualMachine",
     "VirtualMachineConfig",

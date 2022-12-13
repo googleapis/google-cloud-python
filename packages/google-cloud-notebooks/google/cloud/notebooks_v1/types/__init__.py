@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .diagnostic_config import DiagnosticConfig
 from .environment import ContainerImage, Environment, VmImage
 from .event import Event
 from .execution import Execution, ExecutionTemplate
@@ -21,6 +22,7 @@ from .instance_config import InstanceConfig
 from .managed_service import (
     CreateRuntimeRequest,
     DeleteRuntimeRequest,
+    DiagnoseRuntimeRequest,
     GetRuntimeRequest,
     ListRuntimesRequest,
     ListRuntimesResponse,
@@ -31,6 +33,8 @@ from .managed_service import (
     StartRuntimeRequest,
     StopRuntimeRequest,
     SwitchRuntimeRequest,
+    UpdateRuntimeRequest,
+    UpgradeRuntimeRequest,
 )
 from .runtime import (
     EncryptionConfig,
@@ -55,6 +59,7 @@ from .service import (
     DeleteExecutionRequest,
     DeleteInstanceRequest,
     DeleteScheduleRequest,
+    DiagnoseInstanceRequest,
     GetEnvironmentRequest,
     GetExecutionRequest,
     GetInstanceHealthRequest,
@@ -92,6 +97,7 @@ from .service import (
 )
 
 __all__ = (
+    "DiagnosticConfig",
     "ContainerImage",
     "Environment",
     "VmImage",
@@ -103,6 +109,7 @@ __all__ = (
     "InstanceConfig",
     "CreateRuntimeRequest",
     "DeleteRuntimeRequest",
+    "DiagnoseRuntimeRequest",
     "GetRuntimeRequest",
     "ListRuntimesRequest",
     "ListRuntimesResponse",
@@ -113,6 +120,8 @@ __all__ = (
     "StartRuntimeRequest",
     "StopRuntimeRequest",
     "SwitchRuntimeRequest",
+    "UpdateRuntimeRequest",
+    "UpgradeRuntimeRequest",
     "EncryptionConfig",
     "LocalDisk",
     "LocalDiskInitializeParams",
@@ -133,6 +142,7 @@ __all__ = (
     "DeleteExecutionRequest",
     "DeleteInstanceRequest",
     "DeleteScheduleRequest",
+    "DiagnoseInstanceRequest",
     "GetEnvironmentRequest",
     "GetExecutionRequest",
     "GetInstanceHealthRequest",

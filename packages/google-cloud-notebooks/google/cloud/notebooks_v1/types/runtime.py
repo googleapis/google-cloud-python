@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -88,47 +90,47 @@ class Runtime(proto.Message):
         AGENT_NOT_INSTALLED = 3
         AGENT_NOT_RUNNING = 4
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    virtual_machine = proto.Field(
+    virtual_machine: "VirtualMachine" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="runtime_type",
         message="VirtualMachine",
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=3,
         enum=State,
     )
-    health_state = proto.Field(
+    health_state: HealthState = proto.Field(
         proto.ENUM,
         number=4,
         enum=HealthState,
     )
-    access_config = proto.Field(
+    access_config: "RuntimeAccessConfig" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="RuntimeAccessConfig",
     )
-    software_config = proto.Field(
+    software_config: "RuntimeSoftwareConfig" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="RuntimeSoftwareConfig",
     )
-    metrics = proto.Field(
+    metrics: "RuntimeMetrics" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="RuntimeMetrics",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=20,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=21,
         message=timestamp_pb2.Timestamp,
@@ -171,12 +173,12 @@ class RuntimeAcceleratorConfig(proto.Message):
         NVIDIA_TESLA_P100_VWS = 10
         NVIDIA_TESLA_P4_VWS = 11
 
-    type_ = proto.Field(
+    type_: AcceleratorType = proto.Field(
         proto.ENUM,
         number=1,
         enum=AcceleratorType,
     )
-    core_count = proto.Field(
+    core_count: int = proto.Field(
         proto.INT64,
         number=2,
     )
@@ -195,7 +197,7 @@ class EncryptionConfig(proto.Message):
             ``projects/{PROJECT_ID}/locations/{REGION}/keyRings/{KEY_RING_NAME}/cryptoKeys/{KEY_NAME}``
     """
 
-    kms_key = proto.Field(
+    kms_key: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -227,7 +229,7 @@ class LocalDisk(proto.Message):
             to apply to this disk, in the form persistent-disk-x, where
             x is a number assigned by Google Compute Engine. This field
             is only applicable for persistent disks.
-        guest_os_features (Sequence[google.cloud.notebooks_v1.types.LocalDisk.RuntimeGuestOsFeature]):
+        guest_os_features (MutableSequence[google.cloud.notebooks_v1.types.LocalDisk.RuntimeGuestOsFeature]):
             Output only. Indicates a list of features to
             enable on the guest operating system. Applicable
             only for bootable images. Read  Enabling guest
@@ -261,7 +263,7 @@ class LocalDisk(proto.Message):
         kind (str):
             Output only. Type of the resource. Always
             compute#attachedDisk for attached disks.
-        licenses (Sequence[str]):
+        licenses (MutableSequence[str]):
             Output only. Any valid publicly visible
             licenses.
         mode (str):
@@ -307,58 +309,58 @@ class LocalDisk(proto.Message):
                 -  WINDOWS
         """
 
-        type_ = proto.Field(
+        type_: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    auto_delete = proto.Field(
+    auto_delete: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    boot = proto.Field(
+    boot: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    device_name = proto.Field(
+    device_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    guest_os_features = proto.RepeatedField(
+    guest_os_features: MutableSequence[RuntimeGuestOsFeature] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=RuntimeGuestOsFeature,
     )
-    index = proto.Field(
+    index: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    initialize_params = proto.Field(
+    initialize_params: "LocalDiskInitializeParams" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="LocalDiskInitializeParams",
     )
-    interface = proto.Field(
+    interface: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    kind = proto.Field(
+    kind: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    licenses = proto.RepeatedField(
+    licenses: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=9,
     )
-    mode = proto.Field(
+    mode: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    source = proto.Field(
+    source: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=12,
     )
@@ -392,7 +394,7 @@ class LocalDiskInitializeParams(proto.Message):
             Input only. The type of the boot disk attached to this
             instance, defaults to standard persistent disk
             (``PD_STANDARD``).
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. Labels to apply to this disk. These
             can be later modified by the disks.setLabels
             method. This field is only applicable for
@@ -407,24 +409,24 @@ class LocalDiskInitializeParams(proto.Message):
         PD_BALANCED = 3
         PD_EXTREME = 4
 
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    disk_name = proto.Field(
+    disk_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    disk_size_gb = proto.Field(
+    disk_size_gb: int = proto.Field(
         proto.INT64,
         number=3,
     )
-    disk_type = proto.Field(
+    disk_type: DiskType = proto.Field(
         proto.ENUM,
         number=4,
         enum=DiskType,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
@@ -453,16 +455,16 @@ class RuntimeAccessConfig(proto.Message):
         SINGLE_USER = 1
         SERVICE_ACCOUNT = 2
 
-    access_type = proto.Field(
+    access_type: RuntimeAccessType = proto.Field(
         proto.ENUM,
         number=1,
         enum=RuntimeAccessType,
     )
-    runtime_owner = proto.Field(
+    runtime_owner: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    proxy_uri = proto.Field(
+    proxy_uri: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -506,7 +508,7 @@ class RuntimeSoftwareConfig(proto.Message):
             Path to a Bash script that automatically runs after a
             notebook instance fully boots up. The path must be a URL or
             Cloud Storage path (``gs://path-to-file/file-name``).
-        kernels (Sequence[google.cloud.notebooks_v1.types.ContainerImage]):
+        kernels (MutableSequence[google.cloud.notebooks_v1.types.ContainerImage]):
             Optional. Use a list of container images to
             use as Kernels in the notebook instance.
         upgradeable (bool):
@@ -514,46 +516,79 @@ class RuntimeSoftwareConfig(proto.Message):
             image is available in an image family.
 
             This field is a member of `oneof`_ ``_upgradeable``.
+        post_startup_script_behavior (google.cloud.notebooks_v1.types.RuntimeSoftwareConfig.PostStartupScriptBehavior):
+            Behavior for the post startup script.
+        disable_terminal (bool):
+            Bool indicating whether JupyterLab terminal
+            will be available or not. Default: False
+
+            This field is a member of `oneof`_ ``_disable_terminal``.
+        version (str):
+            Output only. version of boot image such as
+            M100, from release label of the image.
+
+            This field is a member of `oneof`_ ``_version``.
     """
 
-    notebook_upgrade_schedule = proto.Field(
+    class PostStartupScriptBehavior(proto.Enum):
+        r"""Behavior for the post startup script."""
+        POST_STARTUP_SCRIPT_BEHAVIOR_UNSPECIFIED = 0
+        RUN_EVERY_START = 1
+        DOWNLOAD_AND_RUN_EVERY_START = 2
+
+    notebook_upgrade_schedule: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    enable_health_monitoring = proto.Field(
+    enable_health_monitoring: bool = proto.Field(
         proto.BOOL,
         number=2,
         optional=True,
     )
-    idle_shutdown = proto.Field(
+    idle_shutdown: bool = proto.Field(
         proto.BOOL,
         number=3,
         optional=True,
     )
-    idle_shutdown_timeout = proto.Field(
+    idle_shutdown_timeout: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    install_gpu_driver = proto.Field(
+    install_gpu_driver: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    custom_gpu_driver_path = proto.Field(
+    custom_gpu_driver_path: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    post_startup_script = proto.Field(
+    post_startup_script: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    kernels = proto.RepeatedField(
+    kernels: MutableSequence[environment.ContainerImage] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message=environment.ContainerImage,
     )
-    upgradeable = proto.Field(
+    upgradeable: bool = proto.Field(
         proto.BOOL,
         number=9,
+        optional=True,
+    )
+    post_startup_script_behavior: PostStartupScriptBehavior = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=PostStartupScriptBehavior,
+    )
+    disable_terminal: bool = proto.Field(
+        proto.BOOL,
+        number=11,
+        optional=True,
+    )
+    version: str = proto.Field(
+        proto.STRING,
+        number=12,
         optional=True,
     )
 
@@ -563,11 +598,11 @@ class RuntimeMetrics(proto.Message):
     sessions stats.
 
     Attributes:
-        system_metrics (Mapping[str, str]):
+        system_metrics (MutableMapping[str, str]):
             Output only. The system metrics.
     """
 
-    system_metrics = proto.MapField(
+    system_metrics: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=1,
@@ -603,15 +638,15 @@ class RuntimeShieldedInstanceConfig(proto.Message):
             is created. Enabled by default.
     """
 
-    enable_secure_boot = proto.Field(
+    enable_secure_boot: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    enable_vtpm = proto.Field(
+    enable_vtpm: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    enable_integrity_monitoring = proto.Field(
+    enable_integrity_monitoring: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -631,15 +666,15 @@ class VirtualMachine(proto.Message):
             Virtual Machine configuration settings.
     """
 
-    instance_name = proto.Field(
+    instance_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    instance_id = proto.Field(
+    instance_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    virtual_machine_config = proto.Field(
+    virtual_machine_config: "VirtualMachineConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="VirtualMachineConfig",
@@ -663,7 +698,7 @@ class VirtualMachineConfig(proto.Message):
 
             -  ``n1-standard-2``
             -  ``e2-standard-8``
-        container_images (Sequence[google.cloud.notebooks_v1.types.ContainerImage]):
+        container_images (MutableSequence[google.cloud.notebooks_v1.types.ContainerImage]):
             Optional. Use a list of container images to
             use as Kernels in the notebook instance.
         data_disk (google.cloud.notebooks_v1.types.LocalDisk):
@@ -686,8 +721,8 @@ class VirtualMachineConfig(proto.Message):
 
             A full URL or partial URI. Examples:
 
-            -  ``https://www.googleapis.com/compute/v1/projects/[project_id]/regions/global/default``
-            -  ``projects/[project_id]/regions/global/default``
+            -  ``https://www.googleapis.com/compute/v1/projects/[project_id]/global/networks/default``
+            -  ``projects/[project_id]/global/networks/default``
 
             Runtimes are managed resources inside Google Infrastructure.
             Runtimes support the following network configurations:
@@ -713,19 +748,19 @@ class VirtualMachineConfig(proto.Message):
             restriction can only be enabled for subnetwork enabled
             networks, and all dependencies must be configured to be
             accessible without external IP addresses.
-        tags (Sequence[str]):
+        tags (MutableSequence[str]):
             Optional. The Compute Engine tags to add to runtime (see
             `Tagging
             instances <https://cloud.google.com/compute/docs/label-or-tag-resources#tags>`__).
-        guest_attributes (Mapping[str, str]):
+        guest_attributes (MutableMapping[str, str]):
             Output only. The Compute Engine guest attributes. (see
             `Project and instance guest
             attributes <https://cloud.google.com/compute/docs/storing-retrieving-metadata#guest_attributes>`__).
-        metadata (Mapping[str, str]):
+        metadata (MutableMapping[str, str]):
             Optional. The Compute Engine metadata entries to add to
             virtual machine. (see `Project and instance
             metadata <https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata>`__).
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. The labels to associate with this runtime. Label
             **keys** must contain 1 to 63 characters, and must conform
             to `RFC 1035 <https://www.ietf.org/rfc/rfc1035.txt>`__.
@@ -769,80 +804,80 @@ class VirtualMachineConfig(proto.Message):
 
         """
 
-    zone = proto.Field(
+    zone: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    machine_type = proto.Field(
+    machine_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    container_images = proto.RepeatedField(
+    container_images: MutableSequence[environment.ContainerImage] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=environment.ContainerImage,
     )
-    data_disk = proto.Field(
+    data_disk: "LocalDisk" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="LocalDisk",
     )
-    encryption_config = proto.Field(
+    encryption_config: "EncryptionConfig" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="EncryptionConfig",
     )
-    shielded_instance_config = proto.Field(
+    shielded_instance_config: "RuntimeShieldedInstanceConfig" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="RuntimeShieldedInstanceConfig",
     )
-    accelerator_config = proto.Field(
+    accelerator_config: "RuntimeAcceleratorConfig" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="RuntimeAcceleratorConfig",
     )
-    network = proto.Field(
+    network: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    subnet = proto.Field(
+    subnet: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    internal_ip_only = proto.Field(
+    internal_ip_only: bool = proto.Field(
         proto.BOOL,
         number=10,
     )
-    tags = proto.RepeatedField(
+    tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=13,
     )
-    guest_attributes = proto.MapField(
+    guest_attributes: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=14,
     )
-    metadata = proto.MapField(
+    metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=15,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=16,
     )
-    nic_type = proto.Field(
+    nic_type: NicType = proto.Field(
         proto.ENUM,
         number=17,
         enum=NicType,
     )
-    reserved_ip_range = proto.Field(
+    reserved_ip_range: str = proto.Field(
         proto.STRING,
         number=18,
     )
-    boot_image = proto.Field(
+    boot_image: BootImage = proto.Field(
         proto.MESSAGE,
         number=19,
         message=BootImage,

@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 from .environment import ContainerImage, Environment, VmImage
-from .instance import Instance
+from .instance import Instance, ReservationAffinity
 from .service import (
     CreateEnvironmentRequest,
     CreateInstanceRequest,
@@ -46,6 +46,7 @@ __all__ = (
     "Environment",
     "VmImage",
     "Instance",
+    "ReservationAffinity",
     "CreateEnvironmentRequest",
     "CreateInstanceRequest",
     "DeleteEnvironmentRequest",

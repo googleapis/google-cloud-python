@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -77,37 +79,37 @@ class OperationMetadata(proto.Message):
             API endpoint name of this operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_message = proto.Field(
+    status_message: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    requested_cancellation = proto.Field(
+    requested_cancellation: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    endpoint = proto.Field(
+    endpoint: str = proto.Field(
         proto.STRING,
         number=8,
     )
@@ -127,15 +129,15 @@ class ListInstancesRequest(proto.Message):
             used to continue listing from the last result.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -145,13 +147,13 @@ class ListInstancesResponse(proto.Message):
     r"""Response for listing notebook instances.
 
     Attributes:
-        instances (Sequence[google.cloud.notebooks_v1beta1.types.Instance]):
+        instances (MutableSequence[google.cloud.notebooks_v1beta1.types.Instance]):
             A list of returned instances.
         next_page_token (str):
             Page token that can be used to continue
             listing from the last result in the next list
             call.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached. For example,
             ['us-west1-a', 'us-central1-b']. A ListInstancesResponse
             will only contain either instances or unreachables,
@@ -161,16 +163,16 @@ class ListInstancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instances = proto.RepeatedField(
+    instances: MutableSequence[gcn_instance.Instance] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcn_instance.Instance,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -185,7 +187,7 @@ class GetInstanceRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -205,15 +207,15 @@ class CreateInstanceRequest(proto.Message):
             Required. The instance to be created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    instance_id = proto.Field(
+    instance_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    instance = proto.Field(
+    instance: gcn_instance.Instance = proto.Field(
         proto.MESSAGE,
         number=3,
         message=gcn_instance.Instance,
@@ -235,11 +237,11 @@ class RegisterInstanceRequest(proto.Message):
             character cannot be a dash.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    instance_id = proto.Field(
+    instance_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -262,16 +264,16 @@ class SetInstanceAcceleratorRequest(proto.Message):
             to find a valid combination. TPUs are not supported.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    type_ = proto.Field(
+    type_: gcn_instance.Instance.AcceleratorType = proto.Field(
         proto.ENUM,
         number=2,
         enum=gcn_instance.Instance.AcceleratorType,
     )
-    core_count = proto.Field(
+    core_count: int = proto.Field(
         proto.INT64,
         number=3,
     )
@@ -289,11 +291,11 @@ class SetInstanceMachineTypeRequest(proto.Message):
             type <https://cloud.google.com/compute/docs/machine-types>`__.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    machine_type = proto.Field(
+    machine_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -306,17 +308,17 @@ class SetInstanceLabelsRequest(proto.Message):
         name (str):
             Required. Format:
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels to apply to this instance.
             These can be later modified by the setLabels
             method
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
@@ -332,7 +334,7 @@ class DeleteInstanceRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -347,7 +349,7 @@ class StartInstanceRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -362,7 +364,7 @@ class StopInstanceRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -377,7 +379,7 @@ class ResetInstanceRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -395,20 +397,20 @@ class ReportInstanceInfoRequest(proto.Message):
             Required. The VM hardware token for
             authenticating the VM.
             https://cloud.google.com/compute/docs/instances/verifying-instance-identity
-        metadata (Mapping[str, str]):
+        metadata (MutableMapping[str, str]):
             The metadata reported to Notebooks API. This
             will be merged to the instance metadata store
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    vm_id = proto.Field(
+    vm_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    metadata = proto.MapField(
+    metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
@@ -424,7 +426,7 @@ class IsInstanceUpgradeableRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    notebook_instance = proto.Field(
+    notebook_instance: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -442,19 +444,28 @@ class IsInstanceUpgradeableResponse(proto.Message):
             only be populated if field upgradeable is true.
         upgrade_info (str):
             Additional information about upgrade.
+        upgrade_image (str):
+            The new image self link this instance will be
+            upgraded to if calling the upgrade endpoint.
+            This field will only be populated if field
+            upgradeable is true.
     """
 
-    upgradeable = proto.Field(
+    upgradeable: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    upgrade_version = proto.Field(
+    upgrade_version: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    upgrade_info = proto.Field(
+    upgrade_info: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    upgrade_image: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -467,7 +478,7 @@ class UpgradeInstanceRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -486,11 +497,11 @@ class UpgradeInstanceInternalRequest(proto.Message):
             https://cloud.google.com/compute/docs/instances/verifying-instance-identity
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    vm_id = proto.Field(
+    vm_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -510,15 +521,15 @@ class ListEnvironmentsRequest(proto.Message):
             used to continue listing from the last result.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -528,13 +539,13 @@ class ListEnvironmentsResponse(proto.Message):
     r"""Response for listing environments.
 
     Attributes:
-        environments (Sequence[google.cloud.notebooks_v1beta1.types.Environment]):
+        environments (MutableSequence[google.cloud.notebooks_v1beta1.types.Environment]):
             A list of returned environments.
         next_page_token (str):
             A page token that can be used to continue
             listing from the last result in the next list
             call.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -542,16 +553,16 @@ class ListEnvironmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    environments = proto.RepeatedField(
+    environments: MutableSequence[gcn_environment.Environment] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcn_environment.Environment,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -566,7 +577,7 @@ class GetEnvironmentRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/environments/{environment_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -589,15 +600,15 @@ class CreateEnvironmentRequest(proto.Message):
             Required. The environment to be created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    environment_id = proto.Field(
+    environment_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    environment = proto.Field(
+    environment: gcn_environment.Environment = proto.Field(
         proto.MESSAGE,
         number=3,
         message=gcn_environment.Environment,
@@ -613,7 +624,7 @@ class DeleteEnvironmentRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/environments/{environment_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

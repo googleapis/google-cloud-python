@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -35,11 +37,11 @@ class InstanceConfig(proto.Message):
             Verifies core internal services are running.
     """
 
-    notebook_upgrade_schedule = proto.Field(
+    notebook_upgrade_schedule: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    enable_health_monitoring = proto.Field(
+    enable_health_monitoring: bool = proto.Field(
         proto.BOOL,
         number=2,
     )

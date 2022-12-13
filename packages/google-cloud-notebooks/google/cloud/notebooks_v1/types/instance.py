@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -36,7 +38,7 @@ class ReservationAffinity(proto.Message):
         key (str):
             Optional. Corresponds to the label key of
             reservation resource.
-        values (Sequence[str]):
+        values (MutableSequence[str]):
             Optional. Corresponds to the label values of
             reservation resource.
     """
@@ -50,16 +52,16 @@ class ReservationAffinity(proto.Message):
         ANY_RESERVATION = 2
         SPECIFIC_RESERVATION = 3
 
-    consume_reservation_type = proto.Field(
+    consume_reservation_type: Type = proto.Field(
         proto.ENUM,
         number=1,
         enum=Type,
     )
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    values = proto.RepeatedField(
+    values: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -96,7 +98,7 @@ class Instance(proto.Message):
         proxy_uri (str):
             Output only. The proxy endpoint that is used
             to access the Jupyter notebook.
-        instance_owners (Sequence[str]):
+        instance_owners (MutableSequence[str]):
             Input only. The owner of this instance after creation.
             Format: ``alias@example.com``
 
@@ -112,7 +114,7 @@ class Instance(proto.Message):
             If not specified, the `Compute Engine default service
             account <https://cloud.google.com/compute/docs/access/service-accounts#default_service_account>`__
             is used.
-        service_account_scopes (Sequence[str]):
+        service_account_scopes (MutableSequence[str]):
             Optional. The URIs of service account scopes to be included
             in Compute Engine instances.
 
@@ -178,7 +180,7 @@ class Instance(proto.Message):
 
             Learn more about `using your own encryption
             keys </kms/docs/quickstart>`__.
-        disks (Sequence[google.cloud.notebooks_v1.types.Instance.Disk]):
+        disks (MutableSequence[google.cloud.notebooks_v1.types.Instance.Disk]):
             Output only. Attached disks to notebook
             instance.
         shielded_instance_config (google.cloud.notebooks_v1.types.Instance.ShieldedInstanceConfig):
@@ -197,17 +199,17 @@ class Instance(proto.Message):
         subnet (str):
             The name of the subnet that this instance is in. Format:
             ``projects/{project_id}/regions/{region}/subnetworks/{subnetwork_id}``
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels to apply to this instance.
             These can be later modified by the setLabels
             method.
-        metadata (Mapping[str, str]):
+        metadata (MutableMapping[str, str]):
             Custom metadata to apply to this instance.
-        tags (Sequence[str]):
+        tags (MutableSequence[str]):
             Optional. The Compute Engine tags to add to runtime (see
             `Tagging
             instances <https://cloud.google.com/compute/docs/label-or-tag-resources#tags>`__).
-        upgrade_history (Sequence[google.cloud.notebooks_v1.types.Instance.UpgradeHistoryEntry]):
+        upgrade_history (MutableSequence[google.cloud.notebooks_v1.types.Instance.UpgradeHistoryEntry]):
             The upgrade history of this instance.
         nic_type (google.cloud.notebooks_v1.types.Instance.NicType):
             Optional. The type of vNIC to be used on this
@@ -295,12 +297,12 @@ class Instance(proto.Message):
                 Count of cores of this accelerator.
         """
 
-        type_ = proto.Field(
+        type_: "Instance.AcceleratorType" = proto.Field(
             proto.ENUM,
             number=1,
             enum="Instance.AcceleratorType",
         )
-        core_count = proto.Field(
+        core_count: int = proto.Field(
             proto.INT64,
             number=2,
         )
@@ -331,7 +333,7 @@ class Instance(proto.Message):
                 is only applicable for persistent disks.
             disk_size_gb (int):
                 Indicates the size of the disk in base-2 GB.
-            guest_os_features (Sequence[google.cloud.notebooks_v1.types.Instance.Disk.GuestOsFeature]):
+            guest_os_features (MutableSequence[google.cloud.notebooks_v1.types.Instance.Disk.GuestOsFeature]):
                 Indicates a list of features to enable on the
                 guest operating system. Applicable only for
                 bootable images. Read  Enabling guest operating
@@ -356,7 +358,7 @@ class Instance(proto.Message):
             kind (str):
                 Type of the resource. Always
                 compute#attachedDisk for attached disks.
-            licenses (Sequence[str]):
+            licenses (MutableSequence[str]):
                 A list of publicly visible licenses. Reserved
                 for Google's use. A License represents billing
                 and aggregate usage data for public and
@@ -396,57 +398,59 @@ class Instance(proto.Message):
                     -  WINDOWS
             """
 
-            type_ = proto.Field(
+            type_: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
 
-        auto_delete = proto.Field(
+        auto_delete: bool = proto.Field(
             proto.BOOL,
             number=1,
         )
-        boot = proto.Field(
+        boot: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
-        device_name = proto.Field(
+        device_name: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        disk_size_gb = proto.Field(
+        disk_size_gb: int = proto.Field(
             proto.INT64,
             number=4,
         )
-        guest_os_features = proto.RepeatedField(
+        guest_os_features: MutableSequence[
+            "Instance.Disk.GuestOsFeature"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message="Instance.Disk.GuestOsFeature",
         )
-        index = proto.Field(
+        index: int = proto.Field(
             proto.INT64,
             number=6,
         )
-        interface = proto.Field(
+        interface: str = proto.Field(
             proto.STRING,
             number=7,
         )
-        kind = proto.Field(
+        kind: str = proto.Field(
             proto.STRING,
             number=8,
         )
-        licenses = proto.RepeatedField(
+        licenses: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=9,
         )
-        mode = proto.Field(
+        mode: str = proto.Field(
             proto.STRING,
             number=10,
         )
-        source = proto.Field(
+        source: str = proto.Field(
             proto.STRING,
             number=11,
         )
-        type_ = proto.Field(
+        type_: str = proto.Field(
             proto.STRING,
             number=12,
         )
@@ -478,15 +482,15 @@ class Instance(proto.Message):
                 is created. Enabled by default.
         """
 
-        enable_secure_boot = proto.Field(
+        enable_secure_boot: bool = proto.Field(
             proto.BOOL,
             number=1,
         )
-        enable_vtpm = proto.Field(
+        enable_vtpm: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
-        enable_integrity_monitoring = proto.Field(
+        enable_integrity_monitoring: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
@@ -536,208 +540,208 @@ class Instance(proto.Message):
             UPGRADE = 1
             ROLLBACK = 2
 
-        snapshot = proto.Field(
+        snapshot: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        vm_image = proto.Field(
+        vm_image: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        container_image = proto.Field(
+        container_image: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        framework = proto.Field(
+        framework: str = proto.Field(
             proto.STRING,
             number=4,
         )
-        version = proto.Field(
+        version: str = proto.Field(
             proto.STRING,
             number=5,
         )
-        state = proto.Field(
+        state: "Instance.UpgradeHistoryEntry.State" = proto.Field(
             proto.ENUM,
             number=6,
             enum="Instance.UpgradeHistoryEntry.State",
         )
-        create_time = proto.Field(
+        create_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=7,
             message=timestamp_pb2.Timestamp,
         )
-        target_image = proto.Field(
+        target_image: str = proto.Field(
             proto.STRING,
             number=8,
         )
-        action = proto.Field(
+        action: "Instance.UpgradeHistoryEntry.Action" = proto.Field(
             proto.ENUM,
             number=9,
             enum="Instance.UpgradeHistoryEntry.Action",
         )
-        target_version = proto.Field(
+        target_version: str = proto.Field(
             proto.STRING,
             number=10,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    vm_image = proto.Field(
+    vm_image: environment.VmImage = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="environment",
         message=environment.VmImage,
     )
-    container_image = proto.Field(
+    container_image: environment.ContainerImage = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="environment",
         message=environment.ContainerImage,
     )
-    post_startup_script = proto.Field(
+    post_startup_script: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    proxy_uri = proto.Field(
+    proxy_uri: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    instance_owners = proto.RepeatedField(
+    instance_owners: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    service_account = proto.Field(
+    service_account: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    service_account_scopes = proto.RepeatedField(
+    service_account_scopes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=31,
     )
-    machine_type = proto.Field(
+    machine_type: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    accelerator_config = proto.Field(
+    accelerator_config: AcceleratorConfig = proto.Field(
         proto.MESSAGE,
         number=9,
         message=AcceleratorConfig,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=10,
         enum=State,
     )
-    install_gpu_driver = proto.Field(
+    install_gpu_driver: bool = proto.Field(
         proto.BOOL,
         number=11,
     )
-    custom_gpu_driver_path = proto.Field(
+    custom_gpu_driver_path: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    boot_disk_type = proto.Field(
+    boot_disk_type: DiskType = proto.Field(
         proto.ENUM,
         number=13,
         enum=DiskType,
     )
-    boot_disk_size_gb = proto.Field(
+    boot_disk_size_gb: int = proto.Field(
         proto.INT64,
         number=14,
     )
-    data_disk_type = proto.Field(
+    data_disk_type: DiskType = proto.Field(
         proto.ENUM,
         number=25,
         enum=DiskType,
     )
-    data_disk_size_gb = proto.Field(
+    data_disk_size_gb: int = proto.Field(
         proto.INT64,
         number=26,
     )
-    no_remove_data_disk = proto.Field(
+    no_remove_data_disk: bool = proto.Field(
         proto.BOOL,
         number=27,
     )
-    disk_encryption = proto.Field(
+    disk_encryption: DiskEncryption = proto.Field(
         proto.ENUM,
         number=15,
         enum=DiskEncryption,
     )
-    kms_key = proto.Field(
+    kms_key: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    disks = proto.RepeatedField(
+    disks: MutableSequence[Disk] = proto.RepeatedField(
         proto.MESSAGE,
         number=28,
         message=Disk,
     )
-    shielded_instance_config = proto.Field(
+    shielded_instance_config: ShieldedInstanceConfig = proto.Field(
         proto.MESSAGE,
         number=30,
         message=ShieldedInstanceConfig,
     )
-    no_public_ip = proto.Field(
+    no_public_ip: bool = proto.Field(
         proto.BOOL,
         number=17,
     )
-    no_proxy_access = proto.Field(
+    no_proxy_access: bool = proto.Field(
         proto.BOOL,
         number=18,
     )
-    network = proto.Field(
+    network: str = proto.Field(
         proto.STRING,
         number=19,
     )
-    subnet = proto.Field(
+    subnet: str = proto.Field(
         proto.STRING,
         number=20,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=21,
     )
-    metadata = proto.MapField(
+    metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=22,
     )
-    tags = proto.RepeatedField(
+    tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=32,
     )
-    upgrade_history = proto.RepeatedField(
+    upgrade_history: MutableSequence[UpgradeHistoryEntry] = proto.RepeatedField(
         proto.MESSAGE,
         number=29,
         message=UpgradeHistoryEntry,
     )
-    nic_type = proto.Field(
+    nic_type: NicType = proto.Field(
         proto.ENUM,
         number=33,
         enum=NicType,
     )
-    reservation_affinity = proto.Field(
+    reservation_affinity: "ReservationAffinity" = proto.Field(
         proto.MESSAGE,
         number=34,
         message="ReservationAffinity",
     )
-    creator = proto.Field(
+    creator: str = proto.Field(
         proto.STRING,
         number=36,
     )
-    can_ip_forward = proto.Field(
+    can_ip_forward: bool = proto.Field(
         proto.BOOL,
         number=39,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=23,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=24,
         message=timestamp_pb2.Timestamp,

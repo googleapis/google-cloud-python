@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -64,7 +66,7 @@ class Schedule(proto.Message):
         execution_template (google.cloud.notebooks_v1.types.ExecutionTemplate):
             Notebook Execution Template corresponding to
             this schedule.
-        recent_executions (Sequence[google.cloud.notebooks_v1.types.Execution]):
+        recent_executions (MutableSequence[google.cloud.notebooks_v1.types.Execution]):
             Output only. The most recent execution names
             triggered from this schedule and their
             corresponding states.
@@ -80,47 +82,47 @@ class Schedule(proto.Message):
         INITIALIZING = 5
         DELETING = 6
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=4,
         enum=State,
     )
-    cron_schedule = proto.Field(
+    cron_schedule: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    time_zone = proto.Field(
+    time_zone: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    execution_template = proto.Field(
+    execution_template: execution.ExecutionTemplate = proto.Field(
         proto.MESSAGE,
         number=9,
         message=execution.ExecutionTemplate,
     )
-    recent_executions = proto.RepeatedField(
+    recent_executions: MutableSequence[execution.Execution] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message=execution.Execution,

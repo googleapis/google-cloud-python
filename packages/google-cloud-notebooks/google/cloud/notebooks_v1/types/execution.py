@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -92,7 +94,7 @@ class ExecutionTemplate(proto.Message):
         accelerator_config (google.cloud.notebooks_v1.types.ExecutionTemplate.SchedulerAcceleratorConfig):
             Configuration (count and accelerator type)
             for hardware running notebook execution.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels for execution.
             If execution is scheduled, a field included will
             be 'nbs-scheduled'. Otherwise, it is an
@@ -195,12 +197,12 @@ class ExecutionTemplate(proto.Message):
                 Count of cores of this accelerator.
         """
 
-        type_ = proto.Field(
+        type_: "ExecutionTemplate.SchedulerAcceleratorType" = proto.Field(
             proto.ENUM,
             number=1,
             enum="ExecutionTemplate.SchedulerAcceleratorType",
         )
-        core_count = proto.Field(
+        core_count: int = proto.Field(
             proto.INT64,
             number=2,
         )
@@ -214,7 +216,7 @@ class ExecutionTemplate(proto.Message):
                 ``projects/{PROJECT_ID}/regions/{REGION}/clusters/{CLUSTER_NAME}``
         """
 
-        cluster = proto.Field(
+        cluster: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -237,87 +239,87 @@ class ExecutionTemplate(proto.Message):
                 Private services access must already be configured for the
                 network. If left unspecified, the job is not peered with any
                 network.
-            env (Mapping[str, str]):
+            env (MutableMapping[str, str]):
                 Environment variables. At most 100 environment variables can
                 be specified and unique. Example:
                 GCP_BUCKET=gs://my-bucket/samples/
         """
 
-        network = proto.Field(
+        network: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        env = proto.MapField(
+        env: MutableMapping[str, str] = proto.MapField(
             proto.STRING,
             proto.STRING,
             number=2,
         )
 
-    scale_tier = proto.Field(
+    scale_tier: ScaleTier = proto.Field(
         proto.ENUM,
         number=1,
         enum=ScaleTier,
     )
-    master_type = proto.Field(
+    master_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    accelerator_config = proto.Field(
+    accelerator_config: SchedulerAcceleratorConfig = proto.Field(
         proto.MESSAGE,
         number=3,
         message=SchedulerAcceleratorConfig,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    input_notebook_file = proto.Field(
+    input_notebook_file: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    container_image_uri = proto.Field(
+    container_image_uri: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    output_notebook_folder = proto.Field(
+    output_notebook_folder: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    params_yaml_file = proto.Field(
+    params_yaml_file: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    parameters = proto.Field(
+    parameters: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    service_account = proto.Field(
+    service_account: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    job_type = proto.Field(
+    job_type: JobType = proto.Field(
         proto.ENUM,
         number=11,
         enum=JobType,
     )
-    dataproc_parameters = proto.Field(
+    dataproc_parameters: DataprocParameters = proto.Field(
         proto.MESSAGE,
         number=12,
         oneof="job_parameters",
         message=DataprocParameters,
     )
-    vertex_ai_parameters = proto.Field(
+    vertex_ai_parameters: VertexAIParameters = proto.Field(
         proto.MESSAGE,
         number=13,
         oneof="job_parameters",
         message=VertexAIParameters,
     )
-    kernel_spec = proto.Field(
+    kernel_spec: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    tensorboard = proto.Field(
+    tensorboard: str = proto.Field(
         proto.STRING,
         number=15,
     )
@@ -368,43 +370,43 @@ class Execution(proto.Message):
         EXPIRED = 9
         INITIALIZING = 10
 
-    execution_template = proto.Field(
+    execution_template: "ExecutionTemplate" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ExecutionTemplate",
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=7,
         enum=State,
     )
-    output_notebook_file = proto.Field(
+    output_notebook_file: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    job_uri = proto.Field(
+    job_uri: str = proto.Field(
         proto.STRING,
         number=9,
     )

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -33,7 +35,7 @@ class Event(proto.Message):
             Event report time.
         type_ (google.cloud.notebooks_v1.types.Event.EventType):
             Event type.
-        details (Mapping[str, str]):
+        details (MutableMapping[str, str]):
             Optional. Event details. This field is used
             to pass event information.
     """
@@ -46,17 +48,17 @@ class Event(proto.Message):
         HEALTH = 3
         MAINTENANCE = 4
 
-    report_time = proto.Field(
+    report_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    type_ = proto.Field(
+    type_: EventType = proto.Field(
         proto.ENUM,
         number=2,
         enum=EventType,
     )
-    details = proto.MapField(
+    details: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,

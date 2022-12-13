@@ -49,6 +49,8 @@ class notebooksCallTransformer(cst.CSTTransformer):
         'delete_instance': ('name', ),
         'delete_runtime': ('name', 'request_id', ),
         'delete_schedule': ('name', ),
+        'diagnose_instance': ('name', 'diagnostic_config', ),
+        'diagnose_runtime': ('name', 'diagnostic_config', ),
         'get_environment': ('name', ),
         'get_execution': ('name', ),
         'get_instance': ('name', ),
@@ -79,9 +81,11 @@ class notebooksCallTransformer(cst.CSTTransformer):
         'trigger_schedule': ('name', ),
         'update_instance_config': ('name', 'config', ),
         'update_instance_metadata_items': ('name', 'items', ),
+        'update_runtime': ('runtime', 'update_mask', 'request_id', ),
         'update_shielded_instance_config': ('name', 'shielded_instance_config', ),
         'upgrade_instance': ('name', 'type_', ),
         'upgrade_instance_internal': ('name', 'vm_id', 'type_', ),
+        'upgrade_runtime': ('name', 'request_id', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

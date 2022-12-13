@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-notebooks"
+    "name": "google-cloud-notebooks",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -347,6 +348,175 @@
         }
       ],
       "title": "notebooks_v1_generated_managed_notebook_service_delete_runtime_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient",
+          "shortName": "ManagedNotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient.diagnose_runtime",
+        "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.DiagnoseRuntime",
+          "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
+            "shortName": "ManagedNotebookService"
+          },
+          "shortName": "DiagnoseRuntime"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.DiagnoseRuntimeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "diagnostic_config",
+            "type": "google.cloud.notebooks_v1.types.DiagnosticConfig"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "diagnose_runtime"
+      },
+      "description": "Sample for DiagnoseRuntime",
+      "file": "notebooks_v1_generated_managed_notebook_service_diagnose_runtime_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "notebooks_v1_generated_ManagedNotebookService_DiagnoseRuntime_async",
+      "segments": [
+        {
+          "end": 59,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 59,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 56,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 60,
+          "start": 57,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_diagnose_runtime_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient",
+          "shortName": "ManagedNotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient.diagnose_runtime",
+        "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.DiagnoseRuntime",
+          "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
+            "shortName": "ManagedNotebookService"
+          },
+          "shortName": "DiagnoseRuntime"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.DiagnoseRuntimeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "diagnostic_config",
+            "type": "google.cloud.notebooks_v1.types.DiagnosticConfig"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "diagnose_runtime"
+      },
+      "description": "Sample for DiagnoseRuntime",
+      "file": "notebooks_v1_generated_managed_notebook_service_diagnose_runtime_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "notebooks_v1_generated_ManagedNotebookService_DiagnoseRuntime_sync",
+      "segments": [
+        {
+          "end": 59,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 59,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 56,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 60,
+          "start": 57,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_diagnose_runtime_sync.py"
     },
     {
       "canonical": true,
@@ -1643,6 +1813,336 @@
         }
       ],
       "title": "notebooks_v1_generated_managed_notebook_service_switch_runtime_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient",
+          "shortName": "ManagedNotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient.update_runtime",
+        "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.UpdateRuntime",
+          "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
+            "shortName": "ManagedNotebookService"
+          },
+          "shortName": "UpdateRuntime"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.UpdateRuntimeRequest"
+          },
+          {
+            "name": "runtime",
+            "type": "google.cloud.notebooks_v1.types.Runtime"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_runtime"
+      },
+      "description": "Sample for UpdateRuntime",
+      "file": "notebooks_v1_generated_managed_notebook_service_update_runtime_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "notebooks_v1_generated_ManagedNotebookService_UpdateRuntime_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_update_runtime_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient",
+          "shortName": "ManagedNotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient.update_runtime",
+        "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.UpdateRuntime",
+          "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
+            "shortName": "ManagedNotebookService"
+          },
+          "shortName": "UpdateRuntime"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.UpdateRuntimeRequest"
+          },
+          {
+            "name": "runtime",
+            "type": "google.cloud.notebooks_v1.types.Runtime"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_runtime"
+      },
+      "description": "Sample for UpdateRuntime",
+      "file": "notebooks_v1_generated_managed_notebook_service_update_runtime_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "notebooks_v1_generated_ManagedNotebookService_UpdateRuntime_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_update_runtime_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient",
+          "shortName": "ManagedNotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient.upgrade_runtime",
+        "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.UpgradeRuntime",
+          "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
+            "shortName": "ManagedNotebookService"
+          },
+          "shortName": "UpgradeRuntime"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.UpgradeRuntimeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "upgrade_runtime"
+      },
+      "description": "Sample for UpgradeRuntime",
+      "file": "notebooks_v1_generated_managed_notebook_service_upgrade_runtime_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "notebooks_v1_generated_ManagedNotebookService_UpgradeRuntime_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_upgrade_runtime_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient",
+          "shortName": "ManagedNotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient.upgrade_runtime",
+        "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.UpgradeRuntime",
+          "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
+            "shortName": "ManagedNotebookService"
+          },
+          "shortName": "UpgradeRuntime"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.UpgradeRuntimeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "upgrade_runtime"
+      },
+      "description": "Sample for UpgradeRuntime",
+      "file": "notebooks_v1_generated_managed_notebook_service_upgrade_runtime_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "notebooks_v1_generated_ManagedNotebookService_UpgradeRuntime_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_upgrade_runtime_sync.py"
     },
     {
       "canonical": true,
@@ -2995,6 +3495,175 @@
         }
       ],
       "title": "notebooks_v1_generated_notebook_service_delete_schedule_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.diagnose_instance",
+        "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.DiagnoseInstance",
+          "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
+            "shortName": "NotebookService"
+          },
+          "shortName": "DiagnoseInstance"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.DiagnoseInstanceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "diagnostic_config",
+            "type": "google.cloud.notebooks_v1.types.DiagnosticConfig"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "diagnose_instance"
+      },
+      "description": "Sample for DiagnoseInstance",
+      "file": "notebooks_v1_generated_notebook_service_diagnose_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "notebooks_v1_generated_NotebookService_DiagnoseInstance_async",
+      "segments": [
+        {
+          "end": 59,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 59,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 56,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 60,
+          "start": 57,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "notebooks_v1_generated_notebook_service_diagnose_instance_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.diagnose_instance",
+        "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.DiagnoseInstance",
+          "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
+            "shortName": "NotebookService"
+          },
+          "shortName": "DiagnoseInstance"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.DiagnoseInstanceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "diagnostic_config",
+            "type": "google.cloud.notebooks_v1.types.DiagnosticConfig"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "diagnose_instance"
+      },
+      "description": "Sample for DiagnoseInstance",
+      "file": "notebooks_v1_generated_notebook_service_diagnose_instance_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "notebooks_v1_generated_NotebookService_DiagnoseInstance_sync",
+      "segments": [
+        {
+          "end": 59,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 59,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 56,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 60,
+          "start": 57,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "notebooks_v1_generated_notebook_service_diagnose_instance_sync.py"
     },
     {
       "canonical": true,
