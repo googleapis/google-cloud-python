@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [2.8.0](https://github.com/googleapis/python-oslogin/compare/v2.7.4...v2.8.0) (2022-12-13)
+
+
+### Features
+
+* Add support for `google.cloud.oslogin.__version__` ([988d363](https://github.com/googleapis/python-oslogin/commit/988d363319310cda3b3a7e85360a5fc737576446))
+* Add typing to proto.Message based class attributes ([988d363](https://github.com/googleapis/python-oslogin/commit/988d363319310cda3b3a7e85360a5fc737576446))
+* Added CreateSshPublicKey RPC ([988d363](https://github.com/googleapis/python-oslogin/commit/988d363319310cda3b3a7e85360a5fc737576446))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([988d363](https://github.com/googleapis/python-oslogin/commit/988d363319310cda3b3a7e85360a5fc737576446))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([#236](https://github.com/googleapis/python-oslogin/issues/236)) ([2a6c163](https://github.com/googleapis/python-oslogin/commit/2a6c16360aace4ad7701f40e7411905ac31e3597))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([988d363](https://github.com/googleapis/python-oslogin/commit/988d363319310cda3b3a7e85360a5fc737576446))
+
 ## [2.7.4](https://github.com/googleapis/python-oslogin/compare/v2.7.3...v2.7.4) (2022-10-07)
 
 
