@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.25.0](https://github.com/googleapis/python-spanner/compare/v3.24.0...v3.25.0) (2022-12-13)
+
+
+### Features
+
+* Fgac support and samples ([#867](https://github.com/googleapis/python-spanner/issues/867)) ([24fa244](https://github.com/googleapis/python-spanner/commit/24fa244ceb13263a7c2ce752bf7a4170bcabec6f))
+
 ## [3.24.0](https://github.com/googleapis/python-spanner/compare/v3.23.0...v3.24.0) (2022-11-30)
 
 
