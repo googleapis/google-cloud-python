@@ -21,6 +21,7 @@ except ImportError:  # pragma: NO PY3 COVER
     import mock
 
 from google.auth import credentials
+from google.api_core.client_options import ClientOptions
 from google.cloud import environment_vars
 from google.cloud.datastore import _http
 
@@ -81,9 +82,42 @@ class TestClient:
                 project="test-project",
                 namespace="test-namespace",
                 credentials=creds,
+                client_options=ClientOptions(
+                    api_endpoint="alternate-endpoint.example.com"
+                ),
             )
         assert client.namespace == "test-namespace"
         assert client.project == "test-project"
+        assert client.host == "alternate-endpoint.example.com"
+        assert client.secure is True
+
+    @staticmethod
+    def test_constructor_client_options_as_dict():
+        with patch_credentials("testing") as creds:
+            client = client_module.Client(
+                project="test-project",
+                namespace="test-namespace",
+                credentials=creds,
+                client_options={"api_endpoint": "alternate-endpoint.example.com"},
+            )
+        assert client.namespace == "test-namespace"
+        assert client.project == "test-project"
+        assert client.host == "alternate-endpoint.example.com"
+        assert client.secure is True
+
+    @staticmethod
+    def test_constructor_client_options_no_api_endpoint():
+        with patch_credentials("testing") as creds:
+            client = client_module.Client(
+                project="test-project",
+                namespace="test-namespace",
+                credentials=creds,
+                client_options={"scopes": ["my_scope"]},
+            )
+        assert client.namespace == "test-namespace"
+        assert client.project == "test-project"
+        assert client.host == _http.DATASTORE_API_HOST
+        assert client.secure is True
 
     @staticmethod
     def test__determine_default():

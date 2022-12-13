@@ -19,6 +19,8 @@ import grpc
 import os
 import requests
 
+import google.api_core.client_options
+
 from google.api_core.gapic_v1 import client_info
 from google.cloud import environment_vars
 from google.cloud import _helpers
@@ -76,6 +78,9 @@ class Client(google_client.ClientWithProject):
     The NDB client must be created in order to use NDB, and any use of NDB must
     be within the context of a call to :meth:`context`.
 
+    The Datastore Emulator is used for the client if and only if the
+    DATASTORE_EMULATOR_HOST environment variable is set.
+
     Arguments:
         project (Optional[str]): The project to pass to proxied API methods. If
             not passed, falls back to the default inferred from the
@@ -84,20 +89,37 @@ class Client(google_client.ClientWithProject):
         credentials (Optional[:class:`~google.auth.credentials.Credentials`]):
             The OAuth2 Credentials to use for this client. If not passed, falls
             back to the default inferred from the environment.
+        client_options (Optional[:class:`~google.api_core.client_options.ClientOptions` or :class:`dict`])
+            Client options used to set user options on the client.
+            API Endpoint should be set through client_options.
     """
 
     SCOPE = ("https://www.googleapis.com/auth/datastore",)
     """The scopes required for authenticating as a Cloud Datastore consumer."""
 
-    def __init__(self, project=None, namespace=None, credentials=None):
+    def __init__(
+        self, project=None, namespace=None, credentials=None, client_options=None
+    ):
         self.namespace = namespace
-        self.host = os.environ.get(environment_vars.GCD_HOST, DATASTORE_API_HOST)
         self.client_info = _CLIENT_INFO
+        self._client_options = client_options
 
         # Use insecure connection when using Datastore Emulator, otherwise
         # use secure connection
         emulator = bool(os.environ.get(environment_vars.GCD_HOST))
         self.secure = not emulator
+
+        # Use Datastore API host from client_options if provided, otherwise use default
+        api_endpoint = DATASTORE_API_HOST
+        if client_options is not None:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
+        self.host = os.environ.get(environment_vars.GCD_HOST, api_endpoint)
 
         if emulator:
             # When using the emulator, in theory, the client shouldn't need to
@@ -108,10 +130,13 @@ class Client(google_client.ClientWithProject):
             super(Client, self).__init__(
                 project=project,
                 credentials=credentials,
+                client_options=client_options,
                 _http=requests.Session,
             )
         else:
-            super(Client, self).__init__(project=project, credentials=credentials)
+            super(Client, self).__init__(
+                project=project, credentials=credentials, client_options=client_options
+            )
 
         if emulator:
             channel = grpc.insecure_channel(self.host)
