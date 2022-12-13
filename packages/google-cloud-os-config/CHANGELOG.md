@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/python-os-config/compare/v1.12.4...v1.13.0) (2022-12-13)
+
+
+### Features
+
+* Add support for `google.cloud.osconfig.__version__` ([0980ecc](https://github.com/googleapis/python-os-config/commit/0980eccc0b4d528719b13849f2ff9bb2707e4a21))
+* Add typing to proto.Message based class attributes ([0980ecc](https://github.com/googleapis/python-os-config/commit/0980eccc0b4d528719b13849f2ff9bb2707e4a21))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([0980ecc](https://github.com/googleapis/python-os-config/commit/0980eccc0b4d528719b13849f2ff9bb2707e4a21))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([326bd8c](https://github.com/googleapis/python-os-config/commit/326bd8cc374f342187beb50f95308408fe839986))
+* Drop usage of pkg_resources ([326bd8c](https://github.com/googleapis/python-os-config/commit/326bd8cc374f342187beb50f95308408fe839986))
+* Fix timeout default values ([326bd8c](https://github.com/googleapis/python-os-config/commit/326bd8cc374f342187beb50f95308408fe839986))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([0980ecc](https://github.com/googleapis/python-os-config/commit/0980eccc0b4d528719b13849f2ff9bb2707e4a21))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([326bd8c](https://github.com/googleapis/python-os-config/commit/326bd8cc374f342187beb50f95308408fe839986))
+
 ## [1.12.4](https://github.com/googleapis/python-os-config/compare/v1.12.3...v1.12.4) (2022-10-07)
 
 
