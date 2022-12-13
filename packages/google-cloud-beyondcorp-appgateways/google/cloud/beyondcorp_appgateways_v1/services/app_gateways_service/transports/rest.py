@@ -59,10 +59,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class AppGatewaysServiceRestInterceptor:
     """Interceptor for AppGatewaysService.
@@ -79,33 +75,37 @@ class AppGatewaysServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomAppGatewaysServiceInterceptor(AppGatewaysServiceRestInterceptor):
-            def pre_create_app_gateway(request, metadata):
+            def pre_create_app_gateway(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_app_gateway(response):
+            def post_create_app_gateway(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_app_gateway(request, metadata):
+            def pre_delete_app_gateway(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_app_gateway(response):
+            def post_delete_app_gateway(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_app_gateway(request, metadata):
+            def pre_get_app_gateway(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_app_gateway(response):
+            def post_get_app_gateway(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_app_gateways(request, metadata):
+            def pre_list_app_gateways(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_app_gateways(response):
+            def post_list_app_gateways(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = AppGatewaysServiceRestTransport(interceptor=MyCustomAppGatewaysServiceInterceptor())
         client = AppGatewaysServiceClient(transport=transport)
