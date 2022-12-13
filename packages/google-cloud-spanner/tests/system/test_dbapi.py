@@ -314,27 +314,35 @@ SELECT * FROM contacts WHERE contact_id = 1
 
 def test_DDL_autocommit(shared_instance, dbapi_database):
     """Check that DDLs in autocommit mode are immediately executed."""
-    conn = Connection(shared_instance, dbapi_database)
-    conn.autocommit = True
 
-    cur = conn.cursor()
-    cur.execute(
+    try:
+        conn = Connection(shared_instance, dbapi_database)
+        conn.autocommit = True
+
+        cur = conn.cursor()
+        cur.execute(
+            """
+            CREATE TABLE Singers (
+                SingerId     INT64 NOT NULL,
+                Name    STRING(1024),
+            ) PRIMARY KEY (SingerId)
         """
-        CREATE TABLE Singers (
-            SingerId     INT64 NOT NULL,
-            Name    STRING(1024),
-        ) PRIMARY KEY (SingerId)
-    """
-    )
-    conn.close()
+        )
+        conn.close()
 
-    # if previous DDL wasn't committed, the next DROP TABLE
-    # statement will fail with a ProgrammingError
-    conn = Connection(shared_instance, dbapi_database)
-    cur = conn.cursor()
+        # if previous DDL wasn't committed, the next DROP TABLE
+        # statement will fail with a ProgrammingError
+        conn = Connection(shared_instance, dbapi_database)
+        cur = conn.cursor()
 
-    cur.execute("DROP TABLE Singers")
-    conn.commit()
+        cur.execute("DROP TABLE Singers")
+        conn.commit()
+    finally:
+        # Delete table
+        table = dbapi_database.table("Singers")
+        if table.exists():
+            op = dbapi_database.update_ddl(["DROP TABLE Singers"])
+            op.result()
 
 
 @pytest.mark.skipif(_helpers.USE_EMULATOR, reason="Emulator does not support json.")
@@ -343,93 +351,114 @@ def test_autocommit_with_json_data(shared_instance, dbapi_database):
     Check that DDLs in autocommit mode are immediately
     executed for json fields.
     """
-    # Create table
-    conn = Connection(shared_instance, dbapi_database)
-    conn.autocommit = True
+    try:
+        # Create table
+        conn = Connection(shared_instance, dbapi_database)
+        conn.autocommit = True
 
-    cur = conn.cursor()
-    cur.execute(
+        cur = conn.cursor()
+        cur.execute(
+            """
+            CREATE TABLE JsonDetails (
+                DataId     INT64 NOT NULL,
+                Details    JSON,
+            ) PRIMARY KEY (DataId)
         """
-        CREATE TABLE JsonDetails (
-            DataId     INT64 NOT NULL,
-            Details    JSON,
-        ) PRIMARY KEY (DataId)
-    """
-    )
+        )
 
-    # Insert data to table
-    cur.execute(
-        sql="INSERT INTO JsonDetails (DataId, Details) VALUES (%s, %s)",
-        args=(123, JsonObject({"name": "Jakob", "age": "26"})),
-    )
+        # Insert data to table
+        cur.execute(
+            sql="INSERT INTO JsonDetails (DataId, Details) VALUES (%s, %s)",
+            args=(123, JsonObject({"name": "Jakob", "age": "26"})),
+        )
 
-    # Read back the data.
-    cur.execute("""select * from JsonDetails;""")
-    got_rows = cur.fetchall()
+        # Read back the data.
+        cur.execute("""select * from JsonDetails;""")
+        got_rows = cur.fetchall()
 
-    # Assert the response
-    assert len(got_rows) == 1
-    assert got_rows[0][0] == 123
-    assert got_rows[0][1] == {"age": "26", "name": "Jakob"}
+        # Assert the response
+        assert len(got_rows) == 1
+        assert got_rows[0][0] == 123
+        assert got_rows[0][1] == {"age": "26", "name": "Jakob"}
 
-    # Drop the table
-    cur.execute("DROP TABLE JsonDetails")
-    conn.commit()
-    conn.close()
+        # Drop the table
+        cur.execute("DROP TABLE JsonDetails")
+        conn.commit()
+        conn.close()
+    finally:
+        # Delete table
+        table = dbapi_database.table("JsonDetails")
+        if table.exists():
+            op = dbapi_database.update_ddl(["DROP TABLE JsonDetails"])
+            op.result()
 
 
 @pytest.mark.skipif(_helpers.USE_EMULATOR, reason="Emulator does not support json.")
 def test_json_array(shared_instance, dbapi_database):
-    # Create table
-    conn = Connection(shared_instance, dbapi_database)
-    conn.autocommit = True
+    try:
+        # Create table
+        conn = Connection(shared_instance, dbapi_database)
+        conn.autocommit = True
 
-    cur = conn.cursor()
-    cur.execute(
+        cur = conn.cursor()
+        cur.execute(
+            """
+            CREATE TABLE JsonDetails (
+                DataId     INT64 NOT NULL,
+                Details    JSON,
+            ) PRIMARY KEY (DataId)
         """
-        CREATE TABLE JsonDetails (
-            DataId     INT64 NOT NULL,
-            Details    JSON,
-        ) PRIMARY KEY (DataId)
-    """
-    )
-    cur.execute(
-        "INSERT INTO JsonDetails (DataId, Details) VALUES (%s, %s)",
-        [1, JsonObject([1, 2, 3])],
-    )
+        )
+        cur.execute(
+            "INSERT INTO JsonDetails (DataId, Details) VALUES (%s, %s)",
+            [1, JsonObject([1, 2, 3])],
+        )
 
-    cur.execute("SELECT * FROM JsonDetails WHERE DataId = 1")
-    row = cur.fetchone()
-    assert isinstance(row[1], JsonObject)
-    assert row[1].serialize() == "[1,2,3]"
+        cur.execute("SELECT * FROM JsonDetails WHERE DataId = 1")
+        row = cur.fetchone()
+        assert isinstance(row[1], JsonObject)
+        assert row[1].serialize() == "[1,2,3]"
 
-    cur.execute("DROP TABLE JsonDetails")
-    conn.close()
+        cur.execute("DROP TABLE JsonDetails")
+        conn.close()
+    finally:
+        # Delete table
+        table = dbapi_database.table("JsonDetails")
+        if table.exists():
+            op = dbapi_database.update_ddl(["DROP TABLE JsonDetails"])
+            op.result()
 
 
 def test_DDL_commit(shared_instance, dbapi_database):
     """Check that DDLs in commit mode are executed on calling `commit()`."""
-    conn = Connection(shared_instance, dbapi_database)
-    cur = conn.cursor()
+    try:
+        conn = Connection(shared_instance, dbapi_database)
+        cur = conn.cursor()
 
-    cur.execute(
+        cur.execute(
+            """
+        CREATE TABLE Singers (
+            SingerId     INT64 NOT NULL,
+            Name    STRING(1024),
+        ) PRIMARY KEY (SingerId)
         """
-    CREATE TABLE Singers (
-        SingerId     INT64 NOT NULL,
-        Name    STRING(1024),
-    ) PRIMARY KEY (SingerId)
-    """
-    )
-    conn.commit()
-    conn.close()
+        )
+        conn.commit()
+        conn.close()
 
-    # if previous DDL wasn't committed, the next DROP TABLE
-    # statement will fail with a ProgrammingError
-    conn = Connection(shared_instance, dbapi_database)
-    cur = conn.cursor()
+        # if previous DDL wasn't committed, the next DROP TABLE
+        # statement will fail with a ProgrammingError
+        conn = Connection(shared_instance, dbapi_database)
+        cur = conn.cursor()
 
-    cur.execute("DROP TABLE Singers")
-    conn.commit()
+        cur.execute("DROP TABLE Singers")
+        conn.commit()
+    finally:
+        # Delete table
+        table = dbapi_database.table("Singers")
+        if table.exists():
+            op = dbapi_database.update_ddl(["DROP TABLE Singers"])
+            op.result()
 
 
 def test_ping(shared_instance, dbapi_database):
@@ -505,53 +534,62 @@ VALUES (1, 'first-name', 'last-name', 'test.email@example.com')
 
 @pytest.mark.parametrize("autocommit", [False, True])
 def test_rowcount(shared_instance, dbapi_database, autocommit):
-    conn = Connection(shared_instance, dbapi_database)
-    conn.autocommit = autocommit
-    cur = conn.cursor()
+    try:
+        conn = Connection(shared_instance, dbapi_database)
+        conn.autocommit = autocommit
+        cur = conn.cursor()
 
-    cur.execute(
+        cur.execute(
+            """
+        CREATE TABLE Singers (
+            SingerId INT64 NOT NULL,
+            Name     STRING(1024),
+        ) PRIMARY KEY (SingerId)
         """
-    CREATE TABLE Singers (
-        SingerId INT64 NOT NULL,
-        Name     STRING(1024),
-    ) PRIMARY KEY (SingerId)
-    """
-    )
-    conn.commit()
+        )
+        conn.commit()
 
-    # executemany sets rowcount to the total modified rows
-    rows = [(i, f"Singer {i}") for i in range(100)]
-    cur.executemany("INSERT INTO Singers (SingerId, Name) VALUES (%s, %s)", rows[:98])
-    assert cur.rowcount == 98
+        # executemany sets rowcount to the total modified rows
+        rows = [(i, f"Singer {i}") for i in range(100)]
+        cur.executemany(
+            "INSERT INTO Singers (SingerId, Name) VALUES (%s, %s)", rows[:98]
+        )
+        assert cur.rowcount == 98
 
-    # execute with INSERT
-    cur.execute(
-        "INSERT INTO Singers (SingerId, Name) VALUES (%s, %s), (%s, %s)",
-        [x for row in rows[98:] for x in row],
-    )
-    assert cur.rowcount == 2
+        # execute with INSERT
+        cur.execute(
+            "INSERT INTO Singers (SingerId, Name) VALUES (%s, %s), (%s, %s)",
+            [x for row in rows[98:] for x in row],
+        )
+        assert cur.rowcount == 2
 
-    # execute with UPDATE
-    cur.execute("UPDATE Singers SET Name = 'Cher' WHERE SingerId < 25")
-    assert cur.rowcount == 25
+        # execute with UPDATE
+        cur.execute("UPDATE Singers SET Name = 'Cher' WHERE SingerId < 25")
+        assert cur.rowcount == 25
 
-    # execute with SELECT
-    cur.execute("SELECT Name FROM Singers WHERE SingerId < 75")
-    assert len(cur.fetchall()) == 75
-    # rowcount is not available for SELECT
-    assert cur.rowcount == -1
+        # execute with SELECT
+        cur.execute("SELECT Name FROM Singers WHERE SingerId < 75")
+        assert len(cur.fetchall()) == 75
+        # rowcount is not available for SELECT
+        assert cur.rowcount == -1
 
-    # execute with DELETE
-    cur.execute("DELETE FROM Singers")
-    assert cur.rowcount == 100
+        # execute with DELETE
+        cur.execute("DELETE FROM Singers")
+        assert cur.rowcount == 100
 
-    # execute with UPDATE matching 0 rows
-    cur.execute("UPDATE Singers SET Name = 'Cher' WHERE SingerId < 25")
-    assert cur.rowcount == 0
+        # execute with UPDATE matching 0 rows
+        cur.execute("UPDATE Singers SET Name = 'Cher' WHERE SingerId < 25")
+        assert cur.rowcount == 0
 
-    conn.commit()
-    cur.execute("DROP TABLE Singers")
-    conn.commit()
+        conn.commit()
+        cur.execute("DROP TABLE Singers")
+        conn.commit()
+    finally:
+        # Delete table
+        table = dbapi_database.table("Singers")
+        if table.exists():
+            op = dbapi_database.update_ddl(["DROP TABLE Singers"])
+            op.result()
 
 
 @pytest.mark.parametrize("autocommit", [False, True])
