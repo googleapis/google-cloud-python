@@ -15,10 +15,7 @@
 import contextlib
 import pytest
 
-try:
-    from unittest import mock
-except ImportError:  # pragma: NO PY3 COVER
-    import mock
+from unittest import mock
 
 from google.auth import credentials
 from google.api_core.client_options import ClientOptions

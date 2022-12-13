@@ -23,10 +23,7 @@ import random
 import threading
 import zlib
 
-try:
-    from unittest import mock
-except ImportError:
-    import mock
+from unittest import mock
 
 import pytest
 

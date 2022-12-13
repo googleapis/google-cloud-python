@@ -15,10 +15,7 @@
 import base64
 import pickle
 
-try:
-    from unittest import mock
-except ImportError:  # pragma: NO PY3 COVER
-    import mock
+from unittest import mock
 
 from google.cloud.datastore import _app_engine_key_pb2
 import google.cloud.datastore

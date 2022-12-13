@@ -29,11 +29,7 @@ from google.cloud.ndb import utils
 
 import pytest
 
-# In Python 2.7, mock is not part of unittest
-try:
-    from unittest import mock
-except ImportError:
-    import mock
+from unittest import mock
 
 utils.DEBUG = True
 

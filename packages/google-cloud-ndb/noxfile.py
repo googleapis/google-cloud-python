@@ -45,7 +45,6 @@ def unit(session):
     )
     # Install all dependencies.
     session.install("pytest", "pytest-cov")
-    session.install("mock")
     session.install("google-cloud-testutils", "-c", constraints_path)
     session.install("-e", ".", "-c", constraints_path)
     # This variable is used to skip coverage by Python version
@@ -190,7 +189,6 @@ def system(session):
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install("pytest")
-    session.install("mock")
     session.install("google-cloud-testutils")
     for local_dep in LOCAL_DEPS:
         session.install(local_dep)

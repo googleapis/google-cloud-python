@@ -14,10 +14,7 @@
 
 import warnings
 
-try:
-    from unittest import mock
-except ImportError:  # pragma: NO PY3 COVER
-    import mock
+from unittest import mock
 
 import pytest
 

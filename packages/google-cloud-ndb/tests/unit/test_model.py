@@ -19,10 +19,7 @@ import six
 import types
 import zlib
 
-try:
-    from unittest import mock
-except ImportError:  # pragma: NO PY3 COVER
-    import mock
+from unittest import mock
 
 from google.cloud import datastore
 from google.cloud.datastore import entity as entity_module
