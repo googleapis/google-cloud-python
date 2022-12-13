@@ -168,7 +168,30 @@ class DocumentOutputConfig(proto.Message):
                 Only supports top level document and pages field so it must
                 be in the form of ``{document_field_name}`` or
                 ``pages.{page_field_name}``.
+            sharding_config (google.cloud.documentai_v1.types.DocumentOutputConfig.GcsOutputConfig.ShardingConfig):
+                Specifies the sharding config for the output
+                document.
         """
+
+        class ShardingConfig(proto.Message):
+            r"""The sharding config for the output document.
+
+            Attributes:
+                pages_per_shard (int):
+                    The number of pages per shard.
+                pages_overlap (int):
+                    The number of overlapping pages between
+                    consecutive shards.
+            """
+
+            pages_per_shard: int = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+            pages_overlap: int = proto.Field(
+                proto.INT32,
+                number=2,
+            )
 
         gcs_uri: str = proto.Field(
             proto.STRING,
@@ -178,6 +201,13 @@ class DocumentOutputConfig(proto.Message):
             proto.MESSAGE,
             number=2,
             message=field_mask_pb2.FieldMask,
+        )
+        sharding_config: "DocumentOutputConfig.GcsOutputConfig.ShardingConfig" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=3,
+                message="DocumentOutputConfig.GcsOutputConfig.ShardingConfig",
+            )
         )
 
     gcs_output_config: GcsOutputConfig = proto.Field(
