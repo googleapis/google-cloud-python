@@ -61,10 +61,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class UserEventServiceRestInterceptor:
     """Interceptor for UserEventService.
@@ -81,26 +77,29 @@ class UserEventServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomUserEventServiceInterceptor(UserEventServiceRestInterceptor):
-            def pre_collect_user_event(request, metadata):
+            def pre_collect_user_event(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_collect_user_event(response):
+            def post_collect_user_event(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_import_user_events(request, metadata):
+            def pre_import_user_events(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_import_user_events(response):
+            def post_import_user_events(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_write_user_event(request, metadata):
+            def pre_write_user_event(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_write_user_event(response):
+            def post_write_user_event(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = UserEventServiceRestTransport(interceptor=MyCustomUserEventServiceInterceptor())
         client = UserEventServiceClient(transport=transport)
