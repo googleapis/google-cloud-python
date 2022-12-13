@@ -69,40 +69,45 @@ class EventarcRestInterceptor:
 
     .. code-block:: python
         class MyCustomEventarcInterceptor(EventarcRestInterceptor):
-            def pre_create_trigger(request, metadata):
+            def pre_create_trigger(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_trigger(response):
+            def post_create_trigger(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_trigger(request, metadata):
+            def pre_delete_trigger(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_trigger(response):
+            def post_delete_trigger(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_trigger(request, metadata):
+            def pre_get_trigger(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_trigger(response):
+            def post_get_trigger(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_triggers(request, metadata):
+            def pre_list_triggers(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_triggers(response):
+            def post_list_triggers(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_trigger(request, metadata):
+            def pre_update_trigger(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_trigger(response):
+            def post_update_trigger(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = EventarcRestTransport(interceptor=MyCustomEventarcInterceptor())
         client = EventarcClient(transport=transport)

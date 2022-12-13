@@ -67,37 +67,41 @@ class LoggingServiceV2RestInterceptor:
 
     .. code-block:: python
         class MyCustomLoggingServiceV2Interceptor(LoggingServiceV2RestInterceptor):
-            def pre_delete_log(request, metadata):
+            def pre_delete_log(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_list_log_entries(request, metadata):
+            def pre_list_log_entries(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_log_entries(response):
+            def post_list_log_entries(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_logs(request, metadata):
+            def pre_list_logs(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_logs(response):
+            def post_list_logs(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_monitored_resource_descriptors(request, metadata):
+            def pre_list_monitored_resource_descriptors(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_monitored_resource_descriptors(response):
+            def post_list_monitored_resource_descriptors(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_write_log_entries(request, metadata):
+            def pre_write_log_entries(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_write_log_entries(response):
+            def post_write_log_entries(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = LoggingServiceV2RestTransport(interceptor=MyCustomLoggingServiceV2Interceptor())
         client = LoggingServiceV2Client(transport=transport)

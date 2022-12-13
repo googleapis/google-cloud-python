@@ -69,13 +69,14 @@ class {{ service.name }}RestInterceptor:
     .. code-block:: python
         class MyCustom{{ service.name }}Interceptor({{ service.name }}RestInterceptor):
     {% for _, method in service.methods|dictsort if not method.client_streaming %}
-            def pre_{{ method.name|snake_case }}(request, metadata):
+            def pre_{{ method.name|snake_case }}(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
     {% if not method.void %}
-            def post_{{ method.name|snake_case }}(response):
+            def post_{{ method.name|snake_case }}(self, response):
                 logging.log(f"Received response: {response}")
+                return response
     {% endif %}
 
 {% endfor %}

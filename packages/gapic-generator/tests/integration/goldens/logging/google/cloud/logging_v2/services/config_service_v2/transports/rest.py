@@ -67,151 +67,169 @@ class ConfigServiceV2RestInterceptor:
 
     .. code-block:: python
         class MyCustomConfigServiceV2Interceptor(ConfigServiceV2RestInterceptor):
-            def pre_create_bucket(request, metadata):
+            def pre_create_bucket(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_bucket(response):
+            def post_create_bucket(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_exclusion(request, metadata):
+            def pre_create_exclusion(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_exclusion(response):
+            def post_create_exclusion(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_sink(request, metadata):
+            def pre_create_sink(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_sink(response):
+            def post_create_sink(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_view(request, metadata):
+            def pre_create_view(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_view(response):
+            def post_create_view(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_bucket(request, metadata):
+            def pre_delete_bucket(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_delete_exclusion(request, metadata):
+            def pre_delete_exclusion(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_delete_sink(request, metadata):
+            def pre_delete_sink(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_delete_view(request, metadata):
+            def pre_delete_view(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_get_bucket(request, metadata):
+            def pre_get_bucket(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_bucket(response):
+            def post_get_bucket(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_cmek_settings(request, metadata):
+            def pre_get_cmek_settings(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_cmek_settings(response):
+            def post_get_cmek_settings(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_exclusion(request, metadata):
+            def pre_get_exclusion(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_exclusion(response):
+            def post_get_exclusion(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_sink(request, metadata):
+            def pre_get_sink(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_sink(response):
+            def post_get_sink(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_view(request, metadata):
+            def pre_get_view(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_view(response):
+            def post_get_view(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_buckets(request, metadata):
+            def pre_list_buckets(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_buckets(response):
+            def post_list_buckets(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_exclusions(request, metadata):
+            def pre_list_exclusions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_exclusions(response):
+            def post_list_exclusions(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_sinks(request, metadata):
+            def pre_list_sinks(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_sinks(response):
+            def post_list_sinks(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_views(request, metadata):
+            def pre_list_views(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_views(response):
+            def post_list_views(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_undelete_bucket(request, metadata):
+            def pre_undelete_bucket(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_update_bucket(request, metadata):
+            def pre_update_bucket(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_bucket(response):
+            def post_update_bucket(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_cmek_settings(request, metadata):
+            def pre_update_cmek_settings(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_cmek_settings(response):
+            def post_update_cmek_settings(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_exclusion(request, metadata):
+            def pre_update_exclusion(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_exclusion(response):
+            def post_update_exclusion(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_sink(request, metadata):
+            def pre_update_sink(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_sink(response):
+            def post_update_sink(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_view(request, metadata):
+            def pre_update_view(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_view(response):
+            def post_update_view(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = ConfigServiceV2RestTransport(interceptor=MyCustomConfigServiceV2Interceptor())
         client = ConfigServiceV2Client(transport=transport)

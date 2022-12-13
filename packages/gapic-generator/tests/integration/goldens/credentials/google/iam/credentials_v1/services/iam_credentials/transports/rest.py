@@ -66,33 +66,37 @@ class IAMCredentialsRestInterceptor:
 
     .. code-block:: python
         class MyCustomIAMCredentialsInterceptor(IAMCredentialsRestInterceptor):
-            def pre_generate_access_token(request, metadata):
+            def pre_generate_access_token(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_generate_access_token(response):
+            def post_generate_access_token(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_generate_id_token(request, metadata):
+            def pre_generate_id_token(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_generate_id_token(response):
+            def post_generate_id_token(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_sign_blob(request, metadata):
+            def pre_sign_blob(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_sign_blob(response):
+            def post_sign_blob(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_sign_jwt(request, metadata):
+            def pre_sign_jwt(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_sign_jwt(response):
+            def post_sign_jwt(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = IAMCredentialsRestTransport(interceptor=MyCustomIAMCredentialsInterceptor())
         client = IAMCredentialsClient(transport=transport)

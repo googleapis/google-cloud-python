@@ -67,37 +67,41 @@ class MetricsServiceV2RestInterceptor:
 
     .. code-block:: python
         class MyCustomMetricsServiceV2Interceptor(MetricsServiceV2RestInterceptor):
-            def pre_create_log_metric(request, metadata):
+            def pre_create_log_metric(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_log_metric(response):
+            def post_create_log_metric(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_log_metric(request, metadata):
+            def pre_delete_log_metric(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_get_log_metric(request, metadata):
+            def pre_get_log_metric(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_log_metric(response):
+            def post_get_log_metric(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_log_metrics(request, metadata):
+            def pre_list_log_metrics(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_log_metrics(response):
+            def post_list_log_metrics(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_log_metric(request, metadata):
+            def pre_update_log_metric(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_log_metric(response):
+            def post_update_log_metric(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = MetricsServiceV2RestTransport(interceptor=MyCustomMetricsServiceV2Interceptor())
         client = MetricsServiceV2Client(transport=transport)

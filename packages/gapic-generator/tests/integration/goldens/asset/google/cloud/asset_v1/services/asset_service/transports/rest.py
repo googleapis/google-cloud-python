@@ -69,86 +69,97 @@ class AssetServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomAssetServiceInterceptor(AssetServiceRestInterceptor):
-            def pre_analyze_iam_policy(request, metadata):
+            def pre_analyze_iam_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_analyze_iam_policy(response):
+            def post_analyze_iam_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_analyze_iam_policy_longrunning(request, metadata):
+            def pre_analyze_iam_policy_longrunning(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_analyze_iam_policy_longrunning(response):
+            def post_analyze_iam_policy_longrunning(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_batch_get_assets_history(request, metadata):
+            def pre_batch_get_assets_history(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_batch_get_assets_history(response):
+            def post_batch_get_assets_history(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_feed(request, metadata):
+            def pre_create_feed(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_feed(response):
+            def post_create_feed(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_feed(request, metadata):
+            def pre_delete_feed(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_export_assets(request, metadata):
+            def pre_export_assets(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_export_assets(response):
+            def post_export_assets(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_feed(request, metadata):
+            def pre_get_feed(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_feed(response):
+            def post_get_feed(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_assets(request, metadata):
+            def pre_list_assets(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_assets(response):
+            def post_list_assets(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_feeds(request, metadata):
+            def pre_list_feeds(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_feeds(response):
+            def post_list_feeds(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_search_all_iam_policies(request, metadata):
+            def pre_search_all_iam_policies(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_search_all_iam_policies(response):
+            def post_search_all_iam_policies(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_search_all_resources(request, metadata):
+            def pre_search_all_resources(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_search_all_resources(response):
+            def post_search_all_resources(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_feed(request, metadata):
+            def pre_update_feed(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_feed(response):
+            def post_update_feed(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = AssetServiceRestTransport(interceptor=MyCustomAssetServiceInterceptor())
         client = AssetServiceClient(transport=transport)

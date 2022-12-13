@@ -62,12 +62,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-{% if opts.rest_numeric_enums %}
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
-{% endif %}
 
 class {{ service.name }}RestInterceptor:
     """Interceptor for {{ service.name }}.
@@ -85,13 +79,14 @@ class {{ service.name }}RestInterceptor:
     .. code-block:: python
         class MyCustom{{ service.name }}Interceptor({{ service.name }}RestInterceptor):
     {% for _, method in service.methods|dictsort if not method.client_streaming %}
-            def pre_{{ method.name|snake_case }}(request, metadata):
+            def pre_{{ method.name|snake_case }}(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
     {% if not method.void %}
-            def post_{{ method.name|snake_case }}(response):
+            def post_{{ method.name|snake_case }}(self, response):
                 logging.log(f"Received response: {response}")
+                return response
     {% endif %}
 
 {% endfor %}

@@ -68,68 +68,77 @@ class CloudRedisRestInterceptor:
 
     .. code-block:: python
         class MyCustomCloudRedisInterceptor(CloudRedisRestInterceptor):
-            def pre_create_instance(request, metadata):
+            def pre_create_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_instance(response):
+            def post_create_instance(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_instance(request, metadata):
+            def pre_delete_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_instance(response):
+            def post_delete_instance(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_export_instance(request, metadata):
+            def pre_export_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_export_instance(response):
+            def post_export_instance(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_failover_instance(request, metadata):
+            def pre_failover_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_failover_instance(response):
+            def post_failover_instance(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_instance(request, metadata):
+            def pre_get_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_instance(response):
+            def post_get_instance(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_import_instance(request, metadata):
+            def pre_import_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_import_instance(response):
+            def post_import_instance(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_instances(request, metadata):
+            def pre_list_instances(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_instances(response):
+            def post_list_instances(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_instance(request, metadata):
+            def pre_update_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_instance(response):
+            def post_update_instance(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_upgrade_instance(request, metadata):
+            def pre_upgrade_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_upgrade_instance(response):
+            def post_upgrade_instance(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = CloudRedisRestTransport(interceptor=MyCustomCloudRedisInterceptor())
         client = CloudRedisClient(transport=transport)
