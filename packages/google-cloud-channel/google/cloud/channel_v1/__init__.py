@@ -81,11 +81,14 @@ from .types.reports_service import (
 )
 from .types.repricing import (
     ChannelPartnerRepricingConfig,
+    ConditionalOverride,
     CustomerRepricingConfig,
     PercentageAdjustment,
     RebillingBasis,
     RepricingAdjustment,
+    RepricingCondition,
     RepricingConfig,
+    SkuGroupCondition,
 )
 from .types.service import (
     ActivateEntitlementRequest,
@@ -179,6 +182,7 @@ __all__ = (
     "CloudIdentityInfo",
     "Column",
     "CommitmentSettings",
+    "ConditionalOverride",
     "Constraints",
     "ContactInfo",
     "CreateChannelPartnerLinkRequest",
@@ -267,12 +271,14 @@ __all__ = (
     "ReportStatus",
     "ReportValue",
     "RepricingAdjustment",
+    "RepricingCondition",
     "RepricingConfig",
     "ResourceType",
     "Row",
     "RunReportJobRequest",
     "RunReportJobResponse",
     "Sku",
+    "SkuGroupCondition",
     "StartPaidServiceRequest",
     "SubscriberEvent",
     "SuspendEntitlementRequest",

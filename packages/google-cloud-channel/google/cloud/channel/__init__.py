@@ -96,11 +96,14 @@ from google.cloud.channel_v1.types.reports_service import (
 )
 from google.cloud.channel_v1.types.repricing import (
     ChannelPartnerRepricingConfig,
+    ConditionalOverride,
     CustomerRepricingConfig,
     PercentageAdjustment,
     RebillingBasis,
     RepricingAdjustment,
+    RepricingCondition,
     RepricingConfig,
+    SkuGroupCondition,
 )
 from google.cloud.channel_v1.types.service import (
     ActivateEntitlementRequest,
@@ -235,10 +238,13 @@ __all__ = (
     "RunReportJobRequest",
     "RunReportJobResponse",
     "ChannelPartnerRepricingConfig",
+    "ConditionalOverride",
     "CustomerRepricingConfig",
     "PercentageAdjustment",
     "RepricingAdjustment",
+    "RepricingCondition",
     "RepricingConfig",
+    "SkuGroupCondition",
     "RebillingBasis",
     "ActivateEntitlementRequest",
     "CancelEntitlementRequest",

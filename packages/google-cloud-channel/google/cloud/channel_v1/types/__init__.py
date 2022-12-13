@@ -68,11 +68,14 @@ from .reports_service import (
 )
 from .repricing import (
     ChannelPartnerRepricingConfig,
+    ConditionalOverride,
     CustomerRepricingConfig,
     PercentageAdjustment,
     RebillingBasis,
     RepricingAdjustment,
+    RepricingCondition,
     RepricingConfig,
+    SkuGroupCondition,
 )
 from .service import (
     ActivateEntitlementRequest,
@@ -199,10 +202,13 @@ __all__ = (
     "RunReportJobRequest",
     "RunReportJobResponse",
     "ChannelPartnerRepricingConfig",
+    "ConditionalOverride",
     "CustomerRepricingConfig",
     "PercentageAdjustment",
     "RepricingAdjustment",
+    "RepricingCondition",
     "RepricingConfig",
+    "SkuGroupCondition",
     "RebillingBasis",
     "ActivateEntitlementRequest",
     "CancelEntitlementRequest",

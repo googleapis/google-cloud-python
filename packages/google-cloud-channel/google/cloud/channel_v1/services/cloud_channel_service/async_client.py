@@ -80,8 +80,8 @@ class CloudChannelServiceAsyncClient:
 
     CloudChannelService exposes the following resources:
 
-    -  [Customer][google.cloud.channel.v1.Customer]s: An entity—usually
-       an enterprise—managed by a reseller or distributor.
+    -  [Customer][google.cloud.channel.v1.Customer]s: An entity-usually
+       an enterprise-managed by a reseller or distributor.
 
     -  [Entitlement][google.cloud.channel.v1.Entitlement]s: An entity
        that provides a customer with the means to use a service.
@@ -344,7 +344,7 @@ class CloudChannelServiceAsyncClient:
         Returns:
             google.cloud.channel_v1.services.cloud_channel_service.pagers.ListCustomersAsyncPager:
                 Response message for
-                [CloudChannelService.ListCustomers][google.cloud.channel.v1.CloudChannelService.ListCustomers].
+                   [CloudChannelService.ListCustomers][google.cloud.channel.v1.CloudChannelService.ListCustomers].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1179,7 +1179,7 @@ class CloudChannelServiceAsyncClient:
         Returns:
             google.cloud.channel_v1.services.cloud_channel_service.pagers.ListEntitlementsAsyncPager:
                 Response message for
-                [CloudChannelService.ListEntitlements][google.cloud.channel.v1.CloudChannelService.ListEntitlements].
+                   [CloudChannelService.ListEntitlements][google.cloud.channel.v1.CloudChannelService.ListEntitlements].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1295,7 +1295,7 @@ class CloudChannelServiceAsyncClient:
         Returns:
             google.cloud.channel_v1.services.cloud_channel_service.pagers.ListTransferableSkusAsyncPager:
                 Response message for
-                [CloudChannelService.ListTransferableSkus][google.cloud.channel.v1.CloudChannelService.ListTransferableSkus].
+                   [CloudChannelService.ListTransferableSkus][google.cloud.channel.v1.CloudChannelService.ListTransferableSkus].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1415,7 +1415,7 @@ class CloudChannelServiceAsyncClient:
         Returns:
             google.cloud.channel_v1.services.cloud_channel_service.pagers.ListTransferableOffersAsyncPager:
                 Response message for
-                [CloudChannelService.ListTransferableOffers][google.cloud.channel.v1.CloudChannelService.ListTransferableOffers].
+                   [CloudChannelService.ListTransferableOffers][google.cloud.channel.v1.CloudChannelService.ListTransferableOffers].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -2641,7 +2641,8 @@ class CloudChannelServiceAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.channel_v1.types.TransferEntitlementsResponse` Response message for [CloudChannelService.TransferEntitlements][google.cloud.channel.v1.CloudChannelService.TransferEntitlements].
+                The result type for the operation will be :class:`google.cloud.channel_v1.types.TransferEntitlementsResponse` Response message for
+                   [CloudChannelService.TransferEntitlements][google.cloud.channel.v1.CloudChannelService.TransferEntitlements].
                    This is put in the response field of
                    google.longrunning.Operation.
 
@@ -2889,7 +2890,7 @@ class CloudChannelServiceAsyncClient:
         Returns:
             google.cloud.channel_v1.services.cloud_channel_service.pagers.ListChannelPartnerLinksAsyncPager:
                 Response message for
-                [CloudChannelService.ListChannelPartnerLinks][google.cloud.channel.v1.CloudChannelService.ListChannelPartnerLinks].
+                   [CloudChannelService.ListChannelPartnerLinks][google.cloud.channel.v1.CloudChannelService.ListChannelPartnerLinks].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -3455,7 +3456,7 @@ class CloudChannelServiceAsyncClient:
         Returns:
             google.cloud.channel_v1.services.cloud_channel_service.pagers.ListCustomerRepricingConfigsAsyncPager:
                 Response message for
-                [CloudChannelService.ListCustomerRepricingConfigs][google.cloud.channel.v1.CloudChannelService.ListCustomerRepricingConfigs].
+                   [CloudChannelService.ListCustomerRepricingConfigs][google.cloud.channel.v1.CloudChannelService.ListCustomerRepricingConfigs].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

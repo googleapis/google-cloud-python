@@ -29,6 +29,9 @@ __protobuf__ = proto.module(
         "RepricingConfig",
         "RepricingAdjustment",
         "PercentageAdjustment",
+        "ConditionalOverride",
+        "RepricingCondition",
+        "SkuGroupCondition",
     },
 )
 
@@ -150,6 +153,12 @@ class RepricingConfig(proto.Message):
             [RebillingBasis][google.cloud.channel.v1.RebillingBasis] to
             use for this bill. Specifies the relative cost based on
             repricing costs you will apply.
+        conditional_overrides (MutableSequence[google.cloud.channel_v1.types.ConditionalOverride]):
+            The conditional overrides to apply for this
+            configuration. If you list multiple overrides,
+            only the first valid override is used.  If you
+            don't list any overrides, the API uses the
+            normal adjustment and rebilling basis.
     """
 
     class EntitlementGranularity(proto.Message):
@@ -200,6 +209,11 @@ class RepricingConfig(proto.Message):
         number=3,
         enum="RebillingBasis",
     )
+    conditional_overrides: MutableSequence["ConditionalOverride"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="ConditionalOverride",
+    )
 
 
 class RepricingAdjustment(proto.Message):
@@ -241,6 +255,81 @@ class PercentageAdjustment(proto.Message):
         proto.MESSAGE,
         number=2,
         message=decimal_pb2.Decimal,
+    )
+
+
+class ConditionalOverride(proto.Message):
+    r"""Specifies the override to conditionally apply.
+
+    Attributes:
+        adjustment (google.cloud.channel_v1.types.RepricingAdjustment):
+            Required. Information about the applied
+            override's adjustment.
+        rebilling_basis (google.cloud.channel_v1.types.RebillingBasis):
+            Required. The
+            [RebillingBasis][google.cloud.channel.v1.RebillingBasis] to
+            use for the applied override. Shows the relative cost based
+            on your repricing costs.
+        repricing_condition (google.cloud.channel_v1.types.RepricingCondition):
+            Required. Specifies the condition which, if
+            met, will apply the override.
+    """
+
+    adjustment: "RepricingAdjustment" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="RepricingAdjustment",
+    )
+    rebilling_basis: "RebillingBasis" = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="RebillingBasis",
+    )
+    repricing_condition: "RepricingCondition" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="RepricingCondition",
+    )
+
+
+class RepricingCondition(proto.Message):
+    r"""Represents the various repricing conditions you can use for a
+    conditional override.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        sku_group_condition (google.cloud.channel_v1.types.SkuGroupCondition):
+            SKU Group condition for override.
+
+            This field is a member of `oneof`_ ``condition``.
+    """
+
+    sku_group_condition: "SkuGroupCondition" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="condition",
+        message="SkuGroupCondition",
+    )
+
+
+class SkuGroupCondition(proto.Message):
+    r"""A condition that applies the override if a line item SKU is
+    found in the SKU group.
+
+    Attributes:
+        sku_group (str):
+            Specifies a SKU group
+            (https://cloud.google.com/skus/sku-groups). Resource name of
+            SKU group. Format: accounts/{account}/skuGroups/{sku_group}.
+            Example:
+            "accounts/C01234/skuGroups/3d50fd57-3157-4577-a5a9-a219b8490041".
+    """
+
+    sku_group: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

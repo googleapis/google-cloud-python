@@ -542,10 +542,8 @@ class CloudChannelReportsServiceClient(metaclass=CloudChannelReportsServiceClien
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.channel_v1.types.RunReportJobResponse`
-                Response message for
-                [CloudChannelReportsService.RunReportJob][google.cloud.channel.v1.CloudChannelReportsService.RunReportJob].
+                The result type for the operation will be :class:`google.cloud.channel_v1.types.RunReportJobResponse` Response message for
+                   [CloudChannelReportsService.RunReportJob][google.cloud.channel.v1.CloudChannelReportsService.RunReportJob].
 
         """
         # Create or coerce a protobuf request object.
@@ -647,7 +645,8 @@ class CloudChannelReportsServiceClient(metaclass=CloudChannelReportsServiceClien
 
         Returns:
             google.cloud.channel_v1.services.cloud_channel_reports_service.pagers.FetchReportResultsPager:
-                Response message for [CloudChannelReportsService.FetchReportResults][google.cloud.channel.v1.CloudChannelReportsService.FetchReportResults].
+                Response message for
+                   [CloudChannelReportsService.FetchReportResults][google.cloud.channel.v1.CloudChannelReportsService.FetchReportResults].
                    Contains a tabular representation of the report
                    results.
 
@@ -769,7 +768,7 @@ class CloudChannelReportsServiceClient(metaclass=CloudChannelReportsServiceClien
         Returns:
             google.cloud.channel_v1.services.cloud_channel_reports_service.pagers.ListReportsPager:
                 Response message for
-                [CloudChannelReportsService.ListReports][google.cloud.channel.v1.CloudChannelReportsService.ListReports].
+                   [CloudChannelReportsService.ListReports][google.cloud.channel.v1.CloudChannelReportsService.ListReports].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

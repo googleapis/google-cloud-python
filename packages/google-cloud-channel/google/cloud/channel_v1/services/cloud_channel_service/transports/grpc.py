@@ -51,8 +51,8 @@ class CloudChannelServiceGrpcTransport(CloudChannelServiceTransport):
 
     CloudChannelService exposes the following resources:
 
-    -  [Customer][google.cloud.channel.v1.Customer]s: An entity—usually
-       an enterprise—managed by a reseller or distributor.
+    -  [Customer][google.cloud.channel.v1.Customer]s: An entity-usually
+       an enterprise-managed by a reseller or distributor.
 
     -  [Entitlement][google.cloud.channel.v1.Entitlement]s: An entity
        that provides a customer with the means to use a service.
