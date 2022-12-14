@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.13.0](https://github.com/googleapis/python-kms/compare/v2.12.3...v2.13.0) (2022-12-14)
+
+
+### Features
+
+* Add SHA-2 import methods ([6311278](https://github.com/googleapis/python-kms/commit/6311278a4aa3413751ba789cde6e6741a69b7791))
+* Add support for `google.cloud.kms.__version__` ([6311278](https://github.com/googleapis/python-kms/commit/6311278a4aa3413751ba789cde6e6741a69b7791))
+* Add support for additional HMAC algorithms ([6311278](https://github.com/googleapis/python-kms/commit/6311278a4aa3413751ba789cde6e6741a69b7791))
+* Add typing to proto.Message based class attributes ([6311278](https://github.com/googleapis/python-kms/commit/6311278a4aa3413751ba789cde6e6741a69b7791))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([6311278](https://github.com/googleapis/python-kms/commit/6311278a4aa3413751ba789cde6e6741a69b7791))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([dbe2f96](https://github.com/googleapis/python-kms/commit/dbe2f9697ec5183302c7c870d30165f0b436df20))
+* Drop usage of pkg_resources ([dbe2f96](https://github.com/googleapis/python-kms/commit/dbe2f9697ec5183302c7c870d30165f0b436df20))
+* Fix timeout default values ([dbe2f96](https://github.com/googleapis/python-kms/commit/dbe2f9697ec5183302c7c870d30165f0b436df20))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([6311278](https://github.com/googleapis/python-kms/commit/6311278a4aa3413751ba789cde6e6741a69b7791))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([dbe2f96](https://github.com/googleapis/python-kms/commit/dbe2f9697ec5183302c7c870d30165f0b436df20))
+
 ## [2.12.3](https://github.com/googleapis/python-kms/compare/v2.12.2...v2.12.3) (2022-10-07)
 
 
