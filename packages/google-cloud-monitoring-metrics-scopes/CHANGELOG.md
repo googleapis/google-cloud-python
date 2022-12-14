@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-monitoring-metrics-scopes/compare/v1.2.4...v1.3.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.monitoring_metrics_scope.__version__` ([b6e3dac](https://github.com/googleapis/python-monitoring-metrics-scopes/commit/b6e3dacc878778fbc38b1702db24175830534fd3))
+* Add typing to proto.Message based class attributes ([b6e3dac](https://github.com/googleapis/python-monitoring-metrics-scopes/commit/b6e3dacc878778fbc38b1702db24175830534fd3))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([b6e3dac](https://github.com/googleapis/python-monitoring-metrics-scopes/commit/b6e3dacc878778fbc38b1702db24175830534fd3))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([536fbb0](https://github.com/googleapis/python-monitoring-metrics-scopes/commit/536fbb017a3055b25b8787b788e34ed3f75e0ea8))
+* Drop usage of pkg_resources ([536fbb0](https://github.com/googleapis/python-monitoring-metrics-scopes/commit/536fbb017a3055b25b8787b788e34ed3f75e0ea8))
+* Fix timeout default values ([536fbb0](https://github.com/googleapis/python-monitoring-metrics-scopes/commit/536fbb017a3055b25b8787b788e34ed3f75e0ea8))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([b6e3dac](https://github.com/googleapis/python-monitoring-metrics-scopes/commit/b6e3dacc878778fbc38b1702db24175830534fd3))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([536fbb0](https://github.com/googleapis/python-monitoring-metrics-scopes/commit/536fbb017a3055b25b8787b788e34ed3f75e0ea8))
+
 ## [1.2.4](https://github.com/googleapis/python-monitoring-metrics-scopes/compare/v1.2.3...v1.2.4) (2022-10-07)
 
 
