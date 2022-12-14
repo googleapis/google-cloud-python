@@ -62,10 +62,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class BackupForGKERestInterceptor:
     """Interceptor for BackupForGKE.
@@ -82,173 +78,197 @@ class BackupForGKERestInterceptor:
 
     .. code-block:: python
         class MyCustomBackupForGKEInterceptor(BackupForGKERestInterceptor):
-            def pre_create_backup(request, metadata):
+            def pre_create_backup(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_backup(response):
+            def post_create_backup(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_backup_plan(request, metadata):
+            def pre_create_backup_plan(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_backup_plan(response):
+            def post_create_backup_plan(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_restore(request, metadata):
+            def pre_create_restore(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_restore(response):
+            def post_create_restore(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_restore_plan(request, metadata):
+            def pre_create_restore_plan(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_restore_plan(response):
+            def post_create_restore_plan(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_backup(request, metadata):
+            def pre_delete_backup(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_backup(response):
+            def post_delete_backup(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_backup_plan(request, metadata):
+            def pre_delete_backup_plan(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_backup_plan(response):
+            def post_delete_backup_plan(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_restore(request, metadata):
+            def pre_delete_restore(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_restore(response):
+            def post_delete_restore(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_restore_plan(request, metadata):
+            def pre_delete_restore_plan(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_restore_plan(response):
+            def post_delete_restore_plan(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_backup(request, metadata):
+            def pre_get_backup(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_backup(response):
+            def post_get_backup(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_backup_plan(request, metadata):
+            def pre_get_backup_plan(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_backup_plan(response):
+            def post_get_backup_plan(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_restore(request, metadata):
+            def pre_get_restore(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_restore(response):
+            def post_get_restore(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_restore_plan(request, metadata):
+            def pre_get_restore_plan(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_restore_plan(response):
+            def post_get_restore_plan(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_volume_backup(request, metadata):
+            def pre_get_volume_backup(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_volume_backup(response):
+            def post_get_volume_backup(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_volume_restore(request, metadata):
+            def pre_get_volume_restore(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_volume_restore(response):
+            def post_get_volume_restore(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_backup_plans(request, metadata):
+            def pre_list_backup_plans(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_backup_plans(response):
+            def post_list_backup_plans(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_backups(request, metadata):
+            def pre_list_backups(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_backups(response):
+            def post_list_backups(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_restore_plans(request, metadata):
+            def pre_list_restore_plans(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_restore_plans(response):
+            def post_list_restore_plans(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_restores(request, metadata):
+            def pre_list_restores(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_restores(response):
+            def post_list_restores(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_volume_backups(request, metadata):
+            def pre_list_volume_backups(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_volume_backups(response):
+            def post_list_volume_backups(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_volume_restores(request, metadata):
+            def pre_list_volume_restores(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_volume_restores(response):
+            def post_list_volume_restores(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_backup(request, metadata):
+            def pre_update_backup(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_backup(response):
+            def post_update_backup(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_backup_plan(request, metadata):
+            def pre_update_backup_plan(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_backup_plan(response):
+            def post_update_backup_plan(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_restore(request, metadata):
+            def pre_update_restore(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_restore(response):
+            def post_update_restore(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_restore_plan(request, metadata):
+            def pre_update_restore_plan(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_restore_plan(response):
+            def post_update_restore_plan(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = BackupForGKERestTransport(interceptor=MyCustomBackupForGKEInterceptor())
         client = BackupForGKEClient(transport=transport)
