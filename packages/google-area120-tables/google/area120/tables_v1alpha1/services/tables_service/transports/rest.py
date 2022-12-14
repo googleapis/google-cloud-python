@@ -49,10 +49,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class TablesServiceRestInterceptor:
     """Interceptor for TablesService.
@@ -69,83 +65,93 @@ class TablesServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomTablesServiceInterceptor(TablesServiceRestInterceptor):
-            def pre_batch_create_rows(request, metadata):
+            def pre_batch_create_rows(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_batch_create_rows(response):
+            def post_batch_create_rows(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_batch_delete_rows(request, metadata):
+            def pre_batch_delete_rows(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_batch_update_rows(request, metadata):
+            def pre_batch_update_rows(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_batch_update_rows(response):
+            def post_batch_update_rows(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_row(request, metadata):
+            def pre_create_row(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_row(response):
+            def post_create_row(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_row(request, metadata):
+            def pre_delete_row(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_get_row(request, metadata):
+            def pre_get_row(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_row(response):
+            def post_get_row(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_table(request, metadata):
+            def pre_get_table(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_table(response):
+            def post_get_table(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_workspace(request, metadata):
+            def pre_get_workspace(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_workspace(response):
+            def post_get_workspace(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_rows(request, metadata):
+            def pre_list_rows(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_rows(response):
+            def post_list_rows(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_tables(request, metadata):
+            def pre_list_tables(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_tables(response):
+            def post_list_tables(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_workspaces(request, metadata):
+            def pre_list_workspaces(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_workspaces(response):
+            def post_list_workspaces(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_row(request, metadata):
+            def pre_update_row(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_row(response):
+            def post_update_row(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = TablesServiceRestTransport(interceptor=MyCustomTablesServiceInterceptor())
         client = TablesServiceClient(transport=transport)
