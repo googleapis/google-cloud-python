@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -34,18 +36,18 @@ class LogsPanel(proto.Message):
             Queries <https://cloud.google.com/logging/docs/view/advanced-queries>`__.
             Only log entries that match the filter are returned. An
             empty filter matches all log entries.
-        resource_names (Sequence[str]):
+        resource_names (MutableSequence[str]):
             The names of logging resources to collect
             logs for. Currently only projects are supported.
             If empty, the widget will default to the host
             project.
     """
 
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    resource_names = proto.RepeatedField(
+    resource_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.monitoring_dashboard_v1.types import metrics
@@ -34,7 +36,7 @@ class TimeSeriesTable(proto.Message):
     r"""A table that displays time series data.
 
     Attributes:
-        data_sets (Sequence[google.cloud.monitoring_dashboard_v1.types.TimeSeriesTable.TableDataSet]):
+        data_sets (MutableSequence[google.cloud.monitoring_dashboard_v1.types.TimeSeriesTable.TableDataSet]):
             Required. The data displayed in this table.
     """
 
@@ -64,27 +66,29 @@ class TimeSeriesTable(proto.Message):
                 configuring how the table is rendered.
         """
 
-        time_series_query = proto.Field(
+        time_series_query: metrics.TimeSeriesQuery = proto.Field(
             proto.MESSAGE,
             number=1,
             message=metrics.TimeSeriesQuery,
         )
-        table_template = proto.Field(
+        table_template: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        min_alignment_period = proto.Field(
+        min_alignment_period: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=3,
             message=duration_pb2.Duration,
         )
-        table_display_options = proto.Field(
-            proto.MESSAGE,
-            number=4,
-            message=gmd_table_display_options.TableDisplayOptions,
+        table_display_options: gmd_table_display_options.TableDisplayOptions = (
+            proto.Field(
+                proto.MESSAGE,
+                number=4,
+                message=gmd_table_display_options.TableDisplayOptions,
+            )
         )
 
-    data_sets = proto.RepeatedField(
+    data_sets: MutableSequence[TableDataSet] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=TableDataSet,

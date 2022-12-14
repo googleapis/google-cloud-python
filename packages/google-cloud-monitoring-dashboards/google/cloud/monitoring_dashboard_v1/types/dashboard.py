@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.monitoring_dashboard_v1.types import dashboard_filter
@@ -75,55 +77,57 @@ class Dashboard(proto.Message):
             columns and the widgets are arranged vertically.
 
             This field is a member of `oneof`_ ``layout``.
-        dashboard_filters (Sequence[google.cloud.monitoring_dashboard_v1.types.DashboardFilter]):
+        dashboard_filters (MutableSequence[google.cloud.monitoring_dashboard_v1.types.DashboardFilter]):
             Filters to reduce the amount of data charted
             based on the filter criteria.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels applied to the dashboard
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    grid_layout = proto.Field(
+    grid_layout: layouts.GridLayout = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="layout",
         message=layouts.GridLayout,
     )
-    mosaic_layout = proto.Field(
+    mosaic_layout: layouts.MosaicLayout = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="layout",
         message=layouts.MosaicLayout,
     )
-    row_layout = proto.Field(
+    row_layout: layouts.RowLayout = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="layout",
         message=layouts.RowLayout,
     )
-    column_layout = proto.Field(
+    column_layout: layouts.ColumnLayout = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="layout",
         message=layouts.ColumnLayout,
     )
-    dashboard_filters = proto.RepeatedField(
+    dashboard_filters: MutableSequence[
+        dashboard_filter.DashboardFilter
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message=dashboard_filter.DashboardFilter,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=12,

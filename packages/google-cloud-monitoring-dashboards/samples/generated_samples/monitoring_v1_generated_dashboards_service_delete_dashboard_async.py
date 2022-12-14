@@ -20,7 +20,7 @@
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-monitoring-dashboard
+#   python3 -m pip install google-cloud-monitoring-dashboards
 
 
 # [START monitoring_v1_generated_DashboardsService_DeleteDashboard_async]
@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.monitoring import dashboard_v1
+from google.cloud import monitoring_dashboard_v1
 
 
 async def sample_delete_dashboard():
     # Create a client
-    client = dashboard_v1.DashboardsServiceAsyncClient()
+    client = monitoring_dashboard_v1.DashboardsServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = dashboard_v1.DeleteDashboardRequest(
+    request = monitoring_dashboard_v1.DeleteDashboardRequest(
         name="name_value",
     )
 

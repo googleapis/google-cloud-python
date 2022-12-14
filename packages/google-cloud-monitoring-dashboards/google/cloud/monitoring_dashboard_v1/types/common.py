@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import duration_pb2  # type: ignore
@@ -112,7 +114,7 @@ class Aggregation(proto.Message):
             then ``per_series_aligner`` must be specified, and must not
             be ``ALIGN_NONE``. An ``alignment_period`` must also be
             specified; otherwise, an error is returned.
-        group_by_fields (Sequence[str]):
+        group_by_fields (MutableSequence[str]):
             The set of fields to preserve when ``cross_series_reducer``
             is specified. The ``group_by_fields`` determine how the time
             series are partitioned into subsets prior to applying the
@@ -186,22 +188,22 @@ class Aggregation(proto.Message):
         REDUCE_PERCENTILE_50 = 11
         REDUCE_PERCENTILE_05 = 12
 
-    alignment_period = proto.Field(
+    alignment_period: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=1,
         message=duration_pb2.Duration,
     )
-    per_series_aligner = proto.Field(
+    per_series_aligner: Aligner = proto.Field(
         proto.ENUM,
         number=2,
         enum=Aligner,
     )
-    cross_series_reducer = proto.Field(
+    cross_series_reducer: Reducer = proto.Field(
         proto.ENUM,
         number=4,
         enum=Reducer,
     )
-    group_by_fields = proto.RepeatedField(
+    group_by_fields: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
@@ -248,16 +250,16 @@ class PickTimeSeriesFilter(proto.Message):
         TOP = 1
         BOTTOM = 2
 
-    ranking_method = proto.Field(
+    ranking_method: Method = proto.Field(
         proto.ENUM,
         number=1,
         enum=Method,
     )
-    num_time_series = proto.Field(
+    num_time_series: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    direction = proto.Field(
+    direction: Direction = proto.Field(
         proto.ENUM,
         number=3,
         enum=Direction,
@@ -287,12 +289,12 @@ class StatisticalTimeSeriesFilter(proto.Message):
         METHOD_UNSPECIFIED = 0
         METHOD_CLUSTER_OUTLIER = 1
 
-    ranking_method = proto.Field(
+    ranking_method: Method = proto.Field(
         proto.ENUM,
         number=1,
         enum=Method,
     )
-    num_time_series = proto.Field(
+    num_time_series: int = proto.Field(
         proto.INT32,
         number=2,
     )

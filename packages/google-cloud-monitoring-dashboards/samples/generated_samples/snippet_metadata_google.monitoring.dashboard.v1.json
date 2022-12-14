@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-monitoring-dashboard"
+    "name": "google-cloud-monitoring-dashboards",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -15,10 +16,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.monitoring.dashboard_v1.DashboardsServiceAsyncClient",
+          "fullName": "google.cloud.monitoring_dashboard_v1.DashboardsServiceAsyncClient",
           "shortName": "DashboardsServiceAsyncClient"
         },
-        "fullName": "google.monitoring.dashboard_v1.DashboardsServiceAsyncClient.create_dashboard",
+        "fullName": "google.cloud.monitoring_dashboard_v1.DashboardsServiceAsyncClient.create_dashboard",
         "method": {
           "fullName": "google.monitoring.dashboard.v1.DashboardsService.CreateDashboard",
           "service": {
@@ -30,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.monitoring.dashboard_v1.types.CreateDashboardRequest"
+            "type": "google.cloud.monitoring_dashboard_v1.types.CreateDashboardRequest"
           },
           {
             "name": "retry",
@@ -45,7 +46,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.monitoring.dashboard_v1.types.Dashboard",
+        "resultType": "google.cloud.monitoring_dashboard_v1.types.Dashboard",
         "shortName": "create_dashboard"
       },
       "description": "Sample for CreateDashboard",
@@ -91,10 +92,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.monitoring.dashboard_v1.DashboardsServiceClient",
+          "fullName": "google.cloud.monitoring_dashboard_v1.DashboardsServiceClient",
           "shortName": "DashboardsServiceClient"
         },
-        "fullName": "google.monitoring.dashboard_v1.DashboardsServiceClient.create_dashboard",
+        "fullName": "google.cloud.monitoring_dashboard_v1.DashboardsServiceClient.create_dashboard",
         "method": {
           "fullName": "google.monitoring.dashboard.v1.DashboardsService.CreateDashboard",
           "service": {
@@ -106,7 +107,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.monitoring.dashboard_v1.types.CreateDashboardRequest"
+            "type": "google.cloud.monitoring_dashboard_v1.types.CreateDashboardRequest"
           },
           {
             "name": "retry",
@@ -121,7 +122,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.monitoring.dashboard_v1.types.Dashboard",
+        "resultType": "google.cloud.monitoring_dashboard_v1.types.Dashboard",
         "shortName": "create_dashboard"
       },
       "description": "Sample for CreateDashboard",
@@ -168,10 +169,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.monitoring.dashboard_v1.DashboardsServiceAsyncClient",
+          "fullName": "google.cloud.monitoring_dashboard_v1.DashboardsServiceAsyncClient",
           "shortName": "DashboardsServiceAsyncClient"
         },
-        "fullName": "google.monitoring.dashboard_v1.DashboardsServiceAsyncClient.delete_dashboard",
+        "fullName": "google.cloud.monitoring_dashboard_v1.DashboardsServiceAsyncClient.delete_dashboard",
         "method": {
           "fullName": "google.monitoring.dashboard.v1.DashboardsService.DeleteDashboard",
           "service": {
@@ -183,7 +184,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.monitoring.dashboard_v1.types.DeleteDashboardRequest"
+            "type": "google.cloud.monitoring_dashboard_v1.types.DeleteDashboardRequest"
           },
           {
             "name": "retry",
@@ -241,10 +242,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.monitoring.dashboard_v1.DashboardsServiceClient",
+          "fullName": "google.cloud.monitoring_dashboard_v1.DashboardsServiceClient",
           "shortName": "DashboardsServiceClient"
         },
-        "fullName": "google.monitoring.dashboard_v1.DashboardsServiceClient.delete_dashboard",
+        "fullName": "google.cloud.monitoring_dashboard_v1.DashboardsServiceClient.delete_dashboard",
         "method": {
           "fullName": "google.monitoring.dashboard.v1.DashboardsService.DeleteDashboard",
           "service": {
@@ -256,7 +257,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.monitoring.dashboard_v1.types.DeleteDashboardRequest"
+            "type": "google.cloud.monitoring_dashboard_v1.types.DeleteDashboardRequest"
           },
           {
             "name": "retry",
@@ -315,10 +316,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.monitoring.dashboard_v1.DashboardsServiceAsyncClient",
+          "fullName": "google.cloud.monitoring_dashboard_v1.DashboardsServiceAsyncClient",
           "shortName": "DashboardsServiceAsyncClient"
         },
-        "fullName": "google.monitoring.dashboard_v1.DashboardsServiceAsyncClient.get_dashboard",
+        "fullName": "google.cloud.monitoring_dashboard_v1.DashboardsServiceAsyncClient.get_dashboard",
         "method": {
           "fullName": "google.monitoring.dashboard.v1.DashboardsService.GetDashboard",
           "service": {
@@ -330,7 +331,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.monitoring.dashboard_v1.types.GetDashboardRequest"
+            "type": "google.cloud.monitoring_dashboard_v1.types.GetDashboardRequest"
           },
           {
             "name": "retry",
@@ -345,7 +346,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.monitoring.dashboard_v1.types.Dashboard",
+        "resultType": "google.cloud.monitoring_dashboard_v1.types.Dashboard",
         "shortName": "get_dashboard"
       },
       "description": "Sample for GetDashboard",
@@ -391,10 +392,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.monitoring.dashboard_v1.DashboardsServiceClient",
+          "fullName": "google.cloud.monitoring_dashboard_v1.DashboardsServiceClient",
           "shortName": "DashboardsServiceClient"
         },
-        "fullName": "google.monitoring.dashboard_v1.DashboardsServiceClient.get_dashboard",
+        "fullName": "google.cloud.monitoring_dashboard_v1.DashboardsServiceClient.get_dashboard",
         "method": {
           "fullName": "google.monitoring.dashboard.v1.DashboardsService.GetDashboard",
           "service": {
@@ -406,7 +407,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.monitoring.dashboard_v1.types.GetDashboardRequest"
+            "type": "google.cloud.monitoring_dashboard_v1.types.GetDashboardRequest"
           },
           {
             "name": "retry",
@@ -421,7 +422,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.monitoring.dashboard_v1.types.Dashboard",
+        "resultType": "google.cloud.monitoring_dashboard_v1.types.Dashboard",
         "shortName": "get_dashboard"
       },
       "description": "Sample for GetDashboard",
@@ -468,10 +469,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.monitoring.dashboard_v1.DashboardsServiceAsyncClient",
+          "fullName": "google.cloud.monitoring_dashboard_v1.DashboardsServiceAsyncClient",
           "shortName": "DashboardsServiceAsyncClient"
         },
-        "fullName": "google.monitoring.dashboard_v1.DashboardsServiceAsyncClient.list_dashboards",
+        "fullName": "google.cloud.monitoring_dashboard_v1.DashboardsServiceAsyncClient.list_dashboards",
         "method": {
           "fullName": "google.monitoring.dashboard.v1.DashboardsService.ListDashboards",
           "service": {
@@ -483,7 +484,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.monitoring.dashboard_v1.types.ListDashboardsRequest"
+            "type": "google.cloud.monitoring_dashboard_v1.types.ListDashboardsRequest"
           },
           {
             "name": "retry",
@@ -498,7 +499,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.monitoring.dashboard_v1.services.dashboards_service.pagers.ListDashboardsAsyncPager",
+        "resultType": "google.cloud.monitoring_dashboard_v1.services.dashboards_service.pagers.ListDashboardsAsyncPager",
         "shortName": "list_dashboards"
       },
       "description": "Sample for ListDashboards",
@@ -544,10 +545,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.monitoring.dashboard_v1.DashboardsServiceClient",
+          "fullName": "google.cloud.monitoring_dashboard_v1.DashboardsServiceClient",
           "shortName": "DashboardsServiceClient"
         },
-        "fullName": "google.monitoring.dashboard_v1.DashboardsServiceClient.list_dashboards",
+        "fullName": "google.cloud.monitoring_dashboard_v1.DashboardsServiceClient.list_dashboards",
         "method": {
           "fullName": "google.monitoring.dashboard.v1.DashboardsService.ListDashboards",
           "service": {
@@ -559,7 +560,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.monitoring.dashboard_v1.types.ListDashboardsRequest"
+            "type": "google.cloud.monitoring_dashboard_v1.types.ListDashboardsRequest"
           },
           {
             "name": "retry",
@@ -574,7 +575,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.monitoring.dashboard_v1.services.dashboards_service.pagers.ListDashboardsPager",
+        "resultType": "google.cloud.monitoring_dashboard_v1.services.dashboards_service.pagers.ListDashboardsPager",
         "shortName": "list_dashboards"
       },
       "description": "Sample for ListDashboards",
@@ -621,10 +622,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.monitoring.dashboard_v1.DashboardsServiceAsyncClient",
+          "fullName": "google.cloud.monitoring_dashboard_v1.DashboardsServiceAsyncClient",
           "shortName": "DashboardsServiceAsyncClient"
         },
-        "fullName": "google.monitoring.dashboard_v1.DashboardsServiceAsyncClient.update_dashboard",
+        "fullName": "google.cloud.monitoring_dashboard_v1.DashboardsServiceAsyncClient.update_dashboard",
         "method": {
           "fullName": "google.monitoring.dashboard.v1.DashboardsService.UpdateDashboard",
           "service": {
@@ -636,7 +637,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.monitoring.dashboard_v1.types.UpdateDashboardRequest"
+            "type": "google.cloud.monitoring_dashboard_v1.types.UpdateDashboardRequest"
           },
           {
             "name": "retry",
@@ -651,7 +652,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.monitoring.dashboard_v1.types.Dashboard",
+        "resultType": "google.cloud.monitoring_dashboard_v1.types.Dashboard",
         "shortName": "update_dashboard"
       },
       "description": "Sample for UpdateDashboard",
@@ -697,10 +698,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.monitoring.dashboard_v1.DashboardsServiceClient",
+          "fullName": "google.cloud.monitoring_dashboard_v1.DashboardsServiceClient",
           "shortName": "DashboardsServiceClient"
         },
-        "fullName": "google.monitoring.dashboard_v1.DashboardsServiceClient.update_dashboard",
+        "fullName": "google.cloud.monitoring_dashboard_v1.DashboardsServiceClient.update_dashboard",
         "method": {
           "fullName": "google.monitoring.dashboard.v1.DashboardsService.UpdateDashboard",
           "service": {
@@ -712,7 +713,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.monitoring.dashboard_v1.types.UpdateDashboardRequest"
+            "type": "google.cloud.monitoring_dashboard_v1.types.UpdateDashboardRequest"
           },
           {
             "name": "retry",
@@ -727,7 +728,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.monitoring.dashboard_v1.types.Dashboard",
+        "resultType": "google.cloud.monitoring_dashboard_v1.types.Dashboard",
         "shortName": "update_dashboard"
       },
       "description": "Sample for UpdateDashboard",

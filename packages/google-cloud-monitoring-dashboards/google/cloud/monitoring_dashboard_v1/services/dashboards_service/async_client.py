@@ -16,8 +16,19 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
+
+from google.cloud.monitoring_dashboard_v1 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -167,9 +178,9 @@ class DashboardsServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, DashboardsServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the dashboards service client.
@@ -213,10 +224,12 @@ class DashboardsServiceAsyncClient:
 
     async def create_dashboard(
         self,
-        request: Union[dashboards_service.CreateDashboardRequest, dict] = None,
+        request: Optional[
+            Union[dashboards_service.CreateDashboardRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dashboard.Dashboard:
         r"""Creates a new custom dashboard. For examples on how you can use
@@ -236,17 +249,17 @@ class DashboardsServiceAsyncClient:
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.monitoring import dashboard_v1
+            from google.cloud import monitoring_dashboard_v1
 
             async def sample_create_dashboard():
                 # Create a client
-                client = dashboard_v1.DashboardsServiceAsyncClient()
+                client = monitoring_dashboard_v1.DashboardsServiceAsyncClient()
 
                 # Initialize request argument(s)
-                dashboard = dashboard_v1.Dashboard()
+                dashboard = monitoring_dashboard_v1.Dashboard()
                 dashboard.display_name = "display_name_value"
 
-                request = dashboard_v1.CreateDashboardRequest(
+                request = monitoring_dashboard_v1.CreateDashboardRequest(
                     parent="parent_value",
                     dashboard=dashboard,
                 )
@@ -258,7 +271,7 @@ class DashboardsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.monitoring_dashboard_v1.types.CreateDashboardRequest, dict]):
+            request (Optional[Union[google.cloud.monitoring_dashboard_v1.types.CreateDashboardRequest, dict]]):
                 The request object. The `CreateDashboard` request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -304,10 +317,10 @@ class DashboardsServiceAsyncClient:
 
     async def list_dashboards(
         self,
-        request: Union[dashboards_service.ListDashboardsRequest, dict] = None,
+        request: Optional[Union[dashboards_service.ListDashboardsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDashboardsAsyncPager:
         r"""Lists the existing dashboards.
@@ -326,14 +339,14 @@ class DashboardsServiceAsyncClient:
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.monitoring import dashboard_v1
+            from google.cloud import monitoring_dashboard_v1
 
             async def sample_list_dashboards():
                 # Create a client
-                client = dashboard_v1.DashboardsServiceAsyncClient()
+                client = monitoring_dashboard_v1.DashboardsServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = dashboard_v1.ListDashboardsRequest(
+                request = monitoring_dashboard_v1.ListDashboardsRequest(
                     parent="parent_value",
                 )
 
@@ -345,7 +358,7 @@ class DashboardsServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.monitoring_dashboard_v1.types.ListDashboardsRequest, dict]):
+            request (Optional[Union[google.cloud.monitoring_dashboard_v1.types.ListDashboardsRequest, dict]]):
                 The request object. The `ListDashboards` request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -400,10 +413,10 @@ class DashboardsServiceAsyncClient:
 
     async def get_dashboard(
         self,
-        request: Union[dashboards_service.GetDashboardRequest, dict] = None,
+        request: Optional[Union[dashboards_service.GetDashboardRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dashboard.Dashboard:
         r"""Fetches a specific dashboard.
@@ -422,14 +435,14 @@ class DashboardsServiceAsyncClient:
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.monitoring import dashboard_v1
+            from google.cloud import monitoring_dashboard_v1
 
             async def sample_get_dashboard():
                 # Create a client
-                client = dashboard_v1.DashboardsServiceAsyncClient()
+                client = monitoring_dashboard_v1.DashboardsServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = dashboard_v1.GetDashboardRequest(
+                request = monitoring_dashboard_v1.GetDashboardRequest(
                     name="name_value",
                 )
 
@@ -440,7 +453,7 @@ class DashboardsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.monitoring_dashboard_v1.types.GetDashboardRequest, dict]):
+            request (Optional[Union[google.cloud.monitoring_dashboard_v1.types.GetDashboardRequest, dict]]):
                 The request object. The `GetDashboard` request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -486,10 +499,12 @@ class DashboardsServiceAsyncClient:
 
     async def delete_dashboard(
         self,
-        request: Union[dashboards_service.DeleteDashboardRequest, dict] = None,
+        request: Optional[
+            Union[dashboards_service.DeleteDashboardRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an existing custom dashboard.
@@ -508,14 +523,14 @@ class DashboardsServiceAsyncClient:
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.monitoring import dashboard_v1
+            from google.cloud import monitoring_dashboard_v1
 
             async def sample_delete_dashboard():
                 # Create a client
-                client = dashboard_v1.DashboardsServiceAsyncClient()
+                client = monitoring_dashboard_v1.DashboardsServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = dashboard_v1.DeleteDashboardRequest(
+                request = monitoring_dashboard_v1.DeleteDashboardRequest(
                     name="name_value",
                 )
 
@@ -523,7 +538,7 @@ class DashboardsServiceAsyncClient:
                 await client.delete_dashboard(request=request)
 
         Args:
-            request (Union[google.cloud.monitoring_dashboard_v1.types.DeleteDashboardRequest, dict]):
+            request (Optional[Union[google.cloud.monitoring_dashboard_v1.types.DeleteDashboardRequest, dict]]):
                 The request object. The `DeleteDashboard` request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -558,10 +573,12 @@ class DashboardsServiceAsyncClient:
 
     async def update_dashboard(
         self,
-        request: Union[dashboards_service.UpdateDashboardRequest, dict] = None,
+        request: Optional[
+            Union[dashboards_service.UpdateDashboardRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dashboard.Dashboard:
         r"""Replaces an existing custom dashboard with a new definition.
@@ -580,17 +597,17 @@ class DashboardsServiceAsyncClient:
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.monitoring import dashboard_v1
+            from google.cloud import monitoring_dashboard_v1
 
             async def sample_update_dashboard():
                 # Create a client
-                client = dashboard_v1.DashboardsServiceAsyncClient()
+                client = monitoring_dashboard_v1.DashboardsServiceAsyncClient()
 
                 # Initialize request argument(s)
-                dashboard = dashboard_v1.Dashboard()
+                dashboard = monitoring_dashboard_v1.Dashboard()
                 dashboard.display_name = "display_name_value"
 
-                request = dashboard_v1.UpdateDashboardRequest(
+                request = monitoring_dashboard_v1.UpdateDashboardRequest(
                     dashboard=dashboard,
                 )
 
@@ -601,7 +618,7 @@ class DashboardsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.monitoring_dashboard_v1.types.UpdateDashboardRequest, dict]):
+            request (Optional[Union[google.cloud.monitoring_dashboard_v1.types.UpdateDashboardRequest, dict]]):
                 The request object. The `UpdateDashboard` request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -654,14 +671,9 @@ class DashboardsServiceAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-monitoring-dashboard",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("DashboardsServiceAsyncClient",)

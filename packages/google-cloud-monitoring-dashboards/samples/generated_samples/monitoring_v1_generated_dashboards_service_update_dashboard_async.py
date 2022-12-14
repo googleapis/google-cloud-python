@@ -20,7 +20,7 @@
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-monitoring-dashboard
+#   python3 -m pip install google-cloud-monitoring-dashboards
 
 
 # [START monitoring_v1_generated_DashboardsService_UpdateDashboard_async]
@@ -31,18 +31,18 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.monitoring import dashboard_v1
+from google.cloud import monitoring_dashboard_v1
 
 
 async def sample_update_dashboard():
     # Create a client
-    client = dashboard_v1.DashboardsServiceAsyncClient()
+    client = monitoring_dashboard_v1.DashboardsServiceAsyncClient()
 
     # Initialize request argument(s)
-    dashboard = dashboard_v1.Dashboard()
+    dashboard = monitoring_dashboard_v1.Dashboard()
     dashboard.display_name = "display_name_value"
 
-    request = dashboard_v1.UpdateDashboardRequest(
+    request = monitoring_dashboard_v1.UpdateDashboardRequest(
         dashboard=dashboard,
     )
 

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.monitoring_dashboard_v1.types import common
@@ -77,29 +79,29 @@ class TimeSeriesQuery(proto.Message):
             field in ``MetricDescriptor``.
     """
 
-    time_series_filter = proto.Field(
+    time_series_filter: "TimeSeriesFilter" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="source",
         message="TimeSeriesFilter",
     )
-    time_series_filter_ratio = proto.Field(
+    time_series_filter_ratio: "TimeSeriesFilterRatio" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="source",
         message="TimeSeriesFilterRatio",
     )
-    time_series_query_language = proto.Field(
+    time_series_query_language: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="source",
     )
-    prometheus_query = proto.Field(
+    prometheus_query: str = proto.Field(
         proto.STRING,
         number=6,
         oneof="source",
     )
-    unit_override = proto.Field(
+    unit_override: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -142,27 +144,27 @@ class TimeSeriesFilter(proto.Message):
             This field is a member of `oneof`_ ``output_filter``.
     """
 
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    aggregation = proto.Field(
+    aggregation: common.Aggregation = proto.Field(
         proto.MESSAGE,
         number=2,
         message=common.Aggregation,
     )
-    secondary_aggregation = proto.Field(
+    secondary_aggregation: common.Aggregation = proto.Field(
         proto.MESSAGE,
         number=3,
         message=common.Aggregation,
     )
-    pick_time_series_filter = proto.Field(
+    pick_time_series_filter: common.PickTimeSeriesFilter = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="output_filter",
         message=common.PickTimeSeriesFilter,
     )
-    statistical_time_series_filter = proto.Field(
+    statistical_time_series_filter: common.StatisticalTimeSeriesFilter = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="output_filter",
@@ -219,38 +221,38 @@ class TimeSeriesFilterRatio(proto.Message):
                 time series for different views of the data.
         """
 
-        filter = proto.Field(
+        filter: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        aggregation = proto.Field(
+        aggregation: common.Aggregation = proto.Field(
             proto.MESSAGE,
             number=2,
             message=common.Aggregation,
         )
 
-    numerator = proto.Field(
+    numerator: RatioPart = proto.Field(
         proto.MESSAGE,
         number=1,
         message=RatioPart,
     )
-    denominator = proto.Field(
+    denominator: RatioPart = proto.Field(
         proto.MESSAGE,
         number=2,
         message=RatioPart,
     )
-    secondary_aggregation = proto.Field(
+    secondary_aggregation: common.Aggregation = proto.Field(
         proto.MESSAGE,
         number=3,
         message=common.Aggregation,
     )
-    pick_time_series_filter = proto.Field(
+    pick_time_series_filter: common.PickTimeSeriesFilter = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="output_filter",
         message=common.PickTimeSeriesFilter,
     )
-    statistical_time_series_filter = proto.Field(
+    statistical_time_series_filter: common.StatisticalTimeSeriesFilter = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="output_filter",
@@ -303,25 +305,25 @@ class Threshold(proto.Message):
         Y1 = 1
         Y2 = 2
 
-    label = proto.Field(
+    label: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    value = proto.Field(
+    value: float = proto.Field(
         proto.DOUBLE,
         number=2,
     )
-    color = proto.Field(
+    color: Color = proto.Field(
         proto.ENUM,
         number=3,
         enum=Color,
     )
-    direction = proto.Field(
+    direction: Direction = proto.Field(
         proto.ENUM,
         number=4,
         enum=Direction,
     )
-    target_axis = proto.Field(
+    target_axis: TargetAxis = proto.Field(
         proto.ENUM,
         number=5,
         enum=TargetAxis,

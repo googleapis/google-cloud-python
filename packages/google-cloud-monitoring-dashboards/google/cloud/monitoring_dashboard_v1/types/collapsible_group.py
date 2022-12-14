@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -35,7 +37,7 @@ class CollapsibleGroup(proto.Message):
             page load.
     """
 
-    collapsed = proto.Field(
+    collapsed: bool = proto.Field(
         proto.BOOL,
         number=1,
     )

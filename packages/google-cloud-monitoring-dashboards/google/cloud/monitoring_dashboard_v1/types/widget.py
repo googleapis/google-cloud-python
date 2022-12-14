@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.monitoring_dashboard_v1.types import alertchart
@@ -87,53 +89,53 @@ class Widget(proto.Message):
             This field is a member of `oneof`_ ``content``.
     """
 
-    title = proto.Field(
+    title: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    xy_chart = proto.Field(
+    xy_chart: xychart.XyChart = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="content",
         message=xychart.XyChart,
     )
-    scorecard = proto.Field(
+    scorecard: gmd_scorecard.Scorecard = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="content",
         message=gmd_scorecard.Scorecard,
     )
-    text = proto.Field(
+    text: gmd_text.Text = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="content",
         message=gmd_text.Text,
     )
-    blank = proto.Field(
+    blank: empty_pb2.Empty = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="content",
         message=empty_pb2.Empty,
     )
-    alert_chart = proto.Field(
+    alert_chart: alertchart.AlertChart = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="content",
         message=alertchart.AlertChart,
     )
-    time_series_table = proto.Field(
+    time_series_table: table.TimeSeriesTable = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="content",
         message=table.TimeSeriesTable,
     )
-    collapsible_group = proto.Field(
+    collapsible_group: gmd_collapsible_group.CollapsibleGroup = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="content",
         message=gmd_collapsible_group.CollapsibleGroup,
     )
-    logs_panel = proto.Field(
+    logs_panel: gmd_logs_panel.LogsPanel = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="content",

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -40,11 +42,11 @@ class Text(proto.Message):
         MARKDOWN = 1
         RAW = 2
 
-    content = proto.Field(
+    content: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    format_ = proto.Field(
+    format_: Format = proto.Field(
         proto.ENUM,
         number=2,
         enum=Format,

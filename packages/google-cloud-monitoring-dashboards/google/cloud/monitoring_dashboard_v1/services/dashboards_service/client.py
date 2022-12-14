@@ -16,8 +16,20 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
+
+from google.cloud.monitoring_dashboard_v1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -60,7 +72,7 @@ class DashboardsServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[DashboardsServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -351,8 +363,8 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DashboardsServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, DashboardsServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the dashboards service client.
@@ -366,7 +378,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
             transport (Union[str, DashboardsServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -396,6 +408,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -448,10 +461,12 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
 
     def create_dashboard(
         self,
-        request: Union[dashboards_service.CreateDashboardRequest, dict] = None,
+        request: Optional[
+            Union[dashboards_service.CreateDashboardRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dashboard.Dashboard:
         r"""Creates a new custom dashboard. For examples on how you can use
@@ -471,17 +486,17 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.monitoring import dashboard_v1
+            from google.cloud import monitoring_dashboard_v1
 
             def sample_create_dashboard():
                 # Create a client
-                client = dashboard_v1.DashboardsServiceClient()
+                client = monitoring_dashboard_v1.DashboardsServiceClient()
 
                 # Initialize request argument(s)
-                dashboard = dashboard_v1.Dashboard()
+                dashboard = monitoring_dashboard_v1.Dashboard()
                 dashboard.display_name = "display_name_value"
 
-                request = dashboard_v1.CreateDashboardRequest(
+                request = monitoring_dashboard_v1.CreateDashboardRequest(
                     parent="parent_value",
                     dashboard=dashboard,
                 )
@@ -540,10 +555,10 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
 
     def list_dashboards(
         self,
-        request: Union[dashboards_service.ListDashboardsRequest, dict] = None,
+        request: Optional[Union[dashboards_service.ListDashboardsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDashboardsPager:
         r"""Lists the existing dashboards.
@@ -562,14 +577,14 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.monitoring import dashboard_v1
+            from google.cloud import monitoring_dashboard_v1
 
             def sample_list_dashboards():
                 # Create a client
-                client = dashboard_v1.DashboardsServiceClient()
+                client = monitoring_dashboard_v1.DashboardsServiceClient()
 
                 # Initialize request argument(s)
-                request = dashboard_v1.ListDashboardsRequest(
+                request = monitoring_dashboard_v1.ListDashboardsRequest(
                     parent="parent_value",
                 )
 
@@ -637,10 +652,10 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
 
     def get_dashboard(
         self,
-        request: Union[dashboards_service.GetDashboardRequest, dict] = None,
+        request: Optional[Union[dashboards_service.GetDashboardRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dashboard.Dashboard:
         r"""Fetches a specific dashboard.
@@ -659,14 +674,14 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.monitoring import dashboard_v1
+            from google.cloud import monitoring_dashboard_v1
 
             def sample_get_dashboard():
                 # Create a client
-                client = dashboard_v1.DashboardsServiceClient()
+                client = monitoring_dashboard_v1.DashboardsServiceClient()
 
                 # Initialize request argument(s)
-                request = dashboard_v1.GetDashboardRequest(
+                request = monitoring_dashboard_v1.GetDashboardRequest(
                     name="name_value",
                 )
 
@@ -724,10 +739,12 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
 
     def delete_dashboard(
         self,
-        request: Union[dashboards_service.DeleteDashboardRequest, dict] = None,
+        request: Optional[
+            Union[dashboards_service.DeleteDashboardRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an existing custom dashboard.
@@ -746,14 +763,14 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.monitoring import dashboard_v1
+            from google.cloud import monitoring_dashboard_v1
 
             def sample_delete_dashboard():
                 # Create a client
-                client = dashboard_v1.DashboardsServiceClient()
+                client = monitoring_dashboard_v1.DashboardsServiceClient()
 
                 # Initialize request argument(s)
-                request = dashboard_v1.DeleteDashboardRequest(
+                request = monitoring_dashboard_v1.DeleteDashboardRequest(
                     name="name_value",
                 )
 
@@ -797,10 +814,12 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
 
     def update_dashboard(
         self,
-        request: Union[dashboards_service.UpdateDashboardRequest, dict] = None,
+        request: Optional[
+            Union[dashboards_service.UpdateDashboardRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dashboard.Dashboard:
         r"""Replaces an existing custom dashboard with a new definition.
@@ -819,17 +838,17 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.monitoring import dashboard_v1
+            from google.cloud import monitoring_dashboard_v1
 
             def sample_update_dashboard():
                 # Create a client
-                client = dashboard_v1.DashboardsServiceClient()
+                client = monitoring_dashboard_v1.DashboardsServiceClient()
 
                 # Initialize request argument(s)
-                dashboard = dashboard_v1.Dashboard()
+                dashboard = monitoring_dashboard_v1.Dashboard()
                 dashboard.display_name = "display_name_value"
 
-                request = dashboard_v1.UpdateDashboardRequest(
+                request = monitoring_dashboard_v1.UpdateDashboardRequest(
                     dashboard=dashboard,
                 )
 
@@ -901,14 +920,9 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-monitoring-dashboard",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("DashboardsServiceClient",)

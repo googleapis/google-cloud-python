@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -56,20 +58,20 @@ class DashboardFilter(proto.Message):
         SYSTEM_METADATA_LABEL = 4
         GROUP = 5
 
-    label_key = proto.Field(
+    label_key: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    template_variable = proto.Field(
+    template_variable: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    string_value = proto.Field(
+    string_value: str = proto.Field(
         proto.STRING,
         number=4,
         oneof="default_value",
     )
-    filter_type = proto.Field(
+    filter_type: FilterType = proto.Field(
         proto.ENUM,
         number=5,
         enum=FilterType,

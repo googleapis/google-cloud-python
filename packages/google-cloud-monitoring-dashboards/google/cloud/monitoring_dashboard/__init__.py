@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.monitoring_dashboard import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.monitoring_dashboard_v1.services.dashboards_service.client import (
     DashboardsServiceClient,

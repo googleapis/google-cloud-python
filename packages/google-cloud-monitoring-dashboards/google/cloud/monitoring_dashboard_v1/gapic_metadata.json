@@ -1,7 +1,7 @@
  {
   "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
   "language": "python",
-  "libraryPackage": "google.monitoring.dashboard_v1",
+  "libraryPackage": "google.cloud.monitoring_dashboard_v1",
   "protoPackage": "google.monitoring.dashboard.v1",
   "schema": "1.0",
   "services": {

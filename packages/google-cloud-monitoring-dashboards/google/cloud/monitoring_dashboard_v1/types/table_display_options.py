@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -28,12 +30,12 @@ class TableDisplayOptions(proto.Message):
     r"""Table display options that can be reused.
 
     Attributes:
-        shown_columns (Sequence[str]):
+        shown_columns (MutableSequence[str]):
             Optional. This field is unused and has been replaced by
             TimeSeriesTable.column_settings
     """
 
-    shown_columns = proto.RepeatedField(
+    shown_columns: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )

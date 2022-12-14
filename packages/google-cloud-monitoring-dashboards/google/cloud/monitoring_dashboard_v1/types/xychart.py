@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.monitoring_dashboard_v1.types import metrics
@@ -32,7 +34,7 @@ class XyChart(proto.Message):
     r"""A chart that displays data on a 2D (X and Y axes) plane.
 
     Attributes:
-        data_sets (Sequence[google.cloud.monitoring_dashboard_v1.types.XyChart.DataSet]):
+        data_sets (MutableSequence[google.cloud.monitoring_dashboard_v1.types.XyChart.DataSet]):
             Required. The data displayed in this chart.
         timeshift_duration (google.protobuf.duration_pb2.Duration):
             The duration used to display a comparison
@@ -42,7 +44,7 @@ class XyChart(proto.Message):
             The duration must be positive, and it can only
             be applied to charts with data sets of LINE plot
             type.
-        thresholds (Sequence[google.cloud.monitoring_dashboard_v1.types.Threshold]):
+        thresholds (MutableSequence[google.cloud.monitoring_dashboard_v1.types.Threshold]):
             Threshold lines drawn horizontally across the
             chart.
         x_axis (google.cloud.monitoring_dashboard_v1.types.XyChart.Axis):
@@ -96,26 +98,26 @@ class XyChart(proto.Message):
             Y1 = 1
             Y2 = 2
 
-        time_series_query = proto.Field(
+        time_series_query: metrics.TimeSeriesQuery = proto.Field(
             proto.MESSAGE,
             number=1,
             message=metrics.TimeSeriesQuery,
         )
-        plot_type = proto.Field(
+        plot_type: "XyChart.DataSet.PlotType" = proto.Field(
             proto.ENUM,
             number=2,
             enum="XyChart.DataSet.PlotType",
         )
-        legend_template = proto.Field(
+        legend_template: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        min_alignment_period = proto.Field(
+        min_alignment_period: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=4,
             message=duration_pb2.Duration,
         )
-        target_axis = proto.Field(
+        target_axis: "XyChart.DataSet.TargetAxis" = proto.Field(
             proto.ENUM,
             number=5,
             enum="XyChart.DataSet.TargetAxis",
@@ -138,47 +140,47 @@ class XyChart(proto.Message):
             LINEAR = 1
             LOG10 = 2
 
-        label = proto.Field(
+        label: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        scale = proto.Field(
+        scale: "XyChart.Axis.Scale" = proto.Field(
             proto.ENUM,
             number=2,
             enum="XyChart.Axis.Scale",
         )
 
-    data_sets = proto.RepeatedField(
+    data_sets: MutableSequence[DataSet] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=DataSet,
     )
-    timeshift_duration = proto.Field(
+    timeshift_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=4,
         message=duration_pb2.Duration,
     )
-    thresholds = proto.RepeatedField(
+    thresholds: MutableSequence[metrics.Threshold] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=metrics.Threshold,
     )
-    x_axis = proto.Field(
+    x_axis: Axis = proto.Field(
         proto.MESSAGE,
         number=6,
         message=Axis,
     )
-    y_axis = proto.Field(
+    y_axis: Axis = proto.Field(
         proto.MESSAGE,
         number=7,
         message=Axis,
     )
-    y2_axis = proto.Field(
+    y2_axis: Axis = proto.Field(
         proto.MESSAGE,
         number=9,
         message=Axis,
     )
-    chart_options = proto.Field(
+    chart_options: "ChartOptions" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="ChartOptions",
@@ -200,7 +202,7 @@ class ChartOptions(proto.Message):
         X_RAY = 2
         STATS = 3
 
-    mode = proto.Field(
+    mode: Mode = proto.Field(
         proto.ENUM,
         number=1,
         enum=Mode,

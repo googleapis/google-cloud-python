@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.monitoring_dashboard_v1.types import widget as gmd_widget
@@ -39,16 +41,16 @@ class GridLayout(proto.Message):
             The number of columns into which the view's
             width is divided. If omitted or set to zero, a
             system default will be used while rendering.
-        widgets (Sequence[google.cloud.monitoring_dashboard_v1.types.Widget]):
+        widgets (MutableSequence[google.cloud.monitoring_dashboard_v1.types.Widget]):
             The informational elements that are arranged
             into the columns row-first.
     """
 
-    columns = proto.Field(
+    columns: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    widgets = proto.RepeatedField(
+    widgets: MutableSequence[gmd_widget.Widget] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=gmd_widget.Widget,
@@ -66,7 +68,7 @@ class MosaicLayout(proto.Message):
             The number of columns in the mosaic grid. The
             number of columns must be between 1 and 12,
             inclusive.
-        tiles (Sequence[google.cloud.monitoring_dashboard_v1.types.MosaicLayout.Tile]):
+        tiles (MutableSequence[google.cloud.monitoring_dashboard_v1.types.MosaicLayout.Tile]):
             The tiles to display.
     """
 
@@ -95,33 +97,33 @@ class MosaicLayout(proto.Message):
                 an ``XyChart``.
         """
 
-        x_pos = proto.Field(
+        x_pos: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        y_pos = proto.Field(
+        y_pos: int = proto.Field(
             proto.INT32,
             number=2,
         )
-        width = proto.Field(
+        width: int = proto.Field(
             proto.INT32,
             number=3,
         )
-        height = proto.Field(
+        height: int = proto.Field(
             proto.INT32,
             number=4,
         )
-        widget = proto.Field(
+        widget: gmd_widget.Widget = proto.Field(
             proto.MESSAGE,
             number=5,
             message=gmd_widget.Widget,
         )
 
-    columns = proto.Field(
+    columns: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    tiles = proto.RepeatedField(
+    tiles: MutableSequence[Tile] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=Tile,
@@ -133,7 +135,7 @@ class RowLayout(proto.Message):
     rows and arranges a set of widgets horizontally in each row.
 
     Attributes:
-        rows (Sequence[google.cloud.monitoring_dashboard_v1.types.RowLayout.Row]):
+        rows (MutableSequence[google.cloud.monitoring_dashboard_v1.types.RowLayout.Row]):
             The rows of content to display.
     """
 
@@ -148,22 +150,22 @@ class RowLayout(proto.Message):
                 weight, greater the height of the row on the
                 screen. If omitted, a value of 1 is used while
                 rendering.
-            widgets (Sequence[google.cloud.monitoring_dashboard_v1.types.Widget]):
+            widgets (MutableSequence[google.cloud.monitoring_dashboard_v1.types.Widget]):
                 The display widgets arranged horizontally in
                 this row.
         """
 
-        weight = proto.Field(
+        weight: int = proto.Field(
             proto.INT64,
             number=1,
         )
-        widgets = proto.RepeatedField(
+        widgets: MutableSequence[gmd_widget.Widget] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message=gmd_widget.Widget,
         )
 
-    rows = proto.RepeatedField(
+    rows: MutableSequence[Row] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=Row,
@@ -176,7 +178,7 @@ class ColumnLayout(proto.Message):
     each column.
 
     Attributes:
-        columns (Sequence[google.cloud.monitoring_dashboard_v1.types.ColumnLayout.Column]):
+        columns (MutableSequence[google.cloud.monitoring_dashboard_v1.types.ColumnLayout.Column]):
             The columns of content to display.
     """
 
@@ -191,22 +193,22 @@ class ColumnLayout(proto.Message):
                 Greater the weight, greater the width of the
                 column on the screen. If omitted, a value of 1
                 is used while rendering.
-            widgets (Sequence[google.cloud.monitoring_dashboard_v1.types.Widget]):
+            widgets (MutableSequence[google.cloud.monitoring_dashboard_v1.types.Widget]):
                 The display widgets arranged vertically in
                 this column.
         """
 
-        weight = proto.Field(
+        weight: int = proto.Field(
             proto.INT64,
             number=1,
         )
-        widgets = proto.RepeatedField(
+        widgets: MutableSequence[gmd_widget.Widget] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message=gmd_widget.Widget,
         )
 
-    columns = proto.RepeatedField(
+    columns: MutableSequence[Column] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=Column,

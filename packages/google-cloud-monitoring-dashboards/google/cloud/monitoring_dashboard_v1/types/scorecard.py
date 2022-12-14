@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.monitoring_dashboard_v1.types import metrics
@@ -52,47 +54,49 @@ class Scorecard(proto.Message):
             chart.
 
             This field is a member of `oneof`_ ``data_view``.
-        thresholds (Sequence[google.cloud.monitoring_dashboard_v1.types.Threshold]):
-            The thresholds used to determine the state of
-            the scorecard given the time series' current
-            value. For an actual value x, the scorecard is
-            in a danger state if x is less than or equal to
-            a danger threshold that triggers below, or
-            greater than or equal to a danger threshold that
-            triggers above. Similarly, if x is above/below a
-            warning threshold that triggers above/below,
-            then the scorecard is in a warning state -
-            unless x also puts it in a danger state. (Danger
+        thresholds (MutableSequence[google.cloud.monitoring_dashboard_v1.types.Threshold]):
+            The thresholds used to determine the state of the scorecard
+            given the time series' current value. For an actual value x,
+            the scorecard is in a danger state if x is less than or
+            equal to a danger threshold that triggers below, or greater
+            than or equal to a danger threshold that triggers above.
+            Similarly, if x is above/below a warning threshold that
+            triggers above/below, then the scorecard is in a warning
+            state - unless x also puts it in a danger state. (Danger
             trumps warning.)
-            As an example, consider a scorecard with the
-            following four thresholds: {
-              value: 90,
-              category: 'DANGER',
-              trigger: 'ABOVE',
-            },
-            {
-              value: 70,
-              category: 'WARNING',
-              trigger: 'ABOVE',
-            },
-            {
-              value: 10,
-              category: 'DANGER',
-              trigger: 'BELOW',
-            },
-            {
-              value: 20,
-              category: 'WARNING',
-              trigger: 'BELOW',
-            }
 
-            Then: values less than or equal to 10 would put
-            the scorecard in a DANGER state, values greater
-            than 10 but less than or equal to 20 a WARNING
-            state, values strictly between 20 and 70 an OK
-            state, values greater than or equal to 70 but
-            less than 90 a WARNING state, and values greater
-            than or equal to 90 a DANGER state.
+            As an example, consider a scorecard with the following four
+            thresholds:
+
+            ::
+
+               {
+                 value: 90,
+                 category: 'DANGER',
+                 trigger: 'ABOVE',
+               },
+               {
+                 value: 70,
+                 category: 'WARNING',
+                 trigger: 'ABOVE',
+               },
+               {
+                 value: 10,
+                 category: 'DANGER',
+                 trigger: 'BELOW',
+               },
+               {
+                 value: 20,
+                 category: 'WARNING',
+                 trigger: 'BELOW',
+               }
+
+            Then: values less than or equal to 10 would put the
+            scorecard in a DANGER state, values greater than 10 but less
+            than or equal to 20 a WARNING state, values strictly between
+            20 and 70 an OK state, values greater than or equal to 70
+            but less than 90 a WARNING state, and values greater than or
+            equal to 90 a DANGER state.
     """
 
     class GaugeView(proto.Message):
@@ -111,11 +115,11 @@ class Scorecard(proto.Message):
                 equal to this.
         """
 
-        lower_bound = proto.Field(
+        lower_bound: float = proto.Field(
             proto.DOUBLE,
             number=1,
         )
-        upper_bound = proto.Field(
+        upper_bound: float = proto.Field(
             proto.DOUBLE,
             number=2,
         )
@@ -140,35 +144,35 @@ class Scorecard(proto.Message):
                 is optional and exists only as a hint.
         """
 
-        spark_chart_type = proto.Field(
+        spark_chart_type: metrics.SparkChartType = proto.Field(
             proto.ENUM,
             number=1,
             enum=metrics.SparkChartType,
         )
-        min_alignment_period = proto.Field(
+        min_alignment_period: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=2,
             message=duration_pb2.Duration,
         )
 
-    time_series_query = proto.Field(
+    time_series_query: metrics.TimeSeriesQuery = proto.Field(
         proto.MESSAGE,
         number=1,
         message=metrics.TimeSeriesQuery,
     )
-    gauge_view = proto.Field(
+    gauge_view: GaugeView = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="data_view",
         message=GaugeView,
     )
-    spark_chart_view = proto.Field(
+    spark_chart_view: SparkChartView = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="data_view",
         message=SparkChartView,
     )
-    thresholds = proto.RepeatedField(
+    thresholds: MutableSequence[metrics.Threshold] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=metrics.Threshold,

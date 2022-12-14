@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.monitoring_dashboard_v1.types import dashboard as gmd_dashboard
@@ -53,16 +55,16 @@ class CreateDashboardRequest(proto.Message):
             review, but do not actually save it.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    dashboard = proto.Field(
+    dashboard: gmd_dashboard.Dashboard = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gmd_dashboard.Dashboard,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -90,15 +92,15 @@ class ListDashboardsRequest(proto.Message):
             additional results from the previous method call.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -108,7 +110,7 @@ class ListDashboardsResponse(proto.Message):
     r"""The ``ListDashboards`` request.
 
     Attributes:
-        dashboards (Sequence[google.cloud.monitoring_dashboard_v1.types.Dashboard]):
+        dashboards (MutableSequence[google.cloud.monitoring_dashboard_v1.types.Dashboard]):
             The list of requested dashboards.
         next_page_token (str):
             If there are more results than have been returned, then this
@@ -121,12 +123,12 @@ class ListDashboardsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    dashboards = proto.RepeatedField(
+    dashboards: MutableSequence[gmd_dashboard.Dashboard] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gmd_dashboard.Dashboard,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -145,7 +147,7 @@ class GetDashboardRequest(proto.Message):
                (for custom dashboards).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -163,7 +165,7 @@ class DeleteDashboardRequest(proto.Message):
                 projects/[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID]
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -181,12 +183,12 @@ class UpdateDashboardRequest(proto.Message):
             review, but do not actually save it.
     """
 
-    dashboard = proto.Field(
+    dashboard: gmd_dashboard.Dashboard = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gmd_dashboard.Dashboard,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
