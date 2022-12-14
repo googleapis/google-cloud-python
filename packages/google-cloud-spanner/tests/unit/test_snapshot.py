@@ -49,23 +49,65 @@ BASE_ATTRIBUTES = {
 
 
 class Test_restart_on_unavailable(OpenTelemetryBase):
+    def _getTargetClass(self):
+        from google.cloud.spanner_v1.snapshot import _SnapshotBase
+
+        return _SnapshotBase
+
+    def _makeDerived(self, session):
+        class _Derived(self._getTargetClass()):
+
+            _transaction_id = None
+            _multi_use = False
+
+            def _make_txn_selector(self):
+                from google.cloud.spanner_v1 import (
+                    TransactionOptions,
+                    TransactionSelector,
+                )
+
+                if self._transaction_id:
+                    return TransactionSelector(id=self._transaction_id)
+                options = TransactionOptions(
+                    read_only=TransactionOptions.ReadOnly(strong=True)
+                )
+                if self._multi_use:
+                    return TransactionSelector(begin=options)
+                return TransactionSelector(single_use=options)
+
+        return _Derived(session)
+
+    def _make_spanner_api(self):
+        from google.cloud.spanner_v1 import SpannerClient
+
+        return mock.create_autospec(SpannerClient, instance=True)
+
     def _call_fut(
-        self, restart, request, span_name=None, session=None, attributes=None
+        self, derived, restart, request, span_name=None, session=None, attributes=None
     ):
         from google.cloud.spanner_v1.snapshot import _restart_on_unavailable
 
-        return _restart_on_unavailable(restart, request, span_name, session, attributes)
+        return _restart_on_unavailable(
+            restart, request, span_name, session, attributes, transaction=derived
+        )
 
-    def _make_item(self, value, resume_token=b""):
+    def _make_item(self, value, resume_token=b"", metadata=None):
         return mock.Mock(
-            value=value, resume_token=resume_token, spec=["value", "resume_token"]
+            value=value,
+            resume_token=resume_token,
+            metadata=metadata,
+            spec=["value", "resume_token", "metadata"],
         )
 
     def test_iteration_w_empty_raw(self):
         raw = _MockIterator()
         request = mock.Mock(test="test", spec=["test", "resume_token"])
         restart = mock.Mock(spec=[], return_value=raw)
-        resumable = self._call_fut(restart, request)
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        session = _Session(database)
+        derived = self._makeDerived(session)
+        resumable = self._call_fut(derived, restart, request)
         self.assertEqual(list(resumable), [])
         restart.assert_called_once_with(request=request)
         self.assertNoSpans()
@@ -75,7 +117,11 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         raw = _MockIterator(*ITEMS)
         request = mock.Mock(test="test", spec=["test", "resume_token"])
         restart = mock.Mock(spec=[], return_value=raw)
-        resumable = self._call_fut(restart, request)
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        session = _Session(database)
+        derived = self._makeDerived(session)
+        resumable = self._call_fut(derived, restart, request)
         self.assertEqual(list(resumable), list(ITEMS))
         restart.assert_called_once_with(request=request)
         self.assertNoSpans()
@@ -90,7 +136,11 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         raw = _MockIterator(*ITEMS)
         request = mock.Mock(test="test", spec=["test", "resume_token"])
         restart = mock.Mock(spec=[], return_value=raw)
-        resumable = self._call_fut(restart, request)
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        session = _Session(database)
+        derived = self._makeDerived(session)
+        resumable = self._call_fut(derived, restart, request)
         self.assertEqual(list(resumable), list(ITEMS))
         restart.assert_called_once_with(request=request)
         self.assertNoSpans()
@@ -107,7 +157,11 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         after = _MockIterator(*ITEMS)
         request = mock.Mock(test="test", spec=["test", "resume_token"])
         restart = mock.Mock(spec=[], side_effect=[before, after])
-        resumable = self._call_fut(restart, request)
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        session = _Session(database)
+        derived = self._makeDerived(session)
+        resumable = self._call_fut(derived, restart, request)
         self.assertEqual(list(resumable), list(ITEMS))
         self.assertEqual(len(restart.mock_calls), 2)
         self.assertEqual(request.resume_token, b"")
@@ -130,7 +184,11 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         after = _MockIterator(*ITEMS)
         request = mock.Mock(test="test", spec=["test", "resume_token"])
         restart = mock.Mock(spec=[], side_effect=[before, after])
-        resumable = self._call_fut(restart, request)
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        session = _Session(database)
+        derived = self._makeDerived(session)
+        resumable = self._call_fut(derived, restart, request)
         self.assertEqual(list(resumable), list(ITEMS))
         self.assertEqual(len(restart.mock_calls), 2)
         self.assertEqual(request.resume_token, b"")
@@ -148,7 +206,11 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         after = _MockIterator(*ITEMS)
         request = mock.Mock(spec=["resume_token"])
         restart = mock.Mock(spec=[], side_effect=[before, after])
-        resumable = self._call_fut(restart, request)
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        session = _Session(database)
+        derived = self._makeDerived(session)
+        resumable = self._call_fut(derived, restart, request)
         with self.assertRaises(InternalServerError):
             list(resumable)
         restart.assert_called_once_with(request=request)
@@ -166,7 +228,11 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         after = _MockIterator(*LAST)
         request = mock.Mock(test="test", spec=["test", "resume_token"])
         restart = mock.Mock(spec=[], side_effect=[before, after])
-        resumable = self._call_fut(restart, request)
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        session = _Session(database)
+        derived = self._makeDerived(session)
+        resumable = self._call_fut(derived, restart, request)
         self.assertEqual(list(resumable), list(FIRST + LAST))
         self.assertEqual(len(restart.mock_calls), 2)
         self.assertEqual(request.resume_token, RESUME_TOKEN)
@@ -188,7 +254,11 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         after = _MockIterator(*LAST)
         request = mock.Mock(test="test", spec=["test", "resume_token"])
         restart = mock.Mock(spec=[], side_effect=[before, after])
-        resumable = self._call_fut(restart, request)
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        session = _Session(database)
+        derived = self._makeDerived(session)
+        resumable = self._call_fut(derived, restart, request)
         self.assertEqual(list(resumable), list(FIRST + LAST))
         self.assertEqual(len(restart.mock_calls), 2)
         self.assertEqual(request.resume_token, RESUME_TOKEN)
@@ -206,7 +276,11 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         after = _MockIterator(*LAST)
         request = mock.Mock(test="test", spec=["test", "resume_token"])
         restart = mock.Mock(spec=[], side_effect=[before, after])
-        resumable = self._call_fut(restart, request)
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        session = _Session(database)
+        derived = self._makeDerived(session)
+        resumable = self._call_fut(derived, restart, request)
         with self.assertRaises(InternalServerError):
             list(resumable)
         restart.assert_called_once_with(request=request)
@@ -223,10 +297,118 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         after = _MockIterator(*SECOND)
         request = mock.Mock(test="test", spec=["test", "resume_token"])
         restart = mock.Mock(spec=[], side_effect=[before, after])
-        resumable = self._call_fut(restart, request)
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        session = _Session(database)
+        derived = self._makeDerived(session)
+        resumable = self._call_fut(derived, restart, request)
         self.assertEqual(list(resumable), list(FIRST + SECOND))
         self.assertEqual(len(restart.mock_calls), 2)
         self.assertEqual(request.resume_token, RESUME_TOKEN)
+        self.assertNoSpans()
+
+    def test_iteration_w_raw_w_multiuse(self):
+        from google.cloud.spanner_v1 import (
+            ReadRequest,
+        )
+
+        FIRST = (
+            self._make_item(0),
+            self._make_item(1),
+        )
+        before = _MockIterator(*FIRST)
+        request = ReadRequest(transaction=None)
+        restart = mock.Mock(spec=[], return_value=before)
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        session = _Session(database)
+        derived = self._makeDerived(session)
+        derived._multi_use = True
+        resumable = self._call_fut(derived, restart, request)
+        self.assertEqual(list(resumable), list(FIRST))
+        self.assertEqual(len(restart.mock_calls), 1)
+        begin_count = sum(
+            [1 for args in restart.call_args_list if "begin" in args.kwargs.__str__()]
+        )
+        self.assertEqual(begin_count, 1)
+        self.assertNoSpans()
+
+    def test_iteration_w_raw_raising_unavailable_w_multiuse(self):
+        from google.api_core.exceptions import ServiceUnavailable
+        from google.cloud.spanner_v1 import (
+            ReadRequest,
+        )
+
+        FIRST = (
+            self._make_item(0),
+            self._make_item(1),
+        )
+        SECOND = (self._make_item(2), self._make_item(3))
+        before = _MockIterator(
+            *FIRST, fail_after=True, error=ServiceUnavailable("testing")
+        )
+        after = _MockIterator(*SECOND)
+        request = ReadRequest(transaction=None)
+        restart = mock.Mock(spec=[], side_effect=[before, after])
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        session = _Session(database)
+        derived = self._makeDerived(session)
+        derived._multi_use = True
+        resumable = self._call_fut(derived, restart, request)
+        self.assertEqual(list(resumable), list(SECOND))
+        self.assertEqual(len(restart.mock_calls), 2)
+        begin_count = sum(
+            [1 for args in restart.call_args_list if "begin" in args.kwargs.__str__()]
+        )
+
+        # Since the transaction id was not set before the Unavailable error, the statement will be retried with inline begin.
+        self.assertEqual(begin_count, 2)
+        self.assertNoSpans()
+
+    def test_iteration_w_raw_raising_unavailable_after_token_w_multiuse(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
+        from google.cloud.spanner_v1 import ResultSetMetadata
+        from google.cloud.spanner_v1 import (
+            Transaction as TransactionPB,
+            ReadRequest,
+        )
+
+        transaction_pb = TransactionPB(id=TXN_ID)
+        metadata_pb = ResultSetMetadata(transaction=transaction_pb)
+        FIRST = (
+            self._make_item(0),
+            self._make_item(1, resume_token=RESUME_TOKEN, metadata=metadata_pb),
+        )
+        SECOND = (self._make_item(2), self._make_item(3))
+        before = _MockIterator(
+            *FIRST, fail_after=True, error=ServiceUnavailable("testing")
+        )
+        after = _MockIterator(*SECOND)
+        request = ReadRequest(transaction=None)
+        restart = mock.Mock(spec=[], side_effect=[before, after])
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        session = _Session(database)
+        derived = self._makeDerived(session)
+        derived._multi_use = True
+
+        resumable = self._call_fut(derived, restart, request)
+
+        self.assertEqual(list(resumable), list(FIRST + SECOND))
+        self.assertEqual(len(restart.mock_calls), 2)
+        self.assertEqual(request.resume_token, RESUME_TOKEN)
+        transaction_id_selector_count = sum(
+            [
+                1
+                for args in restart.call_args_list
+                if 'id: "DEAFBEAD"' in args.kwargs.__str__()
+            ]
+        )
+
+        # Statement will be retried with Transaction id.
+        self.assertEqual(transaction_id_selector_count, 2)
         self.assertNoSpans()
 
     def test_iteration_w_raw_raising_retryable_internal_error_after_token(self):
@@ -244,7 +426,11 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         after = _MockIterator(*SECOND)
         request = mock.Mock(test="test", spec=["test", "resume_token"])
         restart = mock.Mock(spec=[], side_effect=[before, after])
-        resumable = self._call_fut(restart, request)
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        session = _Session(database)
+        derived = self._makeDerived(session)
+        resumable = self._call_fut(derived, restart, request)
         self.assertEqual(list(resumable), list(FIRST + SECOND))
         self.assertEqual(len(restart.mock_calls), 2)
         self.assertEqual(request.resume_token, RESUME_TOKEN)
@@ -261,7 +447,11 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         after = _MockIterator(*SECOND)
         request = mock.Mock(test="test", spec=["test", "resume_token"])
         restart = mock.Mock(spec=[], side_effect=[before, after])
-        resumable = self._call_fut(restart, request)
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        session = _Session(database)
+        derived = self._makeDerived(session)
+        resumable = self._call_fut(derived, restart, request)
         with self.assertRaises(InternalServerError):
             list(resumable)
         restart.assert_called_once_with(request=request)
@@ -273,8 +463,12 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         raw = _MockIterator()
         request = mock.Mock(test="test", spec=["test", "resume_token"])
         restart = mock.Mock(spec=[], return_value=raw)
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        session = _Session(database)
+        derived = self._makeDerived(session)
         resumable = self._call_fut(
-            restart, request, name, _Session(_Database()), extra_atts
+            derived, restart, request, name, _Session(_Database()), extra_atts
         )
         self.assertEqual(list(resumable), [])
         self.assertSpanAttributes(name, attributes=dict(BASE_ATTRIBUTES, test_att=1))
@@ -293,7 +487,13 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
             request = mock.Mock(test="test", spec=["test", "resume_token"])
             restart = mock.Mock(spec=[], side_effect=[before, after])
             name = "TestSpan"
-            resumable = self._call_fut(restart, request, name, _Session(_Database()))
+            database = _Database()
+            database.spanner_api = self._make_spanner_api()
+            session = _Session(database)
+            derived = self._makeDerived(session)
+            resumable = self._call_fut(
+                derived, restart, request, name, _Session(_Database())
+            )
             self.assertEqual(list(resumable), list(FIRST + LAST))
             self.assertEqual(len(restart.mock_calls), 2)
             self.assertEqual(request.resume_token, RESUME_TOKEN)
@@ -876,7 +1076,6 @@ class Test_SnapshotBase(OpenTelemetryBase):
         derived._multi_use = multi_use
         if w_txn:
             derived._transaction_id = TXN_ID
-
         tokens = list(
             derived.partition_read(
                 TABLE_NAME,

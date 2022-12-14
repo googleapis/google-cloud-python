@@ -13,7 +13,8 @@
 # limitations under the License.
 
 """Spanner read-write transaction support."""
-
+import functools
+import threading
 from google.protobuf.struct_pb2 import Struct
 
 from google.cloud.spanner_v1._helpers import (
@@ -48,6 +49,7 @@ class Transaction(_SnapshotBase, _BatchBase):
     commit_stats = None
     _multi_use = True
     _execute_sql_count = 0
+    _lock = threading.Lock()
 
     def __init__(self, session):
         if session._transaction is not None:
@@ -61,8 +63,6 @@ class Transaction(_SnapshotBase, _BatchBase):
         :raises: :exc:`ValueError` if the object's state is invalid for making
                  API requests.
         """
-        if self._transaction_id is None:
-            raise ValueError("Transaction is not begun")
 
         if self.committed is not None:
             raise ValueError("Transaction is already committed")
@@ -78,7 +78,31 @@ class Transaction(_SnapshotBase, _BatchBase):
         :returns: a selector configured for read-write transaction semantics.
         """
         self._check_state()
-        return TransactionSelector(id=self._transaction_id)
+
+        if self._transaction_id is None:
+            return TransactionSelector(
+                begin=TransactionOptions(read_write=TransactionOptions.ReadWrite())
+            )
+        else:
+            return TransactionSelector(id=self._transaction_id)
+
+    def _execute_request(
+        self, method, request, trace_name=None, session=None, attributes=None
+    ):
+        """Helper method to execute request after fetching transaction selector.
+
+        :type method: callable
+        :param method: function returning iterator
+
+        :type request: proto
+        :param request: request proto to call the method with
+        """
+        transaction = self._make_txn_selector()
+        request.transaction = transaction
+        with trace_call(trace_name, session, attributes):
+            response = method(request=request)
+
+        return response
 
     def begin(self):
         """Begin a transaction on the database.
@@ -111,15 +135,17 @@ class Transaction(_SnapshotBase, _BatchBase):
     def rollback(self):
         """Roll back a transaction on the database."""
         self._check_state()
-        database = self._session._database
-        api = database.spanner_api
-        metadata = _metadata_with_prefix(database.name)
-        with trace_call("CloudSpanner.Rollback", self._session):
-            api.rollback(
-                session=self._session.name,
-                transaction_id=self._transaction_id,
-                metadata=metadata,
-            )
+
+        if self._transaction_id is not None:
+            database = self._session._database
+            api = database.spanner_api
+            metadata = _metadata_with_prefix(database.name)
+            with trace_call("CloudSpanner.Rollback", self._session):
+                api.rollback(
+                    session=self._session.name,
+                    transaction_id=self._transaction_id,
+                    metadata=metadata,
+                )
         self.rolled_back = True
         del self._session._transaction
 
@@ -142,6 +168,10 @@ class Transaction(_SnapshotBase, _BatchBase):
         :raises ValueError: if there are no mutations to commit.
         """
         self._check_state()
+        if self._transaction_id is None and len(self._mutations) > 0:
+            self.begin()
+        elif self._transaction_id is None and len(self._mutations) == 0:
+            raise ValueError("Transaction is not begun")
 
         database = self._session._database
         api = database.spanner_api
@@ -264,7 +294,6 @@ class Transaction(_SnapshotBase, _BatchBase):
         params_pb = self._make_params_pb(params, param_types)
         database = self._session._database
         metadata = _metadata_with_prefix(database.name)
-        transaction = self._make_txn_selector()
         api = database.spanner_api
 
         seqno, self._execute_sql_count = (
@@ -288,7 +317,6 @@ class Transaction(_SnapshotBase, _BatchBase):
         request = ExecuteSqlRequest(
             session=self._session.name,
             sql=dml,
-            transaction=transaction,
             params=params_pb,
             param_types=param_types,
             query_mode=query_mode,
@@ -296,12 +324,42 @@ class Transaction(_SnapshotBase, _BatchBase):
             seqno=seqno,
             request_options=request_options,
         )
-        with trace_call(
-            "CloudSpanner.ReadWriteTransaction", self._session, trace_attributes
-        ):
-            response = api.execute_sql(
-                request=request, metadata=metadata, retry=retry, timeout=timeout
+
+        method = functools.partial(
+            api.execute_sql,
+            request=request,
+            metadata=metadata,
+            retry=retry,
+            timeout=timeout,
+        )
+
+        if self._transaction_id is None:
+            # lock is added to handle the inline begin for first rpc
+            with self._lock:
+                response = self._execute_request(
+                    method,
+                    request,
+                    "CloudSpanner.ReadWriteTransaction",
+                    self._session,
+                    trace_attributes,
+                )
+                # Setting the transaction id because the transaction begin was inlined for first rpc.
+                if (
+                    self._transaction_id is None
+                    and response is not None
+                    and response.metadata is not None
+                    and response.metadata.transaction is not None
+                ):
+                    self._transaction_id = response.metadata.transaction.id
+        else:
+            response = self._execute_request(
+                method,
+                request,
+                "CloudSpanner.ReadWriteTransaction",
+                self._session,
+                trace_attributes,
             )
+
         return response.stats.row_count_exact
 
     def batch_update(self, statements, request_options=None):
@@ -348,7 +406,6 @@ class Transaction(_SnapshotBase, _BatchBase):
 
         database = self._session._database
         metadata = _metadata_with_prefix(database.name)
-        transaction = self._make_txn_selector()
         api = database.spanner_api
 
         seqno, self._execute_sql_count = (
@@ -368,21 +425,53 @@ class Transaction(_SnapshotBase, _BatchBase):
         }
         request = ExecuteBatchDmlRequest(
             session=self._session.name,
-            transaction=transaction,
             statements=parsed,
             seqno=seqno,
             request_options=request_options,
         )
-        with trace_call("CloudSpanner.DMLTransaction", self._session, trace_attributes):
-            response = api.execute_batch_dml(request=request, metadata=metadata)
+
+        method = functools.partial(
+            api.execute_batch_dml,
+            request=request,
+            metadata=metadata,
+        )
+
+        if self._transaction_id is None:
+            # lock is added to handle the inline begin for first rpc
+            with self._lock:
+                response = self._execute_request(
+                    method,
+                    request,
+                    "CloudSpanner.DMLTransaction",
+                    self._session,
+                    trace_attributes,
+                )
+                # Setting the transaction id because the transaction begin was inlined for first rpc.
+                for result_set in response.result_sets:
+                    if (
+                        self._transaction_id is None
+                        and result_set.metadata is not None
+                        and result_set.metadata.transaction is not None
+                    ):
+                        self._transaction_id = result_set.metadata.transaction.id
+                        break
+        else:
+            response = self._execute_request(
+                method,
+                request,
+                "CloudSpanner.DMLTransaction",
+                self._session,
+                trace_attributes,
+            )
+
         row_counts = [
             result_set.stats.row_count_exact for result_set in response.result_sets
         ]
+
         return response.status, row_counts
 
     def __enter__(self):
         """Begin ``with`` block."""
-        self.begin()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

@@ -91,12 +91,6 @@ class TestTransaction(OpenTelemetryBase):
         self.assertTrue(transaction._multi_use)
         self.assertEqual(transaction._execute_sql_count, 0)
 
-    def test__check_state_not_begun(self):
-        session = _Session()
-        transaction = self._make_one(session)
-        with self.assertRaises(ValueError):
-            transaction._check_state()
-
     def test__check_state_already_committed(self):
         session = _Session()
         transaction = self._make_one(session)
@@ -195,10 +189,16 @@ class TestTransaction(OpenTelemetryBase):
         )
 
     def test_rollback_not_begun(self):
-        session = _Session()
+        database = _Database()
+        api = database.spanner_api = self._make_spanner_api()
+        session = _Session(database)
         transaction = self._make_one(session)
-        with self.assertRaises(ValueError):
-            transaction.rollback()
+
+        transaction.rollback()
+        self.assertTrue(transaction.rolled_back)
+
+        # Since there was no transaction to be rolled back, rollbacl rpc is not called.
+        api.rollback.assert_not_called()
 
         self.assertNoSpans()
 
@@ -835,15 +835,10 @@ class TestTransaction(OpenTelemetryBase):
                 raise Exception("bail out")
 
         self.assertEqual(transaction.committed, None)
+        # Rollback rpc will not be called as there is no transaction id to be rolled back, rolled_back flag will be marked as true.
         self.assertTrue(transaction.rolled_back)
         self.assertEqual(len(transaction._mutations), 1)
-
         self.assertEqual(api._committed, None)
-
-        session_id, txn_id, metadata = api._rolled_back
-        self.assertEqual(session_id, session.name)
-        self.assertEqual(txn_id, self.TRANSACTION_ID)
-        self.assertEqual(metadata, [("google-cloud-resource-prefix", database.name)])
 
 
 class _Client(object):

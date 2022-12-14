@@ -578,7 +578,6 @@ class Database(object):
                 request = ExecuteSqlRequest(
                     session=session.name,
                     sql=dml,
-                    transaction=txn_selector,
                     params=params_pb,
                     param_types=param_types,
                     query_options=query_options,
@@ -589,7 +588,11 @@ class Database(object):
                     metadata=metadata,
                 )
 
-                iterator = _restart_on_unavailable(method, request)
+                iterator = _restart_on_unavailable(
+                    method=method,
+                    request=request,
+                    transaction_selector=txn_selector,
+                )
 
                 result_set = StreamedResultSet(iterator)
                 list(result_set)  # consume all partials

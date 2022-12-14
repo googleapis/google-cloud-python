@@ -758,7 +758,6 @@ class TestSession(OpenTelemetryBase):
     def test_run_in_transaction_callback_raises_non_gax_error(self):
         from google.cloud.spanner_v1 import (
             Transaction as TransactionPB,
-            TransactionOptions,
         )
         from google.cloud.spanner_v1.transaction import Transaction
 
@@ -799,24 +798,16 @@ class TestSession(OpenTelemetryBase):
         self.assertTrue(txn.rolled_back)
         self.assertEqual(args, ())
         self.assertEqual(kw, {})
-
-        expected_options = TransactionOptions(read_write=TransactionOptions.ReadWrite())
-        gax_api.begin_transaction.assert_called_once_with(
-            session=self.SESSION_NAME,
-            options=expected_options,
-            metadata=[("google-cloud-resource-prefix", database.name)],
-        )
-        gax_api.rollback.assert_called_once_with(
-            session=self.SESSION_NAME,
-            transaction_id=TRANSACTION_ID,
-            metadata=[("google-cloud-resource-prefix", database.name)],
-        )
+        # Transaction only has mutation operations.
+        # Exception was raised before commit, hence transaction did not begin.
+        # Therefore rollback and begin transaction were not called.
+        gax_api.rollback.assert_not_called()
+        gax_api.begin_transaction.assert_not_called()
 
     def test_run_in_transaction_callback_raises_non_abort_rpc_error(self):
         from google.api_core.exceptions import Cancelled
         from google.cloud.spanner_v1 import (
             Transaction as TransactionPB,
-            TransactionOptions,
         )
         from google.cloud.spanner_v1.transaction import Transaction
 
@@ -855,12 +846,6 @@ class TestSession(OpenTelemetryBase):
         self.assertEqual(args, ())
         self.assertEqual(kw, {})
 
-        expected_options = TransactionOptions(read_write=TransactionOptions.ReadWrite())
-        gax_api.begin_transaction.assert_called_once_with(
-            session=self.SESSION_NAME,
-            options=expected_options,
-            metadata=[("google-cloud-resource-prefix", database.name)],
-        )
         gax_api.rollback.assert_not_called()
 
     def test_run_in_transaction_w_args_w_kwargs_wo_abort(self):
@@ -1216,16 +1201,12 @@ class TestSession(OpenTelemetryBase):
             self.assertEqual(kw, {})
 
         expected_options = TransactionOptions(read_write=TransactionOptions.ReadWrite())
-        self.assertEqual(
-            gax_api.begin_transaction.call_args_list,
-            [
-                mock.call(
-                    session=self.SESSION_NAME,
-                    options=expected_options,
-                    metadata=[("google-cloud-resource-prefix", database.name)],
-                )
-            ]
-            * 2,
+
+        # First call was aborted before commit operation, therefore no begin rpc was made during first attempt.
+        gax_api.begin_transaction.assert_called_once_with(
+            session=self.SESSION_NAME,
+            options=expected_options,
+            metadata=[("google-cloud-resource-prefix", database.name)],
         )
         request = CommitRequest(
             session=self.SESSION_NAME,

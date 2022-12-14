@@ -724,7 +724,7 @@ class TestTransactionPingingPool(unittest.TestCase):
         for session in SESSIONS:
             session.create.assert_not_called()
             txn = session._transaction
-            txn.begin.assert_called_once_with()
+            txn.begin.assert_not_called()
 
         self.assertTrue(pool._pending_sessions.empty())
 
@@ -753,7 +753,7 @@ class TestTransactionPingingPool(unittest.TestCase):
         for session in SESSIONS:
             session.create.assert_not_called()
             txn = session._transaction
-            txn.begin.assert_called_once_with()
+            txn.begin.assert_not_called()
 
         self.assertTrue(pool._pending_sessions.empty())
 
@@ -839,7 +839,7 @@ class TestTransactionPingingPool(unittest.TestCase):
         pool.begin_pending_transactions()  # no raise
 
         for txn in TRANSACTIONS:
-            txn.begin.assert_called_once_with()
+            txn.begin.assert_not_called()
 
         self.assertTrue(pending.empty())
 

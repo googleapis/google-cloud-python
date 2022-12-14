@@ -15,7 +15,7 @@
 """Model a set of read-only queries to a database as a snapshot."""
 
 import functools
-
+import threading
 from google.protobuf.struct_pb2 import Struct
 from google.cloud.spanner_v1 import ExecuteSqlRequest
 from google.cloud.spanner_v1 import ReadRequest
@@ -27,6 +27,7 @@ from google.cloud.spanner_v1 import PartitionReadRequest
 
 from google.api_core.exceptions import InternalServerError
 from google.api_core.exceptions import ServiceUnavailable
+from google.api_core.exceptions import InvalidArgument
 from google.api_core import gapic_v1
 from google.cloud.spanner_v1._helpers import _make_value_pb
 from google.cloud.spanner_v1._helpers import _merge_query_options
@@ -43,7 +44,13 @@ _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES = (
 
 
 def _restart_on_unavailable(
-    method, request, trace_name=None, session=None, attributes=None
+    method,
+    request,
+    trace_name=None,
+    session=None,
+    attributes=None,
+    transaction=None,
+    transaction_selector=None,
 ):
     """Restart iteration after :exc:`.ServiceUnavailable`.
 
@@ -52,15 +59,41 @@ def _restart_on_unavailable(
 
     :type request: proto
     :param request: request proto to call the method with
+
+    :type transaction: :class:`google.cloud.spanner_v1.snapshot._SnapshotBase`
+    :param transaction: Snapshot or Transaction class object based on the type of transaction
+
+    :type transaction_selector: :class:`transaction_pb2.TransactionSelector`
+    :param transaction_selector: Transaction selector object to be used in request if transaction is not passed,
+    if both transaction_selector and transaction are passed, then transaction is given priority.
     """
+
     resume_token = b""
     item_buffer = []
+
+    if transaction is not None:
+        transaction_selector = transaction._make_txn_selector()
+    elif transaction_selector is None:
+        raise InvalidArgument(
+            "Either transaction or transaction_selector should be set"
+        )
+
+    request.transaction = transaction_selector
     with trace_call(trace_name, session, attributes):
         iterator = method(request=request)
     while True:
         try:
             for item in iterator:
                 item_buffer.append(item)
+                # Setting the transaction id because the transaction begin was inlined for first rpc.
+                if (
+                    transaction is not None
+                    and transaction._transaction_id is None
+                    and item.metadata is not None
+                    and item.metadata.transaction is not None
+                    and item.metadata.transaction.id is not None
+                ):
+                    transaction._transaction_id = item.metadata.transaction.id
                 if item.resume_token:
                     resume_token = item.resume_token
                     break
@@ -68,6 +101,9 @@ def _restart_on_unavailable(
             del item_buffer[:]
             with trace_call(trace_name, session, attributes):
                 request.resume_token = resume_token
+                if transaction is not None:
+                    transaction_selector = transaction._make_txn_selector()
+                request.transaction = transaction_selector
                 iterator = method(request=request)
             continue
         except InternalServerError as exc:
@@ -80,6 +116,9 @@ def _restart_on_unavailable(
             del item_buffer[:]
             with trace_call(trace_name, session, attributes):
                 request.resume_token = resume_token
+                if transaction is not None:
+                    transaction_selector = transaction._make_txn_selector()
+                request.transaction = transaction_selector
                 iterator = method(request=request)
             continue
 
@@ -106,6 +145,7 @@ class _SnapshotBase(_SessionWrapper):
     _transaction_id = None
     _read_request_count = 0
     _execute_sql_count = 0
+    _lock = threading.Lock()
 
     def _make_txn_selector(self):
         """Helper for :meth:`read` / :meth:`execute_sql`.
@@ -180,13 +220,12 @@ class _SnapshotBase(_SessionWrapper):
         if self._read_request_count > 0:
             if not self._multi_use:
                 raise ValueError("Cannot re-use single-use snapshot.")
-            if self._transaction_id is None:
+            if self._transaction_id is None and self._read_only:
                 raise ValueError("Transaction ID pending.")
 
         database = self._session._database
         api = database.spanner_api
         metadata = _metadata_with_prefix(database.name)
-        transaction = self._make_txn_selector()
 
         if request_options is None:
             request_options = RequestOptions()
@@ -204,7 +243,6 @@ class _SnapshotBase(_SessionWrapper):
             table=table,
             columns=columns,
             key_set=keyset._to_pb(),
-            transaction=transaction,
             index=index,
             limit=limit,
             partition_token=partition,
@@ -219,13 +257,32 @@ class _SnapshotBase(_SessionWrapper):
         )
 
         trace_attributes = {"table_id": table, "columns": columns}
-        iterator = _restart_on_unavailable(
-            restart,
-            request,
-            "CloudSpanner.ReadOnlyTransaction",
-            self._session,
-            trace_attributes,
-        )
+
+        if self._transaction_id is None:
+            # lock is added to handle the inline begin for first rpc
+            with self._lock:
+                iterator = _restart_on_unavailable(
+                    restart,
+                    request,
+                    "CloudSpanner.ReadOnlyTransaction",
+                    self._session,
+                    trace_attributes,
+                    transaction=self,
+                )
+                self._read_request_count += 1
+                if self._multi_use:
+                    return StreamedResultSet(iterator, source=self)
+                else:
+                    return StreamedResultSet(iterator)
+        else:
+            iterator = _restart_on_unavailable(
+                restart,
+                request,
+                "CloudSpanner.ReadOnlyTransaction",
+                self._session,
+                trace_attributes,
+                transaction=self,
+            )
 
         self._read_request_count += 1
 
@@ -301,7 +358,7 @@ class _SnapshotBase(_SessionWrapper):
         if self._read_request_count > 0:
             if not self._multi_use:
                 raise ValueError("Cannot re-use single-use snapshot.")
-            if self._transaction_id is None:
+            if self._transaction_id is None and self._read_only:
                 raise ValueError("Transaction ID pending.")
 
         if params is not None:
@@ -315,7 +372,7 @@ class _SnapshotBase(_SessionWrapper):
 
         database = self._session._database
         metadata = _metadata_with_prefix(database.name)
-        transaction = self._make_txn_selector()
+
         api = database.spanner_api
 
         # Query-level options have higher precedence than client-level and
@@ -336,7 +393,6 @@ class _SnapshotBase(_SessionWrapper):
         request = ExecuteSqlRequest(
             session=self._session.name,
             sql=sql,
-            transaction=transaction,
             params=params_pb,
             param_types=param_types,
             query_mode=query_mode,
@@ -354,13 +410,34 @@ class _SnapshotBase(_SessionWrapper):
         )
 
         trace_attributes = {"db.statement": sql}
-        iterator = _restart_on_unavailable(
-            restart,
-            request,
-            "CloudSpanner.ReadWriteTransaction",
-            self._session,
-            trace_attributes,
-        )
+
+        if self._transaction_id is None:
+            # lock is added to handle the inline begin for first rpc
+            with self._lock:
+                iterator = _restart_on_unavailable(
+                    restart,
+                    request,
+                    "CloudSpanner.ReadWriteTransaction",
+                    self._session,
+                    trace_attributes,
+                    transaction=self,
+                )
+                self._read_request_count += 1
+                self._execute_sql_count += 1
+
+                if self._multi_use:
+                    return StreamedResultSet(iterator, source=self)
+                else:
+                    return StreamedResultSet(iterator)
+        else:
+            iterator = _restart_on_unavailable(
+                restart,
+                request,
+                "CloudSpanner.ReadWriteTransaction",
+                self._session,
+                trace_attributes,
+                transaction=self,
+            )
 
         self._read_request_count += 1
         self._execute_sql_count += 1
