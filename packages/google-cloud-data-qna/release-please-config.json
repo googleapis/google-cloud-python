@@ -5,6 +5,7 @@
       "release-type": "python",
       "extra-files": [
         "google/cloud/dataqna/gapic_version.py",
+        "google/cloud/dataqna_v1alpha/gapic_version.py",
         {
           "type": "json",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.dataqna.v1alpha.json",

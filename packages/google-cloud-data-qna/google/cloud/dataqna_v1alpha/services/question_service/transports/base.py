@@ -23,22 +23,17 @@ from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
 
+from google.cloud.dataqna_v1alpha import gapic_version as package_version
 from google.cloud.dataqna_v1alpha.types import user_feedback as gcd_user_feedback
 from google.cloud.dataqna_v1alpha.types import question
 from google.cloud.dataqna_v1alpha.types import question as gcd_question
 from google.cloud.dataqna_v1alpha.types import question_service
 from google.cloud.dataqna_v1alpha.types import user_feedback
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-data-qna",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 class QuestionServiceTransport(abc.ABC):

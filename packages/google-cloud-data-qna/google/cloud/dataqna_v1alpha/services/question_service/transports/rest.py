@@ -67,40 +67,45 @@ class QuestionServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomQuestionServiceInterceptor(QuestionServiceRestInterceptor):
-            def pre_create_question(request, metadata):
+            def pre_create_question(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_question(response):
+            def post_create_question(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_execute_question(request, metadata):
+            def pre_execute_question(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_execute_question(response):
+            def post_execute_question(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_question(request, metadata):
+            def pre_get_question(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_question(response):
+            def post_get_question(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_user_feedback(request, metadata):
+            def pre_get_user_feedback(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_user_feedback(response):
+            def post_get_user_feedback(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_user_feedback(request, metadata):
+            def pre_update_user_feedback(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_user_feedback(response):
+            def post_update_user_feedback(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = QuestionServiceRestTransport(interceptor=MyCustomQuestionServiceInterceptor())
         client = QuestionServiceClient(transport=transport)

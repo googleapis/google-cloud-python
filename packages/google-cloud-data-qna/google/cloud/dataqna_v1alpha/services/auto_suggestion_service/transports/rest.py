@@ -63,12 +63,13 @@ class AutoSuggestionServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomAutoSuggestionServiceInterceptor(AutoSuggestionServiceRestInterceptor):
-            def pre_suggest_queries(request, metadata):
+            def pre_suggest_queries(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_suggest_queries(response):
+            def post_suggest_queries(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = AutoSuggestionServiceRestTransport(interceptor=MyCustomAutoSuggestionServiceInterceptor())
         client = AutoSuggestionServiceClient(transport=transport)
