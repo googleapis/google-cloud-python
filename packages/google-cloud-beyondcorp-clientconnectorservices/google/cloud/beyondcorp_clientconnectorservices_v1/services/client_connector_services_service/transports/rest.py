@@ -61,10 +61,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class ClientConnectorServicesServiceRestInterceptor:
     """Interceptor for ClientConnectorServicesService.
@@ -81,40 +77,45 @@ class ClientConnectorServicesServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomClientConnectorServicesServiceInterceptor(ClientConnectorServicesServiceRestInterceptor):
-            def pre_create_client_connector_service(request, metadata):
+            def pre_create_client_connector_service(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_client_connector_service(response):
+            def post_create_client_connector_service(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_client_connector_service(request, metadata):
+            def pre_delete_client_connector_service(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_client_connector_service(response):
+            def post_delete_client_connector_service(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_client_connector_service(request, metadata):
+            def pre_get_client_connector_service(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_client_connector_service(response):
+            def post_get_client_connector_service(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_client_connector_services(request, metadata):
+            def pre_list_client_connector_services(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_client_connector_services(response):
+            def post_list_client_connector_services(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_client_connector_service(request, metadata):
+            def pre_update_client_connector_service(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_client_connector_service(response):
+            def post_update_client_connector_service(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = ClientConnectorServicesServiceRestTransport(interceptor=MyCustomClientConnectorServicesServiceInterceptor())
         client = ClientConnectorServicesServiceClient(transport=transport)
