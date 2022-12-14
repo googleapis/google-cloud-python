@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [2.9.0](https://github.com/googleapis/python-recommender/compare/v2.8.3...v2.9.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.recommender.__version__` ([e0fa41b](https://github.com/googleapis/python-recommender/commit/e0fa41b098e29e9c69fa11d0c5b2a343a79b84c8))
+* Add typing to proto.Message based class attributes ([e0fa41b](https://github.com/googleapis/python-recommender/commit/e0fa41b098e29e9c69fa11d0c5b2a343a79b84c8))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([e0fa41b](https://github.com/googleapis/python-recommender/commit/e0fa41b098e29e9c69fa11d0c5b2a343a79b84c8))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([5856985](https://github.com/googleapis/python-recommender/commit/5856985e9caaeea6312abd5883a7d18bc9ecf25c))
+* Drop usage of pkg_resources ([5856985](https://github.com/googleapis/python-recommender/commit/5856985e9caaeea6312abd5883a7d18bc9ecf25c))
+* Fix timeout default values ([5856985](https://github.com/googleapis/python-recommender/commit/5856985e9caaeea6312abd5883a7d18bc9ecf25c))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([e0fa41b](https://github.com/googleapis/python-recommender/commit/e0fa41b098e29e9c69fa11d0c5b2a343a79b84c8))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([5856985](https://github.com/googleapis/python-recommender/commit/5856985e9caaeea6312abd5883a7d18bc9ecf25c))
+
 ## [2.8.3](https://github.com/googleapis/python-recommender/compare/v2.8.2...v2.8.3) (2022-10-07)
 
 
