@@ -48,9 +48,9 @@ class Access(proto.Message):
             The caller IP's geolocation, which identifies
             where the call came from.
         user_agent_family (str):
-            What kind of user agent is associated, e.g.
-            operating system shells, embedded or stand-alone
-            applications, etc.
+            What kind of user agent is associated, for
+            example operating system shells, embedded or
+            stand-alone applications, etc.
         service_name (str):
             This is the API service that the service
             account made a call to, e.g.
@@ -84,6 +84,17 @@ class Access(proto.Message):
             authorities are present, they are guaranteed to
             be sorted based on the original ordering of the
             identity delegation events.
+        user_name (str):
+            A string that represents the username of a
+            user, user account, or other entity involved in
+            the access event. What the entity is and what
+            its role in the access event is depends on the
+            finding that this field appears in. The entity
+            is likely not an IAM principal, but could be a
+            user that is logged into an operating system, if
+            the finding is VM-related, or a user that is
+            logged into some type of application that is
+            involved in the access event.
     """
 
     principal_email: str = proto.Field(
@@ -125,6 +136,10 @@ class Access(proto.Message):
         proto.MESSAGE,
         number=9,
         message="ServiceAccountDelegationInfo",
+    )
+    user_name: str = proto.Field(
+        proto.STRING,
+        number=11,
     )
 
 
