@@ -59,10 +59,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class AppConnectorsServiceRestInterceptor:
     """Interceptor for AppConnectorsService.
@@ -79,47 +75,53 @@ class AppConnectorsServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomAppConnectorsServiceInterceptor(AppConnectorsServiceRestInterceptor):
-            def pre_create_app_connector(request, metadata):
+            def pre_create_app_connector(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_app_connector(response):
+            def post_create_app_connector(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_app_connector(request, metadata):
+            def pre_delete_app_connector(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_app_connector(response):
+            def post_delete_app_connector(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_app_connector(request, metadata):
+            def pre_get_app_connector(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_app_connector(response):
+            def post_get_app_connector(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_app_connectors(request, metadata):
+            def pre_list_app_connectors(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_app_connectors(response):
+            def post_list_app_connectors(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_report_status(request, metadata):
+            def pre_report_status(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_report_status(response):
+            def post_report_status(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_app_connector(request, metadata):
+            def pre_update_app_connector(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_app_connector(response):
+            def post_update_app_connector(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = AppConnectorsServiceRestTransport(interceptor=MyCustomAppConnectorsServiceInterceptor())
         client = AppConnectorsServiceClient(transport=transport)
