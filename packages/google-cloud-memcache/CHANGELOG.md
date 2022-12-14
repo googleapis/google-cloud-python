@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-memcache/compare/v1.4.4...v1.5.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.memcache.__version__` ([c9c771a](https://github.com/googleapis/python-memcache/commit/c9c771af7c188c8c3ce66113b41a475d290aa6c2))
+* Add typing to proto.Message based class attributes ([c9c771a](https://github.com/googleapis/python-memcache/commit/c9c771af7c188c8c3ce66113b41a475d290aa6c2))
+* Maintenance schedules ([c9c771a](https://github.com/googleapis/python-memcache/commit/c9c771af7c188c8c3ce66113b41a475d290aa6c2))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([c9c771a](https://github.com/googleapis/python-memcache/commit/c9c771af7c188c8c3ce66113b41a475d290aa6c2))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([b1f7a36](https://github.com/googleapis/python-memcache/commit/b1f7a36fa9649dcd345220f692c29f676d858cdc))
+* Drop usage of pkg_resources ([b1f7a36](https://github.com/googleapis/python-memcache/commit/b1f7a36fa9649dcd345220f692c29f676d858cdc))
+* Fix timeout default values ([b1f7a36](https://github.com/googleapis/python-memcache/commit/b1f7a36fa9649dcd345220f692c29f676d858cdc))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([c9c771a](https://github.com/googleapis/python-memcache/commit/c9c771af7c188c8c3ce66113b41a475d290aa6c2))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([b1f7a36](https://github.com/googleapis/python-memcache/commit/b1f7a36fa9649dcd345220f692c29f676d858cdc))
+
 ## [1.4.4](https://github.com/googleapis/python-memcache/compare/v1.4.3...v1.4.4) (2022-10-07)
 
 
