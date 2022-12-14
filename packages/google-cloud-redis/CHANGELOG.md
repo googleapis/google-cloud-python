@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+## [2.10.0](https://github.com/googleapis/python-redis/compare/v2.9.3...v2.10.0) (2022-12-08)
+
+
+### Features
+
+* add support for `google.cloud.redis.__version__` ([6572d29](https://github.com/googleapis/python-redis/commit/6572d29699ccf8889c5fd395f50001931edf9c0c))
+* Add typing to proto.Message based class attributes ([6572d29](https://github.com/googleapis/python-redis/commit/6572d29699ccf8889c5fd395f50001931edf9c0c))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([6572d29](https://github.com/googleapis/python-redis/commit/6572d29699ccf8889c5fd395f50001931edf9c0c))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([f9d3238](https://github.com/googleapis/python-redis/commit/f9d323840bb684057ea66664a9dc469a175902e8))
+* Drop usage of pkg_resources ([f9d3238](https://github.com/googleapis/python-redis/commit/f9d323840bb684057ea66664a9dc469a175902e8))
+* Fix timeout default values ([f9d3238](https://github.com/googleapis/python-redis/commit/f9d323840bb684057ea66664a9dc469a175902e8))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([6572d29](https://github.com/googleapis/python-redis/commit/6572d29699ccf8889c5fd395f50001931edf9c0c))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([f9d3238](https://github.com/googleapis/python-redis/commit/f9d323840bb684057ea66664a9dc469a175902e8))
+
 ## [2.9.3](https://github.com/googleapis/python-redis/compare/v2.9.2...v2.9.3) (2022-10-07)
 
 
