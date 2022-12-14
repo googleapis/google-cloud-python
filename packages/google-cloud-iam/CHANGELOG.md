@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [2.10.0](https://github.com/googleapis/python-iam/compare/v2.9.0...v2.10.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.iam.__version__` ([54a3a20](https://github.com/googleapis/python-iam/commit/54a3a20ee2dd29a18c793081ad29de13cc45dced))
+* Add typing to proto.Message based class attributes ([54a3a20](https://github.com/googleapis/python-iam/commit/54a3a20ee2dd29a18c793081ad29de13cc45dced))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([54a3a20](https://github.com/googleapis/python-iam/commit/54a3a20ee2dd29a18c793081ad29de13cc45dced))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([5092db7](https://github.com/googleapis/python-iam/commit/5092db71071cd44031ef799abf8814301fe9c822))
+* Drop usage of pkg_resources ([5092db7](https://github.com/googleapis/python-iam/commit/5092db71071cd44031ef799abf8814301fe9c822))
+* Fix timeout default values ([5092db7](https://github.com/googleapis/python-iam/commit/5092db71071cd44031ef799abf8814301fe9c822))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([54a3a20](https://github.com/googleapis/python-iam/commit/54a3a20ee2dd29a18c793081ad29de13cc45dced))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([5092db7](https://github.com/googleapis/python-iam/commit/5092db71071cd44031ef799abf8814301fe9c822))
+
 ## [2.9.0](https://github.com/googleapis/python-iam/compare/v2.8.2...v2.9.0) (2022-10-24)
 
 
