@@ -18,9 +18,5 @@ docker:
 deep-remove-regex:
   - /owl-bot-staging
 
-deep-copy-regex:
-  - source: /google/cloud/bigquery/(v.*)/.*-py/(.*)
-    dest: /owl-bot-staging/$1/$2
-
 begin-after-commit-hash: f2de93abafa306b2ebadf1d10d947db8bcf2bf15
 
