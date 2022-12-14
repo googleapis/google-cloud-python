@@ -15,7 +15,6 @@
 import datetime
 import pickle
 import pytz
-import six
 import types
 import zlib
 
@@ -971,12 +970,6 @@ class TestProperty:
 
         methods = SomeProperty._find_methods("IN", "find_me")
         expected = [SomeProperty.IN, SomeProperty.find_me, model.Property.IN]
-        if six.PY2:  # pragma: NO PY3 COVER  # pragma: NO BRANCH
-            expected = [
-                SomeProperty.IN.__func__,
-                SomeProperty.find_me.__func__,
-                model.Property.IN.__func__,
-            ]
         assert methods == expected
         # Check cache
         key = "{}.{}".format(SomeProperty.__module__, SomeProperty.__name__)
@@ -989,12 +982,6 @@ class TestProperty:
 
         methods = SomeProperty._find_methods("IN", "find_me", reverse=True)
         expected = [model.Property.IN, SomeProperty.find_me, SomeProperty.IN]
-        if six.PY2:  # pragma: NO PY3 COVER  # pragma: NO BRANCH
-            expected = [
-                model.Property.IN.__func__,
-                SomeProperty.find_me.__func__,
-                SomeProperty.IN.__func__,
-            ]
         assert methods == expected
         # Check cache
         key = "{}.{}".format(SomeProperty.__module__, SomeProperty.__name__)
@@ -2340,9 +2327,8 @@ class TestUser:
         assert not user_value1 < user_value1
         assert user_value1 < user_value2
         assert user_value1 < user_value3
-        if six.PY3:  # pragma: NO PY2 COVER  # pragma: NO BRANCH
-            with pytest.raises(TypeError):
-                user_value1 < user_value4
+        with pytest.raises(TypeError):
+            user_value1 < user_value4
 
     @staticmethod
     def test__from_ds_entity():
@@ -5990,8 +5976,7 @@ class Test__legacy_db_get_value:
         assert prop._legacy_db_get_value(v, p) == b"foo"
 
     @staticmethod
-    @pytest.mark.skipif(six.PY2, reason="Test for Python 3 only.")
-    def test_str_utf8():  # pragma: NO PY2 COVER
+    def test_str_utf8():
         prop = model.Property()
         p = _legacy_entity_pb.Property()
         v = _legacy_entity_pb.PropertyValue()

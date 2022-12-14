@@ -17,7 +17,6 @@ import pickle
 from unittest import mock
 
 import pytest
-import six
 
 from google.cloud.datastore import entity as datastore_entity
 from google.cloud.datastore import helpers
@@ -2303,8 +2302,6 @@ class TestGQL:
         )
         query = query_module.gql(gql_query)
         compat_rep = "'xxx'"
-        if six.PY2:  # pragma: NO PY3 COVER  # pragma: NO BRANCH
-            compat_rep = "u'xxx'"
         assert query.__repr__() == rep.format(compat_rep)
 
     @staticmethod
@@ -2329,8 +2326,6 @@ class TestGQL:
         positional = [5, "xxx"]
         query = query_module.gql(gql_query, *positional)
         compat_rep = "'xxx'"
-        if six.PY2:  # pragma: NO PY3 COVER  # pragma: NO BRANCH
-            compat_rep = "u'xxx'"
         assert query.__repr__() == rep.format(compat_rep)
 
     @staticmethod
@@ -2355,8 +2350,6 @@ class TestGQL:
         keywords = {"param1": 5, "param2": "xxx"}
         query = query_module.gql(gql_query, **keywords)
         compat_rep = "'xxx'"
-        if six.PY2:  # pragma: NO PY3 COVER  # pragma: NO BRANCH
-            compat_rep = "u'xxx'"
         assert query.__repr__() == rep.format(compat_rep)
 
     @staticmethod
@@ -2382,6 +2375,4 @@ class TestGQL:
         keywords = {"param1": "xxx"}
         query = query_module.gql(gql_query, *positional, **keywords)
         compat_rep = "'xxx'"
-        if six.PY2:  # pragma: NO PY3 COVER  # pragma: NO BRANCH
-            compat_rep = "u'xxx'"
         assert query.__repr__() == rep.format(compat_rep)
