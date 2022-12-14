@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.13.0](https://github.com/googleapis/python-analytics-admin/compare/v0.12.0...v0.13.0) (2022-12-14)
+
+
+### Features
+
+* Add typing to proto.Message based class  attributes ([6fb3129](https://github.com/googleapis/python-analytics-admin/commit/6fb3129a9a558cf1e08d472ae1aa516a9c9bf132))
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([28dc93b](https://github.com/googleapis/python-analytics-admin/commit/28dc93b4609d3e0934a1841e407749ab16c00d09))
+* Drop usage of pkg_resources ([28dc93b](https://github.com/googleapis/python-analytics-admin/commit/28dc93b4609d3e0934a1841e407749ab16c00d09))
+* Fix timeout default values ([28dc93b](https://github.com/googleapis/python-analytics-admin/commit/28dc93b4609d3e0934a1841e407749ab16c00d09))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([6fb3129](https://github.com/googleapis/python-analytics-admin/commit/6fb3129a9a558cf1e08d472ae1aa516a9c9bf132))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([28dc93b](https://github.com/googleapis/python-analytics-admin/commit/28dc93b4609d3e0934a1841e407749ab16c00d09))
+* Updates the `properties_run_access_report` sample to return aggregated data instead of individual data access records ([#298](https://github.com/googleapis/python-analytics-admin/issues/298)) ([86568d1](https://github.com/googleapis/python-analytics-admin/commit/86568d1e39d19f3e51996dd6e319c40110daebaa))
+
 ## [0.12.0](https://github.com/googleapis/python-analytics-admin/compare/v0.11.2...v0.12.0) (2022-11-07)
 
 
