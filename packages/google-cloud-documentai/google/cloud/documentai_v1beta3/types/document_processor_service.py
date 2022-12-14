@@ -31,6 +31,7 @@ from google.cloud.documentai_v1beta3.types import processor_type
 __protobuf__ = proto.module(
     package="google.cloud.documentai.v1beta3",
     manifest={
+        "ProcessOptions",
         "ProcessRequest",
         "HumanReviewStatus",
         "ProcessResponse",
@@ -83,6 +84,22 @@ __protobuf__ = proto.module(
 )
 
 
+class ProcessOptions(proto.Message):
+    r"""Options for Process API
+
+    Attributes:
+        ocr_config (google.cloud.documentai_v1beta3.types.OcrConfig):
+            Only applicable to "Document OCR Processor".
+            Returns error if set on other processor types.
+    """
+
+    ocr_config: document_io.OcrConfig = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=document_io.OcrConfig,
+    )
+
+
 class ProcessRequest(proto.Message):
     r"""Request message for the process document method.
 
@@ -125,6 +142,8 @@ class ProcessRequest(proto.Message):
             document. Only supports top level document and pages field
             so it must be in the form of ``{document_field_name}`` or
             ``pages.{page_field_name}``.
+        process_options (google.cloud.documentai_v1beta3.types.ProcessOptions):
+            Inference-time options for the process API
     """
 
     inline_document: gcd_document.Document = proto.Field(
@@ -156,6 +175,11 @@ class ProcessRequest(proto.Message):
         proto.MESSAGE,
         number=6,
         message=field_mask_pb2.FieldMask,
+    )
+    process_options: "ProcessOptions" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="ProcessOptions",
     )
 
 
@@ -259,6 +283,8 @@ class BatchProcessRequest(proto.Message):
         skip_human_review (bool):
             Whether Human Review feature should be
             skipped for this request. Default to false.
+        process_options (google.cloud.documentai_v1beta3.types.ProcessOptions):
+            Inference-time options for the process API
     """
 
     class BatchInputConfig(proto.Message):
@@ -325,6 +351,11 @@ class BatchProcessRequest(proto.Message):
     skip_human_review: bool = proto.Field(
         proto.BOOL,
         number=4,
+    )
+    process_options: "ProcessOptions" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="ProcessOptions",
     )
 
 

@@ -72,7 +72,7 @@ class Document(proto.Message):
             Optional. UTF-8 encoded text in reading order
             from the document.
         text_styles (MutableSequence[google.cloud.documentai_v1beta3.types.Document.Style]):
-            Placeholder. Styles for the
+            Styles for the
             [Document.text][google.cloud.documentai.v1beta3.Document.text].
         pages (MutableSequence[google.cloud.documentai_v1beta3.types.Document.Page]):
             Visual page layout for the
@@ -779,9 +779,9 @@ class Document(proto.Message):
                     If the value is non-textual, this field represents the type.
                     Current valid values are:
 
-                    -  blank (this indicates the field_value is normal text)
-                    -  "unfilled_checkbox"
-                    -  "filled_checkbox".
+                    -  blank (this indicates the ``field_value`` is normal text)
+                    -  ``unfilled_checkbox``
+                    -  ``filled_checkbox``
                 corrected_key_text (str):
                     Created for Labeling UI to export key text. If corrections
                     were made to the text identified by the
@@ -1121,8 +1121,8 @@ class Document(proto.Message):
                     For some entity types, one of respective
                     ``structured_value`` fields may also be populated. Also not
                     all the types of ``structured_value`` will be normalized.
-                    For example, some processors may not generate float or int
-                    normalized text by default.
+                    For example, some processors may not generate ``float`` or
+                    ``integer`` normalized text by default.
 
                     Below are sample formats mapped to structured values.
 
@@ -1327,9 +1327,10 @@ class Document(proto.Message):
                 page (int):
                     Required. Index into the
                     [Document.pages][google.cloud.documentai.v1beta3.Document.pages]
-                    element, for example using [Document.pages][page_refs.page]
-                    to locate the related page element. This field is skipped
-                    when its value is the default 0. See
+                    element, for example using
+                    ``[Document.pages][page_refs.page]`` to locate the related
+                    page element. This field is skipped when its value is the
+                    default ``0``. See
                     https://developers.google.com/protocol-buffers/docs/proto3#json.
                 layout_type (google.cloud.documentai_v1beta3.types.Document.PageAnchor.PageRef.LayoutType):
                     Optional. The type of the layout element that

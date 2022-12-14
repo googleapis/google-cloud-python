@@ -50,6 +50,9 @@ class ProcessorType(proto.Message):
             access.
         launch_stage (google.api.launch_stage_pb2.LaunchStage):
             Launch stage of the processor type
+        sample_document_uris (MutableSequence[str]):
+            A set of Cloud Storage URIs of sample
+            documents for this processor.
     """
 
     class LocationInfo(proto.Message):
@@ -91,6 +94,10 @@ class ProcessorType(proto.Message):
         proto.ENUM,
         number=8,
         enum=launch_stage_pb2.LaunchStage,
+    )
+    sample_document_uris: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=9,
     )
 
 

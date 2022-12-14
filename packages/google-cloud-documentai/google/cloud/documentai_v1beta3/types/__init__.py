@@ -21,6 +21,7 @@ from .document_io import (
     GcsDocument,
     GcsDocuments,
     GcsPrefix,
+    OcrConfig,
     RawDocument,
 )
 from .document_processor_service import (
@@ -58,6 +59,7 @@ from .document_processor_service import (
     ListProcessorTypesResponse,
     ListProcessorVersionsRequest,
     ListProcessorVersionsResponse,
+    ProcessOptions,
     ProcessRequest,
     ProcessResponse,
     ReviewDocumentOperationMetadata,
@@ -88,6 +90,7 @@ __all__ = (
     "GcsDocument",
     "GcsDocuments",
     "GcsPrefix",
+    "OcrConfig",
     "RawDocument",
     "BatchProcessMetadata",
     "BatchProcessRequest",
@@ -123,6 +126,7 @@ __all__ = (
     "ListProcessorTypesResponse",
     "ListProcessorVersionsRequest",
     "ListProcessorVersionsResponse",
+    "ProcessOptions",
     "ProcessRequest",
     "ProcessResponse",
     "ReviewDocumentOperationMetadata",

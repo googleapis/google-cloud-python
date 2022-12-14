@@ -27,6 +27,7 @@ __protobuf__ = proto.module(
         "GcsPrefix",
         "BatchDocumentsInputConfig",
         "DocumentOutputConfig",
+        "OcrConfig",
     },
 )
 
@@ -215,6 +216,22 @@ class DocumentOutputConfig(proto.Message):
         number=1,
         oneof="destination",
         message=GcsOutputConfig,
+    )
+
+
+class OcrConfig(proto.Message):
+    r"""Config for Document OCR.
+
+    Attributes:
+        enable_native_pdf_parsing (bool):
+            Enables special handling for PDFs with
+            existing text information. Results in better
+            text extraction quality in such PDF inputs.
+    """
+
+    enable_native_pdf_parsing: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 

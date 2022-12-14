@@ -30,6 +30,7 @@ from .types.document_io import (
     GcsDocument,
     GcsDocuments,
     GcsPrefix,
+    OcrConfig,
     RawDocument,
 )
 from .types.document_processor_service import (
@@ -67,6 +68,7 @@ from .types.document_processor_service import (
     ListProcessorTypesResponse,
     ListProcessorVersionsRequest,
     ListProcessorVersionsResponse,
+    ProcessOptions,
     ProcessRequest,
     ProcessResponse,
     ReviewDocumentOperationMetadata,
@@ -138,6 +140,8 @@ __all__ = (
     "ListProcessorsRequest",
     "ListProcessorsResponse",
     "NormalizedVertex",
+    "OcrConfig",
+    "ProcessOptions",
     "ProcessRequest",
     "ProcessResponse",
     "Processor",
