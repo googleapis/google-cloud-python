@@ -4,7 +4,9 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/cloud/network_security_v1beta1/gapic_version.py",
         "google/cloud/network_security/gapic_version.py",
+        "google/cloud/network_security_v1/gapic_version.py",
         {
           "type": "json",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.networksecurity.v1.json",

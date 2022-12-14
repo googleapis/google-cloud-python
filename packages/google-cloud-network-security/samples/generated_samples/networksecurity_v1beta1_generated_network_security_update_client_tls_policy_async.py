@@ -51,7 +51,7 @@ async def sample_update_client_tls_policy():
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = (await operation).result()
 
     # Handle the response
     print(response)

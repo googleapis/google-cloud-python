@@ -5251,7 +5251,7 @@ def test_list_authorization_policies_rest_required_fields(
 
             response = client.list_authorization_policies(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5598,7 +5598,7 @@ def test_get_authorization_policy_rest_required_fields(
 
             response = client.get_authorization_policy(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5912,6 +5912,7 @@ def test_create_authorization_policy_rest_required_fields(
                     "authorizationPolicyId",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -6253,7 +6254,7 @@ def test_update_authorization_policy_rest_required_fields(
 
             response = client.update_authorization_policy(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -6562,7 +6563,7 @@ def test_delete_authorization_policy_rest_required_fields(
 
             response = client.delete_authorization_policy(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -6847,7 +6848,7 @@ def test_list_server_tls_policies_rest_required_fields(
 
             response = client.list_server_tls_policies(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -7190,7 +7191,7 @@ def test_get_server_tls_policy_rest_required_fields(
 
             response = client.get_server_tls_policy(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -7492,6 +7493,7 @@ def test_create_server_tls_policy_rest_required_fields(
                     "serverTlsPolicyId",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -7809,7 +7811,7 @@ def test_update_server_tls_policy_rest_required_fields(
 
             response = client.update_server_tls_policy(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -8104,7 +8106,7 @@ def test_delete_server_tls_policy_rest_required_fields(
 
             response = client.delete_server_tls_policy(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -8388,7 +8390,7 @@ def test_list_client_tls_policies_rest_required_fields(
 
             response = client.list_client_tls_policies(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -8731,7 +8733,7 @@ def test_get_client_tls_policy_rest_required_fields(
 
             response = client.get_client_tls_policy(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -9031,6 +9033,7 @@ def test_create_client_tls_policy_rest_required_fields(
                     "clientTlsPolicyId",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -9344,7 +9347,7 @@ def test_update_client_tls_policy_rest_required_fields(
 
             response = client.update_client_tls_policy(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -9637,7 +9640,7 @@ def test_delete_client_tls_policy_rest_required_fields(
 
             response = client.delete_client_tls_policy(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 

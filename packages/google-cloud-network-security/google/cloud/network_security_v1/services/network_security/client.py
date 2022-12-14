@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.network_security_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -427,9 +428,6 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
             transport (Union[str, NetworkSecurityTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-                NOTE: "rest" transport functionality is currently in a
-                beta state (preview). We welcome your feedback via an
-                issue in this library's source repository.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
@@ -519,7 +517,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAuthorizationPoliciesPager:
         r"""Lists AuthorizationPolicies in a given project and
@@ -642,7 +640,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> authorization_policy.AuthorizationPolicy:
         r"""Gets details of a single AuthorizationPolicy.
@@ -756,7 +754,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         ] = None,
         authorization_policy_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new AuthorizationPolicy in a given project
@@ -915,7 +913,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         ] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single
@@ -1061,7 +1059,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single AuthorizationPolicy.
@@ -1192,7 +1190,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServerTlsPoliciesPager:
         r"""Lists ServerTlsPolicies in a given project and
@@ -1311,7 +1309,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> server_tls_policy.ServerTlsPolicy:
         r"""Gets details of a single ServerTlsPolicy.
@@ -1423,7 +1421,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         server_tls_policy: Optional[gcn_server_tls_policy.ServerTlsPolicy] = None,
         server_tls_policy_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new ServerTlsPolicy in a given project and
@@ -1573,7 +1571,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         server_tls_policy: Optional[gcn_server_tls_policy.ServerTlsPolicy] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single ServerTlsPolicy.
@@ -1713,7 +1711,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single ServerTlsPolicy.
@@ -1840,7 +1838,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListClientTlsPoliciesPager:
         r"""Lists ClientTlsPolicies in a given project and
@@ -1959,7 +1957,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> client_tls_policy.ClientTlsPolicy:
         r"""Gets details of a single ClientTlsPolicy.
@@ -2070,7 +2068,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         client_tls_policy: Optional[gcn_client_tls_policy.ClientTlsPolicy] = None,
         client_tls_policy_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new ClientTlsPolicy in a given project and
@@ -2219,7 +2217,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         client_tls_policy: Optional[gcn_client_tls_policy.ClientTlsPolicy] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single ClientTlsPolicy.
@@ -2358,7 +2356,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single ClientTlsPolicy.
@@ -2491,14 +2489,9 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-network-security",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("NetworkSecurityClient",)

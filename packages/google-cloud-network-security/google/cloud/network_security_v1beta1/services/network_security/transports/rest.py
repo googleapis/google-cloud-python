@@ -86,110 +86,125 @@ class NetworkSecurityRestInterceptor:
 
     .. code-block:: python
         class MyCustomNetworkSecurityInterceptor(NetworkSecurityRestInterceptor):
-            def pre_create_authorization_policy(request, metadata):
+            def pre_create_authorization_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_authorization_policy(response):
+            def post_create_authorization_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_client_tls_policy(request, metadata):
+            def pre_create_client_tls_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_client_tls_policy(response):
+            def post_create_client_tls_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_server_tls_policy(request, metadata):
+            def pre_create_server_tls_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_server_tls_policy(response):
+            def post_create_server_tls_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_authorization_policy(request, metadata):
+            def pre_delete_authorization_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_authorization_policy(response):
+            def post_delete_authorization_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_client_tls_policy(request, metadata):
+            def pre_delete_client_tls_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_client_tls_policy(response):
+            def post_delete_client_tls_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_server_tls_policy(request, metadata):
+            def pre_delete_server_tls_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_server_tls_policy(response):
+            def post_delete_server_tls_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_authorization_policy(request, metadata):
+            def pre_get_authorization_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_authorization_policy(response):
+            def post_get_authorization_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_client_tls_policy(request, metadata):
+            def pre_get_client_tls_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_client_tls_policy(response):
+            def post_get_client_tls_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_server_tls_policy(request, metadata):
+            def pre_get_server_tls_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_server_tls_policy(response):
+            def post_get_server_tls_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_authorization_policies(request, metadata):
+            def pre_list_authorization_policies(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_authorization_policies(response):
+            def post_list_authorization_policies(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_client_tls_policies(request, metadata):
+            def pre_list_client_tls_policies(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_client_tls_policies(response):
+            def post_list_client_tls_policies(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_server_tls_policies(request, metadata):
+            def pre_list_server_tls_policies(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_server_tls_policies(response):
+            def post_list_server_tls_policies(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_authorization_policy(request, metadata):
+            def pre_update_authorization_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_authorization_policy(response):
+            def post_update_authorization_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_client_tls_policy(request, metadata):
+            def pre_update_client_tls_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_client_tls_policy(response):
+            def post_update_client_tls_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_server_tls_policy(request, metadata):
+            def pre_update_server_tls_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_server_tls_policy(response):
+            def post_update_server_tls_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = NetworkSecurityRestTransport(interceptor=MyCustomNetworkSecurityInterceptor())
         client = NetworkSecurityClient(transport=transport)
@@ -798,9 +813,6 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
 
     It sends JSON representations of protocol buffers over HTTP/1.1
 
-    NOTE: This REST transport functionality is currently in a beta
-    state (preview). We welcome your feedback via an issue in this
-    library's source repository. Thank you!
     """
 
     def __init__(
@@ -820,39 +832,35 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
     ) -> None:
         """Instantiate the transport.
 
-        NOTE: This REST transport functionality is currently in a beta
-        state (preview). We welcome your feedback via a GitHub issue in
-        this library's repository. Thank you!
+        Args:
+            host (Optional[str]):
+                 The hostname to connect to.
+            credentials (Optional[google.auth.credentials.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify the application to the service; if none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
 
-         Args:
-             host (Optional[str]):
-                  The hostname to connect to.
-             credentials (Optional[google.auth.credentials.Credentials]): The
-                 authorization credentials to attach to requests. These
-                 credentials identify the application to the service; if none
-                 are specified, the client will attempt to ascertain the
-                 credentials from the environment.
-
-             credentials_file (Optional[str]): A file with credentials that can
-                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                 This argument is ignored if ``channel`` is provided.
-             scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                 ignored if ``channel`` is provided.
-             client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
-                 certificate to configure mutual TLS HTTP channel. It is ignored
-                 if ``channel`` is provided.
-             quota_project_id (Optional[str]): An optional project to use for billing
-                 and quota.
-             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
-                 The client info used to send a user-agent string along with
-                 API requests. If ``None``, then default info will be used.
-                 Generally, you only need to set this if you are developing
-                 your own client library.
-             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
-                 be used for service account credentials.
-             url_scheme: the protocol scheme for the API endpoint.  Normally
-                 "https", but for testing or local servers,
-                 "http" can be specified.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is ignored if ``channel`` is provided.
+            scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                ignored if ``channel`` is provided.
+            client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
+                certificate to configure mutual TLS HTTP channel. It is ignored
+                if ``channel`` is provided.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you are developing
+                your own client library.
+            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                be used for service account credentials.
+            url_scheme: the protocol scheme for the API endpoint.  Normally
+                "https", but for testing or local servers,
+                "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -927,6 +935,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 credentials=self._credentials,
                 scopes=self._scopes,
                 http_options=http_options,
+                path_prefix="v1beta1",
             )
 
             self._operations_client = operations_v1.AbstractOperationsClient(
@@ -1002,7 +1011,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -1012,10 +1021,12 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1102,7 +1113,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -1112,10 +1123,12 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1202,7 +1215,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -1212,10 +1225,12 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1305,10 +1320,12 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1394,10 +1411,12 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1483,10 +1502,12 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1576,10 +1597,12 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1670,10 +1693,12 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1765,10 +1790,12 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1858,10 +1885,12 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1948,10 +1977,12 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -2038,10 +2069,12 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -2130,7 +2163,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -2140,10 +2173,12 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -2228,7 +2263,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -2238,10 +2273,12 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -2326,7 +2363,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -2336,10 +2373,12 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
