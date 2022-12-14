@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/python-recaptcha-enterprise/compare/v1.9.0...v1.10.0) (2022-12-14)
+
+
+### Features
+
+* Add account_verification field to Assessment for MFA ([2e8b6f2](https://github.com/googleapis/python-recaptcha-enterprise/commit/2e8b6f2ee3cf082f89c5f05f5945f262871f8e48))
+* Add support for `google.cloud.recaptchaenterprise.__version__` ([faccae1](https://github.com/googleapis/python-recaptcha-enterprise/commit/faccae1397d5face106d7b5cbb02fcdc6af4e572))
+* Add typing to proto.Message based class attributes ([faccae1](https://github.com/googleapis/python-recaptcha-enterprise/commit/faccae1397d5face106d7b5cbb02fcdc6af4e572))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([faccae1](https://github.com/googleapis/python-recaptcha-enterprise/commit/faccae1397d5face106d7b5cbb02fcdc6af4e572))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([2e8b6f2](https://github.com/googleapis/python-recaptcha-enterprise/commit/2e8b6f2ee3cf082f89c5f05f5945f262871f8e48))
+* Drop usage of pkg_resources ([2e8b6f2](https://github.com/googleapis/python-recaptcha-enterprise/commit/2e8b6f2ee3cf082f89c5f05f5945f262871f8e48))
+* Fix timeout default values ([2e8b6f2](https://github.com/googleapis/python-recaptcha-enterprise/commit/2e8b6f2ee3cf082f89c5f05f5945f262871f8e48))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([faccae1](https://github.com/googleapis/python-recaptcha-enterprise/commit/faccae1397d5face106d7b5cbb02fcdc6af4e572))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([2e8b6f2](https://github.com/googleapis/python-recaptcha-enterprise/commit/2e8b6f2ee3cf082f89c5f05f5945f262871f8e48))
+
 ## [1.9.0](https://github.com/googleapis/python-recaptcha-enterprise/compare/v1.8.3...v1.9.0) (2022-10-26)
 
 
