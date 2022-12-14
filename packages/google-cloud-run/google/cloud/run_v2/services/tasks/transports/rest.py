@@ -49,10 +49,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class TasksRestInterceptor:
     """Interceptor for Tasks.
@@ -69,19 +65,21 @@ class TasksRestInterceptor:
 
     .. code-block:: python
         class MyCustomTasksInterceptor(TasksRestInterceptor):
-            def pre_get_task(request, metadata):
+            def pre_get_task(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_task(response):
+            def post_get_task(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_tasks(request, metadata):
+            def pre_list_tasks(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_tasks(response):
+            def post_list_tasks(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = TasksRestTransport(interceptor=MyCustomTasksInterceptor())
         client = TasksClient(transport=transport)

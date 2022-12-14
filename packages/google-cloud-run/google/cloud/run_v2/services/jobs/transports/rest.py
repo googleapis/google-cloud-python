@@ -60,10 +60,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class JobsRestInterceptor:
     """Interceptor for Jobs.
@@ -80,68 +76,77 @@ class JobsRestInterceptor:
 
     .. code-block:: python
         class MyCustomJobsInterceptor(JobsRestInterceptor):
-            def pre_create_job(request, metadata):
+            def pre_create_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_job(response):
+            def post_create_job(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_job(request, metadata):
+            def pre_delete_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_job(response):
+            def post_delete_job(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_iam_policy(request, metadata):
+            def pre_get_iam_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_iam_policy(response):
+            def post_get_iam_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_job(request, metadata):
+            def pre_get_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_job(response):
+            def post_get_job(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_jobs(request, metadata):
+            def pre_list_jobs(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_jobs(response):
+            def post_list_jobs(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_run_job(request, metadata):
+            def pre_run_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_run_job(response):
+            def post_run_job(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_iam_policy(request, metadata):
+            def pre_set_iam_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_iam_policy(response):
+            def post_set_iam_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_test_iam_permissions(request, metadata):
+            def pre_test_iam_permissions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_test_iam_permissions(response):
+            def post_test_iam_permissions(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_job(request, metadata):
+            def pre_update_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_job(response):
+            def post_update_job(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = JobsRestTransport(interceptor=MyCustomJobsInterceptor())
         client = JobsClient(transport=transport)

@@ -57,10 +57,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class RevisionsRestInterceptor:
     """Interceptor for Revisions.
@@ -77,26 +73,29 @@ class RevisionsRestInterceptor:
 
     .. code-block:: python
         class MyCustomRevisionsInterceptor(RevisionsRestInterceptor):
-            def pre_delete_revision(request, metadata):
+            def pre_delete_revision(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_revision(response):
+            def post_delete_revision(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_revision(request, metadata):
+            def pre_get_revision(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_revision(response):
+            def post_get_revision(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_revisions(request, metadata):
+            def pre_list_revisions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_revisions(response):
+            def post_list_revisions(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = RevisionsRestTransport(interceptor=MyCustomRevisionsInterceptor())
         client = RevisionsClient(transport=transport)

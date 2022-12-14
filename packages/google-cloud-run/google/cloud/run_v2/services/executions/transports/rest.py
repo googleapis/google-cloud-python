@@ -57,10 +57,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class ExecutionsRestInterceptor:
     """Interceptor for Executions.
@@ -77,26 +73,29 @@ class ExecutionsRestInterceptor:
 
     .. code-block:: python
         class MyCustomExecutionsInterceptor(ExecutionsRestInterceptor):
-            def pre_delete_execution(request, metadata):
+            def pre_delete_execution(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_execution(response):
+            def post_delete_execution(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_execution(request, metadata):
+            def pre_get_execution(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_execution(response):
+            def post_get_execution(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_executions(request, metadata):
+            def pre_list_executions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_executions(response):
+            def post_list_executions(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = ExecutionsRestTransport(interceptor=MyCustomExecutionsInterceptor())
         client = ExecutionsClient(transport=transport)

@@ -60,10 +60,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class ServicesRestInterceptor:
     """Interceptor for Services.
@@ -80,61 +76,69 @@ class ServicesRestInterceptor:
 
     .. code-block:: python
         class MyCustomServicesInterceptor(ServicesRestInterceptor):
-            def pre_create_service(request, metadata):
+            def pre_create_service(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_service(response):
+            def post_create_service(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_service(request, metadata):
+            def pre_delete_service(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_service(response):
+            def post_delete_service(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_iam_policy(request, metadata):
+            def pre_get_iam_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_iam_policy(response):
+            def post_get_iam_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_service(request, metadata):
+            def pre_get_service(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_service(response):
+            def post_get_service(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_services(request, metadata):
+            def pre_list_services(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_services(response):
+            def post_list_services(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_iam_policy(request, metadata):
+            def pre_set_iam_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_iam_policy(response):
+            def post_set_iam_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_test_iam_permissions(request, metadata):
+            def pre_test_iam_permissions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_test_iam_permissions(response):
+            def post_test_iam_permissions(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_service(request, metadata):
+            def pre_update_service(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_service(response):
+            def post_update_service(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = ServicesRestTransport(interceptor=MyCustomServicesInterceptor())
         client = ServicesClient(transport=transport)
