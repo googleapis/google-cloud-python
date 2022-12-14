@@ -65,310 +65,349 @@ class AnalyticsAdminServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomAnalyticsAdminServiceInterceptor(AnalyticsAdminServiceRestInterceptor):
-            def pre_acknowledge_user_data_collection(request, metadata):
+            def pre_acknowledge_user_data_collection(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_acknowledge_user_data_collection(response):
+            def post_acknowledge_user_data_collection(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_archive_custom_dimension(request, metadata):
+            def pre_archive_custom_dimension(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_archive_custom_metric(request, metadata):
+            def pre_archive_custom_metric(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_create_conversion_event(request, metadata):
+            def pre_create_conversion_event(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_conversion_event(response):
+            def post_create_conversion_event(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_custom_dimension(request, metadata):
+            def pre_create_custom_dimension(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_custom_dimension(response):
+            def post_create_custom_dimension(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_custom_metric(request, metadata):
+            def pre_create_custom_metric(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_custom_metric(response):
+            def post_create_custom_metric(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_data_stream(request, metadata):
+            def pre_create_data_stream(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_data_stream(response):
+            def post_create_data_stream(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_firebase_link(request, metadata):
+            def pre_create_firebase_link(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_firebase_link(response):
+            def post_create_firebase_link(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_google_ads_link(request, metadata):
+            def pre_create_google_ads_link(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_google_ads_link(response):
+            def post_create_google_ads_link(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_measurement_protocol_secret(request, metadata):
+            def pre_create_measurement_protocol_secret(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_measurement_protocol_secret(response):
+            def post_create_measurement_protocol_secret(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_property(request, metadata):
+            def pre_create_property(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_property(response):
+            def post_create_property(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_account(request, metadata):
+            def pre_delete_account(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_delete_conversion_event(request, metadata):
+            def pre_delete_conversion_event(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_delete_data_stream(request, metadata):
+            def pre_delete_data_stream(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_delete_firebase_link(request, metadata):
+            def pre_delete_firebase_link(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_delete_google_ads_link(request, metadata):
+            def pre_delete_google_ads_link(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_delete_measurement_protocol_secret(request, metadata):
+            def pre_delete_measurement_protocol_secret(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_delete_property(request, metadata):
+            def pre_delete_property(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_property(response):
+            def post_delete_property(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_account(request, metadata):
+            def pre_get_account(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_account(response):
+            def post_get_account(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_conversion_event(request, metadata):
+            def pre_get_conversion_event(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_conversion_event(response):
+            def post_get_conversion_event(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_custom_dimension(request, metadata):
+            def pre_get_custom_dimension(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_custom_dimension(response):
+            def post_get_custom_dimension(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_custom_metric(request, metadata):
+            def pre_get_custom_metric(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_custom_metric(response):
+            def post_get_custom_metric(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_data_retention_settings(request, metadata):
+            def pre_get_data_retention_settings(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_data_retention_settings(response):
+            def post_get_data_retention_settings(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_data_sharing_settings(request, metadata):
+            def pre_get_data_sharing_settings(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_data_sharing_settings(response):
+            def post_get_data_sharing_settings(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_data_stream(request, metadata):
+            def pre_get_data_stream(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_data_stream(response):
+            def post_get_data_stream(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_measurement_protocol_secret(request, metadata):
+            def pre_get_measurement_protocol_secret(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_measurement_protocol_secret(response):
+            def post_get_measurement_protocol_secret(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_property(request, metadata):
+            def pre_get_property(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_property(response):
+            def post_get_property(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_accounts(request, metadata):
+            def pre_list_accounts(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_accounts(response):
+            def post_list_accounts(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_account_summaries(request, metadata):
+            def pre_list_account_summaries(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_account_summaries(response):
+            def post_list_account_summaries(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_conversion_events(request, metadata):
+            def pre_list_conversion_events(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_conversion_events(response):
+            def post_list_conversion_events(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_custom_dimensions(request, metadata):
+            def pre_list_custom_dimensions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_custom_dimensions(response):
+            def post_list_custom_dimensions(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_custom_metrics(request, metadata):
+            def pre_list_custom_metrics(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_custom_metrics(response):
+            def post_list_custom_metrics(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_data_streams(request, metadata):
+            def pre_list_data_streams(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_data_streams(response):
+            def post_list_data_streams(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_firebase_links(request, metadata):
+            def pre_list_firebase_links(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_firebase_links(response):
+            def post_list_firebase_links(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_google_ads_links(request, metadata):
+            def pre_list_google_ads_links(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_google_ads_links(response):
+            def post_list_google_ads_links(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_measurement_protocol_secrets(request, metadata):
+            def pre_list_measurement_protocol_secrets(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_measurement_protocol_secrets(response):
+            def post_list_measurement_protocol_secrets(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_properties(request, metadata):
+            def pre_list_properties(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_properties(response):
+            def post_list_properties(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_provision_account_ticket(request, metadata):
+            def pre_provision_account_ticket(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_provision_account_ticket(response):
+            def post_provision_account_ticket(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_search_change_history_events(request, metadata):
+            def pre_search_change_history_events(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_search_change_history_events(response):
+            def post_search_change_history_events(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_account(request, metadata):
+            def pre_update_account(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_account(response):
+            def post_update_account(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_custom_dimension(request, metadata):
+            def pre_update_custom_dimension(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_custom_dimension(response):
+            def post_update_custom_dimension(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_custom_metric(request, metadata):
+            def pre_update_custom_metric(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_custom_metric(response):
+            def post_update_custom_metric(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_data_retention_settings(request, metadata):
+            def pre_update_data_retention_settings(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_data_retention_settings(response):
+            def post_update_data_retention_settings(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_data_stream(request, metadata):
+            def pre_update_data_stream(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_data_stream(response):
+            def post_update_data_stream(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_google_ads_link(request, metadata):
+            def pre_update_google_ads_link(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_google_ads_link(response):
+            def post_update_google_ads_link(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_measurement_protocol_secret(request, metadata):
+            def pre_update_measurement_protocol_secret(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_measurement_protocol_secret(response):
+            def post_update_measurement_protocol_secret(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_property(request, metadata):
+            def pre_update_property(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_property(response):
+            def post_update_property(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = AnalyticsAdminServiceRestTransport(interceptor=MyCustomAnalyticsAdminServiceInterceptor())
         client = AnalyticsAdminServiceClient(transport=transport)
@@ -1403,9 +1442,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
     It sends JSON representations of protocol buffers over HTTP/1.1
 
-    NOTE: This REST transport functionality is currently in a beta
-    state (preview). We welcome your feedback via an issue in this
-    library's source repository. Thank you!
     """
 
     def __init__(
@@ -1425,39 +1461,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
     ) -> None:
         """Instantiate the transport.
 
-        NOTE: This REST transport functionality is currently in a beta
-        state (preview). We welcome your feedback via a GitHub issue in
-        this library's repository. Thank you!
+        Args:
+            host (Optional[str]):
+                 The hostname to connect to.
+            credentials (Optional[google.auth.credentials.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify the application to the service; if none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
 
-         Args:
-             host (Optional[str]):
-                  The hostname to connect to.
-             credentials (Optional[google.auth.credentials.Credentials]): The
-                 authorization credentials to attach to requests. These
-                 credentials identify the application to the service; if none
-                 are specified, the client will attempt to ascertain the
-                 credentials from the environment.
-
-             credentials_file (Optional[str]): A file with credentials that can
-                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                 This argument is ignored if ``channel`` is provided.
-             scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                 ignored if ``channel`` is provided.
-             client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
-                 certificate to configure mutual TLS HTTP channel. It is ignored
-                 if ``channel`` is provided.
-             quota_project_id (Optional[str]): An optional project to use for billing
-                 and quota.
-             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
-                 The client info used to send a user-agent string along with
-                 API requests. If ``None``, then default info will be used.
-                 Generally, you only need to set this if you are developing
-                 your own client library.
-             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
-                 be used for service account credentials.
-             url_scheme: the protocol scheme for the API endpoint.  Normally
-                 "https", but for testing or local servers,
-                 "http" can be specified.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is ignored if ``channel`` is provided.
+            scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                ignored if ``channel`` is provided.
+            client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
+                certificate to configure mutual TLS HTTP channel. It is ignored
+                if ``channel`` is provided.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you are developing
+                your own client library.
+            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                be used for service account credentials.
+            url_scheme: the protocol scheme for the API endpoint.  Normally
+                "https", but for testing or local servers,
+                "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -1551,7 +1583,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -1561,10 +1593,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1644,7 +1678,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -1654,10 +1688,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1729,7 +1765,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -1739,10 +1775,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1820,7 +1858,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -1830,10 +1868,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1917,7 +1957,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -1927,10 +1967,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -2014,7 +2056,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -2024,10 +2066,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -2113,7 +2157,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -2123,10 +2167,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -2212,7 +2258,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -2222,10 +2268,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -2311,7 +2359,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -2321,10 +2369,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -2416,7 +2466,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -2426,10 +2476,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -2513,7 +2565,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -2523,10 +2575,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -2606,10 +2660,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -2682,10 +2738,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -2758,10 +2816,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -2834,10 +2894,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -2910,10 +2972,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -2992,10 +3056,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -3072,10 +3138,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -3158,10 +3226,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -3248,10 +3318,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -3336,10 +3408,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -3424,10 +3498,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -3515,10 +3591,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -3606,10 +3684,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -3694,10 +3774,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -3785,10 +3867,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -3871,10 +3955,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -3945,9 +4031,11 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -4024,9 +4112,11 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -4113,10 +4203,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -4203,10 +4295,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -4293,10 +4387,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -4383,10 +4479,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -4473,10 +4571,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -4563,10 +4663,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -4656,10 +4758,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -4746,10 +4850,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -4824,7 +4930,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -4834,9 +4940,11 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -4923,7 +5031,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -4933,10 +5041,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -5022,7 +5132,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -5032,10 +5142,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -5121,7 +5233,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -5131,10 +5243,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -5220,7 +5334,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -5230,10 +5344,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -5322,7 +5438,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -5332,10 +5448,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -5423,7 +5541,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -5433,10 +5551,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -5524,7 +5644,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -5534,10 +5654,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -5629,7 +5751,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -5639,10 +5761,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -5728,7 +5852,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -5738,10 +5862,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)

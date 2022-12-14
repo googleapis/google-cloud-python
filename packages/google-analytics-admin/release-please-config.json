@@ -4,7 +4,9 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/analytics/admin_v1beta/gapic_version.py",
         "google/analytics/admin/gapic_version.py",
+        "google/analytics/admin_v1alpha/gapic_version.py",
         {
           "type": "json",
           "path": "samples/generated_samples/snippet_metadata_google.analytics.admin.v1alpha.json",
