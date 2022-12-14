@@ -56,10 +56,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class ApiKeysRestInterceptor:
     """Interceptor for ApiKeys.
@@ -76,61 +72,69 @@ class ApiKeysRestInterceptor:
 
     .. code-block:: python
         class MyCustomApiKeysInterceptor(ApiKeysRestInterceptor):
-            def pre_create_key(request, metadata):
+            def pre_create_key(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_key(response):
+            def post_create_key(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_key(request, metadata):
+            def pre_delete_key(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_key(response):
+            def post_delete_key(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_key(request, metadata):
+            def pre_get_key(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_key(response):
+            def post_get_key(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_key_string(request, metadata):
+            def pre_get_key_string(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_key_string(response):
+            def post_get_key_string(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_keys(request, metadata):
+            def pre_list_keys(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_keys(response):
+            def post_list_keys(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_lookup_key(request, metadata):
+            def pre_lookup_key(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_lookup_key(response):
+            def post_lookup_key(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_undelete_key(request, metadata):
+            def pre_undelete_key(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_undelete_key(response):
+            def post_undelete_key(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_key(request, metadata):
+            def pre_update_key(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_key(response):
+            def post_update_key(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = ApiKeysRestTransport(interceptor=MyCustomApiKeysInterceptor())
         client = ApiKeysClient(transport=transport)
