@@ -5,6 +5,7 @@
       "release-type": "python",
       "extra-files": [
         "google/cloud/video/live_stream/gapic_version.py",
+        "google/cloud/video/live_stream_v1/gapic_version.py",
         {
           "type": "json",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.video.livestream.v1.json",
