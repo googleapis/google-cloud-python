@@ -47,10 +47,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class PublisherRestInterceptor:
     """Interceptor for Publisher.
@@ -67,19 +63,21 @@ class PublisherRestInterceptor:
 
     .. code-block:: python
         class MyCustomPublisherInterceptor(PublisherRestInterceptor):
-            def pre_publish_channel_connection_events(request, metadata):
+            def pre_publish_channel_connection_events(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_publish_channel_connection_events(response):
+            def post_publish_channel_connection_events(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_publish_events(request, metadata):
+            def pre_publish_events(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_publish_events(response):
+            def post_publish_events(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = PublisherRestTransport(interceptor=MyCustomPublisherInterceptor())
         client = PublisherClient(transport=transport)
