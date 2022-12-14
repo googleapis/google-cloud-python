@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from grafeas.grafeas_v1.types import common
@@ -54,12 +56,12 @@ class DSSEAttestationNote(proto.Message):
                 "cloudbuild-prod".
         """
 
-        human_readable_name = proto.Field(
+        human_readable_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    hint = proto.Field(
+    hint: DSSEHint = proto.Field(
         proto.MESSAGE,
         number=1,
         message=DSSEHint,
@@ -82,12 +84,12 @@ class DSSEAttestationOccurrence(proto.Message):
             This field is a member of `oneof`_ ``decoded_payload``.
     """
 
-    envelope = proto.Field(
+    envelope: common.Envelope = proto.Field(
         proto.MESSAGE,
         number=1,
         message=common.Envelope,
     )
-    statement = proto.Field(
+    statement: intoto_statement.InTotoStatement = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="decoded_payload",

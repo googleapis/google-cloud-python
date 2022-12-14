@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -31,12 +33,12 @@ class DeploymentNote(proto.Message):
     r"""An artifact that can be deployed in some runtime.
 
     Attributes:
-        resource_uri (Sequence[str]):
+        resource_uri (MutableSequence[str]):
             Required. Resource URI for the artifact being
             deployed.
     """
 
-    resource_uri = proto.RepeatedField(
+    resource_uri: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -60,7 +62,7 @@ class DeploymentOccurrence(proto.Message):
         address (str):
             Address of the runtime element hosting this
             deployment.
-        resource_uri (Sequence[str]):
+        resource_uri (MutableSequence[str]):
             Output only. Resource URI for the artifact
             being deployed taken from the deployable field
             with the same name.
@@ -75,33 +77,33 @@ class DeploymentOccurrence(proto.Message):
         FLEX = 2
         CUSTOM = 3
 
-    user_email = proto.Field(
+    user_email: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    deploy_time = proto.Field(
+    deploy_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    undeploy_time = proto.Field(
+    undeploy_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    config = proto.Field(
+    config: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    address = proto.Field(
+    address: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    resource_uri = proto.RepeatedField(
+    resource_uri: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    platform = proto.Field(
+    platform: Platform = proto.Field(
         proto.ENUM,
         number=7,
         enum=Platform,

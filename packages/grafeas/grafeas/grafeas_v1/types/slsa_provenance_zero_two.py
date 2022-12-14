@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import struct_pb2  # type: ignore
@@ -41,7 +43,7 @@ class SlsaProvenanceZeroTwo(proto.Message):
 
         metadata (grafeas.grafeas_v1.types.SlsaProvenanceZeroTwo.SlsaMetadata):
 
-        materials (Sequence[grafeas.grafeas_v1.types.SlsaProvenanceZeroTwo.SlsaMaterial]):
+        materials (MutableSequence[grafeas.grafeas_v1.types.SlsaProvenanceZeroTwo.SlsaMaterial]):
 
     """
 
@@ -55,7 +57,7 @@ class SlsaProvenanceZeroTwo(proto.Message):
 
         """
 
-        id = proto.Field(
+        id: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -68,15 +70,15 @@ class SlsaProvenanceZeroTwo(proto.Message):
         Attributes:
             uri (str):
 
-            digest (Mapping[str, str]):
+            digest (MutableMapping[str, str]):
 
         """
 
-        uri = proto.Field(
+        uri: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        digest = proto.MapField(
+        digest: MutableMapping[str, str] = proto.MapField(
             proto.STRING,
             proto.STRING,
             number=2,
@@ -94,17 +96,17 @@ class SlsaProvenanceZeroTwo(proto.Message):
 
         """
 
-        config_source = proto.Field(
+        config_source: "SlsaProvenanceZeroTwo.SlsaConfigSource" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="SlsaProvenanceZeroTwo.SlsaConfigSource",
         )
-        parameters = proto.Field(
+        parameters: struct_pb2.Struct = proto.Field(
             proto.MESSAGE,
             number=2,
             message=struct_pb2.Struct,
         )
-        environment = proto.Field(
+        environment: struct_pb2.Struct = proto.Field(
             proto.MESSAGE,
             number=3,
             message=struct_pb2.Struct,
@@ -118,22 +120,22 @@ class SlsaProvenanceZeroTwo(proto.Message):
         Attributes:
             uri (str):
 
-            digest (Mapping[str, str]):
+            digest (MutableMapping[str, str]):
 
             entry_point (str):
 
         """
 
-        uri = proto.Field(
+        uri: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        digest = proto.MapField(
+        digest: MutableMapping[str, str] = proto.MapField(
             proto.STRING,
             proto.STRING,
             number=2,
         )
-        entry_point = proto.Field(
+        entry_point: str = proto.Field(
             proto.STRING,
             number=3,
         )
@@ -154,26 +156,26 @@ class SlsaProvenanceZeroTwo(proto.Message):
 
         """
 
-        build_invocation_id = proto.Field(
+        build_invocation_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        build_started_on = proto.Field(
+        build_started_on: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=2,
             message=timestamp_pb2.Timestamp,
         )
-        build_finished_on = proto.Field(
+        build_finished_on: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=3,
             message=timestamp_pb2.Timestamp,
         )
-        completeness = proto.Field(
+        completeness: "SlsaProvenanceZeroTwo.SlsaCompleteness" = proto.Field(
             proto.MESSAGE,
             number=4,
             message="SlsaProvenanceZeroTwo.SlsaCompleteness",
         )
-        reproducible = proto.Field(
+        reproducible: bool = proto.Field(
             proto.BOOL,
             number=5,
         )
@@ -191,44 +193,44 @@ class SlsaProvenanceZeroTwo(proto.Message):
 
         """
 
-        parameters = proto.Field(
+        parameters: bool = proto.Field(
             proto.BOOL,
             number=1,
         )
-        environment = proto.Field(
+        environment: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
-        materials = proto.Field(
+        materials: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
 
-    builder = proto.Field(
+    builder: SlsaBuilder = proto.Field(
         proto.MESSAGE,
         number=1,
         message=SlsaBuilder,
     )
-    build_type = proto.Field(
+    build_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    invocation = proto.Field(
+    invocation: SlsaInvocation = proto.Field(
         proto.MESSAGE,
         number=3,
         message=SlsaInvocation,
     )
-    build_config = proto.Field(
+    build_config: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=4,
         message=struct_pb2.Struct,
     )
-    metadata = proto.Field(
+    metadata: SlsaMetadata = proto.Field(
         proto.MESSAGE,
         number=5,
         message=SlsaMetadata,
     )
-    materials = proto.RepeatedField(
+    materials: MutableSequence[SlsaMaterial] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=SlsaMaterial,

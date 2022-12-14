@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -107,54 +109,54 @@ class CVSSv3(proto.Message):
         IMPACT_LOW = 2
         IMPACT_NONE = 3
 
-    base_score = proto.Field(
+    base_score: float = proto.Field(
         proto.FLOAT,
         number=1,
     )
-    exploitability_score = proto.Field(
+    exploitability_score: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
-    impact_score = proto.Field(
+    impact_score: float = proto.Field(
         proto.FLOAT,
         number=3,
     )
-    attack_vector = proto.Field(
+    attack_vector: AttackVector = proto.Field(
         proto.ENUM,
         number=5,
         enum=AttackVector,
     )
-    attack_complexity = proto.Field(
+    attack_complexity: AttackComplexity = proto.Field(
         proto.ENUM,
         number=6,
         enum=AttackComplexity,
     )
-    privileges_required = proto.Field(
+    privileges_required: PrivilegesRequired = proto.Field(
         proto.ENUM,
         number=7,
         enum=PrivilegesRequired,
     )
-    user_interaction = proto.Field(
+    user_interaction: UserInteraction = proto.Field(
         proto.ENUM,
         number=8,
         enum=UserInteraction,
     )
-    scope = proto.Field(
+    scope: Scope = proto.Field(
         proto.ENUM,
         number=9,
         enum=Scope,
     )
-    confidentiality_impact = proto.Field(
+    confidentiality_impact: Impact = proto.Field(
         proto.ENUM,
         number=10,
         enum=Impact,
     )
-    integrity_impact = proto.Field(
+    integrity_impact: Impact = proto.Field(
         proto.ENUM,
         number=11,
         enum=Impact,
     )
-    availability_impact = proto.Field(
+    availability_impact: Impact = proto.Field(
         proto.ENUM,
         number=12,
         enum=Impact,
@@ -247,59 +249,59 @@ class CVSS(proto.Message):
         IMPACT_LOW = 2
         IMPACT_NONE = 3
 
-    base_score = proto.Field(
+    base_score: float = proto.Field(
         proto.FLOAT,
         number=1,
     )
-    exploitability_score = proto.Field(
+    exploitability_score: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
-    impact_score = proto.Field(
+    impact_score: float = proto.Field(
         proto.FLOAT,
         number=3,
     )
-    attack_vector = proto.Field(
+    attack_vector: AttackVector = proto.Field(
         proto.ENUM,
         number=4,
         enum=AttackVector,
     )
-    attack_complexity = proto.Field(
+    attack_complexity: AttackComplexity = proto.Field(
         proto.ENUM,
         number=5,
         enum=AttackComplexity,
     )
-    authentication = proto.Field(
+    authentication: Authentication = proto.Field(
         proto.ENUM,
         number=6,
         enum=Authentication,
     )
-    privileges_required = proto.Field(
+    privileges_required: PrivilegesRequired = proto.Field(
         proto.ENUM,
         number=7,
         enum=PrivilegesRequired,
     )
-    user_interaction = proto.Field(
+    user_interaction: UserInteraction = proto.Field(
         proto.ENUM,
         number=8,
         enum=UserInteraction,
     )
-    scope = proto.Field(
+    scope: Scope = proto.Field(
         proto.ENUM,
         number=9,
         enum=Scope,
     )
-    confidentiality_impact = proto.Field(
+    confidentiality_impact: Impact = proto.Field(
         proto.ENUM,
         number=10,
         enum=Impact,
     )
-    integrity_impact = proto.Field(
+    integrity_impact: Impact = proto.Field(
         proto.ENUM,
         number=11,
         enum=Impact,
     )
-    availability_impact = proto.Field(
+    availability_impact: Impact = proto.Field(
         proto.ENUM,
         number=12,
         enum=Impact,

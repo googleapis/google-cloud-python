@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -41,11 +43,11 @@ class Layer(proto.Message):
             directive.
     """
 
-    directive = proto.Field(
+    directive: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    arguments = proto.Field(
+    arguments: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -59,7 +61,7 @@ class Fingerprint(proto.Message):
         v1_name (str):
             Required. The layer ID of the final layer in
             the Docker image's v1 representation.
-        v2_blob (Sequence[str]):
+        v2_blob (MutableSequence[str]):
             Required. The ordered list of v2 blobs that
             represent a given image.
         v2_name (str):
@@ -68,15 +70,15 @@ class Fingerprint(proto.Message):
             v2_name[N+1]) Only the name of the final blob is kept.
     """
 
-    v1_name = proto.Field(
+    v1_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    v2_blob = proto.RepeatedField(
+    v2_blob: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    v2_name = proto.Field(
+    v2_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -97,11 +99,11 @@ class ImageNote(proto.Message):
             base image.
     """
 
-    resource_url = proto.Field(
+    resource_url: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    fingerprint = proto.Field(
+    fingerprint: "Fingerprint" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Fingerprint",
@@ -121,7 +123,7 @@ class ImageOccurrence(proto.Message):
             Output only. The number of layers by which
             this image differs from the associated image
             basis.
-        layer_info (Sequence[grafeas.grafeas_v1.types.Layer]):
+        layer_info (MutableSequence[grafeas.grafeas_v1.types.Layer]):
             This contains layer-specific metadata, if populated it has
             length "distance" and is ordered with [distance] being the
             layer immediately following the base image and [1] being the
@@ -131,21 +133,21 @@ class ImageOccurrence(proto.Message):
             for the derived image occurrence.
     """
 
-    fingerprint = proto.Field(
+    fingerprint: "Fingerprint" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Fingerprint",
     )
-    distance = proto.Field(
+    distance: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    layer_info = proto.RepeatedField(
+    layer_info: MutableSequence["Layer"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="Layer",
     )
-    base_resource_url = proto.Field(
+    base_resource_url: str = proto.Field(
         proto.STRING,
         number=4,
     )

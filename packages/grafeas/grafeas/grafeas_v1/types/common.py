@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -56,11 +58,11 @@ class RelatedUrl(proto.Message):
             Label to describe usage of the URL.
     """
 
-    url = proto.Field(
+    url: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    label = proto.Field(
+    label: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -129,11 +131,11 @@ class Signature(proto.Message):
             -  "nih:///sha-256;703f68f42aba2c6de30f488a5ea122fef76324679c9bf89791ba95a1271589a5".
     """
 
-    signature = proto.Field(
+    signature: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    public_key_id = proto.Field(
+    public_key_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -149,19 +151,19 @@ class Envelope(proto.Message):
 
         payload_type (str):
 
-        signatures (Sequence[grafeas.grafeas_v1.types.EnvelopeSignature]):
+        signatures (MutableSequence[grafeas.grafeas_v1.types.EnvelopeSignature]):
 
     """
 
-    payload = proto.Field(
+    payload: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    payload_type = proto.Field(
+    payload_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    signatures = proto.RepeatedField(
+    signatures: MutableSequence["EnvelopeSignature"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="EnvelopeSignature",
@@ -178,11 +180,11 @@ class EnvelopeSignature(proto.Message):
 
     """
 
-    sig = proto.Field(
+    sig: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    keyid = proto.Field(
+    keyid: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -198,7 +200,7 @@ class FileLocation(proto.Message):
             war file combined with the path to jar file.
     """
 
-    file_path = proto.Field(
+    file_path: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -221,11 +223,11 @@ class License(proto.Message):
             Comments
     """
 
-    expression = proto.Field(
+    expression: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    comments = proto.Field(
+    comments: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -241,11 +243,11 @@ class Digest(proto.Message):
             Value of the digest.
     """
 
-    algo = proto.Field(
+    algo: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    digest_bytes = proto.Field(
+    digest_bytes: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )

@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "grafeas-grafeas"
+    "name": "grafeas",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -38,7 +39,7 @@
           },
           {
             "name": "notes",
-            "type": "Mapping[str, grafeas.grafeas_v1.types.Note]"
+            "type": "MutableMapping[str, grafeas.grafeas_v1.types.Note]"
           },
           {
             "name": "retry",
@@ -122,7 +123,7 @@
           },
           {
             "name": "notes",
-            "type": "Mapping[str, grafeas.grafeas_v1.types.Note]"
+            "type": "MutableMapping[str, grafeas.grafeas_v1.types.Note]"
           },
           {
             "name": "retry",
@@ -207,7 +208,7 @@
           },
           {
             "name": "occurrences",
-            "type": "Sequence[grafeas.grafeas_v1.types.Occurrence]"
+            "type": "MutableSequence[grafeas.grafeas_v1.types.Occurrence]"
           },
           {
             "name": "retry",
@@ -291,7 +292,7 @@
           },
           {
             "name": "occurrences",
-            "type": "Sequence[grafeas.grafeas_v1.types.Occurrence]"
+            "type": "MutableSequence[grafeas.grafeas_v1.types.Occurrence]"
           },
           {
             "name": "retry",

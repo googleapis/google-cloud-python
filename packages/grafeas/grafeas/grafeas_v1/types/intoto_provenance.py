@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import any_pb2  # type: ignore
@@ -58,7 +60,7 @@ class Recipe(proto.Message):
             For example, if the recipe type were "make",
             then this would reference the directory in which
             to run make as well as which target to use.
-        arguments (Sequence[google.protobuf.any_pb2.Any]):
+        arguments (MutableSequence[google.protobuf.any_pb2.Any]):
             Collection of all external inputs that
             influenced the build on top of
             recipe.definedInMaterial and recipe.entryPoint.
@@ -68,7 +70,7 @@ class Recipe(proto.Message):
             recipe.entryPoint. Since the arguments field can
             greatly vary in structure, depending on the
             builder and recipe type, this is of form "Any".
-        environment (Sequence[google.protobuf.any_pb2.Any]):
+        environment (MutableSequence[google.protobuf.any_pb2.Any]):
             Any other builder-controlled inputs necessary
             for correctly evaluating the recipe. Usually
             only needed for reproducing the build but not
@@ -78,24 +80,24 @@ class Recipe(proto.Message):
             is of form "Any".
     """
 
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    defined_in_material = proto.Field(
+    defined_in_material: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    entry_point = proto.Field(
+    entry_point: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    arguments = proto.RepeatedField(
+    arguments: MutableSequence[any_pb2.Any] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=any_pb2.Any,
     )
-    environment = proto.RepeatedField(
+    environment: MutableSequence[any_pb2.Any] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=any_pb2.Any,
@@ -122,15 +124,15 @@ class Completeness(proto.Message):
             "hermetic".
     """
 
-    arguments = proto.Field(
+    arguments: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    environment = proto.Field(
+    environment: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    materials = proto.Field(
+    materials: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -158,26 +160,26 @@ class Metadata(proto.Message):
             identical output.
     """
 
-    build_invocation_id = proto.Field(
+    build_invocation_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    build_started_on = proto.Field(
+    build_started_on: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    build_finished_on = proto.Field(
+    build_finished_on: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    completeness = proto.Field(
+    completeness: "Completeness" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="Completeness",
     )
-    reproducible = proto.Field(
+    reproducible: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -191,7 +193,7 @@ class BuilderConfig(proto.Message):
 
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -211,7 +213,7 @@ class InTotoProvenance(proto.Message):
             output (if the build is reproducible).
         metadata (grafeas.grafeas_v1.types.Metadata):
 
-        materials (Sequence[str]):
+        materials (MutableSequence[str]):
             The collection of artifacts that influenced
             the build including sources, dependencies, build
             tools, base images, and so on. This is
@@ -220,22 +222,22 @@ class InTotoProvenance(proto.Message):
             or null is equivalent to empty.
     """
 
-    builder_config = proto.Field(
+    builder_config: "BuilderConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="BuilderConfig",
     )
-    recipe = proto.Field(
+    recipe: "Recipe" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Recipe",
     )
-    metadata = proto.Field(
+    metadata: "Metadata" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Metadata",
     )
-    materials = proto.RepeatedField(
+    materials: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )

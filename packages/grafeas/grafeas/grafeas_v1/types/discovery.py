@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -40,7 +42,7 @@ class DiscoveryNote(proto.Message):
             that is handled by this discovery.
     """
 
-    analysis_kind = proto.Field(
+    analysis_kind: common.NoteKind = proto.Field(
         proto.ENUM,
         number=1,
         enum=common.NoteKind,
@@ -59,7 +61,7 @@ class DiscoveryOccurrence(proto.Message):
             The status of discovery for the resource.
         analysis_completed (grafeas.grafeas_v1.types.DiscoveryOccurrence.AnalysisCompleted):
 
-        analysis_error (Sequence[google.rpc.status_pb2.Status]):
+        analysis_error (MutableSequence[google.rpc.status_pb2.Status]):
             Indicates any errors encountered during
             analysis of a resource. There could be 0 or more
             of these errors.
@@ -101,50 +103,50 @@ class DiscoveryOccurrence(proto.Message):
         types of analysis can be performed on a single resource.
 
         Attributes:
-            analysis_type (Sequence[str]):
+            analysis_type (MutableSequence[str]):
 
         """
 
-        analysis_type = proto.RepeatedField(
+        analysis_type: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
 
-    continuous_analysis = proto.Field(
+    continuous_analysis: ContinuousAnalysis = proto.Field(
         proto.ENUM,
         number=1,
         enum=ContinuousAnalysis,
     )
-    analysis_status = proto.Field(
+    analysis_status: AnalysisStatus = proto.Field(
         proto.ENUM,
         number=2,
         enum=AnalysisStatus,
     )
-    analysis_completed = proto.Field(
+    analysis_completed: AnalysisCompleted = proto.Field(
         proto.MESSAGE,
         number=7,
         message=AnalysisCompleted,
     )
-    analysis_error = proto.RepeatedField(
+    analysis_error: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message=status_pb2.Status,
     )
-    analysis_status_error = proto.Field(
+    analysis_status_error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=3,
         message=status_pb2.Status,
     )
-    cpe = proto.Field(
+    cpe: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    last_scan_time = proto.Field(
+    last_scan_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    archive_time = proto.Field(
+    archive_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,

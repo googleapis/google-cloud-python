@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import any_pb2  # type: ignore
@@ -41,7 +43,7 @@ class SlsaProvenance(proto.Message):
             output (if the build is reproducible).
         metadata (grafeas.grafeas_v1.types.SlsaProvenance.SlsaMetadata):
 
-        materials (Sequence[grafeas.grafeas_v1.types.SlsaProvenance.Material]):
+        materials (MutableSequence[grafeas.grafeas_v1.types.SlsaProvenance.Material]):
             The collection of artifacts that influenced
             the build including sources, dependencies, build
             tools, base images, and so on. This is
@@ -94,24 +96,24 @@ class SlsaProvenance(proto.Message):
                 recipe Type, the structure may be different.
         """
 
-        type_ = proto.Field(
+        type_: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        defined_in_material = proto.Field(
+        defined_in_material: int = proto.Field(
             proto.INT64,
             number=2,
         )
-        entry_point = proto.Field(
+        entry_point: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        arguments = proto.Field(
+        arguments: any_pb2.Any = proto.Field(
             proto.MESSAGE,
             number=4,
             message=any_pb2.Any,
         )
-        environment = proto.Field(
+        environment: any_pb2.Any = proto.Field(
             proto.MESSAGE,
             number=5,
             message=any_pb2.Any,
@@ -137,15 +139,15 @@ class SlsaProvenance(proto.Message):
                 "hermetic".
         """
 
-        arguments = proto.Field(
+        arguments: bool = proto.Field(
             proto.BOOL,
             number=1,
         )
-        environment = proto.Field(
+        environment: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
-        materials = proto.Field(
+        materials: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
@@ -172,26 +174,26 @@ class SlsaProvenance(proto.Message):
                 identical output.
         """
 
-        build_invocation_id = proto.Field(
+        build_invocation_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        build_started_on = proto.Field(
+        build_started_on: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=2,
             message=timestamp_pb2.Timestamp,
         )
-        build_finished_on = proto.Field(
+        build_finished_on: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=3,
             message=timestamp_pb2.Timestamp,
         )
-        completeness = proto.Field(
+        completeness: "SlsaProvenance.SlsaCompleteness" = proto.Field(
             proto.MESSAGE,
             number=4,
             message="SlsaProvenance.SlsaCompleteness",
         )
-        reproducible = proto.Field(
+        reproducible: bool = proto.Field(
             proto.BOOL,
             number=5,
         )
@@ -204,7 +206,7 @@ class SlsaProvenance(proto.Message):
 
         """
 
-        id = proto.Field(
+        id: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -215,36 +217,36 @@ class SlsaProvenance(proto.Message):
         Attributes:
             uri (str):
 
-            digest (Mapping[str, str]):
+            digest (MutableMapping[str, str]):
 
         """
 
-        uri = proto.Field(
+        uri: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        digest = proto.MapField(
+        digest: MutableMapping[str, str] = proto.MapField(
             proto.STRING,
             proto.STRING,
             number=2,
         )
 
-    builder = proto.Field(
+    builder: SlsaBuilder = proto.Field(
         proto.MESSAGE,
         number=1,
         message=SlsaBuilder,
     )
-    recipe = proto.Field(
+    recipe: SlsaRecipe = proto.Field(
         proto.MESSAGE,
         number=2,
         message=SlsaRecipe,
     )
-    metadata = proto.Field(
+    metadata: SlsaMetadata = proto.Field(
         proto.MESSAGE,
         number=3,
         message=SlsaMetadata,
     )
-    materials = proto.RepeatedField(
+    materials: MutableSequence[Material] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=Material,

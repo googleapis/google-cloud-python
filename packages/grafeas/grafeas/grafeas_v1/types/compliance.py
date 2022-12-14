@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from grafeas.grafeas_v1.types import severity as g_severity
@@ -40,7 +42,7 @@ class ComplianceNote(proto.Message):
             check.
         description (str):
             A description about this compliance check.
-        version (Sequence[grafeas.grafeas_v1.types.ComplianceVersion]):
+        version (MutableSequence[grafeas.grafeas_v1.types.ComplianceVersion]):
             The OS and config versions the benchmark
             applies to.
         rationale (str):
@@ -67,44 +69,44 @@ class ComplianceNote(proto.Message):
 
         """
 
-        profile_level = proto.Field(
+        profile_level: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        severity = proto.Field(
+        severity: g_severity.Severity = proto.Field(
             proto.ENUM,
             number=2,
             enum=g_severity.Severity,
         )
 
-    title = proto.Field(
+    title: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    version = proto.RepeatedField(
+    version: MutableSequence["ComplianceVersion"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="ComplianceVersion",
     )
-    rationale = proto.Field(
+    rationale: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    remediation = proto.Field(
+    remediation: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    cis_benchmark = proto.Field(
+    cis_benchmark: CisBenchmark = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="compliance_type",
         message=CisBenchmark,
     )
-    scan_instructions = proto.Field(
+    scan_instructions: bytes = proto.Field(
         proto.BYTES,
         number=7,
     )
@@ -128,15 +130,15 @@ class ComplianceVersion(proto.Message):
             benchmark is defined in.
     """
 
-    cpe_uri = proto.Field(
+    cpe_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    benchmark_document = proto.Field(
+    benchmark_document: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -148,18 +150,18 @@ class ComplianceOccurrence(proto.Message):
     specified reason.
 
     Attributes:
-        non_compliant_files (Sequence[grafeas.grafeas_v1.types.NonCompliantFile]):
+        non_compliant_files (MutableSequence[grafeas.grafeas_v1.types.NonCompliantFile]):
 
         non_compliance_reason (str):
 
     """
 
-    non_compliant_files = proto.RepeatedField(
+    non_compliant_files: MutableSequence["NonCompliantFile"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="NonCompliantFile",
     )
-    non_compliance_reason = proto.Field(
+    non_compliance_reason: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -178,15 +180,15 @@ class NonCompliantFile(proto.Message):
             CIS check.
     """
 
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_command = proto.Field(
+    display_command: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    reason = proto.Field(
+    reason: str = proto.Field(
         proto.STRING,
         number=3,
     )

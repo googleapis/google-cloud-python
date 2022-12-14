@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from grafeas.grafeas_v1.types import common
@@ -66,29 +68,29 @@ class Distribution(proto.Message):
             of this package.
     """
 
-    cpe_uri = proto.Field(
+    cpe_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    architecture = proto.Field(
+    architecture: "Architecture" = proto.Field(
         proto.ENUM,
         number=2,
         enum="Architecture",
     )
-    latest_version = proto.Field(
+    latest_version: "Version" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Version",
     )
-    maintainer = proto.Field(
+    maintainer: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    url = proto.Field(
+    url: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -111,16 +113,16 @@ class Location(proto.Message):
             package/version is installed.
     """
 
-    cpe_uri = proto.Field(
+    cpe_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    version = proto.Field(
+    version: "Version" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Version",
     )
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -132,7 +134,7 @@ class PackageNote(proto.Message):
     Attributes:
         name (str):
             The name of the package.
-        distribution (Sequence[grafeas.grafeas_v1.types.Distribution]):
+        distribution (MutableSequence[grafeas.grafeas_v1.types.Distribution]):
             Deprecated.
             The various channels by which a package is
             distributed.
@@ -162,56 +164,56 @@ class PackageNote(proto.Message):
         license_ (grafeas.grafeas_v1.types.License):
             Licenses that have been declared by the
             authors of the package.
-        digest (Sequence[grafeas.grafeas_v1.types.Digest]):
+        digest (MutableSequence[grafeas.grafeas_v1.types.Digest]):
             Hash value, typically a file digest, that
             allows unique identification a specific package.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    distribution = proto.RepeatedField(
+    distribution: MutableSequence["Distribution"] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message="Distribution",
     )
-    package_type = proto.Field(
+    package_type: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    cpe_uri = proto.Field(
+    cpe_uri: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    architecture = proto.Field(
+    architecture: "Architecture" = proto.Field(
         proto.ENUM,
         number=13,
         enum="Architecture",
     )
-    version = proto.Field(
+    version: "Version" = proto.Field(
         proto.MESSAGE,
         number=14,
         message="Version",
     )
-    maintainer = proto.Field(
+    maintainer: str = proto.Field(
         proto.STRING,
         number=15,
     )
-    url = proto.Field(
+    url: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=17,
     )
-    license_ = proto.Field(
+    license_: common.License = proto.Field(
         proto.MESSAGE,
         number=18,
         message=common.License,
     )
-    digest = proto.RepeatedField(
+    digest: MutableSequence[common.Digest] = proto.RepeatedField(
         proto.MESSAGE,
         number=19,
         message=common.Digest,
@@ -225,7 +227,7 @@ class PackageOccurrence(proto.Message):
     Attributes:
         name (str):
             The name of the installed package.
-        location (Sequence[grafeas.grafeas_v1.types.Location]):
+        location (MutableSequence[grafeas.grafeas_v1.types.Location]):
             All of the places within the filesystem
             versions of this package have been found.
         package_type (str):
@@ -249,34 +251,34 @@ class PackageOccurrence(proto.Message):
             The version of the package.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    location = proto.RepeatedField(
+    location: MutableSequence["Location"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="Location",
     )
-    package_type = proto.Field(
+    package_type: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    cpe_uri = proto.Field(
+    cpe_uri: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    architecture = proto.Field(
+    architecture: "Architecture" = proto.Field(
         proto.ENUM,
         number=5,
         enum="Architecture",
     )
-    license_ = proto.Field(
+    license_: common.License = proto.Field(
         proto.MESSAGE,
         number=6,
         message=common.License,
     )
-    version = proto.Field(
+    version: "Version" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="Version",
@@ -325,28 +327,28 @@ class Version(proto.Message):
         MINIMUM = 2
         MAXIMUM = 3
 
-    epoch = proto.Field(
+    epoch: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    revision = proto.Field(
+    revision: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    inclusive = proto.Field(
+    inclusive: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    kind = proto.Field(
+    kind: VersionKind = proto.Field(
         proto.ENUM,
         number=4,
         enum=VersionKind,
     )
-    full_name = proto.Field(
+    full_name: str = proto.Field(
         proto.STRING,
         number=5,
     )

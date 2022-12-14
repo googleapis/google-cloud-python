@@ -16,8 +16,20 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
+
+from grafeas.grafeas_v1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -68,7 +80,7 @@ class GrafeasClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[GrafeasTransport]:
         """Returns an appropriate transport class.
 
@@ -317,11 +329,11 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
     def get_occurrence(
         self,
-        request: Union[grafeas.GetOccurrenceRequest, dict] = None,
+        request: Optional[Union[grafeas.GetOccurrenceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> grafeas.Occurrence:
         r"""Gets the specified occurrence.
@@ -418,12 +430,12 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
     def list_occurrences(
         self,
-        request: Union[grafeas.ListOccurrencesRequest, dict] = None,
+        request: Optional[Union[grafeas.ListOccurrencesRequest, dict]] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListOccurrencesPager:
         r"""Lists occurrences for the specified project.
@@ -539,11 +551,11 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
     def delete_occurrence(
         self,
-        request: Union[grafeas.DeleteOccurrenceRequest, dict] = None,
+        request: Optional[Union[grafeas.DeleteOccurrenceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified occurrence. For example, use
@@ -630,12 +642,12 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
     def create_occurrence(
         self,
-        request: Union[grafeas.CreateOccurrenceRequest, dict] = None,
+        request: Optional[Union[grafeas.CreateOccurrenceRequest, dict]] = None,
         *,
-        parent: str = None,
-        occurrence: grafeas.Occurrence = None,
+        parent: Optional[str] = None,
+        occurrence: Optional[grafeas.Occurrence] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> grafeas.Occurrence:
         r"""Creates a new occurrence.
@@ -740,12 +752,12 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
     def batch_create_occurrences(
         self,
-        request: Union[grafeas.BatchCreateOccurrencesRequest, dict] = None,
+        request: Optional[Union[grafeas.BatchCreateOccurrencesRequest, dict]] = None,
         *,
-        parent: str = None,
-        occurrences: Sequence[grafeas.Occurrence] = None,
+        parent: Optional[str] = None,
+        occurrences: Optional[MutableSequence[grafeas.Occurrence]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> grafeas.BatchCreateOccurrencesResponse:
         r"""Creates new occurrences in batch.
@@ -788,7 +800,7 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            occurrences (Sequence[grafeas.grafeas_v1.types.Occurrence]):
+            occurrences (MutableSequence[grafeas.grafeas_v1.types.Occurrence]):
                 The occurrences to create. Max
                 allowed length is 1000.
 
@@ -853,13 +865,13 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
     def update_occurrence(
         self,
-        request: Union[grafeas.UpdateOccurrenceRequest, dict] = None,
+        request: Optional[Union[grafeas.UpdateOccurrenceRequest, dict]] = None,
         *,
-        name: str = None,
-        occurrence: grafeas.Occurrence = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        name: Optional[str] = None,
+        occurrence: Optional[grafeas.Occurrence] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> grafeas.Occurrence:
         r"""Updates the specified occurrence.
@@ -970,11 +982,11 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
     def get_occurrence_note(
         self,
-        request: Union[grafeas.GetOccurrenceNoteRequest, dict] = None,
+        request: Optional[Union[grafeas.GetOccurrenceNoteRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> grafeas.Note:
         r"""Gets the note attached to the specified occurrence.
@@ -1074,11 +1086,11 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
     def get_note(
         self,
-        request: Union[grafeas.GetNoteRequest, dict] = None,
+        request: Optional[Union[grafeas.GetNoteRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> grafeas.Note:
         r"""Gets the specified note.
@@ -1175,12 +1187,12 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
     def list_notes(
         self,
-        request: Union[grafeas.ListNotesRequest, dict] = None,
+        request: Optional[Union[grafeas.ListNotesRequest, dict]] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNotesPager:
         r"""Lists notes for the specified project.
@@ -1296,11 +1308,11 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
     def delete_note(
         self,
-        request: Union[grafeas.DeleteNoteRequest, dict] = None,
+        request: Optional[Union[grafeas.DeleteNoteRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified note.
@@ -1385,13 +1397,13 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
     def create_note(
         self,
-        request: Union[grafeas.CreateNoteRequest, dict] = None,
+        request: Optional[Union[grafeas.CreateNoteRequest, dict]] = None,
         *,
-        parent: str = None,
-        note_id: str = None,
-        note: grafeas.Note = None,
+        parent: Optional[str] = None,
+        note_id: Optional[str] = None,
+        note: Optional[grafeas.Note] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> grafeas.Note:
         r"""Creates a new note.
@@ -1504,12 +1516,12 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
     def batch_create_notes(
         self,
-        request: Union[grafeas.BatchCreateNotesRequest, dict] = None,
+        request: Optional[Union[grafeas.BatchCreateNotesRequest, dict]] = None,
         *,
-        parent: str = None,
-        notes: Mapping[str, grafeas.Note] = None,
+        parent: Optional[str] = None,
+        notes: Optional[MutableMapping[str, grafeas.Note]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> grafeas.BatchCreateNotesResponse:
         r"""Creates new notes in batch.
@@ -1551,7 +1563,7 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            notes (Mapping[str, grafeas.grafeas_v1.types.Note]):
+            notes (MutableMapping[str, grafeas.grafeas_v1.types.Note]):
                 The notes to create. Max allowed
                 length is 1000.
 
@@ -1614,13 +1626,13 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
     def update_note(
         self,
-        request: Union[grafeas.UpdateNoteRequest, dict] = None,
+        request: Optional[Union[grafeas.UpdateNoteRequest, dict]] = None,
         *,
-        name: str = None,
-        note: grafeas.Note = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        name: Optional[str] = None,
+        note: Optional[grafeas.Note] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> grafeas.Note:
         r"""Updates the specified note.
@@ -1731,12 +1743,12 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
     def list_note_occurrences(
         self,
-        request: Union[grafeas.ListNoteOccurrencesRequest, dict] = None,
+        request: Optional[Union[grafeas.ListNoteOccurrencesRequest, dict]] = None,
         *,
-        name: str = None,
-        filter: str = None,
+        name: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNoteOccurrencesPager:
         r"""Lists occurrences referencing the specified note.
@@ -1869,14 +1881,9 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "grafeas",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("GrafeasClient",)

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from grafeas.grafeas_v1.types import intoto_provenance as g_intoto_provenance
@@ -40,7 +42,7 @@ class BuildNote(proto.Message):
             which produced this build.
     """
 
-    builder_version = proto.Field(
+    builder_version: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -76,21 +78,21 @@ class BuildOccurrence(proto.Message):
             in the Occurrence's envelope.
     """
 
-    provenance = proto.Field(
+    provenance: g_provenance.BuildProvenance = proto.Field(
         proto.MESSAGE,
         number=1,
         message=g_provenance.BuildProvenance,
     )
-    provenance_bytes = proto.Field(
+    provenance_bytes: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    intoto_provenance = proto.Field(
+    intoto_provenance: g_intoto_provenance.InTotoProvenance = proto.Field(
         proto.MESSAGE,
         number=3,
         message=g_intoto_provenance.InTotoProvenance,
     )
-    intoto_statement = proto.Field(
+    intoto_statement: g_intoto_statement.InTotoStatement = proto.Field(
         proto.MESSAGE,
         number=4,
         message=g_intoto_statement.InTotoStatement,

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -48,9 +50,9 @@ class BuildProvenance(proto.Message):
             Required. Unique identifier of the build.
         project_id (str):
             ID of the project.
-        commands (Sequence[grafeas.grafeas_v1.types.Command]):
+        commands (MutableSequence[grafeas.grafeas_v1.types.Command]):
             Commands requested by the build.
-        built_artifacts (Sequence[grafeas.grafeas_v1.types.Artifact]):
+        built_artifacts (MutableSequence[grafeas.grafeas_v1.types.Artifact]):
             Output of the build.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Time at which the build was created.
@@ -74,7 +76,7 @@ class BuildProvenance(proto.Message):
         trigger_id (str):
             Trigger identifier if the build was triggered
             automatically; empty if not.
-        build_options (Mapping[str, str]):
+        build_options (MutableMapping[str, str]):
             Special options applied to this build. This
             is a catch-all field where build providers can
             enter any desired additional details.
@@ -83,62 +85,62 @@ class BuildProvenance(proto.Message):
             this build was executed.
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    commands = proto.RepeatedField(
+    commands: MutableSequence["Command"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="Command",
     )
-    built_artifacts = proto.RepeatedField(
+    built_artifacts: MutableSequence["Artifact"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="Artifact",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    creator = proto.Field(
+    creator: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    logs_uri = proto.Field(
+    logs_uri: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    source_provenance = proto.Field(
+    source_provenance: "Source" = proto.Field(
         proto.MESSAGE,
         number=10,
         message="Source",
     )
-    trigger_id = proto.Field(
+    trigger_id: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    build_options = proto.MapField(
+    build_options: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=12,
     )
-    builder_version = proto.Field(
+    builder_version: str = proto.Field(
         proto.STRING,
         number=13,
     )
@@ -152,7 +154,7 @@ class Source(proto.Message):
         artifact_storage_source_uri (str):
             If provided, the input binary artifacts for
             the build came from this location.
-        file_hashes (Mapping[str, grafeas.grafeas_v1.types.FileHashes]):
+        file_hashes (MutableMapping[str, grafeas.grafeas_v1.types.FileHashes]):
             Hash(es) of the build source, which can be
             used to verify that the original source
             integrity was maintained in the build.
@@ -167,7 +169,7 @@ class Source(proto.Message):
         context (grafeas.grafeas_v1.types.SourceContext):
             If provided, the source code used for the
             build came from this location.
-        additional_contexts (Sequence[grafeas.grafeas_v1.types.SourceContext]):
+        additional_contexts (MutableSequence[grafeas.grafeas_v1.types.SourceContext]):
             If provided, some of the source code used for
             the build may be found in these locations, in
             the case where the source repository had
@@ -176,22 +178,22 @@ class Source(proto.Message):
             field.
     """
 
-    artifact_storage_source_uri = proto.Field(
+    artifact_storage_source_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    file_hashes = proto.MapField(
+    file_hashes: MutableMapping[str, "FileHashes"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=2,
         message="FileHashes",
     )
-    context = proto.Field(
+    context: "SourceContext" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="SourceContext",
     )
-    additional_contexts = proto.RepeatedField(
+    additional_contexts: MutableSequence["SourceContext"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="SourceContext",
@@ -204,11 +206,11 @@ class FileHashes(proto.Message):
     build.
 
     Attributes:
-        file_hash (Sequence[grafeas.grafeas_v1.types.Hash]):
+        file_hash (MutableSequence[grafeas.grafeas_v1.types.Hash]):
             Required. Collection of file hashes.
     """
 
-    file_hash = proto.RepeatedField(
+    file_hash: MutableSequence["Hash"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Hash",
@@ -226,11 +228,11 @@ class Hash(proto.Message):
             Required. The hash value.
     """
 
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    value = proto.Field(
+    value: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
@@ -245,10 +247,10 @@ class Command(proto.Message):
             Required. Name of the command, as presented on the command
             line, or if the command is packaged as a Docker container,
             as presented to ``docker pull``.
-        env (Sequence[str]):
+        env (MutableSequence[str]):
             Environment variables set before running this
             command.
-        args (Sequence[str]):
+        args (MutableSequence[str]):
             Command-line arguments used when executing
             this command.
         dir_ (str):
@@ -257,32 +259,32 @@ class Command(proto.Message):
         id (str):
             Optional unique identifier for this command, used in
             wait_for to reference this command as a dependency.
-        wait_for (Sequence[str]):
+        wait_for (MutableSequence[str]):
             The ID(s) of the command(s) that this command
             depends on.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    env = proto.RepeatedField(
+    env: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    args = proto.RepeatedField(
+    args: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    dir_ = proto.Field(
+    dir_: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    wait_for = proto.RepeatedField(
+    wait_for: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
@@ -299,7 +301,7 @@ class Artifact(proto.Message):
             Artifact ID, if any; for container images, this will be a
             URL by digest like
             ``gcr.io/projectID/imagename@sha256:123456``.
-        names (Sequence[str]):
+        names (MutableSequence[str]):
             Related artifact names. This may be the path to a binary or
             jar file, or in the case of a container build, the name used
             to push the container image to Google Container Registry, as
@@ -308,15 +310,15 @@ class Artifact(proto.Message):
             to one image.
     """
 
-    checksum = proto.Field(
+    checksum: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    names = proto.RepeatedField(
+    names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -350,29 +352,29 @@ class SourceContext(proto.Message):
             Git repo (e.g., GitHub).
 
             This field is a member of `oneof`_ ``context``.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels with user defined metadata.
     """
 
-    cloud_repo = proto.Field(
+    cloud_repo: "CloudRepoSourceContext" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="context",
         message="CloudRepoSourceContext",
     )
-    gerrit = proto.Field(
+    gerrit: "GerritSourceContext" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="context",
         message="GerritSourceContext",
     )
-    git = proto.Field(
+    git: "GitSourceContext" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="context",
         message="GitSourceContext",
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
@@ -396,12 +398,12 @@ class AliasContext(proto.Message):
         MOVABLE = 2
         OTHER = 4
 
-    kind = proto.Field(
+    kind: Kind = proto.Field(
         proto.ENUM,
         number=1,
         enum=Kind,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -431,17 +433,17 @@ class CloudRepoSourceContext(proto.Message):
             This field is a member of `oneof`_ ``revision``.
     """
 
-    repo_id = proto.Field(
+    repo_id: "RepoId" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="RepoId",
     )
-    revision_id = proto.Field(
+    revision_id: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="revision",
     )
-    alias_context = proto.Field(
+    alias_context: "AliasContext" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="revision",
@@ -477,20 +479,20 @@ class GerritSourceContext(proto.Message):
             This field is a member of `oneof`_ ``revision``.
     """
 
-    host_uri = proto.Field(
+    host_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    gerrit_project = proto.Field(
+    gerrit_project: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    revision_id = proto.Field(
+    revision_id: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="revision",
     )
-    alias_context = proto.Field(
+    alias_context: "AliasContext" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="revision",
@@ -509,11 +511,11 @@ class GitSourceContext(proto.Message):
             Git commit hash.
     """
 
-    url = proto.Field(
+    url: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    revision_id = proto.Field(
+    revision_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -542,13 +544,13 @@ class RepoId(proto.Message):
             This field is a member of `oneof`_ ``id``.
     """
 
-    project_repo_id = proto.Field(
+    project_repo_id: "ProjectRepoId" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="id",
         message="ProjectRepoId",
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="id",
@@ -567,11 +569,11 @@ class ProjectRepoId(proto.Message):
             default repo.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    repo_name = proto.Field(
+    repo_name: str = proto.Field(
         proto.STRING,
         number=2,
     )

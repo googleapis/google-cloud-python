@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -44,7 +46,7 @@ class UpgradeNote(proto.Message):
         version (grafeas.grafeas_v1.types.Version):
             Required for non-Windows OS. The version of
             the package in machine + human readable form.
-        distributions (Sequence[grafeas.grafeas_v1.types.UpgradeDistribution]):
+        distributions (MutableSequence[grafeas.grafeas_v1.types.UpgradeDistribution]):
             Metadata about the upgrade for each specific
             operating system.
         windows_update (grafeas.grafeas_v1.types.WindowsUpdate):
@@ -52,21 +54,21 @@ class UpgradeNote(proto.Message):
             metadata about the Windows update.
     """
 
-    package = proto.Field(
+    package: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    version = proto.Field(
+    version: g_package.Version = proto.Field(
         proto.MESSAGE,
         number=2,
         message=g_package.Version,
     )
-    distributions = proto.RepeatedField(
+    distributions: MutableSequence["UpgradeDistribution"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="UpgradeDistribution",
     )
-    windows_update = proto.Field(
+    windows_update: "WindowsUpdate" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="WindowsUpdate",
@@ -93,23 +95,23 @@ class UpgradeDistribution(proto.Message):
         severity (str):
             The severity as specified by the upstream
             operating system.
-        cve (Sequence[str]):
+        cve (MutableSequence[str]):
             The cve tied to this Upgrade.
     """
 
-    cpe_uri = proto.Field(
+    cpe_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    classification = proto.Field(
+    classification: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    severity = proto.Field(
+    severity: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    cve = proto.RepeatedField(
+    cve: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
@@ -129,10 +131,10 @@ class WindowsUpdate(proto.Message):
             The localized title of the update.
         description (str):
             The localized description of the update.
-        categories (Sequence[grafeas.grafeas_v1.types.WindowsUpdate.Category]):
+        categories (MutableSequence[grafeas.grafeas_v1.types.WindowsUpdate.Category]):
             The list of categories to which the update
             belongs.
-        kb_article_ids (Sequence[str]):
+        kb_article_ids (MutableSequence[str]):
             The Microsoft Knowledge Base article IDs that
             are associated with the update.
         support_url (str):
@@ -153,11 +155,11 @@ class WindowsUpdate(proto.Message):
                 The revision number of the update.
         """
 
-        update_id = proto.Field(
+        update_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        revision = proto.Field(
+        revision: int = proto.Field(
             proto.INT32,
             number=2,
         )
@@ -172,42 +174,42 @@ class WindowsUpdate(proto.Message):
                 The localized name of the category.
         """
 
-        category_id = proto.Field(
+        category_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=2,
         )
 
-    identity = proto.Field(
+    identity: Identity = proto.Field(
         proto.MESSAGE,
         number=1,
         message=Identity,
     )
-    title = proto.Field(
+    title: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    categories = proto.RepeatedField(
+    categories: MutableSequence[Category] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=Category,
     )
-    kb_article_ids = proto.RepeatedField(
+    kb_article_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    support_url = proto.Field(
+    support_url: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    last_published_timestamp = proto.Field(
+    last_published_timestamp: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
@@ -238,21 +240,21 @@ class UpgradeOccurrence(proto.Message):
             metadata about the Windows update.
     """
 
-    package = proto.Field(
+    package: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    parsed_version = proto.Field(
+    parsed_version: g_package.Version = proto.Field(
         proto.MESSAGE,
         number=3,
         message=g_package.Version,
     )
-    distribution = proto.Field(
+    distribution: "UpgradeDistribution" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="UpgradeDistribution",
     )
-    windows_update = proto.Field(
+    windows_update: "WindowsUpdate" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="WindowsUpdate",

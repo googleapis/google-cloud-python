@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from grafeas.grafeas_v1.types import intoto_provenance
@@ -48,7 +50,7 @@ class InTotoStatement(proto.Message):
     Attributes:
         type_ (str):
             Always ``https://in-toto.io/Statement/v0.1``.
-        subject (Sequence[grafeas.grafeas_v1.types.Subject]):
+        subject (MutableSequence[grafeas.grafeas_v1.types.Subject]):
 
         predicate_type (str):
             ``https://slsa.dev/provenance/v0.1`` for SlsaProvenance.
@@ -63,36 +65,38 @@ class InTotoStatement(proto.Message):
             This field is a member of `oneof`_ ``predicate``.
     """
 
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    subject = proto.RepeatedField(
+    subject: MutableSequence["Subject"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="Subject",
     )
-    predicate_type = proto.Field(
+    predicate_type: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    provenance = proto.Field(
+    provenance: intoto_provenance.InTotoProvenance = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="predicate",
         message=intoto_provenance.InTotoProvenance,
     )
-    slsa_provenance = proto.Field(
+    slsa_provenance: g_slsa_provenance.SlsaProvenance = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="predicate",
         message=g_slsa_provenance.SlsaProvenance,
     )
-    slsa_provenance_zero_two = proto.Field(
-        proto.MESSAGE,
-        number=6,
-        oneof="predicate",
-        message=g_slsa_provenance_zero_two.SlsaProvenanceZeroTwo,
+    slsa_provenance_zero_two: g_slsa_provenance_zero_two.SlsaProvenanceZeroTwo = (
+        proto.Field(
+            proto.MESSAGE,
+            number=6,
+            oneof="predicate",
+            message=g_slsa_provenance_zero_two.SlsaProvenanceZeroTwo,
+        )
     )
 
 
@@ -102,17 +106,17 @@ class Subject(proto.Message):
     Attributes:
         name (str):
 
-        digest (Mapping[str, str]):
+        digest (MutableMapping[str, str]):
             ``"<ALGORITHM>": "<HEX_VALUE>"`` Algorithms can be e.g.
             sha256, sha512 See
             https://github.com/in-toto/attestation/blob/main/spec/field_types.md#DigestSet
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    digest = proto.MapField(
+    digest: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,

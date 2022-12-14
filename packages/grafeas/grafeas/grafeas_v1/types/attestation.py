@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from grafeas.grafeas_v1.types import common
@@ -61,12 +63,12 @@ class AttestationNote(proto.Message):
                 attestation authority, for example "qa".
         """
 
-        human_readable_name = proto.Field(
+        human_readable_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    hint = proto.Field(
+    hint: Hint = proto.Field(
         proto.MESSAGE,
         number=1,
         message=Hint,
@@ -84,7 +86,7 @@ class Jwt(proto.Message):
             https://tools.ietf.org/html/rfc7515.html#section-3.1
     """
 
-    compact_jwt = proto.Field(
+    compact_jwt: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -105,13 +107,13 @@ class AttestationOccurrence(proto.Message):
         serialized_payload (bytes):
             Required. The serialized payload that is verified by one or
             more ``signatures``.
-        signatures (Sequence[grafeas.grafeas_v1.types.Signature]):
+        signatures (MutableSequence[grafeas.grafeas_v1.types.Signature]):
             One or more signatures over ``serialized_payload``. Verifier
             implementations should consider this attestation message
             verified if at least one ``signature`` verifies
             ``serialized_payload``. See ``Signature`` in common.proto
             for more details on signature structure and verification.
-        jwts (Sequence[grafeas.grafeas_v1.types.Jwt]):
+        jwts (MutableSequence[grafeas.grafeas_v1.types.Jwt]):
             One or more JWTs encoding a self-contained attestation. Each
             JWT encodes the payload that it verifies within the JWT
             itself. Verifier implementation SHOULD ignore the
@@ -124,16 +126,16 @@ class AttestationOccurrence(proto.Message):
             Grafeas.
     """
 
-    serialized_payload = proto.Field(
+    serialized_payload: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    signatures = proto.RepeatedField(
+    signatures: MutableSequence[common.Signature] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=common.Signature,
     )
-    jwts = proto.RepeatedField(
+    jwts: MutableSequence["Jwt"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="Jwt",

@@ -13,27 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import MutableMapping, MutableSequence
-
-import proto  # type: ignore
-
-
-__protobuf__ = proto.module(
-    package="grafeas.v1",
-    manifest={
-        "Severity",
-    },
-)
-
-
-class Severity(proto.Enum):
-    r"""Note provider assigned severity/impact ranking."""
-    SEVERITY_UNSPECIFIED = 0
-    MINIMAL = 1
-    LOW = 2
-    MEDIUM = 3
-    HIGH = 4
-    CRITICAL = 5
-
-
-__all__ = tuple(sorted(__protobuf__.manifest))
+__version__ = "1.6.1"  # {x-release-please-version}
