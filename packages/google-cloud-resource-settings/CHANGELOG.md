@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-resource-settings/compare/v1.4.3...v1.5.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.resourcesettings.__version__` ([24d1f71](https://github.com/googleapis/python-resource-settings/commit/24d1f71570281c23a995d90aae23b312ac91c4dd))
+* Add typing to proto.Message based class attributes ([24d1f71](https://github.com/googleapis/python-resource-settings/commit/24d1f71570281c23a995d90aae23b312ac91c4dd))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([24d1f71](https://github.com/googleapis/python-resource-settings/commit/24d1f71570281c23a995d90aae23b312ac91c4dd))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([78343a3](https://github.com/googleapis/python-resource-settings/commit/78343a3722e4a7c58af6fed867eeabde77b2717f))
+* Drop usage of pkg_resources ([78343a3](https://github.com/googleapis/python-resource-settings/commit/78343a3722e4a7c58af6fed867eeabde77b2717f))
+* Fix timeout default values ([78343a3](https://github.com/googleapis/python-resource-settings/commit/78343a3722e4a7c58af6fed867eeabde77b2717f))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([24d1f71](https://github.com/googleapis/python-resource-settings/commit/24d1f71570281c23a995d90aae23b312ac91c4dd))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([78343a3](https://github.com/googleapis/python-resource-settings/commit/78343a3722e4a7c58af6fed867eeabde77b2717f))
+
 ## [1.4.3](https://github.com/googleapis/python-resource-settings/compare/v1.4.2...v1.4.3) (2022-10-07)
 
 
