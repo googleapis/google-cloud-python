@@ -6815,6 +6815,7 @@ def test_create_cdn_key_rest_required_fields(
                     "cdnKeyId",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -7123,7 +7124,7 @@ def test_list_cdn_keys_rest_required_fields(
 
             response = client.list_cdn_keys(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -7460,7 +7461,7 @@ def test_get_cdn_key_rest_required_fields(
 
             response = client.get_cdn_key(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -7719,7 +7720,7 @@ def test_delete_cdn_key_rest_required_fields(
 
             response = client.delete_cdn_key(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -7993,7 +7994,7 @@ def test_update_cdn_key_rest_required_fields(
 
             response = client.update_cdn_key(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -8366,7 +8367,7 @@ def test_create_vod_session_rest_required_fields(
 
             response = client.create_vod_session(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -8717,7 +8718,7 @@ def test_get_vod_session_rest_required_fields(
 
             response = client.get_vod_session(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -8996,7 +8997,7 @@ def test_list_vod_stitch_details_rest_required_fields(
 
             response = client.list_vod_stitch_details(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -9341,7 +9342,7 @@ def test_get_vod_stitch_detail_rest_required_fields(
 
             response = client.get_vod_stitch_detail(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -9625,7 +9626,7 @@ def test_list_vod_ad_tag_details_rest_required_fields(
 
             response = client.list_vod_ad_tag_details(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -9970,7 +9971,7 @@ def test_get_vod_ad_tag_detail_rest_required_fields(
 
             response = client.get_vod_ad_tag_detail(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -10254,7 +10255,7 @@ def test_list_live_ad_tag_details_rest_required_fields(
 
             response = client.list_live_ad_tag_details(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -10599,7 +10600,7 @@ def test_get_live_ad_tag_detail_rest_required_fields(
 
             response = client.get_live_ad_tag_detail(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -10890,6 +10891,7 @@ def test_create_slate_rest_required_fields(
                     "slateId",
                     "",
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -11180,7 +11182,7 @@ def test_list_slates_rest_required_fields(
 
             response = client.list_slates(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -11516,7 +11518,7 @@ def test_get_slate_rest_required_fields(
 
             response = client.get_slate(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -11787,7 +11789,7 @@ def test_update_slate_rest_required_fields(
 
             response = client.update_slate(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -12065,7 +12067,7 @@ def test_delete_slate_rest_required_fields(
 
             response = client.delete_slate(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -12354,7 +12356,7 @@ def test_create_live_session_rest_required_fields(
 
             response = client.create_live_session(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -12661,7 +12663,7 @@ def test_get_live_session_rest_required_fields(
 
             response = client.get_live_session(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 

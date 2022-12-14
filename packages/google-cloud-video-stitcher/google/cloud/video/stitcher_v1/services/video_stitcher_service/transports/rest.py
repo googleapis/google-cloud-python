@@ -72,139 +72,157 @@ class VideoStitcherServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomVideoStitcherServiceInterceptor(VideoStitcherServiceRestInterceptor):
-            def pre_create_cdn_key(request, metadata):
+            def pre_create_cdn_key(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_cdn_key(response):
+            def post_create_cdn_key(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_live_session(request, metadata):
+            def pre_create_live_session(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_live_session(response):
+            def post_create_live_session(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_slate(request, metadata):
+            def pre_create_slate(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_slate(response):
+            def post_create_slate(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_vod_session(request, metadata):
+            def pre_create_vod_session(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_vod_session(response):
+            def post_create_vod_session(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_cdn_key(request, metadata):
+            def pre_delete_cdn_key(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_delete_slate(request, metadata):
+            def pre_delete_slate(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_get_cdn_key(request, metadata):
+            def pre_get_cdn_key(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_cdn_key(response):
+            def post_get_cdn_key(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_live_ad_tag_detail(request, metadata):
+            def pre_get_live_ad_tag_detail(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_live_ad_tag_detail(response):
+            def post_get_live_ad_tag_detail(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_live_session(request, metadata):
+            def pre_get_live_session(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_live_session(response):
+            def post_get_live_session(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_slate(request, metadata):
+            def pre_get_slate(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_slate(response):
+            def post_get_slate(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_vod_ad_tag_detail(request, metadata):
+            def pre_get_vod_ad_tag_detail(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_vod_ad_tag_detail(response):
+            def post_get_vod_ad_tag_detail(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_vod_session(request, metadata):
+            def pre_get_vod_session(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_vod_session(response):
+            def post_get_vod_session(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_vod_stitch_detail(request, metadata):
+            def pre_get_vod_stitch_detail(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_vod_stitch_detail(response):
+            def post_get_vod_stitch_detail(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_cdn_keys(request, metadata):
+            def pre_list_cdn_keys(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_cdn_keys(response):
+            def post_list_cdn_keys(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_live_ad_tag_details(request, metadata):
+            def pre_list_live_ad_tag_details(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_live_ad_tag_details(response):
+            def post_list_live_ad_tag_details(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_slates(request, metadata):
+            def pre_list_slates(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_slates(response):
+            def post_list_slates(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_vod_ad_tag_details(request, metadata):
+            def pre_list_vod_ad_tag_details(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_vod_ad_tag_details(response):
+            def post_list_vod_ad_tag_details(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_vod_stitch_details(request, metadata):
+            def pre_list_vod_stitch_details(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_vod_stitch_details(response):
+            def post_list_vod_stitch_details(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_cdn_key(request, metadata):
+            def pre_update_cdn_key(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_cdn_key(response):
+            def post_update_cdn_key(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_slate(request, metadata):
+            def pre_update_slate(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_slate(response):
+            def post_update_slate(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = VideoStitcherServiceRestTransport(interceptor=MyCustomVideoStitcherServiceInterceptor())
         client = VideoStitcherServiceClient(transport=transport)
@@ -677,9 +695,6 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
 
     It sends JSON representations of protocol buffers over HTTP/1.1
 
-    NOTE: This REST transport functionality is currently in a beta
-    state (preview). We welcome your feedback via an issue in this
-    library's source repository. Thank you!
     """
 
     def __init__(
@@ -699,39 +714,35 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
     ) -> None:
         """Instantiate the transport.
 
-        NOTE: This REST transport functionality is currently in a beta
-        state (preview). We welcome your feedback via a GitHub issue in
-        this library's repository. Thank you!
+        Args:
+            host (Optional[str]):
+                 The hostname to connect to.
+            credentials (Optional[google.auth.credentials.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify the application to the service; if none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
 
-         Args:
-             host (Optional[str]):
-                  The hostname to connect to.
-             credentials (Optional[google.auth.credentials.Credentials]): The
-                 authorization credentials to attach to requests. These
-                 credentials identify the application to the service; if none
-                 are specified, the client will attempt to ascertain the
-                 credentials from the environment.
-
-             credentials_file (Optional[str]): A file with credentials that can
-                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                 This argument is ignored if ``channel`` is provided.
-             scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                 ignored if ``channel`` is provided.
-             client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
-                 certificate to configure mutual TLS HTTP channel. It is ignored
-                 if ``channel`` is provided.
-             quota_project_id (Optional[str]): An optional project to use for billing
-                 and quota.
-             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
-                 The client info used to send a user-agent string along with
-                 API requests. If ``None``, then default info will be used.
-                 Generally, you only need to set this if you are developing
-                 your own client library.
-             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
-                 be used for service account credentials.
-             url_scheme: the protocol scheme for the API endpoint.  Normally
-                 "https", but for testing or local servers,
-                 "http" can be specified.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is ignored if ``channel`` is provided.
+            scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                ignored if ``channel`` is provided.
+            client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
+                certificate to configure mutual TLS HTTP channel. It is ignored
+                if ``channel`` is provided.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you are developing
+                your own client library.
+            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                be used for service account credentials.
+            url_scheme: the protocol scheme for the API endpoint.  Normally
+                "https", but for testing or local servers,
+                "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -824,7 +835,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -834,10 +845,12 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -921,7 +934,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -931,10 +944,12 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1018,7 +1033,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -1028,10 +1043,12 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1115,7 +1132,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -1125,10 +1142,12 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1208,10 +1227,12 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1282,10 +1303,12 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1364,10 +1387,12 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1454,10 +1479,12 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1542,10 +1569,12 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1628,10 +1657,12 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1718,10 +1749,12 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1804,10 +1837,12 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1894,10 +1929,12 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -1982,10 +2019,12 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -2072,10 +2111,12 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -2160,10 +2201,12 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -2250,10 +2293,12 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -2340,10 +2385,12 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -2430,7 +2477,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -2440,10 +2487,12 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -2527,7 +2576,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -2537,10 +2586,12 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)

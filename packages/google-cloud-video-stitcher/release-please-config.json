@@ -4,6 +4,7 @@
     ".": {
       "release-type": "python",
       "extra-files": [
+        "google/cloud/video/stitcher_v1/gapic_version.py",
         "google/cloud/video/stitcher/gapic_version.py",
         {
           "type": "json",
