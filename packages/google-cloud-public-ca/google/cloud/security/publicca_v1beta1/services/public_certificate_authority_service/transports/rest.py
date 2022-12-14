@@ -47,10 +47,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class PublicCertificateAuthorityServiceRestInterceptor:
     """Interceptor for PublicCertificateAuthorityService.
@@ -67,12 +63,13 @@ class PublicCertificateAuthorityServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomPublicCertificateAuthorityServiceInterceptor(PublicCertificateAuthorityServiceRestInterceptor):
-            def pre_create_external_account_key(request, metadata):
+            def pre_create_external_account_key(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_external_account_key(response):
+            def post_create_external_account_key(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = PublicCertificateAuthorityServiceRestTransport(interceptor=MyCustomPublicCertificateAuthorityServiceInterceptor())
         client = PublicCertificateAuthorityServiceClient(transport=transport)
