@@ -105,6 +105,11 @@ class ReadSession(proto.Message):
             are completely consumed. This estimate is based
             on metadata from the table which might be
             incomplete or stale.
+        estimated_row_count (int):
+            Output only. An estimate on the number of
+            rows present in this session's streams. This
+            estimate is based on metadata from the table
+            which might be incomplete or stale.
         trace_id (str):
             Optional. ID set by client to annotate a
             session identity.  This does not need to be
@@ -267,6 +272,10 @@ class ReadSession(proto.Message):
     estimated_total_bytes_scanned: int = proto.Field(
         proto.INT64,
         number=12,
+    )
+    estimated_row_count: int = proto.Field(
+        proto.INT64,
+        number=14,
     )
     trace_id: str = proto.Field(
         proto.STRING,

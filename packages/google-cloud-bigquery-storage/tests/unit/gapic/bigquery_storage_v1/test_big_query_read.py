@@ -702,6 +702,7 @@ def test_create_read_session(request_type, transport: str = "grpc"):
             data_format=stream.DataFormat.AVRO,
             table="table_value",
             estimated_total_bytes_scanned=3076,
+            estimated_row_count=2047,
             trace_id="trace_id_value",
             avro_schema=avro.AvroSchema(schema="schema_value"),
         )
@@ -718,6 +719,7 @@ def test_create_read_session(request_type, transport: str = "grpc"):
     assert response.data_format == stream.DataFormat.AVRO
     assert response.table == "table_value"
     assert response.estimated_total_bytes_scanned == 3076
+    assert response.estimated_row_count == 2047
     assert response.trace_id == "trace_id_value"
 
 
@@ -763,6 +765,7 @@ async def test_create_read_session_async(
                 data_format=stream.DataFormat.AVRO,
                 table="table_value",
                 estimated_total_bytes_scanned=3076,
+                estimated_row_count=2047,
                 trace_id="trace_id_value",
             )
         )
@@ -779,6 +782,7 @@ async def test_create_read_session_async(
     assert response.data_format == stream.DataFormat.AVRO
     assert response.table == "table_value"
     assert response.estimated_total_bytes_scanned == 3076
+    assert response.estimated_row_count == 2047
     assert response.trace_id == "trace_id_value"
 
 
