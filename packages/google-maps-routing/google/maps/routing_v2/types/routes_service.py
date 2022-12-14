@@ -69,12 +69,9 @@ class ComputeRoutesRequest(proto.Message):
             Optional. Specifies how to compute the route. The server
             attempts to use the selected routing preference to compute
             the route. If the routing preference results in an error or
-            an extra long latency, then an error is returned. In the
-            future, we might implement a fallback mechanism to use a
-            different option when the preferred option does not give a
-            valid result. You can specify this option only when the
-            ``travel_mode`` is ``DRIVE`` or ``TWO_WHEELER``, otherwise
-            the request fails.
+            an extra long latency, then an error is returned. You can
+            specify this option only when the ``travel_mode`` is
+            ``DRIVE`` or ``TWO_WHEELER``, otherwise the request fails.
         polyline_quality (google.maps.routing_v2.types.PolylineQuality):
             Optional. Specifies your preference for the
             quality of the polyline.
@@ -247,12 +244,9 @@ class ComputeRouteMatrixRequest(proto.Message):
             Optional. Specifies how to compute the route. The server
             attempts to use the selected routing preference to compute
             the route. If the routing preference results in an error or
-            an extra long latency, an error is returned. In the future,
-            we might implement a fallback mechanism to use a different
-            option when the preferred option does not give a valid
-            result. You can specify this option only when the
-            ``travel_mode`` is ``DRIVE`` or ``TWO_WHEELER``, otherwise
-            the request fails.
+            an extra long latency, an error is returned. You can specify
+            this option only when the ``travel_mode`` is ``DRIVE`` or
+            ``TWO_WHEELER``, otherwise the request fails.
         departure_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. The departure time. If you don't
             set this value, this defaults to the time that
