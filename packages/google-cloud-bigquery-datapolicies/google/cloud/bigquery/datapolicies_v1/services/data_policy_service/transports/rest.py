@@ -51,10 +51,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class DataPolicyServiceRestInterceptor:
     """Interceptor for DataPolicyService.
@@ -71,65 +67,73 @@ class DataPolicyServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomDataPolicyServiceInterceptor(DataPolicyServiceRestInterceptor):
-            def pre_create_data_policy(request, metadata):
+            def pre_create_data_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_data_policy(response):
+            def post_create_data_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_data_policy(request, metadata):
+            def pre_delete_data_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_get_data_policy(request, metadata):
+            def pre_get_data_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_data_policy(response):
+            def post_get_data_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_iam_policy(request, metadata):
+            def pre_get_iam_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_iam_policy(response):
+            def post_get_iam_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_data_policies(request, metadata):
+            def pre_list_data_policies(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_data_policies(response):
+            def post_list_data_policies(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_rename_data_policy(request, metadata):
+            def pre_rename_data_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_rename_data_policy(response):
+            def post_rename_data_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_iam_policy(request, metadata):
+            def pre_set_iam_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_iam_policy(response):
+            def post_set_iam_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_test_iam_permissions(request, metadata):
+            def pre_test_iam_permissions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_test_iam_permissions(response):
+            def post_test_iam_permissions(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_data_policy(request, metadata):
+            def pre_update_data_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_data_policy(response):
+            def post_update_data_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = DataPolicyServiceRestTransport(interceptor=MyCustomDataPolicyServiceInterceptor())
         client = DataPolicyServiceClient(transport=transport)
