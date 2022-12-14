@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.8.0](https://github.com/googleapis/python-life-sciences/compare/v0.7.2...v0.8.0) (2022-12-14)
+
+
+### Features
+
+* Add Pipeline.secret_environment, Action.secret_environment, VirtualMachine.reservation ([76d2a14](https://github.com/googleapis/python-life-sciences/commit/76d2a14d75c73a5f1c4b403c5be4a94d691e9a34))
+* Add support for `google.cloud.lifesciences.__version__` ([76d2a14](https://github.com/googleapis/python-life-sciences/commit/76d2a14d75c73a5f1c4b403c5be4a94d691e9a34))
+* Add typing to proto.Message based class attributes ([76d2a14](https://github.com/googleapis/python-life-sciences/commit/76d2a14d75c73a5f1c4b403c5be4a94d691e9a34))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([76d2a14](https://github.com/googleapis/python-life-sciences/commit/76d2a14d75c73a5f1c4b403c5be4a94d691e9a34))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([94cf595](https://github.com/googleapis/python-life-sciences/commit/94cf595d26c14566085646d9b312d17f21e7a48e))
+* Drop usage of pkg_resources ([94cf595](https://github.com/googleapis/python-life-sciences/commit/94cf595d26c14566085646d9b312d17f21e7a48e))
+* Fix timeout default values ([94cf595](https://github.com/googleapis/python-life-sciences/commit/94cf595d26c14566085646d9b312d17f21e7a48e))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([76d2a14](https://github.com/googleapis/python-life-sciences/commit/76d2a14d75c73a5f1c4b403c5be4a94d691e9a34))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([94cf595](https://github.com/googleapis/python-life-sciences/commit/94cf595d26c14566085646d9b312d17f21e7a48e))
+
 ## [0.7.2](https://github.com/googleapis/python-life-sciences/compare/v0.7.1...v0.7.2) (2022-10-10)
 
 
