@@ -185,8 +185,8 @@ class SynthesizeSpeechRequest(proto.Message):
 class SynthesisInput(proto.Message):
     r"""Contains text input to be synthesized. Either ``text`` or ``ssml``
     must be supplied. Supplying both or neither returns
-    [google.rpc.Code.INVALID_ARGUMENT][]. The input size is limited to
-    5000 characters.
+    [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
+    The input size is limited to 5000 bytes.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -203,8 +203,9 @@ class SynthesisInput(proto.Message):
         ssml (str):
             The SSML document to be synthesized. The SSML document must
             be valid and well-formed. Otherwise the RPC will fail and
-            return [google.rpc.Code.INVALID_ARGUMENT][]. For more
-            information, see
+            return
+            [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
+            For more information, see
             `SSML <https://cloud.google.com/text-to-speech/docs/ssml>`__.
 
             This field is a member of `oneof`_ ``input_source``.
@@ -315,7 +316,8 @@ class AudioConfig(proto.Message):
             desired sample rate (which might result in worse audio
             quality), unless the specified sample rate is not supported
             for the encoding chosen, in which case it will fail the
-            request and return [google.rpc.Code.INVALID_ARGUMENT][].
+            request and return
+            [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
         effects_profile_id (MutableSequence[str]):
             Optional. Input only. An identifier which selects 'audio
             effects' profiles that are applied on (post synthesized)

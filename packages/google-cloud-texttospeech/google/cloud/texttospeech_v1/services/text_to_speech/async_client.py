@@ -34,12 +34,15 @@ from google.api_core import retry as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.texttospeech_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
+
+from google.longrunning import operations_pb2
 
 from google.cloud.texttospeech_v1.types import cloud_tts
 
@@ -214,7 +217,7 @@ class TextToSpeechAsyncClient:
         *,
         language_code: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_tts.ListVoicesResponse:
         r"""Returns a list of Voice supported for synthesis.
@@ -318,7 +321,7 @@ class TextToSpeechAsyncClient:
         voice: Optional[cloud_tts.VoiceSelectionParams] = None,
         audio_config: Optional[cloud_tts.AudioConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_tts.SynthesizeSpeechResponse:
         r"""Synthesizes speech synchronously: receive results
@@ -445,14 +448,9 @@ class TextToSpeechAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-texttospeech",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("TextToSpeechAsyncClient",)

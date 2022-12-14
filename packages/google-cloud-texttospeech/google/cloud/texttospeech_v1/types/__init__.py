@@ -26,6 +26,11 @@ from .cloud_tts import (
     Voice,
     VoiceSelectionParams,
 )
+from .cloud_tts_lrs import (
+    SynthesizeLongAudioMetadata,
+    SynthesizeLongAudioRequest,
+    SynthesizeLongAudioResponse,
+)
 
 __all__ = (
     "AudioConfig",
@@ -39,4 +44,7 @@ __all__ = (
     "VoiceSelectionParams",
     "AudioEncoding",
     "SsmlVoiceGender",
+    "SynthesizeLongAudioMetadata",
+    "SynthesizeLongAudioRequest",
+    "SynthesizeLongAudioResponse",
 )

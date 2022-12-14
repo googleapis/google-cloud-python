@@ -19,6 +19,10 @@ __version__ = package_version.__version__
 
 
 from .services.text_to_speech import TextToSpeechAsyncClient, TextToSpeechClient
+from .services.text_to_speech_long_audio_synthesize import (
+    TextToSpeechLongAudioSynthesizeAsyncClient,
+    TextToSpeechLongAudioSynthesizeClient,
+)
 from .types.cloud_tts import (
     AudioConfig,
     AudioEncoding,
@@ -33,9 +37,15 @@ from .types.cloud_tts import (
     Voice,
     VoiceSelectionParams,
 )
+from .types.cloud_tts_lrs import (
+    SynthesizeLongAudioMetadata,
+    SynthesizeLongAudioRequest,
+    SynthesizeLongAudioResponse,
+)
 
 __all__ = (
     "TextToSpeechAsyncClient",
+    "TextToSpeechLongAudioSynthesizeAsyncClient",
     "AudioConfig",
     "AudioEncoding",
     "CustomVoiceParams",
@@ -43,9 +53,13 @@ __all__ = (
     "ListVoicesResponse",
     "SsmlVoiceGender",
     "SynthesisInput",
+    "SynthesizeLongAudioMetadata",
+    "SynthesizeLongAudioRequest",
+    "SynthesizeLongAudioResponse",
     "SynthesizeSpeechRequest",
     "SynthesizeSpeechResponse",
     "TextToSpeechClient",
+    "TextToSpeechLongAudioSynthesizeClient",
     "Timepoint",
     "Voice",
     "VoiceSelectionParams",

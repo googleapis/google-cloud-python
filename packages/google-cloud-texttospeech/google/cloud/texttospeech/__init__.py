@@ -24,6 +24,12 @@ from google.cloud.texttospeech_v1.services.text_to_speech.async_client import (
 from google.cloud.texttospeech_v1.services.text_to_speech.client import (
     TextToSpeechClient,
 )
+from google.cloud.texttospeech_v1.services.text_to_speech_long_audio_synthesize.async_client import (
+    TextToSpeechLongAudioSynthesizeAsyncClient,
+)
+from google.cloud.texttospeech_v1.services.text_to_speech_long_audio_synthesize.client import (
+    TextToSpeechLongAudioSynthesizeClient,
+)
 from google.cloud.texttospeech_v1.types.cloud_tts import (
     AudioConfig,
     AudioEncoding,
@@ -37,10 +43,17 @@ from google.cloud.texttospeech_v1.types.cloud_tts import (
     Voice,
     VoiceSelectionParams,
 )
+from google.cloud.texttospeech_v1.types.cloud_tts_lrs import (
+    SynthesizeLongAudioMetadata,
+    SynthesizeLongAudioRequest,
+    SynthesizeLongAudioResponse,
+)
 
 __all__ = (
     "TextToSpeechClient",
     "TextToSpeechAsyncClient",
+    "TextToSpeechLongAudioSynthesizeClient",
+    "TextToSpeechLongAudioSynthesizeAsyncClient",
     "AudioConfig",
     "CustomVoiceParams",
     "ListVoicesRequest",
@@ -52,4 +65,7 @@ __all__ = (
     "VoiceSelectionParams",
     "AudioEncoding",
     "SsmlVoiceGender",
+    "SynthesizeLongAudioMetadata",
+    "SynthesizeLongAudioRequest",
+    "SynthesizeLongAudioResponse",
 )

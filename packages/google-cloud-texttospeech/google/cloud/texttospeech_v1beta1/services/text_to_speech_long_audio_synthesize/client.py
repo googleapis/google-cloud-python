@@ -46,31 +46,40 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.api_core import operation  # type: ignore
+from google.api_core import operation_async  # type: ignore
 from google.longrunning import operations_pb2
 
-from google.cloud.texttospeech_v1beta1.types import cloud_tts
+from google.cloud.texttospeech_v1beta1.types import cloud_tts_lrs
 
-from .transports.base import DEFAULT_CLIENT_INFO, TextToSpeechTransport
-from .transports.grpc import TextToSpeechGrpcTransport
-from .transports.grpc_asyncio import TextToSpeechGrpcAsyncIOTransport
+from .transports.base import (
+    DEFAULT_CLIENT_INFO,
+    TextToSpeechLongAudioSynthesizeTransport,
+)
+from .transports.grpc import TextToSpeechLongAudioSynthesizeGrpcTransport
+from .transports.grpc_asyncio import TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport
 
 
-class TextToSpeechClientMeta(type):
-    """Metaclass for the TextToSpeech client.
+class TextToSpeechLongAudioSynthesizeClientMeta(type):
+    """Metaclass for the TextToSpeechLongAudioSynthesize client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
 
-    _transport_registry = OrderedDict()  # type: Dict[str, Type[TextToSpeechTransport]]
-    _transport_registry["grpc"] = TextToSpeechGrpcTransport
-    _transport_registry["grpc_asyncio"] = TextToSpeechGrpcAsyncIOTransport
+    _transport_registry = (
+        OrderedDict()
+    )  # type: Dict[str, Type[TextToSpeechLongAudioSynthesizeTransport]]
+    _transport_registry["grpc"] = TextToSpeechLongAudioSynthesizeGrpcTransport
+    _transport_registry[
+        "grpc_asyncio"
+    ] = TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport
 
     def get_transport_class(
         cls,
         label: Optional[str] = None,
-    ) -> Type[TextToSpeechTransport]:
+    ) -> Type[TextToSpeechLongAudioSynthesizeTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -89,7 +98,9 @@ class TextToSpeechClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
+class TextToSpeechLongAudioSynthesizeClient(
+    metaclass=TextToSpeechLongAudioSynthesizeClientMeta
+):
     """Service that implements Google Cloud Text-to-Speech API."""
 
     @staticmethod
@@ -138,7 +149,7 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            TextToSpeechClient: The constructed client.
+            TextToSpeechLongAudioSynthesizeClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -156,7 +167,7 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            TextToSpeechClient: The constructed client.
+            TextToSpeechLongAudioSynthesizeClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -165,11 +176,11 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> TextToSpeechTransport:
+    def transport(self) -> TextToSpeechLongAudioSynthesizeTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            TextToSpeechTransport: The transport used by the client
+            TextToSpeechLongAudioSynthesizeTransport: The transport used by the client
                 instance.
         """
         return self._transport
@@ -344,11 +355,13 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, TextToSpeechTransport]] = None,
+        transport: Optional[
+            Union[str, TextToSpeechLongAudioSynthesizeTransport]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the text to speech client.
+        """Instantiates the text to speech long audio synthesize client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -356,7 +369,7 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, TextToSpeechTransport]): The
+            transport (Union[str, TextToSpeechLongAudioSynthesizeTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
@@ -404,8 +417,8 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        if isinstance(transport, TextToSpeechTransport):
-            # transport is a TextToSpeechTransport instance.
+        if isinstance(transport, TextToSpeechLongAudioSynthesizeTransport):
+            # transport is a TextToSpeechLongAudioSynthesizeTransport instance.
             if credentials or client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -440,16 +453,15 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
                 api_audience=client_options.api_audience,
             )
 
-    def list_voices(
+    def synthesize_long_audio(
         self,
-        request: Optional[Union[cloud_tts.ListVoicesRequest, dict]] = None,
+        request: Optional[Union[cloud_tts_lrs.SynthesizeLongAudioRequest, dict]] = None,
         *,
-        language_code: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> cloud_tts.ListVoicesResponse:
-        r"""Returns a list of Voice supported for synthesis.
+    ) -> operation.Operation:
+        r"""Synthesizes long form text asynchronously.
 
         .. code-block:: python
 
@@ -462,38 +474,36 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import texttospeech_v1beta1
 
-            def sample_list_voices():
+            def sample_synthesize_long_audio():
                 # Create a client
-                client = texttospeech_v1beta1.TextToSpeechClient()
+                client = texttospeech_v1beta1.TextToSpeechLongAudioSynthesizeClient()
 
                 # Initialize request argument(s)
-                request = texttospeech_v1beta1.ListVoicesRequest(
+                input = texttospeech_v1beta1.SynthesisInput()
+                input.text = "text_value"
+
+                audio_config = texttospeech_v1beta1.AudioConfig()
+                audio_config.audio_encoding = "ALAW"
+
+                request = texttospeech_v1beta1.SynthesizeLongAudioRequest(
+                    input=input,
+                    audio_config=audio_config,
                 )
 
                 # Make the request
-                response = client.list_voices(request=request)
+                operation = client.synthesize_long_audio(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.texttospeech_v1beta1.types.ListVoicesRequest, dict]):
+            request (Union[google.cloud.texttospeech_v1beta1.types.SynthesizeLongAudioRequest, dict]):
                 The request object. The top-level message sent by the
-                client for the `ListVoices` method.
-            language_code (str):
-                Optional. Recommended.
-                `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__
-                language tag. If not specified, the API will return all
-                supported voices. If specified, the ListVoices call will
-                only return voices that can be used to synthesize this
-                language_code. For example, if you specify ``"en-NZ"``,
-                all ``"en-NZ"`` voices will be returned. If you specify
-                ``"no"``, both ``"no-\*"`` (Norwegian) and ``"nb-\*"``
-                (Norwegian Bokmal) voices will be returned.
-
-                This corresponds to the ``language_code`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
+                client for the `SynthesizeLongAudio` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -501,35 +511,32 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.texttospeech_v1beta1.types.ListVoicesResponse:
-                The message returned to the client by the ListVoices
-                method.
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.texttospeech_v1beta1.types.SynthesizeLongAudioResponse`
+                The message returned to the client by the
+                SynthesizeLongAudio method.
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([language_code])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
         # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_tts.ListVoicesRequest.
+        # in a cloud_tts_lrs.SynthesizeLongAudioRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, cloud_tts.ListVoicesRequest):
-            request = cloud_tts.ListVoicesRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if language_code is not None:
-                request.language_code = language_code
+        if not isinstance(request, cloud_tts_lrs.SynthesizeLongAudioRequest):
+            request = cloud_tts_lrs.SynthesizeLongAudioRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_voices]
+        rpc = self._transport._wrapped_methods[self._transport.synthesize_long_audio]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
 
         # Send the request.
         response = rpc(
@@ -539,132 +546,12 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
             metadata=metadata,
         )
 
-        # Done; return the response.
-        return response
-
-    def synthesize_speech(
-        self,
-        request: Optional[Union[cloud_tts.SynthesizeSpeechRequest, dict]] = None,
-        *,
-        input: Optional[cloud_tts.SynthesisInput] = None,
-        voice: Optional[cloud_tts.VoiceSelectionParams] = None,
-        audio_config: Optional[cloud_tts.AudioConfig] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> cloud_tts.SynthesizeSpeechResponse:
-        r"""Synthesizes speech synchronously: receive results
-        after all text input has been processed.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import texttospeech_v1beta1
-
-            def sample_synthesize_speech():
-                # Create a client
-                client = texttospeech_v1beta1.TextToSpeechClient()
-
-                # Initialize request argument(s)
-                input = texttospeech_v1beta1.SynthesisInput()
-                input.text = "text_value"
-
-                voice = texttospeech_v1beta1.VoiceSelectionParams()
-                voice.language_code = "language_code_value"
-
-                audio_config = texttospeech_v1beta1.AudioConfig()
-                audio_config.audio_encoding = "ALAW"
-
-                request = texttospeech_v1beta1.SynthesizeSpeechRequest(
-                    input=input,
-                    voice=voice,
-                    audio_config=audio_config,
-                )
-
-                # Make the request
-                response = client.synthesize_speech(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest, dict]):
-                The request object. The top-level message sent by the
-                client for the `SynthesizeSpeech` method.
-            input (google.cloud.texttospeech_v1beta1.types.SynthesisInput):
-                Required. The Synthesizer requires
-                either plain text or SSML as input.
-
-                This corresponds to the ``input`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            voice (google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams):
-                Required. The desired voice of the
-                synthesized audio.
-
-                This corresponds to the ``voice`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            audio_config (google.cloud.texttospeech_v1beta1.types.AudioConfig):
-                Required. The configuration of the
-                synthesized audio.
-
-                This corresponds to the ``audio_config`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechResponse:
-                The message returned to the client by the
-                SynthesizeSpeech method.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([input, voice, audio_config])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_tts.SynthesizeSpeechRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, cloud_tts.SynthesizeSpeechRequest):
-            request = cloud_tts.SynthesizeSpeechRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if input is not None:
-                request.input = input
-            if voice is not None:
-                request.voice = voice
-            if audio_config is not None:
-                request.audio_config = audio_config
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.synthesize_speech]
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            cloud_tts_lrs.SynthesizeLongAudioResponse,
+            metadata_type=cloud_tts_lrs.SynthesizeLongAudioMetadata,
         )
 
         # Done; return the response.
@@ -689,4 +576,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("TextToSpeechClient",)
+__all__ = ("TextToSpeechLongAudioSynthesizeClient",)

@@ -24,9 +24,18 @@ except ImportError:  # pragma: NO COVER
 
 import math
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
+from google.api_core import (
+    future,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    operation,
+    operations_v1,
+    path_template,
+)
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
+from google.api_core import operation_async  # type: ignore
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
@@ -38,12 +47,12 @@ from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
 
-from google.cloud.texttospeech_v1beta1.services.text_to_speech import (
-    TextToSpeechAsyncClient,
-    TextToSpeechClient,
+from google.cloud.texttospeech_v1.services.text_to_speech_long_audio_synthesize import (
+    TextToSpeechLongAudioSynthesizeAsyncClient,
+    TextToSpeechLongAudioSynthesizeClient,
     transports,
 )
-from google.cloud.texttospeech_v1beta1.types import cloud_tts
+from google.cloud.texttospeech_v1.types import cloud_tts, cloud_tts_lrs
 
 
 def client_cert_source_callback():
@@ -68,33 +77,47 @@ def test__get_default_mtls_endpoint():
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
 
-    assert TextToSpeechClient._get_default_mtls_endpoint(None) is None
     assert (
-        TextToSpeechClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
+        TextToSpeechLongAudioSynthesizeClient._get_default_mtls_endpoint(None) is None
     )
     assert (
-        TextToSpeechClient._get_default_mtls_endpoint(api_mtls_endpoint)
+        TextToSpeechLongAudioSynthesizeClient._get_default_mtls_endpoint(api_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        TextToSpeechClient._get_default_mtls_endpoint(sandbox_endpoint)
+        TextToSpeechLongAudioSynthesizeClient._get_default_mtls_endpoint(
+            api_mtls_endpoint
+        )
+        == api_mtls_endpoint
+    )
+    assert (
+        TextToSpeechLongAudioSynthesizeClient._get_default_mtls_endpoint(
+            sandbox_endpoint
+        )
         == sandbox_mtls_endpoint
     )
     assert (
-        TextToSpeechClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
+        TextToSpeechLongAudioSynthesizeClient._get_default_mtls_endpoint(
+            sandbox_mtls_endpoint
+        )
         == sandbox_mtls_endpoint
     )
-    assert TextToSpeechClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert (
+        TextToSpeechLongAudioSynthesizeClient._get_default_mtls_endpoint(non_googleapi)
+        == non_googleapi
+    )
 
 
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (TextToSpeechClient, "grpc"),
-        (TextToSpeechAsyncClient, "grpc_asyncio"),
+        (TextToSpeechLongAudioSynthesizeClient, "grpc"),
+        (TextToSpeechLongAudioSynthesizeAsyncClient, "grpc_asyncio"),
     ],
 )
-def test_text_to_speech_client_from_service_account_info(client_class, transport_name):
+def test_text_to_speech_long_audio_synthesize_client_from_service_account_info(
+    client_class, transport_name
+):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
@@ -111,11 +134,14 @@ def test_text_to_speech_client_from_service_account_info(client_class, transport
 @pytest.mark.parametrize(
     "transport_class,transport_name",
     [
-        (transports.TextToSpeechGrpcTransport, "grpc"),
-        (transports.TextToSpeechGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.TextToSpeechLongAudioSynthesizeGrpcTransport, "grpc"),
+        (
+            transports.TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport,
+            "grpc_asyncio",
+        ),
     ],
 )
-def test_text_to_speech_client_service_account_always_use_jwt(
+def test_text_to_speech_long_audio_synthesize_client_service_account_always_use_jwt(
     transport_class, transport_name
 ):
     with mock.patch.object(
@@ -136,11 +162,13 @@ def test_text_to_speech_client_service_account_always_use_jwt(
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (TextToSpeechClient, "grpc"),
-        (TextToSpeechAsyncClient, "grpc_asyncio"),
+        (TextToSpeechLongAudioSynthesizeClient, "grpc"),
+        (TextToSpeechLongAudioSynthesizeAsyncClient, "grpc_asyncio"),
     ],
 )
-def test_text_to_speech_client_from_service_account_file(client_class, transport_name):
+def test_text_to_speech_long_audio_synthesize_client_from_service_account_file(
+    client_class, transport_name
+):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
@@ -161,47 +189,57 @@ def test_text_to_speech_client_from_service_account_file(client_class, transport
         assert client.transport._host == ("texttospeech.googleapis.com:443")
 
 
-def test_text_to_speech_client_get_transport_class():
-    transport = TextToSpeechClient.get_transport_class()
+def test_text_to_speech_long_audio_synthesize_client_get_transport_class():
+    transport = TextToSpeechLongAudioSynthesizeClient.get_transport_class()
     available_transports = [
-        transports.TextToSpeechGrpcTransport,
+        transports.TextToSpeechLongAudioSynthesizeGrpcTransport,
     ]
     assert transport in available_transports
 
-    transport = TextToSpeechClient.get_transport_class("grpc")
-    assert transport == transports.TextToSpeechGrpcTransport
+    transport = TextToSpeechLongAudioSynthesizeClient.get_transport_class("grpc")
+    assert transport == transports.TextToSpeechLongAudioSynthesizeGrpcTransport
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (TextToSpeechClient, transports.TextToSpeechGrpcTransport, "grpc"),
         (
-            TextToSpeechAsyncClient,
-            transports.TextToSpeechGrpcAsyncIOTransport,
+            TextToSpeechLongAudioSynthesizeClient,
+            transports.TextToSpeechLongAudioSynthesizeGrpcTransport,
+            "grpc",
+        ),
+        (
+            TextToSpeechLongAudioSynthesizeAsyncClient,
+            transports.TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
     ],
 )
 @mock.patch.object(
-    TextToSpeechClient, "DEFAULT_ENDPOINT", modify_default_endpoint(TextToSpeechClient)
+    TextToSpeechLongAudioSynthesizeClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(TextToSpeechLongAudioSynthesizeClient),
 )
 @mock.patch.object(
-    TextToSpeechAsyncClient,
+    TextToSpeechLongAudioSynthesizeAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(TextToSpeechAsyncClient),
+    modify_default_endpoint(TextToSpeechLongAudioSynthesizeAsyncClient),
 )
-def test_text_to_speech_client_client_options(
+def test_text_to_speech_long_audio_synthesize_client_client_options(
     client_class, transport_class, transport_name
 ):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(TextToSpeechClient, "get_transport_class") as gtc:
+    with mock.patch.object(
+        TextToSpeechLongAudioSynthesizeClient, "get_transport_class"
+    ) as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(TextToSpeechClient, "get_transport_class") as gtc:
+    with mock.patch.object(
+        TextToSpeechLongAudioSynthesizeClient, "get_transport_class"
+    ) as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
@@ -310,32 +348,44 @@ def test_text_to_speech_client_client_options(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
-        (TextToSpeechClient, transports.TextToSpeechGrpcTransport, "grpc", "true"),
         (
-            TextToSpeechAsyncClient,
-            transports.TextToSpeechGrpcAsyncIOTransport,
+            TextToSpeechLongAudioSynthesizeClient,
+            transports.TextToSpeechLongAudioSynthesizeGrpcTransport,
+            "grpc",
+            "true",
+        ),
+        (
+            TextToSpeechLongAudioSynthesizeAsyncClient,
+            transports.TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport,
             "grpc_asyncio",
             "true",
         ),
-        (TextToSpeechClient, transports.TextToSpeechGrpcTransport, "grpc", "false"),
         (
-            TextToSpeechAsyncClient,
-            transports.TextToSpeechGrpcAsyncIOTransport,
+            TextToSpeechLongAudioSynthesizeClient,
+            transports.TextToSpeechLongAudioSynthesizeGrpcTransport,
+            "grpc",
+            "false",
+        ),
+        (
+            TextToSpeechLongAudioSynthesizeAsyncClient,
+            transports.TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport,
             "grpc_asyncio",
             "false",
         ),
     ],
 )
 @mock.patch.object(
-    TextToSpeechClient, "DEFAULT_ENDPOINT", modify_default_endpoint(TextToSpeechClient)
+    TextToSpeechLongAudioSynthesizeClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(TextToSpeechLongAudioSynthesizeClient),
 )
 @mock.patch.object(
-    TextToSpeechAsyncClient,
+    TextToSpeechLongAudioSynthesizeAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(TextToSpeechAsyncClient),
+    modify_default_endpoint(TextToSpeechLongAudioSynthesizeAsyncClient),
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_text_to_speech_client_mtls_env_auto(
+def test_text_to_speech_long_audio_synthesize_client_mtls_env_auto(
     client_class, transport_class, transport_name, use_client_cert_env
 ):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -431,16 +481,23 @@ def test_text_to_speech_client_mtls_env_auto(
                 )
 
 
-@pytest.mark.parametrize("client_class", [TextToSpeechClient, TextToSpeechAsyncClient])
-@mock.patch.object(
-    TextToSpeechClient, "DEFAULT_ENDPOINT", modify_default_endpoint(TextToSpeechClient)
+@pytest.mark.parametrize(
+    "client_class",
+    [TextToSpeechLongAudioSynthesizeClient, TextToSpeechLongAudioSynthesizeAsyncClient],
 )
 @mock.patch.object(
-    TextToSpeechAsyncClient,
+    TextToSpeechLongAudioSynthesizeClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(TextToSpeechAsyncClient),
+    modify_default_endpoint(TextToSpeechLongAudioSynthesizeClient),
 )
-def test_text_to_speech_client_get_mtls_endpoint_and_cert_source(client_class):
+@mock.patch.object(
+    TextToSpeechLongAudioSynthesizeAsyncClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(TextToSpeechLongAudioSynthesizeAsyncClient),
+)
+def test_text_to_speech_long_audio_synthesize_client_get_mtls_endpoint_and_cert_source(
+    client_class,
+):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
@@ -511,15 +568,19 @@ def test_text_to_speech_client_get_mtls_endpoint_and_cert_source(client_class):
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (TextToSpeechClient, transports.TextToSpeechGrpcTransport, "grpc"),
         (
-            TextToSpeechAsyncClient,
-            transports.TextToSpeechGrpcAsyncIOTransport,
+            TextToSpeechLongAudioSynthesizeClient,
+            transports.TextToSpeechLongAudioSynthesizeGrpcTransport,
+            "grpc",
+        ),
+        (
+            TextToSpeechLongAudioSynthesizeAsyncClient,
+            transports.TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
     ],
 )
-def test_text_to_speech_client_client_options_scopes(
+def test_text_to_speech_long_audio_synthesize_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
@@ -546,20 +607,20 @@ def test_text_to_speech_client_client_options_scopes(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            TextToSpeechClient,
-            transports.TextToSpeechGrpcTransport,
+            TextToSpeechLongAudioSynthesizeClient,
+            transports.TextToSpeechLongAudioSynthesizeGrpcTransport,
             "grpc",
             grpc_helpers,
         ),
         (
-            TextToSpeechAsyncClient,
-            transports.TextToSpeechGrpcAsyncIOTransport,
+            TextToSpeechLongAudioSynthesizeAsyncClient,
+            transports.TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
     ],
 )
-def test_text_to_speech_client_client_options_credentials_file(
+def test_text_to_speech_long_audio_synthesize_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -581,12 +642,14 @@ def test_text_to_speech_client_client_options_credentials_file(
         )
 
 
-def test_text_to_speech_client_client_options_from_dict():
+def test_text_to_speech_long_audio_synthesize_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.texttospeech_v1beta1.services.text_to_speech.transports.TextToSpeechGrpcTransport.__init__"
+        "google.cloud.texttospeech_v1.services.text_to_speech_long_audio_synthesize.transports.TextToSpeechLongAudioSynthesizeGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
-        client = TextToSpeechClient(client_options={"api_endpoint": "squid.clam.whelk"})
+        client = TextToSpeechLongAudioSynthesizeClient(
+            client_options={"api_endpoint": "squid.clam.whelk"}
+        )
         grpc_transport.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -604,20 +667,20 @@ def test_text_to_speech_client_client_options_from_dict():
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            TextToSpeechClient,
-            transports.TextToSpeechGrpcTransport,
+            TextToSpeechLongAudioSynthesizeClient,
+            transports.TextToSpeechLongAudioSynthesizeGrpcTransport,
             "grpc",
             grpc_helpers,
         ),
         (
-            TextToSpeechAsyncClient,
-            transports.TextToSpeechGrpcAsyncIOTransport,
+            TextToSpeechLongAudioSynthesizeAsyncClient,
+            transports.TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
     ],
 )
-def test_text_to_speech_client_create_channel_credentials_file(
+def test_text_to_speech_long_audio_synthesize_client_create_channel_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -670,177 +733,12 @@ def test_text_to_speech_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_tts.ListVoicesRequest,
+        cloud_tts_lrs.SynthesizeLongAudioRequest,
         dict,
     ],
 )
-def test_list_voices(request_type, transport: str = "grpc"):
-    client = TextToSpeechClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_voices), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = cloud_tts.ListVoicesResponse()
-        response = client.list_voices(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tts.ListVoicesRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, cloud_tts.ListVoicesResponse)
-
-
-def test_list_voices_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TextToSpeechClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_voices), "__call__") as call:
-        client.list_voices()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tts.ListVoicesRequest()
-
-
-@pytest.mark.asyncio
-async def test_list_voices_async(
-    transport: str = "grpc_asyncio", request_type=cloud_tts.ListVoicesRequest
-):
-    client = TextToSpeechAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_voices), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cloud_tts.ListVoicesResponse()
-        )
-        response = await client.list_voices(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tts.ListVoicesRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, cloud_tts.ListVoicesResponse)
-
-
-@pytest.mark.asyncio
-async def test_list_voices_async_from_dict():
-    await test_list_voices_async(request_type=dict)
-
-
-def test_list_voices_flattened():
-    client = TextToSpeechClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_voices), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = cloud_tts.ListVoicesResponse()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.list_voices(
-            language_code="language_code_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].language_code
-        mock_val = "language_code_value"
-        assert arg == mock_val
-
-
-def test_list_voices_flattened_error():
-    client = TextToSpeechClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_voices(
-            cloud_tts.ListVoicesRequest(),
-            language_code="language_code_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_list_voices_flattened_async():
-    client = TextToSpeechAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_voices), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = cloud_tts.ListVoicesResponse()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cloud_tts.ListVoicesResponse()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.list_voices(
-            language_code="language_code_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].language_code
-        mock_val = "language_code_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_list_voices_flattened_error_async():
-    client = TextToSpeechAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.list_voices(
-            cloud_tts.ListVoicesRequest(),
-            language_code="language_code_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        cloud_tts.SynthesizeSpeechRequest,
-        dict,
-    ],
-)
-def test_synthesize_speech(request_type, transport: str = "grpc"):
-    client = TextToSpeechClient(
+def test_synthesize_long_audio(request_type, transport: str = "grpc"):
+    client = TextToSpeechLongAudioSynthesizeClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -851,47 +749,45 @@ def test_synthesize_speech(request_type, transport: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.synthesize_speech), "__call__"
+        type(client.transport.synthesize_long_audio), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = cloud_tts.SynthesizeSpeechResponse(
-            audio_content=b"audio_content_blob",
-        )
-        response = client.synthesize_speech(request)
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.synthesize_long_audio(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tts.SynthesizeSpeechRequest()
+        assert args[0] == cloud_tts_lrs.SynthesizeLongAudioRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, cloud_tts.SynthesizeSpeechResponse)
-    assert response.audio_content == b"audio_content_blob"
+    assert isinstance(response, future.Future)
 
 
-def test_synthesize_speech_empty_call():
+def test_synthesize_long_audio_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = TextToSpeechClient(
+    client = TextToSpeechLongAudioSynthesizeClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.synthesize_speech), "__call__"
+        type(client.transport.synthesize_long_audio), "__call__"
     ) as call:
-        client.synthesize_speech()
+        client.synthesize_long_audio()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tts.SynthesizeSpeechRequest()
+        assert args[0] == cloud_tts_lrs.SynthesizeLongAudioRequest()
 
 
 @pytest.mark.asyncio
-async def test_synthesize_speech_async(
-    transport: str = "grpc_asyncio", request_type=cloud_tts.SynthesizeSpeechRequest
+async def test_synthesize_long_audio_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_tts_lrs.SynthesizeLongAudioRequest,
 ):
-    client = TextToSpeechAsyncClient(
+    client = TextToSpeechLongAudioSynthesizeAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -902,178 +798,122 @@ async def test_synthesize_speech_async(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.synthesize_speech), "__call__"
+        type(client.transport.synthesize_long_audio), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cloud_tts.SynthesizeSpeechResponse(
-                audio_content=b"audio_content_blob",
-            )
+            operations_pb2.Operation(name="operations/spam")
         )
-        response = await client.synthesize_speech(request)
+        response = await client.synthesize_long_audio(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tts.SynthesizeSpeechRequest()
+        assert args[0] == cloud_tts_lrs.SynthesizeLongAudioRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, cloud_tts.SynthesizeSpeechResponse)
-    assert response.audio_content == b"audio_content_blob"
+    assert isinstance(response, future.Future)
 
 
 @pytest.mark.asyncio
-async def test_synthesize_speech_async_from_dict():
-    await test_synthesize_speech_async(request_type=dict)
+async def test_synthesize_long_audio_async_from_dict():
+    await test_synthesize_long_audio_async(request_type=dict)
 
 
-def test_synthesize_speech_flattened():
-    client = TextToSpeechClient(
+def test_synthesize_long_audio_field_headers():
+    client = TextToSpeechLongAudioSynthesizeClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_tts_lrs.SynthesizeLongAudioRequest()
+
+    request.parent = "parent_value"
+
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.synthesize_speech), "__call__"
+        type(client.transport.synthesize_long_audio), "__call__"
     ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = cloud_tts.SynthesizeSpeechResponse()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.synthesize_speech(
-            input=cloud_tts.SynthesisInput(text="text_value"),
-            voice=cloud_tts.VoiceSelectionParams(language_code="language_code_value"),
-            audio_config=cloud_tts.AudioConfig(
-                audio_encoding=cloud_tts.AudioEncoding.LINEAR16
-            ),
-        )
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.synthesize_long_audio(request)
 
-        # Establish that the underlying call was made with the expected
-        # request object values.
+        # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        arg = args[0].input
-        mock_val = cloud_tts.SynthesisInput(text="text_value")
-        assert arg == mock_val
-        arg = args[0].voice
-        mock_val = cloud_tts.VoiceSelectionParams(language_code="language_code_value")
-        assert arg == mock_val
-        arg = args[0].audio_config
-        mock_val = cloud_tts.AudioConfig(
-            audio_encoding=cloud_tts.AudioEncoding.LINEAR16
-        )
-        assert arg == mock_val
+        assert args[0] == request
 
-
-def test_synthesize_speech_flattened_error():
-    client = TextToSpeechClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.synthesize_speech(
-            cloud_tts.SynthesizeSpeechRequest(),
-            input=cloud_tts.SynthesisInput(text="text_value"),
-            voice=cloud_tts.VoiceSelectionParams(language_code="language_code_value"),
-            audio_config=cloud_tts.AudioConfig(
-                audio_encoding=cloud_tts.AudioEncoding.LINEAR16
-            ),
-        )
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
-async def test_synthesize_speech_flattened_async():
-    client = TextToSpeechAsyncClient(
+async def test_synthesize_long_audio_field_headers_async():
+    client = TextToSpeechLongAudioSynthesizeAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_tts_lrs.SynthesizeLongAudioRequest()
+
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.synthesize_speech), "__call__"
+        type(client.transport.synthesize_long_audio), "__call__"
     ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = cloud_tts.SynthesizeSpeechResponse()
-
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cloud_tts.SynthesizeSpeechResponse()
+            operations_pb2.Operation(name="operations/op")
         )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.synthesize_speech(
-            input=cloud_tts.SynthesisInput(text="text_value"),
-            voice=cloud_tts.VoiceSelectionParams(language_code="language_code_value"),
-            audio_config=cloud_tts.AudioConfig(
-                audio_encoding=cloud_tts.AudioEncoding.LINEAR16
-            ),
-        )
+        await client.synthesize_long_audio(request)
 
-        # Establish that the underlying call was made with the expected
-        # request object values.
+        # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        arg = args[0].input
-        mock_val = cloud_tts.SynthesisInput(text="text_value")
-        assert arg == mock_val
-        arg = args[0].voice
-        mock_val = cloud_tts.VoiceSelectionParams(language_code="language_code_value")
-        assert arg == mock_val
-        arg = args[0].audio_config
-        mock_val = cloud_tts.AudioConfig(
-            audio_encoding=cloud_tts.AudioEncoding.LINEAR16
-        )
-        assert arg == mock_val
+        assert args[0] == request
 
-
-@pytest.mark.asyncio
-async def test_synthesize_speech_flattened_error_async():
-    client = TextToSpeechAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.synthesize_speech(
-            cloud_tts.SynthesizeSpeechRequest(),
-            input=cloud_tts.SynthesisInput(text="text_value"),
-            voice=cloud_tts.VoiceSelectionParams(language_code="language_code_value"),
-            audio_config=cloud_tts.AudioConfig(
-                audio_encoding=cloud_tts.AudioEncoding.LINEAR16
-            ),
-        )
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
 
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
-    transport = transports.TextToSpeechGrpcTransport(
+    transport = transports.TextToSpeechLongAudioSynthesizeGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = TextToSpeechClient(
+        client = TextToSpeechLongAudioSynthesizeClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
-    transport = transports.TextToSpeechGrpcTransport(
+    transport = transports.TextToSpeechLongAudioSynthesizeGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = TextToSpeechClient(
+        client = TextToSpeechLongAudioSynthesizeClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
         )
 
     # It is an error to provide an api_key and a transport instance.
-    transport = transports.TextToSpeechGrpcTransport(
+    transport = transports.TextToSpeechLongAudioSynthesizeGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = TextToSpeechClient(
+        client = TextToSpeechLongAudioSynthesizeClient(
             client_options=options,
             transport=transport,
         )
@@ -1082,16 +922,16 @@ def test_credentials_transport_error():
     options = mock.Mock()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = TextToSpeechClient(
+        client = TextToSpeechLongAudioSynthesizeClient(
             client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
-    transport = transports.TextToSpeechGrpcTransport(
+    transport = transports.TextToSpeechLongAudioSynthesizeGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = TextToSpeechClient(
+        client = TextToSpeechLongAudioSynthesizeClient(
             client_options={"scopes": ["1", "2"]},
             transport=transport,
         )
@@ -1099,22 +939,22 @@ def test_credentials_transport_error():
 
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.TextToSpeechGrpcTransport(
+    transport = transports.TextToSpeechLongAudioSynthesizeGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    client = TextToSpeechClient(transport=transport)
+    client = TextToSpeechLongAudioSynthesizeClient(transport=transport)
     assert client.transport is transport
 
 
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.TextToSpeechGrpcTransport(
+    transport = transports.TextToSpeechLongAudioSynthesizeGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
-    transport = transports.TextToSpeechGrpcAsyncIOTransport(
+    transport = transports.TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
@@ -1124,8 +964,8 @@ def test_transport_get_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.TextToSpeechGrpcTransport,
-        transports.TextToSpeechGrpcAsyncIOTransport,
+        transports.TextToSpeechLongAudioSynthesizeGrpcTransport,
+        transports.TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -1143,7 +983,9 @@ def test_transport_adc(transport_class):
     ],
 )
 def test_transport_kind(transport_name):
-    transport = TextToSpeechClient.get_transport_class(transport_name)(
+    transport = TextToSpeechLongAudioSynthesizeClient.get_transport_class(
+        transport_name
+    )(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert transport.kind == transport_name
@@ -1151,46 +993,48 @@ def test_transport_kind(transport_name):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = TextToSpeechClient(
+    client = TextToSpeechLongAudioSynthesizeClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
-        transports.TextToSpeechGrpcTransport,
+        transports.TextToSpeechLongAudioSynthesizeGrpcTransport,
     )
 
 
-def test_text_to_speech_base_transport_error():
+def test_text_to_speech_long_audio_synthesize_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.TextToSpeechTransport(
+        transport = transports.TextToSpeechLongAudioSynthesizeTransport(
             credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
 
-def test_text_to_speech_base_transport():
+def test_text_to_speech_long_audio_synthesize_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.texttospeech_v1beta1.services.text_to_speech.transports.TextToSpeechTransport.__init__"
+        "google.cloud.texttospeech_v1.services.text_to_speech_long_audio_synthesize.transports.TextToSpeechLongAudioSynthesizeTransport.__init__"
     ) as Transport:
         Transport.return_value = None
-        transport = transports.TextToSpeechTransport(
+        transport = transports.TextToSpeechLongAudioSynthesizeTransport(
             credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
-    methods = (
-        "list_voices",
-        "synthesize_speech",
-    )
+    methods = ("synthesize_long_audio",)
     for method in methods:
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())
 
     with pytest.raises(NotImplementedError):
         transport.close()
+
+    # Additionally, the LRO client (a property) should
+    # also raise NotImplementedError
+    with pytest.raises(NotImplementedError):
+        transport.operations_client
 
     # Catch all for all remaining methods and properties
     remainder = [
@@ -1201,16 +1045,16 @@ def test_text_to_speech_base_transport():
             getattr(transport, r)()
 
 
-def test_text_to_speech_base_transport_with_credentials_file():
+def test_text_to_speech_long_audio_synthesize_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.texttospeech_v1beta1.services.text_to_speech.transports.TextToSpeechTransport._prep_wrapped_messages"
+        "google.cloud.texttospeech_v1.services.text_to_speech_long_audio_synthesize.transports.TextToSpeechLongAudioSynthesizeTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.TextToSpeechTransport(
+        transport = transports.TextToSpeechLongAudioSynthesizeTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
         )
@@ -1222,22 +1066,22 @@ def test_text_to_speech_base_transport_with_credentials_file():
         )
 
 
-def test_text_to_speech_base_transport_with_adc():
+def test_text_to_speech_long_audio_synthesize_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.texttospeech_v1beta1.services.text_to_speech.transports.TextToSpeechTransport._prep_wrapped_messages"
+        "google.cloud.texttospeech_v1.services.text_to_speech_long_audio_synthesize.transports.TextToSpeechLongAudioSynthesizeTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.TextToSpeechTransport()
+        transport = transports.TextToSpeechLongAudioSynthesizeTransport()
         adc.assert_called_once()
 
 
-def test_text_to_speech_auth_adc():
+def test_text_to_speech_long_audio_synthesize_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        TextToSpeechClient()
+        TextToSpeechLongAudioSynthesizeClient()
         adc.assert_called_once_with(
             scopes=None,
             default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
@@ -1248,11 +1092,11 @@ def test_text_to_speech_auth_adc():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.TextToSpeechGrpcTransport,
-        transports.TextToSpeechGrpcAsyncIOTransport,
+        transports.TextToSpeechLongAudioSynthesizeGrpcTransport,
+        transports.TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport,
     ],
 )
-def test_text_to_speech_transport_auth_adc(transport_class):
+def test_text_to_speech_long_audio_synthesize_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
@@ -1268,11 +1112,13 @@ def test_text_to_speech_transport_auth_adc(transport_class):
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.TextToSpeechGrpcTransport,
-        transports.TextToSpeechGrpcAsyncIOTransport,
+        transports.TextToSpeechLongAudioSynthesizeGrpcTransport,
+        transports.TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport,
     ],
 )
-def test_text_to_speech_transport_auth_gdch_credentials(transport_class):
+def test_text_to_speech_long_audio_synthesize_transport_auth_gdch_credentials(
+    transport_class,
+):
     host = "https://language.com"
     api_audience_tests = [None, "https://language2.com"]
     api_audience_expect = [host, "https://language2.com"]
@@ -1290,11 +1136,16 @@ def test_text_to_speech_transport_auth_gdch_credentials(transport_class):
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
     [
-        (transports.TextToSpeechGrpcTransport, grpc_helpers),
-        (transports.TextToSpeechGrpcAsyncIOTransport, grpc_helpers_async),
+        (transports.TextToSpeechLongAudioSynthesizeGrpcTransport, grpc_helpers),
+        (
+            transports.TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport,
+            grpc_helpers_async,
+        ),
     ],
 )
-def test_text_to_speech_transport_create_channel(transport_class, grpc_helpers):
+def test_text_to_speech_long_audio_synthesize_transport_create_channel(
+    transport_class, grpc_helpers
+):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(
@@ -1324,9 +1175,14 @@ def test_text_to_speech_transport_create_channel(transport_class, grpc_helpers):
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.TextToSpeechGrpcTransport, transports.TextToSpeechGrpcAsyncIOTransport],
+    [
+        transports.TextToSpeechLongAudioSynthesizeGrpcTransport,
+        transports.TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport,
+    ],
 )
-def test_text_to_speech_grpc_transport_client_cert_source_for_mtls(transport_class):
+def test_text_to_speech_long_audio_synthesize_grpc_transport_client_cert_source_for_mtls(
+    transport_class,
+):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
@@ -1371,8 +1227,8 @@ def test_text_to_speech_grpc_transport_client_cert_source_for_mtls(transport_cla
         "grpc_asyncio",
     ],
 )
-def test_text_to_speech_host_no_port(transport_name):
-    client = TextToSpeechClient(
+def test_text_to_speech_long_audio_synthesize_host_no_port(transport_name):
+    client = TextToSpeechLongAudioSynthesizeClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="texttospeech.googleapis.com"
@@ -1389,8 +1245,8 @@ def test_text_to_speech_host_no_port(transport_name):
         "grpc_asyncio",
     ],
 )
-def test_text_to_speech_host_with_port(transport_name):
-    client = TextToSpeechClient(
+def test_text_to_speech_long_audio_synthesize_host_with_port(transport_name):
+    client = TextToSpeechLongAudioSynthesizeClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="texttospeech.googleapis.com:8000"
@@ -1400,11 +1256,11 @@ def test_text_to_speech_host_with_port(transport_name):
     assert client.transport._host == ("texttospeech.googleapis.com:8000")
 
 
-def test_text_to_speech_grpc_transport_channel():
+def test_text_to_speech_long_audio_synthesize_grpc_transport_channel():
     channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.TextToSpeechGrpcTransport(
+    transport = transports.TextToSpeechLongAudioSynthesizeGrpcTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -1413,11 +1269,11 @@ def test_text_to_speech_grpc_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
-def test_text_to_speech_grpc_asyncio_transport_channel():
+def test_text_to_speech_long_audio_synthesize_grpc_asyncio_transport_channel():
     channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.TextToSpeechGrpcAsyncIOTransport(
+    transport = transports.TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -1430,9 +1286,14 @@ def test_text_to_speech_grpc_asyncio_transport_channel():
 # removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.TextToSpeechGrpcTransport, transports.TextToSpeechGrpcAsyncIOTransport],
+    [
+        transports.TextToSpeechLongAudioSynthesizeGrpcTransport,
+        transports.TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport,
+    ],
 )
-def test_text_to_speech_transport_channel_mtls_with_client_cert_source(transport_class):
+def test_text_to_speech_long_audio_synthesize_transport_channel_mtls_with_client_cert_source(
+    transport_class,
+):
     with mock.patch(
         "grpc.ssl_channel_credentials", autospec=True
     ) as grpc_ssl_channel_cred:
@@ -1479,9 +1340,14 @@ def test_text_to_speech_transport_channel_mtls_with_client_cert_source(transport
 # removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.TextToSpeechGrpcTransport, transports.TextToSpeechGrpcAsyncIOTransport],
+    [
+        transports.TextToSpeechLongAudioSynthesizeGrpcTransport,
+        transports.TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport,
+    ],
 )
-def test_text_to_speech_transport_channel_mtls_with_adc(transport_class):
+def test_text_to_speech_long_audio_synthesize_transport_channel_mtls_with_adc(
+    transport_class,
+):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
@@ -1518,6 +1384,40 @@ def test_text_to_speech_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
+def test_text_to_speech_long_audio_synthesize_grpc_lro_client():
+    client = TextToSpeechLongAudioSynthesizeClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
+def test_text_to_speech_long_audio_synthesize_grpc_lro_async_client():
+    client = TextToSpeechLongAudioSynthesizeAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 def test_model_path():
     project = "squid"
     location = "clam"
@@ -1527,7 +1427,7 @@ def test_model_path():
         location=location,
         model=model,
     )
-    actual = TextToSpeechClient.model_path(project, location, model)
+    actual = TextToSpeechLongAudioSynthesizeClient.model_path(project, location, model)
     assert expected == actual
 
 
@@ -1537,10 +1437,10 @@ def test_parse_model_path():
         "location": "oyster",
         "model": "nudibranch",
     }
-    path = TextToSpeechClient.model_path(**expected)
+    path = TextToSpeechLongAudioSynthesizeClient.model_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = TextToSpeechClient.parse_model_path(path)
+    actual = TextToSpeechLongAudioSynthesizeClient.parse_model_path(path)
     assert expected == actual
 
 
@@ -1549,7 +1449,9 @@ def test_common_billing_account_path():
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
-    actual = TextToSpeechClient.common_billing_account_path(billing_account)
+    actual = TextToSpeechLongAudioSynthesizeClient.common_billing_account_path(
+        billing_account
+    )
     assert expected == actual
 
 
@@ -1557,10 +1459,12 @@ def test_parse_common_billing_account_path():
     expected = {
         "billing_account": "mussel",
     }
-    path = TextToSpeechClient.common_billing_account_path(**expected)
+    path = TextToSpeechLongAudioSynthesizeClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = TextToSpeechClient.parse_common_billing_account_path(path)
+    actual = TextToSpeechLongAudioSynthesizeClient.parse_common_billing_account_path(
+        path
+    )
     assert expected == actual
 
 
@@ -1569,7 +1473,7 @@ def test_common_folder_path():
     expected = "folders/{folder}".format(
         folder=folder,
     )
-    actual = TextToSpeechClient.common_folder_path(folder)
+    actual = TextToSpeechLongAudioSynthesizeClient.common_folder_path(folder)
     assert expected == actual
 
 
@@ -1577,10 +1481,10 @@ def test_parse_common_folder_path():
     expected = {
         "folder": "nautilus",
     }
-    path = TextToSpeechClient.common_folder_path(**expected)
+    path = TextToSpeechLongAudioSynthesizeClient.common_folder_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = TextToSpeechClient.parse_common_folder_path(path)
+    actual = TextToSpeechLongAudioSynthesizeClient.parse_common_folder_path(path)
     assert expected == actual
 
 
@@ -1589,7 +1493,9 @@ def test_common_organization_path():
     expected = "organizations/{organization}".format(
         organization=organization,
     )
-    actual = TextToSpeechClient.common_organization_path(organization)
+    actual = TextToSpeechLongAudioSynthesizeClient.common_organization_path(
+        organization
+    )
     assert expected == actual
 
 
@@ -1597,10 +1503,10 @@ def test_parse_common_organization_path():
     expected = {
         "organization": "abalone",
     }
-    path = TextToSpeechClient.common_organization_path(**expected)
+    path = TextToSpeechLongAudioSynthesizeClient.common_organization_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = TextToSpeechClient.parse_common_organization_path(path)
+    actual = TextToSpeechLongAudioSynthesizeClient.parse_common_organization_path(path)
     assert expected == actual
 
 
@@ -1609,7 +1515,7 @@ def test_common_project_path():
     expected = "projects/{project}".format(
         project=project,
     )
-    actual = TextToSpeechClient.common_project_path(project)
+    actual = TextToSpeechLongAudioSynthesizeClient.common_project_path(project)
     assert expected == actual
 
 
@@ -1617,10 +1523,10 @@ def test_parse_common_project_path():
     expected = {
         "project": "clam",
     }
-    path = TextToSpeechClient.common_project_path(**expected)
+    path = TextToSpeechLongAudioSynthesizeClient.common_project_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = TextToSpeechClient.parse_common_project_path(path)
+    actual = TextToSpeechLongAudioSynthesizeClient.parse_common_project_path(path)
     assert expected == actual
 
 
@@ -1631,7 +1537,9 @@ def test_common_location_path():
         project=project,
         location=location,
     )
-    actual = TextToSpeechClient.common_location_path(project, location)
+    actual = TextToSpeechLongAudioSynthesizeClient.common_location_path(
+        project, location
+    )
     assert expected == actual
 
 
@@ -1640,10 +1548,10 @@ def test_parse_common_location_path():
         "project": "oyster",
         "location": "nudibranch",
     }
-    path = TextToSpeechClient.common_location_path(**expected)
+    path = TextToSpeechLongAudioSynthesizeClient.common_location_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = TextToSpeechClient.parse_common_location_path(path)
+    actual = TextToSpeechLongAudioSynthesizeClient.parse_common_location_path(path)
     assert expected == actual
 
 
@@ -1651,18 +1559,18 @@ def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
-        transports.TextToSpeechTransport, "_prep_wrapped_messages"
+        transports.TextToSpeechLongAudioSynthesizeTransport, "_prep_wrapped_messages"
     ) as prep:
-        client = TextToSpeechClient(
+        client = TextToSpeechLongAudioSynthesizeClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
     with mock.patch.object(
-        transports.TextToSpeechTransport, "_prep_wrapped_messages"
+        transports.TextToSpeechLongAudioSynthesizeTransport, "_prep_wrapped_messages"
     ) as prep:
-        transport_class = TextToSpeechClient.get_transport_class()
+        transport_class = TextToSpeechLongAudioSynthesizeClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
@@ -1672,7 +1580,7 @@ def test_client_with_default_client_info():
 
 @pytest.mark.asyncio
 async def test_transport_close_async():
-    client = TextToSpeechAsyncClient(
+    client = TextToSpeechLongAudioSynthesizeAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
@@ -1690,7 +1598,7 @@ def test_transport_close():
     }
 
     for transport, close_name in transports.items():
-        client = TextToSpeechClient(
+        client = TextToSpeechLongAudioSynthesizeClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         with mock.patch.object(
@@ -1706,7 +1614,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = TextToSpeechClient(
+        client = TextToSpeechLongAudioSynthesizeClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
@@ -1720,8 +1628,14 @@ def test_client_ctx():
 @pytest.mark.parametrize(
     "client_class,transport_class",
     [
-        (TextToSpeechClient, transports.TextToSpeechGrpcTransport),
-        (TextToSpeechAsyncClient, transports.TextToSpeechGrpcAsyncIOTransport),
+        (
+            TextToSpeechLongAudioSynthesizeClient,
+            transports.TextToSpeechLongAudioSynthesizeGrpcTransport,
+        ),
+        (
+            TextToSpeechLongAudioSynthesizeAsyncClient,
+            transports.TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport,
+        ),
     ],
 )
 def test_api_key_credentials(client_class, transport_class):

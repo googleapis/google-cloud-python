@@ -13,24 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, grpc_helpers_async
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
-from grpc.experimental import aio  # type: ignore
 
-from google.cloud.texttospeech_v1beta1.types import cloud_tts
+from google.cloud.texttospeech_v1.types import cloud_tts_lrs
 
-from .base import DEFAULT_CLIENT_INFO, TextToSpeechTransport
-from .grpc import TextToSpeechGrpcTransport
+from .base import DEFAULT_CLIENT_INFO, TextToSpeechLongAudioSynthesizeTransport
 
 
-class TextToSpeechGrpcAsyncIOTransport(TextToSpeechTransport):
-    """gRPC AsyncIO backend transport for TextToSpeech.
+class TextToSpeechLongAudioSynthesizeGrpcTransport(
+    TextToSpeechLongAudioSynthesizeTransport
+):
+    """gRPC backend transport for TextToSpeechLongAudioSynthesize.
 
     Service that implements Google Cloud Text-to-Speech API.
 
@@ -42,51 +43,7 @@ class TextToSpeechGrpcAsyncIOTransport(TextToSpeechTransport):
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
 
-    _grpc_channel: aio.Channel
-    _stubs: Dict[str, Callable] = {}
-
-    @classmethod
-    def create_channel(
-        cls,
-        host: str = "texttospeech.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> aio.Channel:
-        """Create and return a gRPC AsyncIO channel object.
-        Args:
-            host (Optional[str]): The host for the channel to use.
-            credentials (Optional[~.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify this application to the service. If
-                none are specified, the client will attempt to ascertain
-                the credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            kwargs (Optional[dict]): Keyword arguments, which are passed to the
-                channel creation.
-        Returns:
-            aio.Channel: A gRPC AsyncIO channel object.
-        """
-
-        return grpc_helpers_async.create_channel(
-            host,
-            credentials=credentials,
-            credentials_file=credentials_file,
-            quota_project_id=quota_project_id,
-            default_scopes=cls.AUTH_SCOPES,
-            scopes=scopes,
-            default_host=cls.DEFAULT_HOST,
-            **kwargs,
-        )
+    _stubs: Dict[str, Callable]
 
     def __init__(
         self,
@@ -95,7 +52,7 @@ class TextToSpeechGrpcAsyncIOTransport(TextToSpeechTransport):
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: Optional[aio.Channel] = None,
+        channel: Optional[grpc.Channel] = None,
         api_mtls_endpoint: Optional[str] = None,
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -119,10 +76,9 @@ class TextToSpeechGrpcAsyncIOTransport(TextToSpeechTransport):
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if ``channel`` is provided.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            channel (Optional[aio.Channel]): A ``Channel`` instance through
+            scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                ignored if ``channel`` is provided.
+            channel (Optional[grpc.Channel]): A ``Channel`` instance through
                 which to make calls.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
@@ -149,7 +105,7 @@ class TextToSpeechGrpcAsyncIOTransport(TextToSpeechTransport):
                 be used for service account credentials.
 
         Raises:
-            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+          google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
               creation failed for any reason.
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
@@ -157,6 +113,7 @@ class TextToSpeechGrpcAsyncIOTransport(TextToSpeechTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        self._operations_client: Optional[operations_v1.OperationsClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -169,6 +126,7 @@ class TextToSpeechGrpcAsyncIOTransport(TextToSpeechTransport):
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
+
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -222,59 +180,83 @@ class TextToSpeechGrpcAsyncIOTransport(TextToSpeechTransport):
         # Wrap messages. This must be done after self._grpc_channel exists
         self._prep_wrapped_messages(client_info)
 
-    @property
-    def grpc_channel(self) -> aio.Channel:
-        """Create the channel designed to connect to this service.
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "texttospeech.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> grpc.Channel:
+        """Create and return a gRPC channel object.
+        Args:
+            host (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is mutually exclusive with credentials.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            grpc.Channel: A gRPC channel object.
 
-        This property caches on the instance; repeated calls return
-        the same channel.
+        Raises:
+            google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
+              and ``credentials_file`` are passed.
         """
-        # Return the channel from cache.
+
+        return grpc_helpers.create_channel(
+            host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            quota_project_id=quota_project_id,
+            default_scopes=cls.AUTH_SCOPES,
+            scopes=scopes,
+            default_host=cls.DEFAULT_HOST,
+            **kwargs,
+        )
+
+    @property
+    def grpc_channel(self) -> grpc.Channel:
+        """Return the channel designed to connect to this service."""
         return self._grpc_channel
 
     @property
-    def list_voices(
-        self,
-    ) -> Callable[
-        [cloud_tts.ListVoicesRequest], Awaitable[cloud_tts.ListVoicesResponse]
-    ]:
-        r"""Return a callable for the list voices method over gRPC.
+    def operations_client(self) -> operations_v1.OperationsClient:
+        """Create the client designed to process long-running operations.
 
-        Returns a list of Voice supported for synthesis.
-
-        Returns:
-            Callable[[~.ListVoicesRequest],
-                    Awaitable[~.ListVoicesResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
+        This property caches on the instance; repeated calls return the same
+        client.
         """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_voices" not in self._stubs:
-            self._stubs["list_voices"] = self.grpc_channel.unary_unary(
-                "/google.cloud.texttospeech.v1beta1.TextToSpeech/ListVoices",
-                request_serializer=cloud_tts.ListVoicesRequest.serialize,
-                response_deserializer=cloud_tts.ListVoicesResponse.deserialize,
-            )
-        return self._stubs["list_voices"]
+        # Quick check: Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+
+        # Return the client from cache.
+        return self._operations_client
 
     @property
-    def synthesize_speech(
+    def synthesize_long_audio(
         self,
-    ) -> Callable[
-        [cloud_tts.SynthesizeSpeechRequest],
-        Awaitable[cloud_tts.SynthesizeSpeechResponse],
-    ]:
-        r"""Return a callable for the synthesize speech method over gRPC.
+    ) -> Callable[[cloud_tts_lrs.SynthesizeLongAudioRequest], operations_pb2.Operation]:
+        r"""Return a callable for the synthesize long audio method over gRPC.
 
-        Synthesizes speech synchronously: receive results
-        after all text input has been processed.
+        Synthesizes long form text asynchronously.
 
         Returns:
-            Callable[[~.SynthesizeSpeechRequest],
-                    Awaitable[~.SynthesizeSpeechResponse]]:
+            Callable[[~.SynthesizeLongAudioRequest],
+                    ~.Operation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -282,16 +264,20 @@ class TextToSpeechGrpcAsyncIOTransport(TextToSpeechTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "synthesize_speech" not in self._stubs:
-            self._stubs["synthesize_speech"] = self.grpc_channel.unary_unary(
-                "/google.cloud.texttospeech.v1beta1.TextToSpeech/SynthesizeSpeech",
-                request_serializer=cloud_tts.SynthesizeSpeechRequest.serialize,
-                response_deserializer=cloud_tts.SynthesizeSpeechResponse.deserialize,
+        if "synthesize_long_audio" not in self._stubs:
+            self._stubs["synthesize_long_audio"] = self.grpc_channel.unary_unary(
+                "/google.cloud.texttospeech.v1.TextToSpeechLongAudioSynthesize/SynthesizeLongAudio",
+                request_serializer=cloud_tts_lrs.SynthesizeLongAudioRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["synthesize_speech"]
+        return self._stubs["synthesize_long_audio"]
 
     def close(self):
-        return self.grpc_channel.close()
+        self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc"
 
 
-__all__ = ("TextToSpeechGrpcAsyncIOTransport",)
+__all__ = ("TextToSpeechLongAudioSynthesizeGrpcTransport",)

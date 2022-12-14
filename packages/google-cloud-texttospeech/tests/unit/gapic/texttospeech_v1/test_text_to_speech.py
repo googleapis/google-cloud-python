@@ -30,6 +30,7 @@ from google.api_core import exceptions as core_exceptions
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
+from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 import grpc
 from grpc.experimental import aio

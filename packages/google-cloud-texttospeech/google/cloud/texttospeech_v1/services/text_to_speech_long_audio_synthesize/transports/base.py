@@ -18,23 +18,23 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.texttospeech_v1 import gapic_version as package_version
-from google.cloud.texttospeech_v1.types import cloud_tts
+from google.cloud.texttospeech_v1.types import cloud_tts_lrs
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
 
 
-class TextToSpeechTransport(abc.ABC):
-    """Abstract transport class for TextToSpeech."""
+class TextToSpeechLongAudioSynthesizeTransport(abc.ABC):
+    """Abstract transport class for TextToSpeechLongAudioSynthesize."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
@@ -123,14 +123,9 @@ class TextToSpeechTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.list_voices: gapic_v1.method.wrap_method(
-                self.list_voices,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.synthesize_speech: gapic_v1.method.wrap_method(
-                self.synthesize_speech,
-                default_timeout=None,
+            self.synthesize_long_audio: gapic_v1.method.wrap_method(
+                self.synthesize_long_audio,
+                default_timeout=5000.0,
                 client_info=client_info,
             ),
         }
@@ -145,23 +140,16 @@ class TextToSpeechTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def list_voices(
-        self,
-    ) -> Callable[
-        [cloud_tts.ListVoicesRequest],
-        Union[cloud_tts.ListVoicesResponse, Awaitable[cloud_tts.ListVoicesResponse]],
-    ]:
+    def operations_client(self):
+        """Return the client designed to process long-running operations."""
         raise NotImplementedError()
 
     @property
-    def synthesize_speech(
+    def synthesize_long_audio(
         self,
     ) -> Callable[
-        [cloud_tts.SynthesizeSpeechRequest],
-        Union[
-            cloud_tts.SynthesizeSpeechResponse,
-            Awaitable[cloud_tts.SynthesizeSpeechResponse],
-        ],
+        [cloud_tts_lrs.SynthesizeLongAudioRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
@@ -170,4 +158,4 @@ class TextToSpeechTransport(abc.ABC):
         raise NotImplementedError()
 
 
-__all__ = ("TextToSpeechTransport",)
+__all__ = ("TextToSpeechLongAudioSynthesizeTransport",)

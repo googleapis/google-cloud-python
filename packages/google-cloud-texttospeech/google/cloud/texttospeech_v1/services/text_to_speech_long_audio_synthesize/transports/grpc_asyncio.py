@@ -16,21 +16,23 @@
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, grpc_helpers_async
+from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.texttospeech_v1beta1.types import cloud_tts
+from google.cloud.texttospeech_v1.types import cloud_tts_lrs
 
-from .base import DEFAULT_CLIENT_INFO, TextToSpeechTransport
-from .grpc import TextToSpeechGrpcTransport
+from .base import DEFAULT_CLIENT_INFO, TextToSpeechLongAudioSynthesizeTransport
+from .grpc import TextToSpeechLongAudioSynthesizeGrpcTransport
 
 
-class TextToSpeechGrpcAsyncIOTransport(TextToSpeechTransport):
-    """gRPC AsyncIO backend transport for TextToSpeech.
+class TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport(
+    TextToSpeechLongAudioSynthesizeTransport
+):
+    """gRPC AsyncIO backend transport for TextToSpeechLongAudioSynthesize.
 
     Service that implements Google Cloud Text-to-Speech API.
 
@@ -157,6 +159,7 @@ class TextToSpeechGrpcAsyncIOTransport(TextToSpeechTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        self._operations_client: Optional[operations_v1.OperationsAsyncClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -233,48 +236,34 @@ class TextToSpeechGrpcAsyncIOTransport(TextToSpeechTransport):
         return self._grpc_channel
 
     @property
-    def list_voices(
-        self,
-    ) -> Callable[
-        [cloud_tts.ListVoicesRequest], Awaitable[cloud_tts.ListVoicesResponse]
-    ]:
-        r"""Return a callable for the list voices method over gRPC.
+    def operations_client(self) -> operations_v1.OperationsAsyncClient:
+        """Create the client designed to process long-running operations.
 
-        Returns a list of Voice supported for synthesis.
-
-        Returns:
-            Callable[[~.ListVoicesRequest],
-                    Awaitable[~.ListVoicesResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
+        This property caches on the instance; repeated calls return the same
+        client.
         """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_voices" not in self._stubs:
-            self._stubs["list_voices"] = self.grpc_channel.unary_unary(
-                "/google.cloud.texttospeech.v1beta1.TextToSpeech/ListVoices",
-                request_serializer=cloud_tts.ListVoicesRequest.serialize,
-                response_deserializer=cloud_tts.ListVoicesResponse.deserialize,
+        # Quick check: Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsAsyncClient(
+                self.grpc_channel
             )
-        return self._stubs["list_voices"]
+
+        # Return the client from cache.
+        return self._operations_client
 
     @property
-    def synthesize_speech(
+    def synthesize_long_audio(
         self,
     ) -> Callable[
-        [cloud_tts.SynthesizeSpeechRequest],
-        Awaitable[cloud_tts.SynthesizeSpeechResponse],
+        [cloud_tts_lrs.SynthesizeLongAudioRequest], Awaitable[operations_pb2.Operation]
     ]:
-        r"""Return a callable for the synthesize speech method over gRPC.
+        r"""Return a callable for the synthesize long audio method over gRPC.
 
-        Synthesizes speech synchronously: receive results
-        after all text input has been processed.
+        Synthesizes long form text asynchronously.
 
         Returns:
-            Callable[[~.SynthesizeSpeechRequest],
-                    Awaitable[~.SynthesizeSpeechResponse]]:
+            Callable[[~.SynthesizeLongAudioRequest],
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -282,16 +271,16 @@ class TextToSpeechGrpcAsyncIOTransport(TextToSpeechTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "synthesize_speech" not in self._stubs:
-            self._stubs["synthesize_speech"] = self.grpc_channel.unary_unary(
-                "/google.cloud.texttospeech.v1beta1.TextToSpeech/SynthesizeSpeech",
-                request_serializer=cloud_tts.SynthesizeSpeechRequest.serialize,
-                response_deserializer=cloud_tts.SynthesizeSpeechResponse.deserialize,
+        if "synthesize_long_audio" not in self._stubs:
+            self._stubs["synthesize_long_audio"] = self.grpc_channel.unary_unary(
+                "/google.cloud.texttospeech.v1.TextToSpeechLongAudioSynthesize/SynthesizeLongAudio",
+                request_serializer=cloud_tts_lrs.SynthesizeLongAudioRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["synthesize_speech"]
+        return self._stubs["synthesize_long_audio"]
 
     def close(self):
         return self.grpc_channel.close()
 
 
-__all__ = ("TextToSpeechGrpcAsyncIOTransport",)
+__all__ = ("TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport",)

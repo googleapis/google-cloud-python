@@ -38,6 +38,30 @@
           }
         }
       }
+    },
+    "TextToSpeechLongAudioSynthesize": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "TextToSpeechLongAudioSynthesizeClient",
+          "rpcs": {
+            "SynthesizeLongAudio": {
+              "methods": [
+                "synthesize_long_audio"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "TextToSpeechLongAudioSynthesizeAsyncClient",
+          "rpcs": {
+            "SynthesizeLongAudio": {
+              "methods": [
+                "synthesize_long_audio"
+              ]
+            }
+          }
+        }
+      }
     }
   }
 }
