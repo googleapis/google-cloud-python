@@ -47,10 +47,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class PrivateCatalogRestInterceptor:
     """Interceptor for PrivateCatalog.
@@ -67,26 +63,29 @@ class PrivateCatalogRestInterceptor:
 
     .. code-block:: python
         class MyCustomPrivateCatalogInterceptor(PrivateCatalogRestInterceptor):
-            def pre_search_catalogs(request, metadata):
+            def pre_search_catalogs(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_search_catalogs(response):
+            def post_search_catalogs(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_search_products(request, metadata):
+            def pre_search_products(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_search_products(response):
+            def post_search_products(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_search_versions(request, metadata):
+            def pre_search_versions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_search_versions(response):
+            def post_search_versions(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = PrivateCatalogRestTransport(interceptor=MyCustomPrivateCatalogInterceptor())
         client = PrivateCatalogClient(transport=transport)
