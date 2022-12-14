@@ -63,19 +63,21 @@ class LicenseCodesRestInterceptor:
 
     .. code-block:: python
         class MyCustomLicenseCodesInterceptor(LicenseCodesRestInterceptor):
-            def pre_get(request, metadata):
+            def pre_get(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get(response):
+            def post_get(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_test_iam_permissions(request, metadata):
+            def pre_test_iam_permissions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_test_iam_permissions(response):
+            def post_test_iam_permissions(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = LicenseCodesRestTransport(interceptor=MyCustomLicenseCodesInterceptor())
         client = LicenseCodesClient(transport=transport)

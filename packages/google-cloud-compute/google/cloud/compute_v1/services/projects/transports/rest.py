@@ -63,96 +63,109 @@ class ProjectsRestInterceptor:
 
     .. code-block:: python
         class MyCustomProjectsInterceptor(ProjectsRestInterceptor):
-            def pre_disable_xpn_host(request, metadata):
+            def pre_disable_xpn_host(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_disable_xpn_host(response):
+            def post_disable_xpn_host(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_disable_xpn_resource(request, metadata):
+            def pre_disable_xpn_resource(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_disable_xpn_resource(response):
+            def post_disable_xpn_resource(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_enable_xpn_host(request, metadata):
+            def pre_enable_xpn_host(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_enable_xpn_host(response):
+            def post_enable_xpn_host(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_enable_xpn_resource(request, metadata):
+            def pre_enable_xpn_resource(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_enable_xpn_resource(response):
+            def post_enable_xpn_resource(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get(request, metadata):
+            def pre_get(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get(response):
+            def post_get(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_xpn_host(request, metadata):
+            def pre_get_xpn_host(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_xpn_host(response):
+            def post_get_xpn_host(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_xpn_resources(request, metadata):
+            def pre_get_xpn_resources(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_xpn_resources(response):
+            def post_get_xpn_resources(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_xpn_hosts(request, metadata):
+            def pre_list_xpn_hosts(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_xpn_hosts(response):
+            def post_list_xpn_hosts(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_move_disk(request, metadata):
+            def pre_move_disk(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_move_disk(response):
+            def post_move_disk(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_move_instance(request, metadata):
+            def pre_move_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_move_instance(response):
+            def post_move_instance(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_common_instance_metadata(request, metadata):
+            def pre_set_common_instance_metadata(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_common_instance_metadata(response):
+            def post_set_common_instance_metadata(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_default_network_tier(request, metadata):
+            def pre_set_default_network_tier(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_default_network_tier(response):
+            def post_set_default_network_tier(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_usage_export_bucket(request, metadata):
+            def pre_set_usage_export_bucket(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_usage_export_bucket(response):
+            def post_set_usage_export_bucket(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = ProjectsRestTransport(interceptor=MyCustomProjectsInterceptor())
         client = ProjectsClient(transport=transport)

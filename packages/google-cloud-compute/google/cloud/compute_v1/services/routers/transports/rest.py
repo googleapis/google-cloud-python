@@ -63,75 +63,85 @@ class RoutersRestInterceptor:
 
     .. code-block:: python
         class MyCustomRoutersInterceptor(RoutersRestInterceptor):
-            def pre_aggregated_list(request, metadata):
+            def pre_aggregated_list(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_aggregated_list(response):
+            def post_aggregated_list(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete(request, metadata):
+            def pre_delete(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete(response):
+            def post_delete(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get(request, metadata):
+            def pre_get(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get(response):
+            def post_get(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_nat_mapping_info(request, metadata):
+            def pre_get_nat_mapping_info(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_nat_mapping_info(response):
+            def post_get_nat_mapping_info(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_router_status(request, metadata):
+            def pre_get_router_status(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_router_status(response):
+            def post_get_router_status(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_insert(request, metadata):
+            def pre_insert(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_insert(response):
+            def post_insert(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list(request, metadata):
+            def pre_list(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list(response):
+            def post_list(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_patch(request, metadata):
+            def pre_patch(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_patch(response):
+            def post_patch(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_preview(request, metadata):
+            def pre_preview(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_preview(response):
+            def post_preview(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update(request, metadata):
+            def pre_update(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update(response):
+            def post_update(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = RoutersRestTransport(interceptor=MyCustomRoutersInterceptor())
         client = RoutersClient(transport=transport)

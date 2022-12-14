@@ -63,82 +63,93 @@ class TargetPoolsRestInterceptor:
 
     .. code-block:: python
         class MyCustomTargetPoolsInterceptor(TargetPoolsRestInterceptor):
-            def pre_add_health_check(request, metadata):
+            def pre_add_health_check(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_add_health_check(response):
+            def post_add_health_check(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_add_instance(request, metadata):
+            def pre_add_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_add_instance(response):
+            def post_add_instance(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_aggregated_list(request, metadata):
+            def pre_aggregated_list(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_aggregated_list(response):
+            def post_aggregated_list(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete(request, metadata):
+            def pre_delete(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete(response):
+            def post_delete(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get(request, metadata):
+            def pre_get(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get(response):
+            def post_get(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_health(request, metadata):
+            def pre_get_health(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_health(response):
+            def post_get_health(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_insert(request, metadata):
+            def pre_insert(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_insert(response):
+            def post_insert(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list(request, metadata):
+            def pre_list(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list(response):
+            def post_list(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_remove_health_check(request, metadata):
+            def pre_remove_health_check(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_remove_health_check(response):
+            def post_remove_health_check(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_remove_instance(request, metadata):
+            def pre_remove_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_remove_instance(response):
+            def post_remove_instance(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_backup(request, metadata):
+            def pre_set_backup(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_backup(response):
+            def post_set_backup(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = TargetPoolsRestTransport(interceptor=MyCustomTargetPoolsInterceptor())
         client = TargetPoolsClient(transport=transport)

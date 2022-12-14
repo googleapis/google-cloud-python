@@ -63,117 +63,133 @@ class NetworkFirewallPoliciesRestInterceptor:
 
     .. code-block:: python
         class MyCustomNetworkFirewallPoliciesInterceptor(NetworkFirewallPoliciesRestInterceptor):
-            def pre_add_association(request, metadata):
+            def pre_add_association(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_add_association(response):
+            def post_add_association(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_add_rule(request, metadata):
+            def pre_add_rule(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_add_rule(response):
+            def post_add_rule(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_clone_rules(request, metadata):
+            def pre_clone_rules(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_clone_rules(response):
+            def post_clone_rules(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete(request, metadata):
+            def pre_delete(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete(response):
+            def post_delete(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get(request, metadata):
+            def pre_get(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get(response):
+            def post_get(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_association(request, metadata):
+            def pre_get_association(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_association(response):
+            def post_get_association(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_iam_policy(request, metadata):
+            def pre_get_iam_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_iam_policy(response):
+            def post_get_iam_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_rule(request, metadata):
+            def pre_get_rule(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_rule(response):
+            def post_get_rule(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_insert(request, metadata):
+            def pre_insert(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_insert(response):
+            def post_insert(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list(request, metadata):
+            def pre_list(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list(response):
+            def post_list(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_patch(request, metadata):
+            def pre_patch(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_patch(response):
+            def post_patch(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_patch_rule(request, metadata):
+            def pre_patch_rule(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_patch_rule(response):
+            def post_patch_rule(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_remove_association(request, metadata):
+            def pre_remove_association(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_remove_association(response):
+            def post_remove_association(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_remove_rule(request, metadata):
+            def pre_remove_rule(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_remove_rule(response):
+            def post_remove_rule(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_iam_policy(request, metadata):
+            def pre_set_iam_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_iam_policy(response):
+            def post_set_iam_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_test_iam_permissions(request, metadata):
+            def pre_test_iam_permissions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_test_iam_permissions(response):
+            def post_test_iam_permissions(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = NetworkFirewallPoliciesRestTransport(interceptor=MyCustomNetworkFirewallPoliciesInterceptor())
         client = NetworkFirewallPoliciesClient(transport=transport)

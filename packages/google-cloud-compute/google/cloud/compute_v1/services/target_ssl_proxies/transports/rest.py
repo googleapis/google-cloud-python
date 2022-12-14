@@ -63,68 +63,77 @@ class TargetSslProxiesRestInterceptor:
 
     .. code-block:: python
         class MyCustomTargetSslProxiesInterceptor(TargetSslProxiesRestInterceptor):
-            def pre_delete(request, metadata):
+            def pre_delete(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete(response):
+            def post_delete(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get(request, metadata):
+            def pre_get(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get(response):
+            def post_get(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_insert(request, metadata):
+            def pre_insert(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_insert(response):
+            def post_insert(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list(request, metadata):
+            def pre_list(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list(response):
+            def post_list(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_backend_service(request, metadata):
+            def pre_set_backend_service(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_backend_service(response):
+            def post_set_backend_service(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_certificate_map(request, metadata):
+            def pre_set_certificate_map(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_certificate_map(response):
+            def post_set_certificate_map(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_proxy_header(request, metadata):
+            def pre_set_proxy_header(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_proxy_header(response):
+            def post_set_proxy_header(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_ssl_certificates(request, metadata):
+            def pre_set_ssl_certificates(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_ssl_certificates(response):
+            def post_set_ssl_certificates(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_ssl_policy(request, metadata):
+            def pre_set_ssl_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_ssl_policy(response):
+            def post_set_ssl_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = TargetSslProxiesRestTransport(interceptor=MyCustomTargetSslProxiesInterceptor())
         client = TargetSslProxiesClient(transport=transport)

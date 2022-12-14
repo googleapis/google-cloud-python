@@ -63,68 +63,77 @@ class BackendBucketsRestInterceptor:
 
     .. code-block:: python
         class MyCustomBackendBucketsInterceptor(BackendBucketsRestInterceptor):
-            def pre_add_signed_url_key(request, metadata):
+            def pre_add_signed_url_key(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_add_signed_url_key(response):
+            def post_add_signed_url_key(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete(request, metadata):
+            def pre_delete(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete(response):
+            def post_delete(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_signed_url_key(request, metadata):
+            def pre_delete_signed_url_key(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_signed_url_key(response):
+            def post_delete_signed_url_key(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get(request, metadata):
+            def pre_get(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get(response):
+            def post_get(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_insert(request, metadata):
+            def pre_insert(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_insert(response):
+            def post_insert(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list(request, metadata):
+            def pre_list(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list(response):
+            def post_list(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_patch(request, metadata):
+            def pre_patch(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_patch(response):
+            def post_patch(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_edge_security_policy(request, metadata):
+            def pre_set_edge_security_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_edge_security_policy(response):
+            def post_set_edge_security_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update(request, metadata):
+            def pre_update(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update(response):
+            def post_update(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = BackendBucketsRestTransport(interceptor=MyCustomBackendBucketsInterceptor())
         client = BackendBucketsClient(transport=transport)

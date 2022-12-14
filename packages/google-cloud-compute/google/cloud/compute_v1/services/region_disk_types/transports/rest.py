@@ -63,19 +63,21 @@ class RegionDiskTypesRestInterceptor:
 
     .. code-block:: python
         class MyCustomRegionDiskTypesInterceptor(RegionDiskTypesRestInterceptor):
-            def pre_get(request, metadata):
+            def pre_get(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get(response):
+            def post_get(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list(request, metadata):
+            def pre_list(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list(response):
+            def post_list(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = RegionDiskTypesRestTransport(interceptor=MyCustomRegionDiskTypesInterceptor())
         client = RegionDiskTypesClient(transport=transport)

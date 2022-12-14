@@ -63,89 +63,101 @@ class SubnetworksRestInterceptor:
 
     .. code-block:: python
         class MyCustomSubnetworksInterceptor(SubnetworksRestInterceptor):
-            def pre_aggregated_list(request, metadata):
+            def pre_aggregated_list(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_aggregated_list(response):
+            def post_aggregated_list(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete(request, metadata):
+            def pre_delete(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete(response):
+            def post_delete(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_expand_ip_cidr_range(request, metadata):
+            def pre_expand_ip_cidr_range(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_expand_ip_cidr_range(response):
+            def post_expand_ip_cidr_range(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get(request, metadata):
+            def pre_get(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get(response):
+            def post_get(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_iam_policy(request, metadata):
+            def pre_get_iam_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_iam_policy(response):
+            def post_get_iam_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_insert(request, metadata):
+            def pre_insert(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_insert(response):
+            def post_insert(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list(request, metadata):
+            def pre_list(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list(response):
+            def post_list(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_usable(request, metadata):
+            def pre_list_usable(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_usable(response):
+            def post_list_usable(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_patch(request, metadata):
+            def pre_patch(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_patch(response):
+            def post_patch(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_iam_policy(request, metadata):
+            def pre_set_iam_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_iam_policy(response):
+            def post_set_iam_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_private_ip_google_access(request, metadata):
+            def pre_set_private_ip_google_access(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_private_ip_google_access(response):
+            def post_set_private_ip_google_access(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_test_iam_permissions(request, metadata):
+            def pre_test_iam_permissions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_test_iam_permissions(response):
+            def post_test_iam_permissions(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = SubnetworksRestTransport(interceptor=MyCustomSubnetworksInterceptor())
         client = SubnetworksClient(transport=transport)

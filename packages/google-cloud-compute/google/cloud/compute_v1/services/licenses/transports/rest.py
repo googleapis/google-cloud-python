@@ -63,54 +63,61 @@ class LicensesRestInterceptor:
 
     .. code-block:: python
         class MyCustomLicensesInterceptor(LicensesRestInterceptor):
-            def pre_delete(request, metadata):
+            def pre_delete(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete(response):
+            def post_delete(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get(request, metadata):
+            def pre_get(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get(response):
+            def post_get(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_iam_policy(request, metadata):
+            def pre_get_iam_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_iam_policy(response):
+            def post_get_iam_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_insert(request, metadata):
+            def pre_insert(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_insert(response):
+            def post_insert(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list(request, metadata):
+            def pre_list(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list(response):
+            def post_list(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_iam_policy(request, metadata):
+            def pre_set_iam_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_iam_policy(response):
+            def post_set_iam_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_test_iam_permissions(request, metadata):
+            def pre_test_iam_permissions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_test_iam_permissions(response):
+            def post_test_iam_permissions(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = LicensesRestTransport(interceptor=MyCustomLicensesInterceptor())
         client = LicensesClient(transport=transport)

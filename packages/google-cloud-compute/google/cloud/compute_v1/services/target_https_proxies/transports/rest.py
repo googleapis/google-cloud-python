@@ -63,82 +63,93 @@ class TargetHttpsProxiesRestInterceptor:
 
     .. code-block:: python
         class MyCustomTargetHttpsProxiesInterceptor(TargetHttpsProxiesRestInterceptor):
-            def pre_aggregated_list(request, metadata):
+            def pre_aggregated_list(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_aggregated_list(response):
+            def post_aggregated_list(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete(request, metadata):
+            def pre_delete(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete(response):
+            def post_delete(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get(request, metadata):
+            def pre_get(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get(response):
+            def post_get(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_insert(request, metadata):
+            def pre_insert(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_insert(response):
+            def post_insert(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list(request, metadata):
+            def pre_list(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list(response):
+            def post_list(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_patch(request, metadata):
+            def pre_patch(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_patch(response):
+            def post_patch(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_certificate_map(request, metadata):
+            def pre_set_certificate_map(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_certificate_map(response):
+            def post_set_certificate_map(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_quic_override(request, metadata):
+            def pre_set_quic_override(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_quic_override(response):
+            def post_set_quic_override(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_ssl_certificates(request, metadata):
+            def pre_set_ssl_certificates(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_ssl_certificates(response):
+            def post_set_ssl_certificates(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_ssl_policy(request, metadata):
+            def pre_set_ssl_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_ssl_policy(response):
+            def post_set_ssl_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_url_map(request, metadata):
+            def pre_set_url_map(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_url_map(response):
+            def post_set_url_map(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = TargetHttpsProxiesRestTransport(interceptor=MyCustomTargetHttpsProxiesInterceptor())
         client = TargetHttpsProxiesClient(transport=transport)

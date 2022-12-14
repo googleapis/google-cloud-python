@@ -63,12 +63,13 @@ class ImageFamilyViewsRestInterceptor:
 
     .. code-block:: python
         class MyCustomImageFamilyViewsInterceptor(ImageFamilyViewsRestInterceptor):
-            def pre_get(request, metadata):
+            def pre_get(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get(response):
+            def post_get(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = ImageFamilyViewsRestTransport(interceptor=MyCustomImageFamilyViewsInterceptor())
         client = ImageFamilyViewsClient(transport=transport)

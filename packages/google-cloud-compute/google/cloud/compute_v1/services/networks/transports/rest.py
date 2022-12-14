@@ -63,82 +63,93 @@ class NetworksRestInterceptor:
 
     .. code-block:: python
         class MyCustomNetworksInterceptor(NetworksRestInterceptor):
-            def pre_add_peering(request, metadata):
+            def pre_add_peering(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_add_peering(response):
+            def post_add_peering(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete(request, metadata):
+            def pre_delete(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete(response):
+            def post_delete(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get(request, metadata):
+            def pre_get(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get(response):
+            def post_get(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_effective_firewalls(request, metadata):
+            def pre_get_effective_firewalls(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_effective_firewalls(response):
+            def post_get_effective_firewalls(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_insert(request, metadata):
+            def pre_insert(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_insert(response):
+            def post_insert(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list(request, metadata):
+            def pre_list(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list(response):
+            def post_list(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_peering_routes(request, metadata):
+            def pre_list_peering_routes(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_peering_routes(response):
+            def post_list_peering_routes(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_patch(request, metadata):
+            def pre_patch(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_patch(response):
+            def post_patch(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_remove_peering(request, metadata):
+            def pre_remove_peering(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_remove_peering(response):
+            def post_remove_peering(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_switch_to_custom_mode(request, metadata):
+            def pre_switch_to_custom_mode(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_switch_to_custom_mode(response):
+            def post_switch_to_custom_mode(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_peering(request, metadata):
+            def pre_update_peering(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_peering(response):
+            def post_update_peering(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = NetworksRestTransport(interceptor=MyCustomNetworksInterceptor())
         client = NetworksClient(transport=transport)

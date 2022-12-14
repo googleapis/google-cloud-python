@@ -63,320 +63,365 @@ class InstancesRestInterceptor:
 
     .. code-block:: python
         class MyCustomInstancesInterceptor(InstancesRestInterceptor):
-            def pre_add_access_config(request, metadata):
+            def pre_add_access_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_add_access_config(response):
+            def post_add_access_config(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_add_resource_policies(request, metadata):
+            def pre_add_resource_policies(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_add_resource_policies(response):
+            def post_add_resource_policies(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_aggregated_list(request, metadata):
+            def pre_aggregated_list(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_aggregated_list(response):
+            def post_aggregated_list(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_attach_disk(request, metadata):
+            def pre_attach_disk(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_attach_disk(response):
+            def post_attach_disk(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_bulk_insert(request, metadata):
+            def pre_bulk_insert(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_bulk_insert(response):
+            def post_bulk_insert(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete(request, metadata):
+            def pre_delete(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete(response):
+            def post_delete(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_access_config(request, metadata):
+            def pre_delete_access_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_access_config(response):
+            def post_delete_access_config(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_detach_disk(request, metadata):
+            def pre_detach_disk(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_detach_disk(response):
+            def post_detach_disk(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get(request, metadata):
+            def pre_get(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get(response):
+            def post_get(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_effective_firewalls(request, metadata):
+            def pre_get_effective_firewalls(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_effective_firewalls(response):
+            def post_get_effective_firewalls(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_guest_attributes(request, metadata):
+            def pre_get_guest_attributes(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_guest_attributes(response):
+            def post_get_guest_attributes(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_iam_policy(request, metadata):
+            def pre_get_iam_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_iam_policy(response):
+            def post_get_iam_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_screenshot(request, metadata):
+            def pre_get_screenshot(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_screenshot(response):
+            def post_get_screenshot(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_serial_port_output(request, metadata):
+            def pre_get_serial_port_output(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_serial_port_output(response):
+            def post_get_serial_port_output(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_shielded_instance_identity(request, metadata):
+            def pre_get_shielded_instance_identity(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_shielded_instance_identity(response):
+            def post_get_shielded_instance_identity(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_insert(request, metadata):
+            def pre_insert(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_insert(response):
+            def post_insert(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list(request, metadata):
+            def pre_list(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list(response):
+            def post_list(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_referrers(request, metadata):
+            def pre_list_referrers(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_referrers(response):
+            def post_list_referrers(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_remove_resource_policies(request, metadata):
+            def pre_remove_resource_policies(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_remove_resource_policies(response):
+            def post_remove_resource_policies(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_reset(request, metadata):
+            def pre_reset(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_reset(response):
+            def post_reset(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_resume(request, metadata):
+            def pre_resume(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_resume(response):
+            def post_resume(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_send_diagnostic_interrupt(request, metadata):
+            def pre_send_diagnostic_interrupt(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_send_diagnostic_interrupt(response):
+            def post_send_diagnostic_interrupt(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_deletion_protection(request, metadata):
+            def pre_set_deletion_protection(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_deletion_protection(response):
+            def post_set_deletion_protection(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_disk_auto_delete(request, metadata):
+            def pre_set_disk_auto_delete(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_disk_auto_delete(response):
+            def post_set_disk_auto_delete(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_iam_policy(request, metadata):
+            def pre_set_iam_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_iam_policy(response):
+            def post_set_iam_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_labels(request, metadata):
+            def pre_set_labels(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_labels(response):
+            def post_set_labels(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_machine_resources(request, metadata):
+            def pre_set_machine_resources(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_machine_resources(response):
+            def post_set_machine_resources(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_machine_type(request, metadata):
+            def pre_set_machine_type(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_machine_type(response):
+            def post_set_machine_type(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_metadata(request, metadata):
+            def pre_set_metadata(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_metadata(response):
+            def post_set_metadata(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_min_cpu_platform(request, metadata):
+            def pre_set_min_cpu_platform(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_min_cpu_platform(response):
+            def post_set_min_cpu_platform(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_scheduling(request, metadata):
+            def pre_set_scheduling(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_scheduling(response):
+            def post_set_scheduling(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_service_account(request, metadata):
+            def pre_set_service_account(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_service_account(response):
+            def post_set_service_account(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_shielded_instance_integrity_policy(request, metadata):
+            def pre_set_shielded_instance_integrity_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_shielded_instance_integrity_policy(response):
+            def post_set_shielded_instance_integrity_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_tags(request, metadata):
+            def pre_set_tags(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_tags(response):
+            def post_set_tags(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_simulate_maintenance_event(request, metadata):
+            def pre_simulate_maintenance_event(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_simulate_maintenance_event(response):
+            def post_simulate_maintenance_event(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_start(request, metadata):
+            def pre_start(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_start(response):
+            def post_start(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_start_with_encryption_key(request, metadata):
+            def pre_start_with_encryption_key(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_start_with_encryption_key(response):
+            def post_start_with_encryption_key(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_stop(request, metadata):
+            def pre_stop(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_stop(response):
+            def post_stop(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_suspend(request, metadata):
+            def pre_suspend(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_suspend(response):
+            def post_suspend(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_test_iam_permissions(request, metadata):
+            def pre_test_iam_permissions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_test_iam_permissions(response):
+            def post_test_iam_permissions(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update(request, metadata):
+            def pre_update(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update(response):
+            def post_update(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_access_config(request, metadata):
+            def pre_update_access_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_access_config(response):
+            def post_update_access_config(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_display_device(request, metadata):
+            def pre_update_display_device(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_display_device(response):
+            def post_update_display_device(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_network_interface(request, metadata):
+            def pre_update_network_interface(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_network_interface(response):
+            def post_update_network_interface(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_shielded_instance_config(request, metadata):
+            def pre_update_shielded_instance_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_shielded_instance_config(response):
+            def post_update_shielded_instance_config(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = InstancesRestTransport(interceptor=MyCustomInstancesInterceptor())
         client = InstancesClient(transport=transport)

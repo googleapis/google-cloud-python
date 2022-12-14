@@ -63,138 +63,157 @@ class RegionInstanceGroupManagersRestInterceptor:
 
     .. code-block:: python
         class MyCustomRegionInstanceGroupManagersInterceptor(RegionInstanceGroupManagersRestInterceptor):
-            def pre_abandon_instances(request, metadata):
+            def pre_abandon_instances(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_abandon_instances(response):
+            def post_abandon_instances(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_apply_updates_to_instances(request, metadata):
+            def pre_apply_updates_to_instances(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_apply_updates_to_instances(response):
+            def post_apply_updates_to_instances(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_instances(request, metadata):
+            def pre_create_instances(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_instances(response):
+            def post_create_instances(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete(request, metadata):
+            def pre_delete(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete(response):
+            def post_delete(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_instances(request, metadata):
+            def pre_delete_instances(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_instances(response):
+            def post_delete_instances(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_per_instance_configs(request, metadata):
+            def pre_delete_per_instance_configs(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_per_instance_configs(response):
+            def post_delete_per_instance_configs(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get(request, metadata):
+            def pre_get(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get(response):
+            def post_get(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_insert(request, metadata):
+            def pre_insert(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_insert(response):
+            def post_insert(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list(request, metadata):
+            def pre_list(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list(response):
+            def post_list(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_errors(request, metadata):
+            def pre_list_errors(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_errors(response):
+            def post_list_errors(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_managed_instances(request, metadata):
+            def pre_list_managed_instances(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_managed_instances(response):
+            def post_list_managed_instances(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_per_instance_configs(request, metadata):
+            def pre_list_per_instance_configs(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_per_instance_configs(response):
+            def post_list_per_instance_configs(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_patch(request, metadata):
+            def pre_patch(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_patch(response):
+            def post_patch(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_patch_per_instance_configs(request, metadata):
+            def pre_patch_per_instance_configs(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_patch_per_instance_configs(response):
+            def post_patch_per_instance_configs(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_recreate_instances(request, metadata):
+            def pre_recreate_instances(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_recreate_instances(response):
+            def post_recreate_instances(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_resize(request, metadata):
+            def pre_resize(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_resize(response):
+            def post_resize(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_instance_template(request, metadata):
+            def pre_set_instance_template(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_instance_template(response):
+            def post_set_instance_template(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_target_pools(request, metadata):
+            def pre_set_target_pools(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_target_pools(response):
+            def post_set_target_pools(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_per_instance_configs(request, metadata):
+            def pre_update_per_instance_configs(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_per_instance_configs(response):
+            def post_update_per_instance_configs(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = RegionInstanceGroupManagersRestTransport(interceptor=MyCustomRegionInstanceGroupManagersInterceptor())
         client = RegionInstanceGroupManagersClient(transport=transport)

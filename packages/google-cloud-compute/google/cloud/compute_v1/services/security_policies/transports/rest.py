@@ -63,89 +63,101 @@ class SecurityPoliciesRestInterceptor:
 
     .. code-block:: python
         class MyCustomSecurityPoliciesInterceptor(SecurityPoliciesRestInterceptor):
-            def pre_add_rule(request, metadata):
+            def pre_add_rule(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_add_rule(response):
+            def post_add_rule(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_aggregated_list(request, metadata):
+            def pre_aggregated_list(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_aggregated_list(response):
+            def post_aggregated_list(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete(request, metadata):
+            def pre_delete(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete(response):
+            def post_delete(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get(request, metadata):
+            def pre_get(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get(response):
+            def post_get(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_rule(request, metadata):
+            def pre_get_rule(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_rule(response):
+            def post_get_rule(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_insert(request, metadata):
+            def pre_insert(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_insert(response):
+            def post_insert(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list(request, metadata):
+            def pre_list(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list(response):
+            def post_list(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_preconfigured_expression_sets(request, metadata):
+            def pre_list_preconfigured_expression_sets(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_preconfigured_expression_sets(response):
+            def post_list_preconfigured_expression_sets(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_patch(request, metadata):
+            def pre_patch(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_patch(response):
+            def post_patch(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_patch_rule(request, metadata):
+            def pre_patch_rule(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_patch_rule(response):
+            def post_patch_rule(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_remove_rule(request, metadata):
+            def pre_remove_rule(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_remove_rule(response):
+            def post_remove_rule(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_set_labels(request, metadata):
+            def pre_set_labels(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_set_labels(response):
+            def post_set_labels(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = SecurityPoliciesRestTransport(interceptor=MyCustomSecurityPoliciesInterceptor())
         client = SecurityPoliciesClient(transport=transport)

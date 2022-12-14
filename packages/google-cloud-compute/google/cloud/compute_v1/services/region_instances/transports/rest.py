@@ -63,12 +63,13 @@ class RegionInstancesRestInterceptor:
 
     .. code-block:: python
         class MyCustomRegionInstancesInterceptor(RegionInstancesRestInterceptor):
-            def pre_bulk_insert(request, metadata):
+            def pre_bulk_insert(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_bulk_insert(response):
+            def post_bulk_insert(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = RegionInstancesRestTransport(interceptor=MyCustomRegionInstancesInterceptor())
         client = RegionInstancesClient(transport=transport)
