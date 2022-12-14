@@ -33,7 +33,7 @@ __protobuf__ = proto.module(
 
 class Job(proto.Message):
     r"""Configuration for a job.
-    The maximum allowed size for a job is 100KB.
+    The maximum allowed size for a job is 1MB.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -92,7 +92,7 @@ class Job(proto.Message):
 
             The schedule can be either of the following types:
 
-            -  `Crontab <http://en.wikipedia.org/wiki/Cron#Overview>`__
+            -  `Crontab <https://en.wikipedia.org/wiki/Cron#Overview>`__
             -  English-like
                `schedule <https://cloud.google.com/scheduler/docs/configuring/cron-job-schedules>`__
 
@@ -149,17 +149,35 @@ class Job(proto.Message):
             Cloud Scheduler will retry the job according to the
             [RetryConfig][google.cloud.scheduler.v1beta1.RetryConfig].
 
-            The allowed duration for this deadline is:
+            The default and the allowed values depend on the type of
+            target:
 
             -  For [HTTP
                targets][google.cloud.scheduler.v1beta1.Job.http_target],
-               between 15 seconds and 30 minutes.
+               the default is 3 minutes. The deadline must be in the
+               interval [15 seconds, 30 minutes].
+
             -  For [App Engine HTTP
                targets][google.cloud.scheduler.v1beta1.Job.app_engine_http_target],
-               between 15 seconds and 24 hours.
-            -  For [PubSub
+               0 indicates that the request has the default deadline.
+               The default deadline depends on the scaling type of the
+               service: 10 minutes for standard apps with automatic
+               scaling, 24 hours for standard apps with manual and basic
+               scaling, and 60 minutes for flex apps. If the request
+               deadline is set, it must be in the interval [15 seconds,
+               24 hours 15 seconds].
+
+            -  For [Pub/Sub
                targets][google.cloud.scheduler.v1beta1.Job.pubsub_target],
                this field is ignored.
+        legacy_app_engine_cron (bool):
+            Immutable. This field is used to manage the
+            legacy App Engine Cron jobs using the Cloud
+            Scheduler API. If the field is set to true, the
+            job will be considered a legacy job. Note that
+            App Engine Cron jobs have fewer features than
+            Cloud Scheduler jobs, e.g., are only limited to
+            App Engine targets.
     """
 
     class State(proto.Enum):
@@ -239,6 +257,10 @@ class Job(proto.Message):
         number=22,
         message=duration_pb2.Duration,
     )
+    legacy_app_engine_cron: bool = proto.Field(
+        proto.BOOL,
+        number=23,
+    )
 
 
 class RetryConfig(proto.Message):
@@ -292,7 +314,7 @@ class RetryConfig(proto.Message):
             A job's retry interval starts at
             [min_backoff_duration][google.cloud.scheduler.v1beta1.RetryConfig.min_backoff_duration],
             then doubles ``max_doublings`` times, then increases
-            linearly, and finally retries retries at intervals of
+            linearly, and finally retries at intervals of
             [max_backoff_duration][google.cloud.scheduler.v1beta1.RetryConfig.max_backoff_duration]
             up to
             [retry_count][google.cloud.scheduler.v1beta1.RetryConfig.retry_count]

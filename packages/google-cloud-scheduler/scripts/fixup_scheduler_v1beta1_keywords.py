@@ -40,12 +40,12 @@ class schedulerCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_job': ('parent', 'job', ),
-        'delete_job': ('name', ),
+        'delete_job': ('name', 'legacy_app_engine_cron', ),
         'get_job': ('name', ),
-        'list_jobs': ('parent', 'page_size', 'page_token', ),
+        'list_jobs': ('parent', 'filter', 'page_size', 'page_token', 'legacy_app_engine_cron', ),
         'pause_job': ('name', ),
         'resume_job': ('name', ),
-        'run_job': ('name', ),
+        'run_job': ('name', 'legacy_app_engine_cron', ),
         'update_job': ('job', 'update_mask', ),
     }
 

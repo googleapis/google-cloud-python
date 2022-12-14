@@ -44,6 +44,15 @@ class ListJobsRequest(proto.Message):
         parent (str):
             Required. The location name. For example:
             ``projects/PROJECT_ID/locations/LOCATION_ID``.
+        filter (str):
+            ``filter`` can be used to specify a subset of jobs.
+
+            If ``filter`` equals ``target_config="HttpConfig"``, then
+            the http target jobs are retrieved. If ``filter`` equals
+            ``target_config="PubSubConfig"``, then the Pub/Sub target
+            jobs are retrieved. If ``filter`` equals
+            ``labels.foo=value1 labels.foo=value2`` then only jobs which
+            are labeled with foo=value1 AND foo=value2 will be returned.
         page_size (int):
             Requested page size.
 
@@ -64,11 +73,19 @@ class ListJobsRequest(proto.Message):
             or
             [order_by][google.cloud.scheduler.v1beta1.ListJobsRequest.order_by]
             while iterating through pages.
+        legacy_app_engine_cron (bool):
+            This field is used to manage the legacy App Engine Cron jobs
+            using the Cloud Scheduler API. If the field is set to true,
+            the jobs in the \__cron queue will be listed instead.
     """
 
     parent: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
     page_size: int = proto.Field(
         proto.INT32,
@@ -77,6 +94,10 @@ class ListJobsRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+    legacy_app_engine_cron: bool = proto.Field(
+        proto.BOOL,
+        number=7,
     )
 
 
@@ -198,11 +219,20 @@ class DeleteJobRequest(proto.Message):
         name (str):
             Required. The job name. For example:
             ``projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID``.
+        legacy_app_engine_cron (bool):
+            This field is used to manage the legacy App Engine Cron jobs
+            using the Cloud Scheduler API. If the field is set to true,
+            the job in the \__cron queue with the corresponding name
+            will be deleted instead.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    legacy_app_engine_cron: bool = proto.Field(
+        proto.BOOL,
+        number=2,
     )
 
 
@@ -246,11 +276,20 @@ class RunJobRequest(proto.Message):
         name (str):
             Required. The job name. For example:
             ``projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID``.
+        legacy_app_engine_cron (bool):
+            This field is used to manage the legacy App Engine Cron jobs
+            using the Cloud Scheduler API. If the field is set to true,
+            the job in the \__cron queue with the corresponding name
+            will be forced to run instead.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    legacy_app_engine_cron: bool = proto.Field(
+        proto.BOOL,
+        number=2,
     )
 
 

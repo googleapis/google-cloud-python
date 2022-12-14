@@ -30,6 +30,7 @@ from google.api_core import exceptions as core_exceptions
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
+from google.cloud.location import locations_pb2
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
@@ -1134,6 +1135,7 @@ def test_get_job(request_type, transport: str = "grpc"):
             schedule="schedule_value",
             time_zone="time_zone_value",
             state=job.Job.State.ENABLED,
+            legacy_app_engine_cron=True,
             pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
         )
         response = client.get_job(request)
@@ -1150,6 +1152,7 @@ def test_get_job(request_type, transport: str = "grpc"):
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == job.Job.State.ENABLED
+    assert response.legacy_app_engine_cron is True
 
 
 def test_get_job_empty_call():
@@ -1191,6 +1194,7 @@ async def test_get_job_async(
                 schedule="schedule_value",
                 time_zone="time_zone_value",
                 state=job.Job.State.ENABLED,
+                legacy_app_engine_cron=True,
             )
         )
         response = await client.get_job(request)
@@ -1207,6 +1211,7 @@ async def test_get_job_async(
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == job.Job.State.ENABLED
+    assert response.legacy_app_engine_cron is True
 
 
 @pytest.mark.asyncio
@@ -1379,6 +1384,7 @@ def test_create_job(request_type, transport: str = "grpc"):
             schedule="schedule_value",
             time_zone="time_zone_value",
             state=gcs_job.Job.State.ENABLED,
+            legacy_app_engine_cron=True,
             pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
         )
         response = client.create_job(request)
@@ -1395,6 +1401,7 @@ def test_create_job(request_type, transport: str = "grpc"):
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == gcs_job.Job.State.ENABLED
+    assert response.legacy_app_engine_cron is True
 
 
 def test_create_job_empty_call():
@@ -1436,6 +1443,7 @@ async def test_create_job_async(
                 schedule="schedule_value",
                 time_zone="time_zone_value",
                 state=gcs_job.Job.State.ENABLED,
+                legacy_app_engine_cron=True,
             )
         )
         response = await client.create_job(request)
@@ -1452,6 +1460,7 @@ async def test_create_job_async(
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == gcs_job.Job.State.ENABLED
+    assert response.legacy_app_engine_cron is True
 
 
 @pytest.mark.asyncio
@@ -1634,6 +1643,7 @@ def test_update_job(request_type, transport: str = "grpc"):
             schedule="schedule_value",
             time_zone="time_zone_value",
             state=gcs_job.Job.State.ENABLED,
+            legacy_app_engine_cron=True,
             pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
         )
         response = client.update_job(request)
@@ -1650,6 +1660,7 @@ def test_update_job(request_type, transport: str = "grpc"):
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == gcs_job.Job.State.ENABLED
+    assert response.legacy_app_engine_cron is True
 
 
 def test_update_job_empty_call():
@@ -1691,6 +1702,7 @@ async def test_update_job_async(
                 schedule="schedule_value",
                 time_zone="time_zone_value",
                 state=gcs_job.Job.State.ENABLED,
+                legacy_app_engine_cron=True,
             )
         )
         response = await client.update_job(request)
@@ -1707,6 +1719,7 @@ async def test_update_job_async(
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == gcs_job.Job.State.ENABLED
+    assert response.legacy_app_engine_cron is True
 
 
 @pytest.mark.asyncio
@@ -2109,6 +2122,7 @@ def test_pause_job(request_type, transport: str = "grpc"):
             schedule="schedule_value",
             time_zone="time_zone_value",
             state=job.Job.State.ENABLED,
+            legacy_app_engine_cron=True,
             pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
         )
         response = client.pause_job(request)
@@ -2125,6 +2139,7 @@ def test_pause_job(request_type, transport: str = "grpc"):
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == job.Job.State.ENABLED
+    assert response.legacy_app_engine_cron is True
 
 
 def test_pause_job_empty_call():
@@ -2166,6 +2181,7 @@ async def test_pause_job_async(
                 schedule="schedule_value",
                 time_zone="time_zone_value",
                 state=job.Job.State.ENABLED,
+                legacy_app_engine_cron=True,
             )
         )
         response = await client.pause_job(request)
@@ -2182,6 +2198,7 @@ async def test_pause_job_async(
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == job.Job.State.ENABLED
+    assert response.legacy_app_engine_cron is True
 
 
 @pytest.mark.asyncio
@@ -2354,6 +2371,7 @@ def test_resume_job(request_type, transport: str = "grpc"):
             schedule="schedule_value",
             time_zone="time_zone_value",
             state=job.Job.State.ENABLED,
+            legacy_app_engine_cron=True,
             pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
         )
         response = client.resume_job(request)
@@ -2370,6 +2388,7 @@ def test_resume_job(request_type, transport: str = "grpc"):
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == job.Job.State.ENABLED
+    assert response.legacy_app_engine_cron is True
 
 
 def test_resume_job_empty_call():
@@ -2411,6 +2430,7 @@ async def test_resume_job_async(
                 schedule="schedule_value",
                 time_zone="time_zone_value",
                 state=job.Job.State.ENABLED,
+                legacy_app_engine_cron=True,
             )
         )
         response = await client.resume_job(request)
@@ -2427,6 +2447,7 @@ async def test_resume_job_async(
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == job.Job.State.ENABLED
+    assert response.legacy_app_engine_cron is True
 
 
 @pytest.mark.asyncio
@@ -2599,6 +2620,7 @@ def test_run_job(request_type, transport: str = "grpc"):
             schedule="schedule_value",
             time_zone="time_zone_value",
             state=job.Job.State.ENABLED,
+            legacy_app_engine_cron=True,
             pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
         )
         response = client.run_job(request)
@@ -2615,6 +2637,7 @@ def test_run_job(request_type, transport: str = "grpc"):
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == job.Job.State.ENABLED
+    assert response.legacy_app_engine_cron is True
 
 
 def test_run_job_empty_call():
@@ -2656,6 +2679,7 @@ async def test_run_job_async(
                 schedule="schedule_value",
                 time_zone="time_zone_value",
                 state=job.Job.State.ENABLED,
+                legacy_app_engine_cron=True,
             )
         )
         response = await client.run_job(request)
@@ -2672,6 +2696,7 @@ async def test_run_job_async(
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == job.Job.State.ENABLED
+    assert response.legacy_app_engine_cron is True
 
 
 @pytest.mark.asyncio
@@ -2963,6 +2988,8 @@ def test_cloud_scheduler_base_transport():
         "pause_job",
         "resume_job",
         "run_job",
+        "get_location",
+        "list_locations",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -3495,6 +3522,294 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+
+
+def test_list_locations(transport: str = "grpc"):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = locations_pb2.ListLocationsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+        response = client.list_locations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+@pytest.mark.asyncio
+async def test_list_locations_async(transport: str = "grpc"):
+    client = CloudSchedulerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = locations_pb2.ListLocationsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        response = await client.list_locations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_list_locations_field_headers():
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = locations_pb2.ListLocationsRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_locations_field_headers_async():
+    client = CloudSchedulerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = locations_pb2.ListLocationsRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+def test_list_locations_from_dict():
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        response = client.list_locations(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_from_dict_async():
+    client = CloudSchedulerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        response = await client.list_locations(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+def test_get_location(transport: str = "grpc"):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = locations_pb2.GetLocationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+        response = client.get_location(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+@pytest.mark.asyncio
+async def test_get_location_async(transport: str = "grpc_asyncio"):
+    client = CloudSchedulerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = locations_pb2.GetLocationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        response = await client.get_location(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_get_location_field_headers():
+    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials())
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = locations_pb2.GetLocationRequest()
+    request.name = "locations/abc"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        call.return_value = locations_pb2.Location()
+
+        client.get_location(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations/abc",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_location_field_headers_async():
+    client = CloudSchedulerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = locations_pb2.GetLocationRequest()
+    request.name = "locations/abc"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations/abc",
+    ) in kw["metadata"]
+
+
+def test_get_location_from_dict():
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        response = client.get_location(
+            request={
+                "name": "locations/abc",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_get_location_from_dict_async():
+    client = CloudSchedulerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        response = await client.get_location(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
 
 
 def test_transport_close():
