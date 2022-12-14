@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.15.0](https://github.com/googleapis/python-analytics-data/compare/v0.14.2...v0.15.0) (2022-12-14)
+
+
+### Features
+
+* Add `subject_to_thresholding` field to `ResponseMetadata` type ([#302](https://github.com/googleapis/python-analytics-data/issues/302)) ([779da22](https://github.com/googleapis/python-analytics-data/commit/779da22b33b509219188a26f6b3a2fab707fe69e))
+* Add `tokens_per_project_per_hour` field to `PropertyQuota` type ([779da22](https://github.com/googleapis/python-analytics-data/commit/779da22b33b509219188a26f6b3a2fab707fe69e))
+* Add support for `google.analytics.data.__version__` ([3cade4a](https://github.com/googleapis/python-analytics-data/commit/3cade4a266b8647eb85c18cb6c12a08ac05a023a))
+* Add typing to proto.Message based class attributes ([a09cbdf](https://github.com/googleapis/python-analytics-data/commit/a09cbdfc78bbfc2efe7e9cbdfb9276ea48522682))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([3cade4a](https://github.com/googleapis/python-analytics-data/commit/3cade4a266b8647eb85c18cb6c12a08ac05a023a))
+* **deps:** Require google-api-core &gt;=1.34.0, >= 2.11.0  ([4682a42](https://github.com/googleapis/python-analytics-data/commit/4682a423266d6102b820751424482684d6d4a2b2))
+* Drop usage of pkg_resources ([4682a42](https://github.com/googleapis/python-analytics-data/commit/4682a423266d6102b820751424482684d6d4a2b2))
+* Fix timeout default values ([4682a42](https://github.com/googleapis/python-analytics-data/commit/4682a423266d6102b820751424482684d6d4a2b2))
+
+
+### Documentation
+
+* Add a sample for using minute ranges in realtime reports ([#314](https://github.com/googleapis/python-analytics-data/issues/314)) ([4f1305f](https://github.com/googleapis/python-analytics-data/commit/4f1305f95232134c487f02d22d06a0d826655ad8))
+* **samples:** Snippetgen handling of repeated enum field ([a09cbdf](https://github.com/googleapis/python-analytics-data/commit/a09cbdfc78bbfc2efe7e9cbdfb9276ea48522682))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([4682a42](https://github.com/googleapis/python-analytics-data/commit/4682a423266d6102b820751424482684d6d4a2b2))
+
 ## [0.14.2](https://github.com/googleapis/python-analytics-data/compare/v0.14.1...v0.14.2) (2022-10-10)
 
 
