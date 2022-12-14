@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.9.0](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.8.0...v2.9.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.monitoring_dashboard.__version__` ([e081fe5](https://github.com/googleapis/python-monitoring-dashboards/commit/e081fe519eb9c3c617384a366f2e876bd91d3357))
+* Add typing to proto.Message based class attributes ([e081fe5](https://github.com/googleapis/python-monitoring-dashboards/commit/e081fe519eb9c3c617384a366f2e876bd91d3357))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([e081fe5](https://github.com/googleapis/python-monitoring-dashboards/commit/e081fe519eb9c3c617384a366f2e876bd91d3357))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([e081fe5](https://github.com/googleapis/python-monitoring-dashboards/commit/e081fe519eb9c3c617384a366f2e876bd91d3357))
+* Drop usage of pkg_resources ([e081fe5](https://github.com/googleapis/python-monitoring-dashboards/commit/e081fe519eb9c3c617384a366f2e876bd91d3357))
+* Fix timeout default values ([e081fe5](https://github.com/googleapis/python-monitoring-dashboards/commit/e081fe519eb9c3c617384a366f2e876bd91d3357))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([e081fe5](https://github.com/googleapis/python-monitoring-dashboards/commit/e081fe519eb9c3c617384a366f2e876bd91d3357))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([e081fe5](https://github.com/googleapis/python-monitoring-dashboards/commit/e081fe519eb9c3c617384a366f2e876bd91d3357))
+
 ## [2.8.0](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.7.4...v2.8.0) (2022-10-27)
 
 
