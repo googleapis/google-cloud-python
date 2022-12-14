@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://github.com/googleapis/python-documentai/compare/v2.4.1...v2.5.0) (2022-12-13)
+
+
+### Features
+
+* Added sharding_config field in DocumentOutputConfig.GcsOutputConfig in document_io.proto ([#430](https://github.com/googleapis/python-documentai/issues/430)) ([80df6cb](https://github.com/googleapis/python-documentai/commit/80df6cb24b2e3af1ada4b0e2e602eb42caadb6e7))
+
 ## [2.4.1](https://github.com/googleapis/python-documentai/compare/v2.4.0...v2.4.1) (2022-12-07)
 
 
