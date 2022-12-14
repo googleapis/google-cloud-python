@@ -59,10 +59,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class ProvisioningRestInterceptor:
     """Interceptor for Provisioning.
@@ -79,26 +75,29 @@ class ProvisioningRestInterceptor:
 
     .. code-block:: python
         class MyCustomProvisioningInterceptor(ProvisioningRestInterceptor):
-            def pre_create_instance(request, metadata):
+            def pre_create_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_instance(response):
+            def post_create_instance(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_instance(request, metadata):
+            def pre_delete_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_instance(response):
+            def post_delete_instance(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_instance(request, metadata):
+            def pre_get_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_instance(response):
+            def post_get_instance(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = ProvisioningRestTransport(interceptor=MyCustomProvisioningInterceptor())
         client = ProvisioningClient(transport=transport)

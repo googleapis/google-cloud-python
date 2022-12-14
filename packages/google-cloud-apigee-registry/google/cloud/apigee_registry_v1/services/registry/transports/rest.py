@@ -54,10 +54,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class RegistryRestInterceptor:
     """Interceptor for Registry.
@@ -74,235 +70,265 @@ class RegistryRestInterceptor:
 
     .. code-block:: python
         class MyCustomRegistryInterceptor(RegistryRestInterceptor):
-            def pre_create_api(request, metadata):
+            def pre_create_api(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_api(response):
+            def post_create_api(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_api_deployment(request, metadata):
+            def pre_create_api_deployment(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_api_deployment(response):
+            def post_create_api_deployment(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_api_spec(request, metadata):
+            def pre_create_api_spec(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_api_spec(response):
+            def post_create_api_spec(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_api_version(request, metadata):
+            def pre_create_api_version(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_api_version(response):
+            def post_create_api_version(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_artifact(request, metadata):
+            def pre_create_artifact(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_artifact(response):
+            def post_create_artifact(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_api(request, metadata):
+            def pre_delete_api(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_delete_api_deployment(request, metadata):
+            def pre_delete_api_deployment(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_delete_api_deployment_revision(request, metadata):
+            def pre_delete_api_deployment_revision(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_api_deployment_revision(response):
+            def post_delete_api_deployment_revision(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_api_spec(request, metadata):
+            def pre_delete_api_spec(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_delete_api_spec_revision(request, metadata):
+            def pre_delete_api_spec_revision(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_api_spec_revision(response):
+            def post_delete_api_spec_revision(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_api_version(request, metadata):
+            def pre_delete_api_version(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_delete_artifact(request, metadata):
+            def pre_delete_artifact(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_get_api(request, metadata):
+            def pre_get_api(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_api(response):
+            def post_get_api(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_api_deployment(request, metadata):
+            def pre_get_api_deployment(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_api_deployment(response):
+            def post_get_api_deployment(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_api_spec(request, metadata):
+            def pre_get_api_spec(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_api_spec(response):
+            def post_get_api_spec(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_api_spec_contents(request, metadata):
+            def pre_get_api_spec_contents(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_api_spec_contents(response):
+            def post_get_api_spec_contents(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_api_version(request, metadata):
+            def pre_get_api_version(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_api_version(response):
+            def post_get_api_version(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_artifact(request, metadata):
+            def pre_get_artifact(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_artifact(response):
+            def post_get_artifact(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_artifact_contents(request, metadata):
+            def pre_get_artifact_contents(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_artifact_contents(response):
+            def post_get_artifact_contents(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_api_deployment_revisions(request, metadata):
+            def pre_list_api_deployment_revisions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_api_deployment_revisions(response):
+            def post_list_api_deployment_revisions(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_api_deployments(request, metadata):
+            def pre_list_api_deployments(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_api_deployments(response):
+            def post_list_api_deployments(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_apis(request, metadata):
+            def pre_list_apis(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_apis(response):
+            def post_list_apis(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_api_spec_revisions(request, metadata):
+            def pre_list_api_spec_revisions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_api_spec_revisions(response):
+            def post_list_api_spec_revisions(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_api_specs(request, metadata):
+            def pre_list_api_specs(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_api_specs(response):
+            def post_list_api_specs(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_api_versions(request, metadata):
+            def pre_list_api_versions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_api_versions(response):
+            def post_list_api_versions(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_artifacts(request, metadata):
+            def pre_list_artifacts(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_artifacts(response):
+            def post_list_artifacts(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_replace_artifact(request, metadata):
+            def pre_replace_artifact(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_replace_artifact(response):
+            def post_replace_artifact(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_rollback_api_deployment(request, metadata):
+            def pre_rollback_api_deployment(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_rollback_api_deployment(response):
+            def post_rollback_api_deployment(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_rollback_api_spec(request, metadata):
+            def pre_rollback_api_spec(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_rollback_api_spec(response):
+            def post_rollback_api_spec(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_tag_api_deployment_revision(request, metadata):
+            def pre_tag_api_deployment_revision(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_tag_api_deployment_revision(response):
+            def post_tag_api_deployment_revision(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_tag_api_spec_revision(request, metadata):
+            def pre_tag_api_spec_revision(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_tag_api_spec_revision(response):
+            def post_tag_api_spec_revision(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_api(request, metadata):
+            def pre_update_api(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_api(response):
+            def post_update_api(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_api_deployment(request, metadata):
+            def pre_update_api_deployment(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_api_deployment(response):
+            def post_update_api_deployment(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_api_spec(request, metadata):
+            def pre_update_api_spec(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_api_spec(response):
+            def post_update_api_spec(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_api_version(request, metadata):
+            def pre_update_api_version(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_api_version(response):
+            def post_update_api_version(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = RegistryRestTransport(interceptor=MyCustomRegistryInterceptor())
         client = RegistryClient(transport=transport)
