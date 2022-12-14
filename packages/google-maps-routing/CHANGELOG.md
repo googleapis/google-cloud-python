@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.1.1...google-maps-routing-v0.1.2) (2022-12-14)
+
+
+### Documentation
+
+* updated comment for ComputeRoutesRequest and ComputeRouteMatrixRequest ([2d9d62b](https://github.com/googleapis/google-cloud-python/commit/2d9d62b948c985cd0afac7bea0447f57e4b6ab69))
+* updated comment for Route.route_token ([2d9d62b](https://github.com/googleapis/google-cloud-python/commit/2d9d62b948c985cd0afac7bea0447f57e4b6ab69))
+* updated comment for RouteTravelMode ([2d9d62b](https://github.com/googleapis/google-cloud-python/commit/2d9d62b948c985cd0afac7bea0447f57e4b6ab69))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.1.0...google-maps-routing-v0.1.1) (2022-12-06)
 
 
