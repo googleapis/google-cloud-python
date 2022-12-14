@@ -190,8 +190,7 @@ class Environment(proto.Message):
                 pre-created and available for faster startup to
                 enable interactive exploration use-cases. This
                 defaults to False to avoid additional billed
-                charges.
-                These can only be set to True for the
+                charges. These can only be set to True for the
                 environment with name set to "default", and with
                 default configuration.
         """
