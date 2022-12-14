@@ -43,6 +43,7 @@ __protobuf__ = proto.module(
         "EntityMentionData",
         "IntentMatchData",
         "SentimentData",
+        "IssueMatchData",
         "IssueModel",
         "Issue",
         "IssueModelLabelStats",
@@ -61,6 +62,7 @@ __protobuf__ = proto.module(
         "DialogflowInteractionData",
         "ConversationParticipant",
         "View",
+        "AnnotatorSelector",
     },
 )
 
@@ -437,6 +439,10 @@ class Analysis(proto.Message):
         analysis_result (google.cloud.contact_center_insights_v1.types.AnalysisResult):
             Output only. The result of the analysis,
             which is populated when the analysis finishes.
+        annotator_selector (google.cloud.contact_center_insights_v1.types.AnnotatorSelector):
+            To select the annotators to run and the
+            phrase matchers to use (if any). If not
+            specified, all annotators will be run.
     """
 
     name: str = proto.Field(
@@ -457,6 +463,11 @@ class Analysis(proto.Message):
         proto.MESSAGE,
         number=7,
         message="AnalysisResult",
+    )
+    annotator_selector: "AnnotatorSelector" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="AnnotatorSelector",
     )
 
 
@@ -739,6 +750,10 @@ class CallAnnotation(proto.Message):
             Data specifying a phrase match.
 
             This field is a member of `oneof`_ ``data``.
+        issue_match_data (google.cloud.contact_center_insights_v1.types.IssueMatchData):
+            Data specifying an issue match.
+
+            This field is a member of `oneof`_ ``data``.
         channel_tag (int):
             The channel of the audio where the annotation
             occurs. For single-channel audio, this field is
@@ -792,6 +807,12 @@ class CallAnnotation(proto.Message):
         number=17,
         oneof="data",
         message="PhraseMatchData",
+    )
+    issue_match_data: "IssueMatchData" = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        oneof="data",
+        message="IssueMatchData",
     )
     channel_tag: int = proto.Field(
         proto.INT32,
@@ -1067,6 +1088,21 @@ class SentimentData(proto.Message):
     )
 
 
+class IssueMatchData(proto.Message):
+    r"""The data for an issue match annotation.
+
+    Attributes:
+        issue_assignment (google.cloud.contact_center_insights_v1.types.IssueAssignment):
+            Information about the issue's assignment.
+    """
+
+    issue_assignment: "IssueAssignment" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="IssueAssignment",
+    )
+
+
 class IssueModel(proto.Message):
     r"""The issue model resource.
 
@@ -1182,6 +1218,10 @@ class Issue(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The most recent time that this
             issue was updated.
+        sample_utterances (MutableSequence[str]):
+            Output only. Resource names of the sample
+            representative utterances that match to this
+            issue.
     """
 
     name: str = proto.Field(
@@ -1201,6 +1241,10 @@ class Issue(proto.Message):
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
+    )
+    sample_utterances: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=6,
     )
 
 
@@ -1524,11 +1568,20 @@ class Settings(proto.Message):
             runtime_integration_analysis_percentage (float):
                 Percentage of conversations created using Dialogflow runtime
                 integration to analyze automatically, between [0, 100].
+            annotator_selector (google.cloud.contact_center_insights_v1.types.AnnotatorSelector):
+                To select the annotators to run and the
+                phrase matchers to use (if any). If not
+                specified, all annotators will be run.
         """
 
         runtime_integration_analysis_percentage: float = proto.Field(
             proto.DOUBLE,
             number=1,
+        )
+        annotator_selector: "AnnotatorSelector" = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message="AnnotatorSelector",
         )
 
     name: str = proto.Field(
@@ -2021,6 +2074,82 @@ class View(proto.Message):
     value: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+
+
+class AnnotatorSelector(proto.Message):
+    r"""Selector of all available annotators and phrase matchers to
+    run.
+
+    Attributes:
+        run_interruption_annotator (bool):
+            Whether to run the interruption annotator.
+        run_silence_annotator (bool):
+            Whether to run the silence annotator.
+        run_phrase_matcher_annotator (bool):
+            Whether to run the active phrase matcher
+            annotator(s).
+        phrase_matchers (MutableSequence[str]):
+            The list of phrase matchers to run. If not provided, all
+            active phrase matchers will be used. If inactive phrase
+            matchers are provided, they will not be used. Phrase
+            matchers will be run only if run_phrase_matcher_annotator is
+            set to true. Format:
+            projects/{project}/locations/{location}/phraseMatchers/{phrase_matcher}
+        run_sentiment_annotator (bool):
+            Whether to run the sentiment annotator.
+        run_entity_annotator (bool):
+            Whether to run the entity annotator.
+        run_intent_annotator (bool):
+            Whether to run the intent annotator.
+        run_issue_model_annotator (bool):
+            Whether to run the issue model annotator. A
+            model should have already been deployed for this
+            to take effect.
+        issue_models (MutableSequence[str]):
+            The issue model to run. If not provided, the most recently
+            deployed topic model will be used. The provided issue model
+            will only be used for inference if the issue model is
+            deployed and if run_issue_model_annotator is set to true. If
+            more than one issue model is provided, only the first
+            provided issue model will be used for inference.
+    """
+
+    run_interruption_annotator: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    run_silence_annotator: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    run_phrase_matcher_annotator: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    phrase_matchers: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    run_sentiment_annotator: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    run_entity_annotator: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    run_intent_annotator: bool = proto.Field(
+        proto.BOOL,
+        number=7,
+    )
+    run_issue_model_annotator: bool = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
+    issue_models: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=10,
     )
 
 

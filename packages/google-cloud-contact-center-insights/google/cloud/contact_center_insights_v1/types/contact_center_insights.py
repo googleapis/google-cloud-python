@@ -36,11 +36,17 @@ __protobuf__ = proto.module(
         "GetConversationRequest",
         "UpdateConversationRequest",
         "DeleteConversationRequest",
+        "IngestConversationsRequest",
+        "IngestConversationsMetadata",
+        "IngestConversationsResponse",
         "CreateAnalysisRequest",
         "ListAnalysesRequest",
         "ListAnalysesResponse",
         "GetAnalysisRequest",
         "DeleteAnalysisRequest",
+        "BulkAnalyzeConversationsRequest",
+        "BulkAnalyzeConversationsMetadata",
+        "BulkAnalyzeConversationsResponse",
         "ExportInsightsDataRequest",
         "ExportInsightsDataMetadata",
         "ExportInsightsDataResponse",
@@ -62,6 +68,7 @@ __protobuf__ = proto.module(
         "ListIssuesRequest",
         "ListIssuesResponse",
         "UpdateIssueRequest",
+        "DeleteIssueRequest",
         "CalculateIssueModelStatsRequest",
         "CalculateIssueModelStatsResponse",
         "CreatePhraseMatcherRequest",
@@ -252,6 +259,9 @@ class CreateAnalysisOperationMetadata(proto.Message):
         conversation (str):
             Output only. The Conversation that this
             Analysis Operation belongs to.
+        annotator_selector (google.cloud.contact_center_insights_v1.types.AnnotatorSelector):
+            Output only. The annotator selector used for
+            the analysis (if any).
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -267,6 +277,11 @@ class CreateAnalysisOperationMetadata(proto.Message):
     conversation: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    annotator_selector: resources.AnnotatorSelector = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=resources.AnnotatorSelector,
     )
 
 
@@ -454,6 +469,139 @@ class DeleteConversationRequest(proto.Message):
     )
 
 
+class IngestConversationsRequest(proto.Message):
+    r"""The request to ingest conversations.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        gcs_source (google.cloud.contact_center_insights_v1.types.IngestConversationsRequest.GcsSource):
+            A cloud storage bucket source.
+
+            This field is a member of `oneof`_ ``source``.
+        transcript_object_config (google.cloud.contact_center_insights_v1.types.IngestConversationsRequest.TranscriptObjectConfig):
+            Configuration for when ``source`` contains conversation
+            transcripts.
+
+            This field is a member of `oneof`_ ``object_config``.
+        parent (str):
+            Required. The parent resource for new
+            conversations.
+        conversation_config (google.cloud.contact_center_insights_v1.types.IngestConversationsRequest.ConversationConfig):
+            Configuration that applies to all
+            conversations.
+    """
+
+    class GcsSource(proto.Message):
+        r"""Configuration for Cloud Storage bucket sources.
+
+        Attributes:
+            bucket_uri (str):
+                Required. The Cloud Storage bucket containing
+                source objects.
+        """
+
+        bucket_uri: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class TranscriptObjectConfig(proto.Message):
+        r"""Configuration for processing transcript objects.
+
+        Attributes:
+            medium (google.cloud.contact_center_insights_v1.types.Conversation.Medium):
+                Required. The medium transcript objects
+                represent.
+        """
+
+        medium: resources.Conversation.Medium = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum=resources.Conversation.Medium,
+        )
+
+    class ConversationConfig(proto.Message):
+        r"""Configuration that applies to all conversations.
+
+        Attributes:
+            agent_id (str):
+                An opaque, user-specified string representing
+                the human agent who handled the conversations.
+        """
+
+        agent_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    gcs_source: GcsSource = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="source",
+        message=GcsSource,
+    )
+    transcript_object_config: TranscriptObjectConfig = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="object_config",
+        message=TranscriptObjectConfig,
+    )
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    conversation_config: ConversationConfig = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=ConversationConfig,
+    )
+
+
+class IngestConversationsMetadata(proto.Message):
+    r"""The metadata for an IngestConversations operation.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation was
+            created.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation finished
+            running.
+        request (google.cloud.contact_center_insights_v1.types.IngestConversationsRequest):
+            Output only. The original request for ingest.
+        partial_errors (MutableSequence[google.rpc.status_pb2.Status]):
+            Output only. Partial errors during ingest
+            operation that might cause the operation output
+            to be incomplete.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    request: "IngestConversationsRequest" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="IngestConversationsRequest",
+    )
+    partial_errors: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=status_pb2.Status,
+    )
+
+
+class IngestConversationsResponse(proto.Message):
+    r"""The response to an IngestConversations operation."""
+
+
 class CreateAnalysisRequest(proto.Message):
     r"""The request to create an analysis.
 
@@ -570,6 +718,115 @@ class DeleteAnalysisRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class BulkAnalyzeConversationsRequest(proto.Message):
+    r"""The request to analyze conversations in bulk.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource to create
+            analyses in.
+        filter (str):
+            Required. Filter used to select the subset of
+            conversations to analyze.
+        analysis_percentage (float):
+            Required. Percentage of selected conversation to analyze,
+            between [0, 100].
+        annotator_selector (google.cloud.contact_center_insights_v1.types.AnnotatorSelector):
+            To select the annotators to run and the
+            phrase matchers to use (if any). If not
+            specified, all annotators will be run.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    analysis_percentage: float = proto.Field(
+        proto.FLOAT,
+        number=3,
+    )
+    annotator_selector: resources.AnnotatorSelector = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=resources.AnnotatorSelector,
+    )
+
+
+class BulkAnalyzeConversationsMetadata(proto.Message):
+    r"""The metadata for a bulk analyze conversations operation.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the operation was created.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the operation finished running.
+        request (google.cloud.contact_center_insights_v1.types.BulkAnalyzeConversationsRequest):
+            The original request for bulk analyze.
+        completed_analyses_count (int):
+            The number of requested analyses that have
+            completed successfully so far.
+        failed_analyses_count (int):
+            The number of requested analyses that have
+            failed so far.
+        total_requested_analyses_count (int):
+            Total number of analyses requested. Computed by the number
+            of conversations returned by ``filter`` multiplied by
+            ``analysis_percentage`` in the request.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    request: "BulkAnalyzeConversationsRequest" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="BulkAnalyzeConversationsRequest",
+    )
+    completed_analyses_count: int = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    failed_analyses_count: int = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    total_requested_analyses_count: int = proto.Field(
+        proto.INT32,
+        number=6,
+    )
+
+
+class BulkAnalyzeConversationsResponse(proto.Message):
+    r"""The response for a bulk analyze conversations operation.
+
+    Attributes:
+        successful_analysis_count (int):
+            Count of successful analyses.
+        failed_analysis_count (int):
+            Count of failed analyses.
+    """
+
+    successful_analysis_count: int = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    failed_analysis_count: int = proto.Field(
+        proto.INT32,
+        number=2,
     )
 
 
@@ -1033,6 +1290,20 @@ class UpdateIssueRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteIssueRequest(proto.Message):
+    r"""The request to delete an issue.
+
+    Attributes:
+        name (str):
+            Required. The name of the issue to delete.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

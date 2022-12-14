@@ -172,6 +172,16 @@ class ContactCenterInsightsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.bulk_analyze_conversations: gapic_v1.method.wrap_method(
+                self.bulk_analyze_conversations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.ingest_conversations: gapic_v1.method.wrap_method(
+                self.ingest_conversations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.export_insights_data: gapic_v1.method.wrap_method(
                 self.export_insights_data,
                 default_timeout=None,
@@ -224,6 +234,11 @@ class ContactCenterInsightsTransport(abc.ABC):
             ),
             self.update_issue: gapic_v1.method.wrap_method(
                 self.update_issue,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_issue: gapic_v1.method.wrap_method(
+                self.delete_issue,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -401,6 +416,24 @@ class ContactCenterInsightsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def bulk_analyze_conversations(
+        self,
+    ) -> Callable[
+        [contact_center_insights.BulkAnalyzeConversationsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def ingest_conversations(
+        self,
+    ) -> Callable[
+        [contact_center_insights.IngestConversationsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def export_insights_data(
         self,
     ) -> Callable[
@@ -502,6 +535,15 @@ class ContactCenterInsightsTransport(abc.ABC):
     ) -> Callable[
         [contact_center_insights.UpdateIssueRequest],
         Union[resources.Issue, Awaitable[resources.Issue]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_issue(
+        self,
+    ) -> Callable[
+        [contact_center_insights.DeleteIssueRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

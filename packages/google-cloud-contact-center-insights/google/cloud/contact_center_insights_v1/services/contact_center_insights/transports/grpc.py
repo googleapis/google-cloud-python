@@ -499,6 +499,64 @@ class ContactCenterInsightsGrpcTransport(ContactCenterInsightsTransport):
         return self._stubs["delete_analysis"]
 
     @property
+    def bulk_analyze_conversations(
+        self,
+    ) -> Callable[
+        [contact_center_insights.BulkAnalyzeConversationsRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the bulk analyze conversations method over gRPC.
+
+        Analyzes multiple conversations in a single request.
+
+        Returns:
+            Callable[[~.BulkAnalyzeConversationsRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "bulk_analyze_conversations" not in self._stubs:
+            self._stubs["bulk_analyze_conversations"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/BulkAnalyzeConversations",
+                request_serializer=contact_center_insights.BulkAnalyzeConversationsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["bulk_analyze_conversations"]
+
+    @property
+    def ingest_conversations(
+        self,
+    ) -> Callable[
+        [contact_center_insights.IngestConversationsRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the ingest conversations method over gRPC.
+
+        Imports conversations and processes them according to
+        the user's configuration.
+
+        Returns:
+            Callable[[~.IngestConversationsRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "ingest_conversations" not in self._stubs:
+            self._stubs["ingest_conversations"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/IngestConversations",
+                request_serializer=contact_center_insights.IngestConversationsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["ingest_conversations"]
+
+    @property
     def export_insights_data(
         self,
     ) -> Callable[
@@ -806,6 +864,32 @@ class ContactCenterInsightsGrpcTransport(ContactCenterInsightsTransport):
                 response_deserializer=resources.Issue.deserialize,
             )
         return self._stubs["update_issue"]
+
+    @property
+    def delete_issue(
+        self,
+    ) -> Callable[[contact_center_insights.DeleteIssueRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete issue method over gRPC.
+
+        Deletes an issue.
+
+        Returns:
+            Callable[[~.DeleteIssueRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_issue" not in self._stubs:
+            self._stubs["delete_issue"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeleteIssue",
+                request_serializer=contact_center_insights.DeleteIssueRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_issue"]
 
     @property
     def calculate_issue_model_stats(

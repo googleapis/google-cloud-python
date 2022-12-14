@@ -39,6 +39,7 @@ def partition(
 class contact_center_insightsCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'bulk_analyze_conversations': ('parent', 'filter', 'analysis_percentage', 'annotator_selector', ),
         'calculate_issue_model_stats': ('issue_model', ),
         'calculate_stats': ('location', 'filter', ),
         'create_analysis': ('parent', 'analysis', ),
@@ -48,6 +49,7 @@ class contact_center_insightsCallTransformer(cst.CSTTransformer):
         'create_view': ('parent', 'view', ),
         'delete_analysis': ('name', ),
         'delete_conversation': ('name', 'force', ),
+        'delete_issue': ('name', ),
         'delete_issue_model': ('name', ),
         'delete_phrase_matcher': ('name', ),
         'delete_view': ('name', ),
@@ -60,6 +62,7 @@ class contact_center_insightsCallTransformer(cst.CSTTransformer):
         'get_phrase_matcher': ('name', ),
         'get_settings': ('name', ),
         'get_view': ('name', ),
+        'ingest_conversations': ('parent', 'gcs_source', 'transcript_object_config', 'conversation_config', ),
         'list_analyses': ('parent', 'page_size', 'page_token', 'filter', ),
         'list_conversations': ('parent', 'page_size', 'page_token', 'filter', 'view', ),
         'list_issue_models': ('parent', ),

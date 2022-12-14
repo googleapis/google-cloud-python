@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "ContactCenterInsightsClient",
           "rpcs": {
+            "BulkAnalyzeConversations": {
+              "methods": [
+                "bulk_analyze_conversations"
+              ]
+            },
             "CalculateIssueModelStats": {
               "methods": [
                 "calculate_issue_model_stats"
@@ -53,6 +58,11 @@
             "DeleteConversation": {
               "methods": [
                 "delete_conversation"
+              ]
+            },
+            "DeleteIssue": {
+              "methods": [
+                "delete_issue"
               ]
             },
             "DeleteIssueModel": {
@@ -113,6 +123,11 @@
             "GetView": {
               "methods": [
                 "get_view"
+              ]
+            },
+            "IngestConversations": {
+              "methods": [
+                "ingest_conversations"
               ]
             },
             "ListAnalyses": {
@@ -185,6 +200,11 @@
         "grpc-async": {
           "libraryClient": "ContactCenterInsightsAsyncClient",
           "rpcs": {
+            "BulkAnalyzeConversations": {
+              "methods": [
+                "bulk_analyze_conversations"
+              ]
+            },
             "CalculateIssueModelStats": {
               "methods": [
                 "calculate_issue_model_stats"
@@ -228,6 +248,11 @@
             "DeleteConversation": {
               "methods": [
                 "delete_conversation"
+              ]
+            },
+            "DeleteIssue": {
+              "methods": [
+                "delete_issue"
               ]
             },
             "DeleteIssueModel": {
@@ -288,6 +313,11 @@
             "GetView": {
               "methods": [
                 "get_view"
+              ]
+            },
+            "IngestConversations": {
+              "methods": [
+                "ingest_conversations"
               ]
             },
             "ListAnalyses": {
