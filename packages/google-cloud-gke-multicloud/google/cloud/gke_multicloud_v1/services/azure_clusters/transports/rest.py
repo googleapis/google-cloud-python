@@ -71,117 +71,133 @@ class AzureClustersRestInterceptor:
 
     .. code-block:: python
         class MyCustomAzureClustersInterceptor(AzureClustersRestInterceptor):
-            def pre_create_azure_client(request, metadata):
+            def pre_create_azure_client(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_azure_client(response):
+            def post_create_azure_client(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_azure_cluster(request, metadata):
+            def pre_create_azure_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_azure_cluster(response):
+            def post_create_azure_cluster(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_azure_node_pool(request, metadata):
+            def pre_create_azure_node_pool(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_azure_node_pool(response):
+            def post_create_azure_node_pool(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_azure_client(request, metadata):
+            def pre_delete_azure_client(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_azure_client(response):
+            def post_delete_azure_client(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_azure_cluster(request, metadata):
+            def pre_delete_azure_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_azure_cluster(response):
+            def post_delete_azure_cluster(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_azure_node_pool(request, metadata):
+            def pre_delete_azure_node_pool(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_azure_node_pool(response):
+            def post_delete_azure_node_pool(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_generate_azure_access_token(request, metadata):
+            def pre_generate_azure_access_token(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_generate_azure_access_token(response):
+            def post_generate_azure_access_token(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_azure_client(request, metadata):
+            def pre_get_azure_client(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_azure_client(response):
+            def post_get_azure_client(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_azure_cluster(request, metadata):
+            def pre_get_azure_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_azure_cluster(response):
+            def post_get_azure_cluster(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_azure_node_pool(request, metadata):
+            def pre_get_azure_node_pool(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_azure_node_pool(response):
+            def post_get_azure_node_pool(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_azure_server_config(request, metadata):
+            def pre_get_azure_server_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_azure_server_config(response):
+            def post_get_azure_server_config(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_azure_clients(request, metadata):
+            def pre_list_azure_clients(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_azure_clients(response):
+            def post_list_azure_clients(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_azure_clusters(request, metadata):
+            def pre_list_azure_clusters(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_azure_clusters(response):
+            def post_list_azure_clusters(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_azure_node_pools(request, metadata):
+            def pre_list_azure_node_pools(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_azure_node_pools(response):
+            def post_list_azure_node_pools(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_azure_cluster(request, metadata):
+            def pre_update_azure_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_azure_cluster(response):
+            def post_update_azure_cluster(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_azure_node_pool(request, metadata):
+            def pre_update_azure_node_pool(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_azure_node_pool(response):
+            def post_update_azure_node_pool(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = AzureClustersRestTransport(interceptor=MyCustomAzureClustersInterceptor())
         client = AzureClustersClient(transport=transport)
@@ -709,6 +725,7 @@ class AzureClustersRestTransport(AzureClustersTransport):
                 credentials=self._credentials,
                 scopes=self._scopes,
                 http_options=http_options,
+                path_prefix="v1",
             )
 
             self._operations_client = operations_v1.AbstractOperationsClient(

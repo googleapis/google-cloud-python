@@ -71,89 +71,101 @@ class AwsClustersRestInterceptor:
 
     .. code-block:: python
         class MyCustomAwsClustersInterceptor(AwsClustersRestInterceptor):
-            def pre_create_aws_cluster(request, metadata):
+            def pre_create_aws_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_aws_cluster(response):
+            def post_create_aws_cluster(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_aws_node_pool(request, metadata):
+            def pre_create_aws_node_pool(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_aws_node_pool(response):
+            def post_create_aws_node_pool(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_aws_cluster(request, metadata):
+            def pre_delete_aws_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_aws_cluster(response):
+            def post_delete_aws_cluster(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_aws_node_pool(request, metadata):
+            def pre_delete_aws_node_pool(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_aws_node_pool(response):
+            def post_delete_aws_node_pool(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_generate_aws_access_token(request, metadata):
+            def pre_generate_aws_access_token(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_generate_aws_access_token(response):
+            def post_generate_aws_access_token(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_aws_cluster(request, metadata):
+            def pre_get_aws_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_aws_cluster(response):
+            def post_get_aws_cluster(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_aws_node_pool(request, metadata):
+            def pre_get_aws_node_pool(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_aws_node_pool(response):
+            def post_get_aws_node_pool(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_aws_server_config(request, metadata):
+            def pre_get_aws_server_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_aws_server_config(response):
+            def post_get_aws_server_config(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_aws_clusters(request, metadata):
+            def pre_list_aws_clusters(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_aws_clusters(response):
+            def post_list_aws_clusters(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_aws_node_pools(request, metadata):
+            def pre_list_aws_node_pools(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_aws_node_pools(response):
+            def post_list_aws_node_pools(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_aws_cluster(request, metadata):
+            def pre_update_aws_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_aws_cluster(response):
+            def post_update_aws_cluster(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_aws_node_pool(request, metadata):
+            def pre_update_aws_node_pool(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_aws_node_pool(response):
+            def post_update_aws_node_pool(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = AwsClustersRestTransport(interceptor=MyCustomAwsClustersInterceptor())
         client = AwsClustersClient(transport=transport)
@@ -587,6 +599,7 @@ class AwsClustersRestTransport(AwsClustersTransport):
                 credentials=self._credentials,
                 scopes=self._scopes,
                 http_options=http_options,
+                path_prefix="v1",
             )
 
             self._operations_client = operations_v1.AbstractOperationsClient(
