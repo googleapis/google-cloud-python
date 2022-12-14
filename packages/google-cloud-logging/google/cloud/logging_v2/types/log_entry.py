@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.api import monitored_resource_pb2  # type: ignore
@@ -144,7 +146,7 @@ class LogEntry(proto.Message):
         http_request (google.logging.type.http_request_pb2.HttpRequest):
             Optional. Information about the HTTP request
             associated with this log entry, if applicable.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. A map of key, value pairs that provides additional
             information about the log entry. The labels can be
             user-defined or system-defined.
@@ -196,84 +198,84 @@ class LogEntry(proto.Message):
             entries split from a single LogEntry.
     """
 
-    log_name = proto.Field(
+    log_name: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    resource = proto.Field(
+    resource: monitored_resource_pb2.MonitoredResource = proto.Field(
         proto.MESSAGE,
         number=8,
         message=monitored_resource_pb2.MonitoredResource,
     )
-    proto_payload = proto.Field(
+    proto_payload: any_pb2.Any = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="payload",
         message=any_pb2.Any,
     )
-    text_payload = proto.Field(
+    text_payload: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="payload",
     )
-    json_payload = proto.Field(
+    json_payload: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="payload",
         message=struct_pb2.Struct,
     )
-    timestamp = proto.Field(
+    timestamp: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    receive_timestamp = proto.Field(
+    receive_timestamp: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=24,
         message=timestamp_pb2.Timestamp,
     )
-    severity = proto.Field(
+    severity: log_severity_pb2.LogSeverity = proto.Field(
         proto.ENUM,
         number=10,
         enum=log_severity_pb2.LogSeverity,
     )
-    insert_id = proto.Field(
+    insert_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    http_request = proto.Field(
+    http_request: http_request_pb2.HttpRequest = proto.Field(
         proto.MESSAGE,
         number=7,
         message=http_request_pb2.HttpRequest,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=11,
     )
-    operation = proto.Field(
+    operation: "LogEntryOperation" = proto.Field(
         proto.MESSAGE,
         number=15,
         message="LogEntryOperation",
     )
-    trace = proto.Field(
+    trace: str = proto.Field(
         proto.STRING,
         number=22,
     )
-    span_id = proto.Field(
+    span_id: str = proto.Field(
         proto.STRING,
         number=27,
     )
-    trace_sampled = proto.Field(
+    trace_sampled: bool = proto.Field(
         proto.BOOL,
         number=30,
     )
-    source_location = proto.Field(
+    source_location: "LogEntrySourceLocation" = proto.Field(
         proto.MESSAGE,
         number=23,
         message="LogEntrySourceLocation",
     )
-    split = proto.Field(
+    split: "LogSplit" = proto.Field(
         proto.MESSAGE,
         number=35,
         message="LogSplit",
@@ -302,19 +304,19 @@ class LogEntryOperation(proto.Message):
             last log entry in the operation.
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    producer = proto.Field(
+    producer: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    first = proto.Field(
+    first: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    last = proto.Field(
+    last: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -342,15 +344,15 @@ class LogEntrySourceLocation(proto.Message):
             (Go), ``function`` (Python).
     """
 
-    file = proto.Field(
+    file: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    line = proto.Field(
+    line: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    function = proto.Field(
+    function: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -377,15 +379,15 @@ class LogSplit(proto.Message):
             original LogEntry was split into.
     """
 
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    index = proto.Field(
+    index: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    total_splits = proto.Field(
+    total_splits: int = proto.Field(
         proto.INT32,
         number=3,
     )

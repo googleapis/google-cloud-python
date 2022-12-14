@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -133,7 +135,7 @@ class LogBucket(proto.Message):
             if they are empty.
         lifecycle_state (google.cloud.logging_v2.types.LifecycleState):
             Output only. The bucket lifecycle state.
-        restricted_fields (Sequence[str]):
+        restricted_fields (MutableSequence[str]):
             Log entry field paths that are denied access in this bucket.
 
             The following fields and their children are eligible:
@@ -153,42 +155,42 @@ class LogBucket(proto.Message):
             KMS key is allowed.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    retention_days = proto.Field(
+    retention_days: int = proto.Field(
         proto.INT32,
         number=11,
     )
-    locked = proto.Field(
+    locked: bool = proto.Field(
         proto.BOOL,
         number=9,
     )
-    lifecycle_state = proto.Field(
+    lifecycle_state: "LifecycleState" = proto.Field(
         proto.ENUM,
         number=12,
         enum="LifecycleState",
     )
-    restricted_fields = proto.RepeatedField(
+    restricted_fields: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=15,
     )
-    cmek_settings = proto.Field(
+    cmek_settings: "CmekSettings" = proto.Field(
         proto.MESSAGE,
         number=19,
         message="CmekSettings",
@@ -230,25 +232,25 @@ class LogView(proto.Message):
             "gce_instance" AND LOG_ID("stdout")
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -305,7 +307,7 @@ class LogSink(proto.Message):
         disabled (bool):
             Optional. If set to true, then this sink is
             disabled and it does not export any log entries.
-        exclusions (Sequence[google.cloud.logging_v2.types.LogExclusion]):
+        exclusions (MutableSequence[google.cloud.logging_v2.types.LogExclusion]):
             Optional. Log entries that match any of these exclusion
             filters will not be exported.
 
@@ -374,56 +376,56 @@ class LogSink(proto.Message):
         V2 = 1
         V1 = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    destination = proto.Field(
+    destination: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=18,
     )
-    disabled = proto.Field(
+    disabled: bool = proto.Field(
         proto.BOOL,
         number=19,
     )
-    exclusions = proto.RepeatedField(
+    exclusions: MutableSequence["LogExclusion"] = proto.RepeatedField(
         proto.MESSAGE,
         number=16,
         message="LogExclusion",
     )
-    output_version_format = proto.Field(
+    output_version_format: VersionFormat = proto.Field(
         proto.ENUM,
         number=6,
         enum=VersionFormat,
     )
-    writer_identity = proto.Field(
+    writer_identity: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    include_children = proto.Field(
+    include_children: bool = proto.Field(
         proto.BOOL,
         number=9,
     )
-    bigquery_options = proto.Field(
+    bigquery_options: "BigQueryOptions" = proto.Field(
         proto.MESSAGE,
         number=12,
         oneof="options",
         message="BigQueryOptions",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=13,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=14,
         message=timestamp_pb2.Timestamp,
@@ -457,11 +459,11 @@ class BigQueryOptions(proto.Message):
             will have this field set to false.
     """
 
-    use_partitioned_tables = proto.Field(
+    use_partitioned_tables: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    uses_timestamp_column_partitioning = proto.Field(
+    uses_timestamp_column_partitioning: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -498,15 +500,15 @@ class ListBucketsRequest(proto.Message):
             results might be available.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -516,7 +518,7 @@ class ListBucketsResponse(proto.Message):
     r"""The response from ListBuckets.
 
     Attributes:
-        buckets (Sequence[google.cloud.logging_v2.types.LogBucket]):
+        buckets (MutableSequence[google.cloud.logging_v2.types.LogBucket]):
             A list of buckets.
         next_page_token (str):
             If there might be more results than appear in this response,
@@ -529,12 +531,12 @@ class ListBucketsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    buckets = proto.RepeatedField(
+    buckets: MutableSequence["LogBucket"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="LogBucket",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -566,15 +568,15 @@ class CreateBucketRequest(proto.Message):
             name field in the bucket is ignored.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    bucket_id = proto.Field(
+    bucket_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    bucket = proto.Field(
+    bucket: "LogBucket" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="LogBucket",
@@ -612,16 +614,16 @@ class UpdateBucketRequest(proto.Message):
             For example: ``updateMask=retention_days``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    bucket = proto.Field(
+    bucket: "LogBucket" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="LogBucket",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=4,
         message=field_mask_pb2.FieldMask,
@@ -647,7 +649,7 @@ class GetBucketRequest(proto.Message):
             ``"projects/my-project/locations/global/buckets/my-bucket"``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -672,7 +674,7 @@ class DeleteBucketRequest(proto.Message):
             ``"projects/my-project/locations/global/buckets/my-bucket"``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -697,7 +699,7 @@ class UndeleteBucketRequest(proto.Message):
             ``"projects/my-project/locations/global/buckets/my-bucket"``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -728,15 +730,15 @@ class ListViewsRequest(proto.Message):
             results might be available.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -746,7 +748,7 @@ class ListViewsResponse(proto.Message):
     r"""The response from ListViews.
 
     Attributes:
-        views (Sequence[google.cloud.logging_v2.types.LogView]):
+        views (MutableSequence[google.cloud.logging_v2.types.LogView]):
             A list of views.
         next_page_token (str):
             If there might be more results than appear in this response,
@@ -759,12 +761,12 @@ class ListViewsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    views = proto.RepeatedField(
+    views: MutableSequence["LogView"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="LogView",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -790,15 +792,15 @@ class CreateViewRequest(proto.Message):
             Required. The new view.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view_id = proto.Field(
+    view_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    view = proto.Field(
+    view: "LogView" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="LogView",
@@ -833,16 +835,16 @@ class UpdateViewRequest(proto.Message):
             For example: ``updateMask=filter``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: "LogView" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="LogView",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=4,
         message=field_mask_pb2.FieldMask,
@@ -865,7 +867,7 @@ class GetViewRequest(proto.Message):
             ``"projects/my-project/locations/global/buckets/my-bucket/views/my-view"``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -889,7 +891,7 @@ class DeleteViewRequest(proto.Message):
                `"projects/my-project/locations/global/buckets/my-bucket/views/my-view"`
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -921,15 +923,15 @@ class ListSinksRequest(proto.Message):
             results might be available.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -939,7 +941,7 @@ class ListSinksResponse(proto.Message):
     r"""Result returned from ``ListSinks``.
 
     Attributes:
-        sinks (Sequence[google.cloud.logging_v2.types.LogSink]):
+        sinks (MutableSequence[google.cloud.logging_v2.types.LogSink]):
             A list of sinks.
         next_page_token (str):
             If there might be more results than appear in this response,
@@ -952,12 +954,12 @@ class ListSinksResponse(proto.Message):
     def raw_page(self):
         return self
 
-    sinks = proto.RepeatedField(
+    sinks: MutableSequence["LogSink"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="LogSink",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -982,7 +984,7 @@ class GetSinkRequest(proto.Message):
             ``"projects/my-project/sinks/my-sink"``
     """
 
-    sink_name = proto.Field(
+    sink_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1026,16 +1028,16 @@ class CreateSinkRequest(proto.Message):
             [LogSink][google.logging.v2.LogSink].
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    sink = proto.Field(
+    sink: "LogSink" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="LogSink",
     )
-    unique_writer_identity = proto.Field(
+    unique_writer_identity: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -1098,20 +1100,20 @@ class UpdateSinkRequest(proto.Message):
             For example: ``updateMask=filter``
     """
 
-    sink_name = proto.Field(
+    sink_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    sink = proto.Field(
+    sink: "LogSink" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="LogSink",
     )
-    unique_writer_identity = proto.Field(
+    unique_writer_identity: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=4,
         message=field_mask_pb2.FieldMask,
@@ -1138,7 +1140,7 @@ class DeleteSinkRequest(proto.Message):
             ``"projects/my-project/sinks/my-sink"``
     """
 
-    sink_name = proto.Field(
+    sink_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1190,28 +1192,28 @@ class LogExclusion(proto.Message):
             exclusions.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    disabled = proto.Field(
+    disabled: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
@@ -1245,15 +1247,15 @@ class ListExclusionsRequest(proto.Message):
             results might be available.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -1263,7 +1265,7 @@ class ListExclusionsResponse(proto.Message):
     r"""Result returned from ``ListExclusions``.
 
     Attributes:
-        exclusions (Sequence[google.cloud.logging_v2.types.LogExclusion]):
+        exclusions (MutableSequence[google.cloud.logging_v2.types.LogExclusion]):
             A list of exclusions.
         next_page_token (str):
             If there might be more results than appear in this response,
@@ -1276,12 +1278,12 @@ class ListExclusionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    exclusions = proto.RepeatedField(
+    exclusions: MutableSequence["LogExclusion"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="LogExclusion",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1306,7 +1308,7 @@ class GetExclusionRequest(proto.Message):
             ``"projects/my-project/exclusions/my-exclusion"``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1337,11 +1339,11 @@ class CreateExclusionRequest(proto.Message):
             resource.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    exclusion = proto.Field(
+    exclusion: "LogExclusion" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="LogExclusion",
@@ -1381,16 +1383,16 @@ class UpdateExclusionRequest(proto.Message):
             ``"filter,description"``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    exclusion = proto.Field(
+    exclusion: "LogExclusion" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="LogExclusion",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -1417,7 +1419,7 @@ class DeleteExclusionRequest(proto.Message):
             ``"projects/my-project/exclusions/my-exclusion"``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1452,7 +1454,7 @@ class GetCmekSettingsRequest(proto.Message):
             projects and folders in the Google Cloud organization.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1503,16 +1505,16 @@ class UpdateCmekSettingsRequest(proto.Message):
             For example: ``"updateMask=kmsKeyName"``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    cmek_settings = proto.Field(
+    cmek_settings: "CmekSettings" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="CmekSettings",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -1585,15 +1587,15 @@ class CmekSettings(proto.Message):
             for more information.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    kms_key_name = proto.Field(
+    kms_key_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    service_account_id = proto.Field(
+    service_account_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1629,7 +1631,7 @@ class GetSettingsRequest(proto.Message):
             and folders in the Google Cloud organization.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1677,16 +1679,16 @@ class UpdateSettingsRequest(proto.Message):
             For example: ``"updateMask=kmsKeyName"``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    settings = proto.Field(
+    settings: "Settings" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Settings",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -1763,23 +1765,23 @@ class Settings(proto.Message):
             manually if needed.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    kms_key_name = proto.Field(
+    kms_key_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    kms_service_account_id = proto.Field(
+    kms_service_account_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    storage_location = proto.Field(
+    storage_location: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    disable_default_sink = proto.Field(
+    disable_default_sink: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -1805,15 +1807,15 @@ class CopyLogEntriesRequest(proto.Message):
             entries.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    destination = proto.Field(
+    destination: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1847,35 +1849,35 @@ class CopyLogEntriesMetadata(proto.Message):
             For example: ``"serviceAccount:foo@bar.com"``
     """
 
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: "OperationState" = proto.Field(
         proto.ENUM,
         number=3,
         enum="OperationState",
     )
-    cancellation_requested = proto.Field(
+    cancellation_requested: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    request = proto.Field(
+    request: "CopyLogEntriesRequest" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="CopyLogEntriesRequest",
     )
-    progress = proto.Field(
+    progress: int = proto.Field(
         proto.INT32,
         number=6,
     )
-    writer_identity = proto.Field(
+    writer_identity: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -1889,7 +1891,7 @@ class CopyLogEntriesResponse(proto.Message):
             Number of log entries copied.
     """
 
-    log_entries_copied_count = proto.Field(
+    log_entries_copied_count: int = proto.Field(
         proto.INT64,
         number=1,
     )
