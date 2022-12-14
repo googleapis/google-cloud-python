@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -114,11 +116,11 @@ class Constraint(proto.Message):
                 'folders/123' folder.
         """
 
-        supports_in = proto.Field(
+        supports_in: bool = proto.Field(
             proto.BOOL,
             number=1,
         )
-        supports_under = proto.Field(
+        supports_under: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
@@ -133,30 +135,30 @@ class Constraint(proto.Message):
 
         """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    constraint_default = proto.Field(
+    constraint_default: ConstraintDefault = proto.Field(
         proto.ENUM,
         number=4,
         enum=ConstraintDefault,
     )
-    list_constraint = proto.Field(
+    list_constraint: ListConstraint = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="constraint_type",
         message=ListConstraint,
     )
-    boolean_constraint = proto.Field(
+    boolean_constraint: BooleanConstraint = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="constraint_type",

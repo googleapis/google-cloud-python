@@ -1,43 +1,47 @@
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+import json
 import os
+from pathlib import Path
 import shutil
 import subprocess
-
 
 import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 from synthtool.sources import git
 
+
 GOOGLEAPIS_REPO = "googleapis/googleapis"
 
-common = gcp.CommonTemplates()
+# ----------------------------------------------------------------------------
+# Copy the generated client from the owl-bot staging directory
+# ----------------------------------------------------------------------------
 
-default_version = "v2"
+clean_up_generated_samples = True
+
+# Load the default version defined in .repo-metadata.json.
+default_version = json.load(open(".repo-metadata.json", "rt")).get(
+    "default_version"
+)
 
 for library in s.get_staging_dirs(default_version):
-    # Rename to google-cloud-org-policy
-    # TODO: use bazel option to rename package
-    s.replace(
-        library / "google/cloud/**/*",
-        "google-cloud-orgpolicy",
-        "google-cloud-org-policy"
-    )
-
-    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst", "noxfile.py"])
-
+    if clean_up_generated_samples:
+        shutil.rmtree("samples/generated_samples", ignore_errors=True)
+        clean_up_generated_samples = False
+    s.move([library], excludes=["**/gapic_version.py", "noxfile.py"])
 s.remove_staging_dirs()
 
 # Clean up googleapis
@@ -59,27 +63,23 @@ s.copy("googleapis/google/api/http.proto", "google/api")
 shutil.rmtree('googleapis')
 
 # ----------------------------------------------------------------------------
-#  Add templated files
+# Add templated files
 # ----------------------------------------------------------------------------
 
-# coverage is 97 to exclude orgpolicy/v1 code
-templated_files = common.py_library(microgenerator=True, cov_level=97)
-
-s.move(
-    templated_files, excludes=[".coveragerc", "noxfile.py"]
+templated_files = gcp.CommonTemplates().py_library(
+    cov_level=97,
+    microgenerator=True,
+    versions=gcp.common.detect_versions(path="./google", default_first=True),
 )
+s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml", "noxfile.py"])
 
 python.py_samples(skip_readmes=True)
-
-python.configure_previous_major_version_branches()
 
 # Generate _pb2.py files and format them
 s.shell.run(["nox", "-s", "generate_protos"], hide_output=False)
 
 # Clean up google/api
 shutil.rmtree('google/api')
-
-s.shell.run(["nox", "-s", "blacken"], hide_output=False)
 
 # Add license headers
 python.fix_pb2_headers()
@@ -107,3 +107,7 @@ s.replace(
     PB2_GRPC_HEADER,
     fr"{LICENSE}\n\n\g<1>\n\n\g<2>",  # add line breaks to avoid stacking replacements
 )
+
+# run format session for all directories which have a noxfile
+for noxfile in Path(".").glob("**/noxfile.py"):
+    s.shell.run(["nox", "-s", "blacken"], cwd=noxfile.parent, hide_output=False)

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.orgpolicy_v2.types import constraint
@@ -66,16 +68,16 @@ class Policy(proto.Message):
             Deprecated.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    spec = proto.Field(
+    spec: "PolicySpec" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="PolicySpec",
     )
-    alternate = proto.Field(
+    alternate: "AlternatePolicySpec" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="AlternatePolicySpec",
@@ -97,11 +99,11 @@ class AlternatePolicySpec(proto.Message):
             resources.
     """
 
-    launch = proto.Field(
+    launch: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    spec = proto.Field(
+    spec: "PolicySpec" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="PolicySpec",
@@ -130,7 +132,7 @@ class PolicySpec(proto.Message):
             Output only. The time stamp this was previously updated.
             This represents the last time a call to ``CreatePolicy`` or
             ``UpdatePolicy`` was made for that ``Policy``.
-        rules (Sequence[google.cloud.orgpolicy_v2.types.PolicySpec.PolicyRule]):
+        rules (MutableSequence[google.cloud.orgpolicy_v2.types.PolicySpec.PolicyRule]):
             Up to 10 PolicyRules are allowed.
 
             In Policies for boolean constraints, the following
@@ -228,67 +230,67 @@ class PolicySpec(proto.Message):
             ``Constraint`` defines whether ancestry prefixes can be used.
 
             Attributes:
-                allowed_values (Sequence[str]):
+                allowed_values (MutableSequence[str]):
                     List of values allowed at this resource.
-                denied_values (Sequence[str]):
+                denied_values (MutableSequence[str]):
                     List of values denied at this resource.
             """
 
-            allowed_values = proto.RepeatedField(
+            allowed_values: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=1,
             )
-            denied_values = proto.RepeatedField(
+            denied_values: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=2,
             )
 
-        values = proto.Field(
+        values: "PolicySpec.PolicyRule.StringValues" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="kind",
             message="PolicySpec.PolicyRule.StringValues",
         )
-        allow_all = proto.Field(
+        allow_all: bool = proto.Field(
             proto.BOOL,
             number=2,
             oneof="kind",
         )
-        deny_all = proto.Field(
+        deny_all: bool = proto.Field(
             proto.BOOL,
             number=3,
             oneof="kind",
         )
-        enforce = proto.Field(
+        enforce: bool = proto.Field(
             proto.BOOL,
             number=4,
             oneof="kind",
         )
-        condition = proto.Field(
+        condition: expr_pb2.Expr = proto.Field(
             proto.MESSAGE,
             number=5,
             message=expr_pb2.Expr,
         )
 
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    rules = proto.RepeatedField(
+    rules: MutableSequence[PolicyRule] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=PolicyRule,
     )
-    inherit_from_parent = proto.Field(
+    inherit_from_parent: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    reset = proto.Field(
+    reset: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -319,15 +321,15 @@ class ListConstraintsRequest(proto.Message):
             this field.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -338,7 +340,7 @@ class ListConstraintsResponse(proto.Message):
     [google.cloud.orgpolicy.v2.OrgPolicy.ListConstraints] method.
 
     Attributes:
-        constraints (Sequence[google.cloud.orgpolicy_v2.types.Constraint]):
+        constraints (MutableSequence[google.cloud.orgpolicy_v2.types.Constraint]):
             The collection of constraints that are
             available on the targeted resource.
         next_page_token (str):
@@ -350,12 +352,12 @@ class ListConstraintsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    constraints = proto.RepeatedField(
+    constraints: MutableSequence[constraint.Constraint] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=constraint.Constraint,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -387,15 +389,15 @@ class ListPoliciesRequest(proto.Message):
             this field.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -407,7 +409,7 @@ class ListPoliciesResponse(proto.Message):
     be empty if no ``Policies`` are set on the resource.
 
     Attributes:
-        policies (Sequence[google.cloud.orgpolicy_v2.types.Policy]):
+        policies (MutableSequence[google.cloud.orgpolicy_v2.types.Policy]):
             All ``Policies`` that exist on the resource. It will be
             empty if no ``Policies`` are set.
         next_page_token (str):
@@ -420,12 +422,12 @@ class ListPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    policies = proto.RepeatedField(
+    policies: MutableSequence["Policy"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Policy",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -441,7 +443,7 @@ class GetPolicyRequest(proto.Message):
             naming requirements.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -457,7 +459,7 @@ class GetEffectivePolicyRequest(proto.Message):
             for naming rules.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -480,11 +482,11 @@ class CreatePolicyRequest(proto.Message):
             Required. ``Policy`` to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    policy = proto.Field(
+    policy: "Policy" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Policy",
@@ -500,7 +502,7 @@ class UpdatePolicyRequest(proto.Message):
             Required. ``Policy`` to update.
     """
 
-    policy = proto.Field(
+    policy: "Policy" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Policy",
@@ -517,7 +519,7 @@ class DeletePolicyRequest(proto.Message):
             naming rules.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

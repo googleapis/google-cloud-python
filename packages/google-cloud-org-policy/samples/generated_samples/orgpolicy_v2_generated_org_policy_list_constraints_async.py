@@ -20,7 +20,7 @@
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-orgpolicy
+#   python3 -m pip install google-cloud-org-policy
 
 
 # [START orgpolicy_v2_generated_OrgPolicy_ListConstraints_async]

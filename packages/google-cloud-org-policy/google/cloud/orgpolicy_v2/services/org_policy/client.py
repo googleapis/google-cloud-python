@@ -16,8 +16,20 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
+
+from google.cloud.orgpolicy_v2 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -56,7 +68,7 @@ class OrgPolicyClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[OrgPolicyTransport]:
         """Returns an appropriate transport class.
 
@@ -367,8 +379,8 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, OrgPolicyTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, OrgPolicyTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the org policy client.
@@ -382,7 +394,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
             transport (Union[str, OrgPolicyTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -412,6 +424,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -464,11 +477,11 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
 
     def list_constraints(
         self,
-        request: Union[orgpolicy.ListConstraintsRequest, dict] = None,
+        request: Optional[Union[orgpolicy.ListConstraintsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConstraintsPager:
         r"""Lists ``Constraints`` that could be applied on the specified
@@ -588,11 +601,11 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
 
     def list_policies(
         self,
-        request: Union[orgpolicy.ListPoliciesRequest, dict] = None,
+        request: Optional[Union[orgpolicy.ListPoliciesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPoliciesPager:
         r"""Retrieves all of the ``Policies`` that exist on a particular
@@ -714,11 +727,11 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
 
     def get_policy(
         self,
-        request: Union[orgpolicy.GetPolicyRequest, dict] = None,
+        request: Optional[Union[orgpolicy.GetPolicyRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> orgpolicy.Policy:
         r"""Gets a ``Policy`` on a resource.
@@ -820,11 +833,11 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
 
     def get_effective_policy(
         self,
-        request: Union[orgpolicy.GetEffectivePolicyRequest, dict] = None,
+        request: Optional[Union[orgpolicy.GetEffectivePolicyRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> orgpolicy.Policy:
         r"""Gets the effective ``Policy`` on a resource. This is the result
@@ -929,12 +942,12 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
 
     def create_policy(
         self,
-        request: Union[orgpolicy.CreatePolicyRequest, dict] = None,
+        request: Optional[Union[orgpolicy.CreatePolicyRequest, dict]] = None,
         *,
-        parent: str = None,
-        policy: orgpolicy.Policy = None,
+        parent: Optional[str] = None,
+        policy: Optional[orgpolicy.Policy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> orgpolicy.Policy:
         r"""Creates a Policy.
@@ -1052,11 +1065,11 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
 
     def update_policy(
         self,
-        request: Union[orgpolicy.UpdatePolicyRequest, dict] = None,
+        request: Optional[Union[orgpolicy.UpdatePolicyRequest, dict]] = None,
         *,
-        policy: orgpolicy.Policy = None,
+        policy: Optional[orgpolicy.Policy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> orgpolicy.Policy:
         r"""Updates a Policy.
@@ -1164,11 +1177,11 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
 
     def delete_policy(
         self,
-        request: Union[orgpolicy.DeletePolicyRequest, dict] = None,
+        request: Optional[Union[orgpolicy.DeletePolicyRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a Policy.
@@ -1272,14 +1285,9 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-org-policy",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("OrgPolicyClient",)

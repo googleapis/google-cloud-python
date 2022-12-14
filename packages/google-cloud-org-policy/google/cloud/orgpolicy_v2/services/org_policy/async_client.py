@@ -16,8 +16,19 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
+
+from google.cloud.orgpolicy_v2 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -177,9 +188,9 @@ class OrgPolicyAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, OrgPolicyTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the org policy client.
@@ -223,11 +234,11 @@ class OrgPolicyAsyncClient:
 
     async def list_constraints(
         self,
-        request: Union[orgpolicy.ListConstraintsRequest, dict] = None,
+        request: Optional[Union[orgpolicy.ListConstraintsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConstraintsAsyncPager:
         r"""Lists ``Constraints`` that could be applied on the specified
@@ -261,7 +272,7 @@ class OrgPolicyAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.orgpolicy_v2.types.ListConstraintsRequest, dict]):
+            request (Optional[Union[google.cloud.orgpolicy_v2.types.ListConstraintsRequest, dict]]):
                 The request object. The request sent to the
                 [ListConstraints]
                 [google.cloud.orgpolicy.v2.OrgPolicy.ListConstraints]
@@ -357,11 +368,11 @@ class OrgPolicyAsyncClient:
 
     async def list_policies(
         self,
-        request: Union[orgpolicy.ListPoliciesRequest, dict] = None,
+        request: Optional[Union[orgpolicy.ListPoliciesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPoliciesAsyncPager:
         r"""Retrieves all of the ``Policies`` that exist on a particular
@@ -395,7 +406,7 @@ class OrgPolicyAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.orgpolicy_v2.types.ListPoliciesRequest, dict]):
+            request (Optional[Union[google.cloud.orgpolicy_v2.types.ListPoliciesRequest, dict]]):
                 The request object. The request sent to the
                 [ListPolicies]
                 [google.cloud.orgpolicy.v2.OrgPolicy.ListPolicies]
@@ -493,11 +504,11 @@ class OrgPolicyAsyncClient:
 
     async def get_policy(
         self,
-        request: Union[orgpolicy.GetPolicyRequest, dict] = None,
+        request: Optional[Union[orgpolicy.GetPolicyRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> orgpolicy.Policy:
         r"""Gets a ``Policy`` on a resource.
@@ -533,7 +544,7 @@ class OrgPolicyAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.orgpolicy_v2.types.GetPolicyRequest, dict]):
+            request (Optional[Union[google.cloud.orgpolicy_v2.types.GetPolicyRequest, dict]]):
                 The request object. The request sent to the [GetPolicy]
                 [google.cloud.orgpolicy.v2.OrgPolicy.GetPolicy] method.
             name (:class:`str`):
@@ -609,11 +620,11 @@ class OrgPolicyAsyncClient:
 
     async def get_effective_policy(
         self,
-        request: Union[orgpolicy.GetEffectivePolicyRequest, dict] = None,
+        request: Optional[Union[orgpolicy.GetEffectivePolicyRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> orgpolicy.Policy:
         r"""Gets the effective ``Policy`` on a resource. This is the result
@@ -650,7 +661,7 @@ class OrgPolicyAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.orgpolicy_v2.types.GetEffectivePolicyRequest, dict]):
+            request (Optional[Union[google.cloud.orgpolicy_v2.types.GetEffectivePolicyRequest, dict]]):
                 The request object. The request sent to the
                 [GetEffectivePolicy]
                 [google.cloud.orgpolicy.v2.OrgPolicy.GetEffectivePolicy]
@@ -728,12 +739,12 @@ class OrgPolicyAsyncClient:
 
     async def create_policy(
         self,
-        request: Union[orgpolicy.CreatePolicyRequest, dict] = None,
+        request: Optional[Union[orgpolicy.CreatePolicyRequest, dict]] = None,
         *,
-        parent: str = None,
-        policy: orgpolicy.Policy = None,
+        parent: Optional[str] = None,
+        policy: Optional[orgpolicy.Policy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> orgpolicy.Policy:
         r"""Creates a Policy.
@@ -771,7 +782,7 @@ class OrgPolicyAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.orgpolicy_v2.types.CreatePolicyRequest, dict]):
+            request (Optional[Union[google.cloud.orgpolicy_v2.types.CreatePolicyRequest, dict]]):
                 The request object. The request sent to the
                 [CreatePolicyRequest]
                 [google.cloud.orgpolicy.v2.OrgPolicy.CreatePolicy]
@@ -861,11 +872,11 @@ class OrgPolicyAsyncClient:
 
     async def update_policy(
         self,
-        request: Union[orgpolicy.UpdatePolicyRequest, dict] = None,
+        request: Optional[Union[orgpolicy.UpdatePolicyRequest, dict]] = None,
         *,
-        policy: orgpolicy.Policy = None,
+        policy: Optional[orgpolicy.Policy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> orgpolicy.Policy:
         r"""Updates a Policy.
@@ -905,7 +916,7 @@ class OrgPolicyAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.orgpolicy_v2.types.UpdatePolicyRequest, dict]):
+            request (Optional[Union[google.cloud.orgpolicy_v2.types.UpdatePolicyRequest, dict]]):
                 The request object. The request sent to the
                 [UpdatePolicyRequest]
                 [google.cloud.orgpolicy.v2.OrgPolicy.UpdatePolicy]
@@ -983,11 +994,11 @@ class OrgPolicyAsyncClient:
 
     async def delete_policy(
         self,
-        request: Union[orgpolicy.DeletePolicyRequest, dict] = None,
+        request: Optional[Union[orgpolicy.DeletePolicyRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a Policy.
@@ -1020,7 +1031,7 @@ class OrgPolicyAsyncClient:
                 await client.delete_policy(request=request)
 
         Args:
-            request (Union[google.cloud.orgpolicy_v2.types.DeletePolicyRequest, dict]):
+            request (Optional[Union[google.cloud.orgpolicy_v2.types.DeletePolicyRequest, dict]]):
                 The request object. The request sent to the
                 [DeletePolicy]
                 [google.cloud.orgpolicy.v2.OrgPolicy.DeletePolicy]
@@ -1094,14 +1105,9 @@ class OrgPolicyAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-org-policy",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("OrgPolicyAsyncClient",)
