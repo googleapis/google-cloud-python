@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.8.0](https://github.com/googleapis/python-network-security/compare/v0.7.2...v0.8.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.network_security.__version__` ([c5d13c9](https://github.com/googleapis/python-network-security/commit/c5d13c9bb41ef2ea8f9d66349f3fc9fbe6bd0681))
+* Add typing to proto.Message based class attributes ([c5d13c9](https://github.com/googleapis/python-network-security/commit/c5d13c9bb41ef2ea8f9d66349f3fc9fbe6bd0681))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([c5d13c9](https://github.com/googleapis/python-network-security/commit/c5d13c9bb41ef2ea8f9d66349f3fc9fbe6bd0681))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([9e9e394](https://github.com/googleapis/python-network-security/commit/9e9e394c014a3137a7b0d2b0a7cc2ff9a503efaf))
+* Drop usage of pkg_resources ([9e9e394](https://github.com/googleapis/python-network-security/commit/9e9e394c014a3137a7b0d2b0a7cc2ff9a503efaf))
+* Fix timeout default values ([9e9e394](https://github.com/googleapis/python-network-security/commit/9e9e394c014a3137a7b0d2b0a7cc2ff9a503efaf))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([c5d13c9](https://github.com/googleapis/python-network-security/commit/c5d13c9bb41ef2ea8f9d66349f3fc9fbe6bd0681))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([9e9e394](https://github.com/googleapis/python-network-security/commit/9e9e394c014a3137a7b0d2b0a7cc2ff9a503efaf))
+
 ## [0.7.2](https://github.com/googleapis/python-network-security/compare/v0.7.1...v0.7.2) (2022-10-10)
 
 
