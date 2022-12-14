@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-org-policy/compare/v1.4.1...v1.5.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.orgpolicy.__version__` ([2d8fd20](https://github.com/googleapis/python-org-policy/commit/2d8fd208355f35f3f71f287a055c0c15d7806326))
+* Add typing to proto.Message based class attributes ([2d8fd20](https://github.com/googleapis/python-org-policy/commit/2d8fd208355f35f3f71f287a055c0c15d7806326))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([2d8fd20](https://github.com/googleapis/python-org-policy/commit/2d8fd208355f35f3f71f287a055c0c15d7806326))
+* **deps:** Allow protobuf 3.19.5 ([#188](https://github.com/googleapis/python-org-policy/issues/188)) ([0d596b6](https://github.com/googleapis/python-org-policy/commit/0d596b6ff7317d77436512a0f7ebc6b862339ed5))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([2d8fd20](https://github.com/googleapis/python-org-policy/commit/2d8fd208355f35f3f71f287a055c0c15d7806326))
+* Drop usage of pkg_resources ([2d8fd20](https://github.com/googleapis/python-org-policy/commit/2d8fd208355f35f3f71f287a055c0c15d7806326))
+* Fix timeout default values ([2d8fd20](https://github.com/googleapis/python-org-policy/commit/2d8fd208355f35f3f71f287a055c0c15d7806326))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([2d8fd20](https://github.com/googleapis/python-org-policy/commit/2d8fd208355f35f3f71f287a055c0c15d7806326))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([2d8fd20](https://github.com/googleapis/python-org-policy/commit/2d8fd208355f35f3f71f287a055c0c15d7806326))
+
 ## [1.4.1](https://github.com/googleapis/python-org-policy/compare/v1.4.0...v1.4.1) (2022-08-12)
 
 
