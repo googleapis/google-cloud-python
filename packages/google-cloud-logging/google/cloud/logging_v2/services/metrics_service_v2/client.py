@@ -16,8 +16,20 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
+
+from google.cloud.logging_v2 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -60,7 +72,7 @@ class MetricsServiceV2ClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[MetricsServiceV2Transport]:
         """Returns an appropriate transport class.
 
@@ -330,8 +342,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, MetricsServiceV2Transport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, MetricsServiceV2Transport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the metrics service v2 client.
@@ -345,7 +357,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             transport (Union[str, MetricsServiceV2Transport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -375,6 +387,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -427,11 +440,11 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
     def list_log_metrics(
         self,
-        request: Union[logging_metrics.ListLogMetricsRequest, dict] = None,
+        request: Optional[Union[logging_metrics.ListLogMetricsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListLogMetricsPager:
         r"""Lists logs-based metrics.
@@ -544,11 +557,11 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
     def get_log_metric(
         self,
-        request: Union[logging_metrics.GetLogMetricRequest, dict] = None,
+        request: Optional[Union[logging_metrics.GetLogMetricRequest, dict]] = None,
         *,
-        metric_name: str = None,
+        metric_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging_metrics.LogMetric:
         r"""Gets a logs-based metric.
@@ -659,12 +672,12 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
     def create_log_metric(
         self,
-        request: Union[logging_metrics.CreateLogMetricRequest, dict] = None,
+        request: Optional[Union[logging_metrics.CreateLogMetricRequest, dict]] = None,
         *,
-        parent: str = None,
-        metric: logging_metrics.LogMetric = None,
+        parent: Optional[str] = None,
+        metric: Optional[logging_metrics.LogMetric] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging_metrics.LogMetric:
         r"""Creates a logs-based metric.
@@ -791,12 +804,12 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
     def update_log_metric(
         self,
-        request: Union[logging_metrics.UpdateLogMetricRequest, dict] = None,
+        request: Optional[Union[logging_metrics.UpdateLogMetricRequest, dict]] = None,
         *,
-        metric_name: str = None,
-        metric: logging_metrics.LogMetric = None,
+        metric_name: Optional[str] = None,
+        metric: Optional[logging_metrics.LogMetric] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging_metrics.LogMetric:
         r"""Creates or updates a logs-based metric.
@@ -924,11 +937,11 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
     def delete_log_metric(
         self,
-        request: Union[logging_metrics.DeleteLogMetricRequest, dict] = None,
+        request: Optional[Union[logging_metrics.DeleteLogMetricRequest, dict]] = None,
         *,
-        metric_name: str = None,
+        metric_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a logs-based metric.
@@ -1030,14 +1043,9 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-logging",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("MetricsServiceV2Client",)

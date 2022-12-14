@@ -14,13 +14,9 @@
 
 from __future__ import absolute_import
 
-import pkg_resources
+from google.cloud.logging_v2 import gapic_version as package_version
 
-try:
-    __version__ = pkg_resources.get_distribution("google-cloud-logging").version
-except pkg_resources.DistributionNotFound:
-    __version__ = None
-
+__version__ = package_version.__version__
 
 from google.cloud.logging_v2.client import Client
 from google.cloud.logging_v2.entries import logger_name_from_path

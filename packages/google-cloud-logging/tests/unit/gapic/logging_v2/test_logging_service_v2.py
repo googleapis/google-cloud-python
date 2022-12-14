@@ -71,22 +71,6 @@ def modify_default_endpoint(client):
     )
 
 
-def test_logging_default_client_info_headers():
-    import re
-    import pkg_resources
-
-    # test that DEFAULT_CLIENT_INFO contains the expected gapic headers
-    gapic_header_regex = re.compile(
-        r"gapic\/[0-9]+\.[\w.-]+ gax\/[0-9]+\.[\w.-]+ gl-python\/[0-9]+\.[\w.-]+ grpc\/[0-9]+\.[\w.-]+"
-    )
-    detected_info = (
-        google.cloud.logging_v2.services.logging_service_v2.transports.base.DEFAULT_CLIENT_INFO
-    )
-    assert detected_info is not None
-    detected_agent = " ".join(sorted(detected_info.to_user_agent().split(" ")))
-    assert gapic_header_regex.match(detected_agent)
-
-
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
@@ -1051,7 +1035,7 @@ def test_write_log_entries_flattened():
         # using the keyword arguments to the method.
         client.write_log_entries(
             log_name="log_name_value",
-            resource=monitored_resource_pb2.MonitoredResource(type="type__value"),
+            resource=monitored_resource_pb2.MonitoredResource(type="type_value"),
             labels={"key_value": "value_value"},
             entries=[log_entry.LogEntry(log_name="log_name_value")],
         )
@@ -1064,7 +1048,7 @@ def test_write_log_entries_flattened():
         mock_val = "log_name_value"
         assert arg == mock_val
         arg = args[0].resource
-        mock_val = monitored_resource_pb2.MonitoredResource(type="type__value")
+        mock_val = monitored_resource_pb2.MonitoredResource(type="type_value")
         assert arg == mock_val
         arg = args[0].labels
         mock_val = {"key_value": "value_value"}
@@ -1085,7 +1069,7 @@ def test_write_log_entries_flattened_error():
         client.write_log_entries(
             logging.WriteLogEntriesRequest(),
             log_name="log_name_value",
-            resource=monitored_resource_pb2.MonitoredResource(type="type__value"),
+            resource=monitored_resource_pb2.MonitoredResource(type="type_value"),
             labels={"key_value": "value_value"},
             entries=[log_entry.LogEntry(log_name="log_name_value")],
         )
@@ -1111,7 +1095,7 @@ async def test_write_log_entries_flattened_async():
         # using the keyword arguments to the method.
         response = await client.write_log_entries(
             log_name="log_name_value",
-            resource=monitored_resource_pb2.MonitoredResource(type="type__value"),
+            resource=monitored_resource_pb2.MonitoredResource(type="type_value"),
             labels={"key_value": "value_value"},
             entries=[log_entry.LogEntry(log_name="log_name_value")],
         )
@@ -1124,7 +1108,7 @@ async def test_write_log_entries_flattened_async():
         mock_val = "log_name_value"
         assert arg == mock_val
         arg = args[0].resource
-        mock_val = monitored_resource_pb2.MonitoredResource(type="type__value")
+        mock_val = monitored_resource_pb2.MonitoredResource(type="type_value")
         assert arg == mock_val
         arg = args[0].labels
         mock_val = {"key_value": "value_value"}
@@ -1146,7 +1130,7 @@ async def test_write_log_entries_flattened_error_async():
         await client.write_log_entries(
             logging.WriteLogEntriesRequest(),
             log_name="log_name_value",
-            resource=monitored_resource_pb2.MonitoredResource(type="type__value"),
+            resource=monitored_resource_pb2.MonitoredResource(type="type_value"),
             labels={"key_value": "value_value"},
             entries=[log_entry.LogEntry(log_name="log_name_value")],
         )

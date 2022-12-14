@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-logging"
+    "name": "google-cloud-logging",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -4305,7 +4306,7 @@
           },
           {
             "name": "resource_names",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "filter",
@@ -4393,7 +4394,7 @@
           },
           {
             "name": "resource_names",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "filter",
@@ -4957,11 +4958,11 @@
           },
           {
             "name": "labels",
-            "type": "Mapping[str, str]"
+            "type": "MutableMapping[str, str]"
           },
           {
             "name": "entries",
-            "type": "Sequence[google.cloud.logging_v2.types.LogEntry]"
+            "type": "MutableSequence[google.cloud.logging_v2.types.LogEntry]"
           },
           {
             "name": "retry",
@@ -5049,11 +5050,11 @@
           },
           {
             "name": "labels",
-            "type": "Mapping[str, str]"
+            "type": "MutableMapping[str, str]"
           },
           {
             "name": "entries",
-            "type": "Sequence[google.cloud.logging_v2.types.LogEntry]"
+            "type": "MutableSequence[google.cloud.logging_v2.types.LogEntry]"
           },
           {
             "name": "retry",
