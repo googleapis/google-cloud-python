@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-managed-identities/compare/v1.5.4...v1.6.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.managedidentities.__version__` ([66d589f](https://github.com/googleapis/python-managed-identities/commit/66d589f08b034a39250d8c6076a93ae0bb8e63b9))
+* Add typing to proto.Message based class attributes ([66d589f](https://github.com/googleapis/python-managed-identities/commit/66d589f08b034a39250d8c6076a93ae0bb8e63b9))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([66d589f](https://github.com/googleapis/python-managed-identities/commit/66d589f08b034a39250d8c6076a93ae0bb8e63b9))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([1bfe12b](https://github.com/googleapis/python-managed-identities/commit/1bfe12bd7dd23ba9e0a6e1ea4a5204408e900cc5))
+* Drop usage of pkg_resources ([1bfe12b](https://github.com/googleapis/python-managed-identities/commit/1bfe12bd7dd23ba9e0a6e1ea4a5204408e900cc5))
+* Fix timeout default values ([1bfe12b](https://github.com/googleapis/python-managed-identities/commit/1bfe12bd7dd23ba9e0a6e1ea4a5204408e900cc5))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([66d589f](https://github.com/googleapis/python-managed-identities/commit/66d589f08b034a39250d8c6076a93ae0bb8e63b9))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([1bfe12b](https://github.com/googleapis/python-managed-identities/commit/1bfe12bd7dd23ba9e0a6e1ea4a5204408e900cc5))
+
 ## [1.5.4](https://github.com/googleapis/python-managed-identities/compare/v1.5.3...v1.5.4) (2022-10-07)
 
 
