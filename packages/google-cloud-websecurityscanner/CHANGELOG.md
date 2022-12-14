@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## [1.10.0](https://github.com/googleapis/python-websecurityscanner/compare/v1.9.2...v1.10.0) (2022-12-08)
+
+
+### Features
+
+* add support for `google.cloud.websecurityscanner.__version__` ([dfaf574](https://github.com/googleapis/python-websecurityscanner/commit/dfaf574e799d4c47cfdabfdd3c1dc5eb8c9884c9))
+* Add typing to proto.Message based class attributes ([dfaf574](https://github.com/googleapis/python-websecurityscanner/commit/dfaf574e799d4c47cfdabfdd3c1dc5eb8c9884c9))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([dfaf574](https://github.com/googleapis/python-websecurityscanner/commit/dfaf574e799d4c47cfdabfdd3c1dc5eb8c9884c9))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([29b129f](https://github.com/googleapis/python-websecurityscanner/commit/29b129f298d500cbbc11affc6aa12242565425a5))
+* Drop usage of pkg_resources ([29b129f](https://github.com/googleapis/python-websecurityscanner/commit/29b129f298d500cbbc11affc6aa12242565425a5))
+* Fix timeout default values ([29b129f](https://github.com/googleapis/python-websecurityscanner/commit/29b129f298d500cbbc11affc6aa12242565425a5))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([dfaf574](https://github.com/googleapis/python-websecurityscanner/commit/dfaf574e799d4c47cfdabfdd3c1dc5eb8c9884c9))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([29b129f](https://github.com/googleapis/python-websecurityscanner/commit/29b129f298d500cbbc11affc6aa12242565425a5))
+
 ## [1.9.2](https://github.com/googleapis/python-websecurityscanner/compare/v1.9.1...v1.9.2) (2022-10-07)
 
 
