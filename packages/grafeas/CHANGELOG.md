@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.7.0](https://github.com/googleapis/python-grafeas/compare/v1.6.1...v1.7.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `grafeas.grafeas.__version__` ([ad9ec08](https://github.com/googleapis/python-grafeas/commit/ad9ec0886ebf5be225f0ac91fd2bb0c45ab6ad7b))
+* Add typing to proto.Message based class attributes ([ad9ec08](https://github.com/googleapis/python-grafeas/commit/ad9ec0886ebf5be225f0ac91fd2bb0c45ab6ad7b))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([ad9ec08](https://github.com/googleapis/python-grafeas/commit/ad9ec0886ebf5be225f0ac91fd2bb0c45ab6ad7b))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([ad9ec08](https://github.com/googleapis/python-grafeas/commit/ad9ec0886ebf5be225f0ac91fd2bb0c45ab6ad7b))
+* Drop usage of pkg_resources ([ad9ec08](https://github.com/googleapis/python-grafeas/commit/ad9ec0886ebf5be225f0ac91fd2bb0c45ab6ad7b))
+* Fix timeout default values ([ad9ec08](https://github.com/googleapis/python-grafeas/commit/ad9ec0886ebf5be225f0ac91fd2bb0c45ab6ad7b))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([ad9ec08](https://github.com/googleapis/python-grafeas/commit/ad9ec0886ebf5be225f0ac91fd2bb0c45ab6ad7b))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([ad9ec08](https://github.com/googleapis/python-grafeas/commit/ad9ec0886ebf5be225f0ac91fd2bb0c45ab6ad7b))
+
 ## [1.6.1](https://github.com/googleapis/python-grafeas/compare/v1.6.0...v1.6.1) (2022-10-07)
 
 
