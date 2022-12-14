@@ -47,10 +47,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class TemplatesServiceRestInterceptor:
     """Interceptor for TemplatesService.
@@ -67,26 +63,29 @@ class TemplatesServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomTemplatesServiceInterceptor(TemplatesServiceRestInterceptor):
-            def pre_create_job_from_template(request, metadata):
+            def pre_create_job_from_template(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_job_from_template(response):
+            def post_create_job_from_template(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_template(request, metadata):
+            def pre_get_template(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_template(response):
+            def post_get_template(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_launch_template(request, metadata):
+            def pre_launch_template(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_launch_template(response):
+            def post_launch_template(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = TemplatesServiceRestTransport(interceptor=MyCustomTemplatesServiceInterceptor())
         client = TemplatesServiceClient(transport=transport)

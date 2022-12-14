@@ -47,10 +47,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class MetricsV1Beta3RestInterceptor:
     """Interceptor for MetricsV1Beta3.
@@ -67,26 +63,29 @@ class MetricsV1Beta3RestInterceptor:
 
     .. code-block:: python
         class MyCustomMetricsV1Beta3Interceptor(MetricsV1Beta3RestInterceptor):
-            def pre_get_job_execution_details(request, metadata):
+            def pre_get_job_execution_details(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_job_execution_details(response):
+            def post_get_job_execution_details(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_job_metrics(request, metadata):
+            def pre_get_job_metrics(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_job_metrics(response):
+            def post_get_job_metrics(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_stage_execution_details(request, metadata):
+            def pre_get_stage_execution_details(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_stage_execution_details(response):
+            def post_get_stage_execution_details(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = MetricsV1Beta3RestTransport(interceptor=MyCustomMetricsV1Beta3Interceptor())
         client = MetricsV1Beta3Client(transport=transport)

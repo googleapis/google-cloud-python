@@ -47,10 +47,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class MessagesV1Beta3RestInterceptor:
     """Interceptor for MessagesV1Beta3.
@@ -67,12 +63,13 @@ class MessagesV1Beta3RestInterceptor:
 
     .. code-block:: python
         class MyCustomMessagesV1Beta3Interceptor(MessagesV1Beta3RestInterceptor):
-            def pre_list_job_messages(request, metadata):
+            def pre_list_job_messages(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_job_messages(response):
+            def post_list_job_messages(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = MessagesV1Beta3RestTransport(interceptor=MyCustomMessagesV1Beta3Interceptor())
         client = MessagesV1Beta3Client(transport=transport)

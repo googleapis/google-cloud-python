@@ -47,10 +47,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class JobsV1Beta3RestInterceptor:
     """Interceptor for JobsV1Beta3.
@@ -67,54 +63,61 @@ class JobsV1Beta3RestInterceptor:
 
     .. code-block:: python
         class MyCustomJobsV1Beta3Interceptor(JobsV1Beta3RestInterceptor):
-            def pre_aggregated_list_jobs(request, metadata):
+            def pre_aggregated_list_jobs(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_aggregated_list_jobs(response):
+            def post_aggregated_list_jobs(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_check_active_jobs(request, metadata):
+            def pre_check_active_jobs(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_check_active_jobs(response):
+            def post_check_active_jobs(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_job(request, metadata):
+            def pre_create_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_job(response):
+            def post_create_job(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_job(request, metadata):
+            def pre_get_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_job(response):
+            def post_get_job(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_jobs(request, metadata):
+            def pre_list_jobs(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_jobs(response):
+            def post_list_jobs(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_snapshot_job(request, metadata):
+            def pre_snapshot_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_snapshot_job(response):
+            def post_snapshot_job(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_job(request, metadata):
+            def pre_update_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_job(response):
+            def post_update_job(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = JobsV1Beta3RestTransport(interceptor=MyCustomJobsV1Beta3Interceptor())
         client = JobsV1Beta3Client(transport=transport)

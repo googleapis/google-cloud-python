@@ -47,10 +47,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class FlexTemplatesServiceRestInterceptor:
     """Interceptor for FlexTemplatesService.
@@ -67,12 +63,13 @@ class FlexTemplatesServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomFlexTemplatesServiceInterceptor(FlexTemplatesServiceRestInterceptor):
-            def pre_launch_flex_template(request, metadata):
+            def pre_launch_flex_template(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_launch_flex_template(response):
+            def post_launch_flex_template(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = FlexTemplatesServiceRestTransport(interceptor=MyCustomFlexTemplatesServiceInterceptor())
         client = FlexTemplatesServiceClient(transport=transport)

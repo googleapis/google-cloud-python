@@ -47,10 +47,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class SnapshotsV1Beta3RestInterceptor:
     """Interceptor for SnapshotsV1Beta3.
@@ -67,26 +63,29 @@ class SnapshotsV1Beta3RestInterceptor:
 
     .. code-block:: python
         class MyCustomSnapshotsV1Beta3Interceptor(SnapshotsV1Beta3RestInterceptor):
-            def pre_delete_snapshot(request, metadata):
+            def pre_delete_snapshot(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_snapshot(response):
+            def post_delete_snapshot(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_snapshot(request, metadata):
+            def pre_get_snapshot(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_snapshot(response):
+            def post_get_snapshot(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_snapshots(request, metadata):
+            def pre_list_snapshots(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_snapshots(response):
+            def post_list_snapshots(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = SnapshotsV1Beta3RestTransport(interceptor=MyCustomSnapshotsV1Beta3Interceptor())
         client = SnapshotsV1Beta3Client(transport=transport)
