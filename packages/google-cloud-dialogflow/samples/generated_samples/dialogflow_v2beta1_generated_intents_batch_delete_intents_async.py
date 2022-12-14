@@ -52,7 +52,7 @@ async def sample_batch_delete_intents():
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = (await operation).result()
 
     # Handle the response
     print(response)

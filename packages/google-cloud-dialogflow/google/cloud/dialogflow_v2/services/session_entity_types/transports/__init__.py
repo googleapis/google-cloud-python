@@ -20,7 +20,6 @@ from .base import SessionEntityTypesTransport
 from .grpc import SessionEntityTypesGrpcTransport
 from .grpc_asyncio import SessionEntityTypesGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

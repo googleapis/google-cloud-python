@@ -22,31 +22,31 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-import grpc
-from grpc.experimental import aio
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-from proto.marshal.rules import wrappers
 
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import path_template
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.dialogflow_v2.services.fulfillments import FulfillmentsAsyncClient
-from google.cloud.dialogflow_v2.services.fulfillments import FulfillmentsClient
-from google.cloud.dialogflow_v2.services.fulfillments import transports
-from google.cloud.dialogflow_v2.types import fulfillment
-from google.cloud.dialogflow_v2.types import fulfillment as gcd_fulfillment
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
-import google.auth
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+from google.cloud.dialogflow_v2.services.fulfillments import (
+    FulfillmentsAsyncClient,
+    FulfillmentsClient,
+    transports,
+)
+from google.cloud.dialogflow_v2.types import fulfillment
+from google.cloud.dialogflow_v2.types import fulfillment as gcd_fulfillment
 
 
 def client_cert_source_callback():

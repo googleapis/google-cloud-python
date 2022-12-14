@@ -13,15 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
-from google.cloud.dialogflow_v2.types import audio_config as gcd_audio_config
-from google.cloud.dialogflow_v2.types import session
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.dialogflow_v2.types import audio_config as gcd_audio_config
+from google.cloud.dialogflow_v2.types import session
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2",
@@ -112,7 +113,7 @@ class Participant(proto.Message):
             -  Dialogflow only accepts a UTF-8 encoded string, e.g., a
                hex digest of a hash function like SHA-512.
             -  The length of the user id must be <= 256 characters.
-        documents_metadata_filters (Mapping[str, str]):
+        documents_metadata_filters (MutableMapping[str, str]):
             Optional. Key-value filters on the metadata of documents
             returned by article suggestion. If specified, article
             suggestion only returns suggested documents that match all
@@ -144,24 +145,24 @@ class Participant(proto.Message):
         AUTOMATED_AGENT = 2
         END_USER = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    role = proto.Field(
+    role: Role = proto.Field(
         proto.ENUM,
         number=2,
         enum=Role,
     )
-    sip_recording_media_label = proto.Field(
+    sip_recording_media_label: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    obfuscated_external_user_id = proto.Field(
+    obfuscated_external_user_id: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    documents_metadata_filters = proto.MapField(
+    documents_metadata_filters: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=8,
@@ -198,43 +199,43 @@ class Message(proto.Message):
             for the message.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    content = proto.Field(
+    content: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    participant = proto.Field(
+    participant: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    participant_role = proto.Field(
+    participant_role: "Participant.Role" = proto.Field(
         proto.ENUM,
         number=5,
         enum="Participant.Role",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    send_time = proto.Field(
+    send_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    message_annotation = proto.Field(
+    message_annotation: "MessageAnnotation" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="MessageAnnotation",
     )
-    sentiment_analysis = proto.Field(
+    sentiment_analysis: session.SentimentAnalysisResult = proto.Field(
         proto.MESSAGE,
         number=8,
         message=session.SentimentAnalysisResult,
@@ -254,11 +255,11 @@ class CreateParticipantRequest(proto.Message):
             Required. The participant to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    participant = proto.Field(
+    participant: "Participant" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Participant",
@@ -275,7 +276,7 @@ class GetParticipantRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/participants/<Participant ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -299,15 +300,15 @@ class ListParticipantsRequest(proto.Message):
             list request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -318,7 +319,7 @@ class ListParticipantsResponse(proto.Message):
     [Participants.ListParticipants][google.cloud.dialogflow.v2.Participants.ListParticipants].
 
     Attributes:
-        participants (Sequence[google.cloud.dialogflow_v2.types.Participant]):
+        participants (MutableSequence[google.cloud.dialogflow_v2.types.Participant]):
             The list of participants. There is a maximum number of items
             returned based on the page_size field in the request.
         next_page_token (str):
@@ -330,12 +331,12 @@ class ListParticipantsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    participants = proto.RepeatedField(
+    participants: MutableSequence["Participant"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Participant",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -353,12 +354,12 @@ class UpdateParticipantRequest(proto.Message):
             update.
     """
 
-    participant = proto.Field(
+    participant: "Participant" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Participant",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -415,43 +416,43 @@ class AnalyzeContentRequest(proto.Message):
             only idempotent if a ``request_id`` is provided.
     """
 
-    participant = proto.Field(
+    participant: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    text_input = proto.Field(
+    text_input: session.TextInput = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="input",
         message=session.TextInput,
     )
-    event_input = proto.Field(
+    event_input: session.EventInput = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="input",
         message=session.EventInput,
     )
-    reply_audio_config = proto.Field(
+    reply_audio_config: gcd_audio_config.OutputAudioConfig = proto.Field(
         proto.MESSAGE,
         number=5,
         message=gcd_audio_config.OutputAudioConfig,
     )
-    query_params = proto.Field(
+    query_params: session.QueryParameters = proto.Field(
         proto.MESSAGE,
         number=9,
         message=session.QueryParameters,
     )
-    assist_query_params = proto.Field(
+    assist_query_params: "AssistQueryParameters" = proto.Field(
         proto.MESSAGE,
         number=14,
         message="AssistQueryParameters",
     )
-    cx_parameters = proto.Field(
+    cx_parameters: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=18,
         message=struct_pb2.Struct,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=11,
     )
@@ -467,7 +468,7 @@ class DtmfParameters(proto.Message):
             in the next request.
     """
 
-    accepts_dtmf_input = proto.Field(
+    accepts_dtmf_input: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
@@ -505,7 +506,7 @@ class AnalyzeContentResponse(proto.Message):
             instead.
         message (google.cloud.dialogflow_v2.types.Message):
             Message analyzed by CCAI.
-        human_agent_suggestion_results (Sequence[google.cloud.dialogflow_v2.types.SuggestionResult]):
+        human_agent_suggestion_results (MutableSequence[google.cloud.dialogflow_v2.types.SuggestionResult]):
             The suggestions for most recent human agent. The order is
             the same as
             [HumanAgentAssistantConfig.SuggestionConfig.feature_configs][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig.feature_configs]
@@ -516,7 +517,7 @@ class AnalyzeContentResponse(proto.Message):
             to the overall failure of an AnalyzeContent API call.
             Instead, the features will fail silently with the error
             field set in the corresponding SuggestionResult.
-        end_user_suggestion_results (Sequence[google.cloud.dialogflow_v2.types.SuggestionResult]):
+        end_user_suggestion_results (MutableSequence[google.cloud.dialogflow_v2.types.SuggestionResult]):
             The suggestions for end user. The order is the same as
             [HumanAgentAssistantConfig.SuggestionConfig.feature_configs][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig.feature_configs]
             of
@@ -531,36 +532,40 @@ class AnalyzeContentResponse(proto.Message):
             Indicates the parameters of DTMF.
     """
 
-    reply_text = proto.Field(
+    reply_text: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    reply_audio = proto.Field(
+    reply_audio: "OutputAudio" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="OutputAudio",
     )
-    automated_agent_reply = proto.Field(
+    automated_agent_reply: "AutomatedAgentReply" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="AutomatedAgentReply",
     )
-    message = proto.Field(
+    message: "Message" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="Message",
     )
-    human_agent_suggestion_results = proto.RepeatedField(
+    human_agent_suggestion_results: MutableSequence[
+        "SuggestionResult"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="SuggestionResult",
     )
-    end_user_suggestion_results = proto.RepeatedField(
+    end_user_suggestion_results: MutableSequence[
+        "SuggestionResult"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="SuggestionResult",
     )
-    dtmf_parameters = proto.Field(
+    dtmf_parameters: "DtmfParameters" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="DtmfParameters",
@@ -677,59 +682,59 @@ class StreamingAnalyzeContentRequest(proto.Message):
             responses.
     """
 
-    participant = proto.Field(
+    participant: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    audio_config = proto.Field(
+    audio_config: gcd_audio_config.InputAudioConfig = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="config",
         message=gcd_audio_config.InputAudioConfig,
     )
-    text_config = proto.Field(
+    text_config: "InputTextConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="config",
         message="InputTextConfig",
     )
-    reply_audio_config = proto.Field(
+    reply_audio_config: gcd_audio_config.OutputAudioConfig = proto.Field(
         proto.MESSAGE,
         number=4,
         message=gcd_audio_config.OutputAudioConfig,
     )
-    input_audio = proto.Field(
+    input_audio: bytes = proto.Field(
         proto.BYTES,
         number=5,
         oneof="input",
     )
-    input_text = proto.Field(
+    input_text: str = proto.Field(
         proto.STRING,
         number=6,
         oneof="input",
     )
-    input_dtmf = proto.Field(
+    input_dtmf: gcd_audio_config.TelephonyDtmfEvents = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="input",
         message=gcd_audio_config.TelephonyDtmfEvents,
     )
-    query_params = proto.Field(
+    query_params: session.QueryParameters = proto.Field(
         proto.MESSAGE,
         number=7,
         message=session.QueryParameters,
     )
-    assist_query_params = proto.Field(
+    assist_query_params: "AssistQueryParameters" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="AssistQueryParameters",
     )
-    cx_parameters = proto.Field(
+    cx_parameters: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=13,
         message=struct_pb2.Struct,
     )
-    enable_partial_automated_agent_reply = proto.Field(
+    enable_partial_automated_agent_reply: bool = proto.Field(
         proto.BOOL,
         number=12,
     )
@@ -794,13 +799,13 @@ class StreamingAnalyzeContentResponse(proto.Message):
             instead.
         message (google.cloud.dialogflow_v2.types.Message):
             Message analyzed by CCAI.
-        human_agent_suggestion_results (Sequence[google.cloud.dialogflow_v2.types.SuggestionResult]):
+        human_agent_suggestion_results (MutableSequence[google.cloud.dialogflow_v2.types.SuggestionResult]):
             The suggestions for most recent human agent. The order is
             the same as
             [HumanAgentAssistantConfig.SuggestionConfig.feature_configs][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig.feature_configs]
             of
             [HumanAgentAssistantConfig.human_agent_suggestion_config][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.human_agent_suggestion_config].
-        end_user_suggestion_results (Sequence[google.cloud.dialogflow_v2.types.SuggestionResult]):
+        end_user_suggestion_results (MutableSequence[google.cloud.dialogflow_v2.types.SuggestionResult]):
             The suggestions for end user. The order is the same as
             [HumanAgentAssistantConfig.SuggestionConfig.feature_configs][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig.feature_configs]
             of
@@ -809,41 +814,45 @@ class StreamingAnalyzeContentResponse(proto.Message):
             Indicates the parameters of DTMF.
     """
 
-    recognition_result = proto.Field(
+    recognition_result: session.StreamingRecognitionResult = proto.Field(
         proto.MESSAGE,
         number=1,
         message=session.StreamingRecognitionResult,
     )
-    reply_text = proto.Field(
+    reply_text: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    reply_audio = proto.Field(
+    reply_audio: "OutputAudio" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="OutputAudio",
     )
-    automated_agent_reply = proto.Field(
+    automated_agent_reply: "AutomatedAgentReply" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="AutomatedAgentReply",
     )
-    message = proto.Field(
+    message: "Message" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="Message",
     )
-    human_agent_suggestion_results = proto.RepeatedField(
+    human_agent_suggestion_results: MutableSequence[
+        "SuggestionResult"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="SuggestionResult",
     )
-    end_user_suggestion_results = proto.RepeatedField(
+    end_user_suggestion_results: MutableSequence[
+        "SuggestionResult"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message="SuggestionResult",
     )
-    dtmf_parameters = proto.Field(
+    dtmf_parameters: "DtmfParameters" = proto.Field(
         proto.MESSAGE,
         number=10,
         message="DtmfParameters",
@@ -875,19 +884,19 @@ class SuggestArticlesRequest(proto.Message):
             Parameters for a human assist query.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    latest_message = proto.Field(
+    latest_message: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    context_size = proto.Field(
+    context_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    assist_query_params = proto.Field(
+    assist_query_params: "AssistQueryParameters" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="AssistQueryParameters",
@@ -899,7 +908,7 @@ class SuggestArticlesResponse(proto.Message):
     [Participants.SuggestArticles][google.cloud.dialogflow.v2.Participants.SuggestArticles].
 
     Attributes:
-        article_answers (Sequence[google.cloud.dialogflow_v2.types.ArticleAnswer]):
+        article_answers (MutableSequence[google.cloud.dialogflow_v2.types.ArticleAnswer]):
             Articles ordered by score in descending
             order.
         latest_message (str):
@@ -917,16 +926,16 @@ class SuggestArticlesResponse(proto.Message):
             the conversation.
     """
 
-    article_answers = proto.RepeatedField(
+    article_answers: MutableSequence["ArticleAnswer"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ArticleAnswer",
     )
-    latest_message = proto.Field(
+    latest_message: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    context_size = proto.Field(
+    context_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -956,19 +965,19 @@ class SuggestFaqAnswersRequest(proto.Message):
             Parameters for a human assist query.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    latest_message = proto.Field(
+    latest_message: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    context_size = proto.Field(
+    context_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    assist_query_params = proto.Field(
+    assist_query_params: "AssistQueryParameters" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="AssistQueryParameters",
@@ -980,7 +989,7 @@ class SuggestFaqAnswersResponse(proto.Message):
     [Participants.SuggestFaqAnswers][google.cloud.dialogflow.v2.Participants.SuggestFaqAnswers].
 
     Attributes:
-        faq_answers (Sequence[google.cloud.dialogflow_v2.types.FaqAnswer]):
+        faq_answers (MutableSequence[google.cloud.dialogflow_v2.types.FaqAnswer]):
             Answers extracted from FAQ documents.
         latest_message (str):
             The name of the latest conversation message used to compile
@@ -997,16 +1006,16 @@ class SuggestFaqAnswersResponse(proto.Message):
             the conversation.
     """
 
-    faq_answers = proto.RepeatedField(
+    faq_answers: MutableSequence["FaqAnswer"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="FaqAnswer",
     )
-    latest_message = proto.Field(
+    latest_message: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    context_size = proto.Field(
+    context_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -1040,20 +1049,20 @@ class SuggestSmartRepliesRequest(proto.Message):
             suggestion. By default 20 and at most 50.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    current_text_input = proto.Field(
+    current_text_input: session.TextInput = proto.Field(
         proto.MESSAGE,
         number=4,
         message=session.TextInput,
     )
-    latest_message = proto.Field(
+    latest_message: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    context_size = proto.Field(
+    context_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -1064,7 +1073,7 @@ class SuggestSmartRepliesResponse(proto.Message):
     [Participants.SuggestSmartReplies][google.cloud.dialogflow.v2.Participants.SuggestSmartReplies].
 
     Attributes:
-        smart_reply_answers (Sequence[google.cloud.dialogflow_v2.types.SmartReplyAnswer]):
+        smart_reply_answers (MutableSequence[google.cloud.dialogflow_v2.types.SmartReplyAnswer]):
             Output only. Multiple reply options provided
             by smart reply service. The order is based on
             the rank of the model prediction. The maximum
@@ -1085,16 +1094,16 @@ class SuggestSmartRepliesResponse(proto.Message):
             the conversation.
     """
 
-    smart_reply_answers = proto.RepeatedField(
+    smart_reply_answers: MutableSequence["SmartReplyAnswer"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SmartReplyAnswer",
     )
-    latest_message = proto.Field(
+    latest_message: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    context_size = proto.Field(
+    context_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -1112,12 +1121,12 @@ class OutputAudio(proto.Message):
             The natural language speech audio.
     """
 
-    config = proto.Field(
+    config: gcd_audio_config.OutputAudioConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcd_audio_config.OutputAudioConfig,
     )
-    audio = proto.Field(
+    audio: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
@@ -1139,6 +1148,10 @@ class AutomatedAgentReply(proto.Message):
             message arrives. e.g. if the agent specified
             some music as partial response, it can be
             cancelled.
+        cx_current_page (str):
+            The unique identifier of the current Dialogflow CX
+            conversation page. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
     """
 
     class AutomatedAgentReplyType(proto.Enum):
@@ -1147,19 +1160,23 @@ class AutomatedAgentReply(proto.Message):
         PARTIAL = 1
         FINAL = 2
 
-    detect_intent_response = proto.Field(
+    detect_intent_response: session.DetectIntentResponse = proto.Field(
         proto.MESSAGE,
         number=1,
         message=session.DetectIntentResponse,
     )
-    automated_agent_reply_type = proto.Field(
+    automated_agent_reply_type: AutomatedAgentReplyType = proto.Field(
         proto.ENUM,
         number=7,
         enum=AutomatedAgentReplyType,
     )
-    allow_cancellation = proto.Field(
+    allow_cancellation: bool = proto.Field(
         proto.BOOL,
         number=8,
+    )
+    cx_current_page: str = proto.Field(
+        proto.STRING,
+        number=11,
     )
 
 
@@ -1171,7 +1188,7 @@ class ArticleAnswer(proto.Message):
             The article title.
         uri (str):
             The article URI.
-        snippets (Sequence[str]):
+        snippets (MutableSequence[str]):
             Article snippets.
         confidence (float):
             Article match confidence.
@@ -1179,7 +1196,7 @@ class ArticleAnswer(proto.Message):
             is a good match for this conversation, as a
             value from 0.0 (completely uncertain) to 1.0
             (completely certain).
-        metadata (Mapping[str, str]):
+        metadata (MutableMapping[str, str]):
             A map that contains metadata about the answer
             and the document from which it originates.
         answer_record (str):
@@ -1188,28 +1205,28 @@ class ArticleAnswer(proto.Message):
             ID>/answerRecords/<Answer Record ID>".
     """
 
-    title = proto.Field(
+    title: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    snippets = proto.RepeatedField(
+    snippets: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    confidence = proto.Field(
+    confidence: float = proto.Field(
         proto.FLOAT,
         number=4,
     )
-    metadata = proto.MapField(
+    metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
     )
-    answer_record = proto.Field(
+    answer_record: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -1233,7 +1250,7 @@ class FaqAnswer(proto.Message):
             Indicates which Knowledge Document this answer was extracted
             from. Format:
             ``projects/<Project ID>/locations/<Location ID>/agent/knowledgeBases/<Knowledge Base ID>/documents/<Document ID>``.
-        metadata (Mapping[str, str]):
+        metadata (MutableMapping[str, str]):
             A map that contains metadata about the answer
             and the document from which it originates.
         answer_record (str):
@@ -1242,28 +1259,28 @@ class FaqAnswer(proto.Message):
             ID>/answerRecords/<Answer Record ID>".
     """
 
-    answer = proto.Field(
+    answer: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    confidence = proto.Field(
+    confidence: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
-    question = proto.Field(
+    question: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    source = proto.Field(
+    source: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    metadata = proto.MapField(
+    metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
     )
-    answer_record = proto.Field(
+    answer_record: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -1287,15 +1304,15 @@ class SmartReplyAnswer(proto.Message):
             ID>/answerRecords/<Answer Record ID>".
     """
 
-    reply = proto.Field(
+    reply: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    confidence = proto.Field(
+    confidence: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
-    answer_record = proto.Field(
+    answer_record: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1337,25 +1354,25 @@ class SuggestionResult(proto.Message):
             This field is a member of `oneof`_ ``suggestion_response``.
     """
 
-    error = proto.Field(
+    error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="suggestion_response",
         message=status_pb2.Status,
     )
-    suggest_articles_response = proto.Field(
+    suggest_articles_response: "SuggestArticlesResponse" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="suggestion_response",
         message="SuggestArticlesResponse",
     )
-    suggest_faq_answers_response = proto.Field(
+    suggest_faq_answers_response: "SuggestFaqAnswersResponse" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="suggestion_response",
         message="SuggestFaqAnswersResponse",
     )
-    suggest_smart_replies_response = proto.Field(
+    suggest_smart_replies_response: "SuggestSmartRepliesResponse" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="suggestion_response",
@@ -1374,7 +1391,7 @@ class InputTextConfig(proto.Message):
             for a list of the currently supported language codes.
     """
 
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1410,15 +1427,15 @@ class AnnotatedMessagePart(proto.Message):
                 </pre>
     """
 
-    text = proto.Field(
+    text: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    entity_type = proto.Field(
+    entity_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    formatted_value = proto.Field(
+    formatted_value: struct_pb2.Value = proto.Field(
         proto.MESSAGE,
         number=3,
         message=struct_pb2.Value,
@@ -1429,7 +1446,7 @@ class MessageAnnotation(proto.Message):
     r"""Represents the result of annotation for the message.
 
     Attributes:
-        parts (Sequence[google.cloud.dialogflow_v2.types.AnnotatedMessagePart]):
+        parts (MutableSequence[google.cloud.dialogflow_v2.types.AnnotatedMessagePart]):
             The collection of annotated message parts ordered by their
             position in the message. You can recover the annotated
             message by concatenating [AnnotatedMessagePart.text].
@@ -1438,12 +1455,12 @@ class MessageAnnotation(proto.Message):
             entities.
     """
 
-    parts = proto.RepeatedField(
+    parts: MutableSequence["AnnotatedMessagePart"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AnnotatedMessagePart",
     )
-    contain_entities = proto.Field(
+    contain_entities: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -1453,7 +1470,7 @@ class AssistQueryParameters(proto.Message):
     r"""Represents the parameters of human assist query.
 
     Attributes:
-        documents_metadata_filters (Mapping[str, str]):
+        documents_metadata_filters (MutableMapping[str, str]):
             Key-value filters on the metadata of documents returned by
             article suggestion. If specified, article suggestion only
             returns suggested documents that match all filters in their
@@ -1475,7 +1492,7 @@ class AssistQueryParameters(proto.Message):
                }
     """
 
-    documents_metadata_filters = proto.MapField(
+    documents_metadata_filters: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=1,

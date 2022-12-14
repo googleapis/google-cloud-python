@@ -1,0 +1,30 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "packages": {
+    ".": {
+      "release-type": "python",
+      "extra-files": [
+        "google/cloud/dialogflow_v2beta1/gapic_version.py",
+        "google/cloud/dialogflow/gapic_version.py",
+        "google/cloud/dialogflow_v2/gapic_version.py",
+        {
+          "type": "json",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.dialogflow.v2beta1.json",
+          "jsonpath": "$.clientLibrary.version"
+        },
+        {
+          "type": "json",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.dialogflow.v2.json",
+          "jsonpath": "$.clientLibrary.version"
+        }
+      ]
+    }
+  },
+  "release-type": "python",
+  "plugins": [
+    {
+      "type": "sentence-case"
+    }
+  ],
+  "initial-version": "0.1.0"
+}

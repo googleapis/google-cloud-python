@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import KnowledgeBasesClient
 from .async_client import KnowledgeBasesAsyncClient
+from .client import KnowledgeBasesClient
 
 __all__ = (
     "KnowledgeBasesClient",

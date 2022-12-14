@@ -13,11 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflow_v2.types import participant
-from google.rpc import status_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2",
@@ -60,21 +61,21 @@ class ConversationEvent(proto.Message):
         NEW_MESSAGE = 5
         UNRECOVERABLE_ERROR = 4
 
-    conversation = proto.Field(
+    conversation: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    type_ = proto.Field(
+    type_: Type = proto.Field(
         proto.ENUM,
         number=2,
         enum=Type,
     )
-    error_status = proto.Field(
+    error_status: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=3,
         message=status_pb2.Status,
     )
-    new_message_payload = proto.Field(
+    new_message_payload: participant.Message = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="payload",

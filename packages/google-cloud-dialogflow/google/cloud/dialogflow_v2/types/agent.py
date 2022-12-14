@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2",
@@ -61,7 +61,7 @@ class Agent(proto.Message):
             Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
             for a list of the currently supported language codes. This
             field cannot be set by the ``Update`` method.
-        supported_language_codes (Sequence[str]):
+        supported_language_codes (MutableSequence[str]):
             Optional. The list of all languages supported by this agent
             (except for the ``default_language_code``).
         time_zone (str):
@@ -130,53 +130,53 @@ class Agent(proto.Message):
         TIER_ENTERPRISE = 2
         TIER_ENTERPRISE_PLUS = 3
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    default_language_code = proto.Field(
+    default_language_code: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    supported_language_codes = proto.RepeatedField(
+    supported_language_codes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    time_zone = proto.Field(
+    time_zone: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    avatar_uri = proto.Field(
+    avatar_uri: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    enable_logging = proto.Field(
+    enable_logging: bool = proto.Field(
         proto.BOOL,
         number=8,
     )
-    match_mode = proto.Field(
+    match_mode: MatchMode = proto.Field(
         proto.ENUM,
         number=9,
         enum=MatchMode,
     )
-    classification_threshold = proto.Field(
+    classification_threshold: float = proto.Field(
         proto.FLOAT,
         number=10,
     )
-    api_version = proto.Field(
+    api_version: ApiVersion = proto.Field(
         proto.ENUM,
         number=14,
         enum=ApiVersion,
     )
-    tier = proto.Field(
+    tier: Tier = proto.Field(
         proto.ENUM,
         number=15,
         enum=Tier,
@@ -193,7 +193,7 @@ class GetAgentRequest(proto.Message):
             with. Format: ``projects/<Project ID>``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -211,12 +211,12 @@ class SetAgentRequest(proto.Message):
             get updated.
     """
 
-    agent = proto.Field(
+    agent: "Agent" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Agent",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -233,7 +233,7 @@ class DeleteAgentRequest(proto.Message):
             with. Format: ``projects/<Project ID>``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -256,15 +256,15 @@ class SearchAgentsRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -275,7 +275,7 @@ class SearchAgentsResponse(proto.Message):
     [Agents.SearchAgents][google.cloud.dialogflow.v2.Agents.SearchAgents].
 
     Attributes:
-        agents (Sequence[google.cloud.dialogflow_v2.types.Agent]):
+        agents (MutableSequence[google.cloud.dialogflow_v2.types.Agent]):
             The list of agents. There will be a maximum number of items
             returned based on the page_size field in the request.
         next_page_token (str):
@@ -288,12 +288,12 @@ class SearchAgentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    agents = proto.RepeatedField(
+    agents: MutableSequence["Agent"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Agent",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -309,7 +309,7 @@ class TrainAgentRequest(proto.Message):
             with. Format: ``projects/<Project ID>``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -337,11 +337,11 @@ class ExportAgentRequest(proto.Message):
             control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    agent_uri = proto.Field(
+    agent_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -371,12 +371,12 @@ class ExportAgentResponse(proto.Message):
             This field is a member of `oneof`_ ``agent``.
     """
 
-    agent_uri = proto.Field(
+    agent_uri: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="agent",
     )
-    agent_content = proto.Field(
+    agent_content: bytes = proto.Field(
         proto.BYTES,
         number=2,
         oneof="agent",
@@ -415,16 +415,16 @@ class ImportAgentRequest(proto.Message):
             This field is a member of `oneof`_ ``agent``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    agent_uri = proto.Field(
+    agent_uri: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="agent",
     )
-    agent_content = proto.Field(
+    agent_content: bytes = proto.Field(
         proto.BYTES,
         number=3,
         oneof="agent",
@@ -463,16 +463,16 @@ class RestoreAgentRequest(proto.Message):
             This field is a member of `oneof`_ ``agent``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    agent_uri = proto.Field(
+    agent_uri: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="agent",
     )
-    agent_content = proto.Field(
+    agent_content: bytes = proto.Field(
         proto.BYTES,
         number=3,
         oneof="agent",
@@ -496,11 +496,11 @@ class GetValidationResultRequest(proto.Message):
             before they can be used.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=3,
     )

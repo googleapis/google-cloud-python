@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.dialogflow_v2beta1.types import conversation
-from google.cloud.dialogflow_v2beta1.types import participant
+from google.cloud.dialogflow_v2beta1.types import conversation, participant
 
 
 class ListConversationsPager:

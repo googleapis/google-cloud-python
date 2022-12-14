@@ -13,19 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
-from google.cloud.dialogflow_v2beta1.types import agent
-from google.cloud.dialogflow_v2beta1.types import audio_config as gcd_audio_config
-from google.cloud.dialogflow_v2beta1.types import context
-from google.cloud.dialogflow_v2beta1.types import intent as gcd_intent
-from google.cloud.dialogflow_v2beta1.types import session_entity_type
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.dialogflow_v2beta1.types import audio_config as gcd_audio_config
+from google.cloud.dialogflow_v2beta1.types import agent
+from google.cloud.dialogflow_v2beta1.types import context
+from google.cloud.dialogflow_v2beta1.types import intent as gcd_intent
+from google.cloud.dialogflow_v2beta1.types import session_entity_type
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2beta1",
@@ -110,31 +111,31 @@ class DetectIntentRequest(proto.Message):
             minute of speech audio data.
     """
 
-    session = proto.Field(
+    session: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    query_params = proto.Field(
+    query_params: "QueryParameters" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="QueryParameters",
     )
-    query_input = proto.Field(
+    query_input: "QueryInput" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="QueryInput",
     )
-    output_audio_config = proto.Field(
+    output_audio_config: gcd_audio_config.OutputAudioConfig = proto.Field(
         proto.MESSAGE,
         number=4,
         message=gcd_audio_config.OutputAudioConfig,
     )
-    output_audio_config_mask = proto.Field(
+    output_audio_config_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=7,
         message=field_mask_pb2.FieldMask,
     )
-    input_audio = proto.Field(
+    input_audio: bytes = proto.Field(
         proto.BYTES,
         number=5,
     )
@@ -152,7 +153,7 @@ class DetectIntentResponse(proto.Message):
             The selected results of the conversational query or event
             processing. See ``alternative_query_results`` for additional
             potential results.
-        alternative_query_results (Sequence[google.cloud.dialogflow_v2beta1.types.QueryResult]):
+        alternative_query_results (MutableSequence[google.cloud.dialogflow_v2beta1.types.QueryResult]):
             If Knowledge Connectors are enabled, there could be more
             than one result returned for a given query or event, and
             this field will contain all results except for the top one,
@@ -181,30 +182,30 @@ class DetectIntentResponse(proto.Message):
             generate the output audio.
     """
 
-    response_id = proto.Field(
+    response_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    query_result = proto.Field(
+    query_result: "QueryResult" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="QueryResult",
     )
-    alternative_query_results = proto.RepeatedField(
+    alternative_query_results: MutableSequence["QueryResult"] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="QueryResult",
     )
-    webhook_status = proto.Field(
+    webhook_status: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=3,
         message=status_pb2.Status,
     )
-    output_audio = proto.Field(
+    output_audio: bytes = proto.Field(
         proto.BYTES,
         number=4,
     )
-    output_audio_config = proto.Field(
+    output_audio_config: gcd_audio_config.OutputAudioConfig = proto.Field(
         proto.MESSAGE,
         number=6,
         message=gcd_audio_config.OutputAudioConfig,
@@ -223,14 +224,14 @@ class QueryParameters(proto.Message):
         geo_location (google.type.latlng_pb2.LatLng):
             The geo location of this conversational
             query.
-        contexts (Sequence[google.cloud.dialogflow_v2beta1.types.Context]):
+        contexts (MutableSequence[google.cloud.dialogflow_v2beta1.types.Context]):
             The collection of contexts to be activated
             before this query is executed.
         reset_contexts (bool):
             Specifies whether to delete all contexts in
             the current session before the new ones are
             activated.
-        session_entity_types (Sequence[google.cloud.dialogflow_v2beta1.types.SessionEntityType]):
+        session_entity_types (MutableSequence[google.cloud.dialogflow_v2beta1.types.SessionEntityType]):
             Additional session entity types to replace or
             extend developer entity types with. The entity
             synonyms apply to all languages and persist for
@@ -241,7 +242,7 @@ class QueryParameters(proto.Message):
             is used to populate the
             ``WebhookRequest.original_detect_intent_request.payload``
             field sent to your webhook.
-        knowledge_base_names (Sequence[str]):
+        knowledge_base_names (MutableSequence[str]):
             KnowledgeBases to get alternative results from. If not set,
             the KnowledgeBases enabled in the agent (through UI) will be
             used. Format:
@@ -252,14 +253,14 @@ class QueryParameters(proto.Message):
             not performed. Note: Sentiment Analysis is only
             currently available for Essentials Edition
             agents.
-        sub_agents (Sequence[google.cloud.dialogflow_v2beta1.types.SubAgent]):
+        sub_agents (MutableSequence[google.cloud.dialogflow_v2beta1.types.SubAgent]):
             For mega agent query, directly specify which
             sub agents to query. If any specified sub agent
             is not linked to the mega agent, an error will
             be returned. If empty, Dialogflow will decide
             which sub agents to query. If specified for a
             non-mega-agent query, will be silently ignored.
-        webhook_headers (Mapping[str, str]):
+        webhook_headers (MutableMapping[str, str]):
             This field can be used to pass HTTP headers
             for a webhook call. These headers will be sent
             to webhook along with the headers that have been
@@ -275,49 +276,51 @@ class QueryParameters(proto.Message):
             "X-Forwarded-For", etc.
     """
 
-    time_zone = proto.Field(
+    time_zone: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    geo_location = proto.Field(
+    geo_location: latlng_pb2.LatLng = proto.Field(
         proto.MESSAGE,
         number=2,
         message=latlng_pb2.LatLng,
     )
-    contexts = proto.RepeatedField(
+    contexts: MutableSequence[context.Context] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=context.Context,
     )
-    reset_contexts = proto.Field(
+    reset_contexts: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    session_entity_types = proto.RepeatedField(
+    session_entity_types: MutableSequence[
+        session_entity_type.SessionEntityType
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=session_entity_type.SessionEntityType,
     )
-    payload = proto.Field(
+    payload: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=6,
         message=struct_pb2.Struct,
     )
-    knowledge_base_names = proto.RepeatedField(
+    knowledge_base_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=12,
     )
-    sentiment_analysis_request_config = proto.Field(
+    sentiment_analysis_request_config: "SentimentAnalysisRequestConfig" = proto.Field(
         proto.MESSAGE,
         number=10,
         message="SentimentAnalysisRequestConfig",
     )
-    sub_agents = proto.RepeatedField(
+    sub_agents: MutableSequence[agent.SubAgent] = proto.RepeatedField(
         proto.MESSAGE,
         number=13,
         message=agent.SubAgent,
     )
-    webhook_headers = proto.MapField(
+    webhook_headers: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=14,
@@ -361,25 +364,25 @@ class QueryInput(proto.Message):
             This field is a member of `oneof`_ ``input``.
     """
 
-    audio_config = proto.Field(
+    audio_config: gcd_audio_config.InputAudioConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="input",
         message=gcd_audio_config.InputAudioConfig,
     )
-    text = proto.Field(
+    text: "TextInput" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="input",
         message="TextInput",
     )
-    event = proto.Field(
+    event: "EventInput" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="input",
         message="EventInput",
     )
-    dtmf = proto.Field(
+    dtmf: gcd_audio_config.TelephonyDtmfEvents = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="input",
@@ -460,7 +463,7 @@ class QueryResult(proto.Message):
             The text to be pronounced to the user or shown on the
             screen. Note: This is a legacy field,
             ``fulfillment_messages`` should be preferred.
-        fulfillment_messages (Sequence[google.cloud.dialogflow_v2beta1.types.Intent.Message]):
+        fulfillment_messages (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent.Message]):
             The collection of rich messages to present to
             the user.
         webhook_source (str):
@@ -471,7 +474,7 @@ class QueryResult(proto.Message):
             If the query was fulfilled by a webhook call, this field is
             set to the value of the ``payload`` field returned in the
             webhook response.
-        output_contexts (Sequence[google.cloud.dialogflow_v2beta1.types.Context]):
+        output_contexts (MutableSequence[google.cloud.dialogflow_v2beta1.types.Context]):
             The collection of output contexts. If applicable,
             ``output_contexts.parameters`` contains entries with name
             ``<parameter name>.original`` containing the original
@@ -511,78 +514,80 @@ class QueryResult(proto.Message):
             decreasing ``KnowledgeAnswers.match_confidence``.
     """
 
-    query_text = proto.Field(
+    query_text: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=15,
     )
-    speech_recognition_confidence = proto.Field(
+    speech_recognition_confidence: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
-    action = proto.Field(
+    action: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    parameters = proto.Field(
+    parameters: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=4,
         message=struct_pb2.Struct,
     )
-    all_required_params_present = proto.Field(
+    all_required_params_present: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    cancels_slot_filling = proto.Field(
+    cancels_slot_filling: bool = proto.Field(
         proto.BOOL,
         number=21,
     )
-    fulfillment_text = proto.Field(
+    fulfillment_text: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    fulfillment_messages = proto.RepeatedField(
+    fulfillment_messages: MutableSequence[
+        gcd_intent.Intent.Message
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=gcd_intent.Intent.Message,
     )
-    webhook_source = proto.Field(
+    webhook_source: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    webhook_payload = proto.Field(
+    webhook_payload: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=9,
         message=struct_pb2.Struct,
     )
-    output_contexts = proto.RepeatedField(
+    output_contexts: MutableSequence[context.Context] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message=context.Context,
     )
-    intent = proto.Field(
+    intent: gcd_intent.Intent = proto.Field(
         proto.MESSAGE,
         number=11,
         message=gcd_intent.Intent,
     )
-    intent_detection_confidence = proto.Field(
+    intent_detection_confidence: float = proto.Field(
         proto.FLOAT,
         number=12,
     )
-    diagnostic_info = proto.Field(
+    diagnostic_info: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=14,
         message=struct_pb2.Struct,
     )
-    sentiment_analysis_result = proto.Field(
+    sentiment_analysis_result: "SentimentAnalysisResult" = proto.Field(
         proto.MESSAGE,
         number=17,
         message="SentimentAnalysisResult",
     )
-    knowledge_answers = proto.Field(
+    knowledge_answers: "KnowledgeAnswers" = proto.Field(
         proto.MESSAGE,
         number=18,
         message="KnowledgeAnswers",
@@ -593,7 +598,7 @@ class KnowledgeAnswers(proto.Message):
     r"""Represents the result of querying a Knowledge base.
 
     Attributes:
-        answers (Sequence[google.cloud.dialogflow_v2beta1.types.KnowledgeAnswers.Answer]):
+        answers (MutableSequence[google.cloud.dialogflow_v2beta1.types.KnowledgeAnswers.Answer]):
             A list of answers from Knowledge Connector.
     """
 
@@ -640,29 +645,31 @@ class KnowledgeAnswers(proto.Message):
             MEDIUM = 2
             HIGH = 3
 
-        source = proto.Field(
+        source: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        faq_question = proto.Field(
+        faq_question: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        answer = proto.Field(
+        answer: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        match_confidence_level = proto.Field(
-            proto.ENUM,
-            number=4,
-            enum="KnowledgeAnswers.Answer.MatchConfidenceLevel",
+        match_confidence_level: "KnowledgeAnswers.Answer.MatchConfidenceLevel" = (
+            proto.Field(
+                proto.ENUM,
+                number=4,
+                enum="KnowledgeAnswers.Answer.MatchConfidenceLevel",
+            )
         )
-        match_confidence = proto.Field(
+        match_confidence: float = proto.Field(
             proto.FLOAT,
             number=5,
         )
 
-    answers = proto.RepeatedField(
+    answers: MutableSequence[Answer] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=Answer,
@@ -779,35 +786,35 @@ class StreamingDetectIntentRequest(proto.Message):
             exceed 1 minute.
     """
 
-    session = proto.Field(
+    session: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    query_params = proto.Field(
+    query_params: "QueryParameters" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="QueryParameters",
     )
-    query_input = proto.Field(
+    query_input: "QueryInput" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="QueryInput",
     )
-    single_utterance = proto.Field(
+    single_utterance: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    output_audio_config = proto.Field(
+    output_audio_config: gcd_audio_config.OutputAudioConfig = proto.Field(
         proto.MESSAGE,
         number=5,
         message=gcd_audio_config.OutputAudioConfig,
     )
-    output_audio_config_mask = proto.Field(
+    output_audio_config_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=7,
         message=field_mask_pb2.FieldMask,
     )
-    input_audio = proto.Field(
+    input_audio: bytes = proto.Field(
         proto.BYTES,
         number=6,
     )
@@ -844,7 +851,7 @@ class StreamingDetectIntentResponse(proto.Message):
             The selected results of the conversational query or event
             processing. See ``alternative_query_results`` for additional
             potential results.
-        alternative_query_results (Sequence[google.cloud.dialogflow_v2beta1.types.QueryResult]):
+        alternative_query_results (MutableSequence[google.cloud.dialogflow_v2beta1.types.QueryResult]):
             If Knowledge Connectors are enabled, there could be more
             than one result returned for a given query or event, and
             this field will contain all results except for the top one,
@@ -873,35 +880,35 @@ class StreamingDetectIntentResponse(proto.Message):
             generate the output audio.
     """
 
-    response_id = proto.Field(
+    response_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    recognition_result = proto.Field(
+    recognition_result: "StreamingRecognitionResult" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="StreamingRecognitionResult",
     )
-    query_result = proto.Field(
+    query_result: "QueryResult" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="QueryResult",
     )
-    alternative_query_results = proto.RepeatedField(
+    alternative_query_results: MutableSequence["QueryResult"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="QueryResult",
     )
-    webhook_status = proto.Field(
+    webhook_status: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=4,
         message=status_pb2.Status,
     )
-    output_audio = proto.Field(
+    output_audio: bytes = proto.Field(
         proto.BYTES,
         number=5,
     )
-    output_audio_config = proto.Field(
+    output_audio_config: gcd_audio_config.OutputAudioConfig = proto.Field(
         proto.MESSAGE,
         number=6,
         message=gcd_audio_config.OutputAudioConfig,
@@ -983,7 +990,7 @@ class StreamingRecognitionResult(proto.Message):
                ``is_final = false``.
             -  Otherwise, the value is in (0.0, 1.0] where 0.0 means
                completely unstable and 1.0 means completely stable.
-        speech_word_info (Sequence[google.cloud.dialogflow_v2beta1.types.SpeechWordInfo]):
+        speech_word_info (MutableSequence[google.cloud.dialogflow_v2beta1.types.SpeechWordInfo]):
             Word-specific information for the words recognized by Speech
             in
             [transcript][google.cloud.dialogflow.v2beta1.StreamingRecognitionResult.transcript].
@@ -1008,42 +1015,44 @@ class StreamingRecognitionResult(proto.Message):
         END_OF_SINGLE_UTTERANCE = 2
         PARTIAL_DTMF_DIGITS = 4
 
-    message_type = proto.Field(
+    message_type: MessageType = proto.Field(
         proto.ENUM,
         number=1,
         enum=MessageType,
     )
-    transcript = proto.Field(
+    transcript: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    is_final = proto.Field(
+    is_final: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    confidence = proto.Field(
+    confidence: float = proto.Field(
         proto.FLOAT,
         number=4,
     )
-    stability = proto.Field(
+    stability: float = proto.Field(
         proto.FLOAT,
         number=6,
     )
-    speech_word_info = proto.RepeatedField(
+    speech_word_info: MutableSequence[
+        gcd_audio_config.SpeechWordInfo
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=gcd_audio_config.SpeechWordInfo,
     )
-    speech_end_offset = proto.Field(
+    speech_end_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=8,
         message=duration_pb2.Duration,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    dtmf_digits = proto.Field(
+    dtmf_digits: gcd_audio_config.TelephonyDtmfEvents = proto.Field(
         proto.MESSAGE,
         number=5,
         message=gcd_audio_config.TelephonyDtmfEvents,
@@ -1068,11 +1077,11 @@ class TextInput(proto.Message):
             specify the same language.
     """
 
-    text = proto.Field(
+    text: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1122,16 +1131,16 @@ class EventInput(proto.Message):
             originating detect intent request.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    parameters = proto.Field(
+    parameters: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=2,
         message=struct_pb2.Struct,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1147,7 +1156,7 @@ class SentimentAnalysisRequestConfig(proto.Message):
             performed on ``query_text``.
     """
 
-    analyze_query_text_sentiment = proto.Field(
+    analyze_query_text_sentiment: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
@@ -1174,7 +1183,7 @@ class SentimentAnalysisResult(proto.Message):
             The sentiment analysis result for ``query_text``.
     """
 
-    query_text_sentiment = proto.Field(
+    query_text_sentiment: "Sentiment" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Sentiment",
@@ -1182,8 +1191,10 @@ class SentimentAnalysisResult(proto.Message):
 
 
 class Sentiment(proto.Message):
-    r"""The sentiment, such as positive/negative feeling or
-    association, for a unit of analysis, such as the query text.
+    r"""The sentiment, such as positive/negative feeling or association, for
+    a unit of analysis, such as the query text. See:
+    https://cloud.google.com/natural-language/docs/basics#interpreting_sentiment_analysis_values
+    for how to interpret the result.
 
     Attributes:
         score (float):
@@ -1195,11 +1206,11 @@ class Sentiment(proto.Message):
             of score (positive or negative).
     """
 
-    score = proto.Field(
+    score: float = proto.Field(
         proto.FLOAT,
         number=1,
     )
-    magnitude = proto.Field(
+    magnitude: float = proto.Field(
         proto.FLOAT,
         number=2,
     )

@@ -20,7 +20,6 @@ from .base import IntentsTransport
 from .grpc import IntentsGrpcTransport
 from .grpc_asyncio import IntentsGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[IntentsTransport]]
 _transport_registry["grpc"] = IntentsGrpcTransport

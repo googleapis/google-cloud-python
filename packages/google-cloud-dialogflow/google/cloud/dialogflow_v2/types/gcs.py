@@ -13,8 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2",
@@ -29,14 +30,14 @@ class GcsSources(proto.Message):
     r"""Google Cloud Storage location for the inputs.
 
     Attributes:
-        uris (Sequence[str]):
+        uris (MutableSequence[str]):
             Required. Google Cloud Storage URIs for the
             inputs. A URI is of the form:
             gs://bucket/object-prefix-or-name Whether a
             prefix or name is used depends on the use case.
     """
 
-    uris = proto.RepeatedField(
+    uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -55,7 +56,7 @@ class GcsDestination(proto.Message):
             "write-permission" to the bucket.
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )

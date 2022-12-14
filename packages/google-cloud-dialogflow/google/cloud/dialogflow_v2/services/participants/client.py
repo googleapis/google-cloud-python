@@ -18,40 +18,46 @@ import os
 import re
 from typing import (
     Dict,
-    Mapping,
-    Optional,
     Iterable,
     Iterator,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
     Sequence,
     Tuple,
     Type,
     Union,
+    cast,
 )
-import pkg_resources
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.dialogflow_v2 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2
+from google.protobuf import field_mask_pb2  # type: ignore
+
 from google.cloud.dialogflow_v2.services.participants import pagers
 from google.cloud.dialogflow_v2.types import participant
 from google.cloud.dialogflow_v2.types import participant as gcd_participant
 from google.cloud.dialogflow_v2.types import session
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
-from google.protobuf import field_mask_pb2  # type: ignore
-from .transports.base import ParticipantsTransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, ParticipantsTransport
 from .transports.grpc import ParticipantsGrpcTransport
 from .transports.grpc_asyncio import ParticipantsGrpcAsyncIOTransport
 
@@ -70,7 +76,7 @@ class ParticipantsClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[ParticipantsTransport]:
         """Returns an appropriate transport class.
 
@@ -451,8 +457,8 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ParticipantsTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, ParticipantsTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the participants client.
@@ -466,7 +472,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
             transport (Union[str, ParticipantsTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -496,6 +502,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -548,12 +555,12 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
     def create_participant(
         self,
-        request: Union[gcd_participant.CreateParticipantRequest, dict] = None,
+        request: Optional[Union[gcd_participant.CreateParticipantRequest, dict]] = None,
         *,
-        parent: str = None,
-        participant: gcd_participant.Participant = None,
+        parent: Optional[str] = None,
+        participant: Optional[gcd_participant.Participant] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_participant.Participant:
         r"""Creates a new participant in a conversation.
@@ -659,11 +666,11 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
     def get_participant(
         self,
-        request: Union[participant.GetParticipantRequest, dict] = None,
+        request: Optional[Union[participant.GetParticipantRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> participant.Participant:
         r"""Retrieves a conversation participant.
@@ -761,11 +768,11 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
     def list_participants(
         self,
-        request: Union[participant.ListParticipantsRequest, dict] = None,
+        request: Optional[Union[participant.ListParticipantsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListParticipantsPager:
         r"""Returns the list of all participants in the specified
@@ -878,12 +885,12 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
     def update_participant(
         self,
-        request: Union[gcd_participant.UpdateParticipantRequest, dict] = None,
+        request: Optional[Union[gcd_participant.UpdateParticipantRequest, dict]] = None,
         *,
-        participant: gcd_participant.Participant = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        participant: Optional[gcd_participant.Participant] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_participant.Participant:
         r"""Updates the specified participant.
@@ -989,13 +996,13 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
     def analyze_content(
         self,
-        request: Union[gcd_participant.AnalyzeContentRequest, dict] = None,
+        request: Optional[Union[gcd_participant.AnalyzeContentRequest, dict]] = None,
         *,
-        participant: str = None,
-        text_input: session.TextInput = None,
-        event_input: session.EventInput = None,
+        participant: Optional[str] = None,
+        text_input: Optional[session.TextInput] = None,
+        event_input: Optional[session.EventInput] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_participant.AnalyzeContentResponse:
         r"""Adds a text (chat, for example), or audio (phone recording, for
@@ -1122,10 +1129,10 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
     def streaming_analyze_content(
         self,
-        requests: Iterator[participant.StreamingAnalyzeContentRequest] = None,
+        requests: Optional[Iterator[participant.StreamingAnalyzeContentRequest]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[participant.StreamingAnalyzeContentResponse]:
         r"""Adds a text (chat, for example), or audio (phone recording, for
@@ -1279,11 +1286,11 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
     def suggest_articles(
         self,
-        request: Union[participant.SuggestArticlesRequest, dict] = None,
+        request: Optional[Union[participant.SuggestArticlesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> participant.SuggestArticlesResponse:
         r"""Gets suggested articles for a participant based on
@@ -1383,11 +1390,11 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
     def suggest_faq_answers(
         self,
-        request: Union[participant.SuggestFaqAnswersRequest, dict] = None,
+        request: Optional[Union[participant.SuggestFaqAnswersRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> participant.SuggestFaqAnswersResponse:
         r"""Gets suggested faq answers for a participant based on
@@ -1487,11 +1494,11 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
     def suggest_smart_replies(
         self,
-        request: Union[participant.SuggestSmartRepliesRequest, dict] = None,
+        request: Optional[Union[participant.SuggestSmartRepliesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> participant.SuggestSmartRepliesResponse:
         r"""Gets smart replies for a participant based on
@@ -1604,10 +1611,10 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
     def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1658,10 +1665,10 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
     def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1712,10 +1719,10 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
     def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -1766,10 +1773,10 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
     def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1820,10 +1827,10 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
     def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -1873,14 +1880,9 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         return response
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dialogflow",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ParticipantsClient",)

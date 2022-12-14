@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2beta1",
@@ -63,7 +63,7 @@ class Fulfillment(proto.Message):
             This field is a member of `oneof`_ ``fulfillment``.
         enabled (bool):
             Whether fulfillment is enabled.
-        features (Sequence[google.cloud.dialogflow_v2beta1.types.Fulfillment.Feature]):
+        features (MutableSequence[google.cloud.dialogflow_v2beta1.types.Fulfillment.Feature]):
             The field defines whether the fulfillment is
             enabled for certain features.
     """
@@ -84,7 +84,7 @@ class Fulfillment(proto.Message):
                 The user name for HTTP Basic authentication.
             password (str):
                 The password for HTTP Basic authentication.
-            request_headers (Mapping[str, str]):
+            request_headers (MutableMapping[str, str]):
                 The HTTP request headers to send together
                 with fulfillment requests.
             is_cloud_function (bool):
@@ -95,24 +95,24 @@ class Fulfillment(proto.Message):
                 configured by its uri as a regular web service now.
         """
 
-        uri = proto.Field(
+        uri: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        username = proto.Field(
+        username: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        password = proto.Field(
+        password: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        request_headers = proto.MapField(
+        request_headers: MutableMapping[str, str] = proto.MapField(
             proto.STRING,
             proto.STRING,
             number=4,
         )
-        is_cloud_function = proto.Field(
+        is_cloud_function: bool = proto.Field(
             proto.BOOL,
             number=5,
         )
@@ -131,31 +131,31 @@ class Fulfillment(proto.Message):
             TYPE_UNSPECIFIED = 0
             SMALLTALK = 1
 
-        type_ = proto.Field(
+        type_: "Fulfillment.Feature.Type" = proto.Field(
             proto.ENUM,
             number=1,
             enum="Fulfillment.Feature.Type",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    generic_web_service = proto.Field(
+    generic_web_service: GenericWebService = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="fulfillment",
         message=GenericWebService,
     )
-    enabled = proto.Field(
+    enabled: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    features = proto.RepeatedField(
+    features: MutableSequence[Feature] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=Feature,
@@ -174,7 +174,7 @@ class GetFulfillmentRequest(proto.Message):
             -  ``projects/<Project ID>/locations/<Location ID>/agent/fulfillment``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -193,12 +193,12 @@ class UpdateFulfillmentRequest(proto.Message):
             fields will be updated.
     """
 
-    fulfillment = proto.Field(
+    fulfillment: "Fulfillment" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Fulfillment",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,

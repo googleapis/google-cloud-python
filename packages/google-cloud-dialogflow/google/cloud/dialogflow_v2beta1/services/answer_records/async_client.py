@@ -16,31 +16,44 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import warnings
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.dialogflow_v2beta1.services.answer_records import pagers
-from google.cloud.dialogflow_v2beta1.types import answer_record
-from google.cloud.dialogflow_v2beta1.types import answer_record as gcd_answer_record
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.protobuf import field_mask_pb2  # type: ignore
-from .transports.base import AnswerRecordsTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import AnswerRecordsGrpcAsyncIOTransport
+
+from google.cloud.dialogflow_v2beta1.services.answer_records import pagers
+from google.cloud.dialogflow_v2beta1.types import answer_record as gcd_answer_record
+from google.cloud.dialogflow_v2beta1.types import answer_record
+
 from .client import AnswerRecordsClient
+from .transports.base import DEFAULT_CLIENT_INFO, AnswerRecordsTransport
+from .transports.grpc_asyncio import AnswerRecordsGrpcAsyncIOTransport
 
 
 class AnswerRecordsAsyncClient:
@@ -167,9 +180,9 @@ class AnswerRecordsAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, AnswerRecordsTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the answer records client.
@@ -213,10 +226,10 @@ class AnswerRecordsAsyncClient:
 
     async def get_answer_record(
         self,
-        request: Union[answer_record.GetAnswerRecordRequest, dict] = None,
+        request: Optional[Union[answer_record.GetAnswerRecordRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> answer_record.AnswerRecord:
         r"""Deprecated.
@@ -248,7 +261,7 @@ class AnswerRecordsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.GetAnswerRecordRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.GetAnswerRecordRequest, dict]]):
                 The request object. Request message for
                 [AnswerRecords.GetAnswerRecord][google.cloud.dialogflow.v2beta1.AnswerRecords.GetAnswerRecord].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -329,11 +342,11 @@ class AnswerRecordsAsyncClient:
 
     async def list_answer_records(
         self,
-        request: Union[answer_record.ListAnswerRecordsRequest, dict] = None,
+        request: Optional[Union[answer_record.ListAnswerRecordsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAnswerRecordsAsyncPager:
         r"""Returns the list of all answer records in the
@@ -366,7 +379,7 @@ class AnswerRecordsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.ListAnswerRecordsRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.ListAnswerRecordsRequest, dict]]):
                 The request object. Request message for
                 [AnswerRecords.ListAnswerRecords][google.cloud.dialogflow.v2beta1.AnswerRecords.ListAnswerRecords].
             parent (:class:`str`):
@@ -445,12 +458,14 @@ class AnswerRecordsAsyncClient:
 
     async def update_answer_record(
         self,
-        request: Union[gcd_answer_record.UpdateAnswerRecordRequest, dict] = None,
+        request: Optional[
+            Union[gcd_answer_record.UpdateAnswerRecordRequest, dict]
+        ] = None,
         *,
-        answer_record: gcd_answer_record.AnswerRecord = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        answer_record: Optional[gcd_answer_record.AnswerRecord] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_answer_record.AnswerRecord:
         r"""Updates the specified answer record.
@@ -481,7 +496,7 @@ class AnswerRecordsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.UpdateAnswerRecordRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.UpdateAnswerRecordRequest, dict]]):
                 The request object. Request message for
                 [AnswerRecords.UpdateAnswerRecord][google.cloud.dialogflow.v2beta1.AnswerRecords.UpdateAnswerRecord].
             answer_record (:class:`google.cloud.dialogflow_v2beta1.types.AnswerRecord`):
@@ -587,10 +602,10 @@ class AnswerRecordsAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -641,10 +656,10 @@ class AnswerRecordsAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -695,10 +710,10 @@ class AnswerRecordsAsyncClient:
 
     async def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -749,10 +764,10 @@ class AnswerRecordsAsyncClient:
 
     async def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -803,10 +818,10 @@ class AnswerRecordsAsyncClient:
 
     async def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -862,14 +877,9 @@ class AnswerRecordsAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dialogflow",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("AnswerRecordsAsyncClient",)

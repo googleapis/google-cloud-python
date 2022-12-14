@@ -20,7 +20,6 @@ from .base import ContextsTransport
 from .grpc import ContextsGrpcTransport
 from .grpc_asyncio import ContextsGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[ContextsTransport]]
 _transport_registry["grpc"] = ContextsGrpcTransport

@@ -20,7 +20,6 @@ from .base import ConversationModelsTransport
 from .grpc import ConversationModelsGrpcTransport
 from .grpc_asyncio import ConversationModelsGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

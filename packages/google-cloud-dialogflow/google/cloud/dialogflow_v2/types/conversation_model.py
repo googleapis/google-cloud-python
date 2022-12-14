@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2",
@@ -67,7 +67,7 @@ class ConversationModel(proto.Message):
             most 64 bytes long.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Creation time of this model.
-        datasets (Sequence[google.cloud.dialogflow_v2.types.InputDataset]):
+        datasets (MutableSequence[google.cloud.dialogflow_v2.types.InputDataset]):
             Required. Datasets used to create model.
         state (google.cloud.dialogflow_v2.types.ConversationModel.State):
             Output only. State of the model. A model can
@@ -107,40 +107,40 @@ class ConversationModel(proto.Message):
         SMART_REPLY_DUAL_ENCODER_MODEL = 2
         SMART_REPLY_BERT_MODEL = 6
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    datasets = proto.RepeatedField(
+    datasets: MutableSequence["InputDataset"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="InputDataset",
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=7,
         enum=State,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=19,
     )
-    article_suggestion_model_metadata = proto.Field(
+    article_suggestion_model_metadata: "ArticleSuggestionModelMetadata" = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="model_metadata",
         message="ArticleSuggestionModelMetadata",
     )
-    smart_reply_model_metadata = proto.Field(
+    smart_reply_model_metadata: "SmartReplyModelMetadata" = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="model_metadata",
@@ -172,25 +172,25 @@ class ConversationModelEvaluation(proto.Message):
             This field is a member of `oneof`_ ``metrics``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    evaluation_config = proto.Field(
+    evaluation_config: "EvaluationConfig" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="EvaluationConfig",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    smart_reply_metrics = proto.Field(
+    smart_reply_metrics: "SmartReplyMetrics" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="metrics",
@@ -209,7 +209,7 @@ class EvaluationConfig(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        datasets (Sequence[google.cloud.dialogflow_v2.types.InputDataset]):
+        datasets (MutableSequence[google.cloud.dialogflow_v2.types.InputDataset]):
             Required. Datasets used for evaluation.
         smart_reply_config (google.cloud.dialogflow_v2.types.EvaluationConfig.SmartReplyConfig):
             Configuration for smart reply model
@@ -239,11 +239,11 @@ class EvaluationConfig(proto.Message):
                 results to evaluate.
         """
 
-        allowlist_document = proto.Field(
+        allowlist_document: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        max_result_count = proto.Field(
+        max_result_count: int = proto.Field(
             proto.INT32,
             number=2,
         )
@@ -264,27 +264,27 @@ class EvaluationConfig(proto.Message):
                 results to evaluate.
         """
 
-        allowlist_document = proto.Field(
+        allowlist_document: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        max_result_count = proto.Field(
+        max_result_count: int = proto.Field(
             proto.INT32,
             number=2,
         )
 
-    datasets = proto.RepeatedField(
+    datasets: MutableSequence["InputDataset"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="InputDataset",
     )
-    smart_reply_config = proto.Field(
+    smart_reply_config: SmartReplyConfig = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="model_specific_config",
         message=SmartReplyConfig,
     )
-    smart_compose_config = proto.Field(
+    smart_compose_config: SmartComposeConfig = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="model_specific_config",
@@ -302,7 +302,7 @@ class InputDataset(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/conversationDatasets/<Conversation Dataset ID>``
     """
 
-    dataset = proto.Field(
+    dataset: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -317,7 +317,7 @@ class ArticleSuggestionModelMetadata(proto.Message):
             provided, model_type is used.
     """
 
-    training_model_type = proto.Field(
+    training_model_type: "ConversationModel.ModelType" = proto.Field(
         proto.ENUM,
         number=3,
         enum="ConversationModel.ModelType",
@@ -333,7 +333,7 @@ class SmartReplyModelMetadata(proto.Message):
             model_type is used.
     """
 
-    training_model_type = proto.Field(
+    training_model_type: "ConversationModel.ModelType" = proto.Field(
         proto.ENUM,
         number=6,
         enum="ConversationModel.ModelType",
@@ -348,7 +348,7 @@ class SmartReplyMetrics(proto.Message):
             Percentage of target participant messages in the evaluation
             dataset for which similar messages have appeared at least
             once in the allowlist. Should be [0, 1].
-        top_n_metrics (Sequence[google.cloud.dialogflow_v2.types.SmartReplyMetrics.TopNMetrics]):
+        top_n_metrics (MutableSequence[google.cloud.dialogflow_v2.types.SmartReplyMetrics.TopNMetrics]):
             Metrics of top n smart replies, sorted by [TopNMetric.n][].
         conversation_count (int):
             Total number of conversations used to
@@ -372,25 +372,25 @@ class SmartReplyMetrics(proto.Message):
                 ranges from 0.0 to 1.0 inclusive.
         """
 
-        n = proto.Field(
+        n: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        recall = proto.Field(
+        recall: float = proto.Field(
             proto.FLOAT,
             number=2,
         )
 
-    allowlist_coverage = proto.Field(
+    allowlist_coverage: float = proto.Field(
         proto.FLOAT,
         number=1,
     )
-    top_n_metrics = proto.RepeatedField(
+    top_n_metrics: MutableSequence[TopNMetrics] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=TopNMetrics,
     )
-    conversation_count = proto.Field(
+    conversation_count: int = proto.Field(
         proto.INT64,
         number=3,
     )
@@ -408,11 +408,11 @@ class CreateConversationModelRequest(proto.Message):
             Required. The conversation model to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    conversation_model = proto.Field(
+    conversation_model: "ConversationModel" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ConversationModel",
@@ -429,7 +429,7 @@ class GetConversationModelRequest(proto.Message):
             ``projects/<Project ID>/conversationModels/<Conversation Model ID>``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -452,15 +452,15 @@ class ListConversationModelsRequest(proto.Message):
             list request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -471,7 +471,7 @@ class ListConversationModelsResponse(proto.Message):
     [ConversationModels.ListConversationModels][google.cloud.dialogflow.v2.ConversationModels.ListConversationModels]
 
     Attributes:
-        conversation_models (Sequence[google.cloud.dialogflow_v2.types.ConversationModel]):
+        conversation_models (MutableSequence[google.cloud.dialogflow_v2.types.ConversationModel]):
             The list of models to return.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -483,12 +483,12 @@ class ListConversationModelsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    conversation_models = proto.RepeatedField(
+    conversation_models: MutableSequence["ConversationModel"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ConversationModel",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -504,7 +504,7 @@ class DeleteConversationModelRequest(proto.Message):
             ``projects/<Project ID>/conversationModels/<Conversation Model ID>``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -520,7 +520,7 @@ class DeployConversationModelRequest(proto.Message):
             ``projects/<Project ID>/conversationModels/<Conversation Model ID>``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -536,7 +536,7 @@ class UndeployConversationModelRequest(proto.Message):
             ``projects/<Project ID>/conversationModels/<Conversation Model ID>``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -553,7 +553,7 @@ class GetConversationModelEvaluationRequest(proto.Message):
             ``projects/<Project ID>/conversationModels/<Conversation Model ID>/evaluations/<Evaluation ID>``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -576,15 +576,15 @@ class ListConversationModelEvaluationsRequest(proto.Message):
             list request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -595,7 +595,7 @@ class ListConversationModelEvaluationsResponse(proto.Message):
     [ConversationModels.ListConversationModelEvaluations][google.cloud.dialogflow.v2.ConversationModels.ListConversationModelEvaluations]
 
     Attributes:
-        conversation_model_evaluations (Sequence[google.cloud.dialogflow_v2.types.ConversationModelEvaluation]):
+        conversation_model_evaluations (MutableSequence[google.cloud.dialogflow_v2.types.ConversationModelEvaluation]):
             The list of evaluations to return.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -607,12 +607,14 @@ class ListConversationModelEvaluationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    conversation_model_evaluations = proto.RepeatedField(
+    conversation_model_evaluations: MutableSequence[
+        "ConversationModelEvaluation"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ConversationModelEvaluation",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -631,11 +633,11 @@ class CreateConversationModelEvaluationRequest(proto.Message):
             to be created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    conversation_model_evaluation = proto.Field(
+    conversation_model_evaluation: "ConversationModelEvaluation" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ConversationModelEvaluation",
@@ -669,16 +671,16 @@ class CreateConversationModelOperationMetadata(proto.Message):
         CANCELLING = 5
         TRAINING = 6
 
-    conversation_model = proto.Field(
+    conversation_model: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=2,
         enum=State,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -700,11 +702,11 @@ class DeployConversationModelOperationMetadata(proto.Message):
             server side.
     """
 
-    conversation_model = proto.Field(
+    conversation_model: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -726,11 +728,11 @@ class UndeployConversationModelOperationMetadata(proto.Message):
             measured on server side.
     """
 
-    conversation_model = proto.Field(
+    conversation_model: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -752,11 +754,11 @@ class DeleteConversationModelOperationMetadata(proto.Message):
             server side.
     """
 
-    conversation_model = proto.Field(
+    conversation_model: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -792,20 +794,20 @@ class CreateConversationModelEvaluationOperationMetadata(proto.Message):
         SUCCEEDED = 4
         FAILED = 5
 
-    conversation_model_evaluation = proto.Field(
+    conversation_model_evaluation: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    conversation_model = proto.Field(
+    conversation_model: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=2,
         enum=State,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,

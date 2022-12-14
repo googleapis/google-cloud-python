@@ -17,42 +17,47 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    AsyncIterable,
+    AsyncIterator,
+    Awaitable,
     Dict,
     Mapping,
+    MutableMapping,
+    MutableSequence,
     Optional,
-    AsyncIterable,
-    Awaitable,
-    AsyncIterator,
     Sequence,
     Tuple,
     Type,
     Union,
 )
-import pkg_resources
 import warnings
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.dialogflow_v2beta1.services.participants import pagers
-from google.cloud.dialogflow_v2beta1.types import participant
-from google.cloud.dialogflow_v2beta1.types import participant as gcd_participant
-from google.cloud.dialogflow_v2beta1.types import session
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.protobuf import field_mask_pb2  # type: ignore
-from .transports.base import ParticipantsTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import ParticipantsGrpcAsyncIOTransport
+
+from google.cloud.dialogflow_v2beta1.services.participants import pagers
+from google.cloud.dialogflow_v2beta1.types import participant as gcd_participant
+from google.cloud.dialogflow_v2beta1.types import participant
+from google.cloud.dialogflow_v2beta1.types import session
+
 from .client import ParticipantsClient
+from .transports.base import DEFAULT_CLIENT_INFO, ParticipantsTransport
+from .transports.grpc_asyncio import ParticipantsGrpcAsyncIOTransport
 
 
 class ParticipantsAsyncClient:
@@ -187,9 +192,9 @@ class ParticipantsAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ParticipantsTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the participants client.
@@ -233,12 +238,12 @@ class ParticipantsAsyncClient:
 
     async def create_participant(
         self,
-        request: Union[gcd_participant.CreateParticipantRequest, dict] = None,
+        request: Optional[Union[gcd_participant.CreateParticipantRequest, dict]] = None,
         *,
-        parent: str = None,
-        participant: gcd_participant.Participant = None,
+        parent: Optional[str] = None,
+        participant: Optional[gcd_participant.Participant] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_participant.Participant:
         r"""Creates a new participant in a conversation.
@@ -270,7 +275,7 @@ class ParticipantsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.CreateParticipantRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.CreateParticipantRequest, dict]]):
                 The request object. The request message for
                 [Participants.CreateParticipant][google.cloud.dialogflow.v2beta1.Participants.CreateParticipant].
             parent (:class:`str`):
@@ -344,11 +349,11 @@ class ParticipantsAsyncClient:
 
     async def get_participant(
         self,
-        request: Union[participant.GetParticipantRequest, dict] = None,
+        request: Optional[Union[participant.GetParticipantRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> participant.Participant:
         r"""Retrieves a conversation participant.
@@ -380,7 +385,7 @@ class ParticipantsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.GetParticipantRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.GetParticipantRequest, dict]]):
                 The request object. The request message for
                 [Participants.GetParticipant][google.cloud.dialogflow.v2beta1.Participants.GetParticipant].
             name (:class:`str`):
@@ -446,11 +451,11 @@ class ParticipantsAsyncClient:
 
     async def list_participants(
         self,
-        request: Union[participant.ListParticipantsRequest, dict] = None,
+        request: Optional[Union[participant.ListParticipantsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListParticipantsAsyncPager:
         r"""Returns the list of all participants in the specified
@@ -484,7 +489,7 @@ class ParticipantsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.ListParticipantsRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.ListParticipantsRequest, dict]]):
                 The request object. The request message for
                 [Participants.ListParticipants][google.cloud.dialogflow.v2beta1.Participants.ListParticipants].
             parent (:class:`str`):
@@ -563,12 +568,12 @@ class ParticipantsAsyncClient:
 
     async def update_participant(
         self,
-        request: Union[gcd_participant.UpdateParticipantRequest, dict] = None,
+        request: Optional[Union[gcd_participant.UpdateParticipantRequest, dict]] = None,
         *,
-        participant: gcd_participant.Participant = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        participant: Optional[gcd_participant.Participant] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_participant.Participant:
         r"""Updates the specified participant.
@@ -599,7 +604,7 @@ class ParticipantsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.UpdateParticipantRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.UpdateParticipantRequest, dict]]):
                 The request object. The request message for
                 [Participants.UpdateParticipant][google.cloud.dialogflow.v2beta1.Participants.UpdateParticipant].
             participant (:class:`google.cloud.dialogflow_v2beta1.types.Participant`):
@@ -674,14 +679,14 @@ class ParticipantsAsyncClient:
 
     async def analyze_content(
         self,
-        request: Union[gcd_participant.AnalyzeContentRequest, dict] = None,
+        request: Optional[Union[gcd_participant.AnalyzeContentRequest, dict]] = None,
         *,
-        participant: str = None,
-        text_input: session.TextInput = None,
-        audio_input: gcd_participant.AudioInput = None,
-        event_input: session.EventInput = None,
+        participant: Optional[str] = None,
+        text_input: Optional[session.TextInput] = None,
+        audio_input: Optional[gcd_participant.AudioInput] = None,
+        event_input: Optional[session.EventInput] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_participant.AnalyzeContentResponse:
         r"""Adds a text (chat, for example), or audio (phone recording, for
@@ -718,7 +723,7 @@ class ParticipantsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.AnalyzeContentRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.AnalyzeContentRequest, dict]]):
                 The request object. The request message for
                 [Participants.AnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.AnalyzeContent].
             participant (:class:`str`):
@@ -821,10 +826,12 @@ class ParticipantsAsyncClient:
 
     def streaming_analyze_content(
         self,
-        requests: AsyncIterator[participant.StreamingAnalyzeContentRequest] = None,
+        requests: Optional[
+            AsyncIterator[participant.StreamingAnalyzeContentRequest]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[participant.StreamingAnalyzeContentResponse]]:
         r"""Adds a text (e.g., chat) or audio (e.g., phone recording)
@@ -983,11 +990,11 @@ class ParticipantsAsyncClient:
 
     async def suggest_articles(
         self,
-        request: Union[participant.SuggestArticlesRequest, dict] = None,
+        request: Optional[Union[participant.SuggestArticlesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> participant.SuggestArticlesResponse:
         r"""Gets suggested articles for a participant based on specific
@@ -1027,7 +1034,7 @@ class ParticipantsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.SuggestArticlesRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.SuggestArticlesRequest, dict]]):
                 The request object. The request message for
                 [Participants.SuggestArticles][google.cloud.dialogflow.v2beta1.Participants.SuggestArticles].
             parent (:class:`str`):
@@ -1094,11 +1101,11 @@ class ParticipantsAsyncClient:
 
     async def suggest_faq_answers(
         self,
-        request: Union[participant.SuggestFaqAnswersRequest, dict] = None,
+        request: Optional[Union[participant.SuggestFaqAnswersRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> participant.SuggestFaqAnswersResponse:
         r"""Gets suggested faq answers for a participant based on
@@ -1131,7 +1138,7 @@ class ParticipantsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.SuggestFaqAnswersRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.SuggestFaqAnswersRequest, dict]]):
                 The request object. The request message for
                 [Participants.SuggestFaqAnswers][google.cloud.dialogflow.v2beta1.Participants.SuggestFaqAnswers].
             parent (:class:`str`):
@@ -1198,11 +1205,11 @@ class ParticipantsAsyncClient:
 
     async def suggest_smart_replies(
         self,
-        request: Union[participant.SuggestSmartRepliesRequest, dict] = None,
+        request: Optional[Union[participant.SuggestSmartRepliesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> participant.SuggestSmartRepliesResponse:
         r"""Gets smart replies for a participant based on
@@ -1235,7 +1242,7 @@ class ParticipantsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.SuggestSmartRepliesRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.SuggestSmartRepliesRequest, dict]]):
                 The request object. The request message for
                 [Participants.SuggestSmartReplies][google.cloud.dialogflow.v2beta1.Participants.SuggestSmartReplies].
             parent (:class:`str`):
@@ -1302,10 +1309,10 @@ class ParticipantsAsyncClient:
 
     async def list_suggestions(
         self,
-        request: Union[participant.ListSuggestionsRequest, dict] = None,
+        request: Optional[Union[participant.ListSuggestionsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSuggestionsAsyncPager:
         r"""Deprecated: Use inline suggestion, event based suggestion or
@@ -1356,7 +1363,7 @@ class ParticipantsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.ListSuggestionsRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.ListSuggestionsRequest, dict]]):
                 The request object. The request message for
                 [Participants.ListSuggestions][google.cloud.dialogflow.v2beta1.Participants.ListSuggestions].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1417,10 +1424,10 @@ class ParticipantsAsyncClient:
 
     async def compile_suggestion(
         self,
-        request: Union[participant.CompileSuggestionRequest, dict] = None,
+        request: Optional[Union[participant.CompileSuggestionRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> participant.CompileSuggestionResponse:
         r"""Deprecated. use
@@ -1465,7 +1472,7 @@ class ParticipantsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.CompileSuggestionRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.CompileSuggestionRequest, dict]]):
                 The request object. The request message for
                 [Participants.CompileSuggestion][google.cloud.dialogflow.v2beta1.Participants.CompileSuggestion].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1515,10 +1522,10 @@ class ParticipantsAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1569,10 +1576,10 @@ class ParticipantsAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1623,10 +1630,10 @@ class ParticipantsAsyncClient:
 
     async def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -1677,10 +1684,10 @@ class ParticipantsAsyncClient:
 
     async def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1731,10 +1738,10 @@ class ParticipantsAsyncClient:
 
     async def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -1790,14 +1797,9 @@ class ParticipantsAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dialogflow",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ParticipantsAsyncClient",)

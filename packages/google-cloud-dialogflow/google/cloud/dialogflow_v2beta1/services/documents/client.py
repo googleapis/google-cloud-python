@@ -16,18 +16,30 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -36,15 +48,17 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.dialogflow_v2beta1.services.documents import pagers
-from google.cloud.dialogflow_v2beta1.types import document
-from google.cloud.dialogflow_v2beta1.types import document as gcd_document
-from google.cloud.dialogflow_v2beta1.types import gcs
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
-from .transports.base import DocumentsTransport, DEFAULT_CLIENT_INFO
+
+from google.cloud.dialogflow_v2beta1.services.documents import pagers
+from google.cloud.dialogflow_v2beta1.types import document
+from google.cloud.dialogflow_v2beta1.types import document as gcd_document
+from google.cloud.dialogflow_v2beta1.types import gcs
+
+from .transports.base import DEFAULT_CLIENT_INFO, DocumentsTransport
 from .transports.grpc import DocumentsGrpcTransport
 from .transports.grpc_asyncio import DocumentsGrpcAsyncIOTransport
 
@@ -63,7 +77,7 @@ class DocumentsClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[DocumentsTransport]:
         """Returns an appropriate transport class.
 
@@ -340,8 +354,8 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DocumentsTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, DocumentsTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the documents client.
@@ -355,7 +369,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
             transport (Union[str, DocumentsTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -385,6 +399,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -437,11 +452,11 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
     def list_documents(
         self,
-        request: Union[document.ListDocumentsRequest, dict] = None,
+        request: Optional[Union[document.ListDocumentsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDocumentsPager:
         r"""Returns the list of all documents of the knowledge base.
@@ -556,11 +571,11 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
     def get_document(
         self,
-        request: Union[document.GetDocumentRequest, dict] = None,
+        request: Optional[Union[document.GetDocumentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document.Document:
         r"""Retrieves the specified document.
@@ -668,12 +683,12 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
     def create_document(
         self,
-        request: Union[gcd_document.CreateDocumentRequest, dict] = None,
+        request: Optional[Union[gcd_document.CreateDocumentRequest, dict]] = None,
         *,
-        parent: str = None,
-        document: gcd_document.Document = None,
+        parent: Optional[str] = None,
+        document: Optional[gcd_document.Document] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new document.
@@ -711,7 +726,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
                 document.content_uri = "content_uri_value"
                 document.display_name = "display_name_value"
                 document.mime_type = "mime_type_value"
-                document.knowledge_types = "SMART_REPLY"
+                document.knowledge_types = ['SMART_REPLY']
 
                 request = dialogflow_v2beta1.CreateDocumentRequest(
                     parent="parent_value",
@@ -822,10 +837,10 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
     def import_documents(
         self,
-        request: Union[document.ImportDocumentsRequest, dict] = None,
+        request: Optional[Union[document.ImportDocumentsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Create documents by importing data from external sources.
@@ -863,7 +878,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
                 document_template = dialogflow_v2beta1.ImportDocumentTemplate()
                 document_template.mime_type = "mime_type_value"
-                document_template.knowledge_types = "SMART_REPLY"
+                document_template.knowledge_types = ['SMART_REPLY']
 
                 request = dialogflow_v2beta1.ImportDocumentsRequest(
                     gcs_source=gcs_source,
@@ -940,11 +955,11 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
     def delete_document(
         self,
-        request: Union[document.DeleteDocumentRequest, dict] = None,
+        request: Optional[Union[document.DeleteDocumentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes the specified document.
@@ -1077,12 +1092,12 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
     def update_document(
         self,
-        request: Union[gcd_document.UpdateDocumentRequest, dict] = None,
+        request: Optional[Union[gcd_document.UpdateDocumentRequest, dict]] = None,
         *,
-        document: gcd_document.Document = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        document: Optional[gcd_document.Document] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the specified document.
@@ -1120,7 +1135,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
                 document.content_uri = "content_uri_value"
                 document.display_name = "display_name_value"
                 document.mime_type = "mime_type_value"
-                document.knowledge_types = "SMART_REPLY"
+                document.knowledge_types = ['SMART_REPLY']
 
                 request = dialogflow_v2beta1.UpdateDocumentRequest(
                     document=document,
@@ -1232,12 +1247,12 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
     def reload_document(
         self,
-        request: Union[document.ReloadDocumentRequest, dict] = None,
+        request: Optional[Union[document.ReloadDocumentRequest, dict]] = None,
         *,
-        name: str = None,
-        gcs_source: gcs.GcsSource = None,
+        name: Optional[str] = None,
+        gcs_source: Optional[gcs.GcsSource] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Reloads the specified document from its specified source,
@@ -1403,10 +1418,10 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
     def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1457,10 +1472,10 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
     def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1511,10 +1526,10 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
     def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -1565,10 +1580,10 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
     def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1619,10 +1634,10 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
     def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -1672,14 +1687,9 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         return response
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dialogflow",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("DocumentsClient",)

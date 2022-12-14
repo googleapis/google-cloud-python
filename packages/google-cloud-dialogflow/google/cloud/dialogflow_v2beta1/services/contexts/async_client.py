@@ -16,31 +16,44 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.dialogflow_v2beta1.services.contexts import pagers
-from google.cloud.dialogflow_v2beta1.types import context
-from google.cloud.dialogflow_v2beta1.types import context as gcd_context
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
-from .transports.base import ContextsTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import ContextsGrpcAsyncIOTransport
+
+from google.cloud.dialogflow_v2beta1.services.contexts import pagers
+from google.cloud.dialogflow_v2beta1.types import context
+from google.cloud.dialogflow_v2beta1.types import context as gcd_context
+
 from .client import ContextsClient
+from .transports.base import DEFAULT_CLIENT_INFO, ContextsTransport
+from .transports.grpc_asyncio import ContextsGrpcAsyncIOTransport
 
 
 class ContextsAsyncClient:
@@ -157,9 +170,9 @@ class ContextsAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ContextsTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the contexts client.
@@ -203,11 +216,11 @@ class ContextsAsyncClient:
 
     async def list_contexts(
         self,
-        request: Union[context.ListContextsRequest, dict] = None,
+        request: Optional[Union[context.ListContextsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListContextsAsyncPager:
         r"""Returns the list of all contexts in the specified
@@ -241,7 +254,7 @@ class ContextsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.ListContextsRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.ListContextsRequest, dict]]):
                 The request object. The request message for
                 [Contexts.ListContexts][google.cloud.dialogflow.v2beta1.Contexts.ListContexts].
             parent (:class:`str`):
@@ -329,11 +342,11 @@ class ContextsAsyncClient:
 
     async def get_context(
         self,
-        request: Union[context.GetContextRequest, dict] = None,
+        request: Optional[Union[context.GetContextRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> context.Context:
         r"""Retrieves the specified context.
@@ -365,7 +378,7 @@ class ContextsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.GetContextRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.GetContextRequest, dict]]):
                 The request object. The request message for
                 [Contexts.GetContext][google.cloud.dialogflow.v2beta1.Contexts.GetContext].
             name (:class:`str`):
@@ -457,12 +470,12 @@ class ContextsAsyncClient:
 
     async def create_context(
         self,
-        request: Union[gcd_context.CreateContextRequest, dict] = None,
+        request: Optional[Union[gcd_context.CreateContextRequest, dict]] = None,
         *,
-        parent: str = None,
-        context: gcd_context.Context = None,
+        parent: Optional[str] = None,
+        context: Optional[gcd_context.Context] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_context.Context:
         r"""Creates a context.
@@ -496,7 +509,7 @@ class ContextsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.CreateContextRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.CreateContextRequest, dict]]):
                 The request object. The request message for
                 [Contexts.CreateContext][google.cloud.dialogflow.v2beta1.Contexts.CreateContext].
             parent (:class:`str`):
@@ -596,12 +609,12 @@ class ContextsAsyncClient:
 
     async def update_context(
         self,
-        request: Union[gcd_context.UpdateContextRequest, dict] = None,
+        request: Optional[Union[gcd_context.UpdateContextRequest, dict]] = None,
         *,
-        context: gcd_context.Context = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        context: Optional[gcd_context.Context] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_context.Context:
         r"""Updates the specified context.
@@ -632,7 +645,7 @@ class ContextsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.UpdateContextRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.UpdateContextRequest, dict]]):
                 The request object. The request message for
                 [Contexts.UpdateContext][google.cloud.dialogflow.v2beta1.Contexts.UpdateContext].
             context (:class:`google.cloud.dialogflow_v2beta1.types.Context`):
@@ -724,11 +737,11 @@ class ContextsAsyncClient:
 
     async def delete_context(
         self,
-        request: Union[context.DeleteContextRequest, dict] = None,
+        request: Optional[Union[context.DeleteContextRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified context.
@@ -757,7 +770,7 @@ class ContextsAsyncClient:
                 await client.delete_context(request=request)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.DeleteContextRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.DeleteContextRequest, dict]]):
                 The request object. The request message for
                 [Contexts.DeleteContext][google.cloud.dialogflow.v2beta1.Contexts.DeleteContext].
             name (:class:`str`):
@@ -824,11 +837,11 @@ class ContextsAsyncClient:
 
     async def delete_all_contexts(
         self,
-        request: Union[context.DeleteAllContextsRequest, dict] = None,
+        request: Optional[Union[context.DeleteAllContextsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes all active contexts in the specified session.
@@ -857,7 +870,7 @@ class ContextsAsyncClient:
                 await client.delete_all_contexts(request=request)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.DeleteAllContextsRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.DeleteAllContextsRequest, dict]]):
                 The request object. The request message for
                 [Contexts.DeleteAllContexts][google.cloud.dialogflow.v2beta1.Contexts.DeleteAllContexts].
             parent (:class:`str`):
@@ -924,10 +937,10 @@ class ContextsAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -978,10 +991,10 @@ class ContextsAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1032,10 +1045,10 @@ class ContextsAsyncClient:
 
     async def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -1086,10 +1099,10 @@ class ContextsAsyncClient:
 
     async def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1140,10 +1153,10 @@ class ContextsAsyncClient:
 
     async def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -1199,14 +1212,9 @@ class ContextsAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dialogflow",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ContextsAsyncClient",)

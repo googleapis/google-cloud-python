@@ -20,7 +20,6 @@ from .base import SessionsTransport
 from .grpc import SessionsGrpcTransport
 from .grpc_asyncio import SessionsGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[SessionsTransport]]
 _transport_registry["grpc"] = SessionsGrpcTransport

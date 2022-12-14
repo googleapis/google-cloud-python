@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import AnswerRecordsClient
 from .async_client import AnswerRecordsAsyncClient
+from .client import AnswerRecordsClient
 
 __all__ = (
     "AnswerRecordsClient",

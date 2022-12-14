@@ -16,15 +16,26 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.dialogflow_v2 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -33,19 +44,21 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.dialogflow_v2.services.conversation_profiles import pagers
-from google.cloud.dialogflow_v2.types import audio_config
-from google.cloud.dialogflow_v2.types import conversation_profile
-from google.cloud.dialogflow_v2.types import (
-    conversation_profile as gcd_conversation_profile,
-)
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import ConversationProfilesTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import ConversationProfilesGrpcAsyncIOTransport
+
+from google.cloud.dialogflow_v2.services.conversation_profiles import pagers
+from google.cloud.dialogflow_v2.types import (
+    conversation_profile as gcd_conversation_profile,
+)
+from google.cloud.dialogflow_v2.types import audio_config
+from google.cloud.dialogflow_v2.types import conversation_profile
+
 from .client import ConversationProfilesClient
+from .transports.base import DEFAULT_CLIENT_INFO, ConversationProfilesTransport
+from .transports.grpc_asyncio import ConversationProfilesGrpcAsyncIOTransport
 
 
 class ConversationProfilesAsyncClient:
@@ -195,9 +208,9 @@ class ConversationProfilesAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ConversationProfilesTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the conversation profiles client.
@@ -241,13 +254,13 @@ class ConversationProfilesAsyncClient:
 
     async def list_conversation_profiles(
         self,
-        request: Union[
-            conversation_profile.ListConversationProfilesRequest, dict
+        request: Optional[
+            Union[conversation_profile.ListConversationProfilesRequest, dict]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConversationProfilesAsyncPager:
         r"""Returns the list of all conversation profiles in the
@@ -281,7 +294,7 @@ class ConversationProfilesAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2.types.ListConversationProfilesRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2.types.ListConversationProfilesRequest, dict]]):
                 The request object. The request message for
                 [ConversationProfiles.ListConversationProfiles][google.cloud.dialogflow.v2.ConversationProfiles.ListConversationProfiles].
             parent (:class:`str`):
@@ -360,11 +373,13 @@ class ConversationProfilesAsyncClient:
 
     async def get_conversation_profile(
         self,
-        request: Union[conversation_profile.GetConversationProfileRequest, dict] = None,
+        request: Optional[
+            Union[conversation_profile.GetConversationProfileRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> conversation_profile.ConversationProfile:
         r"""Retrieves the specified conversation profile.
@@ -396,7 +411,7 @@ class ConversationProfilesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2.types.GetConversationProfileRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2.types.GetConversationProfileRequest, dict]]):
                 The request object. The request message for
                 [ConversationProfiles.GetConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.GetConversationProfile].
             name (:class:`str`):
@@ -463,14 +478,16 @@ class ConversationProfilesAsyncClient:
 
     async def create_conversation_profile(
         self,
-        request: Union[
-            gcd_conversation_profile.CreateConversationProfileRequest, dict
+        request: Optional[
+            Union[gcd_conversation_profile.CreateConversationProfileRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        conversation_profile: gcd_conversation_profile.ConversationProfile = None,
+        parent: Optional[str] = None,
+        conversation_profile: Optional[
+            gcd_conversation_profile.ConversationProfile
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_conversation_profile.ConversationProfile:
         r"""Creates a conversation profile in the specified project.
@@ -512,7 +529,7 @@ class ConversationProfilesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2.types.CreateConversationProfileRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2.types.CreateConversationProfileRequest, dict]]):
                 The request object. The request message for
                 [ConversationProfiles.CreateConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.CreateConversationProfile].
             parent (:class:`str`):
@@ -588,14 +605,16 @@ class ConversationProfilesAsyncClient:
 
     async def update_conversation_profile(
         self,
-        request: Union[
-            gcd_conversation_profile.UpdateConversationProfileRequest, dict
+        request: Optional[
+            Union[gcd_conversation_profile.UpdateConversationProfileRequest, dict]
         ] = None,
         *,
-        conversation_profile: gcd_conversation_profile.ConversationProfile = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        conversation_profile: Optional[
+            gcd_conversation_profile.ConversationProfile
+        ] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_conversation_profile.ConversationProfile:
         r"""Updates the specified conversation profile.
@@ -636,7 +655,7 @@ class ConversationProfilesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2.types.UpdateConversationProfileRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2.types.UpdateConversationProfileRequest, dict]]):
                 The request object. The request message for
                 [ConversationProfiles.UpdateConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.UpdateConversationProfile].
             conversation_profile (:class:`google.cloud.dialogflow_v2.types.ConversationProfile`):
@@ -713,13 +732,13 @@ class ConversationProfilesAsyncClient:
 
     async def delete_conversation_profile(
         self,
-        request: Union[
-            conversation_profile.DeleteConversationProfileRequest, dict
+        request: Optional[
+            Union[conversation_profile.DeleteConversationProfileRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified conversation profile.
@@ -748,7 +767,7 @@ class ConversationProfilesAsyncClient:
                 await client.delete_conversation_profile(request=request)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2.types.DeleteConversationProfileRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2.types.DeleteConversationProfileRequest, dict]]):
                 The request object. The request message for
                 [ConversationProfiles.DeleteConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.DeleteConversationProfile].
                 This operation fails if the conversation profile is
@@ -808,13 +827,13 @@ class ConversationProfilesAsyncClient:
 
     async def set_suggestion_feature_config(
         self,
-        request: Union[
-            gcd_conversation_profile.SetSuggestionFeatureConfigRequest, dict
+        request: Optional[
+            Union[gcd_conversation_profile.SetSuggestionFeatureConfigRequest, dict]
         ] = None,
         *,
-        conversation_profile: str = None,
+        conversation_profile: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Adds or updates a suggestion feature in a conversation profile.
@@ -864,13 +883,13 @@ class ConversationProfilesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2.types.SetSuggestionFeatureConfigRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2.types.SetSuggestionFeatureConfigRequest, dict]]):
                 The request object. The request message for
                 [ConversationProfiles.SetSuggestionFeature][].
             conversation_profile (:class:`str`):
@@ -951,13 +970,13 @@ class ConversationProfilesAsyncClient:
 
     async def clear_suggestion_feature_config(
         self,
-        request: Union[
-            gcd_conversation_profile.ClearSuggestionFeatureConfigRequest, dict
+        request: Optional[
+            Union[gcd_conversation_profile.ClearSuggestionFeatureConfigRequest, dict]
         ] = None,
         *,
-        conversation_profile: str = None,
+        conversation_profile: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Clears a suggestion feature from a conversation profile for the
@@ -1000,13 +1019,13 @@ class ConversationProfilesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2.types.ClearSuggestionFeatureConfigRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2.types.ClearSuggestionFeatureConfigRequest, dict]]):
                 The request object. The request message for
                 [ConversationProfiles.ClearFeature][].
             conversation_profile (:class:`str`):
@@ -1087,10 +1106,10 @@ class ConversationProfilesAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1141,10 +1160,10 @@ class ConversationProfilesAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1195,10 +1214,10 @@ class ConversationProfilesAsyncClient:
 
     async def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -1249,10 +1268,10 @@ class ConversationProfilesAsyncClient:
 
     async def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1303,10 +1322,10 @@ class ConversationProfilesAsyncClient:
 
     async def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -1362,14 +1381,9 @@ class ConversationProfilesAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dialogflow",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ConversationProfilesAsyncClient",)

@@ -13,13 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
-from google.cloud.dialogflow_v2beta1.types import audio_config
-from google.cloud.dialogflow_v2beta1.types import fulfillment as gcd_fulfillment
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.dialogflow_v2beta1.types import fulfillment as gcd_fulfillment
+from google.cloud.dialogflow_v2beta1.types import audio_config
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2beta1",
@@ -106,34 +107,34 @@ class Environment(proto.Message):
         LOADING = 2
         RUNNING = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    agent_version = proto.Field(
+    agent_version: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=4,
         enum=State,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    text_to_speech_settings = proto.Field(
+    text_to_speech_settings: "TextToSpeechSettings" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="TextToSpeechSettings",
     )
-    fulfillment = proto.Field(
+    fulfillment: gcd_fulfillment.Fulfillment = proto.Field(
         proto.MESSAGE,
         number=8,
         message=gcd_fulfillment.Fulfillment,
@@ -161,27 +162,29 @@ class TextToSpeechSettings(proto.Message):
             then the synthesizer will honor this request by
             converting to the desired sample rate (which
             might result in worse audio quality).
-        synthesize_speech_configs (Mapping[str, google.cloud.dialogflow_v2beta1.types.SynthesizeSpeechConfig]):
+        synthesize_speech_configs (MutableMapping[str, google.cloud.dialogflow_v2beta1.types.SynthesizeSpeechConfig]):
             Optional. Configuration of how speech should
             be synthesized, mapping from language
             (https://cloud.google.com/dialogflow/docs/reference/language)
             to SynthesizeSpeechConfig.
     """
 
-    enable_text_to_speech = proto.Field(
+    enable_text_to_speech: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    output_audio_encoding = proto.Field(
+    output_audio_encoding: audio_config.OutputAudioEncoding = proto.Field(
         proto.ENUM,
         number=2,
         enum=audio_config.OutputAudioEncoding,
     )
-    sample_rate_hertz = proto.Field(
+    sample_rate_hertz: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    synthesize_speech_configs = proto.MapField(
+    synthesize_speech_configs: MutableMapping[
+        str, audio_config.SynthesizeSpeechConfig
+    ] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=4,
@@ -208,15 +211,15 @@ class ListEnvironmentsRequest(proto.Message):
             list request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -227,7 +230,7 @@ class ListEnvironmentsResponse(proto.Message):
     [Environments.ListEnvironments][google.cloud.dialogflow.v2beta1.Environments.ListEnvironments].
 
     Attributes:
-        environments (Sequence[google.cloud.dialogflow_v2beta1.types.Environment]):
+        environments (MutableSequence[google.cloud.dialogflow_v2beta1.types.Environment]):
             The list of agent environments. There will be a maximum
             number of items returned based on the page_size field in the
             request.
@@ -241,12 +244,12 @@ class ListEnvironmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    environments = proto.RepeatedField(
+    environments: MutableSequence["Environment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Environment",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -264,7 +267,7 @@ class GetEnvironmentRequest(proto.Message):
             -  ``projects/<Project Number / ID>/locations/<Location ID>/agent/environments/<Environment ID>``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -288,16 +291,16 @@ class CreateEnvironmentRequest(proto.Message):
             environment.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    environment = proto.Field(
+    environment: "Environment" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Environment",
     )
-    environment_id = proto.Field(
+    environment_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -321,17 +324,17 @@ class UpdateEnvironmentRequest(proto.Message):
             updating the draft environment (environment ID = ``-``).
     """
 
-    environment = proto.Field(
+    environment: "Environment" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Environment",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    allow_load_to_draft_and_discard_changes = proto.Field(
+    allow_load_to_draft_and_discard_changes: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -349,7 +352,7 @@ class DeleteEnvironmentRequest(proto.Message):
             -  ``projects/<Project Number / ID>/locations/<Location ID>/agent/environments/<Environment ID>``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -375,15 +378,15 @@ class GetEnvironmentHistoryRequest(proto.Message):
             list request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -400,7 +403,7 @@ class EnvironmentHistory(proto.Message):
 
             -  ``projects/<Project Number / ID>/agent/environments/<Environment ID>``
             -  ``projects/<Project Number / ID>/locations/<Location ID>/agent/environments/<Environment ID>``
-        entries (Sequence[google.cloud.dialogflow_v2beta1.types.EnvironmentHistory.Entry]):
+        entries (MutableSequence[google.cloud.dialogflow_v2beta1.types.EnvironmentHistory.Entry]):
             Output only. The list of agent environments. There will be a
             maximum number of items returned based on the page_size
             field in the request.
@@ -425,15 +428,15 @@ class EnvironmentHistory(proto.Message):
                 entry.
         """
 
-        agent_version = proto.Field(
+        agent_version: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        description = proto.Field(
+        description: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        create_time = proto.Field(
+        create_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=3,
             message=timestamp_pb2.Timestamp,
@@ -443,16 +446,16 @@ class EnvironmentHistory(proto.Message):
     def raw_page(self):
         return self
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    entries = proto.RepeatedField(
+    entries: MutableSequence[Entry] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=Entry,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )

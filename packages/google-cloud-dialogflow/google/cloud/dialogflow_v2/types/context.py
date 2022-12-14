@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2",
@@ -102,15 +102,15 @@ class Context(proto.Message):
             Else: parameter value
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    lifespan_count = proto.Field(
+    lifespan_count: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    parameters = proto.Field(
+    parameters: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=3,
         message=struct_pb2.Struct,
@@ -138,15 +138,15 @@ class ListContextsRequest(proto.Message):
             list request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -157,7 +157,7 @@ class ListContextsResponse(proto.Message):
     [Contexts.ListContexts][google.cloud.dialogflow.v2.Contexts.ListContexts].
 
     Attributes:
-        contexts (Sequence[google.cloud.dialogflow_v2.types.Context]):
+        contexts (MutableSequence[google.cloud.dialogflow_v2.types.Context]):
             The list of contexts. There will be a maximum number of
             items returned based on the page_size field in the request.
         next_page_token (str):
@@ -170,12 +170,12 @@ class ListContextsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    contexts = proto.RepeatedField(
+    contexts: MutableSequence["Context"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Context",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -196,7 +196,7 @@ class GetContextRequest(proto.Message):
             assume default '-' user.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -218,11 +218,11 @@ class CreateContextRequest(proto.Message):
             Required. The context to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    context = proto.Field(
+    context: "Context" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Context",
@@ -241,12 +241,12 @@ class UpdateContextRequest(proto.Message):
             get updated.
     """
 
-    context = proto.Field(
+    context: "Context" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Context",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -268,7 +268,7 @@ class DeleteContextRequest(proto.Message):
             assume default '-' user.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -289,7 +289,7 @@ class DeleteAllContextsRequest(proto.Message):
             assume default '-' user.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )

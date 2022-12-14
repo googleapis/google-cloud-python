@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import EntityTypesClient
 from .async_client import EntityTypesAsyncClient
+from .client import EntityTypesClient
 
 __all__ = (
     "EntityTypesClient",

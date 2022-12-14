@@ -13,10 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.dialogflow_v2.types import participant as gcd_participant
-
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2",
@@ -38,20 +39,22 @@ class HumanAgentAssistantEvent(proto.Message):
             The participant that the suggestion is compiled for. Format:
             ``projects/<Project ID>/conversations/<Conversation ID>/participants/<Participant ID>``.
             It will not be set in legacy workflow.
-        suggestion_results (Sequence[google.cloud.dialogflow_v2.types.SuggestionResult]):
+        suggestion_results (MutableSequence[google.cloud.dialogflow_v2.types.SuggestionResult]):
             The suggestion results payload that this
             notification refers to.
     """
 
-    conversation = proto.Field(
+    conversation: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    participant = proto.Field(
+    participant: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    suggestion_results = proto.RepeatedField(
+    suggestion_results: MutableSequence[
+        gcd_participant.SuggestionResult
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=gcd_participant.SuggestionResult,

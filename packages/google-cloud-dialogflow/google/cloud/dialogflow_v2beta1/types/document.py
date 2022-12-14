@@ -13,13 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
-from google.cloud.dialogflow_v2beta1.types import gcs
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.dialogflow_v2beta1.types import gcs
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2beta1",
@@ -69,7 +70,7 @@ class Document(proto.Message):
             the creation request fails.
         mime_type (str):
             Required. The MIME type of this document.
-        knowledge_types (Sequence[google.cloud.dialogflow_v2beta1.types.Document.KnowledgeType]):
+        knowledge_types (MutableSequence[google.cloud.dialogflow_v2beta1.types.Document.KnowledgeType]):
             Required. The knowledge type of document
             content.
         content_uri (str):
@@ -121,7 +122,7 @@ class Document(proto.Message):
             latest reload. This reload may have been
             triggered automatically or manually and may not
             have succeeded.
-        metadata (Mapping[str, str]):
+        metadata (MutableMapping[str, str]):
             Optional. Metadata for the document. The metadata supports
             arbitrary key-value pairs. Suggested use cases include
             storing a document's title, an external URL distinct from
@@ -165,64 +166,64 @@ class Document(proto.Message):
                 or the initial load.
         """
 
-        time = proto.Field(
+        time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=1,
             message=timestamp_pb2.Timestamp,
         )
-        status = proto.Field(
+        status: status_pb2.Status = proto.Field(
             proto.MESSAGE,
             number=2,
             message=status_pb2.Status,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    mime_type = proto.Field(
+    mime_type: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    knowledge_types = proto.RepeatedField(
+    knowledge_types: MutableSequence[KnowledgeType] = proto.RepeatedField(
         proto.ENUM,
         number=4,
         enum=KnowledgeType,
     )
-    content_uri = proto.Field(
+    content_uri: str = proto.Field(
         proto.STRING,
         number=5,
         oneof="source",
     )
-    content = proto.Field(
+    content: str = proto.Field(
         proto.STRING,
         number=6,
         oneof="source",
     )
-    raw_content = proto.Field(
+    raw_content: bytes = proto.Field(
         proto.BYTES,
         number=9,
         oneof="source",
     )
-    enable_auto_reload = proto.Field(
+    enable_auto_reload: bool = proto.Field(
         proto.BOOL,
         number=11,
     )
-    latest_reload_status = proto.Field(
+    latest_reload_status: ReloadStatus = proto.Field(
         proto.MESSAGE,
         number=12,
         message=ReloadStatus,
     )
-    metadata = proto.MapField(
+    metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=7,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=13,
         enum=State,
@@ -239,7 +240,7 @@ class GetDocumentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/knowledgeBases/<Knowledge Base ID>/documents/<Document ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -286,19 +287,19 @@ class ListDocumentsRequest(proto.Message):
             Filtering <https://aip.dev/160>`__.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -309,7 +310,7 @@ class ListDocumentsResponse(proto.Message):
     [Documents.ListDocuments][google.cloud.dialogflow.v2beta1.Documents.ListDocuments].
 
     Attributes:
-        documents (Sequence[google.cloud.dialogflow_v2beta1.types.Document]):
+        documents (MutableSequence[google.cloud.dialogflow_v2beta1.types.Document]):
             The list of documents.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -321,12 +322,12 @@ class ListDocumentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    documents = proto.RepeatedField(
+    documents: MutableSequence["Document"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Document",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -349,16 +350,16 @@ class CreateDocumentRequest(proto.Message):
             source is Google Cloud Storage URI.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    document = proto.Field(
+    document: "Document" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Document",
     )
-    import_gcs_custom_metadata = proto.Field(
+    import_gcs_custom_metadata: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -394,22 +395,22 @@ class ImportDocumentsRequest(proto.Message):
             source is Google Cloud Storage URI.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    gcs_source = proto.Field(
+    gcs_source: gcs.GcsSources = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="source",
         message=gcs.GcsSources,
     )
-    document_template = proto.Field(
+    document_template: "ImportDocumentTemplate" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="ImportDocumentTemplate",
     )
-    import_gcs_custom_metadata = proto.Field(
+    import_gcs_custom_metadata: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -421,10 +422,10 @@ class ImportDocumentTemplate(proto.Message):
     Attributes:
         mime_type (str):
             Required. The MIME type of the document.
-        knowledge_types (Sequence[google.cloud.dialogflow_v2beta1.types.Document.KnowledgeType]):
+        knowledge_types (MutableSequence[google.cloud.dialogflow_v2beta1.types.Document.KnowledgeType]):
             Required. The knowledge type of document
             content.
-        metadata (Mapping[str, str]):
+        metadata (MutableMapping[str, str]):
             Metadata for the document. The metadata supports arbitrary
             key-value pairs. Suggested use cases include storing a
             document's title, an external URL distinct from the
@@ -432,16 +433,16 @@ class ImportDocumentTemplate(proto.Message):
             ``value`` of the metadata is 1024 bytes.
     """
 
-    mime_type = proto.Field(
+    mime_type: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    knowledge_types = proto.RepeatedField(
+    knowledge_types: MutableSequence["Document.KnowledgeType"] = proto.RepeatedField(
         proto.ENUM,
         number=2,
         enum="Document.KnowledgeType",
     )
-    metadata = proto.MapField(
+    metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
@@ -453,12 +454,12 @@ class ImportDocumentsResponse(proto.Message):
     [Documents.ImportDocuments][google.cloud.dialogflow.v2beta1.Documents.ImportDocuments].
 
     Attributes:
-        warnings (Sequence[google.rpc.status_pb2.Status]):
+        warnings (MutableSequence[google.rpc.status_pb2.Status]):
             Includes details about skipped documents or
             any other warnings.
     """
 
-    warnings = proto.RepeatedField(
+    warnings: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=status_pb2.Status,
@@ -475,7 +476,7 @@ class DeleteDocumentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/knowledgeBases/<Knowledge Base ID>/documents/<Document ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -494,12 +495,12 @@ class UpdateDocumentRequest(proto.Message):
             will be returned for attempting to update other fields.
     """
 
-    document = proto.Field(
+    document: "Document" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Document",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -515,7 +516,7 @@ class ExportOperationMetadata(proto.Message):
             Cloud Storage file path of the exported data.
     """
 
-    exported_gcs_destination = proto.Field(
+    exported_gcs_destination: gcs.GcsDestination = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcs.GcsDestination,
@@ -550,16 +551,16 @@ class KnowledgeOperationMetadata(proto.Message):
         RUNNING = 2
         DONE = 3
 
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
     )
-    knowledge_base = proto.Field(
+    knowledge_base: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    export_operation_metadata = proto.Field(
+    export_operation_metadata: "ExportOperationMetadata" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="operation_metadata",
@@ -590,17 +591,17 @@ class ReloadDocumentRequest(proto.Message):
             source is Google Cloud Storage URI.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    gcs_source = proto.Field(
+    gcs_source: gcs.GcsSource = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="source",
         message=gcs.GcsSource,
     )
-    import_gcs_custom_metadata = proto.Field(
+    import_gcs_custom_metadata: bool = proto.Field(
         proto.BOOL,
         number=4,
     )

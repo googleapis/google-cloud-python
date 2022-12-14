@@ -16,34 +16,48 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.dialogflow_v2 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.dialogflow_v2.services.session_entity_types import pagers
-from google.cloud.dialogflow_v2.types import entity_type
-from google.cloud.dialogflow_v2.types import session_entity_type
-from google.cloud.dialogflow_v2.types import (
-    session_entity_type as gcd_session_entity_type,
-)
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.protobuf import field_mask_pb2  # type: ignore
-from .transports.base import SessionEntityTypesTransport, DEFAULT_CLIENT_INFO
+
+from google.cloud.dialogflow_v2.services.session_entity_types import pagers
+from google.cloud.dialogflow_v2.types import (
+    session_entity_type as gcd_session_entity_type,
+)
+from google.cloud.dialogflow_v2.types import entity_type
+from google.cloud.dialogflow_v2.types import session_entity_type
+
+from .transports.base import DEFAULT_CLIENT_INFO, SessionEntityTypesTransport
 from .transports.grpc import SessionEntityTypesGrpcTransport
 from .transports.grpc_asyncio import SessionEntityTypesGrpcAsyncIOTransport
 
@@ -64,7 +78,7 @@ class SessionEntityTypesClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[SessionEntityTypesTransport]:
         """Returns an appropriate transport class.
 
@@ -341,8 +355,8 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, SessionEntityTypesTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, SessionEntityTypesTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the session entity types client.
@@ -356,7 +370,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
             transport (Union[str, SessionEntityTypesTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -386,6 +400,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -438,11 +453,13 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
     def list_session_entity_types(
         self,
-        request: Union[session_entity_type.ListSessionEntityTypesRequest, dict] = None,
+        request: Optional[
+            Union[session_entity_type.ListSessionEntityTypesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSessionEntityTypesPager:
         r"""Returns the list of all session entity types in the
@@ -564,11 +581,13 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
     def get_session_entity_type(
         self,
-        request: Union[session_entity_type.GetSessionEntityTypeRequest, dict] = None,
+        request: Optional[
+            Union[session_entity_type.GetSessionEntityTypeRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> session_entity_type.SessionEntityType:
         r"""Retrieves the specified session entity type.
@@ -682,14 +701,14 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
     def create_session_entity_type(
         self,
-        request: Union[
-            gcd_session_entity_type.CreateSessionEntityTypeRequest, dict
+        request: Optional[
+            Union[gcd_session_entity_type.CreateSessionEntityTypeRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        session_entity_type: gcd_session_entity_type.SessionEntityType = None,
+        parent: Optional[str] = None,
+        session_entity_type: Optional[gcd_session_entity_type.SessionEntityType] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_session_entity_type.SessionEntityType:
         r"""Creates a session entity type.
@@ -826,14 +845,14 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
     def update_session_entity_type(
         self,
-        request: Union[
-            gcd_session_entity_type.UpdateSessionEntityTypeRequest, dict
+        request: Optional[
+            Union[gcd_session_entity_type.UpdateSessionEntityTypeRequest, dict]
         ] = None,
         *,
-        session_entity_type: gcd_session_entity_type.SessionEntityType = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        session_entity_type: Optional[gcd_session_entity_type.SessionEntityType] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_session_entity_type.SessionEntityType:
         r"""Updates the specified session entity type.
@@ -963,11 +982,13 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
     def delete_session_entity_type(
         self,
-        request: Union[session_entity_type.DeleteSessionEntityTypeRequest, dict] = None,
+        request: Optional[
+            Union[session_entity_type.DeleteSessionEntityTypeRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified session entity type.
@@ -1076,10 +1097,10 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
     def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1130,10 +1151,10 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
     def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1184,10 +1205,10 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
     def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -1238,10 +1259,10 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
     def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1292,10 +1313,10 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
     def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -1345,14 +1366,9 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         return response
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dialogflow",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("SessionEntityTypesClient",)

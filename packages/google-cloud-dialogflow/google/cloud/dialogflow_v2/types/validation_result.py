@@ -13,8 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2",
@@ -31,7 +32,7 @@ class ValidationError(proto.Message):
     Attributes:
         severity (google.cloud.dialogflow_v2.types.ValidationError.Severity):
             The severity of the error.
-        entries (Sequence[str]):
+        entries (MutableSequence[str]):
             The names of the entries that the error is
             associated with. Format:
 
@@ -63,16 +64,16 @@ class ValidationError(proto.Message):
         ERROR = 3
         CRITICAL = 4
 
-    severity = proto.Field(
+    severity: Severity = proto.Field(
         proto.ENUM,
         number=1,
         enum=Severity,
     )
-    entries = proto.RepeatedField(
+    entries: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    error_message = proto.Field(
+    error_message: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -82,11 +83,11 @@ class ValidationResult(proto.Message):
     r"""Represents the output of agent validation.
 
     Attributes:
-        validation_errors (Sequence[google.cloud.dialogflow_v2.types.ValidationError]):
+        validation_errors (MutableSequence[google.cloud.dialogflow_v2.types.ValidationError]):
             Contains all validation errors.
     """
 
-    validation_errors = proto.RepeatedField(
+    validation_errors: MutableSequence["ValidationError"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ValidationError",

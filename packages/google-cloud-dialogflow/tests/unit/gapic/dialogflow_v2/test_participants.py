@@ -22,39 +22,36 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-import grpc
-from grpc.experimental import aio
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-from proto.marshal.rules import wrappers
 
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import path_template
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.dialogflow_v2.services.participants import ParticipantsAsyncClient
-from google.cloud.dialogflow_v2.services.participants import ParticipantsClient
-from google.cloud.dialogflow_v2.services.participants import pagers
-from google.cloud.dialogflow_v2.services.participants import transports
-from google.cloud.dialogflow_v2.types import audio_config
-from google.cloud.dialogflow_v2.types import context
-from google.cloud.dialogflow_v2.types import entity_type
-from google.cloud.dialogflow_v2.types import participant
-from google.cloud.dialogflow_v2.types import participant as gcd_participant
-from google.cloud.dialogflow_v2.types import session
-from google.cloud.dialogflow_v2.types import session_entity_type
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
-import google.auth
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+from google.cloud.dialogflow_v2.services.participants import (
+    ParticipantsAsyncClient,
+    ParticipantsClient,
+    pagers,
+    transports,
+)
+from google.cloud.dialogflow_v2.types import audio_config, context, entity_type
+from google.cloud.dialogflow_v2.types import participant
+from google.cloud.dialogflow_v2.types import participant as gcd_participant
+from google.cloud.dialogflow_v2.types import session, session_entity_type
 
 
 def client_cert_source_callback():

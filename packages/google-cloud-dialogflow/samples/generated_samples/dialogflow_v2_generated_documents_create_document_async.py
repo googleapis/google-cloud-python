@@ -43,7 +43,7 @@ async def sample_create_document():
     document.content_uri = "content_uri_value"
     document.display_name = "display_name_value"
     document.mime_type = "mime_type_value"
-    document.knowledge_types = "AGENT_FACING_SMART_REPLY"
+    document.knowledge_types = ['AGENT_FACING_SMART_REPLY']
 
     request = dialogflow_v2.CreateDocumentRequest(
         parent="parent_value",
@@ -55,7 +55,7 @@ async def sample_create_document():
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = (await operation).result()
 
     # Handle the response
     print(response)

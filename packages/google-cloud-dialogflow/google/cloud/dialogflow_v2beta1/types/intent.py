@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.types import context
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2beta1",
@@ -119,27 +120,27 @@ class Intent(proto.Message):
             Google or Dialogflow phone gateway) use this
             information to close interaction with an end
             user. Default is false.
-        input_context_names (Sequence[str]):
+        input_context_names (MutableSequence[str]):
             Optional. The list of context names required for this intent
             to be triggered. Formats:
 
             -  ``projects/<Project ID>/agent/sessions/-/contexts/<Context ID>``
             -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/-/contexts/<Context ID>``
-        events (Sequence[str]):
+        events (MutableSequence[str]):
             Optional. The collection of event names that
             trigger the intent. If the collection of input
             contexts is not empty, all of the contexts must
             be present in the active user session for an
             event to trigger this intent. Event names are
             limited to 150 characters.
-        training_phrases (Sequence[google.cloud.dialogflow_v2beta1.types.Intent.TrainingPhrase]):
+        training_phrases (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent.TrainingPhrase]):
             Optional. The collection of examples that the
             agent is trained on.
         action (str):
             Optional. The name of the action associated
             with the intent. Note: The action name must not
             contain whitespaces.
-        output_contexts (Sequence[google.cloud.dialogflow_v2beta1.types.Context]):
+        output_contexts (MutableSequence[google.cloud.dialogflow_v2beta1.types.Context]):
             Optional. The collection of contexts that are activated when
             the intent is matched. Context messages in this collection
             should not set the parameters field. Setting the
@@ -150,13 +151,13 @@ class Intent(proto.Message):
             Optional. Indicates whether to delete all
             contexts in the current session when this intent
             is matched.
-        parameters (Sequence[google.cloud.dialogflow_v2beta1.types.Intent.Parameter]):
+        parameters (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent.Parameter]):
             Optional. The collection of parameters
             associated with the intent.
-        messages (Sequence[google.cloud.dialogflow_v2beta1.types.Intent.Message]):
+        messages (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent.Message]):
             Optional. The collection of rich messages corresponding to
             the ``Response`` field in the Dialogflow console.
-        default_response_platforms (Sequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.Platform]):
+        default_response_platforms (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.Platform]):
             Optional. The list of platforms for which the first
             responses will be copied from the messages in
             PLATFORM_UNSPECIFIED (i.e. default platform).
@@ -177,7 +178,7 @@ class Intent(proto.Message):
 
             It identifies the parent followup intent. Format:
             ``projects/<Project ID>/agent/intents/<Intent ID>``.
-        followup_intent_info (Sequence[google.cloud.dialogflow_v2beta1.types.Intent.FollowupIntentInfo]):
+        followup_intent_info (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent.FollowupIntentInfo]):
             Output only. Information about all followup
             intents that have this intent as a direct or
             indirect parent. We populate this field only in
@@ -199,7 +200,7 @@ class Intent(proto.Message):
                 training phrase.
             type_ (google.cloud.dialogflow_v2beta1.types.Intent.TrainingPhrase.Type):
                 Required. The type of the training phrase.
-            parts (Sequence[google.cloud.dialogflow_v2beta1.types.Intent.TrainingPhrase.Part]):
+            parts (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent.TrainingPhrase.Part]):
                 Required. The ordered list of training phrase parts. The
                 parts are concatenated in order to form the training phrase.
 
@@ -260,38 +261,38 @@ class Intent(proto.Message):
                     part with the API, you must set this to true.
             """
 
-            text = proto.Field(
+            text: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            entity_type = proto.Field(
+            entity_type: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
-            alias = proto.Field(
+            alias: str = proto.Field(
                 proto.STRING,
                 number=3,
             )
-            user_defined = proto.Field(
+            user_defined: bool = proto.Field(
                 proto.BOOL,
                 number=4,
             )
 
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        type_ = proto.Field(
+        type_: "Intent.TrainingPhrase.Type" = proto.Field(
             proto.ENUM,
             number=2,
             enum="Intent.TrainingPhrase.Type",
         )
-        parts = proto.RepeatedField(
+        parts: MutableSequence["Intent.TrainingPhrase.Part"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="Intent.TrainingPhrase.Part",
         )
-        times_added_count = proto.Field(
+        times_added_count: int = proto.Field(
             proto.INT32,
             number=4,
         )
@@ -327,7 +328,7 @@ class Intent(proto.Message):
                 required. That is, whether the intent cannot be
                 completed without collecting the parameter
                 value.
-            prompts (Sequence[str]):
+            prompts (MutableSequence[str]):
                 Optional. The collection of prompts that the
                 agent can present to the user in order to
                 collect a value for the parameter.
@@ -336,35 +337,35 @@ class Intent(proto.Message):
                 represents a list of values.
         """
 
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        display_name = proto.Field(
+        display_name: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        value = proto.Field(
+        value: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        default_value = proto.Field(
+        default_value: str = proto.Field(
             proto.STRING,
             number=4,
         )
-        entity_type_display_name = proto.Field(
+        entity_type_display_name: str = proto.Field(
             proto.STRING,
             number=5,
         )
-        mandatory = proto.Field(
+        mandatory: bool = proto.Field(
             proto.BOOL,
             number=6,
         )
-        prompts = proto.RepeatedField(
+        prompts: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=7,
         )
-        is_list = proto.Field(
+        is_list: bool = proto.Field(
             proto.BOOL,
             number=8,
         )
@@ -494,12 +495,12 @@ class Intent(proto.Message):
             r"""The text response message.
 
             Attributes:
-                text (Sequence[str]):
+                text (MutableSequence[str]):
                     Optional. The collection of the agent's
                     responses.
             """
 
-            text = proto.RepeatedField(
+            text: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=1,
             )
@@ -516,11 +517,11 @@ class Intent(proto.Message):
                     is set for CarouselSelect.
             """
 
-            image_uri = proto.Field(
+            image_uri: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            accessibility_text = proto.Field(
+            accessibility_text: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
@@ -532,15 +533,15 @@ class Intent(proto.Message):
                 title (str):
                     Optional. The title of the collection of
                     quick replies.
-                quick_replies (Sequence[str]):
+                quick_replies (MutableSequence[str]):
                     Optional. The collection of quick replies.
             """
 
-            title = proto.Field(
+            title: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            quick_replies = proto.RepeatedField(
+            quick_replies: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=2,
             )
@@ -556,7 +557,7 @@ class Intent(proto.Message):
                 image_uri (str):
                     Optional. The public URI to an image file for
                     the card.
-                buttons (Sequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.Card.Button]):
+                buttons (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.Card.Button]):
                     Optional. The collection of card buttons.
             """
 
@@ -571,28 +572,30 @@ class Intent(proto.Message):
                         Dialogflow API or a URI to open.
                 """
 
-                text = proto.Field(
+                text: str = proto.Field(
                     proto.STRING,
                     number=1,
                 )
-                postback = proto.Field(
+                postback: str = proto.Field(
                     proto.STRING,
                     number=2,
                 )
 
-            title = proto.Field(
+            title: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            subtitle = proto.Field(
+            subtitle: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
-            image_uri = proto.Field(
+            image_uri: str = proto.Field(
                 proto.STRING,
                 number=3,
             )
-            buttons = proto.RepeatedField(
+            buttons: MutableSequence[
+                "Intent.Message.Card.Button"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="Intent.Message.Card.Button",
@@ -613,15 +616,15 @@ class Intent(proto.Message):
                     Optional. The text to display.
             """
 
-            text_to_speech = proto.Field(
+            text_to_speech: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            ssml = proto.Field(
+            ssml: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
-            display_text = proto.Field(
+            display_text: str = proto.Field(
                 proto.STRING,
                 number=3,
             )
@@ -633,11 +636,13 @@ class Intent(proto.Message):
             ``SimpleResponse``.
 
             Attributes:
-                simple_responses (Sequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.SimpleResponse]):
+                simple_responses (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.SimpleResponse]):
                     Required. The list of simple responses.
             """
 
-            simple_responses = proto.RepeatedField(
+            simple_responses: MutableSequence[
+                "Intent.Message.SimpleResponse"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="Intent.Message.SimpleResponse",
@@ -656,7 +661,7 @@ class Intent(proto.Message):
                     text of the card.
                 image (google.cloud.dialogflow_v2beta1.types.Intent.Message.Image):
                     Optional. The image for the card.
-                buttons (Sequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.BasicCard.Button]):
+                buttons (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.BasicCard.Button]):
                     Optional. The collection of card buttons.
             """
 
@@ -679,39 +684,43 @@ class Intent(proto.Message):
                             Required. The HTTP or HTTPS scheme URI.
                     """
 
-                    uri = proto.Field(
+                    uri: str = proto.Field(
                         proto.STRING,
                         number=1,
                     )
 
-                title = proto.Field(
+                title: str = proto.Field(
                     proto.STRING,
                     number=1,
                 )
-                open_uri_action = proto.Field(
-                    proto.MESSAGE,
-                    number=2,
-                    message="Intent.Message.BasicCard.Button.OpenUriAction",
+                open_uri_action: "Intent.Message.BasicCard.Button.OpenUriAction" = (
+                    proto.Field(
+                        proto.MESSAGE,
+                        number=2,
+                        message="Intent.Message.BasicCard.Button.OpenUriAction",
+                    )
                 )
 
-            title = proto.Field(
+            title: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            subtitle = proto.Field(
+            subtitle: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
-            formatted_text = proto.Field(
+            formatted_text: str = proto.Field(
                 proto.STRING,
                 number=3,
             )
-            image = proto.Field(
+            image: "Intent.Message.Image" = proto.Field(
                 proto.MESSAGE,
                 number=4,
                 message="Intent.Message.Image",
             )
-            buttons = proto.RepeatedField(
+            buttons: MutableSequence[
+                "Intent.Message.BasicCard.Button"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=5,
                 message="Intent.Message.BasicCard.Button",
@@ -727,7 +736,7 @@ class Intent(proto.Message):
                     suggestion chip.
             """
 
-            title = proto.Field(
+            title: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
@@ -736,11 +745,13 @@ class Intent(proto.Message):
             r"""The collection of suggestions.
 
             Attributes:
-                suggestions (Sequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.Suggestion]):
+                suggestions (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.Suggestion]):
                     Required. The list of suggested replies.
             """
 
-            suggestions = proto.RepeatedField(
+            suggestions: MutableSequence[
+                "Intent.Message.Suggestion"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="Intent.Message.Suggestion",
@@ -759,11 +770,11 @@ class Intent(proto.Message):
                     when the user taps the suggestion chip.
             """
 
-            destination_name = proto.Field(
+            destination_name: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            uri = proto.Field(
+            uri: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
@@ -774,7 +785,7 @@ class Intent(proto.Message):
             Attributes:
                 title (str):
                     Optional. The overall title of the list.
-                items (Sequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.ListSelect.Item]):
+                items (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.ListSelect.Item]):
                     Required. List items.
                 subtitle (str):
                     Optional. Subtitle of the list.
@@ -795,35 +806,37 @@ class Intent(proto.Message):
                         Optional. The image to display.
                 """
 
-                info = proto.Field(
+                info: "Intent.Message.SelectItemInfo" = proto.Field(
                     proto.MESSAGE,
                     number=1,
                     message="Intent.Message.SelectItemInfo",
                 )
-                title = proto.Field(
+                title: str = proto.Field(
                     proto.STRING,
                     number=2,
                 )
-                description = proto.Field(
+                description: str = proto.Field(
                     proto.STRING,
                     number=3,
                 )
-                image = proto.Field(
+                image: "Intent.Message.Image" = proto.Field(
                     proto.MESSAGE,
                     number=4,
                     message="Intent.Message.Image",
                 )
 
-            title = proto.Field(
+            title: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            items = proto.RepeatedField(
+            items: MutableSequence[
+                "Intent.Message.ListSelect.Item"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="Intent.Message.ListSelect.Item",
             )
-            subtitle = proto.Field(
+            subtitle: str = proto.Field(
                 proto.STRING,
                 number=3,
             )
@@ -832,7 +845,7 @@ class Intent(proto.Message):
             r"""The card for presenting a carousel of options to select from.
 
             Attributes:
-                items (Sequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.CarouselSelect.Item]):
+                items (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.CarouselSelect.Item]):
                     Required. Carousel items.
             """
 
@@ -851,26 +864,28 @@ class Intent(proto.Message):
                         Optional. The image to display.
                 """
 
-                info = proto.Field(
+                info: "Intent.Message.SelectItemInfo" = proto.Field(
                     proto.MESSAGE,
                     number=1,
                     message="Intent.Message.SelectItemInfo",
                 )
-                title = proto.Field(
+                title: str = proto.Field(
                     proto.STRING,
                     number=2,
                 )
-                description = proto.Field(
+                description: str = proto.Field(
                     proto.STRING,
                     number=3,
                 )
-                image = proto.Field(
+                image: "Intent.Message.Image" = proto.Field(
                     proto.MESSAGE,
                     number=4,
                     message="Intent.Message.Image",
                 )
 
-            items = proto.RepeatedField(
+            items: MutableSequence[
+                "Intent.Message.CarouselSelect.Item"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="Intent.Message.CarouselSelect.Item",
@@ -884,16 +899,16 @@ class Intent(proto.Message):
                 key (str):
                     Required. A unique key that will be sent back
                     to the agent if this response is given.
-                synonyms (Sequence[str]):
+                synonyms (MutableSequence[str]):
                     Optional. A list of synonyms that can also be
                     used to trigger this item in dialog.
             """
 
-            key = proto.Field(
+            key: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            synonyms = proto.RepeatedField(
+            synonyms: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=2,
             )
@@ -920,7 +935,7 @@ class Intent(proto.Message):
                     ``TelephonySynthesizeSpeech`` message with SSML.
             """
 
-            audio_uri = proto.Field(
+            audio_uri: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
@@ -953,12 +968,12 @@ class Intent(proto.Message):
                     This field is a member of `oneof`_ ``source``.
             """
 
-            text = proto.Field(
+            text: str = proto.Field(
                 proto.STRING,
                 number=1,
                 oneof="source",
             )
-            ssml = proto.Field(
+            ssml: str = proto.Field(
                 proto.STRING,
                 number=2,
                 oneof="source",
@@ -976,7 +991,7 @@ class Intent(proto.Message):
                     (+1xxxyyyzzzz).
             """
 
-            phone_number = proto.Field(
+            phone_number: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
@@ -988,16 +1003,18 @@ class Intent(proto.Message):
                 text (str):
                     Required. Text sent and displayed to the
                     user.
-                rbm_suggestion (Sequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.RbmSuggestion]):
+                rbm_suggestion (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.RbmSuggestion]):
                     Optional. One or more suggestions to show to
                     the user.
             """
 
-            text = proto.Field(
+            text: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            rbm_suggestion = proto.RepeatedField(
+            rbm_suggestion: MutableSequence[
+                "Intent.Message.RbmSuggestion"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="Intent.Message.RbmSuggestion",
@@ -1018,7 +1035,7 @@ class Intent(proto.Message):
                 card_width (google.cloud.dialogflow_v2beta1.types.Intent.Message.RbmCarouselCard.CardWidth):
                     Required. The width of the cards in the
                     carousel.
-                card_contents (Sequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.RbmCardContent]):
+                card_contents (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.RbmCardContent]):
                     Required. The cards in the carousel. A
                     carousel must have at least 2 cards and at most
                     10.
@@ -1030,12 +1047,14 @@ class Intent(proto.Message):
                 SMALL = 1
                 MEDIUM = 2
 
-            card_width = proto.Field(
+            card_width: "Intent.Message.RbmCarouselCard.CardWidth" = proto.Field(
                 proto.ENUM,
                 number=1,
                 enum="Intent.Message.RbmCarouselCard.CardWidth",
             )
-            card_contents = proto.RepeatedField(
+            card_contents: MutableSequence[
+                "Intent.Message.RbmCardContent"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="Intent.Message.RbmCardContent",
@@ -1076,17 +1095,19 @@ class Intent(proto.Message):
                 LEFT = 1
                 RIGHT = 2
 
-            card_orientation = proto.Field(
-                proto.ENUM,
-                number=1,
-                enum="Intent.Message.RbmStandaloneCard.CardOrientation",
+            card_orientation: "Intent.Message.RbmStandaloneCard.CardOrientation" = (
+                proto.Field(
+                    proto.ENUM,
+                    number=1,
+                    enum="Intent.Message.RbmStandaloneCard.CardOrientation",
+                )
             )
-            thumbnail_image_alignment = proto.Field(
+            thumbnail_image_alignment: "Intent.Message.RbmStandaloneCard.ThumbnailImageAlignment" = proto.Field(
                 proto.ENUM,
                 number=2,
                 enum="Intent.Message.RbmStandaloneCard.ThumbnailImageAlignment",
             )
-            card_content = proto.Field(
+            card_content: "Intent.Message.RbmCardContent" = proto.Field(
                 proto.MESSAGE,
                 number=3,
                 message="Intent.Message.RbmCardContent",
@@ -1110,7 +1131,7 @@ class Intent(proto.Message):
                     Optional. However at least one of the title,
                     description or media must be set. Media (image,
                     GIF or a video) to include in the card.
-                suggestions (Sequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.RbmSuggestion]):
+                suggestions (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.RbmSuggestion]):
                     Optional. List of suggestions to include in
                     the card.
             """
@@ -1166,34 +1187,36 @@ class Intent(proto.Message):
                     MEDIUM = 2
                     TALL = 3
 
-                file_uri = proto.Field(
+                file_uri: str = proto.Field(
                     proto.STRING,
                     number=1,
                 )
-                thumbnail_uri = proto.Field(
+                thumbnail_uri: str = proto.Field(
                     proto.STRING,
                     number=2,
                 )
-                height = proto.Field(
+                height: "Intent.Message.RbmCardContent.RbmMedia.Height" = proto.Field(
                     proto.ENUM,
                     number=3,
                     enum="Intent.Message.RbmCardContent.RbmMedia.Height",
                 )
 
-            title = proto.Field(
+            title: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            description = proto.Field(
+            description: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
-            media = proto.Field(
+            media: "Intent.Message.RbmCardContent.RbmMedia" = proto.Field(
                 proto.MESSAGE,
                 number=3,
                 message="Intent.Message.RbmCardContent.RbmMedia",
             )
-            suggestions = proto.RepeatedField(
+            suggestions: MutableSequence[
+                "Intent.Message.RbmSuggestion"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="Intent.Message.RbmSuggestion",
@@ -1224,13 +1247,13 @@ class Intent(proto.Message):
                     This field is a member of `oneof`_ ``suggestion``.
             """
 
-            reply = proto.Field(
+            reply: "Intent.Message.RbmSuggestedReply" = proto.Field(
                 proto.MESSAGE,
                 number=1,
                 oneof="suggestion",
                 message="Intent.Message.RbmSuggestedReply",
             )
-            action = proto.Field(
+            action: "Intent.Message.RbmSuggestedAction" = proto.Field(
                 proto.MESSAGE,
                 number=2,
                 oneof="suggestion",
@@ -1252,11 +1275,11 @@ class Intent(proto.Message):
                     logic.
             """
 
-            text = proto.Field(
+            text: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            postback_data = proto.Field(
+            postback_data: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
@@ -1310,7 +1333,7 @@ class Intent(proto.Message):
                         example of a correctly formatted phone number: +15556767888.
                 """
 
-                phone_number = proto.Field(
+                phone_number: str = proto.Field(
                     proto.STRING,
                     number=1,
                 )
@@ -1327,7 +1350,7 @@ class Intent(proto.Message):
                         Required. The uri to open on the user device
                 """
 
-                uri = proto.Field(
+                uri: str = proto.Field(
                     proto.STRING,
                     number=1,
                 )
@@ -1338,27 +1361,29 @@ class Intent(proto.Message):
 
                 """
 
-            text = proto.Field(
+            text: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            postback_data = proto.Field(
+            postback_data: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
-            dial = proto.Field(
-                proto.MESSAGE,
-                number=3,
-                oneof="action",
-                message="Intent.Message.RbmSuggestedAction.RbmSuggestedActionDial",
+            dial: "Intent.Message.RbmSuggestedAction.RbmSuggestedActionDial" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=3,
+                    oneof="action",
+                    message="Intent.Message.RbmSuggestedAction.RbmSuggestedActionDial",
+                )
             )
-            open_url = proto.Field(
+            open_url: "Intent.Message.RbmSuggestedAction.RbmSuggestedActionOpenUri" = proto.Field(
                 proto.MESSAGE,
                 number=4,
                 oneof="action",
                 message="Intent.Message.RbmSuggestedAction.RbmSuggestedActionOpenUri",
             )
-            share_location = proto.Field(
+            share_location: "Intent.Message.RbmSuggestedAction.RbmSuggestedActionShareLocation" = proto.Field(
                 proto.MESSAGE,
                 number=5,
                 oneof="action",
@@ -1372,7 +1397,7 @@ class Intent(proto.Message):
                 media_type (google.cloud.dialogflow_v2beta1.types.Intent.Message.MediaContent.ResponseMediaType):
                     Optional. What type of media is the content
                     (ie "audio").
-                media_objects (Sequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.MediaContent.ResponseMediaObject]):
+                media_objects (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.MediaContent.ResponseMediaObject]):
                     Required. List of media objects.
             """
 
@@ -1410,37 +1435,39 @@ class Intent(proto.Message):
                         Required. Url where the media is stored.
                 """
 
-                name = proto.Field(
+                name: str = proto.Field(
                     proto.STRING,
                     number=1,
                 )
-                description = proto.Field(
+                description: str = proto.Field(
                     proto.STRING,
                     number=2,
                 )
-                large_image = proto.Field(
+                large_image: "Intent.Message.Image" = proto.Field(
                     proto.MESSAGE,
                     number=3,
                     oneof="image",
                     message="Intent.Message.Image",
                 )
-                icon = proto.Field(
+                icon: "Intent.Message.Image" = proto.Field(
                     proto.MESSAGE,
                     number=4,
                     oneof="image",
                     message="Intent.Message.Image",
                 )
-                content_url = proto.Field(
+                content_url: str = proto.Field(
                     proto.STRING,
                     number=5,
                 )
 
-            media_type = proto.Field(
+            media_type: "Intent.Message.MediaContent.ResponseMediaType" = proto.Field(
                 proto.ENUM,
                 number=1,
                 enum="Intent.Message.MediaContent.ResponseMediaType",
             )
-            media_objects = proto.RepeatedField(
+            media_objects: MutableSequence[
+                "Intent.Message.MediaContent.ResponseMediaObject"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="Intent.Message.MediaContent.ResponseMediaObject",
@@ -1451,7 +1478,7 @@ class Intent(proto.Message):
             https://developers.google.com/actions/assistant/responses#browsing_carousel
 
             Attributes:
-                items (Sequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.BrowseCarouselCard.BrowseCarouselCardItem]):
+                items (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.BrowseCarouselCard.BrowseCarouselCardItem]):
                     Required. List of items in the Browse
                     Carousel Card. Minimum of two items, maximum of
                     ten.
@@ -1510,45 +1537,47 @@ class Intent(proto.Message):
                         AMP_ACTION = 1
                         AMP_CONTENT = 2
 
-                    url = proto.Field(
+                    url: str = proto.Field(
                         proto.STRING,
                         number=1,
                     )
-                    url_type_hint = proto.Field(
+                    url_type_hint: "Intent.Message.BrowseCarouselCard.BrowseCarouselCardItem.OpenUrlAction.UrlTypeHint" = proto.Field(
                         proto.ENUM,
                         number=3,
                         enum="Intent.Message.BrowseCarouselCard.BrowseCarouselCardItem.OpenUrlAction.UrlTypeHint",
                     )
 
-                open_uri_action = proto.Field(
+                open_uri_action: "Intent.Message.BrowseCarouselCard.BrowseCarouselCardItem.OpenUrlAction" = proto.Field(
                     proto.MESSAGE,
                     number=1,
                     message="Intent.Message.BrowseCarouselCard.BrowseCarouselCardItem.OpenUrlAction",
                 )
-                title = proto.Field(
+                title: str = proto.Field(
                     proto.STRING,
                     number=2,
                 )
-                description = proto.Field(
+                description: str = proto.Field(
                     proto.STRING,
                     number=3,
                 )
-                image = proto.Field(
+                image: "Intent.Message.Image" = proto.Field(
                     proto.MESSAGE,
                     number=4,
                     message="Intent.Message.Image",
                 )
-                footer = proto.Field(
+                footer: str = proto.Field(
                     proto.STRING,
                     number=5,
                 )
 
-            items = proto.RepeatedField(
+            items: MutableSequence[
+                "Intent.Message.BrowseCarouselCard.BrowseCarouselCardItem"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="Intent.Message.BrowseCarouselCard.BrowseCarouselCardItem",
             )
-            image_display_options = proto.Field(
+            image_display_options: "Intent.Message.BrowseCarouselCard.ImageDisplayOptions" = proto.Field(
                 proto.ENUM,
                 number=2,
                 enum="Intent.Message.BrowseCarouselCard.ImageDisplayOptions",
@@ -1565,39 +1594,43 @@ class Intent(proto.Message):
                 image (google.cloud.dialogflow_v2beta1.types.Intent.Message.Image):
                     Optional. Image which should be displayed on
                     the card.
-                column_properties (Sequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.ColumnProperties]):
+                column_properties (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.ColumnProperties]):
                     Optional. Display properties for the columns
                     in this table.
-                rows (Sequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.TableCardRow]):
+                rows (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.TableCardRow]):
                     Optional. Rows in this table of data.
-                buttons (Sequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.BasicCard.Button]):
+                buttons (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.BasicCard.Button]):
                     Optional. List of buttons for the card.
             """
 
-            title = proto.Field(
+            title: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            subtitle = proto.Field(
+            subtitle: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
-            image = proto.Field(
+            image: "Intent.Message.Image" = proto.Field(
                 proto.MESSAGE,
                 number=3,
                 message="Intent.Message.Image",
             )
-            column_properties = proto.RepeatedField(
+            column_properties: MutableSequence[
+                "Intent.Message.ColumnProperties"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="Intent.Message.ColumnProperties",
             )
-            rows = proto.RepeatedField(
+            rows: MutableSequence["Intent.Message.TableCardRow"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=5,
                 message="Intent.Message.TableCardRow",
             )
-            buttons = proto.RepeatedField(
+            buttons: MutableSequence[
+                "Intent.Message.BasicCard.Button"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=6,
                 message="Intent.Message.BasicCard.Button",
@@ -1622,11 +1655,11 @@ class Intent(proto.Message):
                 CENTER = 2
                 TRAILING = 3
 
-            header = proto.Field(
+            header: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            horizontal_alignment = proto.Field(
+            horizontal_alignment: "Intent.Message.ColumnProperties.HorizontalAlignment" = proto.Field(
                 proto.ENUM,
                 number=2,
                 enum="Intent.Message.ColumnProperties.HorizontalAlignment",
@@ -1637,7 +1670,7 @@ class Intent(proto.Message):
             [TableCard][google.cloud.dialogflow.v2beta1.Intent.Message.TableCard].
 
             Attributes:
-                cells (Sequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.TableCardCell]):
+                cells (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent.Message.TableCardCell]):
                     Optional. List of cells that make up this
                     row.
                 divider_after (bool):
@@ -1645,12 +1678,14 @@ class Intent(proto.Message):
                     after this row.
             """
 
-            cells = proto.RepeatedField(
+            cells: MutableSequence[
+                "Intent.Message.TableCardCell"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="Intent.Message.TableCardCell",
             )
-            divider_after = proto.Field(
+            divider_after: bool = proto.Field(
                 proto.BOOL,
                 number=2,
             )
@@ -1664,132 +1699,134 @@ class Intent(proto.Message):
                     Required. Text in this cell.
             """
 
-            text = proto.Field(
+            text: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
 
-        text = proto.Field(
+        text: "Intent.Message.Text" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="message",
             message="Intent.Message.Text",
         )
-        image = proto.Field(
+        image: "Intent.Message.Image" = proto.Field(
             proto.MESSAGE,
             number=2,
             oneof="message",
             message="Intent.Message.Image",
         )
-        quick_replies = proto.Field(
+        quick_replies: "Intent.Message.QuickReplies" = proto.Field(
             proto.MESSAGE,
             number=3,
             oneof="message",
             message="Intent.Message.QuickReplies",
         )
-        card = proto.Field(
+        card: "Intent.Message.Card" = proto.Field(
             proto.MESSAGE,
             number=4,
             oneof="message",
             message="Intent.Message.Card",
         )
-        payload = proto.Field(
+        payload: struct_pb2.Struct = proto.Field(
             proto.MESSAGE,
             number=5,
             oneof="message",
             message=struct_pb2.Struct,
         )
-        simple_responses = proto.Field(
+        simple_responses: "Intent.Message.SimpleResponses" = proto.Field(
             proto.MESSAGE,
             number=7,
             oneof="message",
             message="Intent.Message.SimpleResponses",
         )
-        basic_card = proto.Field(
+        basic_card: "Intent.Message.BasicCard" = proto.Field(
             proto.MESSAGE,
             number=8,
             oneof="message",
             message="Intent.Message.BasicCard",
         )
-        suggestions = proto.Field(
+        suggestions: "Intent.Message.Suggestions" = proto.Field(
             proto.MESSAGE,
             number=9,
             oneof="message",
             message="Intent.Message.Suggestions",
         )
-        link_out_suggestion = proto.Field(
+        link_out_suggestion: "Intent.Message.LinkOutSuggestion" = proto.Field(
             proto.MESSAGE,
             number=10,
             oneof="message",
             message="Intent.Message.LinkOutSuggestion",
         )
-        list_select = proto.Field(
+        list_select: "Intent.Message.ListSelect" = proto.Field(
             proto.MESSAGE,
             number=11,
             oneof="message",
             message="Intent.Message.ListSelect",
         )
-        carousel_select = proto.Field(
+        carousel_select: "Intent.Message.CarouselSelect" = proto.Field(
             proto.MESSAGE,
             number=12,
             oneof="message",
             message="Intent.Message.CarouselSelect",
         )
-        telephony_play_audio = proto.Field(
+        telephony_play_audio: "Intent.Message.TelephonyPlayAudio" = proto.Field(
             proto.MESSAGE,
             number=13,
             oneof="message",
             message="Intent.Message.TelephonyPlayAudio",
         )
-        telephony_synthesize_speech = proto.Field(
-            proto.MESSAGE,
-            number=14,
-            oneof="message",
-            message="Intent.Message.TelephonySynthesizeSpeech",
+        telephony_synthesize_speech: "Intent.Message.TelephonySynthesizeSpeech" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=14,
+                oneof="message",
+                message="Intent.Message.TelephonySynthesizeSpeech",
+            )
         )
-        telephony_transfer_call = proto.Field(
+        telephony_transfer_call: "Intent.Message.TelephonyTransferCall" = proto.Field(
             proto.MESSAGE,
             number=15,
             oneof="message",
             message="Intent.Message.TelephonyTransferCall",
         )
-        rbm_text = proto.Field(
+        rbm_text: "Intent.Message.RbmText" = proto.Field(
             proto.MESSAGE,
             number=18,
             oneof="message",
             message="Intent.Message.RbmText",
         )
-        rbm_standalone_rich_card = proto.Field(
+        rbm_standalone_rich_card: "Intent.Message.RbmStandaloneCard" = proto.Field(
             proto.MESSAGE,
             number=19,
             oneof="message",
             message="Intent.Message.RbmStandaloneCard",
         )
-        rbm_carousel_rich_card = proto.Field(
+        rbm_carousel_rich_card: "Intent.Message.RbmCarouselCard" = proto.Field(
             proto.MESSAGE,
             number=20,
             oneof="message",
             message="Intent.Message.RbmCarouselCard",
         )
-        browse_carousel_card = proto.Field(
+        browse_carousel_card: "Intent.Message.BrowseCarouselCard" = proto.Field(
             proto.MESSAGE,
             number=22,
             oneof="message",
             message="Intent.Message.BrowseCarouselCard",
         )
-        table_card = proto.Field(
+        table_card: "Intent.Message.TableCard" = proto.Field(
             proto.MESSAGE,
             number=23,
             oneof="message",
             message="Intent.Message.TableCard",
         )
-        media_content = proto.Field(
+        media_content: "Intent.Message.MediaContent" = proto.Field(
             proto.MESSAGE,
             number=24,
             oneof="message",
             message="Intent.Message.MediaContent",
         )
-        platform = proto.Field(
+        platform: "Intent.Message.Platform" = proto.Field(
             proto.ENUM,
             number=6,
             enum="Intent.Message.Platform",
@@ -1807,102 +1844,102 @@ class Intent(proto.Message):
                 Format: ``projects/<Project ID>/agent/intents/<Intent ID>``.
         """
 
-        followup_intent_name = proto.Field(
+        followup_intent_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        parent_followup_intent_name = proto.Field(
+        parent_followup_intent_name: str = proto.Field(
             proto.STRING,
             number=2,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    webhook_state = proto.Field(
+    webhook_state: WebhookState = proto.Field(
         proto.ENUM,
         number=6,
         enum=WebhookState,
     )
-    priority = proto.Field(
+    priority: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    is_fallback = proto.Field(
+    is_fallback: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    ml_enabled = proto.Field(
+    ml_enabled: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    ml_disabled = proto.Field(
+    ml_disabled: bool = proto.Field(
         proto.BOOL,
         number=19,
     )
-    live_agent_handoff = proto.Field(
+    live_agent_handoff: bool = proto.Field(
         proto.BOOL,
         number=20,
     )
-    end_interaction = proto.Field(
+    end_interaction: bool = proto.Field(
         proto.BOOL,
         number=21,
     )
-    input_context_names = proto.RepeatedField(
+    input_context_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
-    events = proto.RepeatedField(
+    events: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
     )
-    training_phrases = proto.RepeatedField(
+    training_phrases: MutableSequence[TrainingPhrase] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message=TrainingPhrase,
     )
-    action = proto.Field(
+    action: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    output_contexts = proto.RepeatedField(
+    output_contexts: MutableSequence[context.Context] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message=context.Context,
     )
-    reset_contexts = proto.Field(
+    reset_contexts: bool = proto.Field(
         proto.BOOL,
         number=12,
     )
-    parameters = proto.RepeatedField(
+    parameters: MutableSequence[Parameter] = proto.RepeatedField(
         proto.MESSAGE,
         number=13,
         message=Parameter,
     )
-    messages = proto.RepeatedField(
+    messages: MutableSequence[Message] = proto.RepeatedField(
         proto.MESSAGE,
         number=14,
         message=Message,
     )
-    default_response_platforms = proto.RepeatedField(
+    default_response_platforms: MutableSequence[Message.Platform] = proto.RepeatedField(
         proto.ENUM,
         number=15,
         enum=Message.Platform,
     )
-    root_followup_intent_name = proto.Field(
+    root_followup_intent_name: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    parent_followup_intent_name = proto.Field(
+    parent_followup_intent_name: str = proto.Field(
         proto.STRING,
         number=17,
     )
-    followup_intent_info = proto.RepeatedField(
+    followup_intent_info: MutableSequence[FollowupIntentInfo] = proto.RepeatedField(
         proto.MESSAGE,
         number=18,
         message=FollowupIntentInfo,
@@ -1944,24 +1981,24 @@ class ListIntentsRequest(proto.Message):
             list request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    intent_view = proto.Field(
+    intent_view: "IntentView" = proto.Field(
         proto.ENUM,
         number=3,
         enum="IntentView",
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1972,7 +2009,7 @@ class ListIntentsResponse(proto.Message):
     [Intents.ListIntents][google.cloud.dialogflow.v2beta1.Intents.ListIntents].
 
     Attributes:
-        intents (Sequence[google.cloud.dialogflow_v2beta1.types.Intent]):
+        intents (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent]):
             The list of agent intents. There will be a maximum number of
             items returned based on the page_size field in the request.
         next_page_token (str):
@@ -1985,12 +2022,12 @@ class ListIntentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    intents = proto.RepeatedField(
+    intents: MutableSequence["Intent"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Intent",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -2017,15 +2054,15 @@ class GetIntentRequest(proto.Message):
             returned intent.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    intent_view = proto.Field(
+    intent_view: "IntentView" = proto.Field(
         proto.ENUM,
         number=3,
         enum="IntentView",
@@ -2056,20 +2093,20 @@ class CreateIntentRequest(proto.Message):
             returned intent.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    intent = proto.Field(
+    intent: "Intent" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Intent",
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    intent_view = proto.Field(
+    intent_view: "IntentView" = proto.Field(
         proto.ENUM,
         number=4,
         enum="IntentView",
@@ -2097,21 +2134,21 @@ class UpdateIntentRequest(proto.Message):
             returned intent.
     """
 
-    intent = proto.Field(
+    intent: "Intent" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Intent",
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
     )
-    intent_view = proto.Field(
+    intent_view: "IntentView" = proto.Field(
         proto.ENUM,
         number=4,
         enum="IntentView",
@@ -2134,7 +2171,7 @@ class DeleteIntentRequest(proto.Message):
             -  ``projects/<Project ID>/locations/<Location ID>/agent/intents/<Intent ID>``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -2185,31 +2222,31 @@ class BatchUpdateIntentsRequest(proto.Message):
             returned intent.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    intent_batch_uri = proto.Field(
+    intent_batch_uri: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="intent_batch",
     )
-    intent_batch_inline = proto.Field(
+    intent_batch_inline: "IntentBatch" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="intent_batch",
         message="IntentBatch",
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=5,
         message=field_mask_pb2.FieldMask,
     )
-    intent_view = proto.Field(
+    intent_view: "IntentView" = proto.Field(
         proto.ENUM,
         number=6,
         enum="IntentView",
@@ -2221,11 +2258,11 @@ class BatchUpdateIntentsResponse(proto.Message):
     [Intents.BatchUpdateIntents][google.cloud.dialogflow.v2beta1.Intents.BatchUpdateIntents].
 
     Attributes:
-        intents (Sequence[google.cloud.dialogflow_v2beta1.types.Intent]):
+        intents (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent]):
             The collection of updated or created intents.
     """
 
-    intents = proto.RepeatedField(
+    intents: MutableSequence["Intent"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Intent",
@@ -2243,16 +2280,16 @@ class BatchDeleteIntentsRequest(proto.Message):
 
             -  ``projects/<Project ID>/agent``
             -  ``projects/<Project ID>/locations/<Location ID>/agent``
-        intents (Sequence[google.cloud.dialogflow_v2beta1.types.Intent]):
+        intents (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent]):
             Required. The collection of intents to delete. Only intent
             ``name`` must be filled in.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    intents = proto.RepeatedField(
+    intents: MutableSequence["Intent"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="Intent",
@@ -2263,11 +2300,11 @@ class IntentBatch(proto.Message):
     r"""This message is a wrapper around a collection of intents.
 
     Attributes:
-        intents (Sequence[google.cloud.dialogflow_v2beta1.types.Intent]):
+        intents (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent]):
             A collection of intents.
     """
 
-    intents = proto.RepeatedField(
+    intents: MutableSequence["Intent"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Intent",

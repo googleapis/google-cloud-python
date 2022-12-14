@@ -37,19 +37,19 @@ from .answer_record import (
     UpdateAnswerRecordRequest,
 )
 from .audio_config import (
+    AudioEncoding,
     InputAudioConfig,
     OutputAudioConfig,
+    OutputAudioEncoding,
     SpeechContext,
+    SpeechModelVariant,
     SpeechToTextConfig,
     SpeechWordInfo,
+    SsmlVoiceGender,
     SynthesizeSpeechConfig,
+    TelephonyDtmf,
     TelephonyDtmfEvents,
     VoiceSelectionParams,
-    AudioEncoding,
-    OutputAudioEncoding,
-    SpeechModelVariant,
-    SsmlVoiceGender,
-    TelephonyDtmf,
 )
 from .context import (
     Context,
@@ -87,9 +87,7 @@ from .conversation_dataset import (
     ListConversationDatasetsRequest,
     ListConversationDatasetsResponse,
 )
-from .conversation_event import (
-    ConversationEvent,
-)
+from .conversation_event import ConversationEvent
 from .conversation_model import (
     ArticleSuggestionModelMetadata,
     ConversationModel,
@@ -178,18 +176,9 @@ from .environment import (
     TextToSpeechSettings,
     UpdateEnvironmentRequest,
 )
-from .fulfillment import (
-    Fulfillment,
-    GetFulfillmentRequest,
-    UpdateFulfillmentRequest,
-)
-from .gcs import (
-    GcsDestination,
-    GcsSources,
-)
-from .human_agent_assistant_event import (
-    HumanAgentAssistantEvent,
-)
+from .fulfillment import Fulfillment, GetFulfillmentRequest, UpdateFulfillmentRequest
+from .gcs import GcsDestination, GcsSources
+from .human_agent_assistant_event import HumanAgentAssistantEvent
 from .intent import (
     BatchDeleteIntentsRequest,
     BatchUpdateIntentsRequest,
@@ -199,10 +188,10 @@ from .intent import (
     GetIntentRequest,
     Intent,
     IntentBatch,
+    IntentView,
     ListIntentsRequest,
     ListIntentsResponse,
     UpdateIntentRequest,
-    IntentView,
 )
 from .knowledge_base import (
     CreateKnowledgeBaseRequest,
@@ -267,10 +256,7 @@ from .session_entity_type import (
     SessionEntityType,
     UpdateSessionEntityTypeRequest,
 )
-from .validation_result import (
-    ValidationError,
-    ValidationResult,
-)
+from .validation_result import ValidationError, ValidationResult
 from .version import (
     CreateVersionRequest,
     DeleteVersionRequest,
@@ -280,11 +266,7 @@ from .version import (
     UpdateVersionRequest,
     Version,
 )
-from .webhook import (
-    OriginalDetectIntentRequest,
-    WebhookRequest,
-    WebhookResponse,
-)
+from .webhook import OriginalDetectIntentRequest, WebhookRequest, WebhookResponse
 
 __all__ = (
     "Agent",

@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2",
@@ -62,15 +62,15 @@ class KnowledgeBase(proto.Message):
             language code en-us applies.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -121,19 +121,19 @@ class ListKnowledgeBasesRequest(proto.Message):
             Filtering <https://aip.dev/160>`__.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -144,7 +144,7 @@ class ListKnowledgeBasesResponse(proto.Message):
     [KnowledgeBases.ListKnowledgeBases][google.cloud.dialogflow.v2.KnowledgeBases.ListKnowledgeBases].
 
     Attributes:
-        knowledge_bases (Sequence[google.cloud.dialogflow_v2.types.KnowledgeBase]):
+        knowledge_bases (MutableSequence[google.cloud.dialogflow_v2.types.KnowledgeBase]):
             The list of knowledge bases.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -156,12 +156,12 @@ class ListKnowledgeBasesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    knowledge_bases = proto.RepeatedField(
+    knowledge_bases: MutableSequence["KnowledgeBase"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="KnowledgeBase",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -177,7 +177,7 @@ class GetKnowledgeBaseRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/knowledgeBases/<Knowledge Base ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -195,11 +195,11 @@ class CreateKnowledgeBaseRequest(proto.Message):
             Required. The knowledge base to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    knowledge_base = proto.Field(
+    knowledge_base: "KnowledgeBase" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="KnowledgeBase",
@@ -220,11 +220,11 @@ class DeleteKnowledgeBaseRequest(proto.Message):
             base are also deleted.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -243,12 +243,12 @@ class UpdateKnowledgeBaseRequest(proto.Message):
             will be returned for attempting to update other fields.
     """
 
-    knowledge_base = proto.Field(
+    knowledge_base: "KnowledgeBase" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="KnowledgeBase",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,

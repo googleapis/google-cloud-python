@@ -13,11 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.types import participant
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2beta1",
@@ -103,35 +104,35 @@ class Conversation(proto.Message):
         VIRTUAL_AGENT_STAGE = 1
         HUMAN_ASSIST_STAGE = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    lifecycle_state = proto.Field(
+    lifecycle_state: LifecycleState = proto.Field(
         proto.ENUM,
         number=2,
         enum=LifecycleState,
     )
-    conversation_profile = proto.Field(
+    conversation_profile: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    phone_number = proto.Field(
+    phone_number: "ConversationPhoneNumber" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="ConversationPhoneNumber",
     )
-    conversation_stage = proto.Field(
+    conversation_stage: ConversationStage = proto.Field(
         proto.ENUM,
         number=7,
         enum=ConversationStage,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
@@ -148,7 +149,7 @@ class ConversationPhoneNumber(proto.Message):
             this conversation.
     """
 
-    phone_number = proto.Field(
+    phone_number: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -181,16 +182,16 @@ class CreateConversationRequest(proto.Message):
                a project to better ensure uniqueness.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    conversation = proto.Field(
+    conversation: "Conversation" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Conversation",
     )
-    conversation_id = proto.Field(
+    conversation_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -235,19 +236,19 @@ class ListConversationsRequest(proto.Message):
             Filtering <https://aip.dev/160>`__.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -258,7 +259,7 @@ class ListConversationsResponse(proto.Message):
     [Conversations.ListConversations][google.cloud.dialogflow.v2beta1.Conversations.ListConversations].
 
     Attributes:
-        conversations (Sequence[google.cloud.dialogflow_v2beta1.types.Conversation]):
+        conversations (MutableSequence[google.cloud.dialogflow_v2beta1.types.Conversation]):
             The list of conversations. There will be a maximum number of
             items returned based on the page_size field in the request.
         next_page_token (str):
@@ -271,12 +272,12 @@ class ListConversationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    conversations = proto.RepeatedField(
+    conversations: MutableSequence["Conversation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Conversation",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -292,7 +293,7 @@ class GetConversationRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -309,7 +310,7 @@ class CompleteConversationRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -330,11 +331,11 @@ class CreateMessageRequest(proto.Message):
             is required.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    message = proto.Field(
+    message: participant.Message = proto.Field(
         proto.MESSAGE,
         number=2,
         message=participant.Message,
@@ -350,18 +351,18 @@ class BatchCreateMessagesRequest(proto.Message):
             Required. Resource identifier of the conversation to create
             message. Format:
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>``.
-        requests (Sequence[google.cloud.dialogflow_v2beta1.types.CreateMessageRequest]):
+        requests (MutableSequence[google.cloud.dialogflow_v2beta1.types.CreateMessageRequest]):
             Required. A maximum of 1000 Messages can be created in a
             batch. [CreateMessageRequest.message.send_time][] is
             required. All created messages will have identical
             [Message.create_time][google.cloud.dialogflow.v2beta1.Message.create_time].
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    requests = proto.RepeatedField(
+    requests: MutableSequence["CreateMessageRequest"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="CreateMessageRequest",
@@ -373,11 +374,11 @@ class BatchCreateMessagesResponse(proto.Message):
     [Conversations.BatchCreateMessagesResponse][].
 
     Attributes:
-        messages (Sequence[google.cloud.dialogflow_v2beta1.types.Message]):
+        messages (MutableSequence[google.cloud.dialogflow_v2beta1.types.Message]):
             Messages created.
     """
 
-    messages = proto.RepeatedField(
+    messages: MutableSequence[participant.Message] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=participant.Message,
@@ -412,19 +413,19 @@ class ListMessagesRequest(proto.Message):
             list request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -435,7 +436,7 @@ class ListMessagesResponse(proto.Message):
     [Conversations.ListMessages][google.cloud.dialogflow.v2beta1.Conversations.ListMessages].
 
     Attributes:
-        messages (Sequence[google.cloud.dialogflow_v2beta1.types.Message]):
+        messages (MutableSequence[google.cloud.dialogflow_v2beta1.types.Message]):
             Required. The list of messages. There will be a maximum
             number of items returned based on the page_size field in the
             request. ``messages`` is sorted by ``create_time`` in
@@ -450,12 +451,12 @@ class ListMessagesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    messages = proto.RepeatedField(
+    messages: MutableSequence[participant.Message] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=participant.Message,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -482,15 +483,15 @@ class SuggestConversationSummaryRequest(proto.Message):
             suggestion. By default 500 and at most 1000.
     """
 
-    conversation = proto.Field(
+    conversation: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    latest_message = proto.Field(
+    latest_message: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    context_size = proto.Field(
+    context_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
@@ -524,7 +525,7 @@ class SuggestConversationSummaryResponse(proto.Message):
             text (str):
                 The summary content that is concatenated into
                 one string.
-            text_sections (Mapping[str, str]):
+            text_sections (MutableMapping[str, str]):
                 The summary content that is divided into
                 sections. The key is the section's name and the
                 value is the section's content. There is no
@@ -535,30 +536,30 @@ class SuggestConversationSummaryResponse(proto.Message):
                 Record ID>".
         """
 
-        text = proto.Field(
+        text: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        text_sections = proto.MapField(
+        text_sections: MutableMapping[str, str] = proto.MapField(
             proto.STRING,
             proto.STRING,
             number=4,
         )
-        answer_record = proto.Field(
+        answer_record: str = proto.Field(
             proto.STRING,
             number=3,
         )
 
-    summary = proto.Field(
+    summary: Summary = proto.Field(
         proto.MESSAGE,
         number=1,
         message=Summary,
     )
-    latest_message = proto.Field(
+    latest_message: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    context_size = proto.Field(
+    context_size: int = proto.Field(
         proto.INT32,
         number=3,
     )

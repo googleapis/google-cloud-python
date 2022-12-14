@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflow_v2.types import gcs
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2",
@@ -51,7 +52,7 @@ class ConversationInfo(proto.Message):
             more information. Supports all UTF-8 languages.
     """
 
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -73,7 +74,7 @@ class InputConfig(proto.Message):
             This field is a member of `oneof`_ ``source``.
     """
 
-    gcs_source = proto.Field(
+    gcs_source: gcs.GcsSources = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="source",
@@ -111,34 +112,34 @@ class ConversationDataset(proto.Message):
             conversation dataset contains.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    input_config = proto.Field(
+    input_config: "InputConfig" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="InputConfig",
     )
-    conversation_info = proto.Field(
+    conversation_info: "ConversationInfo" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="ConversationInfo",
     )
-    conversation_count = proto.Field(
+    conversation_count: int = proto.Field(
         proto.INT64,
         number=7,
     )
@@ -156,11 +157,11 @@ class CreateConversationDatasetRequest(proto.Message):
             Required. The conversation dataset to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    conversation_dataset = proto.Field(
+    conversation_dataset: "ConversationDataset" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ConversationDataset",
@@ -177,7 +178,7 @@ class GetConversationDatasetRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/conversationDatasets/<Conversation Dataset ID>``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -201,15 +202,15 @@ class ListConversationDatasetsRequest(proto.Message):
             list request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -220,7 +221,7 @@ class ListConversationDatasetsResponse(proto.Message):
     [ConversationDatasets.ListConversationDatasets][google.cloud.dialogflow.v2.ConversationDatasets.ListConversationDatasets].
 
     Attributes:
-        conversation_datasets (Sequence[google.cloud.dialogflow_v2.types.ConversationDataset]):
+        conversation_datasets (MutableSequence[google.cloud.dialogflow_v2.types.ConversationDataset]):
             The list of datasets to return.
         next_page_token (str):
             The token to use to retrieve the next page of
@@ -232,12 +233,12 @@ class ListConversationDatasetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    conversation_datasets = proto.RepeatedField(
+    conversation_datasets: MutableSequence["ConversationDataset"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ConversationDataset",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -253,7 +254,7 @@ class DeleteConversationDatasetRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/conversationDatasets/<Conversation Dataset ID>``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -272,11 +273,11 @@ class ImportConversationDataRequest(proto.Message):
             import data from.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    input_config = proto.Field(
+    input_config: "InputConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="InputConfig",
@@ -293,7 +294,7 @@ class ImportConversationDataOperationMetadata(proto.Message):
             The resource name of the imported conversation dataset.
             Format:
             ``projects/<Project ID>/locations/<Location ID>/conversationDatasets/<Conversation Dataset Id>``
-        partial_failures (Sequence[google.rpc.status_pb2.Status]):
+        partial_failures (MutableSequence[google.rpc.status_pb2.Status]):
             Partial failures are failures that don't fail
             the whole long running operation, e.g. single
             files that couldn't be read.
@@ -303,16 +304,16 @@ class ImportConversationDataOperationMetadata(proto.Message):
             server side.
     """
 
-    conversation_dataset = proto.Field(
+    conversation_dataset: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    partial_failures = proto.RepeatedField(
+    partial_failures: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=status_pb2.Status,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -334,11 +335,11 @@ class ImportConversationDataOperationResponse(proto.Message):
             successfully.
     """
 
-    conversation_dataset = proto.Field(
+    conversation_dataset: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    import_count = proto.Field(
+    import_count: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -354,7 +355,7 @@ class CreateConversationDatasetOperationMetadata(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/conversationDatasets/<Conversation Dataset Id>``
     """
 
-    conversation_dataset = proto.Field(
+    conversation_dataset: str = proto.Field(
         proto.STRING,
         number=1,
     )

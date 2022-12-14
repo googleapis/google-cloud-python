@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import duration_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2beta1",
@@ -120,7 +120,7 @@ class SpeechContext(proto.Message):
     specific conversation state.
 
     Attributes:
-        phrases (Sequence[str]):
+        phrases (MutableSequence[str]):
             Optional. A list of strings containing words and phrases
             that the speech recognizer should recognize with higher
             likelihood.
@@ -150,11 +150,11 @@ class SpeechContext(proto.Message):
             binary search.
     """
 
-    phrases = proto.RepeatedField(
+    phrases: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    boost = proto.Field(
+    boost: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
@@ -189,21 +189,21 @@ class SpeechWordInfo(proto.Message):
             also not rely on it to always be provided.
     """
 
-    word = proto.Field(
+    word: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    start_offset = proto.Field(
+    start_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=1,
         message=duration_pb2.Duration,
     )
-    end_offset = proto.Field(
+    end_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,
     )
-    confidence = proto.Field(
+    confidence: float = proto.Field(
         proto.FLOAT,
         number=4,
     )
@@ -237,7 +237,7 @@ class InputAudioConfig(proto.Message):
             with information about the recognized speech words, e.g.
             start and end time offsets. If false or unspecified, Speech
             doesn't return any word-level information.
-        phrase_hints (Sequence[str]):
+        phrase_hints (MutableSequence[str]):
             A list of strings containing words and phrases that the
             speech recognizer should recognize with higher likelihood.
 
@@ -250,7 +250,7 @@ class InputAudioConfig(proto.Message):
             `speech_contexts <>`__, Dialogflow will treat the
             `phrase_hints <>`__ as a single additional
             `SpeechContext <>`__.
-        speech_contexts (Sequence[google.cloud.dialogflow_v2beta1.types.SpeechContext]):
+        speech_contexts (MutableSequence[google.cloud.dialogflow_v2beta1.types.SpeechContext]):
             Context information to assist speech recognition.
 
             See `the Cloud Speech
@@ -292,46 +292,46 @@ class InputAudioConfig(proto.Message):
             trigger ``NO_SPEECH_RECOGNIZED`` event to Dialogflow agent.
     """
 
-    audio_encoding = proto.Field(
+    audio_encoding: "AudioEncoding" = proto.Field(
         proto.ENUM,
         number=1,
         enum="AudioEncoding",
     )
-    sample_rate_hertz = proto.Field(
+    sample_rate_hertz: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    enable_word_info = proto.Field(
+    enable_word_info: bool = proto.Field(
         proto.BOOL,
         number=13,
     )
-    phrase_hints = proto.RepeatedField(
+    phrase_hints: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    speech_contexts = proto.RepeatedField(
+    speech_contexts: MutableSequence["SpeechContext"] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message="SpeechContext",
     )
-    model = proto.Field(
+    model: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    model_variant = proto.Field(
+    model_variant: "SpeechModelVariant" = proto.Field(
         proto.ENUM,
         number=10,
         enum="SpeechModelVariant",
     )
-    single_utterance = proto.Field(
+    single_utterance: bool = proto.Field(
         proto.BOOL,
         number=8,
     )
-    disable_no_speech_recognized_event = proto.Field(
+    disable_no_speech_recognized_event: bool = proto.Field(
         proto.BOOL,
         number=14,
     )
@@ -361,11 +361,11 @@ class VoiceSelectionParams(proto.Message):
             gender rather than failing the request.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    ssml_gender = proto.Field(
+    ssml_gender: "SsmlVoiceGender" = proto.Field(
         proto.ENUM,
         number=2,
         enum="SsmlVoiceGender",
@@ -397,7 +397,7 @@ class SynthesizeSpeechConfig(proto.Message):
             We strongly recommend not to exceed +10 (dB) as there's
             usually no effective increase in loudness for any value
             greater than that.
-        effects_profile_id (Sequence[str]):
+        effects_profile_id (MutableSequence[str]):
             Optional. An identifier which selects 'audio
             effects' profiles that are applied on (post
             synthesized) text to speech. Effects are applied
@@ -408,23 +408,23 @@ class SynthesizeSpeechConfig(proto.Message):
             synthesized audio.
     """
 
-    speaking_rate = proto.Field(
+    speaking_rate: float = proto.Field(
         proto.DOUBLE,
         number=1,
     )
-    pitch = proto.Field(
+    pitch: float = proto.Field(
         proto.DOUBLE,
         number=2,
     )
-    volume_gain_db = proto.Field(
+    volume_gain_db: float = proto.Field(
         proto.DOUBLE,
         number=3,
     )
-    effects_profile_id = proto.RepeatedField(
+    effects_profile_id: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    voice = proto.Field(
+    voice: "VoiceSelectionParams" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="VoiceSelectionParams",
@@ -455,16 +455,16 @@ class OutputAudioConfig(proto.Message):
             synthesized.
     """
 
-    audio_encoding = proto.Field(
+    audio_encoding: "OutputAudioEncoding" = proto.Field(
         proto.ENUM,
         number=1,
         enum="OutputAudioEncoding",
     )
-    sample_rate_hertz = proto.Field(
+    sample_rate_hertz: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    synthesize_speech_config = proto.Field(
+    synthesize_speech_config: "SynthesizeSpeechConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="SynthesizeSpeechConfig",
@@ -475,11 +475,11 @@ class TelephonyDtmfEvents(proto.Message):
     r"""A wrapper of repeated TelephonyDtmf digits.
 
     Attributes:
-        dtmf_events (Sequence[google.cloud.dialogflow_v2beta1.types.TelephonyDtmf]):
+        dtmf_events (MutableSequence[google.cloud.dialogflow_v2beta1.types.TelephonyDtmf]):
             A sequence of TelephonyDtmf digits.
     """
 
-    dtmf_events = proto.RepeatedField(
+    dtmf_events: MutableSequence["TelephonyDtmf"] = proto.RepeatedField(
         proto.ENUM,
         number=1,
         enum="TelephonyDtmf",
@@ -510,12 +510,12 @@ class SpeechToTextConfig(proto.Message):
             for more details.
     """
 
-    speech_model_variant = proto.Field(
+    speech_model_variant: "SpeechModelVariant" = proto.Field(
         proto.ENUM,
         number=1,
         enum="SpeechModelVariant",
     )
-    model = proto.Field(
+    model: str = proto.Field(
         proto.STRING,
         number=2,
     )

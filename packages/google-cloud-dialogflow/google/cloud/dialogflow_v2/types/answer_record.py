@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflow_v2.types import participant
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2",
@@ -83,16 +84,16 @@ class AnswerRecord(proto.Message):
             This field is a member of `oneof`_ ``record``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    answer_feedback = proto.Field(
+    answer_feedback: "AnswerFeedback" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="AnswerFeedback",
     )
-    agent_assistant_record = proto.Field(
+    agent_assistant_record: "AgentAssistantRecord" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="record",
@@ -130,19 +131,19 @@ class ListAnswerRecordsRequest(proto.Message):
             listing on the next page.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -153,7 +154,7 @@ class ListAnswerRecordsResponse(proto.Message):
     [AnswerRecords.ListAnswerRecords][google.cloud.dialogflow.v2.AnswerRecords.ListAnswerRecords].
 
     Attributes:
-        answer_records (Sequence[google.cloud.dialogflow_v2.types.AnswerRecord]):
+        answer_records (MutableSequence[google.cloud.dialogflow_v2.types.AnswerRecord]):
             The list of answer records.
         next_page_token (str):
             A token to retrieve next page of results. Or empty if there
@@ -167,12 +168,12 @@ class ListAnswerRecordsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    answer_records = proto.RepeatedField(
+    answer_records: MutableSequence["AnswerRecord"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AnswerRecord",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -190,12 +191,12 @@ class UpdateAnswerRecordRequest(proto.Message):
             get updated.
     """
 
-    answer_record = proto.Field(
+    answer_record: "AnswerRecord" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="AnswerRecord",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -236,31 +237,31 @@ class AnswerFeedback(proto.Message):
         PARTIALLY_CORRECT = 2
         FULLY_CORRECT = 3
 
-    correctness_level = proto.Field(
+    correctness_level: CorrectnessLevel = proto.Field(
         proto.ENUM,
         number=1,
         enum=CorrectnessLevel,
     )
-    agent_assistant_detail_feedback = proto.Field(
+    agent_assistant_detail_feedback: "AgentAssistantFeedback" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="detail_feedback",
         message="AgentAssistantFeedback",
     )
-    clicked = proto.Field(
+    clicked: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    click_time = proto.Field(
+    click_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    displayed = proto.Field(
+    displayed: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    display_time = proto.Field(
+    display_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
@@ -321,17 +322,17 @@ class AgentAssistantFeedback(proto.Message):
         INEFFICIENT = 1
         EFFICIENT = 2
 
-    answer_relevance = proto.Field(
+    answer_relevance: AnswerRelevance = proto.Field(
         proto.ENUM,
         number=1,
         enum=AnswerRelevance,
     )
-    document_correctness = proto.Field(
+    document_correctness: DocumentCorrectness = proto.Field(
         proto.ENUM,
         number=2,
         enum=DocumentCorrectness,
     )
-    document_efficiency = proto.Field(
+    document_efficiency: DocumentEfficiency = proto.Field(
         proto.ENUM,
         number=3,
         enum=DocumentEfficiency,
@@ -359,13 +360,13 @@ class AgentAssistantRecord(proto.Message):
             This field is a member of `oneof`_ ``answer``.
     """
 
-    article_suggestion_answer = proto.Field(
+    article_suggestion_answer: participant.ArticleAnswer = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="answer",
         message=participant.ArticleAnswer,
     )
-    faq_answer = proto.Field(
+    faq_answer: participant.FaqAnswer = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="answer",

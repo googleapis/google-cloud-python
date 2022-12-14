@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import ContextsClient
 from .async_client import ContextsAsyncClient
+from .client import ContextsClient
 
 __all__ = (
     "ContextsClient",

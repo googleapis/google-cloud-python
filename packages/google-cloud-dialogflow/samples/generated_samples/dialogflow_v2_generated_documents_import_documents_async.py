@@ -44,7 +44,7 @@ async def sample_import_documents():
 
     document_template = dialogflow_v2.ImportDocumentTemplate()
     document_template.mime_type = "mime_type_value"
-    document_template.knowledge_types = "AGENT_FACING_SMART_REPLY"
+    document_template.knowledge_types = ['AGENT_FACING_SMART_REPLY']
 
     request = dialogflow_v2.ImportDocumentsRequest(
         gcs_source=gcs_source,
@@ -57,7 +57,7 @@ async def sample_import_documents():
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = (await operation).result()
 
     # Handle the response
     print(response)

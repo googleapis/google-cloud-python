@@ -20,7 +20,6 @@ from .base import ParticipantsTransport
 from .grpc import ParticipantsGrpcTransport
 from .grpc_asyncio import ParticipantsGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[ParticipantsTransport]]
 _transport_registry["grpc"] = ParticipantsGrpcTransport

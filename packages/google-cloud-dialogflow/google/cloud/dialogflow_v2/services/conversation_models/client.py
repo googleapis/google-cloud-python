@@ -16,18 +16,30 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.dialogflow_v2 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -36,16 +48,18 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.dialogflow_v2.services.conversation_models import pagers
-from google.cloud.dialogflow_v2.types import conversation_model
-from google.cloud.dialogflow_v2.types import (
-    conversation_model as gcd_conversation_model,
-)
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import ConversationModelsTransport, DEFAULT_CLIENT_INFO
+
+from google.cloud.dialogflow_v2.services.conversation_models import pagers
+from google.cloud.dialogflow_v2.types import (
+    conversation_model as gcd_conversation_model,
+)
+from google.cloud.dialogflow_v2.types import conversation_model
+
+from .transports.base import DEFAULT_CLIENT_INFO, ConversationModelsTransport
 from .transports.grpc import ConversationModelsGrpcTransport
 from .transports.grpc_asyncio import ConversationModelsGrpcAsyncIOTransport
 
@@ -66,7 +80,7 @@ class ConversationModelsClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[ConversationModelsTransport]:
         """Returns an appropriate transport class.
 
@@ -407,8 +421,8 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ConversationModelsTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, ConversationModelsTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the conversation models client.
@@ -422,7 +436,7 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
             transport (Union[str, ConversationModelsTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -452,6 +466,7 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -504,14 +519,14 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
     def create_conversation_model(
         self,
-        request: Union[
-            gcd_conversation_model.CreateConversationModelRequest, dict
+        request: Optional[
+            Union[gcd_conversation_model.CreateConversationModelRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        conversation_model: gcd_conversation_model.ConversationModel = None,
+        parent: Optional[str] = None,
+        conversation_model: Optional[gcd_conversation_model.ConversationModel] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a model.
@@ -651,11 +666,13 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
     def get_conversation_model(
         self,
-        request: Union[conversation_model.GetConversationModelRequest, dict] = None,
+        request: Optional[
+            Union[conversation_model.GetConversationModelRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> conversation_model.ConversationModel:
         r"""Gets conversation model.
@@ -751,11 +768,13 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
     def list_conversation_models(
         self,
-        request: Union[conversation_model.ListConversationModelsRequest, dict] = None,
+        request: Optional[
+            Union[conversation_model.ListConversationModelsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConversationModelsPager:
         r"""Lists conversation models.
@@ -866,11 +885,13 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
     def delete_conversation_model(
         self,
-        request: Union[conversation_model.DeleteConversationModelRequest, dict] = None,
+        request: Optional[
+            Union[conversation_model.DeleteConversationModelRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a model.
@@ -1002,10 +1023,12 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
     def deploy_conversation_model(
         self,
-        request: Union[conversation_model.DeployConversationModelRequest, dict] = None,
+        request: Optional[
+            Union[conversation_model.DeployConversationModelRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deploys a model. If a model is already deployed, deploying it
@@ -1120,12 +1143,12 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
     def undeploy_conversation_model(
         self,
-        request: Union[
-            conversation_model.UndeployConversationModelRequest, dict
+        request: Optional[
+            Union[conversation_model.UndeployConversationModelRequest, dict]
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Undeploys a model. If the model is not deployed this method has
@@ -1241,13 +1264,13 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
     def get_conversation_model_evaluation(
         self,
-        request: Union[
-            conversation_model.GetConversationModelEvaluationRequest, dict
+        request: Optional[
+            Union[conversation_model.GetConversationModelEvaluationRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> conversation_model.ConversationModelEvaluation:
         r"""Gets an evaluation of conversation model.
@@ -1350,13 +1373,13 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
     def list_conversation_model_evaluations(
         self,
-        request: Union[
-            conversation_model.ListConversationModelEvaluationsRequest, dict
+        request: Optional[
+            Union[conversation_model.ListConversationModelEvaluationsRequest, dict]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConversationModelEvaluationsPager:
         r"""Lists evaluations of a conversation model.
@@ -1473,14 +1496,16 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
     def create_conversation_model_evaluation(
         self,
-        request: Union[
-            conversation_model.CreateConversationModelEvaluationRequest, dict
+        request: Optional[
+            Union[conversation_model.CreateConversationModelEvaluationRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        conversation_model_evaluation: conversation_model.ConversationModelEvaluation = None,
+        parent: Optional[str] = None,
+        conversation_model_evaluation: Optional[
+            conversation_model.ConversationModelEvaluation
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates evaluation of a conversation model.
@@ -1621,10 +1646,10 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
     def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1675,10 +1700,10 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
     def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1729,10 +1754,10 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
     def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -1783,10 +1808,10 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
     def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1837,10 +1862,10 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
     def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -1890,14 +1915,9 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
         return response
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dialogflow",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ConversationModelsClient",)

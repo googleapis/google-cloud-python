@@ -16,31 +16,44 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.dialogflow_v2beta1.services.versions import pagers
-from google.cloud.dialogflow_v2beta1.types import version
-from google.cloud.dialogflow_v2beta1.types import version as gcd_version
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import VersionsTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import VersionsGrpcAsyncIOTransport
+
+from google.cloud.dialogflow_v2beta1.services.versions import pagers
+from google.cloud.dialogflow_v2beta1.types import version
+from google.cloud.dialogflow_v2beta1.types import version as gcd_version
+
 from .client import VersionsClient
+from .transports.base import DEFAULT_CLIENT_INFO, VersionsTransport
+from .transports.grpc_asyncio import VersionsGrpcAsyncIOTransport
 
 
 class VersionsAsyncClient:
@@ -157,9 +170,9 @@ class VersionsAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, VersionsTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the versions client.
@@ -203,11 +216,11 @@ class VersionsAsyncClient:
 
     async def list_versions(
         self,
-        request: Union[version.ListVersionsRequest, dict] = None,
+        request: Optional[Union[version.ListVersionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListVersionsAsyncPager:
         r"""Returns the list of all versions of the specified
@@ -241,7 +254,7 @@ class VersionsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.ListVersionsRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.ListVersionsRequest, dict]]):
                 The request object. The request message for
                 [Versions.ListVersions][google.cloud.dialogflow.v2beta1.Versions.ListVersions].
             parent (:class:`str`):
@@ -322,11 +335,11 @@ class VersionsAsyncClient:
 
     async def get_version(
         self,
-        request: Union[version.GetVersionRequest, dict] = None,
+        request: Optional[Union[version.GetVersionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> version.Version:
         r"""Retrieves the specified agent version.
@@ -358,7 +371,7 @@ class VersionsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.GetVersionRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.GetVersionRequest, dict]]):
                 The request object. The request message for
                 [Versions.GetVersion][google.cloud.dialogflow.v2beta1.Versions.GetVersion].
             name (:class:`str`):
@@ -445,12 +458,12 @@ class VersionsAsyncClient:
 
     async def create_version(
         self,
-        request: Union[gcd_version.CreateVersionRequest, dict] = None,
+        request: Optional[Union[gcd_version.CreateVersionRequest, dict]] = None,
         *,
-        parent: str = None,
-        version: gcd_version.Version = None,
+        parent: Optional[str] = None,
+        version: Optional[gcd_version.Version] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_version.Version:
         r"""Creates an agent version.
@@ -484,7 +497,7 @@ class VersionsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.CreateVersionRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.CreateVersionRequest, dict]]):
                 The request object. The request message for
                 [Versions.CreateVersion][google.cloud.dialogflow.v2beta1.Versions.CreateVersion].
             parent (:class:`str`):
@@ -579,12 +592,12 @@ class VersionsAsyncClient:
 
     async def update_version(
         self,
-        request: Union[gcd_version.UpdateVersionRequest, dict] = None,
+        request: Optional[Union[gcd_version.UpdateVersionRequest, dict]] = None,
         *,
-        version: gcd_version.Version = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        version: Optional[gcd_version.Version] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_version.Version:
         r"""Updates the specified agent version.
@@ -619,7 +632,7 @@ class VersionsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.UpdateVersionRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.UpdateVersionRequest, dict]]):
                 The request object. The request message for
                 [Versions.UpdateVersion][google.cloud.dialogflow.v2beta1.Versions.UpdateVersion].
             version (:class:`google.cloud.dialogflow_v2beta1.types.Version`):
@@ -717,11 +730,11 @@ class VersionsAsyncClient:
 
     async def delete_version(
         self,
-        request: Union[version.DeleteVersionRequest, dict] = None,
+        request: Optional[Union[version.DeleteVersionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Delete the specified agent version.
@@ -750,7 +763,7 @@ class VersionsAsyncClient:
                 await client.delete_version(request=request)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.DeleteVersionRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.DeleteVersionRequest, dict]]):
                 The request object. The request message for
                 [Versions.DeleteVersion][google.cloud.dialogflow.v2beta1.Versions.DeleteVersion].
             name (:class:`str`):
@@ -810,10 +823,10 @@ class VersionsAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -864,10 +877,10 @@ class VersionsAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -918,10 +931,10 @@ class VersionsAsyncClient:
 
     async def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -972,10 +985,10 @@ class VersionsAsyncClient:
 
     async def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1026,10 +1039,10 @@ class VersionsAsyncClient:
 
     async def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -1085,14 +1098,9 @@ class VersionsAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dialogflow",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("VersionsAsyncClient",)

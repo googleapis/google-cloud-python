@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2",
@@ -85,24 +85,24 @@ class Version(proto.Message):
         READY = 2
         FAILED = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    version_number = proto.Field(
+    version_number: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    status = proto.Field(
+    status: VersionStatus = proto.Field(
         proto.ENUM,
         number=6,
         enum=VersionStatus,
@@ -129,15 +129,15 @@ class ListVersionsRequest(proto.Message):
             list request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -148,7 +148,7 @@ class ListVersionsResponse(proto.Message):
     [Versions.ListVersions][google.cloud.dialogflow.v2.Versions.ListVersions].
 
     Attributes:
-        versions (Sequence[google.cloud.dialogflow_v2.types.Version]):
+        versions (MutableSequence[google.cloud.dialogflow_v2.types.Version]):
             The list of agent versions. There will be a maximum number
             of items returned based on the page_size field in the
             request.
@@ -162,12 +162,12 @@ class ListVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    versions = proto.RepeatedField(
+    versions: MutableSequence["Version"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Version",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -185,7 +185,7 @@ class GetVersionRequest(proto.Message):
             -  ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -206,11 +206,11 @@ class CreateVersionRequest(proto.Message):
             Required. The version to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    version = proto.Field(
+    version: "Version" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Version",
@@ -232,12 +232,12 @@ class UpdateVersionRequest(proto.Message):
             get updated.
     """
 
-    version = proto.Field(
+    version: "Version" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Version",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -257,7 +257,7 @@ class DeleteVersionRequest(proto.Message):
             -  ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

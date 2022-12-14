@@ -20,7 +20,6 @@ from .base import EntityTypesTransport
 from .grpc import EntityTypesGrpcTransport
 from .grpc_asyncio import EntityTypesGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[EntityTypesTransport]]
 _transport_registry["grpc"] = EntityTypesGrpcTransport

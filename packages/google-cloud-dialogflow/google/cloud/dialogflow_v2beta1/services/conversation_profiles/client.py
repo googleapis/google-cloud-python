@@ -16,18 +16,30 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -36,17 +48,19 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.dialogflow_v2beta1.services.conversation_profiles import pagers
-from google.cloud.dialogflow_v2beta1.types import audio_config
-from google.cloud.dialogflow_v2beta1.types import conversation_profile
-from google.cloud.dialogflow_v2beta1.types import (
-    conversation_profile as gcd_conversation_profile,
-)
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import ConversationProfilesTransport, DEFAULT_CLIENT_INFO
+
+from google.cloud.dialogflow_v2beta1.services.conversation_profiles import pagers
+from google.cloud.dialogflow_v2beta1.types import (
+    conversation_profile as gcd_conversation_profile,
+)
+from google.cloud.dialogflow_v2beta1.types import audio_config
+from google.cloud.dialogflow_v2beta1.types import conversation_profile
+
+from .transports.base import DEFAULT_CLIENT_INFO, ConversationProfilesTransport
 from .transports.grpc import ConversationProfilesGrpcTransport
 from .transports.grpc_asyncio import ConversationProfilesGrpcAsyncIOTransport
 
@@ -67,7 +81,7 @@ class ConversationProfilesClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[ConversationProfilesTransport]:
         """Returns an appropriate transport class.
 
@@ -442,8 +456,8 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ConversationProfilesTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, ConversationProfilesTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the conversation profiles client.
@@ -457,7 +471,7 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
             transport (Union[str, ConversationProfilesTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -487,6 +501,7 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -539,13 +554,13 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
     def list_conversation_profiles(
         self,
-        request: Union[
-            conversation_profile.ListConversationProfilesRequest, dict
+        request: Optional[
+            Union[conversation_profile.ListConversationProfilesRequest, dict]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConversationProfilesPager:
         r"""Returns the list of all conversation profiles in the
@@ -662,11 +677,13 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
     def get_conversation_profile(
         self,
-        request: Union[conversation_profile.GetConversationProfileRequest, dict] = None,
+        request: Optional[
+            Union[conversation_profile.GetConversationProfileRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> conversation_profile.ConversationProfile:
         r"""Retrieves the specified conversation profile.
@@ -765,14 +782,16 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
     def create_conversation_profile(
         self,
-        request: Union[
-            gcd_conversation_profile.CreateConversationProfileRequest, dict
+        request: Optional[
+            Union[gcd_conversation_profile.CreateConversationProfileRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        conversation_profile: gcd_conversation_profile.ConversationProfile = None,
+        parent: Optional[str] = None,
+        conversation_profile: Optional[
+            gcd_conversation_profile.ConversationProfile
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_conversation_profile.ConversationProfile:
         r"""Creates a conversation profile in the specified project.
@@ -894,14 +913,16 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
     def update_conversation_profile(
         self,
-        request: Union[
-            gcd_conversation_profile.UpdateConversationProfileRequest, dict
+        request: Optional[
+            Union[gcd_conversation_profile.UpdateConversationProfileRequest, dict]
         ] = None,
         *,
-        conversation_profile: gcd_conversation_profile.ConversationProfile = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        conversation_profile: Optional[
+            gcd_conversation_profile.ConversationProfile
+        ] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_conversation_profile.ConversationProfile:
         r"""Updates the specified conversation profile.
@@ -1023,13 +1044,13 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
     def delete_conversation_profile(
         self,
-        request: Union[
-            conversation_profile.DeleteConversationProfileRequest, dict
+        request: Optional[
+            Union[conversation_profile.DeleteConversationProfileRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified conversation profile.
@@ -1122,13 +1143,13 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
     def set_suggestion_feature_config(
         self,
-        request: Union[
-            gcd_conversation_profile.SetSuggestionFeatureConfigRequest, dict
+        request: Optional[
+            Union[gcd_conversation_profile.SetSuggestionFeatureConfigRequest, dict]
         ] = None,
         *,
-        conversation_profile: str = None,
+        conversation_profile: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Adds or updates a suggestion feature in a conversation profile.
@@ -1271,13 +1292,13 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
     def clear_suggestion_feature_config(
         self,
-        request: Union[
-            gcd_conversation_profile.ClearSuggestionFeatureConfigRequest, dict
+        request: Optional[
+            Union[gcd_conversation_profile.ClearSuggestionFeatureConfigRequest, dict]
         ] = None,
         *,
-        conversation_profile: str = None,
+        conversation_profile: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Clears a suggestion feature from a conversation profile for the
@@ -1426,10 +1447,10 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
     def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1480,10 +1501,10 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
     def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1534,10 +1555,10 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
     def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -1588,10 +1609,10 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
     def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1642,10 +1663,10 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
     def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -1695,14 +1716,9 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         return response
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dialogflow",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ConversationProfilesClient",)

@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import AgentsClient
 from .async_client import AgentsAsyncClient
+from .client import AgentsClient
 
 __all__ = (
     "AgentsClient",

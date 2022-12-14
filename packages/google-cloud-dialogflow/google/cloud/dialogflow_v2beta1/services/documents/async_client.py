@@ -16,15 +16,26 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -33,17 +44,19 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.dialogflow_v2beta1.services.documents import pagers
-from google.cloud.dialogflow_v2beta1.types import document
-from google.cloud.dialogflow_v2beta1.types import document as gcd_document
-from google.cloud.dialogflow_v2beta1.types import gcs
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
-from .transports.base import DocumentsTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import DocumentsGrpcAsyncIOTransport
+
+from google.cloud.dialogflow_v2beta1.services.documents import pagers
+from google.cloud.dialogflow_v2beta1.types import document
+from google.cloud.dialogflow_v2beta1.types import document as gcd_document
+from google.cloud.dialogflow_v2beta1.types import gcs
+
 from .client import DocumentsClient
+from .transports.base import DEFAULT_CLIENT_INFO, DocumentsTransport
+from .transports.grpc_asyncio import DocumentsGrpcAsyncIOTransport
 
 
 class DocumentsAsyncClient:
@@ -162,9 +175,9 @@ class DocumentsAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, DocumentsTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the documents client.
@@ -208,11 +221,11 @@ class DocumentsAsyncClient:
 
     async def list_documents(
         self,
-        request: Union[document.ListDocumentsRequest, dict] = None,
+        request: Optional[Union[document.ListDocumentsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDocumentsAsyncPager:
         r"""Returns the list of all documents of the knowledge base.
@@ -248,7 +261,7 @@ class DocumentsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.ListDocumentsRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.ListDocumentsRequest, dict]]):
                 The request object. Request message for
                 [Documents.ListDocuments][google.cloud.dialogflow.v2beta1.Documents.ListDocuments].
             parent (:class:`str`):
@@ -327,11 +340,11 @@ class DocumentsAsyncClient:
 
     async def get_document(
         self,
-        request: Union[document.GetDocumentRequest, dict] = None,
+        request: Optional[Union[document.GetDocumentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document.Document:
         r"""Retrieves the specified document.
@@ -366,7 +379,7 @@ class DocumentsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.GetDocumentRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.GetDocumentRequest, dict]]):
                 The request object. Request message for
                 [Documents.GetDocument][google.cloud.dialogflow.v2beta1.Documents.GetDocument].
             name (:class:`str`):
@@ -439,12 +452,12 @@ class DocumentsAsyncClient:
 
     async def create_document(
         self,
-        request: Union[gcd_document.CreateDocumentRequest, dict] = None,
+        request: Optional[Union[gcd_document.CreateDocumentRequest, dict]] = None,
         *,
-        parent: str = None,
-        document: gcd_document.Document = None,
+        parent: Optional[str] = None,
+        document: Optional[gcd_document.Document] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new document.
@@ -482,7 +495,7 @@ class DocumentsAsyncClient:
                 document.content_uri = "content_uri_value"
                 document.display_name = "display_name_value"
                 document.mime_type = "mime_type_value"
-                document.knowledge_types = "SMART_REPLY"
+                document.knowledge_types = ['SMART_REPLY']
 
                 request = dialogflow_v2beta1.CreateDocumentRequest(
                     parent="parent_value",
@@ -494,13 +507,13 @@ class DocumentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.CreateDocumentRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.CreateDocumentRequest, dict]]):
                 The request object. Request message for
                 [Documents.CreateDocument][google.cloud.dialogflow.v2beta1.Documents.CreateDocument].
             parent (:class:`str`):
@@ -593,10 +606,10 @@ class DocumentsAsyncClient:
 
     async def import_documents(
         self,
-        request: Union[document.ImportDocumentsRequest, dict] = None,
+        request: Optional[Union[document.ImportDocumentsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Create documents by importing data from external sources.
@@ -634,7 +647,7 @@ class DocumentsAsyncClient:
 
                 document_template = dialogflow_v2beta1.ImportDocumentTemplate()
                 document_template.mime_type = "mime_type_value"
-                document_template.knowledge_types = "SMART_REPLY"
+                document_template.knowledge_types = ['SMART_REPLY']
 
                 request = dialogflow_v2beta1.ImportDocumentsRequest(
                     gcs_source=gcs_source,
@@ -647,13 +660,13 @@ class DocumentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.ImportDocumentsRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.ImportDocumentsRequest, dict]]):
                 The request object. Request message for
                 [Documents.ImportDocuments][google.cloud.dialogflow.v2beta1.Documents.ImportDocuments].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -710,11 +723,11 @@ class DocumentsAsyncClient:
 
     async def delete_document(
         self,
-        request: Union[document.DeleteDocumentRequest, dict] = None,
+        request: Optional[Union[document.DeleteDocumentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes the specified document.
@@ -757,13 +770,13 @@ class DocumentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.DeleteDocumentRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.DeleteDocumentRequest, dict]]):
                 The request object. Request message for
                 [Documents.DeleteDocument][google.cloud.dialogflow.v2beta1.Documents.DeleteDocument].
             name (:class:`str`):
@@ -847,12 +860,12 @@ class DocumentsAsyncClient:
 
     async def update_document(
         self,
-        request: Union[gcd_document.UpdateDocumentRequest, dict] = None,
+        request: Optional[Union[gcd_document.UpdateDocumentRequest, dict]] = None,
         *,
-        document: gcd_document.Document = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        document: Optional[gcd_document.Document] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the specified document.
@@ -890,7 +903,7 @@ class DocumentsAsyncClient:
                 document.content_uri = "content_uri_value"
                 document.display_name = "display_name_value"
                 document.mime_type = "mime_type_value"
-                document.knowledge_types = "SMART_REPLY"
+                document.knowledge_types = ['SMART_REPLY']
 
                 request = dialogflow_v2beta1.UpdateDocumentRequest(
                     document=document,
@@ -901,13 +914,13 @@ class DocumentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.UpdateDocumentRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.UpdateDocumentRequest, dict]]):
                 The request object. Request message for
                 [Documents.UpdateDocument][google.cloud.dialogflow.v2beta1.Documents.UpdateDocument].
             document (:class:`google.cloud.dialogflow_v2beta1.types.Document`):
@@ -1002,12 +1015,12 @@ class DocumentsAsyncClient:
 
     async def reload_document(
         self,
-        request: Union[document.ReloadDocumentRequest, dict] = None,
+        request: Optional[Union[document.ReloadDocumentRequest, dict]] = None,
         *,
-        name: str = None,
-        gcs_source: gcs.GcsSource = None,
+        name: Optional[str] = None,
+        gcs_source: Optional[gcs.GcsSource] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Reloads the specified document from its specified source,
@@ -1058,13 +1071,13 @@ class DocumentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.ReloadDocumentRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.ReloadDocumentRequest, dict]]):
                 The request object. Request message for
                 [Documents.ReloadDocument][google.cloud.dialogflow.v2beta1.Documents.ReloadDocument].
             name (:class:`str`):
@@ -1160,10 +1173,10 @@ class DocumentsAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1214,10 +1227,10 @@ class DocumentsAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1268,10 +1281,10 @@ class DocumentsAsyncClient:
 
     async def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -1322,10 +1335,10 @@ class DocumentsAsyncClient:
 
     async def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1376,10 +1389,10 @@ class DocumentsAsyncClient:
 
     async def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -1435,14 +1448,9 @@ class DocumentsAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dialogflow",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("DocumentsAsyncClient",)

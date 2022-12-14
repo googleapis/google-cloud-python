@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import ConversationModelsClient
 from .async_client import ConversationModelsAsyncClient
+from .client import ConversationModelsClient
 
 __all__ = (
     "ConversationModelsClient",

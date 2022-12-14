@@ -44,7 +44,7 @@ def sample_import_documents():
 
     document_template = dialogflow_v2beta1.ImportDocumentTemplate()
     document_template.mime_type = "mime_type_value"
-    document_template.knowledge_types = "SMART_REPLY"
+    document_template.knowledge_types = ['SMART_REPLY']
 
     request = dialogflow_v2beta1.ImportDocumentsRequest(
         gcs_source=gcs_source,
