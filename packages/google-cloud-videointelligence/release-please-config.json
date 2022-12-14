@@ -5,6 +5,11 @@
       "release-type": "python",
       "extra-files": [
         "google/cloud/videointelligence/gapic_version.py",
+        "google/cloud/videointelligence_v1p1beta1/gapic_version.py",
+        "google/cloud/videointelligence_v1p2beta1/gapic_version.py",
+        "google/cloud/videointelligence_v1beta2/gapic_version.py",
+        "google/cloud/videointelligence_v1/gapic_version.py",
+        "google/cloud/videointelligence_v1p3beta1/gapic_version.py",
         {
           "type": "json",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.videointelligence.v1p2beta1.json",
