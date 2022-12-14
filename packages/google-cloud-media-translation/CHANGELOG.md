@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.10.0](https://github.com/googleapis/python-media-translation/compare/v0.9.4...v0.10.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.mediatranslation.__version__` ([0600814](https://github.com/googleapis/python-media-translation/commit/06008147212ea925e48800e172abbd2e19ce5338))
+* Add typing to proto.Message based class attributes ([0600814](https://github.com/googleapis/python-media-translation/commit/06008147212ea925e48800e172abbd2e19ce5338))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([0600814](https://github.com/googleapis/python-media-translation/commit/06008147212ea925e48800e172abbd2e19ce5338))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([08e0be5](https://github.com/googleapis/python-media-translation/commit/08e0be5fbace04b6f01cedfe2adeb06be785efd5))
+* Drop usage of pkg_resources ([08e0be5](https://github.com/googleapis/python-media-translation/commit/08e0be5fbace04b6f01cedfe2adeb06be785efd5))
+* Fix timeout default values ([08e0be5](https://github.com/googleapis/python-media-translation/commit/08e0be5fbace04b6f01cedfe2adeb06be785efd5))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([0600814](https://github.com/googleapis/python-media-translation/commit/06008147212ea925e48800e172abbd2e19ce5338))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([08e0be5](https://github.com/googleapis/python-media-translation/commit/08e0be5fbace04b6f01cedfe2adeb06be785efd5))
+
 ## [0.9.4](https://github.com/googleapis/python-media-translation/compare/v0.9.3...v0.9.4) (2022-10-07)
 
 
