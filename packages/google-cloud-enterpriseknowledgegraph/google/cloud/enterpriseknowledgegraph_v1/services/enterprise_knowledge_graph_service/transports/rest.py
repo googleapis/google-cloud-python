@@ -50,10 +50,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class EnterpriseKnowledgeGraphServiceRestInterceptor:
     """Interceptor for EnterpriseKnowledgeGraphService.
@@ -70,62 +66,69 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomEnterpriseKnowledgeGraphServiceInterceptor(EnterpriseKnowledgeGraphServiceRestInterceptor):
-            def pre_cancel_entity_reconciliation_job(request, metadata):
+            def pre_cancel_entity_reconciliation_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_create_entity_reconciliation_job(request, metadata):
+            def pre_create_entity_reconciliation_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_entity_reconciliation_job(response):
+            def post_create_entity_reconciliation_job(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_entity_reconciliation_job(request, metadata):
+            def pre_delete_entity_reconciliation_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_get_entity_reconciliation_job(request, metadata):
+            def pre_get_entity_reconciliation_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_entity_reconciliation_job(response):
+            def post_get_entity_reconciliation_job(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_entity_reconciliation_jobs(request, metadata):
+            def pre_list_entity_reconciliation_jobs(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_entity_reconciliation_jobs(response):
+            def post_list_entity_reconciliation_jobs(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_lookup(request, metadata):
+            def pre_lookup(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_lookup(response):
+            def post_lookup(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_lookup_public_kg(request, metadata):
+            def pre_lookup_public_kg(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_lookup_public_kg(response):
+            def post_lookup_public_kg(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_search(request, metadata):
+            def pre_search(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_search(response):
+            def post_search(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_search_public_kg(request, metadata):
+            def pre_search_public_kg(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_search_public_kg(response):
+            def post_search_public_kg(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = EnterpriseKnowledgeGraphServiceRestTransport(interceptor=MyCustomEnterpriseKnowledgeGraphServiceInterceptor())
         client = EnterpriseKnowledgeGraphServiceClient(transport=transport)
