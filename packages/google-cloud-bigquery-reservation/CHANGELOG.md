@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-bigquery-reservation/compare/v1.7.3...v1.8.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.bigquery_reservation.__version__` ([e82b8e5](https://github.com/googleapis/python-bigquery-reservation/commit/e82b8e50be61e2885ac8f5b21f650e54f8d6d604))
+* Add typing to proto.Message based class attributes ([e82b8e5](https://github.com/googleapis/python-bigquery-reservation/commit/e82b8e50be61e2885ac8f5b21f650e54f8d6d604))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([e82b8e5](https://github.com/googleapis/python-bigquery-reservation/commit/e82b8e50be61e2885ac8f5b21f650e54f8d6d604))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([c9ff564](https://github.com/googleapis/python-bigquery-reservation/commit/c9ff564b070c488b96af8574df442334173996cf))
+* Drop usage of pkg_resources ([c9ff564](https://github.com/googleapis/python-bigquery-reservation/commit/c9ff564b070c488b96af8574df442334173996cf))
+* Fix timeout default values ([c9ff564](https://github.com/googleapis/python-bigquery-reservation/commit/c9ff564b070c488b96af8574df442334173996cf))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([e82b8e5](https://github.com/googleapis/python-bigquery-reservation/commit/e82b8e50be61e2885ac8f5b21f650e54f8d6d604))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([c9ff564](https://github.com/googleapis/python-bigquery-reservation/commit/c9ff564b070c488b96af8574df442334173996cf))
+
 ## [1.7.3](https://github.com/googleapis/python-bigquery-reservation/compare/v1.7.2...v1.7.3) (2022-10-07)
 
 
