@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.9.0](https://github.com/googleapis/python-translate/compare/v3.8.4...v3.9.0) (2022-12-15)
+
+
+### Features
+
+* Add typing to proto.Message based class attributes ([60573e6](https://github.com/googleapis/python-translate/commit/60573e6df214de4ea1a893d751d76e6fc2d05810))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([60573e6](https://github.com/googleapis/python-translate/commit/60573e6df214de4ea1a893d751d76e6fc2d05810))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([60573e6](https://github.com/googleapis/python-translate/commit/60573e6df214de4ea1a893d751d76e6fc2d05810))
+* Drop usage of pkg_resources ([60573e6](https://github.com/googleapis/python-translate/commit/60573e6df214de4ea1a893d751d76e6fc2d05810))
+* Fix timeout default values ([60573e6](https://github.com/googleapis/python-translate/commit/60573e6df214de4ea1a893d751d76e6fc2d05810))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([60573e6](https://github.com/googleapis/python-translate/commit/60573e6df214de4ea1a893d751d76e6fc2d05810))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([60573e6](https://github.com/googleapis/python-translate/commit/60573e6df214de4ea1a893d751d76e6fc2d05810))
+
 ## [3.8.4](https://github.com/googleapis/python-translate/compare/v3.8.3...v3.8.4) (2022-10-07)
 
 
