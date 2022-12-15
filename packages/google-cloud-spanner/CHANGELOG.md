@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.26.0](https://github.com/googleapis/python-spanner/compare/v3.25.0...v3.26.0) (2022-12-15)
+
+
+### Features
+
+* Inline Begin transction for RW transactions ([#840](https://github.com/googleapis/python-spanner/issues/840)) ([c2456be](https://github.com/googleapis/python-spanner/commit/c2456bed513dc4ab8954e5227605fca12e776b63))
+
+
+### Bug Fixes
+
+* Fix for binding of pinging and bursty pool with database role ([#871](https://github.com/googleapis/python-spanner/issues/871)) ([89da17e](https://github.com/googleapis/python-spanner/commit/89da17efccdf4f686f73f87f997128a96c614839))
+
 ## [3.25.0](https://github.com/googleapis/python-spanner/compare/v3.24.0...v3.25.0) (2022-12-13)
 
 
