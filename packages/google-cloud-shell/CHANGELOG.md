@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-shell/compare/v1.4.3...v1.5.0) (2022-12-14)
+
+
+### Features
+
+* Add CloudShellErrorCode.ENVIRONMENT_UNAVAILABLE enum value ([82fc2bc](https://github.com/googleapis/python-shell/commit/82fc2bca5b5908ded7277db4b78297294a599d3c))
+* Add support for `google.cloud.shell.__version__` ([82fc2bc](https://github.com/googleapis/python-shell/commit/82fc2bca5b5908ded7277db4b78297294a599d3c))
+* Add typing to proto.Message based class attributes ([82fc2bc](https://github.com/googleapis/python-shell/commit/82fc2bca5b5908ded7277db4b78297294a599d3c))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([82fc2bc](https://github.com/googleapis/python-shell/commit/82fc2bca5b5908ded7277db4b78297294a599d3c))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([563be00](https://github.com/googleapis/python-shell/commit/563be001e063a0ef60cb15f2c59e70d4d7670a22))
+* Drop usage of pkg_resources ([563be00](https://github.com/googleapis/python-shell/commit/563be001e063a0ef60cb15f2c59e70d4d7670a22))
+* Fix timeout default values ([563be00](https://github.com/googleapis/python-shell/commit/563be001e063a0ef60cb15f2c59e70d4d7670a22))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([82fc2bc](https://github.com/googleapis/python-shell/commit/82fc2bca5b5908ded7277db4b78297294a599d3c))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([563be00](https://github.com/googleapis/python-shell/commit/563be001e063a0ef60cb15f2c59e70d4d7670a22))
+
 ## [1.4.3](https://github.com/googleapis/python-shell/compare/v1.4.2...v1.4.3) (2022-10-07)
 
 
