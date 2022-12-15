@@ -910,7 +910,7 @@ class BaseQuery(object):
 
         for orderBy in orderBys:
             if orderBy.field.field_path == "id":
-                # If ordering by docuent id, compare resource paths.
+                # If ordering by document id, compare resource paths.
                 comp = Order()._compare_to(doc1.reference._path, doc2.reference._path)
             else:
                 if (
