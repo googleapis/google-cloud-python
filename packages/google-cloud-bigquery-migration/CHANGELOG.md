@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.8.0](https://github.com/googleapis/python-bigquery-migration/compare/v0.7.2...v0.8.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.bigquery_migration.__version__` ([8f180ec](https://github.com/googleapis/python-bigquery-migration/commit/8f180ec2c2dec24d73982d5af2f9af8f8f7dfa8f))
+* Add typing to proto.Message based class attributes ([8f180ec](https://github.com/googleapis/python-bigquery-migration/commit/8f180ec2c2dec24d73982d5af2f9af8f8f7dfa8f))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([8f180ec](https://github.com/googleapis/python-bigquery-migration/commit/8f180ec2c2dec24d73982d5af2f9af8f8f7dfa8f))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([61bc618](https://github.com/googleapis/python-bigquery-migration/commit/61bc618abf8ced62fea472b9ceb25a6c5fe24e6d))
+* Drop usage of pkg_resources ([61bc618](https://github.com/googleapis/python-bigquery-migration/commit/61bc618abf8ced62fea472b9ceb25a6c5fe24e6d))
+* Fix timeout default values ([61bc618](https://github.com/googleapis/python-bigquery-migration/commit/61bc618abf8ced62fea472b9ceb25a6c5fe24e6d))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([8f180ec](https://github.com/googleapis/python-bigquery-migration/commit/8f180ec2c2dec24d73982d5af2f9af8f8f7dfa8f))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([61bc618](https://github.com/googleapis/python-bigquery-migration/commit/61bc618abf8ced62fea472b9ceb25a6c5fe24e6d))
+
 ## [0.7.2](https://github.com/googleapis/python-bigquery-migration/compare/v0.7.1...v0.7.2) (2022-10-08)
 
 
