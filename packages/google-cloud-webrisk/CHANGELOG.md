@@ -3,6 +3,29 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+## [1.9.0](https://github.com/googleapis/python-webrisk/compare/v1.8.4...v1.9.0) (2022-12-14)
+
+
+### Features
+
+* Add SOCIAL_ENGINEERING_EXTENDED_COVERAGE threat type ([#238](https://github.com/googleapis/python-webrisk/issues/238)) ([5b785de](https://github.com/googleapis/python-webrisk/commit/5b785de91aacef1129d9e220e9c707c223f00410))
+* Add support for `google.cloud.webrisk.__version__` ([64b1ef3](https://github.com/googleapis/python-webrisk/commit/64b1ef39dba3d568e5468e06ab026e500a346fae))
+* Add typing to proto.Message based class attributes ([64b1ef3](https://github.com/googleapis/python-webrisk/commit/64b1ef39dba3d568e5468e06ab026e500a346fae))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([64b1ef3](https://github.com/googleapis/python-webrisk/commit/64b1ef39dba3d568e5468e06ab026e500a346fae))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([bd4ef44](https://github.com/googleapis/python-webrisk/commit/bd4ef44fc20254a7a0b0cfb3f7cd7923ecd885e0))
+* Drop usage of pkg_resources ([bd4ef44](https://github.com/googleapis/python-webrisk/commit/bd4ef44fc20254a7a0b0cfb3f7cd7923ecd885e0))
+* Fix timeout default values ([bd4ef44](https://github.com/googleapis/python-webrisk/commit/bd4ef44fc20254a7a0b0cfb3f7cd7923ecd885e0))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([64b1ef3](https://github.com/googleapis/python-webrisk/commit/64b1ef39dba3d568e5468e06ab026e500a346fae))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([bd4ef44](https://github.com/googleapis/python-webrisk/commit/bd4ef44fc20254a7a0b0cfb3f7cd7923ecd885e0))
+
 ## [1.8.4](https://github.com/googleapis/python-webrisk/compare/v1.8.3...v1.8.4) (2022-10-07)
 
 
