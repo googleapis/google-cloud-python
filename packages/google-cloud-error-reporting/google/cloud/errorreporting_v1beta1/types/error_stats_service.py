@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.errorreporting_v1beta1.types import common
@@ -69,7 +71,7 @@ class ListGroupStatsRequest(proto.Message):
             Console <https://support.google.com/cloud/answer/6158840>`__.
 
             Examples: ``projects/my-project-123``, ``projects/5551234``.
-        group_id (Sequence[str]):
+        group_id (MutableSequence[str]):
             Optional. List all
             <code>ErrorGroupStats</code> with these IDs.
         service_filter (google.cloud.errorreporting_v1beta1.types.ServiceContextFilter):
@@ -108,49 +110,49 @@ class ListGroupStatsRequest(proto.Message):
             with the identical query parameters as the first request.
     """
 
-    project_name = proto.Field(
+    project_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    group_id = proto.RepeatedField(
+    group_id: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    service_filter = proto.Field(
+    service_filter: "ServiceContextFilter" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="ServiceContextFilter",
     )
-    time_range = proto.Field(
+    time_range: "QueryTimeRange" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="QueryTimeRange",
     )
-    timed_count_duration = proto.Field(
+    timed_count_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=6,
         message=duration_pb2.Duration,
     )
-    alignment = proto.Field(
+    alignment: "TimedCountAlignment" = proto.Field(
         proto.ENUM,
         number=7,
         enum="TimedCountAlignment",
     )
-    alignment_time = proto.Field(
+    alignment_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    order = proto.Field(
+    order: "ErrorGroupOrder" = proto.Field(
         proto.ENUM,
         number=9,
         enum="ErrorGroupOrder",
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=11,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=12,
     )
@@ -160,7 +162,7 @@ class ListGroupStatsResponse(proto.Message):
     r"""Contains a set of requested error group stats.
 
     Attributes:
-        error_group_stats (Sequence[google.cloud.errorreporting_v1beta1.types.ErrorGroupStats]):
+        error_group_stats (MutableSequence[google.cloud.errorreporting_v1beta1.types.ErrorGroupStats]):
             The error group stats which match the given
             request.
         next_page_token (str):
@@ -181,16 +183,16 @@ class ListGroupStatsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    error_group_stats = proto.RepeatedField(
+    error_group_stats: MutableSequence["ErrorGroupStats"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ErrorGroupStats",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    time_range_begin = proto.Field(
+    time_range_begin: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
@@ -220,7 +222,7 @@ class ErrorGroupStats(proto.Message):
             provided in the error report. If more users are implicitly
             affected, such as due to a crash of the whole service, this
             is not reflected here.
-        timed_counts (Sequence[google.cloud.errorreporting_v1beta1.types.TimedCount]):
+        timed_counts (MutableSequence[google.cloud.errorreporting_v1beta1.types.TimedCount]):
             Approximate number of occurrences over time.
             Timed counts returned by ListGroups are
             guaranteed to be:
@@ -235,7 +237,7 @@ class ErrorGroupStats(proto.Message):
             Approximate last occurrence that was ever seen for this
             group and which matches the given filter criteria, ignoring
             the time_range that was specified in the request.
-        affected_services (Sequence[google.cloud.errorreporting_v1beta1.types.ServiceContext]):
+        affected_services (MutableSequence[google.cloud.errorreporting_v1beta1.types.ServiceContext]):
             Service contexts with a non-zero error count for the given
             filter criteria. This list can be truncated if multiple
             services are affected. Refer to ``num_affected_services``
@@ -254,44 +256,44 @@ class ErrorGroupStats(proto.Message):
             characteristics of the group as a whole.
     """
 
-    group = proto.Field(
+    group: common.ErrorGroup = proto.Field(
         proto.MESSAGE,
         number=1,
         message=common.ErrorGroup,
     )
-    count = proto.Field(
+    count: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    affected_users_count = proto.Field(
+    affected_users_count: int = proto.Field(
         proto.INT64,
         number=3,
     )
-    timed_counts = proto.RepeatedField(
+    timed_counts: MutableSequence["TimedCount"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="TimedCount",
     )
-    first_seen_time = proto.Field(
+    first_seen_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    last_seen_time = proto.Field(
+    last_seen_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    affected_services = proto.RepeatedField(
+    affected_services: MutableSequence[common.ServiceContext] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=common.ServiceContext,
     )
-    num_affected_services = proto.Field(
+    num_affected_services: int = proto.Field(
         proto.INT32,
         number=8,
     )
-    representative = proto.Field(
+    representative: common.ErrorEvent = proto.Field(
         proto.MESSAGE,
         number=9,
         message=common.ErrorEvent,
@@ -314,16 +316,16 @@ class TimedCount(proto.Message):
             End of the time period to which ``count`` refers (excluded).
     """
 
-    count = proto.Field(
+    count: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -362,29 +364,29 @@ class ListEventsRequest(proto.Message):
             response.
     """
 
-    project_name = proto.Field(
+    project_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    group_id = proto.Field(
+    group_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    service_filter = proto.Field(
+    service_filter: "ServiceContextFilter" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="ServiceContextFilter",
     )
-    time_range = proto.Field(
+    time_range: "QueryTimeRange" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="QueryTimeRange",
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=6,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -394,7 +396,7 @@ class ListEventsResponse(proto.Message):
     r"""Contains a set of requested error events.
 
     Attributes:
-        error_events (Sequence[google.cloud.errorreporting_v1beta1.types.ErrorEvent]):
+        error_events (MutableSequence[google.cloud.errorreporting_v1beta1.types.ErrorEvent]):
             The error events which match the given
             request.
         next_page_token (str):
@@ -411,16 +413,16 @@ class ListEventsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    error_events = proto.RepeatedField(
+    error_events: MutableSequence[common.ErrorEvent] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=common.ErrorEvent,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    time_range_begin = proto.Field(
+    time_range_begin: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
@@ -446,7 +448,7 @@ class QueryTimeRange(proto.Message):
         PERIOD_1_WEEK = 4
         PERIOD_30_DAYS = 5
 
-    period = proto.Field(
+    period: Period = proto.Field(
         proto.ENUM,
         number=1,
         enum=Period,
@@ -471,15 +473,15 @@ class ServiceContextFilter(proto.Message):
             ```ServiceContext.resource_type`` </error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.resource_type>`__.
     """
 
-    service = proto.Field(
+    service: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    resource_type = proto.Field(
+    resource_type: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -498,7 +500,7 @@ class DeleteEventsRequest(proto.Message):
             Example: ``projects/my-project-123``.
     """
 
-    project_name = proto.Field(
+    project_name: str = proto.Field(
         proto.STRING,
         number=1,
     )

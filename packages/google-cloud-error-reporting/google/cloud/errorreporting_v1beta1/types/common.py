@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -55,7 +57,7 @@ class ErrorGroup(proto.Message):
             the same kind of error occurs in different
             service contexts, it will receive the same group
             ID.
-        tracking_issues (Sequence[google.cloud.errorreporting_v1beta1.types.TrackingIssue]):
+        tracking_issues (MutableSequence[google.cloud.errorreporting_v1beta1.types.TrackingIssue]):
             Associated tracking issues.
         resolution_status (google.cloud.errorreporting_v1beta1.types.ResolutionStatus):
             Error group's resolution status.
@@ -63,20 +65,20 @@ class ErrorGroup(proto.Message):
             interpreted as OPEN
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    group_id = proto.Field(
+    group_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    tracking_issues = proto.RepeatedField(
+    tracking_issues: MutableSequence["TrackingIssue"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="TrackingIssue",
     )
-    resolution_status = proto.Field(
+    resolution_status: "ResolutionStatus" = proto.Field(
         proto.ENUM,
         number=5,
         enum="ResolutionStatus",
@@ -94,7 +96,7 @@ class TrackingIssue(proto.Message):
             ``https://github.com/user/project/issues/4``
     """
 
-    url = proto.Field(
+    url: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -120,21 +122,21 @@ class ErrorEvent(proto.Message):
             occurred.
     """
 
-    event_time = proto.Field(
+    event_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    service_context = proto.Field(
+    service_context: "ServiceContext" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ServiceContext",
     )
-    message = proto.Field(
+    message: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    context = proto.Field(
+    context: "ErrorContext" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="ErrorContext",
@@ -171,15 +173,15 @@ class ServiceContext(proto.Message):
             and must not be set when reporting errors.
     """
 
-    service = proto.Field(
+    service: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    resource_type = proto.Field(
+    resource_type: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -213,16 +215,16 @@ class ErrorContext(proto.Message):
             place where it was caught.
     """
 
-    http_request = proto.Field(
+    http_request: "HttpRequestContext" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="HttpRequestContext",
     )
-    user = proto.Field(
+    user: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    report_location = proto.Field(
+    report_location: "SourceLocation" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="SourceLocation",
@@ -258,27 +260,27 @@ class HttpRequestContext(proto.Message):
             report.
     """
 
-    method = proto.Field(
+    method: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    url = proto.Field(
+    url: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    user_agent = proto.Field(
+    user_agent: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    referrer = proto.Field(
+    referrer: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    response_status_code = proto.Field(
+    response_status_code: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    remote_ip = proto.Field(
+    remote_ip: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -305,15 +307,15 @@ class SourceLocation(proto.Message):
             example, ``my.package.MyClass.method`` in case of Java.
     """
 
-    file_path = proto.Field(
+    file_path: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    line_number = proto.Field(
+    line_number: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    function_name = proto.Field(
+    function_name: str = proto.Field(
         proto.STRING,
         number=4,
     )

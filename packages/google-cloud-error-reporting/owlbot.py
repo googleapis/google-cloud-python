@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,40 +12,72 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""This script is used to synthesize generated parts of this library."""
-import synthtool as s
-from synthtool import gcp
-from synthtool.languages import python
+import json
 import os
+from pathlib import Path
+import shutil
 
-common = gcp.CommonTemplates()
+import synthtool as s
+import synthtool.gcp as gcp
+from synthtool.languages import python
 
-default_version = "v1beta1"
+# ----------------------------------------------------------------------------
+# Copy the generated client from the owl-bot staging directory
+# ----------------------------------------------------------------------------
+
+clean_up_generated_samples = True
+
+# Load the default version defined in .repo-metadata.json.
+default_version = json.load(open(".repo-metadata.json", "rt")).get("default_version")
 
 for library in s.get_staging_dirs(default_version):
-    s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst", "google/cloud/errorreporting/"])
+    if clean_up_generated_samples:
+        shutil.rmtree("samples/generated_samples", ignore_errors=True)
+        clean_up_generated_samples = False
 
+    # work around issue where google.cloud.errorreporting is not present
+    s.replace(library / "google/cloud/errorreporting_v1beta1/__init__.py",
+        "from google.cloud.errorreporting",
+        "from google.cloud.errorreporting_v1beta1"
+    )
+
+    s.move(
+        [library],
+        excludes=[
+            "**/gapic_version.py",
+            "docs/index.rst",
+            "google/cloud/errorreporting/",
+            "setup.py",
+            "testing/constraints-3.7.txt",
+        ],
+    )
 s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(
-    samples=True,  # set to True only if there are samples
-    microgenerator=True,
-    cov_level=100,
-)
-s.move(templated_files, excludes=[".coveragerc", ".github/auto-label.yaml"])  # microgenerator has a good .coveragerc file
 
-# ----------------------------------------------------------------------------
-# Samples templates
-# ----------------------------------------------------------------------------
+templated_files = gcp.CommonTemplates().py_library(
+    cov_level=100,
+    microgenerator=True,
+    versions=gcp.common.detect_versions(path="./google", default_first=True),
+)
+s.move(
+    templated_files,
+    excludes=[
+        ".coveragerc",
+        ".github/release-please.yml",
+        ".github/auto-label.yaml",
+        "docs/index.rst",
+        "testing/constraints-3.7.txt",
+    ],
+)
+
 python.py_samples(skip_readmes=True)
 
-python.configure_previous_major_version_branches()
-
-s.shell.run(["nox", "-s", "blacken"], hide_output=False)
-
+# run format session for all directories which have a noxfile
+for noxfile in Path(".").glob("**/noxfile.py"):
+    s.shell.run(["nox", "-s", "blacken"], cwd=noxfile.parent, hide_output=False)
 
 # --------------------------------------------------------------------------
 # Modify test configs
@@ -61,5 +93,5 @@ for subdir in tracked_subdirs:
                 s.move(
                     ".kokoro/common_env_vars.cfg",
                     file_path,
-                    merge=lambda src, dst, _, : f"{dst}\n{src}",
+                    merge=lambda src, dst, _,: f"{dst}\n{src}",
                 )

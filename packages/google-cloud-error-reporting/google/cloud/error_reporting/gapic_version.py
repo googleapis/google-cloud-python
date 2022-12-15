@@ -1,4 +1,5 @@
-# Copyright 2016 Google LLC
+# -*- coding: utf-8 -*-
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,16 +12,5 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-"""Client library for Error Reporting"""
-
-
-from google.cloud.error_reporting import gapic_version as package_version
-
-__version__ = package_version.__version__
-
-from google.cloud.error_reporting.client import Client
-from google.cloud.error_reporting.client import HTTPContext
-from google.cloud.error_reporting.util import build_flask_context
-
-__all__ = ["__version__", "Client", "HTTPContext", "build_flask_context"]
+#
+__version__ = "1.6.3"  # {x-release-please-version}

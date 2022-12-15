@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.errorreporting_v1beta1.types import common
@@ -44,11 +46,11 @@ class ReportErrorEventRequest(proto.Message):
             Required. The error event to be reported.
     """
 
-    project_name = proto.Field(
+    project_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    event = proto.Field(
+    event: "ReportedErrorEvent" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ReportedErrorEvent",
@@ -106,21 +108,21 @@ class ReportedErrorEvent(proto.Message):
             which the error occurred.
     """
 
-    event_time = proto.Field(
+    event_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    service_context = proto.Field(
+    service_context: common.ServiceContext = proto.Field(
         proto.MESSAGE,
         number=2,
         message=common.ServiceContext,
     )
-    message = proto.Field(
+    message: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    context = proto.Field(
+    context: common.ErrorContext = proto.Field(
         proto.MESSAGE,
         number=4,
         message=common.ErrorContext,

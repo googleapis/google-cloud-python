@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.errorreporting_v1beta1.types import common
@@ -40,7 +42,7 @@ class GetGroupRequest(proto.Message):
             Example: ``projects/my-project-123/groups/my-group``
     """
 
-    group_name = proto.Field(
+    group_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -55,7 +57,7 @@ class UpdateGroupRequest(proto.Message):
             resource on the server.
     """
 
-    group = proto.Field(
+    group: common.ErrorGroup = proto.Field(
         proto.MESSAGE,
         number=1,
         message=common.ErrorGroup,

@@ -16,8 +16,20 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
+
+from google.cloud.errorreporting_v1beta1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -58,7 +70,7 @@ class ErrorStatsServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[ErrorStatsServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -330,8 +342,8 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ErrorStatsServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, ErrorStatsServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the error stats service client.
@@ -345,7 +357,7 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
             transport (Union[str, ErrorStatsServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -375,6 +387,7 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -427,12 +440,14 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
 
     def list_group_stats(
         self,
-        request: Union[error_stats_service.ListGroupStatsRequest, dict] = None,
+        request: Optional[
+            Union[error_stats_service.ListGroupStatsRequest, dict]
+        ] = None,
         *,
-        project_name: str = None,
-        time_range: error_stats_service.QueryTimeRange = None,
+        project_name: Optional[str] = None,
+        time_range: Optional[error_stats_service.QueryTimeRange] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListGroupStatsPager:
         r"""Lists the specified groups.
@@ -566,12 +581,12 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
 
     def list_events(
         self,
-        request: Union[error_stats_service.ListEventsRequest, dict] = None,
+        request: Optional[Union[error_stats_service.ListEventsRequest, dict]] = None,
         *,
-        project_name: str = None,
-        group_id: str = None,
+        project_name: Optional[str] = None,
+        group_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEventsPager:
         r"""Lists the specified events.
@@ -698,11 +713,11 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
 
     def delete_events(
         self,
-        request: Union[error_stats_service.DeleteEventsRequest, dict] = None,
+        request: Optional[Union[error_stats_service.DeleteEventsRequest, dict]] = None,
         *,
-        project_name: str = None,
+        project_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> error_stats_service.DeleteEventsResponse:
         r"""Deletes all error events of a given project.
@@ -817,14 +832,9 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-errorreporting",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ErrorStatsServiceClient",)

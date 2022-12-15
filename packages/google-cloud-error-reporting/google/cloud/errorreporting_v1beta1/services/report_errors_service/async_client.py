@@ -16,8 +16,19 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
+
+from google.cloud.errorreporting_v1beta1 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -156,9 +167,9 @@ class ReportErrorsServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ReportErrorsServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the report errors service client.
@@ -202,12 +213,14 @@ class ReportErrorsServiceAsyncClient:
 
     async def report_error_event(
         self,
-        request: Union[report_errors_service.ReportErrorEventRequest, dict] = None,
+        request: Optional[
+            Union[report_errors_service.ReportErrorEventRequest, dict]
+        ] = None,
         *,
-        project_name: str = None,
-        event: report_errors_service.ReportedErrorEvent = None,
+        project_name: Optional[str] = None,
+        event: Optional[report_errors_service.ReportedErrorEvent] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> report_errors_service.ReportErrorEventResponse:
         r"""Report an individual error event and record the event to a log.
@@ -258,7 +271,7 @@ class ReportErrorsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.errorreporting_v1beta1.types.ReportErrorEventRequest, dict]):
+            request (Optional[Union[google.cloud.errorreporting_v1beta1.types.ReportErrorEventRequest, dict]]):
                 The request object. A request for reporting an
                 individual error event.
             project_name (:class:`str`):
@@ -345,14 +358,9 @@ class ReportErrorsServiceAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-errorreporting",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ReportErrorsServiceAsyncClient",)

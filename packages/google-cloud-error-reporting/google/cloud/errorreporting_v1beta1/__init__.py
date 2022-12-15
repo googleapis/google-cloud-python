@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.errorreporting_v1beta1 import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from .services.error_group_service import ErrorGroupServiceClient
 from .services.error_group_service import ErrorGroupServiceAsyncClient
