@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-optimization/compare/v1.1.3...v1.2.0) (2022-12-15)
+
+
+### Features
+
+* Add typing to proto.Message based class attributes ([8df989c](https://github.com/googleapis/python-optimization/commit/8df989cbbc09ebad2b51b72cead9df2b29ed03a0))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([8df989c](https://github.com/googleapis/python-optimization/commit/8df989cbbc09ebad2b51b72cead9df2b29ed03a0))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([8df989c](https://github.com/googleapis/python-optimization/commit/8df989cbbc09ebad2b51b72cead9df2b29ed03a0))
+* Drop usage of pkg_resources ([8df989c](https://github.com/googleapis/python-optimization/commit/8df989cbbc09ebad2b51b72cead9df2b29ed03a0))
+* Fix timeout default values ([8df989c](https://github.com/googleapis/python-optimization/commit/8df989cbbc09ebad2b51b72cead9df2b29ed03a0))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([8df989c](https://github.com/googleapis/python-optimization/commit/8df989cbbc09ebad2b51b72cead9df2b29ed03a0))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([8df989c](https://github.com/googleapis/python-optimization/commit/8df989cbbc09ebad2b51b72cead9df2b29ed03a0))
+
 ## [1.1.3](https://github.com/googleapis/python-optimization/compare/v1.1.2...v1.1.3) (2022-10-07)
 
 
