@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## [1.7.0](https://github.com/googleapis/python-error-reporting/compare/v1.6.3...v1.7.0) (2022-12-15)
+
+
+### Features
+
+* Add typing to proto.Message based class attributes ([ccaa40f](https://github.com/googleapis/python-error-reporting/commit/ccaa40f1eca7d001cb58cd340189d521e93632ff))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([ccaa40f](https://github.com/googleapis/python-error-reporting/commit/ccaa40f1eca7d001cb58cd340189d521e93632ff))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([ccaa40f](https://github.com/googleapis/python-error-reporting/commit/ccaa40f1eca7d001cb58cd340189d521e93632ff))
+* Drop usage of pkg_resources ([ccaa40f](https://github.com/googleapis/python-error-reporting/commit/ccaa40f1eca7d001cb58cd340189d521e93632ff))
+* Fix timeout default values ([ccaa40f](https://github.com/googleapis/python-error-reporting/commit/ccaa40f1eca7d001cb58cd340189d521e93632ff))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([ccaa40f](https://github.com/googleapis/python-error-reporting/commit/ccaa40f1eca7d001cb58cd340189d521e93632ff))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([ccaa40f](https://github.com/googleapis/python-error-reporting/commit/ccaa40f1eca7d001cb58cd340189d521e93632ff))
+
 ## [1.6.3](https://github.com/googleapis/python-error-reporting/compare/v1.6.2...v1.6.3) (2022-10-07)
 
 
