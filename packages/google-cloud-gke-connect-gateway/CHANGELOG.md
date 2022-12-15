@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.7.0](https://github.com/googleapis/python-gke-connect-gateway/compare/v0.6.3...v0.7.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.gkeconnect.gateway.__version__` ([f7be6d0](https://github.com/googleapis/python-gke-connect-gateway/commit/f7be6d0f2822becc72d23be1880dc0117efcd42d))
+* Add typing to proto.Message based class attributes ([f7be6d0](https://github.com/googleapis/python-gke-connect-gateway/commit/f7be6d0f2822becc72d23be1880dc0117efcd42d))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([f7be6d0](https://github.com/googleapis/python-gke-connect-gateway/commit/f7be6d0f2822becc72d23be1880dc0117efcd42d))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([d3ef952](https://github.com/googleapis/python-gke-connect-gateway/commit/d3ef952da5d153604d0c9313e6ff480285f4ee85))
+* Drop usage of pkg_resources ([d3ef952](https://github.com/googleapis/python-gke-connect-gateway/commit/d3ef952da5d153604d0c9313e6ff480285f4ee85))
+* Fix timeout default values ([d3ef952](https://github.com/googleapis/python-gke-connect-gateway/commit/d3ef952da5d153604d0c9313e6ff480285f4ee85))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([f7be6d0](https://github.com/googleapis/python-gke-connect-gateway/commit/f7be6d0f2822becc72d23be1880dc0117efcd42d))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([d3ef952](https://github.com/googleapis/python-gke-connect-gateway/commit/d3ef952da5d153604d0c9313e6ff480285f4ee85))
+
 ## [0.6.3](https://github.com/googleapis/python-gke-connect-gateway/compare/v0.6.2...v0.6.3) (2022-10-07)
 
 
