@@ -40,6 +40,7 @@ def sample_stop_node():
 
     # Initialize request argument(s)
     request = tpu_v2alpha1.StopNodeRequest(
+        name="name_value",
     )
 
     # Make the request

@@ -38,7 +38,8 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.tpu_v2alpha1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -47,6 +48,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
@@ -219,6 +221,28 @@ class TpuClient(metaclass=TpuClientMeta):
         """Parses a node path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/nodes/(?P<node>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def queued_resource_path(
+        project: str,
+        location: str,
+        queued_resource: str,
+    ) -> str:
+        """Returns a fully-qualified queued_resource string."""
+        return "projects/{project}/locations/{location}/queuedResources/{queued_resource}".format(
+            project=project,
+            location=location,
+            queued_resource=queued_resource,
+        )
+
+    @staticmethod
+    def parse_queued_resource_path(path: str) -> Dict[str, str]:
+        """Parses a queued_resource path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/queuedResources/(?P<queued_resource>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -495,7 +519,7 @@ class TpuClient(metaclass=TpuClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNodesPager:
         r"""Lists nodes.
@@ -608,7 +632,7 @@ class TpuClient(metaclass=TpuClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_tpu.Node:
         r"""Gets the details of a node.
@@ -708,7 +732,7 @@ class TpuClient(metaclass=TpuClientMeta):
         node: Optional[cloud_tpu.Node] = None,
         node_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a node.
@@ -730,7 +754,6 @@ class TpuClient(metaclass=TpuClientMeta):
 
                 # Initialize request argument(s)
                 node = tpu_v2alpha1.Node()
-                node.accelerator_type = "accelerator_type_value"
                 node.runtime_version = "runtime_version_value"
 
                 request = tpu_v2alpha1.CreateNodeRequest(
@@ -842,7 +865,7 @@ class TpuClient(metaclass=TpuClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a node.
@@ -896,9 +919,16 @@ class TpuClient(metaclass=TpuClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.tpu_v2alpha1.types.Node` A TPU
-                instance.
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
 
         """
         # Create or coerce a protobuf request object.
@@ -944,7 +974,7 @@ class TpuClient(metaclass=TpuClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            cloud_tpu.Node,
+            empty_pb2.Empty,
             metadata_type=cloud_tpu.OperationMetadata,
         )
 
@@ -956,7 +986,7 @@ class TpuClient(metaclass=TpuClientMeta):
         request: Optional[Union[cloud_tpu.StopNodeRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Stops a node. This operation is only available with
@@ -979,6 +1009,7 @@ class TpuClient(metaclass=TpuClientMeta):
 
                 # Initialize request argument(s)
                 request = tpu_v2alpha1.StopNodeRequest(
+                    name="name_value",
                 )
 
                 # Make the request
@@ -1052,7 +1083,7 @@ class TpuClient(metaclass=TpuClientMeta):
         request: Optional[Union[cloud_tpu.StartNodeRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Starts a node.
@@ -1074,6 +1105,7 @@ class TpuClient(metaclass=TpuClientMeta):
 
                 # Initialize request argument(s)
                 request = tpu_v2alpha1.StartNodeRequest(
+                    name="name_value",
                 )
 
                 # Make the request
@@ -1149,7 +1181,7 @@ class TpuClient(metaclass=TpuClientMeta):
         node: Optional[cloud_tpu.Node] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the configurations of a node.
@@ -1171,7 +1203,6 @@ class TpuClient(metaclass=TpuClientMeta):
 
                 # Initialize request argument(s)
                 node = tpu_v2alpha1.Node()
-                node.accelerator_type = "accelerator_type_value"
                 node.runtime_version = "runtime_version_value"
 
                 request = tpu_v2alpha1.UpdateNodeRequest(
@@ -1201,7 +1232,8 @@ class TpuClient(metaclass=TpuClientMeta):
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. Mask of fields from [Node][Tpu.Node] to
-                update. Supported fields: None.
+                update. Supported fields: [description, tags, labels,
+                metadata, network_config.enable_external_ips].
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1275,12 +1307,475 @@ class TpuClient(metaclass=TpuClientMeta):
         # Done; return the response.
         return response
 
+    def list_queued_resources(
+        self,
+        request: Optional[Union[cloud_tpu.ListQueuedResourcesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListQueuedResourcesPager:
+        r"""Lists queued resources.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import tpu_v2alpha1
+
+            def sample_list_queued_resources():
+                # Create a client
+                client = tpu_v2alpha1.TpuClient()
+
+                # Initialize request argument(s)
+                request = tpu_v2alpha1.ListQueuedResourcesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_queued_resources(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.tpu_v2alpha1.types.ListQueuedResourcesRequest, dict]):
+                The request object. Request for
+                [ListQueuedResources][google.cloud.tpu.v2alpha1.Tpu.ListQueuedResources].
+            parent (str):
+                Required. The parent resource name.
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.tpu_v2alpha1.services.tpu.pagers.ListQueuedResourcesPager:
+                Response for
+                   [ListQueuedResources][google.cloud.tpu.v2alpha1.Tpu.ListQueuedResources].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_tpu.ListQueuedResourcesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_tpu.ListQueuedResourcesRequest):
+            request = cloud_tpu.ListQueuedResourcesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_queued_resources]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListQueuedResourcesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_queued_resource(
+        self,
+        request: Optional[Union[cloud_tpu.GetQueuedResourceRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> cloud_tpu.QueuedResource:
+        r"""Gets details of a queued resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import tpu_v2alpha1
+
+            def sample_get_queued_resource():
+                # Create a client
+                client = tpu_v2alpha1.TpuClient()
+
+                # Initialize request argument(s)
+                request = tpu_v2alpha1.GetQueuedResourceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_queued_resource(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.tpu_v2alpha1.types.GetQueuedResourceRequest, dict]):
+                The request object. Request for
+                [GetQueuedResource][google.cloud.tpu.v2alpha1.Tpu.GetQueuedResource]
+            name (str):
+                Required. The resource name.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.tpu_v2alpha1.types.QueuedResource:
+                A QueuedResource represents a request
+                for resources that will be placed in a
+                queue and fulfilled when the necessary
+                resources are available.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_tpu.GetQueuedResourceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_tpu.GetQueuedResourceRequest):
+            request = cloud_tpu.GetQueuedResourceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_queued_resource]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_queued_resource(
+        self,
+        request: Optional[Union[cloud_tpu.CreateQueuedResourceRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        queued_resource: Optional[cloud_tpu.QueuedResource] = None,
+        queued_resource_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Creates a QueuedResource TPU instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import tpu_v2alpha1
+
+            def sample_create_queued_resource():
+                # Create a client
+                client = tpu_v2alpha1.TpuClient()
+
+                # Initialize request argument(s)
+                request = tpu_v2alpha1.CreateQueuedResourceRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.create_queued_resource(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.tpu_v2alpha1.types.CreateQueuedResourceRequest, dict]):
+                The request object. Request for
+                [CreateQueuedResource][google.cloud.tpu.v2alpha1.Tpu.CreateQueuedResource].
+            parent (str):
+                Required. The parent resource name.
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            queued_resource (google.cloud.tpu_v2alpha1.types.QueuedResource):
+                Required. The queued resource.
+                This corresponds to the ``queued_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            queued_resource_id (str):
+                The unqualified resource name. Should follow the
+                ``^[A-Za-z0-9_.~+%-]+$`` regex format.
+
+                This corresponds to the ``queued_resource_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.tpu_v2alpha1.types.QueuedResource` A QueuedResource represents a request for resources that will be placed
+                   in a queue and fulfilled when the necessary resources
+                   are available.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, queued_resource, queued_resource_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_tpu.CreateQueuedResourceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_tpu.CreateQueuedResourceRequest):
+            request = cloud_tpu.CreateQueuedResourceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if queued_resource is not None:
+                request.queued_resource = queued_resource
+            if queued_resource_id is not None:
+                request.queued_resource_id = queued_resource_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_queued_resource]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            cloud_tpu.QueuedResource,
+            metadata_type=cloud_tpu.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_queued_resource(
+        self,
+        request: Optional[Union[cloud_tpu.DeleteQueuedResourceRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Deletes a QueuedResource TPU instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import tpu_v2alpha1
+
+            def sample_delete_queued_resource():
+                # Create a client
+                client = tpu_v2alpha1.TpuClient()
+
+                # Initialize request argument(s)
+                request = tpu_v2alpha1.DeleteQueuedResourceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_queued_resource(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.tpu_v2alpha1.types.DeleteQueuedResourceRequest, dict]):
+                The request object. Request for
+                [DeleteQueuedResource][google.cloud.tpu.v2alpha1.Tpu.DeleteQueuedResource].
+            name (str):
+                Required. The resource name.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.tpu_v2alpha1.types.QueuedResource` A QueuedResource represents a request for resources that will be placed
+                   in a queue and fulfilled when the necessary resources
+                   are available.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_tpu.DeleteQueuedResourceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_tpu.DeleteQueuedResourceRequest):
+            request = cloud_tpu.DeleteQueuedResourceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_queued_resource]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            cloud_tpu.QueuedResource,
+            metadata_type=cloud_tpu.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def generate_service_identity(
         self,
         request: Optional[Union[cloud_tpu.GenerateServiceIdentityRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_tpu.GenerateServiceIdentityResponse:
         r"""Generates the Cloud TPU service identity for the
@@ -1365,7 +1860,7 @@ class TpuClient(metaclass=TpuClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAcceleratorTypesPager:
         r"""Lists accelerator types supported by this API.
@@ -1478,7 +1973,7 @@ class TpuClient(metaclass=TpuClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_tpu.AcceleratorType:
         r"""Gets AcceleratorType.
@@ -1578,7 +2073,7 @@ class TpuClient(metaclass=TpuClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRuntimeVersionsPager:
         r"""Lists runtime versions supported by this API.
@@ -1691,7 +2186,7 @@ class TpuClient(metaclass=TpuClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_tpu.RuntimeVersion:
         r"""Gets a runtime version.
@@ -1790,7 +2285,7 @@ class TpuClient(metaclass=TpuClientMeta):
         request: Optional[Union[cloud_tpu.GetGuestAttributesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_tpu.GetGuestAttributesResponse:
         r"""Retrieves the guest attributes for the node.
@@ -1866,6 +2361,106 @@ class TpuClient(metaclass=TpuClientMeta):
         # Done; return the response.
         return response
 
+    def simulate_maintenance_event(
+        self,
+        request: Optional[
+            Union[cloud_tpu.SimulateMaintenanceEventRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Simulates a maintenance event.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import tpu_v2alpha1
+
+            def sample_simulate_maintenance_event():
+                # Create a client
+                client = tpu_v2alpha1.TpuClient()
+
+                # Initialize request argument(s)
+                request = tpu_v2alpha1.SimulateMaintenanceEventRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.simulate_maintenance_event(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.tpu_v2alpha1.types.SimulateMaintenanceEventRequest, dict]):
+                The request object. Request for
+                [SimulateMaintenanceEvent][google.cloud.tpu.v2alpha1.Tpu.SimulateMaintenanceEvent].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.tpu_v2alpha1.types.Node` A TPU
+                instance.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_tpu.SimulateMaintenanceEventRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_tpu.SimulateMaintenanceEventRequest):
+            request = cloud_tpu.SimulateMaintenanceEventRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.simulate_maintenance_event
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            cloud_tpu.Node,
+            metadata_type=cloud_tpu.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def __enter__(self):
         return self
 
@@ -1880,14 +2475,9 @@ class TpuClient(metaclass=TpuClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-tpu",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("TpuClient",)

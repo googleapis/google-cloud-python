@@ -434,6 +434,119 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
         return self._stubs["update_node"]
 
     @property
+    def list_queued_resources(
+        self,
+    ) -> Callable[
+        [cloud_tpu.ListQueuedResourcesRequest],
+        Awaitable[cloud_tpu.ListQueuedResourcesResponse],
+    ]:
+        r"""Return a callable for the list queued resources method over gRPC.
+
+        Lists queued resources.
+
+        Returns:
+            Callable[[~.ListQueuedResourcesRequest],
+                    Awaitable[~.ListQueuedResourcesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_queued_resources" not in self._stubs:
+            self._stubs["list_queued_resources"] = self.grpc_channel.unary_unary(
+                "/google.cloud.tpu.v2alpha1.Tpu/ListQueuedResources",
+                request_serializer=cloud_tpu.ListQueuedResourcesRequest.serialize,
+                response_deserializer=cloud_tpu.ListQueuedResourcesResponse.deserialize,
+            )
+        return self._stubs["list_queued_resources"]
+
+    @property
+    def get_queued_resource(
+        self,
+    ) -> Callable[
+        [cloud_tpu.GetQueuedResourceRequest], Awaitable[cloud_tpu.QueuedResource]
+    ]:
+        r"""Return a callable for the get queued resource method over gRPC.
+
+        Gets details of a queued resource.
+
+        Returns:
+            Callable[[~.GetQueuedResourceRequest],
+                    Awaitable[~.QueuedResource]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_queued_resource" not in self._stubs:
+            self._stubs["get_queued_resource"] = self.grpc_channel.unary_unary(
+                "/google.cloud.tpu.v2alpha1.Tpu/GetQueuedResource",
+                request_serializer=cloud_tpu.GetQueuedResourceRequest.serialize,
+                response_deserializer=cloud_tpu.QueuedResource.deserialize,
+            )
+        return self._stubs["get_queued_resource"]
+
+    @property
+    def create_queued_resource(
+        self,
+    ) -> Callable[
+        [cloud_tpu.CreateQueuedResourceRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the create queued resource method over gRPC.
+
+        Creates a QueuedResource TPU instance.
+
+        Returns:
+            Callable[[~.CreateQueuedResourceRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_queued_resource" not in self._stubs:
+            self._stubs["create_queued_resource"] = self.grpc_channel.unary_unary(
+                "/google.cloud.tpu.v2alpha1.Tpu/CreateQueuedResource",
+                request_serializer=cloud_tpu.CreateQueuedResourceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_queued_resource"]
+
+    @property
+    def delete_queued_resource(
+        self,
+    ) -> Callable[
+        [cloud_tpu.DeleteQueuedResourceRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete queued resource method over gRPC.
+
+        Deletes a QueuedResource TPU instance.
+
+        Returns:
+            Callable[[~.DeleteQueuedResourceRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_queued_resource" not in self._stubs:
+            self._stubs["delete_queued_resource"] = self.grpc_channel.unary_unary(
+                "/google.cloud.tpu.v2alpha1.Tpu/DeleteQueuedResource",
+                request_serializer=cloud_tpu.DeleteQueuedResourceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_queued_resource"]
+
+    @property
     def generate_service_identity(
         self,
     ) -> Callable[
@@ -605,6 +718,34 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
                 response_deserializer=cloud_tpu.GetGuestAttributesResponse.deserialize,
             )
         return self._stubs["get_guest_attributes"]
+
+    @property
+    def simulate_maintenance_event(
+        self,
+    ) -> Callable[
+        [cloud_tpu.SimulateMaintenanceEventRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the simulate maintenance event method over gRPC.
+
+        Simulates a maintenance event.
+
+        Returns:
+            Callable[[~.SimulateMaintenanceEventRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "simulate_maintenance_event" not in self._stubs:
+            self._stubs["simulate_maintenance_event"] = self.grpc_channel.unary_unary(
+                "/google.cloud.tpu.v2alpha1.Tpu/SimulateMaintenanceEvent",
+                request_serializer=cloud_tpu.SimulateMaintenanceEventRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["simulate_maintenance_event"]
 
     def close(self):
         return self.grpc_channel.close()

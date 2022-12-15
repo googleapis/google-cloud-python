@@ -40,7 +40,6 @@ def sample_update_node():
 
     # Initialize request argument(s)
     node = tpu_v2alpha1.Node()
-    node.accelerator_type = "accelerator_type_value"
     node.runtime_version = "runtime_version_value"
 
     request = tpu_v2alpha1.UpdateNodeRequest(

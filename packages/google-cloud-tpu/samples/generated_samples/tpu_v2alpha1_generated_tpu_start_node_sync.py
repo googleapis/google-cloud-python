@@ -40,6 +40,7 @@ def sample_start_node():
 
     # Initialize request argument(s)
     request = tpu_v2alpha1.StartNodeRequest(
+        name="name_value",
     )
 
     # Make the request

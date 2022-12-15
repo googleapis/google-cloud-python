@@ -39,16 +39,21 @@ def partition(
 class tpuCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-        'create_node': ('parent', 'node', 'node_id', ),
-        'delete_node': ('name', ),
+        'create_node': ('parent', 'node', 'node_id', 'request_id', ),
+        'create_queued_resource': ('parent', 'queued_resource', 'queued_resource_id', 'request_id', ),
+        'delete_node': ('name', 'request_id', ),
+        'delete_queued_resource': ('name', 'request_id', ),
         'generate_service_identity': ('parent', ),
         'get_accelerator_type': ('name', ),
         'get_guest_attributes': ('name', 'query_path', 'worker_ids', ),
         'get_node': ('name', ),
+        'get_queued_resource': ('name', ),
         'get_runtime_version': ('name', ),
         'list_accelerator_types': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_nodes': ('parent', 'page_size', 'page_token', ),
+        'list_queued_resources': ('parent', 'page_size', 'page_token', ),
         'list_runtime_versions': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'simulate_maintenance_event': ('name', 'worker_ids', ),
         'start_node': ('name', ),
         'stop_node': ('name', ),
         'update_node': ('update_mask', 'node', ),

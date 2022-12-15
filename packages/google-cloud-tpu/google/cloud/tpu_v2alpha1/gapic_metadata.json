@@ -15,9 +15,19 @@
                 "create_node"
               ]
             },
+            "CreateQueuedResource": {
+              "methods": [
+                "create_queued_resource"
+              ]
+            },
             "DeleteNode": {
               "methods": [
                 "delete_node"
+              ]
+            },
+            "DeleteQueuedResource": {
+              "methods": [
+                "delete_queued_resource"
               ]
             },
             "GenerateServiceIdentity": {
@@ -40,6 +50,11 @@
                 "get_node"
               ]
             },
+            "GetQueuedResource": {
+              "methods": [
+                "get_queued_resource"
+              ]
+            },
             "GetRuntimeVersion": {
               "methods": [
                 "get_runtime_version"
@@ -55,9 +70,19 @@
                 "list_nodes"
               ]
             },
+            "ListQueuedResources": {
+              "methods": [
+                "list_queued_resources"
+              ]
+            },
             "ListRuntimeVersions": {
               "methods": [
                 "list_runtime_versions"
+              ]
+            },
+            "SimulateMaintenanceEvent": {
+              "methods": [
+                "simulate_maintenance_event"
               ]
             },
             "StartNode": {
@@ -85,9 +110,19 @@
                 "create_node"
               ]
             },
+            "CreateQueuedResource": {
+              "methods": [
+                "create_queued_resource"
+              ]
+            },
             "DeleteNode": {
               "methods": [
                 "delete_node"
+              ]
+            },
+            "DeleteQueuedResource": {
+              "methods": [
+                "delete_queued_resource"
               ]
             },
             "GenerateServiceIdentity": {
@@ -110,6 +145,11 @@
                 "get_node"
               ]
             },
+            "GetQueuedResource": {
+              "methods": [
+                "get_queued_resource"
+              ]
+            },
             "GetRuntimeVersion": {
               "methods": [
                 "get_runtime_version"
@@ -125,9 +165,19 @@
                 "list_nodes"
               ]
             },
+            "ListQueuedResources": {
+              "methods": [
+                "list_queued_resources"
+              ]
+            },
             "ListRuntimeVersions": {
               "methods": [
                 "list_runtime_versions"
+              ]
+            },
+            "SimulateMaintenanceEvent": {
+              "methods": [
+                "simulate_maintenance_event"
               ]
             },
             "StartNode": {

@@ -24,18 +24,13 @@ import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
 
+from google.cloud.tpu_v2alpha1 import gapic_version as package_version
 from google.cloud.tpu_v2alpha1.types import cloud_tpu
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-tpu",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 class TpuTransport(abc.ABC):
@@ -163,6 +158,26 @@ class TpuTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_queued_resources: gapic_v1.method.wrap_method(
+                self.list_queued_resources,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_queued_resource: gapic_v1.method.wrap_method(
+                self.get_queued_resource,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_queued_resource: gapic_v1.method.wrap_method(
+                self.create_queued_resource,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_queued_resource: gapic_v1.method.wrap_method(
+                self.delete_queued_resource,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.generate_service_identity: gapic_v1.method.wrap_method(
                 self.generate_service_identity,
                 default_timeout=None,
@@ -190,6 +205,11 @@ class TpuTransport(abc.ABC):
             ),
             self.get_guest_attributes: gapic_v1.method.wrap_method(
                 self.get_guest_attributes,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.simulate_maintenance_event: gapic_v1.method.wrap_method(
+                self.simulate_maintenance_event,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -272,6 +292,45 @@ class TpuTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def list_queued_resources(
+        self,
+    ) -> Callable[
+        [cloud_tpu.ListQueuedResourcesRequest],
+        Union[
+            cloud_tpu.ListQueuedResourcesResponse,
+            Awaitable[cloud_tpu.ListQueuedResourcesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_queued_resource(
+        self,
+    ) -> Callable[
+        [cloud_tpu.GetQueuedResourceRequest],
+        Union[cloud_tpu.QueuedResource, Awaitable[cloud_tpu.QueuedResource]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_queued_resource(
+        self,
+    ) -> Callable[
+        [cloud_tpu.CreateQueuedResourceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_queued_resource(
+        self,
+    ) -> Callable[
+        [cloud_tpu.DeleteQueuedResourceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def generate_service_identity(
         self,
     ) -> Callable[
@@ -334,6 +393,15 @@ class TpuTransport(abc.ABC):
             cloud_tpu.GetGuestAttributesResponse,
             Awaitable[cloud_tpu.GetGuestAttributesResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def simulate_maintenance_event(
+        self,
+    ) -> Callable[
+        [cloud_tpu.SimulateMaintenanceEventRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
