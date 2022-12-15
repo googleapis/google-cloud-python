@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/python-beyondcorp-clientgateways/compare/v0.1.3...v0.2.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.beyondcorp_clientgateways.__version__` ([41cfb6a](https://github.com/googleapis/python-beyondcorp-clientgateways/commit/41cfb6ab9ac28b33e69cc2e1bede18796a42e18a))
+* Add typing to proto.Message based class attributes ([41cfb6a](https://github.com/googleapis/python-beyondcorp-clientgateways/commit/41cfb6ab9ac28b33e69cc2e1bede18796a42e18a))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([41cfb6a](https://github.com/googleapis/python-beyondcorp-clientgateways/commit/41cfb6ab9ac28b33e69cc2e1bede18796a42e18a))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([d290938](https://github.com/googleapis/python-beyondcorp-clientgateways/commit/d2909387abcfe245b2e54939662934b4cb3dcc09))
+* Drop usage of pkg_resources ([d290938](https://github.com/googleapis/python-beyondcorp-clientgateways/commit/d2909387abcfe245b2e54939662934b4cb3dcc09))
+* Fix timeout default values ([d290938](https://github.com/googleapis/python-beyondcorp-clientgateways/commit/d2909387abcfe245b2e54939662934b4cb3dcc09))
+
+
+### Documentation
+
+* Fix minor docstring formatting ([41cfb6a](https://github.com/googleapis/python-beyondcorp-clientgateways/commit/41cfb6ab9ac28b33e69cc2e1bede18796a42e18a))
+* **samples:** Snippetgen handling of repeated enum field ([41cfb6a](https://github.com/googleapis/python-beyondcorp-clientgateways/commit/41cfb6ab9ac28b33e69cc2e1bede18796a42e18a))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([d290938](https://github.com/googleapis/python-beyondcorp-clientgateways/commit/d2909387abcfe245b2e54939662934b4cb3dcc09))
+
 ## [0.1.3](https://github.com/googleapis/python-beyondcorp-clientgateways/compare/v0.1.2...v0.1.3) (2022-10-07)
 
 
