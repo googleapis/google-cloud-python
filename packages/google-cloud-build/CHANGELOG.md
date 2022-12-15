@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.10.0](https://github.com/googleapis/python-cloudbuild/compare/v3.9.3...v3.10.0) (2022-12-15)
+
+
+### Features
+
+* Add allow_failure, exit_code, and allow_exit_code to BuildStep message ([#351](https://github.com/googleapis/python-cloudbuild/issues/351)) ([0ef62e5](https://github.com/googleapis/python-cloudbuild/commit/0ef62e52dcdfae5e12e2bc7f19bbfd188729d7ac))
+* Add support for `google.cloud.devtools.cloudbuild.__version__` ([f2962f8](https://github.com/googleapis/python-cloudbuild/commit/f2962f8773e29c91295d887c1f0f8dea123797c3))
+* Add typing to proto.Message based class attributes ([f2962f8](https://github.com/googleapis/python-cloudbuild/commit/f2962f8773e29c91295d887c1f0f8dea123797c3))
+* Integration of Cloud Build with Artifact Registry ([f2962f8](https://github.com/googleapis/python-cloudbuild/commit/f2962f8773e29c91295d887c1f0f8dea123797c3))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([f2962f8](https://github.com/googleapis/python-cloudbuild/commit/f2962f8773e29c91295d887c1f0f8dea123797c3))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([601b46c](https://github.com/googleapis/python-cloudbuild/commit/601b46cba40cd64682cf40c9bffc5e4269952d75))
+* Drop usage of pkg_resources ([601b46c](https://github.com/googleapis/python-cloudbuild/commit/601b46cba40cd64682cf40c9bffc5e4269952d75))
+* Fix timeout default values ([601b46c](https://github.com/googleapis/python-cloudbuild/commit/601b46cba40cd64682cf40c9bffc5e4269952d75))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([f2962f8](https://github.com/googleapis/python-cloudbuild/commit/f2962f8773e29c91295d887c1f0f8dea123797c3))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([601b46c](https://github.com/googleapis/python-cloudbuild/commit/601b46cba40cd64682cf40c9bffc5e4269952d75))
+
 ## [3.9.3](https://github.com/googleapis/python-cloudbuild/compare/v3.9.2...v3.9.3) (2022-10-07)
 
 
