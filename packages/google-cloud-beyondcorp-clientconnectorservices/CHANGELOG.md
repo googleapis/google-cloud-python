@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/compare/v0.2.2...v0.3.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.beyondcorp_clientconnectorservices.__version__` ([96d425c](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/commit/96d425cdcbe6a72636b97d9da5418fee465614a9))
+* Add typing to proto.Message based class attributes ([96d425c](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/commit/96d425cdcbe6a72636b97d9da5418fee465614a9))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([96d425c](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/commit/96d425cdcbe6a72636b97d9da5418fee465614a9))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([f044545](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/commit/f044545059fd9db57ce9512d9dda00069cad74ef))
+* Drop usage of pkg_resources ([f044545](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/commit/f044545059fd9db57ce9512d9dda00069cad74ef))
+* Fix timeout default values ([f044545](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/commit/f044545059fd9db57ce9512d9dda00069cad74ef))
+
+
+### Documentation
+
+* Fix minor docstring formatting ([96d425c](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/commit/96d425cdcbe6a72636b97d9da5418fee465614a9))
+* **samples:** Snippetgen handling of repeated enum field ([96d425c](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/commit/96d425cdcbe6a72636b97d9da5418fee465614a9))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([f044545](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/commit/f044545059fd9db57ce9512d9dda00069cad74ef))
+
 ## [0.2.2](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/compare/v0.2.1...v0.2.2) (2022-10-10)
 
 
