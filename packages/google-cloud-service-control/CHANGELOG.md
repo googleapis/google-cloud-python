@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-service-control/compare/v1.5.3...v1.6.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.servicecontrol.__version__` ([d379927](https://github.com/googleapis/python-service-control/commit/d3799274d3cf2319f58013448795683537ab7ae6))
+* Add typing to proto.Message based class attributes ([d379927](https://github.com/googleapis/python-service-control/commit/d3799274d3cf2319f58013448795683537ab7ae6))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([d379927](https://github.com/googleapis/python-service-control/commit/d3799274d3cf2319f58013448795683537ab7ae6))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([e1e8cc3](https://github.com/googleapis/python-service-control/commit/e1e8cc3d9ee2493b8f0fc0d2a05d937f71ab6a66))
+* Drop usage of pkg_resources ([e1e8cc3](https://github.com/googleapis/python-service-control/commit/e1e8cc3d9ee2493b8f0fc0d2a05d937f71ab6a66))
+* Fix timeout default values ([e1e8cc3](https://github.com/googleapis/python-service-control/commit/e1e8cc3d9ee2493b8f0fc0d2a05d937f71ab6a66))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([d379927](https://github.com/googleapis/python-service-control/commit/d3799274d3cf2319f58013448795683537ab7ae6))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([e1e8cc3](https://github.com/googleapis/python-service-control/commit/e1e8cc3d9ee2493b8f0fc0d2a05d937f71ab6a66))
+
 ## [1.5.3](https://github.com/googleapis/python-service-control/compare/v1.5.2...v1.5.3) (2022-10-07)
 
 
