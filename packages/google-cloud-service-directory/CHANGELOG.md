@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-service-directory/compare/v1.5.3...v1.6.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.servicedirectory.__version__` ([8e84d42](https://github.com/googleapis/python-service-directory/commit/8e84d42c42fb37d7b11eb17ee70619124f6cd338))
+* Add typing to proto.Message based class attributes ([8e84d42](https://github.com/googleapis/python-service-directory/commit/8e84d42c42fb37d7b11eb17ee70619124f6cd338))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([8e84d42](https://github.com/googleapis/python-service-directory/commit/8e84d42c42fb37d7b11eb17ee70619124f6cd338))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([9fae8c9](https://github.com/googleapis/python-service-directory/commit/9fae8c9648e09da82a80af7fe1a84fad6f8402ab))
+* Drop usage of pkg_resources ([9fae8c9](https://github.com/googleapis/python-service-directory/commit/9fae8c9648e09da82a80af7fe1a84fad6f8402ab))
+* Fix timeout default values ([9fae8c9](https://github.com/googleapis/python-service-directory/commit/9fae8c9648e09da82a80af7fe1a84fad6f8402ab))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([8e84d42](https://github.com/googleapis/python-service-directory/commit/8e84d42c42fb37d7b11eb17ee70619124f6cd338))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([9fae8c9](https://github.com/googleapis/python-service-directory/commit/9fae8c9648e09da82a80af7fe1a84fad6f8402ab))
+
 ## [1.5.3](https://github.com/googleapis/python-service-directory/compare/v1.5.2...v1.5.3) (2022-10-07)
 
 
