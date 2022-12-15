@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-gke-hub/compare/v1.5.3...v1.6.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.gkehub.__version__` ([cd4e739](https://github.com/googleapis/python-gke-hub/commit/cd4e739702c76a2e016a26a29355de1d45742207))
+* Add typing to proto.Message based class attributes ([cd4e739](https://github.com/googleapis/python-gke-hub/commit/cd4e739702c76a2e016a26a29355de1d45742207))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([cd4e739](https://github.com/googleapis/python-gke-hub/commit/cd4e739702c76a2e016a26a29355de1d45742207))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([75f63cd](https://github.com/googleapis/python-gke-hub/commit/75f63cd91615c740e7a59d035e0d8671557b66a2))
+* Drop usage of pkg_resources ([75f63cd](https://github.com/googleapis/python-gke-hub/commit/75f63cd91615c740e7a59d035e0d8671557b66a2))
+* Fix timeout default values ([75f63cd](https://github.com/googleapis/python-gke-hub/commit/75f63cd91615c740e7a59d035e0d8671557b66a2))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([cd4e739](https://github.com/googleapis/python-gke-hub/commit/cd4e739702c76a2e016a26a29355de1d45742207))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([75f63cd](https://github.com/googleapis/python-gke-hub/commit/75f63cd91615c740e7a59d035e0d8671557b66a2))
+
 ## [1.5.3](https://github.com/googleapis/python-gke-hub/compare/v1.5.2...v1.5.3) (2022-10-07)
 
 
