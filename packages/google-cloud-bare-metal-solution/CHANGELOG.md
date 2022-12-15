@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.2.1](https://github.com/googleapis/python-bare-metal-solution/compare/v1.2.0...v1.2.1) (2022-12-08)
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([7aeaf82](https://github.com/googleapis/python-bare-metal-solution/commit/7aeaf82e540e920055aae20c3aabcc82b866a2da))
+* Drop usage of pkg_resources ([7aeaf82](https://github.com/googleapis/python-bare-metal-solution/commit/7aeaf82e540e920055aae20c3aabcc82b866a2da))
+* Fix timeout default values ([7aeaf82](https://github.com/googleapis/python-bare-metal-solution/commit/7aeaf82e540e920055aae20c3aabcc82b866a2da))
+
+
+### Documentation
+
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([7aeaf82](https://github.com/googleapis/python-bare-metal-solution/commit/7aeaf82e540e920055aae20c3aabcc82b866a2da))
+
 ## [1.2.0](https://github.com/googleapis/python-bare-metal-solution/compare/v1.1.3...v1.2.0) (2022-11-16)
 
 
