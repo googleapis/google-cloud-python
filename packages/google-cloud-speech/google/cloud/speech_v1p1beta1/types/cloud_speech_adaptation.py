@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.speech_v1p1beta1.types import resource
@@ -66,15 +68,15 @@ class CreatePhraseSetRequest(proto.Message):
             Required. The phrase set to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    phrase_set_id = proto.Field(
+    phrase_set_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    phrase_set = proto.Field(
+    phrase_set: resource.PhraseSet = proto.Field(
         proto.MESSAGE,
         number=3,
         message=resource.PhraseSet,
@@ -103,12 +105,12 @@ class UpdatePhraseSetRequest(proto.Message):
             The list of fields to be updated.
     """
 
-    phrase_set = proto.Field(
+    phrase_set: resource.PhraseSet = proto.Field(
         proto.MESSAGE,
         number=1,
         message=resource.PhraseSet,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -132,7 +134,7 @@ class GetPhraseSetRequest(proto.Message):
             with matching ``us`` or ``eu`` location value.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -169,15 +171,15 @@ class ListPhraseSetRequest(proto.Message):
             token.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -187,7 +189,7 @@ class ListPhraseSetResponse(proto.Message):
     r"""Message returned to the client by the ``ListPhraseSet`` method.
 
     Attributes:
-        phrase_sets (Sequence[google.cloud.speech_v1p1beta1.types.PhraseSet]):
+        phrase_sets (MutableSequence[google.cloud.speech_v1p1beta1.types.PhraseSet]):
             The phrase set.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -199,12 +201,12 @@ class ListPhraseSetResponse(proto.Message):
     def raw_page(self):
         return self
 
-    phrase_sets = proto.RepeatedField(
+    phrase_sets: MutableSequence[resource.PhraseSet] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resource.PhraseSet,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -220,7 +222,7 @@ class DeletePhraseSetRequest(proto.Message):
             ``projects/{project}/locations/{location}/phraseSets/{phrase_set}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -254,15 +256,15 @@ class CreateCustomClassRequest(proto.Message):
             Required. The custom class to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    custom_class_id = proto.Field(
+    custom_class_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    custom_class = proto.Field(
+    custom_class: resource.CustomClass = proto.Field(
         proto.MESSAGE,
         number=3,
         message=resource.CustomClass,
@@ -291,12 +293,12 @@ class UpdateCustomClassRequest(proto.Message):
             The list of fields to be updated.
     """
 
-    custom_class = proto.Field(
+    custom_class: resource.CustomClass = proto.Field(
         proto.MESSAGE,
         number=1,
         message=resource.CustomClass,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -313,7 +315,7 @@ class GetCustomClassRequest(proto.Message):
             ``projects/{project}/locations/{location}/customClasses/{custom_class}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -350,15 +352,15 @@ class ListCustomClassesRequest(proto.Message):
             page token.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -368,7 +370,7 @@ class ListCustomClassesResponse(proto.Message):
     r"""Message returned to the client by the ``ListCustomClasses`` method.
 
     Attributes:
-        custom_classes (Sequence[google.cloud.speech_v1p1beta1.types.CustomClass]):
+        custom_classes (MutableSequence[google.cloud.speech_v1p1beta1.types.CustomClass]):
             The custom classes.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -380,12 +382,12 @@ class ListCustomClassesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    custom_classes = proto.RepeatedField(
+    custom_classes: MutableSequence[resource.CustomClass] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resource.CustomClass,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -408,7 +410,7 @@ class DeleteCustomClassRequest(proto.Message):
             with matching ``us`` or ``eu`` location value.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

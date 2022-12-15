@@ -664,7 +664,9 @@ def test_recognize(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.recognize), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = cloud_speech.RecognizeResponse()
+        call.return_value = cloud_speech.RecognizeResponse(
+            request_id=1077,
+        )
         response = client.recognize(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -674,6 +676,7 @@ def test_recognize(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_speech.RecognizeResponse)
+    assert response.request_id == 1077
 
 
 def test_recognize_empty_call():
@@ -709,7 +712,9 @@ async def test_recognize_async(
     with mock.patch.object(type(client.transport.recognize), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cloud_speech.RecognizeResponse()
+            cloud_speech.RecognizeResponse(
+                request_id=1077,
+            )
         )
         response = await client.recognize(request)
 
@@ -720,6 +725,7 @@ async def test_recognize_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_speech.RecognizeResponse)
+    assert response.request_id == 1077
 
 
 @pytest.mark.asyncio

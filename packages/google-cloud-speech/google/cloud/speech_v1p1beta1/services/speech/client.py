@@ -19,6 +19,8 @@ import re
 from typing import (
     Dict,
     Mapping,
+    MutableMapping,
+    MutableSequence,
     Optional,
     Iterable,
     Iterator,
@@ -26,8 +28,10 @@ from typing import (
     Tuple,
     Type,
     Union,
+    cast,
 )
-import pkg_resources
+
+from google.cloud.speech_v1p1beta1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -68,7 +72,7 @@ class SpeechClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[SpeechTransport]:
         """Returns an appropriate transport class.
 
@@ -365,8 +369,8 @@ class SpeechClient(metaclass=SpeechClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, SpeechTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, SpeechTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the speech client.
@@ -380,7 +384,7 @@ class SpeechClient(metaclass=SpeechClientMeta):
             transport (Union[str, SpeechTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -410,6 +414,7 @@ class SpeechClient(metaclass=SpeechClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -462,12 +467,12 @@ class SpeechClient(metaclass=SpeechClientMeta):
 
     def recognize(
         self,
-        request: Union[cloud_speech.RecognizeRequest, dict] = None,
+        request: Optional[Union[cloud_speech.RecognizeRequest, dict]] = None,
         *,
-        config: cloud_speech.RecognitionConfig = None,
-        audio: cloud_speech.RecognitionAudio = None,
+        config: Optional[cloud_speech.RecognitionConfig] = None,
+        audio: Optional[cloud_speech.RecognitionAudio] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_speech.RecognizeResponse:
         r"""Performs synchronous speech recognition: receive
@@ -578,12 +583,12 @@ class SpeechClient(metaclass=SpeechClientMeta):
 
     def long_running_recognize(
         self,
-        request: Union[cloud_speech.LongRunningRecognizeRequest, dict] = None,
+        request: Optional[Union[cloud_speech.LongRunningRecognizeRequest, dict]] = None,
         *,
-        config: cloud_speech.RecognitionConfig = None,
-        audio: cloud_speech.RecognitionAudio = None,
+        config: Optional[cloud_speech.RecognitionConfig] = None,
+        audio: Optional[cloud_speech.RecognitionAudio] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Performs asynchronous speech recognition: receive results via
@@ -715,10 +720,10 @@ class SpeechClient(metaclass=SpeechClientMeta):
 
     def streaming_recognize(
         self,
-        requests: Iterator[cloud_speech.StreamingRecognizeRequest] = None,
+        requests: Optional[Iterator[cloud_speech.StreamingRecognizeRequest]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[cloud_speech.StreamingRecognizeResponse]:
         r"""Performs bidirectional streaming speech recognition:
@@ -874,14 +879,9 @@ class SpeechClient(metaclass=SpeechClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-speech",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("SpeechClient",)
