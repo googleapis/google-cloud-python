@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.9.0](https://github.com/googleapis/python-data-qna/compare/v0.8.2...v0.9.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.dataqna.__version__` ([9fb86c9](https://github.com/googleapis/python-data-qna/commit/9fb86c9e584f1011bb0a22d4d5586f689306bd9a))
+* Add typing to proto.Message based class attributes ([9fb86c9](https://github.com/googleapis/python-data-qna/commit/9fb86c9e584f1011bb0a22d4d5586f689306bd9a))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([9fb86c9](https://github.com/googleapis/python-data-qna/commit/9fb86c9e584f1011bb0a22d4d5586f689306bd9a))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([9a515b5](https://github.com/googleapis/python-data-qna/commit/9a515b5de6cd2bc8eb2a65418b4dff14625876c0))
+* Drop usage of pkg_resources ([9a515b5](https://github.com/googleapis/python-data-qna/commit/9a515b5de6cd2bc8eb2a65418b4dff14625876c0))
+* Fix timeout default values ([9a515b5](https://github.com/googleapis/python-data-qna/commit/9a515b5de6cd2bc8eb2a65418b4dff14625876c0))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([9fb86c9](https://github.com/googleapis/python-data-qna/commit/9fb86c9e584f1011bb0a22d4d5586f689306bd9a))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([9a515b5](https://github.com/googleapis/python-data-qna/commit/9a515b5de6cd2bc8eb2a65418b4dff14625876c0))
+
 ## [0.8.2](https://github.com/googleapis/python-data-qna/compare/v0.8.1...v0.8.2) (2022-10-10)
 
 
