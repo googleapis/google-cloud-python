@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.17.0](https://github.com/googleapis/python-securitycenter/compare/v1.16.2...v1.17.0) (2022-12-15)
+
+
+### Features
+
+* Add files field to finding's list of attributes ([63c76ad](https://github.com/googleapis/python-securitycenter/commit/63c76adae5a4f45e7b9f330bac21c934bd46bac2))
+* Add kernel_rootkit field to finding's list of attributes ([#413](https://github.com/googleapis/python-securitycenter/issues/413)) ([62c9cb8](https://github.com/googleapis/python-securitycenter/commit/62c9cb879066162b9f30879cfa63de63ff27c63d))
+* Add support for `google.cloud.securitycenter.__version__` ([63c76ad](https://github.com/googleapis/python-securitycenter/commit/63c76adae5a4f45e7b9f330bac21c934bd46bac2))
+* Add typing to proto.Message based class attributes ([63c76ad](https://github.com/googleapis/python-securitycenter/commit/63c76adae5a4f45e7b9f330bac21c934bd46bac2))
+* Add user_name field to the finding access ([#418](https://github.com/googleapis/python-securitycenter/issues/418)) ([ced00fd](https://github.com/googleapis/python-securitycenter/commit/ced00fdf89d33a078bce530f320b2601466eae8e))
+* Adding project/folder level parents to notification configs in SCC ([#403](https://github.com/googleapis/python-securitycenter/issues/403)) ([667729a](https://github.com/googleapis/python-securitycenter/commit/667729a0ef3b59269302d68f53cd52d1068cf4fa))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([63c76ad](https://github.com/googleapis/python-securitycenter/commit/63c76adae5a4f45e7b9f330bac21c934bd46bac2))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([fae54be](https://github.com/googleapis/python-securitycenter/commit/fae54bea80a45616dab340530b8cceacda58ce1c))
+* Drop usage of pkg_resources ([fae54be](https://github.com/googleapis/python-securitycenter/commit/fae54bea80a45616dab340530b8cceacda58ce1c))
+* Fix timeout default values ([fae54be](https://github.com/googleapis/python-securitycenter/commit/fae54bea80a45616dab340530b8cceacda58ce1c))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([63c76ad](https://github.com/googleapis/python-securitycenter/commit/63c76adae5a4f45e7b9f330bac21c934bd46bac2))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([fae54be](https://github.com/googleapis/python-securitycenter/commit/fae54bea80a45616dab340530b8cceacda58ce1c))
+* **samples:** Update samples to include new parent levels (folder and project) ([#405](https://github.com/googleapis/python-securitycenter/issues/405)) ([5960173](https://github.com/googleapis/python-securitycenter/commit/596017339116c243c5f42d9942fd4a37afd9207c))
+
 ## [1.16.2](https://github.com/googleapis/python-securitycenter/compare/v1.16.1...v1.16.2) (2022-10-07)
 
 
