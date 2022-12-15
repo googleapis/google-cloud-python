@@ -411,8 +411,8 @@ class TaskSpec(proto.Message):
             means if the exit code is 0, exit task. If task ends with
             non-zero exit code, retry the task with max_retry_count.
         environments (MutableMapping[str, str]):
-            Environment variables to set before running
-            the Task. You can set up to 100 environments.
+            Deprecated: please use
+            environment(non-plural) instead.
         volumes (MutableSequence[google.cloud.batch_v1alpha.types.Volume]):
             Volumes to mount before running Tasks using
             this TaskSpec.

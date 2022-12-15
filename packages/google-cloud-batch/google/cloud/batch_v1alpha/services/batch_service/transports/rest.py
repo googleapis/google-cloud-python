@@ -1322,14 +1322,6 @@ class BatchServiceRestTransport(BatchServiceTransport):
                     "method": "get",
                     "uri": "/v1alpha/{resource=projects/*/locations/*/jobs/*}:getIamPolicy",
                 },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{resource=projects/*/locations/*/tasks/*}:getIamPolicy",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{resource=projects/*/locations/*/nodes/*}:getIamPolicy",
-                },
             ]
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
@@ -1396,16 +1388,6 @@ class BatchServiceRestTransport(BatchServiceTransport):
                 {
                     "method": "post",
                     "uri": "/v1alpha/{resource=projects/*/locations/*/jobs/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{resource=projects/*/locations/*/tasks/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{resource=projects/*/locations/*/nodes/*}:setIamPolicy",
                     "body": "*",
                 },
             ]
@@ -1476,16 +1458,6 @@ class BatchServiceRestTransport(BatchServiceTransport):
                 {
                     "method": "post",
                     "uri": "/v1alpha/{resource=projects/*/locations/*/jobs/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{resource=projects/*/locations/*/tasks/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{resource=projects/*/locations/*/nodes/*}:testIamPermissions",
                     "body": "*",
                 },
             ]

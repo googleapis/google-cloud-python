@@ -2630,15 +2630,16 @@ def test_create_job_rest(request_type):
                                 "install_gpu_drivers": True,
                             }
                         ],
+                        "boot_disk": {
+                            "image": "image_value",
+                            "snapshot": "snapshot_value",
+                            "type_": "type__value",
+                            "size_gb": 739,
+                            "disk_interface": "disk_interface_value",
+                        },
                         "disks": [
                             {
-                                "new_disk": {
-                                    "image": "image_value",
-                                    "snapshot": "snapshot_value",
-                                    "type_": "type__value",
-                                    "size_gb": 739,
-                                    "disk_interface": "disk_interface_value",
-                                },
+                                "new_disk": {},
                                 "existing_disk": "existing_disk_value",
                                 "device_name": "device_name_value",
                             }
@@ -3006,15 +3007,16 @@ def test_create_job_rest_bad_request(
                                 "install_gpu_drivers": True,
                             }
                         ],
+                        "boot_disk": {
+                            "image": "image_value",
+                            "snapshot": "snapshot_value",
+                            "type_": "type__value",
+                            "size_gb": 739,
+                            "disk_interface": "disk_interface_value",
+                        },
                         "disks": [
                             {
-                                "new_disk": {
-                                    "image": "image_value",
-                                    "snapshot": "snapshot_value",
-                                    "type_": "type__value",
-                                    "size_gb": 739,
-                                    "disk_interface": "disk_interface_value",
-                                },
+                                "new_disk": {},
                                 "existing_disk": "existing_disk_value",
                                 "device_name": "device_name_value",
                             }

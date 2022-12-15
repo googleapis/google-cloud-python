@@ -612,6 +612,10 @@ class AllocationPolicy(proto.Message):
             accelerators (MutableSequence[google.cloud.batch_v1alpha.types.AllocationPolicy.Accelerator]):
                 The accelerators attached to each VM
                 instance.
+            boot_disk (google.cloud.batch_v1alpha.types.AllocationPolicy.Disk):
+                Book disk to be created and attached to each
+                VM by this InstancePolicy. Boot disk will be
+                deleted when the VM is deleted.
             disks (MutableSequence[google.cloud.batch_v1alpha.types.AllocationPolicy.AttachedDisk]):
                 Non-boot disks to be attached for each VM
                 created by this InstancePolicy. New disks will
@@ -644,6 +648,11 @@ class AllocationPolicy(proto.Message):
             proto.MESSAGE,
             number=5,
             message="AllocationPolicy.Accelerator",
+        )
+        boot_disk: "AllocationPolicy.Disk" = proto.Field(
+            proto.MESSAGE,
+            number=8,
+            message="AllocationPolicy.Disk",
         )
         disks: MutableSequence["AllocationPolicy.AttachedDisk"] = proto.RepeatedField(
             proto.MESSAGE,
