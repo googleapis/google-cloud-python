@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.6.0](https://github.com/googleapis/python-documentai/compare/v2.5.0...v2.6.0) (2022-12-15)
+
+
+### Features
+
+* Added process_options field in ProcessRequest in document_processor_service.proto ([d923e53](https://github.com/googleapis/python-documentai/commit/d923e5348983ebe0881b96dcfdb687696b5eb5df))
+* Added sample_document_uris field in ProcessorType in processor_type.proto ([d923e53](https://github.com/googleapis/python-documentai/commit/d923e5348983ebe0881b96dcfdb687696b5eb5df))
+* Added sharding_config field in DocumentOutputConfig.GcsOutputConfig in document_io.proto ([d923e53](https://github.com/googleapis/python-documentai/commit/d923e5348983ebe0881b96dcfdb687696b5eb5df))
+
 ## [2.5.0](https://github.com/googleapis/python-documentai/compare/v2.4.1...v2.5.0) (2022-12-13)
 
 
