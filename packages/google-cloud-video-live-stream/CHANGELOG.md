@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.1.0](https://github.com/googleapis/python-video-live-stream/compare/v1.0.4...v1.1.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.video.live_stream.__version__` ([714cbd4](https://github.com/googleapis/python-video-live-stream/commit/714cbd4098cca36a7768f5c8d99b426e58ebc0a7))
+* Add typing to proto.Message based class attributes ([714cbd4](https://github.com/googleapis/python-video-live-stream/commit/714cbd4098cca36a7768f5c8d99b426e58ebc0a7))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([714cbd4](https://github.com/googleapis/python-video-live-stream/commit/714cbd4098cca36a7768f5c8d99b426e58ebc0a7))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([b836b51](https://github.com/googleapis/python-video-live-stream/commit/b836b51773c80bc25599d53d56bed3a88e68ad25))
+* Drop usage of pkg_resources ([b836b51](https://github.com/googleapis/python-video-live-stream/commit/b836b51773c80bc25599d53d56bed3a88e68ad25))
+* Fix timeout default values ([b836b51](https://github.com/googleapis/python-video-live-stream/commit/b836b51773c80bc25599d53d56bed3a88e68ad25))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([714cbd4](https://github.com/googleapis/python-video-live-stream/commit/714cbd4098cca36a7768f5c8d99b426e58ebc0a7))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([b836b51](https://github.com/googleapis/python-video-live-stream/commit/b836b51773c80bc25599d53d56bed3a88e68ad25))
+
 ## [1.0.4](https://github.com/googleapis/python-video-live-stream/compare/v1.0.3...v1.0.4) (2022-10-07)
 
 
