@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## [2.8.0](https://github.com/googleapis/python-scheduler/compare/v2.7.3...v2.8.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.scheduler.__version__` ([ab1a908](https://github.com/googleapis/python-scheduler/commit/ab1a9089bbb8f9dd0b4ea26afffa8ae7e7ad069a))
+* Add typing to proto.Message based class attributes ([ab1a908](https://github.com/googleapis/python-scheduler/commit/ab1a9089bbb8f9dd0b4ea26afffa8ae7e7ad069a))
+* Updated Client Libraries for Cloud Scheduler ([#304](https://github.com/googleapis/python-scheduler/issues/304)) ([a6cad2f](https://github.com/googleapis/python-scheduler/commit/a6cad2f03d2846f672f8403d38d2fcb9da69912b))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([ab1a908](https://github.com/googleapis/python-scheduler/commit/ab1a9089bbb8f9dd0b4ea26afffa8ae7e7ad069a))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([75a677a](https://github.com/googleapis/python-scheduler/commit/75a677a30af56568ae365715056360d23f4b7f7c))
+* Drop usage of pkg_resources ([75a677a](https://github.com/googleapis/python-scheduler/commit/75a677a30af56568ae365715056360d23f4b7f7c))
+* Fix timeout default values ([75a677a](https://github.com/googleapis/python-scheduler/commit/75a677a30af56568ae365715056360d23f4b7f7c))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([ab1a908](https://github.com/googleapis/python-scheduler/commit/ab1a9089bbb8f9dd0b4ea26afffa8ae7e7ad069a))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([75a677a](https://github.com/googleapis/python-scheduler/commit/75a677a30af56568ae365715056360d23f4b7f7c))
+
 ## [2.7.3](https://github.com/googleapis/python-scheduler/compare/v2.7.2...v2.7.3) (2022-10-07)
 
 
