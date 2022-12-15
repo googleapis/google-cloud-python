@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/python-dataform/compare/v0.2.3...v0.3.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.dataform.__version__` ([fef5a2c](https://github.com/googleapis/python-dataform/commit/fef5a2c846e006a67d8cb83406fe6b80947e0901))
+* Add typing to proto.Message based class attributes ([fef5a2c](https://github.com/googleapis/python-dataform/commit/fef5a2c846e006a67d8cb83406fe6b80947e0901))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([fef5a2c](https://github.com/googleapis/python-dataform/commit/fef5a2c846e006a67d8cb83406fe6b80947e0901))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([b64c01a](https://github.com/googleapis/python-dataform/commit/b64c01acf35824f9d61ebd833c77829fb52d0b90))
+* Drop usage of pkg_resources ([b64c01a](https://github.com/googleapis/python-dataform/commit/b64c01acf35824f9d61ebd833c77829fb52d0b90))
+* Fix timeout default values ([b64c01a](https://github.com/googleapis/python-dataform/commit/b64c01acf35824f9d61ebd833c77829fb52d0b90))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([fef5a2c](https://github.com/googleapis/python-dataform/commit/fef5a2c846e006a67d8cb83406fe6b80947e0901))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([b64c01a](https://github.com/googleapis/python-dataform/commit/b64c01acf35824f9d61ebd833c77829fb52d0b90))
+
 ## [0.2.3](https://github.com/googleapis/python-dataform/compare/v0.2.2...v0.2.3) (2022-10-07)
 
 
