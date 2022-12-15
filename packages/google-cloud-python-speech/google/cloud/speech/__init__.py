@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.speech import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.speech_v1.services.adaptation.client import AdaptationClient
 from google.cloud.speech_v1.services.adaptation.async_client import (
@@ -30,6 +34,7 @@ from google.cloud.speech_v1.types.cloud_speech import RecognitionMetadata
 from google.cloud.speech_v1.types.cloud_speech import RecognizeRequest
 from google.cloud.speech_v1.types.cloud_speech import RecognizeResponse
 from google.cloud.speech_v1.types.cloud_speech import SpeakerDiarizationConfig
+from google.cloud.speech_v1.types.cloud_speech import SpeechAdaptationInfo
 from google.cloud.speech_v1.types.cloud_speech import SpeechContext
 from google.cloud.speech_v1.types.cloud_speech import SpeechRecognitionAlternative
 from google.cloud.speech_v1.types.cloud_speech import SpeechRecognitionResult
@@ -79,6 +84,7 @@ __all__ = (
     "RecognizeRequest",
     "RecognizeResponse",
     "SpeakerDiarizationConfig",
+    "SpeechAdaptationInfo",
     "SpeechContext",
     "SpeechRecognitionAlternative",
     "SpeechRecognitionResult",

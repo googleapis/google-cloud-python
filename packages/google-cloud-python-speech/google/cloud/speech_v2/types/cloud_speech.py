@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import duration_pb2  # type: ignore
@@ -102,20 +104,20 @@ class CreateRecognizerRequest(proto.Message):
             ``projects/{project}/locations/{location}``.
     """
 
-    recognizer = proto.Field(
+    recognizer: "Recognizer" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Recognizer",
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    recognizer_id = proto.Field(
+    recognizer_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -234,121 +236,121 @@ class OperationMetadata(proto.Message):
             This field is a member of `oneof`_ ``metadata``.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    resource = proto.Field(
+    resource: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    method = proto.Field(
+    method: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    kms_key_name = proto.Field(
+    kms_key_name: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    kms_key_version_name = proto.Field(
+    kms_key_version_name: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    batch_recognize_request = proto.Field(
+    batch_recognize_request: "BatchRecognizeRequest" = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="request",
         message="BatchRecognizeRequest",
     )
-    create_recognizer_request = proto.Field(
+    create_recognizer_request: "CreateRecognizerRequest" = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="request",
         message="CreateRecognizerRequest",
     )
-    update_recognizer_request = proto.Field(
+    update_recognizer_request: "UpdateRecognizerRequest" = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="request",
         message="UpdateRecognizerRequest",
     )
-    delete_recognizer_request = proto.Field(
+    delete_recognizer_request: "DeleteRecognizerRequest" = proto.Field(
         proto.MESSAGE,
         number=11,
         oneof="request",
         message="DeleteRecognizerRequest",
     )
-    undelete_recognizer_request = proto.Field(
+    undelete_recognizer_request: "UndeleteRecognizerRequest" = proto.Field(
         proto.MESSAGE,
         number=12,
         oneof="request",
         message="UndeleteRecognizerRequest",
     )
-    create_custom_class_request = proto.Field(
+    create_custom_class_request: "CreateCustomClassRequest" = proto.Field(
         proto.MESSAGE,
         number=13,
         oneof="request",
         message="CreateCustomClassRequest",
     )
-    update_custom_class_request = proto.Field(
+    update_custom_class_request: "UpdateCustomClassRequest" = proto.Field(
         proto.MESSAGE,
         number=14,
         oneof="request",
         message="UpdateCustomClassRequest",
     )
-    delete_custom_class_request = proto.Field(
+    delete_custom_class_request: "DeleteCustomClassRequest" = proto.Field(
         proto.MESSAGE,
         number=15,
         oneof="request",
         message="DeleteCustomClassRequest",
     )
-    undelete_custom_class_request = proto.Field(
+    undelete_custom_class_request: "UndeleteCustomClassRequest" = proto.Field(
         proto.MESSAGE,
         number=16,
         oneof="request",
         message="UndeleteCustomClassRequest",
     )
-    create_phrase_set_request = proto.Field(
+    create_phrase_set_request: "CreatePhraseSetRequest" = proto.Field(
         proto.MESSAGE,
         number=17,
         oneof="request",
         message="CreatePhraseSetRequest",
     )
-    update_phrase_set_request = proto.Field(
+    update_phrase_set_request: "UpdatePhraseSetRequest" = proto.Field(
         proto.MESSAGE,
         number=18,
         oneof="request",
         message="UpdatePhraseSetRequest",
     )
-    delete_phrase_set_request = proto.Field(
+    delete_phrase_set_request: "DeletePhraseSetRequest" = proto.Field(
         proto.MESSAGE,
         number=19,
         oneof="request",
         message="DeletePhraseSetRequest",
     )
-    undelete_phrase_set_request = proto.Field(
+    undelete_phrase_set_request: "UndeletePhraseSetRequest" = proto.Field(
         proto.MESSAGE,
         number=20,
         oneof="request",
         message="UndeletePhraseSetRequest",
     )
-    update_config_request = proto.Field(
+    update_config_request: "UpdateConfigRequest" = proto.Field(
         proto.MESSAGE,
         number=21,
         oneof="request",
         message="UpdateConfigRequest",
     )
-    progress_percent = proto.Field(
+    progress_percent: int = proto.Field(
         proto.INT32,
         number=22,
     )
-    batch_recognize_metadata = proto.Field(
+    batch_recognize_metadata: "BatchRecognizeMetadata" = proto.Field(
         proto.MESSAGE,
         number=23,
         oneof="metadata",
@@ -385,19 +387,19 @@ class ListRecognizersRequest(proto.Message):
             been deleted.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    show_deleted = proto.Field(
+    show_deleted: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -409,7 +411,7 @@ class ListRecognizersResponse(proto.Message):
     method.
 
     Attributes:
-        recognizers (Sequence[google.cloud.speech_v2.types.Recognizer]):
+        recognizers (MutableSequence[google.cloud.speech_v2.types.Recognizer]):
             The list of requested Recognizers.
         next_page_token (str):
             A token, which can be sent as
@@ -422,12 +424,12 @@ class ListRecognizersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    recognizers = proto.RepeatedField(
+    recognizers: MutableSequence["Recognizer"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Recognizer",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -444,7 +446,7 @@ class GetRecognizerRequest(proto.Message):
             ``projects/{project}/locations/{location}/recognizers/{recognizer}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -472,17 +474,17 @@ class UpdateRecognizerRequest(proto.Message):
             it.
     """
 
-    recognizer = proto.Field(
+    recognizer: "Recognizer" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Recognizer",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -513,19 +515,19 @@ class DeleteRecognizerRequest(proto.Message):
             proceeding.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -552,15 +554,15 @@ class UndeleteRecognizerRequest(proto.Message):
             proceeding.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -602,7 +604,7 @@ class Recognizer(proto.Message):
             [SEPARATE_RECOGNITION_PER_CHANNEL][google.cloud.speech.v2.RecognitionFeatures.MultiChannelMode.SEPARATE_RECOGNITION_PER_CHANNEL]
             is not supported; multi-channel audio is accepted, but only
             the first channel will be processed and transcribed.
-        language_codes (Sequence[str]):
+        language_codes (MutableSequence[str]):
             Required. The language of the supplied audio as a
             `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__
             language tag.
@@ -628,7 +630,7 @@ class Recognizer(proto.Message):
             in the
             [RecognizeRequest.config][google.cloud.speech.v2.RecognizeRequest.config]
             field.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             Allows users to store small amounts of
             arbitrary data. Both the key and the value must
             be 63 characters or less each. At most 100
@@ -675,74 +677,74 @@ class Recognizer(proto.Message):
         ACTIVE = 2
         DELETED = 4
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    model = proto.Field(
+    model: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    language_codes = proto.RepeatedField(
+    language_codes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=17,
     )
-    default_recognition_config = proto.Field(
+    default_recognition_config: "RecognitionConfig" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="RecognitionConfig",
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=7,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=8,
         enum=State,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
     )
-    delete_time = proto.Field(
+    delete_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=11,
         message=timestamp_pb2.Timestamp,
     )
-    expire_time = proto.Field(
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=14,
         message=timestamp_pb2.Timestamp,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    reconciling = proto.Field(
+    reconciling: bool = proto.Field(
         proto.BOOL,
         number=13,
     )
-    kms_key_name = proto.Field(
+    kms_key_name: str = proto.Field(
         proto.STRING,
         number=15,
     )
-    kms_key_version_name = proto.Field(
+    kms_key_version_name: str = proto.Field(
         proto.STRING,
         number=16,
     )
@@ -802,16 +804,16 @@ class ExplicitDecodingConfig(proto.Message):
         MULAW = 2
         ALAW = 3
 
-    encoding = proto.Field(
+    encoding: AudioEncoding = proto.Field(
         proto.ENUM,
         number=1,
         enum=AudioEncoding,
     )
-    sample_rate_hertz = proto.Field(
+    sample_rate_hertz: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    audio_channel_count = proto.Field(
+    audio_channel_count: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -836,11 +838,11 @@ class SpeakerDiarizationConfig(proto.Message):
             to automatically determine the correct number of speakers.
     """
 
-    min_speaker_count = proto.Field(
+    min_speaker_count: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    max_speaker_count = proto.Field(
+    max_speaker_count: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -912,41 +914,41 @@ class RecognitionFeatures(proto.Message):
         MULTI_CHANNEL_MODE_UNSPECIFIED = 0
         SEPARATE_RECOGNITION_PER_CHANNEL = 1
 
-    profanity_filter = proto.Field(
+    profanity_filter: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    enable_word_time_offsets = proto.Field(
+    enable_word_time_offsets: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    enable_word_confidence = proto.Field(
+    enable_word_confidence: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    enable_automatic_punctuation = proto.Field(
+    enable_automatic_punctuation: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    enable_spoken_punctuation = proto.Field(
+    enable_spoken_punctuation: bool = proto.Field(
         proto.BOOL,
         number=14,
     )
-    enable_spoken_emojis = proto.Field(
+    enable_spoken_emojis: bool = proto.Field(
         proto.BOOL,
         number=15,
     )
-    multi_channel_mode = proto.Field(
+    multi_channel_mode: MultiChannelMode = proto.Field(
         proto.ENUM,
         number=17,
         enum=MultiChannelMode,
     )
-    diarization_config = proto.Field(
+    diarization_config: "SpeakerDiarizationConfig" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="SpeakerDiarizationConfig",
     )
-    max_alternatives = proto.Field(
+    max_alternatives: int = proto.Field(
         proto.INT32,
         number=16,
     )
@@ -959,9 +961,9 @@ class SpeechAdaptation(proto.Message):
     resource.
 
     Attributes:
-        phrase_sets (Sequence[google.cloud.speech_v2.types.SpeechAdaptation.AdaptationPhraseSet]):
+        phrase_sets (MutableSequence[google.cloud.speech_v2.types.SpeechAdaptation.AdaptationPhraseSet]):
             A list of inline or referenced phrase sets.
-        custom_classes (Sequence[google.cloud.speech_v2.types.CustomClass]):
+        custom_classes (MutableSequence[google.cloud.speech_v2.types.CustomClass]):
             A list of inline custom classes. Existing
             custom class resources can be referenced
             directly in a phrase set.
@@ -992,24 +994,24 @@ class SpeechAdaptation(proto.Message):
                 This field is a member of `oneof`_ ``value``.
         """
 
-        phrase_set = proto.Field(
+        phrase_set: str = proto.Field(
             proto.STRING,
             number=1,
             oneof="value",
         )
-        inline_phrase_set = proto.Field(
+        inline_phrase_set: "PhraseSet" = proto.Field(
             proto.MESSAGE,
             number=2,
             oneof="value",
             message="PhraseSet",
         )
 
-    phrase_sets = proto.RepeatedField(
+    phrase_sets: MutableSequence[AdaptationPhraseSet] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=AdaptationPhraseSet,
     )
-    custom_classes = proto.RepeatedField(
+    custom_classes: MutableSequence["CustomClass"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="CustomClass",
@@ -1047,24 +1049,24 @@ class RecognitionConfig(proto.Message):
             phrases.
     """
 
-    auto_decoding_config = proto.Field(
+    auto_decoding_config: "AutoDetectDecodingConfig" = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="decoding_config",
         message="AutoDetectDecodingConfig",
     )
-    explicit_decoding_config = proto.Field(
+    explicit_decoding_config: "ExplicitDecodingConfig" = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="decoding_config",
         message="ExplicitDecodingConfig",
     )
-    features = proto.Field(
+    features: "RecognitionFeatures" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="RecognitionFeatures",
     )
-    adaptation = proto.Field(
+    adaptation: "SpeechAdaptation" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="SpeechAdaptation",
@@ -1135,26 +1137,26 @@ class RecognizeRequest(proto.Message):
             This field is a member of `oneof`_ ``audio_source``.
     """
 
-    recognizer = proto.Field(
+    recognizer: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    config = proto.Field(
+    config: "RecognitionConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="RecognitionConfig",
     )
-    config_mask = proto.Field(
+    config_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=8,
         message=field_mask_pb2.FieldMask,
     )
-    content = proto.Field(
+    content: bytes = proto.Field(
         proto.BYTES,
         number=5,
         oneof="audio_source",
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=6,
         oneof="audio_source",
@@ -1170,7 +1172,7 @@ class RecognitionResponseMetadata(proto.Message):
             corresponding request.
     """
 
-    total_billed_duration = proto.Field(
+    total_billed_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=6,
         message=duration_pb2.Duration,
@@ -1195,7 +1197,7 @@ class SpeechRecognitionAlternative(proto.Message):
             accurate and users should not rely on it to be always
             provided. The default of 0.0 is a sentinel value indicating
             ``confidence`` was not set.
-        words (Sequence[google.cloud.speech_v2.types.WordInfo]):
+        words (MutableSequence[google.cloud.speech_v2.types.WordInfo]):
             A list of word-specific information for each recognized
             word. When
             [enable_speaker_diarization][google.cloud.speech.v2.SpeakerDiarizationConfig.enable_speaker_diarization]
@@ -1203,15 +1205,15 @@ class SpeechRecognitionAlternative(proto.Message):
             the audio.
     """
 
-    transcript = proto.Field(
+    transcript: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    confidence = proto.Field(
+    confidence: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
-    words = proto.RepeatedField(
+    words: MutableSequence["WordInfo"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="WordInfo",
@@ -1261,25 +1263,25 @@ class WordInfo(proto.Message):
             is ``true`` and only in the top alternative.
     """
 
-    start_offset = proto.Field(
+    start_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=1,
         message=duration_pb2.Duration,
     )
-    end_offset = proto.Field(
+    end_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,
     )
-    word = proto.Field(
+    word: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    confidence = proto.Field(
+    confidence: float = proto.Field(
         proto.FLOAT,
         number=4,
     )
-    speaker_label = proto.Field(
+    speaker_label: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -1290,7 +1292,7 @@ class SpeechRecognitionResult(proto.Message):
     audio.
 
     Attributes:
-        alternatives (Sequence[google.cloud.speech_v2.types.SpeechRecognitionAlternative]):
+        alternatives (MutableSequence[google.cloud.speech_v2.types.SpeechRecognitionAlternative]):
             May contain one or more recognition
             hypotheses. These alternatives are ordered in
             terms of accuracy, with the top (first)
@@ -1312,21 +1314,21 @@ class SpeechRecognitionResult(proto.Message):
             spoken in the audio.
     """
 
-    alternatives = proto.RepeatedField(
+    alternatives: MutableSequence["SpeechRecognitionAlternative"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SpeechRecognitionAlternative",
     )
-    channel_tag = proto.Field(
+    channel_tag: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    result_end_offset = proto.Field(
+    result_end_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=4,
         message=duration_pb2.Duration,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1337,19 +1339,19 @@ class RecognizeResponse(proto.Message):
     [Recognize][google.cloud.speech.v2.Speech.Recognize] method.
 
     Attributes:
-        results (Sequence[google.cloud.speech_v2.types.SpeechRecognitionResult]):
+        results (MutableSequence[google.cloud.speech_v2.types.SpeechRecognitionResult]):
             Sequential list of transcription results
             corresponding to sequential portions of audio.
         metadata (google.cloud.speech_v2.types.RecognitionResponseMetadata):
             Metadata about the recognition.
     """
 
-    results = proto.RepeatedField(
+    results: MutableSequence["SpeechRecognitionResult"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="SpeechRecognitionResult",
     )
-    metadata = proto.Field(
+    metadata: "RecognitionResponseMetadata" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="RecognitionResponseMetadata",
@@ -1392,26 +1394,26 @@ class StreamingRecognitionFeatures(proto.Message):
                 server will close the stream.
         """
 
-        speech_start_timeout = proto.Field(
+        speech_start_timeout: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=1,
             message=duration_pb2.Duration,
         )
-        speech_end_timeout = proto.Field(
+        speech_end_timeout: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=2,
             message=duration_pb2.Duration,
         )
 
-    enable_voice_activity_events = proto.Field(
+    enable_voice_activity_events: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    interim_results = proto.Field(
+    interim_results: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    voice_activity_timeout = proto.Field(
+    voice_activity_timeout: VoiceActivityTimeout = proto.Field(
         proto.MESSAGE,
         number=3,
         message=VoiceActivityTimeout,
@@ -1452,17 +1454,17 @@ class StreamingRecognitionConfig(proto.Message):
             requests.
     """
 
-    config = proto.Field(
+    config: "RecognitionConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="RecognitionConfig",
     )
-    config_mask = proto.Field(
+    config_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
     )
-    streaming_features = proto.Field(
+    streaming_features: "StreamingRecognitionFeatures" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="StreamingRecognitionFeatures",
@@ -1515,17 +1517,17 @@ class StreamingRecognizeRequest(proto.Message):
             This field is a member of `oneof`_ ``streaming_request``.
     """
 
-    recognizer = proto.Field(
+    recognizer: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    streaming_config = proto.Field(
+    streaming_config: "StreamingRecognitionConfig" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="streaming_request",
         message="StreamingRecognitionConfig",
     )
-    audio = proto.Field(
+    audio: bytes = proto.Field(
         proto.BYTES,
         number=5,
         oneof="streaming_request",
@@ -1563,25 +1565,25 @@ class BatchRecognizeRequest(proto.Message):
             [config][google.cloud.speech.v2.BatchRecognizeRequest.config]
             completely overrides and replaces the config in the
             recognizer for this recognition request.
-        files (Sequence[google.cloud.speech_v2.types.BatchRecognizeFileMetadata]):
+        files (MutableSequence[google.cloud.speech_v2.types.BatchRecognizeFileMetadata]):
             Audio files with file metadata for ASR.
     """
 
-    recognizer = proto.Field(
+    recognizer: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    config = proto.Field(
+    config: "RecognitionConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="RecognitionConfig",
     )
-    config_mask = proto.Field(
+    config_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=5,
         message=field_mask_pb2.FieldMask,
     )
-    files = proto.RepeatedField(
+    files: MutableSequence["BatchRecognizeFileMetadata"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="BatchRecognizeFileMetadata",
@@ -1595,12 +1597,12 @@ class BatchRecognizeResponse(proto.Message):
     [Operation][google.longrunning.Operation].
 
     Attributes:
-        results (Mapping[str, google.cloud.speech_v2.types.BatchRecognizeFileResult]):
+        results (MutableMapping[str, google.cloud.speech_v2.types.BatchRecognizeFileResult]):
             Map from filename to the final result for
             that file.
     """
 
-    results = proto.MapField(
+    results: MutableMapping[str, "BatchRecognizeFileResult"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,
@@ -1619,11 +1621,11 @@ class BatchRecognizeFileResult(proto.Message):
             Error if one was encountered.
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    error = proto.Field(
+    error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=2,
         message=status_pb2.Status,
@@ -1645,16 +1647,16 @@ class BatchRecognizeTranscriptionMetadata(proto.Message):
             be written.
     """
 
-    progress_percent = proto.Field(
+    progress_percent: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    error = proto.Field(
+    error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=2,
         message=status_pb2.Status,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1665,12 +1667,14 @@ class BatchRecognizeMetadata(proto.Message):
     [BatchRecognize][google.cloud.speech.v2.Speech.BatchRecognize].
 
     Attributes:
-        transcription_metadata (Mapping[str, google.cloud.speech_v2.types.BatchRecognizeTranscriptionMetadata]):
+        transcription_metadata (MutableMapping[str, google.cloud.speech_v2.types.BatchRecognizeTranscriptionMetadata]):
             Map from provided filename to the
             transcription metadata for that file.
     """
 
-    transcription_metadata = proto.MapField(
+    transcription_metadata: MutableMapping[
+        str, "BatchRecognizeTranscriptionMetadata"
+    ] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,
@@ -1714,17 +1718,17 @@ class BatchRecognizeFileMetadata(proto.Message):
             recognizer for this recognition request.
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="audio_source",
     )
-    config = proto.Field(
+    config: "RecognitionConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="RecognitionConfig",
     )
-    config_mask = proto.Field(
+    config_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=5,
         message=field_mask_pb2.FieldMask,
@@ -1736,7 +1740,7 @@ class StreamingRecognitionResult(proto.Message):
     portion of the audio that is currently being processed.
 
     Attributes:
-        alternatives (Sequence[google.cloud.speech_v2.types.SpeechRecognitionAlternative]):
+        alternatives (MutableSequence[google.cloud.speech_v2.types.SpeechRecognitionAlternative]):
             May contain one or more recognition
             hypotheses. These alternatives are ordered in
             terms of accuracy, with the top (first)
@@ -1775,29 +1779,29 @@ class StreamingRecognitionResult(proto.Message):
             spoken in the audio.
     """
 
-    alternatives = proto.RepeatedField(
+    alternatives: MutableSequence["SpeechRecognitionAlternative"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SpeechRecognitionAlternative",
     )
-    is_final = proto.Field(
+    is_final: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    stability = proto.Field(
+    stability: float = proto.Field(
         proto.FLOAT,
         number=3,
     )
-    result_end_offset = proto.Field(
+    result_end_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=4,
         message=duration_pb2.Duration,
     )
-    channel_tag = proto.Field(
+    channel_tag: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -1858,7 +1862,7 @@ class StreamingRecognizeResponse(proto.Message):
        ``results``.
 
     Attributes:
-        results (Sequence[google.cloud.speech_v2.types.StreamingRecognitionResult]):
+        results (MutableSequence[google.cloud.speech_v2.types.StreamingRecognitionResult]):
             This repeated list contains zero or more results that
             correspond to consecutive portions of the audio currently
             being processed. It contains zero or one
@@ -1882,22 +1886,22 @@ class StreamingRecognizeResponse(proto.Message):
         SPEECH_ACTIVITY_BEGIN = 2
         SPEECH_ACTIVITY_END = 3
 
-    results = proto.RepeatedField(
+    results: MutableSequence["StreamingRecognitionResult"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="StreamingRecognitionResult",
     )
-    speech_event_type = proto.Field(
+    speech_event_type: SpeechEventType = proto.Field(
         proto.ENUM,
         number=3,
         enum=SpeechEventType,
     )
-    speech_event_offset = proto.Field(
+    speech_event_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=7,
         message=duration_pb2.Duration,
     )
-    metadata = proto.Field(
+    metadata: "RecognitionResponseMetadata" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="RecognitionResponseMetadata",
@@ -1929,15 +1933,15 @@ class Config(proto.Message):
             resource was modified.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    kms_key_name = proto.Field(
+    kms_key_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -1956,7 +1960,7 @@ class GetConfigRequest(proto.Message):
             ``projects/{project}/locations/{location}/config``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1977,12 +1981,12 @@ class UpdateConfigRequest(proto.Message):
             The list of fields to be updated.
     """
 
-    config = proto.Field(
+    config: "Config" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Config",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -2005,7 +2009,7 @@ class CustomClass(proto.Message):
         display_name (str):
             User-settable, human-readable name for the
             CustomClass. Must be 63 characters or less.
-        items (Sequence[google.cloud.speech_v2.types.CustomClass.ClassItem]):
+        items (MutableSequence[google.cloud.speech_v2.types.CustomClass.ClassItem]):
             A collection of class items.
         state (google.cloud.speech_v2.types.CustomClass.State):
             Output only. The CustomClass lifecycle state.
@@ -2020,7 +2024,7 @@ class CustomClass(proto.Message):
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this resource
             will be purged.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             Allows users to store small amounts of
             arbitrary data. Both the key and the value must
             be 63 characters or less each. At most 100
@@ -2062,71 +2066,71 @@ class CustomClass(proto.Message):
                 The class item's value.
         """
 
-        value = proto.Field(
+        value: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    items = proto.RepeatedField(
+    items: MutableSequence[ClassItem] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=ClassItem,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=15,
         enum=State,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    delete_time = proto.Field(
+    delete_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    expire_time = proto.Field(
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=10,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    reconciling = proto.Field(
+    reconciling: bool = proto.Field(
         proto.BOOL,
         number=12,
     )
-    kms_key_name = proto.Field(
+    kms_key_name: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    kms_key_version_name = proto.Field(
+    kms_key_version_name: str = proto.Field(
         proto.STRING,
         number=14,
     )
@@ -2144,7 +2148,7 @@ class PhraseSet(proto.Message):
         uid (str):
             Output only. System-assigned unique
             identifier for the PhraseSet.
-        phrases (Sequence[google.cloud.speech_v2.types.PhraseSet.Phrase]):
+        phrases (MutableSequence[google.cloud.speech_v2.types.PhraseSet.Phrase]):
             A list of word and phrases.
         boost (float):
             Hint Boost. Positive value will increase the probability
@@ -2170,7 +2174,7 @@ class PhraseSet(proto.Message):
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this resource
             will be purged.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             Allows users to store small amounts of
             arbitrary data. Both the key and the value must
             be 63 characters or less each. At most 100
@@ -2234,79 +2238,79 @@ class PhraseSet(proto.Message):
                 skip PhraseSets with a boost value of 0.
         """
 
-        value = proto.Field(
+        value: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        boost = proto.Field(
+        boost: float = proto.Field(
             proto.FLOAT,
             number=2,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    phrases = proto.RepeatedField(
+    phrases: MutableSequence[Phrase] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=Phrase,
     )
-    boost = proto.Field(
+    boost: float = proto.Field(
         proto.FLOAT,
         number=4,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=15,
         enum=State,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    delete_time = proto.Field(
+    delete_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    expire_time = proto.Field(
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=10,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    reconciling = proto.Field(
+    reconciling: bool = proto.Field(
         proto.BOOL,
         number=12,
     )
-    kms_key_name = proto.Field(
+    kms_key_name: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    kms_key_version_name = proto.Field(
+    kms_key_version_name: str = proto.Field(
         proto.STRING,
         number=14,
     )
@@ -2335,20 +2339,20 @@ class CreateCustomClassRequest(proto.Message):
             ``projects/{project}/locations/{location}``.
     """
 
-    custom_class = proto.Field(
+    custom_class: "CustomClass" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="CustomClass",
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    custom_class_id = proto.Field(
+    custom_class_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -2384,19 +2388,19 @@ class ListCustomClassesRequest(proto.Message):
             been deleted.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    show_deleted = proto.Field(
+    show_deleted: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -2408,7 +2412,7 @@ class ListCustomClassesResponse(proto.Message):
     method.
 
     Attributes:
-        custom_classes (Sequence[google.cloud.speech_v2.types.CustomClass]):
+        custom_classes (MutableSequence[google.cloud.speech_v2.types.CustomClass]):
             The list of requested CustomClasses.
         next_page_token (str):
             A token, which can be sent as
@@ -2421,12 +2425,12 @@ class ListCustomClassesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    custom_classes = proto.RepeatedField(
+    custom_classes: MutableSequence["CustomClass"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="CustomClass",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -2444,7 +2448,7 @@ class GetCustomClassRequest(proto.Message):
             ``projects/{project}/locations/{location}/customClasses/{custom_class}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -2471,17 +2475,17 @@ class UpdateCustomClassRequest(proto.Message):
             it.
     """
 
-    custom_class = proto.Field(
+    custom_class: "CustomClass" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="CustomClass",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -2512,19 +2516,19 @@ class DeleteCustomClassRequest(proto.Message):
             proceeding.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -2551,15 +2555,15 @@ class UndeleteCustomClassRequest(proto.Message):
             proceeding.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -2588,20 +2592,20 @@ class CreatePhraseSetRequest(proto.Message):
             ``projects/{project}/locations/{location}``.
     """
 
-    phrase_set = proto.Field(
+    phrase_set: "PhraseSet" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="PhraseSet",
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    phrase_set_id = proto.Field(
+    phrase_set_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -2636,19 +2640,19 @@ class ListPhraseSetsRequest(proto.Message):
             been deleted.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    show_deleted = proto.Field(
+    show_deleted: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -2660,7 +2664,7 @@ class ListPhraseSetsResponse(proto.Message):
     method.
 
     Attributes:
-        phrase_sets (Sequence[google.cloud.speech_v2.types.PhraseSet]):
+        phrase_sets (MutableSequence[google.cloud.speech_v2.types.PhraseSet]):
             The list of requested PhraseSets.
         next_page_token (str):
             A token, which can be sent as
@@ -2673,12 +2677,12 @@ class ListPhraseSetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    phrase_sets = proto.RepeatedField(
+    phrase_sets: MutableSequence["PhraseSet"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="PhraseSet",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -2695,7 +2699,7 @@ class GetPhraseSetRequest(proto.Message):
             ``projects/{project}/locations/{location}/phraseSets/{phrase_set}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -2723,17 +2727,17 @@ class UpdatePhraseSetRequest(proto.Message):
             it.
     """
 
-    phrase_set = proto.Field(
+    phrase_set: "PhraseSet" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="PhraseSet",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -2764,19 +2768,19 @@ class DeletePhraseSetRequest(proto.Message):
             proceeding.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -2803,15 +2807,15 @@ class UndeletePhraseSetRequest(proto.Message):
             proceeding.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=4,
     )

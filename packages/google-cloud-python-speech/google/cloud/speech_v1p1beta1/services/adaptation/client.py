@@ -16,8 +16,20 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
+
+from google.cloud.speech_v1p1beta1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -57,7 +69,7 @@ class AdaptationClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[AdaptationTransport]:
         """Returns an appropriate transport class.
 
@@ -354,8 +366,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, AdaptationTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, AdaptationTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the adaptation client.
@@ -369,7 +381,7 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
             transport (Union[str, AdaptationTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -399,6 +411,7 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -451,13 +464,15 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
     def create_phrase_set(
         self,
-        request: Union[cloud_speech_adaptation.CreatePhraseSetRequest, dict] = None,
+        request: Optional[
+            Union[cloud_speech_adaptation.CreatePhraseSetRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        phrase_set: resource.PhraseSet = None,
-        phrase_set_id: str = None,
+        parent: Optional[str] = None,
+        phrase_set: Optional[resource.PhraseSet] = None,
+        phrase_set_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource.PhraseSet:
         r"""Create a set of phrase hints. Each item in the set
@@ -592,11 +607,13 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
     def get_phrase_set(
         self,
-        request: Union[cloud_speech_adaptation.GetPhraseSetRequest, dict] = None,
+        request: Optional[
+            Union[cloud_speech_adaptation.GetPhraseSetRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource.PhraseSet:
         r"""Get a phrase set.
@@ -705,11 +722,13 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
     def list_phrase_set(
         self,
-        request: Union[cloud_speech_adaptation.ListPhraseSetRequest, dict] = None,
+        request: Optional[
+            Union[cloud_speech_adaptation.ListPhraseSetRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPhraseSetPager:
         r"""List phrase sets.
@@ -830,12 +849,14 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
     def update_phrase_set(
         self,
-        request: Union[cloud_speech_adaptation.UpdatePhraseSetRequest, dict] = None,
+        request: Optional[
+            Union[cloud_speech_adaptation.UpdatePhraseSetRequest, dict]
+        ] = None,
         *,
-        phrase_set: resource.PhraseSet = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        phrase_set: Optional[resource.PhraseSet] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource.PhraseSet:
         r"""Update a phrase set.
@@ -954,11 +975,13 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
     def delete_phrase_set(
         self,
-        request: Union[cloud_speech_adaptation.DeletePhraseSetRequest, dict] = None,
+        request: Optional[
+            Union[cloud_speech_adaptation.DeletePhraseSetRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Delete a phrase set.
@@ -1045,13 +1068,15 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
     def create_custom_class(
         self,
-        request: Union[cloud_speech_adaptation.CreateCustomClassRequest, dict] = None,
+        request: Optional[
+            Union[cloud_speech_adaptation.CreateCustomClassRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        custom_class: resource.CustomClass = None,
-        custom_class_id: str = None,
+        parent: Optional[str] = None,
+        custom_class: Optional[resource.CustomClass] = None,
+        custom_class_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource.CustomClass:
         r"""Create a custom class.
@@ -1187,11 +1212,13 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
     def get_custom_class(
         self,
-        request: Union[cloud_speech_adaptation.GetCustomClassRequest, dict] = None,
+        request: Optional[
+            Union[cloud_speech_adaptation.GetCustomClassRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource.CustomClass:
         r"""Get a custom class.
@@ -1296,11 +1323,13 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
     def list_custom_classes(
         self,
-        request: Union[cloud_speech_adaptation.ListCustomClassesRequest, dict] = None,
+        request: Optional[
+            Union[cloud_speech_adaptation.ListCustomClassesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCustomClassesPager:
         r"""List custom classes.
@@ -1421,12 +1450,14 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
     def update_custom_class(
         self,
-        request: Union[cloud_speech_adaptation.UpdateCustomClassRequest, dict] = None,
+        request: Optional[
+            Union[cloud_speech_adaptation.UpdateCustomClassRequest, dict]
+        ] = None,
         *,
-        custom_class: resource.CustomClass = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        custom_class: Optional[resource.CustomClass] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource.CustomClass:
         r"""Update a custom class.
@@ -1549,11 +1580,13 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
     def delete_custom_class(
         self,
-        request: Union[cloud_speech_adaptation.DeleteCustomClassRequest, dict] = None,
+        request: Optional[
+            Union[cloud_speech_adaptation.DeleteCustomClassRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Delete a custom class.
@@ -1661,14 +1694,9 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-speech",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("AdaptationClient",)

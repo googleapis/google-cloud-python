@@ -26,6 +26,7 @@ import grpc  # type: ignore
 
 from google.cloud.speech_v1.types import cloud_speech_adaptation
 from google.cloud.speech_v1.types import resource
+from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2  # type: ignore
 from .base import AdaptationTransport, DEFAULT_CLIENT_INFO
 
@@ -49,14 +50,14 @@ class AdaptationGrpcTransport(AdaptationTransport):
         self,
         *,
         host: str = "speech.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Sequence[str] = None,
-        channel: grpc.Channel = None,
-        api_mtls_endpoint: str = None,
-        client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
-        ssl_channel_credentials: grpc.ChannelCredentials = None,
-        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        channel: Optional[grpc.Channel] = None,
+        api_mtls_endpoint: Optional[str] = None,
+        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
@@ -183,8 +184,8 @@ class AdaptationGrpcTransport(AdaptationTransport):
     def create_channel(
         cls,
         host: str = "speech.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
         **kwargs,
@@ -508,6 +509,42 @@ class AdaptationGrpcTransport(AdaptationTransport):
 
     def close(self):
         self.grpc_channel.close()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
+        r"""Return a callable for the get_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_operation" not in self._stubs:
+            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/GetOperation",
+                request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["get_operation"]
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
+    ]:
+        r"""Return a callable for the list_operations method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_operations" not in self._stubs:
+            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/ListOperations",
+                request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
+                response_deserializer=operations_pb2.ListOperationsResponse.FromString,
+            )
+        return self._stubs["list_operations"]
 
     @property
     def kind(self) -> str:
