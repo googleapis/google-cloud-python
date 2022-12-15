@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-bigquery-connection/compare/v1.7.3...v1.8.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.bigquery_connection.__version__` ([5ae476d](https://github.com/googleapis/python-bigquery-connection/commit/5ae476d45a64fed355836969579ebe94653bf6fa))
+* Add typing to proto.Message based class attributes ([5ae476d](https://github.com/googleapis/python-bigquery-connection/commit/5ae476d45a64fed355836969579ebe94653bf6fa))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([5ae476d](https://github.com/googleapis/python-bigquery-connection/commit/5ae476d45a64fed355836969579ebe94653bf6fa))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([cbcb79c](https://github.com/googleapis/python-bigquery-connection/commit/cbcb79c785cc1475b71a6f3f1dd11531deef429b))
+* Drop usage of pkg_resources ([cbcb79c](https://github.com/googleapis/python-bigquery-connection/commit/cbcb79c785cc1475b71a6f3f1dd11531deef429b))
+* Fix timeout default values ([cbcb79c](https://github.com/googleapis/python-bigquery-connection/commit/cbcb79c785cc1475b71a6f3f1dd11531deef429b))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([5ae476d](https://github.com/googleapis/python-bigquery-connection/commit/5ae476d45a64fed355836969579ebe94653bf6fa))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([cbcb79c](https://github.com/googleapis/python-bigquery-connection/commit/cbcb79c785cc1475b71a6f3f1dd11531deef429b))
+
 ## [1.7.3](https://github.com/googleapis/python-bigquery-connection/compare/v1.7.2...v1.7.3) (2022-10-07)
 
 
