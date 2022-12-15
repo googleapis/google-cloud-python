@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/python-network-services/compare/v0.2.2...v0.3.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.network_services.__version__` ([9b6c478](https://github.com/googleapis/python-network-services/commit/9b6c478c95590aac6602217e80e346895e99ecf4))
+* Add typing to proto.Message based class attributes ([9b6c478](https://github.com/googleapis/python-network-services/commit/9b6c478c95590aac6602217e80e346895e99ecf4))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([9b6c478](https://github.com/googleapis/python-network-services/commit/9b6c478c95590aac6602217e80e346895e99ecf4))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([c0ecbf1](https://github.com/googleapis/python-network-services/commit/c0ecbf1430820b0415cb8ae02e18d4a687e6fd45))
+* Drop usage of pkg_resources ([c0ecbf1](https://github.com/googleapis/python-network-services/commit/c0ecbf1430820b0415cb8ae02e18d4a687e6fd45))
+* Fix timeout default values ([c0ecbf1](https://github.com/googleapis/python-network-services/commit/c0ecbf1430820b0415cb8ae02e18d4a687e6fd45))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([9b6c478](https://github.com/googleapis/python-network-services/commit/9b6c478c95590aac6602217e80e346895e99ecf4))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([c0ecbf1](https://github.com/googleapis/python-network-services/commit/c0ecbf1430820b0415cb8ae02e18d4a687e6fd45))
+
 ## [0.2.2](https://github.com/googleapis/python-network-services/compare/v0.2.1...v0.2.2) (2022-10-07)
 
 
