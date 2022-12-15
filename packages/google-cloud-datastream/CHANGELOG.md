@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-datastream/compare/v1.2.2...v1.3.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.datastream.__version__` ([431698c](https://github.com/googleapis/python-datastream/commit/431698c65b2a937900c49a5f1c313253b68e2d7a))
+* Add typing to proto.Message based class attributes ([431698c](https://github.com/googleapis/python-datastream/commit/431698c65b2a937900c49a5f1c313253b68e2d7a))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([431698c](https://github.com/googleapis/python-datastream/commit/431698c65b2a937900c49a5f1c313253b68e2d7a))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([34ff993](https://github.com/googleapis/python-datastream/commit/34ff993b57e64821be43a67a808e201aa60e1939))
+* Drop usage of pkg_resources ([34ff993](https://github.com/googleapis/python-datastream/commit/34ff993b57e64821be43a67a808e201aa60e1939))
+* Fix timeout default values ([34ff993](https://github.com/googleapis/python-datastream/commit/34ff993b57e64821be43a67a808e201aa60e1939))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([431698c](https://github.com/googleapis/python-datastream/commit/431698c65b2a937900c49a5f1c313253b68e2d7a))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([34ff993](https://github.com/googleapis/python-datastream/commit/34ff993b57e64821be43a67a808e201aa60e1939))
+
 ## [1.2.2](https://github.com/googleapis/python-datastream/compare/v1.2.1...v1.2.2) (2022-10-07)
 
 
