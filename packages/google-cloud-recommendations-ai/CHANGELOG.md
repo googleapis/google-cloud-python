@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.9.0](https://github.com/googleapis/python-recommendations-ai/compare/v0.8.2...v0.9.0) (2022-12-15)
+
+
+### Features
+
+* Add typing to proto.Message based class attributes ([08fd57c](https://github.com/googleapis/python-recommendations-ai/commit/08fd57ccdf5bbe1a07b40bc00b30c65b9631cab8))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([08fd57c](https://github.com/googleapis/python-recommendations-ai/commit/08fd57ccdf5bbe1a07b40bc00b30c65b9631cab8))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([08fd57c](https://github.com/googleapis/python-recommendations-ai/commit/08fd57ccdf5bbe1a07b40bc00b30c65b9631cab8))
+* Drop usage of pkg_resources ([08fd57c](https://github.com/googleapis/python-recommendations-ai/commit/08fd57ccdf5bbe1a07b40bc00b30c65b9631cab8))
+* Fix timeout default values ([08fd57c](https://github.com/googleapis/python-recommendations-ai/commit/08fd57ccdf5bbe1a07b40bc00b30c65b9631cab8))
+
+
+### Documentation
+
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([08fd57c](https://github.com/googleapis/python-recommendations-ai/commit/08fd57ccdf5bbe1a07b40bc00b30c65b9631cab8))
+
 ## [0.8.2](https://github.com/googleapis/python-recommendations-ai/compare/v0.8.1...v0.8.2) (2022-10-10)
 
 
