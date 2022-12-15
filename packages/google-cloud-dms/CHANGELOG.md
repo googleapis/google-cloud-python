@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-dms/compare/v1.4.3...v1.5.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.clouddms.__version__` ([a840a50](https://github.com/googleapis/python-dms/commit/a840a509d82a0d89590da824bd21334ef231df65))
+* Add typing to proto.Message based class attributes ([a840a50](https://github.com/googleapis/python-dms/commit/a840a509d82a0d89590da824bd21334ef231df65))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([a840a50](https://github.com/googleapis/python-dms/commit/a840a509d82a0d89590da824bd21334ef231df65))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([27e01af](https://github.com/googleapis/python-dms/commit/27e01afdeeb50838f011408dcf78c8326bc807ca))
+* Drop usage of pkg_resources ([27e01af](https://github.com/googleapis/python-dms/commit/27e01afdeeb50838f011408dcf78c8326bc807ca))
+* Fix timeout default values ([27e01af](https://github.com/googleapis/python-dms/commit/27e01afdeeb50838f011408dcf78c8326bc807ca))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([a840a50](https://github.com/googleapis/python-dms/commit/a840a509d82a0d89590da824bd21334ef231df65))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([27e01af](https://github.com/googleapis/python-dms/commit/27e01afdeeb50838f011408dcf78c8326bc807ca))
+
 ## [1.4.3](https://github.com/googleapis/python-dms/compare/v1.4.2...v1.4.3) (2022-10-07)
 
 
