@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-translate"
+    "name": "google-cloud-translate",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -42,11 +43,11 @@
           },
           {
             "name": "target_language_codes",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "input_configs",
-            "type": "Sequence[google.cloud.translate_v3beta1.types.BatchDocumentInputConfig]"
+            "type": "MutableSequence[google.cloud.translate_v3beta1.types.BatchDocumentInputConfig]"
           },
           {
             "name": "output_config",
@@ -138,11 +139,11 @@
           },
           {
             "name": "target_language_codes",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "input_configs",
-            "type": "Sequence[google.cloud.translate_v3beta1.types.BatchDocumentInputConfig]"
+            "type": "MutableSequence[google.cloud.translate_v3beta1.types.BatchDocumentInputConfig]"
           },
           {
             "name": "output_config",

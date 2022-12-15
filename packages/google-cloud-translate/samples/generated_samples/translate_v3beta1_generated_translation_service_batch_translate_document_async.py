@@ -58,7 +58,7 @@ async def sample_batch_translate_document():
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = (await operation).result()
 
     # Handle the response
     print(response)
