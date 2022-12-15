@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-data-fusion/compare/v1.5.3...v1.6.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.data_fusion.__version__` ([7088952](https://github.com/googleapis/python-data-fusion/commit/70889522341510bde3a7c297e5ffbf06ccafc545))
+* Add typing to proto.Message based class attributes ([7088952](https://github.com/googleapis/python-data-fusion/commit/70889522341510bde3a7c297e5ffbf06ccafc545))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([7088952](https://github.com/googleapis/python-data-fusion/commit/70889522341510bde3a7c297e5ffbf06ccafc545))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([d164752](https://github.com/googleapis/python-data-fusion/commit/d1647525fd2a16839349c65196725fe9d6624a97))
+* Drop usage of pkg_resources ([d164752](https://github.com/googleapis/python-data-fusion/commit/d1647525fd2a16839349c65196725fe9d6624a97))
+* Fix timeout default values ([d164752](https://github.com/googleapis/python-data-fusion/commit/d1647525fd2a16839349c65196725fe9d6624a97))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([7088952](https://github.com/googleapis/python-data-fusion/commit/70889522341510bde3a7c297e5ffbf06ccafc545))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([d164752](https://github.com/googleapis/python-data-fusion/commit/d1647525fd2a16839349c65196725fe9d6624a97))
+
 ## [1.5.3](https://github.com/googleapis/python-data-fusion/compare/v1.5.2...v1.5.3) (2022-10-07)
 
 
