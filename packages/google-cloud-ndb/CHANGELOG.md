@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [2.1.0](https://github.com/googleapis/python-ndb/compare/v2.0.0...v2.1.0) (2022-12-15)
+
+
+### Features
+
+* Support client_options for clients ([#815](https://github.com/googleapis/python-ndb/issues/815)) ([6f94f40](https://github.com/googleapis/python-ndb/commit/6f94f40dfcd6f10e3cec979e4eb2b83408c66a30))
+
+
+### Bug Fixes
+
+* **zlib:** Accomodate different Zlib compression levels ([#852](https://github.com/googleapis/python-ndb/issues/852)) ([c1ab83b](https://github.com/googleapis/python-ndb/commit/c1ab83b9581b3d4d10dc7d2508b1c93b14e3c31a))
+
 ## [2.0.0](https://github.com/googleapis/python-ndb/compare/v1.12.0...v2.0.0) (2022-12-06)
 
 
