@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.recommendationengine_v1beta1.types import catalog
@@ -43,11 +45,11 @@ class CreateCatalogItemRequest(proto.Message):
             Required. The catalog item to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    catalog_item = proto.Field(
+    catalog_item: catalog.CatalogItem = proto.Field(
         proto.MESSAGE,
         number=2,
         message=catalog.CatalogItem,
@@ -63,7 +65,7 @@ class GetCatalogItemRequest(proto.Message):
             ``projects/*/locations/global/catalogs/default_catalog/catalogitems/some_catalog_item_id``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -88,19 +90,19 @@ class ListCatalogItemsRequest(proto.Message):
             results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -110,7 +112,7 @@ class ListCatalogItemsResponse(proto.Message):
     r"""Response message for ListCatalogItems method.
 
     Attributes:
-        catalog_items (Sequence[google.cloud.recommendationengine_v1beta1.types.CatalogItem]):
+        catalog_items (MutableSequence[google.cloud.recommendationengine_v1beta1.types.CatalogItem]):
             The catalog items.
         next_page_token (str):
             If empty, the list is complete. If nonempty, the token to
@@ -122,12 +124,12 @@ class ListCatalogItemsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    catalog_items = proto.RepeatedField(
+    catalog_items: MutableSequence[catalog.CatalogItem] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=catalog.CatalogItem,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -139,7 +141,7 @@ class UpdateCatalogItemRequest(proto.Message):
     Attributes:
         name (str):
             Required. Full resource name of catalog item, such as
-            ``projects/*/locations/global/catalogs/default_catalog/catalogItems/some_catalog_item_id``
+            ``projects/*/locations/global/catalogs/default_catalog/catalogItems/some_catalog_item_id``.
         catalog_item (google.cloud.recommendationengine_v1beta1.types.CatalogItem):
             Required. The catalog item to update/create. The
             'catalog_item_id' field has to match that in the 'name'.
@@ -149,16 +151,16 @@ class UpdateCatalogItemRequest(proto.Message):
             default update all fields.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    catalog_item = proto.Field(
+    catalog_item: catalog.CatalogItem = proto.Field(
         proto.MESSAGE,
         number=2,
         message=catalog.CatalogItem,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -174,7 +176,7 @@ class DeleteCatalogItemRequest(proto.Message):
             ``projects/*/locations/global/catalogs/default_catalog/catalogItems/some_catalog_item_id``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

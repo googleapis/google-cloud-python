@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.recommendationengine_v1beta1.types import user_event as gcr_user_event
@@ -109,7 +111,7 @@ class PredictRequest(proto.Message):
             used that returns arbitrary catalog items. Note
             that the dryRun mode should only be used for
             testing the API, or if the model is not ready.
-        params (Mapping[str, google.protobuf.struct_pb2.Value]):
+        params (MutableMapping[str, google.protobuf.struct_pb2.Value]):
             Optional. Additional domain specific parameters for the
             predictions.
 
@@ -125,7 +127,7 @@ class PredictRequest(proto.Message):
                response. The given 'score' indicates the probability of
                an item being clicked/purchased given the user's context
                and history.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. The labels for the predict request.
 
             -  Label keys can contain lowercase letters, digits and
@@ -141,38 +143,38 @@ class PredictRequest(proto.Message):
             examples of labels.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    user_event = proto.Field(
+    user_event: gcr_user_event.UserEvent = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcr_user_event.UserEvent,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=7,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    dry_run = proto.Field(
+    dry_run: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    params = proto.MapField(
+    params: MutableMapping[str, struct_pb2.Value] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=6,
         message=struct_pb2.Value,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=9,
@@ -183,7 +185,7 @@ class PredictResponse(proto.Message):
     r"""Response message for predict method.
 
     Attributes:
-        results (Sequence[google.cloud.recommendationengine_v1beta1.types.PredictResponse.PredictionResult]):
+        results (MutableSequence[google.cloud.recommendationengine_v1beta1.types.PredictResponse.PredictionResult]):
             A list of recommended items. The order
             represents the ranking (from the most relevant
             item to the least).
@@ -192,13 +194,13 @@ class PredictResponse(proto.Message):
             included in the user event logs resulting from
             this recommendation, which enables accurate
             attribution of recommendation model performance.
-        items_missing_in_catalog (Sequence[str]):
+        items_missing_in_catalog (MutableSequence[str]):
             IDs of items in the request that were missing
             from the catalog.
         dry_run (bool):
             True if the dryRun property was set in the
             request.
-        metadata (Mapping[str, google.protobuf.struct_pb2.Value]):
+        metadata (MutableMapping[str, google.protobuf.struct_pb2.Value]):
             Additional domain specific prediction
             response metadata.
         next_page_token (str):
@@ -213,7 +215,7 @@ class PredictResponse(proto.Message):
         Attributes:
             id (str):
                 ID of the recommended catalog item
-            item_metadata (Mapping[str, google.protobuf.struct_pb2.Value]):
+            item_metadata (MutableMapping[str, google.protobuf.struct_pb2.Value]):
                 Additional item metadata / annotations.
 
                 Possible values:
@@ -226,11 +228,11 @@ class PredictResponse(proto.Message):
                    ``PredictRequest.params``.
         """
 
-        id = proto.Field(
+        id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        item_metadata = proto.MapField(
+        item_metadata: MutableMapping[str, struct_pb2.Value] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=2,
@@ -241,30 +243,30 @@ class PredictResponse(proto.Message):
     def raw_page(self):
         return self
 
-    results = proto.RepeatedField(
+    results: MutableSequence[PredictionResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=PredictionResult,
     )
-    recommendation_token = proto.Field(
+    recommendation_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    items_missing_in_catalog = proto.RepeatedField(
+    items_missing_in_catalog: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    dry_run = proto.Field(
+    dry_run: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    metadata = proto.MapField(
+    metadata: MutableMapping[str, struct_pb2.Value] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=5,
         message=struct_pb2.Value,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=6,
     )

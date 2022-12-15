@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.recommendationengine_v1beta1.types import catalog
@@ -107,31 +109,31 @@ class UserEvent(proto.Message):
         ECOMMERCE = 2
         BATCH_UPLOAD = 3
 
-    event_type = proto.Field(
+    event_type: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    user_info = proto.Field(
+    user_info: "UserInfo" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="UserInfo",
     )
-    event_detail = proto.Field(
+    event_detail: "EventDetail" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="EventDetail",
     )
-    product_event_detail = proto.Field(
+    product_event_detail: "ProductEventDetail" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="ProductEventDetail",
     )
-    event_time = proto.Field(
+    event_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    event_source = proto.Field(
+    event_source: EventSource = proto.Field(
         proto.ENUM,
         number=6,
         enum=EventSource,
@@ -179,23 +181,23 @@ class UserInfo(proto.Message):
             processing and pushing the user events).
     """
 
-    visitor_id = proto.Field(
+    visitor_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    user_id = proto.Field(
+    user_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    ip_address = proto.Field(
+    ip_address: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    user_agent = proto.Field(
+    user_agent: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    direct_user_request = proto.Field(
+    direct_user_request: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -223,7 +225,7 @@ class EventDetail(proto.Message):
             these events so that they can be grouped together properly.
             This ``pageViewId`` will be automatically generated if using
             the JavaScript pixel.
-        experiment_ids (Sequence[str]):
+        experiment_ids (MutableSequence[str]):
             Optional. A list of identifiers for the
             independent experiment groups this user event
             belongs to. This is used to distinguish between
@@ -258,27 +260,27 @@ class EventDetail(proto.Message):
             directly, or coming through Google search, and etc.
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    referrer_uri = proto.Field(
+    referrer_uri: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    page_view_id = proto.Field(
+    page_view_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    experiment_ids = proto.RepeatedField(
+    experiment_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    recommendation_token = proto.Field(
+    recommendation_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    event_attributes = proto.Field(
+    event_attributes: common.FeatureMap = proto.Field(
         proto.MESSAGE,
         number=5,
         message=common.FeatureMap,
@@ -294,14 +296,14 @@ class ProductEventDetail(proto.Message):
             Required for ``search`` events. Other event types should not
             set this field. The user's search query as UTF-8 encoded
             text with a length limit of 5 KiB.
-        page_categories (Sequence[google.cloud.recommendationengine_v1beta1.types.CatalogItem.CategoryHierarchy]):
+        page_categories (MutableSequence[google.cloud.recommendationengine_v1beta1.types.CatalogItem.CategoryHierarchy]):
             Required for ``category-page-view`` events. Other event
             types should not set this field. The categories associated
             with a category page. Category pages include special pages
             such as sales or promotions. For instance, a special sale
             page may have the category hierarchy: categories : ["Sales",
             "2017 Black Friday Deals"].
-        product_details (Sequence[google.cloud.recommendationengine_v1beta1.types.ProductDetail]):
+        product_details (MutableSequence[google.cloud.recommendationengine_v1beta1.types.ProductDetail]):
             The main product details related to the event.
 
             This field is required for the following event types:
@@ -347,29 +349,31 @@ class ProductEventDetail(proto.Message):
             should not set this field.
     """
 
-    search_query = proto.Field(
+    search_query: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_categories = proto.RepeatedField(
+    page_categories: MutableSequence[
+        catalog.CatalogItem.CategoryHierarchy
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=catalog.CatalogItem.CategoryHierarchy,
     )
-    product_details = proto.RepeatedField(
+    product_details: MutableSequence["ProductDetail"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="ProductDetail",
     )
-    list_id = proto.Field(
+    list_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    cart_id = proto.Field(
+    cart_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    purchase_transaction = proto.Field(
+    purchase_transaction: "PurchaseTransaction" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="PurchaseTransaction",
@@ -389,10 +393,10 @@ class PurchaseTransaction(proto.Message):
             adjustments to total revenue that you want to include as
             part of your revenue calculations. This field is not
             required if the event type is ``refund``.
-        taxes (Mapping[str, float]):
+        taxes (MutableMapping[str, float]):
             Optional. All the taxes associated with the
             transaction.
-        costs (Mapping[str, float]):
+        costs (MutableMapping[str, float]):
             Optional. All the costs associated with the product. These
             can be manufacturing costs, shipping expenses not borne by
             the end user, or any other costs.
@@ -409,25 +413,25 @@ class PurchaseTransaction(proto.Message):
             This field is not required if the event type is ``refund``.
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    revenue = proto.Field(
+    revenue: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
-    taxes = proto.MapField(
+    taxes: MutableMapping[str, float] = proto.MapField(
         proto.STRING,
         proto.FLOAT,
         number=3,
     )
-    costs = proto.MapField(
+    costs: MutableMapping[str, float] = proto.MapField(
         proto.STRING,
         proto.FLOAT,
         number=4,
     )
-    currency_code = proto.Field(
+    currency_code: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -479,36 +483,36 @@ class ProductDetail(proto.Message):
             product in the user event.
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    currency_code = proto.Field(
+    currency_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    original_price = proto.Field(
+    original_price: float = proto.Field(
         proto.FLOAT,
         number=3,
     )
-    display_price = proto.Field(
+    display_price: float = proto.Field(
         proto.FLOAT,
         number=4,
     )
-    stock_state = proto.Field(
+    stock_state: catalog.ProductCatalogItem.StockState = proto.Field(
         proto.ENUM,
         number=5,
         enum=catalog.ProductCatalogItem.StockState,
     )
-    quantity = proto.Field(
+    quantity: int = proto.Field(
         proto.INT32,
         number=6,
     )
-    available_quantity = proto.Field(
+    available_quantity: int = proto.Field(
         proto.INT32,
         number=7,
     )
-    item_attributes = proto.Field(
+    item_attributes: common.FeatureMap = proto.Field(
         proto.MESSAGE,
         number=8,
         message=common.FeatureMap,

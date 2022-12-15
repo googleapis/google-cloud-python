@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -36,7 +38,7 @@ class PredictionApiKeyRegistration(proto.Message):
             The API key.
     """
 
-    api_key = proto.Field(
+    api_key: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -55,11 +57,11 @@ class CreatePredictionApiKeyRegistrationRequest(proto.Message):
             registration.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    prediction_api_key_registration = proto.Field(
+    prediction_api_key_registration: "PredictionApiKeyRegistration" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="PredictionApiKeyRegistration",
@@ -82,15 +84,15 @@ class ListPredictionApiKeyRegistrationsRequest(proto.Message):
             ``ListPredictionApiKeyRegistration.nextPageToken``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -100,7 +102,7 @@ class ListPredictionApiKeyRegistrationsResponse(proto.Message):
     r"""Response message for the ``ListPredictionApiKeyRegistrations``.
 
     Attributes:
-        prediction_api_key_registrations (Sequence[google.cloud.recommendationengine_v1beta1.types.PredictionApiKeyRegistration]):
+        prediction_api_key_registrations (MutableSequence[google.cloud.recommendationengine_v1beta1.types.PredictionApiKeyRegistration]):
             The list of registered API keys.
         next_page_token (str):
             If empty, the list is complete. If nonempty, pass the token
@@ -112,12 +114,14 @@ class ListPredictionApiKeyRegistrationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    prediction_api_key_registrations = proto.RepeatedField(
+    prediction_api_key_registrations: MutableSequence[
+        "PredictionApiKeyRegistration"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="PredictionApiKeyRegistration",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -133,7 +137,7 @@ class DeletePredictionApiKeyRegistrationRequest(proto.Message):
             ``projects/*/locations/global/catalogs/default_catalog/eventStores/default_event_store/predictionApiKeyRegistrations/<YOUR_API_KEY>``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

@@ -2663,7 +2663,7 @@ def test_create_catalog_item_rest_required_fields(
 
             response = client.create_catalog_item(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2978,7 +2978,7 @@ def test_get_catalog_item_rest_required_fields(
 
             response = client.get_catalog_item(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3256,7 +3256,7 @@ def test_list_catalog_items_rest_required_fields(
 
             response = client.list_catalog_items(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3636,7 +3636,7 @@ def test_update_catalog_item_rest_required_fields(
 
             response = client.update_catalog_item(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3936,7 +3936,7 @@ def test_delete_catalog_item_rest_required_fields(
 
             response = client.delete_catalog_item(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4194,7 +4194,7 @@ def test_import_catalog_items_rest_required_fields(
 
             response = client.import_catalog_items(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5004,6 +5004,37 @@ def test_parse_catalog_path():
 
     # Check that the path construction is reversible.
     actual = CatalogServiceClient.parse_catalog_path(path)
+    assert expected == actual
+
+
+def test_catalog_item_path_path():
+    project = "cuttlefish"
+    location = "mussel"
+    catalog = "winkle"
+    catalog_item_path = "nautilus"
+    expected = "projects/{project}/locations/{location}/catalogs/{catalog}/catalogItems/{catalog_item_path}".format(
+        project=project,
+        location=location,
+        catalog=catalog,
+        catalog_item_path=catalog_item_path,
+    )
+    actual = CatalogServiceClient.catalog_item_path_path(
+        project, location, catalog, catalog_item_path
+    )
+    assert expected == actual
+
+
+def test_parse_catalog_item_path_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "catalog": "squid",
+        "catalog_item_path": "clam",
+    }
+    path = CatalogServiceClient.catalog_item_path_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CatalogServiceClient.parse_catalog_item_path_path(path)
     assert expected == actual
 
 

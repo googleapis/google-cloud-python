@@ -16,8 +16,19 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
+
+from google.cloud.recommendationengine_v1beta1 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -181,9 +192,9 @@ class PredictionApiKeyRegistryAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, PredictionApiKeyRegistryTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the prediction api key registry client.
@@ -227,15 +238,19 @@ class PredictionApiKeyRegistryAsyncClient:
 
     async def create_prediction_api_key_registration(
         self,
-        request: Union[
-            prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest,
-            dict,
+        request: Optional[
+            Union[
+                prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest,
+                dict,
+            ]
         ] = None,
         *,
-        parent: str = None,
-        prediction_api_key_registration: prediction_apikey_registry_service.PredictionApiKeyRegistration = None,
+        parent: Optional[str] = None,
+        prediction_api_key_registration: Optional[
+            prediction_apikey_registry_service.PredictionApiKeyRegistration
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> prediction_apikey_registry_service.PredictionApiKeyRegistration:
         r"""Register an API key for use with predict method.
@@ -267,7 +282,7 @@ class PredictionApiKeyRegistryAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.recommendationengine_v1beta1.types.CreatePredictionApiKeyRegistrationRequest, dict]):
+            request (Optional[Union[google.cloud.recommendationengine_v1beta1.types.CreatePredictionApiKeyRegistrationRequest, dict]]):
                 The request object. Request message for the
                 `CreatePredictionApiKeyRegistration` method.
             parent (:class:`str`):
@@ -352,14 +367,16 @@ class PredictionApiKeyRegistryAsyncClient:
 
     async def list_prediction_api_key_registrations(
         self,
-        request: Union[
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest,
-            dict,
+        request: Optional[
+            Union[
+                prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest,
+                dict,
+            ]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPredictionApiKeyRegistrationsAsyncPager:
         r"""List the registered apiKeys for use with predict
@@ -393,7 +410,7 @@ class PredictionApiKeyRegistryAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.recommendationengine_v1beta1.types.ListPredictionApiKeyRegistrationsRequest, dict]):
+            request (Optional[Union[google.cloud.recommendationengine_v1beta1.types.ListPredictionApiKeyRegistrationsRequest, dict]]):
                 The request object. Request message for the
                 `ListPredictionApiKeyRegistrations`.
             parent (:class:`str`):
@@ -485,14 +502,16 @@ class PredictionApiKeyRegistryAsyncClient:
 
     async def delete_prediction_api_key_registration(
         self,
-        request: Union[
-            prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest,
-            dict,
+        request: Optional[
+            Union[
+                prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest,
+                dict,
+            ]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Unregister an apiKey from using for predict method.
@@ -521,7 +540,7 @@ class PredictionApiKeyRegistryAsyncClient:
                 await client.delete_prediction_api_key_registration(request=request)
 
         Args:
-            request (Union[google.cloud.recommendationengine_v1beta1.types.DeletePredictionApiKeyRegistrationRequest, dict]):
+            request (Optional[Union[google.cloud.recommendationengine_v1beta1.types.DeletePredictionApiKeyRegistrationRequest, dict]]):
                 The request object. Request message for
                 `DeletePredictionApiKeyRegistration` method.
             name (:class:`str`):
@@ -596,14 +615,9 @@ class PredictionApiKeyRegistryAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-recommendations-ai",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("PredictionApiKeyRegistryAsyncClient",)

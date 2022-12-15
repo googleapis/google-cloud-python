@@ -16,8 +16,20 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
+
+from google.cloud.recommendationengine_v1beta1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -65,7 +77,7 @@ class CatalogServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[CatalogServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -190,6 +202,30 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         """Parses a catalog path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/catalogs/(?P<catalog>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def catalog_item_path_path(
+        project: str,
+        location: str,
+        catalog: str,
+        catalog_item_path: str,
+    ) -> str:
+        """Returns a fully-qualified catalog_item_path string."""
+        return "projects/{project}/locations/{location}/catalogs/{catalog}/catalogItems/{catalog_item_path}".format(
+            project=project,
+            location=location,
+            catalog=catalog,
+            catalog_item_path=catalog_item_path,
+        )
+
+    @staticmethod
+    def parse_catalog_item_path_path(path: str) -> Dict[str, str]:
+        """Parses a catalog_item_path path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/catalogs/(?P<catalog>.+?)/catalogItems/(?P<catalog_item_path>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -342,8 +378,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, CatalogServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, CatalogServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the catalog service client.
@@ -357,10 +393,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
             transport (Union[str, CatalogServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-                NOTE: "rest" transport functionality is currently in a
-                beta state (preview). We welcome your feedback via an
-                issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -390,6 +423,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -442,12 +476,12 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def create_catalog_item(
         self,
-        request: Union[catalog_service.CreateCatalogItemRequest, dict] = None,
+        request: Optional[Union[catalog_service.CreateCatalogItemRequest, dict]] = None,
         *,
-        parent: str = None,
-        catalog_item: catalog.CatalogItem = None,
+        parent: Optional[str] = None,
+        catalog_item: Optional[catalog.CatalogItem] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.CatalogItem:
         r"""Creates a catalog item.
@@ -558,11 +592,11 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def get_catalog_item(
         self,
-        request: Union[catalog_service.GetCatalogItemRequest, dict] = None,
+        request: Optional[Union[catalog_service.GetCatalogItemRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.CatalogItem:
         r"""Gets a specific catalog item.
@@ -660,12 +694,12 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def list_catalog_items(
         self,
-        request: Union[catalog_service.ListCatalogItemsRequest, dict] = None,
+        request: Optional[Union[catalog_service.ListCatalogItemsRequest, dict]] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCatalogItemsPager:
         r"""Gets a list of catalog items.
@@ -785,13 +819,13 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def update_catalog_item(
         self,
-        request: Union[catalog_service.UpdateCatalogItemRequest, dict] = None,
+        request: Optional[Union[catalog_service.UpdateCatalogItemRequest, dict]] = None,
         *,
-        name: str = None,
-        catalog_item: catalog.CatalogItem = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        name: Optional[str] = None,
+        catalog_item: Optional[catalog.CatalogItem] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.CatalogItem:
         r"""Updates a catalog item. Partial updating is
@@ -835,7 +869,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 UpdateCatalogItem method.
             name (str):
                 Required. Full resource name of catalog item, such as
-                ``projects/*/locations/global/catalogs/default_catalog/catalogItems/some_catalog_item_id``
+                ``projects/*/locations/global/catalogs/default_catalog/catalogItems/some_catalog_item_id``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -915,11 +949,11 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def delete_catalog_item(
         self,
-        request: Union[catalog_service.DeleteCatalogItemRequest, dict] = None,
+        request: Optional[Union[catalog_service.DeleteCatalogItemRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a catalog item.
@@ -1005,14 +1039,14 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def import_catalog_items(
         self,
-        request: Union[import_.ImportCatalogItemsRequest, dict] = None,
+        request: Optional[Union[import_.ImportCatalogItemsRequest, dict]] = None,
         *,
-        parent: str = None,
-        request_id: str = None,
-        input_config: import_.InputConfig = None,
-        errors_config: import_.ImportErrorsConfig = None,
+        parent: Optional[str] = None,
+        request_id: Optional[str] = None,
+        input_config: Optional[import_.InputConfig] = None,
+        errors_config: Optional[import_.ImportErrorsConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Bulk import of multiple catalog items. Request
@@ -1176,14 +1210,9 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-recommendations-ai",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("CatalogServiceClient",)

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.recommendationengine_v1beta1.types import common
@@ -43,7 +45,7 @@ class CatalogItem(proto.Message):
             within the same catalog. It should also be used
             when logging user events in order for the user
             events to be joined with the Catalog.
-        category_hierarchies (Sequence[google.cloud.recommendationengine_v1beta1.types.CatalogItem.CategoryHierarchy]):
+        category_hierarchies (MutableSequence[google.cloud.recommendationengine_v1beta1.types.CatalogItem.CategoryHierarchy]):
             Required. Catalog item categories. This field is repeated
             for supporting one catalog item belonging to several
             parallel category hierarchies.
@@ -79,7 +81,7 @@ class CatalogItem(proto.Message):
             language codes include 'en', 'es', 'fr', 'de', 'ar', 'fa',
             'zh', 'ja', 'ko', 'sv', 'ro', 'nl'. For other languages,
             contact your Google account manager.
-        tags (Sequence[str]):
+        tags (MutableSequence[str]):
             Optional. Filtering tags associated with the
             catalog item. Each tag should be a UTF-8 encoded
             string with a length limit of 1 KiB.
@@ -103,7 +105,7 @@ class CatalogItem(proto.Message):
         r"""Category represents catalog item category hierarchy.
 
         Attributes:
-            categories (Sequence[str]):
+            categories (MutableSequence[str]):
                 Required. Catalog item categories. Each
                 category should be a UTF-8 encoded string with a
                 length limit of 2 KiB.
@@ -111,46 +113,46 @@ class CatalogItem(proto.Message):
                 specificity (from least to most specific).
         """
 
-        categories = proto.RepeatedField(
+        categories: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    category_hierarchies = proto.RepeatedField(
+    category_hierarchies: MutableSequence[CategoryHierarchy] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=CategoryHierarchy,
     )
-    title = proto.Field(
+    title: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    item_attributes = proto.Field(
+    item_attributes: common.FeatureMap = proto.Field(
         proto.MESSAGE,
         number=5,
         message=common.FeatureMap,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    tags = proto.RepeatedField(
+    tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
     )
-    item_group_id = proto.Field(
+    item_group_id: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    product_metadata = proto.Field(
+    product_metadata: "ProductCatalogItem" = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="recommendation_type",
@@ -178,7 +180,7 @@ class ProductCatalogItem(proto.Message):
             Optional. The product price range.
 
             This field is a member of `oneof`_ ``price``.
-        costs (Mapping[str, float]):
+        costs (MutableMapping[str, float]):
             Optional. A map to pass the costs associated with the
             product.
 
@@ -202,7 +204,7 @@ class ProductCatalogItem(proto.Message):
             Optional. Canonical URL directly linking to
             the item detail page with a length limit of 5
             KiB..
-        images (Sequence[google.cloud.recommendationengine_v1beta1.types.Image]):
+        images (MutableSequence[google.cloud.recommendationengine_v1beta1.types.Image]):
             Optional. Product images for the catalog
             item.
     """
@@ -230,11 +232,11 @@ class ProductCatalogItem(proto.Message):
                 'displayPrice'.
         """
 
-        display_price = proto.Field(
+        display_price: float = proto.Field(
             proto.FLOAT,
             number=1,
         )
-        original_price = proto.Field(
+        original_price: float = proto.Field(
             proto.FLOAT,
             number=2,
         )
@@ -250,50 +252,50 @@ class ProductCatalogItem(proto.Message):
                 Required. The maximum product price.
         """
 
-        min_ = proto.Field(
+        min_: float = proto.Field(
             proto.FLOAT,
             number=1,
         )
-        max_ = proto.Field(
+        max_: float = proto.Field(
             proto.FLOAT,
             number=2,
         )
 
-    exact_price = proto.Field(
+    exact_price: ExactPrice = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="price",
         message=ExactPrice,
     )
-    price_range = proto.Field(
+    price_range: PriceRange = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="price",
         message=PriceRange,
     )
-    costs = proto.MapField(
+    costs: MutableMapping[str, float] = proto.MapField(
         proto.STRING,
         proto.FLOAT,
         number=3,
     )
-    currency_code = proto.Field(
+    currency_code: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    stock_state = proto.Field(
+    stock_state: StockState = proto.Field(
         proto.ENUM,
         number=5,
         enum=StockState,
     )
-    available_quantity = proto.Field(
+    available_quantity: int = proto.Field(
         proto.INT64,
         number=6,
     )
-    canonical_product_uri = proto.Field(
+    canonical_product_uri: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    images = proto.RepeatedField(
+    images: MutableSequence["Image"] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message="Image",
@@ -315,15 +317,15 @@ class Image(proto.Message):
             pixels.
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    height = proto.Field(
+    height: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    width = proto.Field(
+    width: int = proto.Field(
         proto.INT32,
         number=3,
     )

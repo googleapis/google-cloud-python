@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -30,7 +32,7 @@ class FeatureMap(proto.Message):
     categorical/numerical features.
 
     Attributes:
-        categorical_features (Mapping[str, google.cloud.recommendationengine_v1beta1.types.FeatureMap.StringList]):
+        categorical_features (MutableMapping[str, google.cloud.recommendationengine_v1beta1.types.FeatureMap.StringList]):
             Categorical features that can take on one of a limited
             number of possible values. Some examples would be the
             brand/maker of a product, or country of a customer.
@@ -39,7 +41,7 @@ class FeatureMap(proto.Message):
 
             For example:
             ``{ "colors": {"value": ["yellow", "green"]}, "sizes": {"value":["S", "M"]}``
-        numerical_features (Mapping[str, google.cloud.recommendationengine_v1beta1.types.FeatureMap.FloatList]):
+        numerical_features (MutableMapping[str, google.cloud.recommendationengine_v1beta1.types.FeatureMap.FloatList]):
             Numerical features. Some examples would be the height/weight
             of a product, or age of a customer.
 
@@ -53,12 +55,12 @@ class FeatureMap(proto.Message):
         r"""A list of string features.
 
         Attributes:
-            value (Sequence[str]):
+            value (MutableSequence[str]):
                 String feature value with a length limit of
                 128 bytes.
         """
 
-        value = proto.RepeatedField(
+        value: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
@@ -67,22 +69,22 @@ class FeatureMap(proto.Message):
         r"""A list of float features.
 
         Attributes:
-            value (Sequence[float]):
+            value (MutableSequence[float]):
                 Float feature value.
         """
 
-        value = proto.RepeatedField(
+        value: MutableSequence[float] = proto.RepeatedField(
             proto.FLOAT,
             number=1,
         )
 
-    categorical_features = proto.MapField(
+    categorical_features: MutableMapping[str, StringList] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,
         message=StringList,
     )
-    numerical_features = proto.MapField(
+    numerical_features: MutableMapping[str, FloatList] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=2,

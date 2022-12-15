@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.recommendationengine_v1beta1.types import catalog
@@ -44,19 +46,19 @@ class GcsSource(proto.Message):
     format.
 
     Attributes:
-        input_uris (Sequence[str]):
+        input_uris (MutableSequence[str]):
             Required. Google Cloud Storage URIs to input files. URI can
             be up to 2000 characters long. URIs can match the full
             object path (for example,
             ``gs://bucket/directory/object.json``) or a pattern matching
-            one or more files, such as ````gs://bucket/directory/*.json````.
+            one or more files, such as ``gs://bucket/directory/*.json``.
             A request can contain at most 100 files, and each file can
             be up to 2 GB. See `Importing catalog
             information </recommendations-ai/docs/upload-catalog>`__ for
             the expected file format and setup instructions.
     """
 
-    input_uris = proto.RepeatedField(
+    input_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -67,12 +69,12 @@ class CatalogInlineSource(proto.Message):
     method.
 
     Attributes:
-        catalog_items (Sequence[google.cloud.recommendationengine_v1beta1.types.CatalogItem]):
+        catalog_items (MutableSequence[google.cloud.recommendationengine_v1beta1.types.CatalogItem]):
             Optional. A list of catalog items to
             update/create. Recommended max of 10k items.
     """
 
-    catalog_items = proto.RepeatedField(
+    catalog_items: MutableSequence[catalog.CatalogItem] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=catalog.CatalogItem,
@@ -84,12 +86,12 @@ class UserEventInlineSource(proto.Message):
     method.
 
     Attributes:
-        user_events (Sequence[google.cloud.recommendationengine_v1beta1.types.UserEvent]):
+        user_events (MutableSequence[google.cloud.recommendationengine_v1beta1.types.UserEvent]):
             Optional. A list of user events to import.
             Recommended max of 10k items.
     """
 
-    user_events = proto.RepeatedField(
+    user_events: MutableSequence[user_event.UserEvent] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=user_event.UserEvent,
@@ -111,7 +113,7 @@ class ImportErrorsConfig(proto.Message):
             This field is a member of `oneof`_ ``destination``.
     """
 
-    gcs_prefix = proto.Field(
+    gcs_prefix: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="destination",
@@ -141,20 +143,20 @@ class ImportCatalogItemsRequest(proto.Message):
             incurred during the Import.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    input_config = proto.Field(
+    input_config: "InputConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="InputConfig",
     )
-    errors_config = proto.Field(
+    errors_config: "ImportErrorsConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="ImportErrorsConfig",
@@ -184,20 +186,20 @@ class ImportUserEventsRequest(proto.Message):
             incurred during the Import.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    input_config = proto.Field(
+    input_config: "InputConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="InputConfig",
     )
-    errors_config = proto.Field(
+    errors_config: "ImportErrorsConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="ImportErrorsConfig",
@@ -232,19 +234,19 @@ class InputConfig(proto.Message):
             This field is a member of `oneof`_ ``source``.
     """
 
-    catalog_inline_source = proto.Field(
+    catalog_inline_source: "CatalogInlineSource" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="source",
         message="CatalogInlineSource",
     )
-    gcs_source = proto.Field(
+    gcs_source: "GcsSource" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="source",
         message="GcsSource",
     )
-    user_event_inline_source = proto.Field(
+    user_event_inline_source: "UserEventInlineSource" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="source",
@@ -277,28 +279,28 @@ class ImportMetadata(proto.Message):
             is done, this is also the finish time.
     """
 
-    operation_name = proto.Field(
+    operation_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    success_count = proto.Field(
+    success_count: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    failure_count = proto.Field(
+    failure_count: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
@@ -312,7 +314,7 @@ class ImportCatalogItemsResponse(proto.Message):
     was successful.
 
     Attributes:
-        error_samples (Sequence[google.rpc.status_pb2.Status]):
+        error_samples (MutableSequence[google.rpc.status_pb2.Status]):
             A sample of errors encountered while
             processing the request.
         errors_config (google.cloud.recommendationengine_v1beta1.types.ImportErrorsConfig):
@@ -320,12 +322,12 @@ class ImportCatalogItemsResponse(proto.Message):
             errors in the request if set.
     """
 
-    error_samples = proto.RepeatedField(
+    error_samples: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=status_pb2.Status,
     )
-    errors_config = proto.Field(
+    errors_config: "ImportErrorsConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ImportErrorsConfig",
@@ -339,7 +341,7 @@ class ImportUserEventsResponse(proto.Message):
     was successful.
 
     Attributes:
-        error_samples (Sequence[google.rpc.status_pb2.Status]):
+        error_samples (MutableSequence[google.rpc.status_pb2.Status]):
             A sample of errors encountered while
             processing the request.
         errors_config (google.cloud.recommendationengine_v1beta1.types.ImportErrorsConfig):
@@ -350,17 +352,17 @@ class ImportUserEventsResponse(proto.Message):
             status.
     """
 
-    error_samples = proto.RepeatedField(
+    error_samples: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=status_pb2.Status,
     )
-    errors_config = proto.Field(
+    errors_config: "ImportErrorsConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ImportErrorsConfig",
     )
-    import_summary = proto.Field(
+    import_summary: "UserEventImportSummary" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="UserEventImportSummary",
@@ -381,11 +383,11 @@ class UserEventImportSummary(proto.Message):
             catalog.
     """
 
-    joined_events_count = proto.Field(
+    joined_events_count: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    unjoined_events_count = proto.Field(
+    unjoined_events_count: int = proto.Field(
         proto.INT64,
         number=2,
     )

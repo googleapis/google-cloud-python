@@ -72,23 +72,25 @@ class PredictionApiKeyRegistryRestInterceptor:
 
     .. code-block:: python
         class MyCustomPredictionApiKeyRegistryInterceptor(PredictionApiKeyRegistryRestInterceptor):
-            def pre_create_prediction_api_key_registration(request, metadata):
+            def pre_create_prediction_api_key_registration(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_prediction_api_key_registration(response):
+            def post_create_prediction_api_key_registration(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_prediction_api_key_registration(request, metadata):
+            def pre_delete_prediction_api_key_registration(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_list_prediction_api_key_registrations(request, metadata):
+            def pre_list_prediction_api_key_registrations(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_prediction_api_key_registrations(response):
+            def post_list_prediction_api_key_registrations(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = PredictionApiKeyRegistryRestTransport(interceptor=MyCustomPredictionApiKeyRegistryInterceptor())
         client = PredictionApiKeyRegistryClient(transport=transport)
@@ -188,19 +190,16 @@ class PredictionApiKeyRegistryRestTransport(PredictionApiKeyRegistryTransport):
 
     It sends JSON representations of protocol buffers over HTTP/1.1
 
-    NOTE: This REST transport functionality is currently in a beta
-    state (preview). We welcome your feedback via an issue in this
-    library's source repository. Thank you!
     """
 
     def __init__(
         self,
         *,
         host: str = "recommendationengine.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Sequence[str] = None,
-        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
@@ -210,39 +209,35 @@ class PredictionApiKeyRegistryRestTransport(PredictionApiKeyRegistryTransport):
     ) -> None:
         """Instantiate the transport.
 
-        NOTE: This REST transport functionality is currently in a beta
-        state (preview). We welcome your feedback via a GitHub issue in
-        this library's repository. Thank you!
+        Args:
+            host (Optional[str]):
+                 The hostname to connect to.
+            credentials (Optional[google.auth.credentials.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify the application to the service; if none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
 
-         Args:
-             host (Optional[str]):
-                  The hostname to connect to.
-             credentials (Optional[google.auth.credentials.Credentials]): The
-                 authorization credentials to attach to requests. These
-                 credentials identify the application to the service; if none
-                 are specified, the client will attempt to ascertain the
-                 credentials from the environment.
-
-             credentials_file (Optional[str]): A file with credentials that can
-                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                 This argument is ignored if ``channel`` is provided.
-             scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                 ignored if ``channel`` is provided.
-             client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
-                 certificate to configure mutual TLS HTTP channel. It is ignored
-                 if ``channel`` is provided.
-             quota_project_id (Optional[str]): An optional project to use for billing
-                 and quota.
-             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
-                 The client info used to send a user-agent string along with
-                 API requests. If ``None``, then default info will be used.
-                 Generally, you only need to set this if you are developing
-                 your own client library.
-             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
-                 be used for service account credentials.
-             url_scheme: the protocol scheme for the API endpoint.  Normally
-                 "https", but for testing or local servers,
-                 "http" can be specified.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is ignored if ``channel`` is provided.
+            scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                ignored if ``channel`` is provided.
+            client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
+                certificate to configure mutual TLS HTTP channel. It is ignored
+                if ``channel`` is provided.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you are developing
+                your own client library.
+            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                be used for service account credentials.
+            url_scheme: the protocol scheme for the API endpoint.  Normally
+                "https", but for testing or local servers,
+                "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -292,7 +287,7 @@ class PredictionApiKeyRegistryRestTransport(PredictionApiKeyRegistryTransport):
             request: prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> prediction_apikey_registry_service.PredictionApiKeyRegistration:
             r"""Call the create prediction api key
@@ -337,7 +332,7 @@ class PredictionApiKeyRegistryRestTransport(PredictionApiKeyRegistryTransport):
             body = json_format.MessageToJson(
                 transcoded_request["body"],
                 including_default_value_fields=False,
-                use_integers_for_enums=False,
+                use_integers_for_enums=True,
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -347,10 +342,12 @@ class PredictionApiKeyRegistryRestTransport(PredictionApiKeyRegistryTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -397,7 +394,7 @@ class PredictionApiKeyRegistryRestTransport(PredictionApiKeyRegistryTransport):
             request: prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
             r"""Call the delete prediction api key
@@ -440,10 +437,12 @@ class PredictionApiKeyRegistryRestTransport(PredictionApiKeyRegistryTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
@@ -479,7 +478,7 @@ class PredictionApiKeyRegistryRestTransport(PredictionApiKeyRegistryTransport):
             request: prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse:
             r"""Call the list prediction api key
@@ -528,10 +527,12 @@ class PredictionApiKeyRegistryRestTransport(PredictionApiKeyRegistryTransport):
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
                     including_default_value_fields=False,
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)

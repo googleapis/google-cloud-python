@@ -1909,7 +1909,7 @@ def test_create_prediction_api_key_registration_rest_required_fields(
 
             response = client.create_prediction_api_key_registration(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2231,7 +2231,7 @@ def test_list_prediction_api_key_registrations_rest_required_fields(
 
             response = client.list_prediction_api_key_registrations(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2595,7 +2595,7 @@ def test_delete_prediction_api_key_registration_rest_required_fields(
 
             response = client.delete_prediction_api_key_registration(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 

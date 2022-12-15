@@ -16,8 +16,20 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
+
+from google.cloud.recommendationengine_v1beta1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -63,7 +75,7 @@ class PredictionApiKeyRegistryClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[PredictionApiKeyRegistryTransport]:
         """Returns an appropriate transport class.
 
@@ -372,8 +384,8 @@ class PredictionApiKeyRegistryClient(metaclass=PredictionApiKeyRegistryClientMet
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, PredictionApiKeyRegistryTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, PredictionApiKeyRegistryTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the prediction api key registry client.
@@ -387,10 +399,7 @@ class PredictionApiKeyRegistryClient(metaclass=PredictionApiKeyRegistryClientMet
             transport (Union[str, PredictionApiKeyRegistryTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-                NOTE: "rest" transport functionality is currently in a
-                beta state (preview). We welcome your feedback via an
-                issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -420,6 +429,7 @@ class PredictionApiKeyRegistryClient(metaclass=PredictionApiKeyRegistryClientMet
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -472,15 +482,19 @@ class PredictionApiKeyRegistryClient(metaclass=PredictionApiKeyRegistryClientMet
 
     def create_prediction_api_key_registration(
         self,
-        request: Union[
-            prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest,
-            dict,
+        request: Optional[
+            Union[
+                prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest,
+                dict,
+            ]
         ] = None,
         *,
-        parent: str = None,
-        prediction_api_key_registration: prediction_apikey_registry_service.PredictionApiKeyRegistration = None,
+        parent: Optional[str] = None,
+        prediction_api_key_registration: Optional[
+            prediction_apikey_registry_service.PredictionApiKeyRegistration
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> prediction_apikey_registry_service.PredictionApiKeyRegistration:
         r"""Register an API key for use with predict method.
@@ -594,14 +608,16 @@ class PredictionApiKeyRegistryClient(metaclass=PredictionApiKeyRegistryClientMet
 
     def list_prediction_api_key_registrations(
         self,
-        request: Union[
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest,
-            dict,
+        request: Optional[
+            Union[
+                prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest,
+                dict,
+            ]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPredictionApiKeyRegistrationsPager:
         r"""List the registered apiKeys for use with predict
@@ -720,14 +736,16 @@ class PredictionApiKeyRegistryClient(metaclass=PredictionApiKeyRegistryClientMet
 
     def delete_prediction_api_key_registration(
         self,
-        request: Union[
-            prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest,
-            dict,
+        request: Optional[
+            Union[
+                prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest,
+                dict,
+            ]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Unregister an apiKey from using for predict method.
@@ -833,14 +851,9 @@ class PredictionApiKeyRegistryClient(metaclass=PredictionApiKeyRegistryClientMet
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-recommendations-ai",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("PredictionApiKeyRegistryClient",)
