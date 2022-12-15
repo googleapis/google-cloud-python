@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/python-video-stitcher/compare/v0.4.0...v0.5.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.video.stitcher.__version__` ([b45d82a](https://github.com/googleapis/python-video-stitcher/commit/b45d82a9836eb96cf7c21475887897e1a1eb9c93))
+* Add typing to proto.Message based class attributes ([b45d82a](https://github.com/googleapis/python-video-stitcher/commit/b45d82a9836eb96cf7c21475887897e1a1eb9c93))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([b45d82a](https://github.com/googleapis/python-video-stitcher/commit/b45d82a9836eb96cf7c21475887897e1a1eb9c93))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([25011aa](https://github.com/googleapis/python-video-stitcher/commit/25011aadee2f8018c078b9dc2df483393efcab2b))
+* Drop usage of pkg_resources ([25011aa](https://github.com/googleapis/python-video-stitcher/commit/25011aadee2f8018c078b9dc2df483393efcab2b))
+* Fix timeout default values ([25011aa](https://github.com/googleapis/python-video-stitcher/commit/25011aadee2f8018c078b9dc2df483393efcab2b))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([b45d82a](https://github.com/googleapis/python-video-stitcher/commit/b45d82a9836eb96cf7c21475887897e1a1eb9c93))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([25011aa](https://github.com/googleapis/python-video-stitcher/commit/25011aadee2f8018c078b9dc2df483393efcab2b))
+
 ## [0.4.0](https://github.com/googleapis/python-video-stitcher/compare/v0.3.2...v0.4.0) (2022-10-27)
 
 
