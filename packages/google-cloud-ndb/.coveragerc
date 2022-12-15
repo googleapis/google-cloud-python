@@ -7,7 +7,6 @@ show_missing = True
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER
-    pragma: NO PY${PY_VERSION} COVER
 omit =
   */gapic/*.py
   */proto/*.py

@@ -20,10 +20,7 @@ import inspect
 import os
 import threading
 
-try:
-    _getfullargspec = inspect.getfullargspec
-except AttributeError:  # pragma: NO PY3 COVER
-    _getfullargspec = inspect.getargspec
+_getfullargspec = inspect.getfullargspec
 
 TRUTHY_STRINGS = {"t", "true", "y", "yes", "on", "1"}
 

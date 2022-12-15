@@ -17,6 +17,7 @@
 
 import collections
 import contextlib
+import contextvars
 import itertools
 import os
 import six
@@ -60,43 +61,30 @@ class _ContextIds:
 _context_ids = _ContextIds()
 
 
-try:  # pragma: NO PY2 COVER
-    import contextvars
+class _LocalState:
+    """Thread local state."""
 
-    class _LocalState:
-        """Thread local state."""
+    def __init__(self):
+        self._toplevel_context = contextvars.ContextVar(
+            "_toplevel_context", default=None
+        )
+        self._context = contextvars.ContextVar("_context", default=None)
 
-        def __init__(self):
-            self._toplevel_context = contextvars.ContextVar(
-                "_toplevel_context", default=None
-            )
-            self._context = contextvars.ContextVar("_context", default=None)
+    @property
+    def context(self):
+        return self._context.get()
 
-        @property
-        def context(self):
-            return self._context.get()
+    @context.setter
+    def context(self, value):
+        self._context.set(value)
 
-        @context.setter
-        def context(self, value):
-            self._context.set(value)
+    @property
+    def toplevel_context(self):
+        return self._toplevel_context.get()
 
-        @property
-        def toplevel_context(self):
-            return self._toplevel_context.get()
-
-        @toplevel_context.setter
-        def toplevel_context(self, value):
-            self._toplevel_context.set(value)
-
-
-except ImportError:  # pragma: NO PY3 COVER
-
-    class _LocalState(threading.local):
-        """Thread local state."""
-
-        def __init__(self):
-            self.context = None
-            self.toplevel_context = None
+    @toplevel_context.setter
+    def toplevel_context(self, value):
+        self._toplevel_context.set(value)
 
 
 _state = _LocalState()

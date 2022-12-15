@@ -76,8 +76,7 @@ def cover(session):
     # Install all dependencies.
     session.install("coverage")
     # Run coverage report.
-    # TODO return to 100% coverage
-    session.run("coverage", "report", "--fail-under=99", "--show-missing")
+    session.run("coverage", "report", "--fail-under=100", "--show-missing")
     # Erase cached coverage data.
     session.run("coverage", "erase")
 

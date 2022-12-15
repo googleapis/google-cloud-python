@@ -465,7 +465,7 @@ class Key(object):
             state to pickle. The dictionary has three keys ``pairs``, ``app``
             and ``namespace``.
         """
-        return (  # pragma: NO PY2 COVER
+        return (
             {
                 "pairs": self.pairs(),
                 "app": self.app(),

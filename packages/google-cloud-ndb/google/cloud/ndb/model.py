@@ -349,11 +349,7 @@ BlobKey = _datastore_types.BlobKey
 GeoPt = helpers.GeoPoint
 Rollback = exceptions.Rollback
 
-
-try:
-    _getfullargspec = inspect.getfullargspec
-except AttributeError:  # pragma: NO PY3 COVER
-    _getfullargspec = inspect.getargspec
+_getfullargspec = inspect.getfullargspec
 
 
 class KindError(exceptions.BadValueError):
@@ -3064,9 +3060,9 @@ class PickleProperty(BlobProperty):
         Returns:
             Any: The unpickled ``value``.
         """
-        if six.PY3 and type(value) is bytes:  # pragma: NO BRANCH
-            return pickle.loads(value, encoding="bytes")  # pragma: NO PY2 COVER
-        return pickle.loads(value)  # pragma: NO PY3 COVER
+        if type(value) is bytes:  # pragma: NO BRANCH
+            return pickle.loads(value, encoding="bytes")
+        return pickle.loads(value)  # pragma: NO COVER
 
 
 class JsonProperty(BlobProperty):
@@ -3313,7 +3309,7 @@ class User(object):
         return self._email == other._email and self._auth_domain == other._auth_domain
 
     def __lt__(self, other):
-        if not isinstance(other, User):  # pragma: NO PY2 COVER
+        if not isinstance(other, User):
             return NotImplemented
 
         return (self._email, self._auth_domain) < (
@@ -4907,7 +4903,7 @@ class Model(_NotEqualMixin):
 
     def _get_property_for(self, p, indexed=True, depth=0):
         """Internal helper to get the Property for a protobuf-level property."""
-        if isinstance(p.name(), six.text_type):  # pragma: NO PY2 COVER
+        if isinstance(p.name(), six.text_type):
             p.set_name(bytes(p.name(), encoding="utf-8"))
         parts = p.name().decode().split(".")
         if len(parts) <= depth:

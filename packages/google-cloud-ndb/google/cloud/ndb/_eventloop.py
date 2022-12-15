@@ -21,11 +21,7 @@ import logging
 import uuid
 import time
 
-# Python 2.7 module name change
-try:
-    import queue
-except ImportError:  # pragma: NO PY3 COVER
-    import Queue as queue
+import queue
 
 from google.cloud.ndb import utils
 

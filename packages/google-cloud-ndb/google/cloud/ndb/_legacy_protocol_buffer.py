@@ -18,10 +18,7 @@ import struct
 
 
 # Python 3 doesn't have "long" anymore
-try:
-    long(42)
-except NameError:  # pragma: NO PY2 COVER
-    long = int
+long = int
 
 
 class ProtocolBufferDecodeError(Exception):
@@ -31,10 +28,7 @@ class ProtocolBufferDecodeError(Exception):
 class ProtocolMessage:
     def MergePartialFromString(self, s):
         a = array.array("B")
-        try:
-            a.frombytes(s)
-        except AttributeError:  # pragma: NO PY3 COVER
-            a.fromstring(s)
+        a.frombytes(s)
         d = Decoder(a, 0, len(a))
         self.TryMerge(d)
 
@@ -204,11 +198,7 @@ class Decoder:
             raise ProtocolBufferDecodeError("truncated")
         r = self.buf[self.idx : self.idx + length]  # noqa: E203
         self.idx += length
-        try:
-            prefixed = r.tobytes()
-        except AttributeError:  # pragma: NO PY3 COVER
-            prefixed = r.tostring()
-        return prefixed
+        return r.tobytes()
 
 
 __all__ = [

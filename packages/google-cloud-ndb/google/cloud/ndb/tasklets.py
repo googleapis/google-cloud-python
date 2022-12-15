@@ -237,14 +237,7 @@ class Future(object):
             Union[types.TracebackType, None]: The traceback, or None.
         """
         if self._exception:
-            try:
-                traceback = self._exception.__traceback__
-            except AttributeError:  # pragma: NO PY3 COVER  # pragma: NO BRANCH
-                # Python 2 does not have the helpful traceback attribute, and
-                # since the exception is not being handled, it appears that
-                # sys.exec_info can't give us the traceback either.
-                traceback = None
-            return traceback
+            return self._exception.__traceback__
 
     def add_done_callback(self, callback):
         """Add a callback function to be run upon task completion. Will run
@@ -322,11 +315,7 @@ class _TaskletFuture(Future):
             with self.context.use():
                 # Send the next value or exception into the generator
                 if error:
-                    try:
-                        traceback = error.__traceback__
-                    except AttributeError:  # pragma: NO PY3 COVER  # pragma: NO BRANCH  # noqa: E501
-                        traceback = None
-
+                    traceback = error.__traceback__
                     yielded = self.generator.throw(type(error), error, traceback)
 
                 else:
