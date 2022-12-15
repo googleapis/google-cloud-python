@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [2.9.0](https://github.com/googleapis/python-videointelligence/compare/v2.8.3...v2.9.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.videointelligence.__version__` ([29c4e5f](https://github.com/googleapis/python-videointelligence/commit/29c4e5fb6163d30383cb42cd633fc32125508ddf))
+* Add typing to proto.Message based class attributes ([29c4e5f](https://github.com/googleapis/python-videointelligence/commit/29c4e5fb6163d30383cb42cd633fc32125508ddf))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([29c4e5f](https://github.com/googleapis/python-videointelligence/commit/29c4e5fb6163d30383cb42cd633fc32125508ddf))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([ad16669](https://github.com/googleapis/python-videointelligence/commit/ad1666990059300d31c0c6e1fb186146f84c65ee))
+* Drop usage of pkg_resources ([ad16669](https://github.com/googleapis/python-videointelligence/commit/ad1666990059300d31c0c6e1fb186146f84c65ee))
+* Fix timeout default values ([ad16669](https://github.com/googleapis/python-videointelligence/commit/ad1666990059300d31c0c6e1fb186146f84c65ee))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([29c4e5f](https://github.com/googleapis/python-videointelligence/commit/29c4e5fb6163d30383cb42cd633fc32125508ddf))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([ad16669](https://github.com/googleapis/python-videointelligence/commit/ad1666990059300d31c0c6e1fb186146f84c65ee))
+
 ## [2.8.3](https://github.com/googleapis/python-videointelligence/compare/v2.8.2...v2.8.3) (2022-10-10)
 
 
