@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/googleapis/python-cloud-common/compare/v1.0.6...v1.1.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.common.__version__` ([0d9d45f](https://github.com/googleapis/python-cloud-common/commit/0d9d45f96fa52e70d16ef9488b3548e5e7f8bb05))
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([#97](https://github.com/googleapis/python-cloud-common/issues/97)) ([6464998](https://github.com/googleapis/python-cloud-common/commit/6464998254db8e37b866211700e168b6cd382766))
+
 ## [1.0.6](https://github.com/googleapis/python-cloud-common/compare/v1.0.5...v1.0.6) (2022-10-07)
 
 
