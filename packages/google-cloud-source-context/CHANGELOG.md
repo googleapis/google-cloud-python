@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-source-context/compare/v1.2.8...v1.3.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.source_context.__version__` ([f6fd32c](https://github.com/googleapis/python-source-context/commit/f6fd32cd17bb36b3c002fbd3177ce267ddfdfc91))
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([#126](https://github.com/googleapis/python-source-context/issues/126)) ([665ad9f](https://github.com/googleapis/python-source-context/commit/665ad9f76d0e826b45ce63bd68ded249bcb08c17))
+
 ## [1.2.8](https://github.com/googleapis/python-source-context/compare/v1.2.7...v1.2.8) (2022-10-07)
 
 
