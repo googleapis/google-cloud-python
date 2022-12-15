@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-video-transcoder/compare/v1.4.3...v1.5.0) (2022-12-15)
+
+
+### Features
+
+* Add PreprocessingConfig.deinterlace ([227a759](https://github.com/googleapis/python-video-transcoder/commit/227a759d2edf9ad1e6c3110b6004e530a35dd13b))
+* Add support for `google.cloud.video.transcoder.__version__` ([227a759](https://github.com/googleapis/python-video-transcoder/commit/227a759d2edf9ad1e6c3110b6004e530a35dd13b))
+* Add typing to proto.Message based class attributes ([227a759](https://github.com/googleapis/python-video-transcoder/commit/227a759d2edf9ad1e6c3110b6004e530a35dd13b))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([227a759](https://github.com/googleapis/python-video-transcoder/commit/227a759d2edf9ad1e6c3110b6004e530a35dd13b))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([0d53a7b](https://github.com/googleapis/python-video-transcoder/commit/0d53a7baba85c976a4315edf54d34e8bf7225029))
+* Drop usage of pkg_resources ([0d53a7b](https://github.com/googleapis/python-video-transcoder/commit/0d53a7baba85c976a4315edf54d34e8bf7225029))
+* Fix timeout default values ([0d53a7b](https://github.com/googleapis/python-video-transcoder/commit/0d53a7baba85c976a4315edf54d34e8bf7225029))
+
+
+### Documentation
+
+* Minor documentation changes ([227a759](https://github.com/googleapis/python-video-transcoder/commit/227a759d2edf9ad1e6c3110b6004e530a35dd13b))
+* **samples:** Snippetgen handling of repeated enum field ([227a759](https://github.com/googleapis/python-video-transcoder/commit/227a759d2edf9ad1e6c3110b6004e530a35dd13b))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([0d53a7b](https://github.com/googleapis/python-video-transcoder/commit/0d53a7baba85c976a4315edf54d34e8bf7225029))
+
 ## [1.4.3](https://github.com/googleapis/python-video-transcoder/compare/v1.4.2...v1.4.3) (2022-10-07)
 
 
