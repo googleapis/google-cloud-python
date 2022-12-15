@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -39,11 +41,11 @@ class Vertex(proto.Message):
             Y coordinate.
     """
 
-    x = proto.Field(
+    x: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    y = proto.Field(
+    y: int = proto.Field(
         proto.INT32,
         number=2,
     )
@@ -61,11 +63,11 @@ class NormalizedVertex(proto.Message):
             Y coordinate.
     """
 
-    x = proto.Field(
+    x: float = proto.Field(
         proto.FLOAT,
         number=1,
     )
-    y = proto.Field(
+    y: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
@@ -75,18 +77,18 @@ class BoundingPoly(proto.Message):
     r"""A bounding polygon for the detected image annotation.
 
     Attributes:
-        vertices (Sequence[google.cloud.vision_v1p4beta1.types.Vertex]):
+        vertices (MutableSequence[google.cloud.vision_v1p4beta1.types.Vertex]):
             The bounding polygon vertices.
-        normalized_vertices (Sequence[google.cloud.vision_v1p4beta1.types.NormalizedVertex]):
+        normalized_vertices (MutableSequence[google.cloud.vision_v1p4beta1.types.NormalizedVertex]):
             The bounding polygon normalized vertices.
     """
 
-    vertices = proto.RepeatedField(
+    vertices: MutableSequence["Vertex"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Vertex",
     )
-    normalized_vertices = proto.RepeatedField(
+    normalized_vertices: MutableSequence["NormalizedVertex"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="NormalizedVertex",
@@ -108,15 +110,15 @@ class Position(proto.Message):
             Z coordinate (or depth).
     """
 
-    x = proto.Field(
+    x: float = proto.Field(
         proto.FLOAT,
         number=1,
     )
-    y = proto.Field(
+    y: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
-    z = proto.Field(
+    z: float = proto.Field(
         proto.FLOAT,
         number=3,
     )

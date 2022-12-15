@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.vision import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.vision_helpers.decorators import add_single_feature_methods
 from google.cloud.vision_helpers import VisionHelpers

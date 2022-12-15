@@ -1,0 +1,49 @@
+{
+    "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+    "packages": {
+      ".": {
+        "release-type": "python",
+        "extra-files": [
+          "google/cloud/vision/gapic_version.py",
+          "google/cloud/vision_v1/gapic_version.py",
+          "google/cloud/vision_v1p1beta1/gapic_version.py",
+          "google/cloud/vision_v1p2beta1/gapic_version.py",
+          "google/cloud/vision_v1p3beta1/gapic_version.py",
+          "google/cloud/vision_v1p4beta1/gapic_version.py",
+          {
+            "type": "json",
+            "path": "samples/generated_samples/snippet_metadata_google.cloud.vision.v1.json",
+            "jsonpath": "$.clientLibrary.version"
+          },
+          {
+            "type": "json",
+            "path": "samples/generated_samples/snippet_metadata_google.cloud.vision.v1p1beta1.json",
+            "jsonpath": "$.clientLibrary.version"
+          },
+          {
+            "type": "json",
+            "path": "samples/generated_samples/snippet_metadata_google.cloud.vision.v1p2beta1.json",
+            "jsonpath": "$.clientLibrary.version"
+          },
+          {
+            "type": "json",
+            "path": "samples/generated_samples/snippet_metadata_google.cloud.vision.v1p3beta1.json",
+            "jsonpath": "$.clientLibrary.version"
+          },
+          {
+            "type": "json",
+            "path": "samples/generated_samples/snippet_metadata_google.cloud.vision.v1p4beta1.json",
+            "jsonpath": "$.clientLibrary.version"
+          }
+        ]
+      }
+    },
+    "release-type": "python",
+    "plugins": [
+      {
+        "type": "sentence-case"
+      }
+    ],
+    "initial-version": "0.1.0"
+}
+  

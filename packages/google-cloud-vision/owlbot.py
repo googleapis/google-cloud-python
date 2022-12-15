@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,17 +12,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""This script is used to synthesize generated parts of this library."""
+import json
+from pathlib import Path
+import shutil
 
 import synthtool as s
-from synthtool import gcp
+import synthtool.gcp as gcp
 from synthtool.languages import python
 
-common = gcp.CommonTemplates()
+# ----------------------------------------------------------------------------
+# Copy the generated client from the owl-bot staging directory
+# ----------------------------------------------------------------------------
 
-default_version = "v1"
+clean_up_generated_samples = True
+
+# Load the default version defined in .repo-metadata.json.
+default_version = json.load(open(".repo-metadata.json", "rt")).get(
+    "default_version"
+)
 
 for library in s.get_staging_dirs(default_version):
+    if clean_up_generated_samples:
+        shutil.rmtree("samples/generated_samples", ignore_errors=True)
+        clean_up_generated_samples = False
+
     if library.name == "v1":
         s.replace(
             library / "google/cloud/vision/__init__.py",
@@ -87,39 +100,23 @@ for library in s.get_staging_dirs(default_version):
         "                    requests[i] = image_annotator.AsyncAnnotateFileRequest(requests[i])"
     )
 
-    s.move(library / f"google/cloud/vision_{library.name}/proto")
-    s.move(library / f"google/cloud/vision_{library.name}/services")
-    s.move(library / f"google/cloud/vision_{library.name}/types")
-    s.move(library / f"google/cloud/vision_{library.name}/__init__.py")
-    s.move(library / f"google/cloud/vision_{library.name}/py.typed")
-    s.move(library / f"tests/unit/gapic/vision_{library.name}")
-
-    # don't publish docs for these versions
-    if library.name != "v1p1beta1":
-        s.move(library / f"docs/vision_{library.name}")
-
-    # Move docs configuration
-    s.move(library / f"docs/conf.py")
-    s.move(library / "samples")
-
+    s.move([library], excludes=["**/gapic_version.py", "README.rst", "docs/index.rst", "docs/vision_v1p1beta1", "google/cloud/vision/__init__.py"])
 s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(
-   samples=True,
-   microgenerator=True,
-   cov_level=99,
-   system_test_external_dependencies=["google-cloud-storage"]
+
+templated_files = gcp.CommonTemplates().py_library(
+    cov_level=99,
+    microgenerator=True,
+    versions=gcp.common.detect_versions(path="./google", default_first=True),
+    system_test_external_dependencies=["google-cloud-storage"],
 )
-s.move(templated_files, excludes=[".coveragerc", "README.rst"])
+s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml", "README.rst", "docs/index.rst","google/cloud/vision/__init__.py"])
 
-python.configure_previous_major_version_branches()
-
-# ----------------------------------------------------------------------------
-# Samples templates
-# ----------------------------------------------------------------------------
 python.py_samples(skip_readmes=True)
 
-s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+# run format session for all directories which have a noxfile
+for noxfile in Path(".").glob("**/noxfile.py"):
+    s.shell.run(["nox", "-s", "blacken"], cwd=noxfile.parent, hide_output=False)

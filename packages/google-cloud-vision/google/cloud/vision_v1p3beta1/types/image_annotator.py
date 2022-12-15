@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.vision_v1p3beta1.types import geometry
@@ -115,16 +117,16 @@ class Feature(proto.Message):
         PRODUCT_SEARCH = 12
         OBJECT_LOCALIZATION = 19
 
-    type_ = proto.Field(
+    type_: Type = proto.Field(
         proto.ENUM,
         number=1,
         enum=Type,
     )
-    max_results = proto.Field(
+    max_results: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    model = proto.Field(
+    model: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -165,11 +167,11 @@ class ImageSource(proto.Message):
             ``image_uri`` takes precedence.
     """
 
-    gcs_image_uri = proto.Field(
+    gcs_image_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    image_uri = proto.Field(
+    image_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -190,11 +192,11 @@ class Image(proto.Message):
             perform the image annotation request.
     """
 
-    content = proto.Field(
+    content: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    source = proto.Field(
+    source: "ImageSource" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ImageSource",
@@ -223,7 +225,7 @@ class FaceAnnotation(proto.Message):
             an image. It is not based on the landmarker results, only on
             the initial face detection, hence the fd (face detection)
             prefix.
-        landmarks (Sequence[google.cloud.vision_v1p3beta1.types.FaceAnnotation.Landmark]):
+        landmarks (MutableSequence[google.cloud.vision_v1p3beta1.types.FaceAnnotation.Landmark]):
             Detected face landmarks.
         roll_angle (float):
             Roll angle, which indicates the amount of
@@ -310,83 +312,83 @@ class FaceAnnotation(proto.Message):
             CHIN_LEFT_GONION = 33
             CHIN_RIGHT_GONION = 34
 
-        type_ = proto.Field(
+        type_: "FaceAnnotation.Landmark.Type" = proto.Field(
             proto.ENUM,
             number=3,
             enum="FaceAnnotation.Landmark.Type",
         )
-        position = proto.Field(
+        position: geometry.Position = proto.Field(
             proto.MESSAGE,
             number=4,
             message=geometry.Position,
         )
 
-    bounding_poly = proto.Field(
+    bounding_poly: geometry.BoundingPoly = proto.Field(
         proto.MESSAGE,
         number=1,
         message=geometry.BoundingPoly,
     )
-    fd_bounding_poly = proto.Field(
+    fd_bounding_poly: geometry.BoundingPoly = proto.Field(
         proto.MESSAGE,
         number=2,
         message=geometry.BoundingPoly,
     )
-    landmarks = proto.RepeatedField(
+    landmarks: MutableSequence[Landmark] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=Landmark,
     )
-    roll_angle = proto.Field(
+    roll_angle: float = proto.Field(
         proto.FLOAT,
         number=4,
     )
-    pan_angle = proto.Field(
+    pan_angle: float = proto.Field(
         proto.FLOAT,
         number=5,
     )
-    tilt_angle = proto.Field(
+    tilt_angle: float = proto.Field(
         proto.FLOAT,
         number=6,
     )
-    detection_confidence = proto.Field(
+    detection_confidence: float = proto.Field(
         proto.FLOAT,
         number=7,
     )
-    landmarking_confidence = proto.Field(
+    landmarking_confidence: float = proto.Field(
         proto.FLOAT,
         number=8,
     )
-    joy_likelihood = proto.Field(
+    joy_likelihood: "Likelihood" = proto.Field(
         proto.ENUM,
         number=9,
         enum="Likelihood",
     )
-    sorrow_likelihood = proto.Field(
+    sorrow_likelihood: "Likelihood" = proto.Field(
         proto.ENUM,
         number=10,
         enum="Likelihood",
     )
-    anger_likelihood = proto.Field(
+    anger_likelihood: "Likelihood" = proto.Field(
         proto.ENUM,
         number=11,
         enum="Likelihood",
     )
-    surprise_likelihood = proto.Field(
+    surprise_likelihood: "Likelihood" = proto.Field(
         proto.ENUM,
         number=12,
         enum="Likelihood",
     )
-    under_exposed_likelihood = proto.Field(
+    under_exposed_likelihood: "Likelihood" = proto.Field(
         proto.ENUM,
         number=13,
         enum="Likelihood",
     )
-    blurred_likelihood = proto.Field(
+    blurred_likelihood: "Likelihood" = proto.Field(
         proto.ENUM,
         number=14,
         enum="Likelihood",
     )
-    headwear_likelihood = proto.Field(
+    headwear_likelihood: "Likelihood" = proto.Field(
         proto.ENUM,
         number=15,
         enum="Likelihood",
@@ -401,7 +403,7 @@ class LocationInfo(proto.Message):
             lat/long location coordinates.
     """
 
-    lat_lng = proto.Field(
+    lat_lng: latlng_pb2.LatLng = proto.Field(
         proto.MESSAGE,
         number=1,
         message=latlng_pb2.LatLng,
@@ -420,15 +422,15 @@ class Property(proto.Message):
             Value of numeric properties.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    value = proto.Field(
+    value: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    uint64_value = proto.Field(
+    uint64_value: int = proto.Field(
         proto.UINT64,
         number=3,
     )
@@ -466,54 +468,54 @@ class EntityAnnotation(proto.Message):
         bounding_poly (google.cloud.vision_v1p3beta1.types.BoundingPoly):
             Image region to which this entity belongs. Not produced for
             ``LABEL_DETECTION`` features.
-        locations (Sequence[google.cloud.vision_v1p3beta1.types.LocationInfo]):
+        locations (MutableSequence[google.cloud.vision_v1p3beta1.types.LocationInfo]):
             The location information for the detected entity. Multiple
             ``LocationInfo`` elements can be present because one
             location may indicate the location of the scene in the
             image, and another location may indicate the location of the
             place where the image was taken. Location information is
             usually present for landmarks.
-        properties (Sequence[google.cloud.vision_v1p3beta1.types.Property]):
+        properties (MutableSequence[google.cloud.vision_v1p3beta1.types.Property]):
             Some entities may have optional user-supplied ``Property``
             (name/value) fields, such a score or string that qualifies
             the entity.
     """
 
-    mid = proto.Field(
+    mid: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    locale = proto.Field(
+    locale: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    score = proto.Field(
+    score: float = proto.Field(
         proto.FLOAT,
         number=4,
     )
-    confidence = proto.Field(
+    confidence: float = proto.Field(
         proto.FLOAT,
         number=5,
     )
-    topicality = proto.Field(
+    topicality: float = proto.Field(
         proto.FLOAT,
         number=6,
     )
-    bounding_poly = proto.Field(
+    bounding_poly: geometry.BoundingPoly = proto.Field(
         proto.MESSAGE,
         number=7,
         message=geometry.BoundingPoly,
     )
-    locations = proto.RepeatedField(
+    locations: MutableSequence["LocationInfo"] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message="LocationInfo",
     )
-    properties = proto.RepeatedField(
+    properties: MutableSequence["Property"] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message="Property",
@@ -540,23 +542,23 @@ class LocalizedObjectAnnotation(proto.Message):
             This must be populated.
     """
 
-    mid = proto.Field(
+    mid: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    score = proto.Field(
+    score: float = proto.Field(
         proto.FLOAT,
         number=4,
     )
-    bounding_poly = proto.Field(
+    bounding_poly: geometry.BoundingPoly = proto.Field(
         proto.MESSAGE,
         number=5,
         message=geometry.BoundingPoly,
@@ -592,27 +594,27 @@ class SafeSearchAnnotation(proto.Message):
             body areas.
     """
 
-    adult = proto.Field(
+    adult: "Likelihood" = proto.Field(
         proto.ENUM,
         number=1,
         enum="Likelihood",
     )
-    spoof = proto.Field(
+    spoof: "Likelihood" = proto.Field(
         proto.ENUM,
         number=2,
         enum="Likelihood",
     )
-    medical = proto.Field(
+    medical: "Likelihood" = proto.Field(
         proto.ENUM,
         number=3,
         enum="Likelihood",
     )
-    violence = proto.Field(
+    violence: "Likelihood" = proto.Field(
         proto.ENUM,
         number=4,
         enum="Likelihood",
     )
-    racy = proto.Field(
+    racy: "Likelihood" = proto.Field(
         proto.ENUM,
         number=9,
         enum="Likelihood",
@@ -629,12 +631,12 @@ class LatLongRect(proto.Message):
             Max lat/long pair.
     """
 
-    min_lat_lng = proto.Field(
+    min_lat_lng: latlng_pb2.LatLng = proto.Field(
         proto.MESSAGE,
         number=1,
         message=latlng_pb2.LatLng,
     )
-    max_lat_lng = proto.Field(
+    max_lat_lng: latlng_pb2.LatLng = proto.Field(
         proto.MESSAGE,
         number=2,
         message=latlng_pb2.LatLng,
@@ -655,16 +657,16 @@ class ColorInfo(proto.Message):
             Value in range [0, 1].
     """
 
-    color = proto.Field(
+    color: color_pb2.Color = proto.Field(
         proto.MESSAGE,
         number=1,
         message=color_pb2.Color,
     )
-    score = proto.Field(
+    score: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
-    pixel_fraction = proto.Field(
+    pixel_fraction: float = proto.Field(
         proto.FLOAT,
         number=3,
     )
@@ -674,12 +676,12 @@ class DominantColorsAnnotation(proto.Message):
     r"""Set of dominant colors and their corresponding scores.
 
     Attributes:
-        colors (Sequence[google.cloud.vision_v1p3beta1.types.ColorInfo]):
+        colors (MutableSequence[google.cloud.vision_v1p3beta1.types.ColorInfo]):
             RGB color values with their score and pixel
             fraction.
     """
 
-    colors = proto.RepeatedField(
+    colors: MutableSequence["ColorInfo"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ColorInfo",
@@ -695,7 +697,7 @@ class ImageProperties(proto.Message):
             successfully.
     """
 
-    dominant_colors = proto.Field(
+    dominant_colors: "DominantColorsAnnotation" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="DominantColorsAnnotation",
@@ -718,16 +720,16 @@ class CropHint(proto.Message):
             with respect to the original image.
     """
 
-    bounding_poly = proto.Field(
+    bounding_poly: geometry.BoundingPoly = proto.Field(
         proto.MESSAGE,
         number=1,
         message=geometry.BoundingPoly,
     )
-    confidence = proto.Field(
+    confidence: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
-    importance_fraction = proto.Field(
+    importance_fraction: float = proto.Field(
         proto.FLOAT,
         number=3,
     )
@@ -738,11 +740,11 @@ class CropHintsAnnotation(proto.Message):
     serving images.
 
     Attributes:
-        crop_hints (Sequence[google.cloud.vision_v1p3beta1.types.CropHint]):
+        crop_hints (MutableSequence[google.cloud.vision_v1p3beta1.types.CropHint]):
             Crop hint results.
     """
 
-    crop_hints = proto.RepeatedField(
+    crop_hints: MutableSequence["CropHint"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="CropHint",
@@ -753,7 +755,7 @@ class CropHintsParams(proto.Message):
     r"""Parameters for crop hints annotation request.
 
     Attributes:
-        aspect_ratios (Sequence[float]):
+        aspect_ratios (MutableSequence[float]):
             Aspect ratios in floats, representing the
             ratio of the width to the height of the image.
             For example, if the desired aspect ratio is 4/3,
@@ -764,7 +766,7 @@ class CropHintsParams(proto.Message):
             provided after the 16th are ignored.
     """
 
-    aspect_ratios = proto.RepeatedField(
+    aspect_ratios: MutableSequence[float] = proto.RepeatedField(
         proto.FLOAT,
         number=1,
     )
@@ -779,7 +781,7 @@ class WebDetectionParams(proto.Message):
             geo information in the image.
     """
 
-    include_geo_results = proto.Field(
+    include_geo_results: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -794,16 +796,16 @@ class TextDetectionParams(proto.Message):
             By default, Cloud Vision API only includes confidence score
             for DOCUMENT_TEXT_DETECTION result. Set the flag to true to
             include confidence score for TEXT_DETECTION as well.
-        advanced_ocr_options (Sequence[str]):
+        advanced_ocr_options (MutableSequence[str]):
             A list of advanced OCR options to fine-tune
             OCR behavior.
     """
 
-    enable_text_detection_confidence_score = proto.Field(
+    enable_text_detection_confidence_score: bool = proto.Field(
         proto.BOOL,
         number=9,
     )
-    advanced_ocr_options = proto.RepeatedField(
+    advanced_ocr_options: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=11,
     )
@@ -815,7 +817,7 @@ class ImageContext(proto.Message):
     Attributes:
         lat_long_rect (google.cloud.vision_v1p3beta1.types.LatLongRect):
             Not used.
-        language_hints (Sequence[str]):
+        language_hints (MutableSequence[str]):
             List of languages to use for TEXT_DETECTION. In most cases,
             an empty value yields the best results since it enables
             automatic language detection. For languages based on the
@@ -837,31 +839,31 @@ class ImageContext(proto.Message):
             text detection.
     """
 
-    lat_long_rect = proto.Field(
+    lat_long_rect: "LatLongRect" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="LatLongRect",
     )
-    language_hints = proto.RepeatedField(
+    language_hints: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    crop_hints_params = proto.Field(
+    crop_hints_params: "CropHintsParams" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="CropHintsParams",
     )
-    product_search_params = proto.Field(
+    product_search_params: product_search.ProductSearchParams = proto.Field(
         proto.MESSAGE,
         number=5,
         message=product_search.ProductSearchParams,
     )
-    web_detection_params = proto.Field(
+    web_detection_params: "WebDetectionParams" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="WebDetectionParams",
     )
-    text_detection_params = proto.Field(
+    text_detection_params: "TextDetectionParams" = proto.Field(
         proto.MESSAGE,
         number=12,
         message="TextDetectionParams",
@@ -875,24 +877,24 @@ class AnnotateImageRequest(proto.Message):
     Attributes:
         image (google.cloud.vision_v1p3beta1.types.Image):
             The image to be processed.
-        features (Sequence[google.cloud.vision_v1p3beta1.types.Feature]):
+        features (MutableSequence[google.cloud.vision_v1p3beta1.types.Feature]):
             Requested features.
         image_context (google.cloud.vision_v1p3beta1.types.ImageContext):
             Additional context that may accompany the
             image.
     """
 
-    image = proto.Field(
+    image: "Image" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Image",
     )
-    features = proto.RepeatedField(
+    features: MutableSequence["Feature"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="Feature",
     )
-    image_context = proto.Field(
+    image_context: "ImageContext" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="ImageContext",
@@ -913,11 +915,11 @@ class ImageAnnotationContext(proto.Message):
             produce the image.
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_number = proto.Field(
+    page_number: int = proto.Field(
         proto.INT32,
         number=2,
     )
@@ -927,23 +929,23 @@ class AnnotateImageResponse(proto.Message):
     r"""Response to an image annotation request.
 
     Attributes:
-        face_annotations (Sequence[google.cloud.vision_v1p3beta1.types.FaceAnnotation]):
+        face_annotations (MutableSequence[google.cloud.vision_v1p3beta1.types.FaceAnnotation]):
             If present, face detection has completed
             successfully.
-        landmark_annotations (Sequence[google.cloud.vision_v1p3beta1.types.EntityAnnotation]):
+        landmark_annotations (MutableSequence[google.cloud.vision_v1p3beta1.types.EntityAnnotation]):
             If present, landmark detection has completed
             successfully.
-        logo_annotations (Sequence[google.cloud.vision_v1p3beta1.types.EntityAnnotation]):
+        logo_annotations (MutableSequence[google.cloud.vision_v1p3beta1.types.EntityAnnotation]):
             If present, logo detection has completed
             successfully.
-        label_annotations (Sequence[google.cloud.vision_v1p3beta1.types.EntityAnnotation]):
+        label_annotations (MutableSequence[google.cloud.vision_v1p3beta1.types.EntityAnnotation]):
             If present, label detection has completed
             successfully.
-        localized_object_annotations (Sequence[google.cloud.vision_v1p3beta1.types.LocalizedObjectAnnotation]):
+        localized_object_annotations (MutableSequence[google.cloud.vision_v1p3beta1.types.LocalizedObjectAnnotation]):
             If present, localized object detection has
             completed successfully. This will be sorted
             descending by confidence score.
-        text_annotations (Sequence[google.cloud.vision_v1p3beta1.types.EntityAnnotation]):
+        text_annotations (MutableSequence[google.cloud.vision_v1p3beta1.types.EntityAnnotation]):
             If present, text (OCR) detection has
             completed successfully.
         full_text_annotation (google.cloud.vision_v1p3beta1.types.TextAnnotation):
@@ -975,72 +977,74 @@ class AnnotateImageResponse(proto.Message):
             to understand where this image comes from.
     """
 
-    face_annotations = proto.RepeatedField(
+    face_annotations: MutableSequence["FaceAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="FaceAnnotation",
     )
-    landmark_annotations = proto.RepeatedField(
+    landmark_annotations: MutableSequence["EntityAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="EntityAnnotation",
     )
-    logo_annotations = proto.RepeatedField(
+    logo_annotations: MutableSequence["EntityAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="EntityAnnotation",
     )
-    label_annotations = proto.RepeatedField(
+    label_annotations: MutableSequence["EntityAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="EntityAnnotation",
     )
-    localized_object_annotations = proto.RepeatedField(
+    localized_object_annotations: MutableSequence[
+        "LocalizedObjectAnnotation"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=22,
         message="LocalizedObjectAnnotation",
     )
-    text_annotations = proto.RepeatedField(
+    text_annotations: MutableSequence["EntityAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="EntityAnnotation",
     )
-    full_text_annotation = proto.Field(
+    full_text_annotation: text_annotation.TextAnnotation = proto.Field(
         proto.MESSAGE,
         number=12,
         message=text_annotation.TextAnnotation,
     )
-    safe_search_annotation = proto.Field(
+    safe_search_annotation: "SafeSearchAnnotation" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="SafeSearchAnnotation",
     )
-    image_properties_annotation = proto.Field(
+    image_properties_annotation: "ImageProperties" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="ImageProperties",
     )
-    crop_hints_annotation = proto.Field(
+    crop_hints_annotation: "CropHintsAnnotation" = proto.Field(
         proto.MESSAGE,
         number=11,
         message="CropHintsAnnotation",
     )
-    web_detection = proto.Field(
+    web_detection: gcv_web_detection.WebDetection = proto.Field(
         proto.MESSAGE,
         number=13,
         message=gcv_web_detection.WebDetection,
     )
-    product_search_results = proto.Field(
+    product_search_results: product_search.ProductSearchResults = proto.Field(
         proto.MESSAGE,
         number=14,
         message=product_search.ProductSearchResults,
     )
-    error = proto.Field(
+    error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=9,
         message=status_pb2.Status,
     )
-    context = proto.Field(
+    context: "ImageAnnotationContext" = proto.Field(
         proto.MESSAGE,
         number=21,
         message="ImageAnnotationContext",
@@ -1056,17 +1060,17 @@ class AnnotateFileResponse(proto.Message):
         input_config (google.cloud.vision_v1p3beta1.types.InputConfig):
             Information about the file for which this
             response is generated.
-        responses (Sequence[google.cloud.vision_v1p3beta1.types.AnnotateImageResponse]):
+        responses (MutableSequence[google.cloud.vision_v1p3beta1.types.AnnotateImageResponse]):
             Individual responses to images found within
             the file.
     """
 
-    input_config = proto.Field(
+    input_config: "InputConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="InputConfig",
     )
-    responses = proto.RepeatedField(
+    responses: MutableSequence["AnnotateImageResponse"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="AnnotateImageResponse",
@@ -1078,12 +1082,12 @@ class BatchAnnotateImagesRequest(proto.Message):
     service call.
 
     Attributes:
-        requests (Sequence[google.cloud.vision_v1p3beta1.types.AnnotateImageRequest]):
+        requests (MutableSequence[google.cloud.vision_v1p3beta1.types.AnnotateImageRequest]):
             Individual image annotation requests for this
             batch.
     """
 
-    requests = proto.RepeatedField(
+    requests: MutableSequence["AnnotateImageRequest"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AnnotateImageRequest",
@@ -1094,12 +1098,12 @@ class BatchAnnotateImagesResponse(proto.Message):
     r"""Response to a batch image annotation request.
 
     Attributes:
-        responses (Sequence[google.cloud.vision_v1p3beta1.types.AnnotateImageResponse]):
+        responses (MutableSequence[google.cloud.vision_v1p3beta1.types.AnnotateImageResponse]):
             Individual responses to image annotation
             requests within the batch.
     """
 
-    responses = proto.RepeatedField(
+    responses: MutableSequence["AnnotateImageResponse"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AnnotateImageResponse",
@@ -1112,7 +1116,7 @@ class AsyncAnnotateFileRequest(proto.Message):
     Attributes:
         input_config (google.cloud.vision_v1p3beta1.types.InputConfig):
             Required. Information about the input file.
-        features (Sequence[google.cloud.vision_v1p3beta1.types.Feature]):
+        features (MutableSequence[google.cloud.vision_v1p3beta1.types.Feature]):
             Required. Requested features.
         image_context (google.cloud.vision_v1p3beta1.types.ImageContext):
             Additional context that may accompany the
@@ -1122,22 +1126,22 @@ class AsyncAnnotateFileRequest(proto.Message):
             metadata (e.g. format).
     """
 
-    input_config = proto.Field(
+    input_config: "InputConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="InputConfig",
     )
-    features = proto.RepeatedField(
+    features: MutableSequence["Feature"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="Feature",
     )
-    image_context = proto.Field(
+    image_context: "ImageContext" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="ImageContext",
     )
-    output_config = proto.Field(
+    output_config: "OutputConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="OutputConfig",
@@ -1153,7 +1157,7 @@ class AsyncAnnotateFileResponse(proto.Message):
             AsyncAnnotateFileRequest.
     """
 
-    output_config = proto.Field(
+    output_config: "OutputConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="OutputConfig",
@@ -1165,12 +1169,12 @@ class AsyncBatchAnnotateFilesRequest(proto.Message):
     single service call.
 
     Attributes:
-        requests (Sequence[google.cloud.vision_v1p3beta1.types.AsyncAnnotateFileRequest]):
+        requests (MutableSequence[google.cloud.vision_v1p3beta1.types.AsyncAnnotateFileRequest]):
             Required. Individual async file annotation
             requests for this batch.
     """
 
-    requests = proto.RepeatedField(
+    requests: MutableSequence["AsyncAnnotateFileRequest"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AsyncAnnotateFileRequest",
@@ -1181,13 +1185,13 @@ class AsyncBatchAnnotateFilesResponse(proto.Message):
     r"""Response to an async batch file annotation request.
 
     Attributes:
-        responses (Sequence[google.cloud.vision_v1p3beta1.types.AsyncAnnotateFileResponse]):
+        responses (MutableSequence[google.cloud.vision_v1p3beta1.types.AsyncAnnotateFileResponse]):
             The list of file annotation responses, one
             for each request in
             AsyncBatchAnnotateFilesRequest.
     """
 
-    responses = proto.RepeatedField(
+    responses: MutableSequence["AsyncAnnotateFileResponse"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AsyncAnnotateFileResponse",
@@ -1207,12 +1211,12 @@ class InputConfig(proto.Message):
             supported. Wildcards are not supported.
     """
 
-    gcs_source = proto.Field(
+    gcs_source: "GcsSource" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="GcsSource",
     )
-    mime_type = proto.Field(
+    mime_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1239,12 +1243,12 @@ class OutputConfig(proto.Message):
             potential future support for other output configurations.
     """
 
-    gcs_destination = proto.Field(
+    gcs_destination: "GcsDestination" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="GcsDestination",
     )
-    batch_size = proto.Field(
+    batch_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
@@ -1261,7 +1265,7 @@ class GcsSource(proto.Message):
             Wildcards are not currently supported.
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1292,7 +1296,7 @@ class GcsDestination(proto.Message):
             overflows into multiple sharded files.
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1319,17 +1323,17 @@ class OperationMetadata(proto.Message):
         DONE = 3
         CANCELLED = 4
 
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,

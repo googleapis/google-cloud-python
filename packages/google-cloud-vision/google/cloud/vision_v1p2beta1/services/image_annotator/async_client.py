@@ -16,8 +16,19 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
+
+from google.cloud.vision_v1p2beta1 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -161,9 +172,9 @@ class ImageAnnotatorAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ImageAnnotatorTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the image annotator client.
@@ -207,11 +218,15 @@ class ImageAnnotatorAsyncClient:
 
     async def batch_annotate_images(
         self,
-        request: Union[image_annotator.BatchAnnotateImagesRequest, dict] = None,
+        request: Optional[
+            Union[image_annotator.BatchAnnotateImagesRequest, dict]
+        ] = None,
         *,
-        requests: Sequence[image_annotator.AnnotateImageRequest] = None,
+        requests: Optional[
+            MutableSequence[image_annotator.AnnotateImageRequest]
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> image_annotator.BatchAnnotateImagesResponse:
         r"""Run image detection and annotation for a batch of
@@ -243,10 +258,10 @@ class ImageAnnotatorAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vision_v1p2beta1.types.BatchAnnotateImagesRequest, dict]):
+            request (Optional[Union[google.cloud.vision_v1p2beta1.types.BatchAnnotateImagesRequest, dict]]):
                 The request object. Multiple image annotation requests
                 are batched into a single service call.
-            requests (:class:`Sequence[google.cloud.vision_v1p2beta1.types.AnnotateImageRequest]`):
+            requests (:class:`MutableSequence[google.cloud.vision_v1p2beta1.types.AnnotateImageRequest]`):
                 Required. Individual image annotation
                 requests for this batch.
 
@@ -313,11 +328,15 @@ class ImageAnnotatorAsyncClient:
 
     async def async_batch_annotate_files(
         self,
-        request: Union[image_annotator.AsyncBatchAnnotateFilesRequest, dict] = None,
+        request: Optional[
+            Union[image_annotator.AsyncBatchAnnotateFilesRequest, dict]
+        ] = None,
         *,
-        requests: Sequence[image_annotator.AsyncAnnotateFileRequest] = None,
+        requests: Optional[
+            MutableSequence[image_annotator.AsyncAnnotateFileRequest]
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Run async image detection and annotation for a list of generic
@@ -352,16 +371,16 @@ class ImageAnnotatorAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.vision_v1p2beta1.types.AsyncBatchAnnotateFilesRequest, dict]):
+            request (Optional[Union[google.cloud.vision_v1p2beta1.types.AsyncBatchAnnotateFilesRequest, dict]]):
                 The request object. Multiple async file annotation
                 requests are batched into a single service call.
-            requests (:class:`Sequence[google.cloud.vision_v1p2beta1.types.AsyncAnnotateFileRequest]`):
+            requests (:class:`MutableSequence[google.cloud.vision_v1p2beta1.types.AsyncAnnotateFileRequest]`):
                 Required. Individual async file
                 annotation requests for this batch.
 
@@ -444,14 +463,9 @@ class ImageAnnotatorAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-vision",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ImageAnnotatorAsyncClient",)

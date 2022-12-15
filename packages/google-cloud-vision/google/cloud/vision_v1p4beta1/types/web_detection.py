@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -28,24 +30,24 @@ class WebDetection(proto.Message):
     r"""Relevant information for the image from the Internet.
 
     Attributes:
-        web_entities (Sequence[google.cloud.vision_v1p4beta1.types.WebDetection.WebEntity]):
+        web_entities (MutableSequence[google.cloud.vision_v1p4beta1.types.WebDetection.WebEntity]):
             Deduced entities from similar images on the
             Internet.
-        full_matching_images (Sequence[google.cloud.vision_v1p4beta1.types.WebDetection.WebImage]):
+        full_matching_images (MutableSequence[google.cloud.vision_v1p4beta1.types.WebDetection.WebImage]):
             Fully matching images from the Internet.
             Can include resized copies of the query image.
-        partial_matching_images (Sequence[google.cloud.vision_v1p4beta1.types.WebDetection.WebImage]):
+        partial_matching_images (MutableSequence[google.cloud.vision_v1p4beta1.types.WebDetection.WebImage]):
             Partial matching images from the Internet.
             Those images are similar enough to share some
             key-point features. For example an original
             image will likely have partial matching for its
             crops.
-        pages_with_matching_images (Sequence[google.cloud.vision_v1p4beta1.types.WebDetection.WebPage]):
+        pages_with_matching_images (MutableSequence[google.cloud.vision_v1p4beta1.types.WebDetection.WebPage]):
             Web pages containing the matching images from
             the Internet.
-        visually_similar_images (Sequence[google.cloud.vision_v1p4beta1.types.WebDetection.WebImage]):
+        visually_similar_images (MutableSequence[google.cloud.vision_v1p4beta1.types.WebDetection.WebImage]):
             The visually similar image results.
-        best_guess_labels (Sequence[google.cloud.vision_v1p4beta1.types.WebDetection.WebLabel]):
+        best_guess_labels (MutableSequence[google.cloud.vision_v1p4beta1.types.WebDetection.WebLabel]):
             The service's best guess as to the topic of
             the request image. Inferred from similar images
             on the open web.
@@ -66,15 +68,15 @@ class WebDetection(proto.Message):
                 English.
         """
 
-        entity_id = proto.Field(
+        entity_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        score = proto.Field(
+        score: float = proto.Field(
             proto.FLOAT,
             number=2,
         )
-        description = proto.Field(
+        description: str = proto.Field(
             proto.STRING,
             number=3,
         )
@@ -90,11 +92,11 @@ class WebDetection(proto.Message):
                 image.
         """
 
-        url = proto.Field(
+        url: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        score = proto.Field(
+        score: float = proto.Field(
             proto.FLOAT,
             number=2,
         )
@@ -111,10 +113,10 @@ class WebDetection(proto.Message):
             page_title (str):
                 Title for the web page, may contain HTML
                 markups.
-            full_matching_images (Sequence[google.cloud.vision_v1p4beta1.types.WebDetection.WebImage]):
+            full_matching_images (MutableSequence[google.cloud.vision_v1p4beta1.types.WebDetection.WebImage]):
                 Fully matching images on the page.
                 Can include resized copies of the query image.
-            partial_matching_images (Sequence[google.cloud.vision_v1p4beta1.types.WebDetection.WebImage]):
+            partial_matching_images (MutableSequence[google.cloud.vision_v1p4beta1.types.WebDetection.WebImage]):
                 Partial matching images on the page.
                 Those images are similar enough to share some
                 key-point features. For example an original
@@ -122,24 +124,28 @@ class WebDetection(proto.Message):
                 crops.
         """
 
-        url = proto.Field(
+        url: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        score = proto.Field(
+        score: float = proto.Field(
             proto.FLOAT,
             number=2,
         )
-        page_title = proto.Field(
+        page_title: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        full_matching_images = proto.RepeatedField(
+        full_matching_images: MutableSequence[
+            "WebDetection.WebImage"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message="WebDetection.WebImage",
         )
-        partial_matching_images = proto.RepeatedField(
+        partial_matching_images: MutableSequence[
+            "WebDetection.WebImage"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message="WebDetection.WebImage",
@@ -157,41 +163,41 @@ class WebDetection(proto.Message):
                 http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
         """
 
-        label = proto.Field(
+        label: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        language_code = proto.Field(
+        language_code: str = proto.Field(
             proto.STRING,
             number=2,
         )
 
-    web_entities = proto.RepeatedField(
+    web_entities: MutableSequence[WebEntity] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=WebEntity,
     )
-    full_matching_images = proto.RepeatedField(
+    full_matching_images: MutableSequence[WebImage] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=WebImage,
     )
-    partial_matching_images = proto.RepeatedField(
+    partial_matching_images: MutableSequence[WebImage] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=WebImage,
     )
-    pages_with_matching_images = proto.RepeatedField(
+    pages_with_matching_images: MutableSequence[WebPage] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=WebPage,
     )
-    visually_similar_images = proto.RepeatedField(
+    visually_similar_images: MutableSequence[WebImage] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=WebImage,
     )
-    best_guess_labels = proto.RepeatedField(
+    best_guess_labels: MutableSequence[WebLabel] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message=WebLabel,

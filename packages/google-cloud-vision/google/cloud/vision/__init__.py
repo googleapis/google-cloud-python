@@ -15,6 +15,11 @@
 # limitations under the License.
 #
 
+from google.cloud.vision import gapic_version as package_version
+
+__version__ = package_version.__version__
+
+
 from google.cloud.vision_v1.services.image_annotator.async_client import (
     ImageAnnotatorAsyncClient,
 )

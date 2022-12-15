@@ -16,8 +16,19 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
+
+from google.cloud.vision_v1p4beta1 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -191,9 +202,9 @@ class ProductSearchAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ProductSearchTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the product search client.
@@ -237,13 +248,15 @@ class ProductSearchAsyncClient:
 
     async def create_product_set(
         self,
-        request: Union[product_search_service.CreateProductSetRequest, dict] = None,
+        request: Optional[
+            Union[product_search_service.CreateProductSetRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        product_set: product_search_service.ProductSet = None,
-        product_set_id: str = None,
+        parent: Optional[str] = None,
+        product_set: Optional[product_search_service.ProductSet] = None,
+        product_set_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> product_search_service.ProductSet:
         r"""Creates and returns a new ProductSet resource.
@@ -280,7 +293,7 @@ class ProductSearchAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vision_v1p4beta1.types.CreateProductSetRequest, dict]):
+            request (Optional[Union[google.cloud.vision_v1p4beta1.types.CreateProductSetRequest, dict]]):
                 The request object. Request message for the
                 `CreateProductSet` method.
             parent (:class:`str`):
@@ -377,11 +390,13 @@ class ProductSearchAsyncClient:
 
     async def list_product_sets(
         self,
-        request: Union[product_search_service.ListProductSetsRequest, dict] = None,
+        request: Optional[
+            Union[product_search_service.ListProductSetsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListProductSetsAsyncPager:
         r"""Lists ProductSets in an unspecified order.
@@ -419,7 +434,7 @@ class ProductSearchAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.vision_v1p4beta1.types.ListProductSetsRequest, dict]):
+            request (Optional[Union[google.cloud.vision_v1p4beta1.types.ListProductSetsRequest, dict]]):
                 The request object. Request message for the
                 `ListProductSets` method.
             parent (:class:`str`):
@@ -508,11 +523,13 @@ class ProductSearchAsyncClient:
 
     async def get_product_set(
         self,
-        request: Union[product_search_service.GetProductSetRequest, dict] = None,
+        request: Optional[
+            Union[product_search_service.GetProductSetRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> product_search_service.ProductSet:
         r"""Gets information associated with a ProductSet.
@@ -548,7 +565,7 @@ class ProductSearchAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vision_v1p4beta1.types.GetProductSetRequest, dict]):
+            request (Optional[Union[google.cloud.vision_v1p4beta1.types.GetProductSetRequest, dict]]):
                 The request object. Request message for the
                 `GetProductSet` method.
             name (:class:`str`):
@@ -629,12 +646,14 @@ class ProductSearchAsyncClient:
 
     async def update_product_set(
         self,
-        request: Union[product_search_service.UpdateProductSetRequest, dict] = None,
+        request: Optional[
+            Union[product_search_service.UpdateProductSetRequest, dict]
+        ] = None,
         *,
-        product_set: product_search_service.ProductSet = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        product_set: Optional[product_search_service.ProductSet] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> product_search_service.ProductSet:
         r"""Makes changes to a ProductSet resource. Only display_name can be
@@ -673,7 +692,7 @@ class ProductSearchAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vision_v1p4beta1.types.UpdateProductSetRequest, dict]):
+            request (Optional[Union[google.cloud.vision_v1p4beta1.types.UpdateProductSetRequest, dict]]):
                 The request object. Request message for the
                 `UpdateProductSet` method.
             product_set (:class:`google.cloud.vision_v1p4beta1.types.ProductSet`):
@@ -762,11 +781,13 @@ class ProductSearchAsyncClient:
 
     async def delete_product_set(
         self,
-        request: Union[product_search_service.DeleteProductSetRequest, dict] = None,
+        request: Optional[
+            Union[product_search_service.DeleteProductSetRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Permanently deletes a ProductSet. Products and
@@ -798,7 +819,7 @@ class ProductSearchAsyncClient:
                 await client.delete_product_set(request=request)
 
         Args:
-            request (Union[google.cloud.vision_v1p4beta1.types.DeleteProductSetRequest, dict]):
+            request (Optional[Union[google.cloud.vision_v1p4beta1.types.DeleteProductSetRequest, dict]]):
                 The request object. Request message for the
                 `DeleteProductSet` method.
             name (:class:`str`):
@@ -867,13 +888,15 @@ class ProductSearchAsyncClient:
 
     async def create_product(
         self,
-        request: Union[product_search_service.CreateProductRequest, dict] = None,
+        request: Optional[
+            Union[product_search_service.CreateProductRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        product: product_search_service.Product = None,
-        product_id: str = None,
+        parent: Optional[str] = None,
+        product: Optional[product_search_service.Product] = None,
+        product_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> product_search_service.Product:
         r"""Creates and returns a new product resource.
@@ -914,7 +937,7 @@ class ProductSearchAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vision_v1p4beta1.types.CreateProductRequest, dict]):
+            request (Optional[Union[google.cloud.vision_v1p4beta1.types.CreateProductRequest, dict]]):
                 The request object. Request message for the
                 `CreateProduct` method.
             parent (:class:`str`):
@@ -1006,11 +1029,13 @@ class ProductSearchAsyncClient:
 
     async def list_products(
         self,
-        request: Union[product_search_service.ListProductsRequest, dict] = None,
+        request: Optional[
+            Union[product_search_service.ListProductsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListProductsAsyncPager:
         r"""Lists products in an unspecified order.
@@ -1048,7 +1073,7 @@ class ProductSearchAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.vision_v1p4beta1.types.ListProductsRequest, dict]):
+            request (Optional[Union[google.cloud.vision_v1p4beta1.types.ListProductsRequest, dict]]):
                 The request object. Request message for the
                 `ListProducts` method.
             parent (:class:`str`):
@@ -1137,11 +1162,11 @@ class ProductSearchAsyncClient:
 
     async def get_product(
         self,
-        request: Union[product_search_service.GetProductRequest, dict] = None,
+        request: Optional[Union[product_search_service.GetProductRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> product_search_service.Product:
         r"""Gets information associated with a Product.
@@ -1177,7 +1202,7 @@ class ProductSearchAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vision_v1p4beta1.types.GetProductRequest, dict]):
+            request (Optional[Union[google.cloud.vision_v1p4beta1.types.GetProductRequest, dict]]):
                 The request object. Request message for the `GetProduct`
                 method.
             name (:class:`str`):
@@ -1253,12 +1278,14 @@ class ProductSearchAsyncClient:
 
     async def update_product(
         self,
-        request: Union[product_search_service.UpdateProductRequest, dict] = None,
+        request: Optional[
+            Union[product_search_service.UpdateProductRequest, dict]
+        ] = None,
         *,
-        product: product_search_service.Product = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        product: Optional[product_search_service.Product] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> product_search_service.Product:
         r"""Makes changes to a Product resource. Only the ``display_name``,
@@ -1304,7 +1331,7 @@ class ProductSearchAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vision_v1p4beta1.types.UpdateProductRequest, dict]):
+            request (Optional[Union[google.cloud.vision_v1p4beta1.types.UpdateProductRequest, dict]]):
                 The request object. Request message for the
                 `UpdateProduct` method.
             product (:class:`google.cloud.vision_v1p4beta1.types.Product`):
@@ -1390,11 +1417,13 @@ class ProductSearchAsyncClient:
 
     async def delete_product(
         self,
-        request: Union[product_search_service.DeleteProductRequest, dict] = None,
+        request: Optional[
+            Union[product_search_service.DeleteProductRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Permanently deletes a product and its reference
@@ -1428,7 +1457,7 @@ class ProductSearchAsyncClient:
                 await client.delete_product(request=request)
 
         Args:
-            request (Union[google.cloud.vision_v1p4beta1.types.DeleteProductRequest, dict]):
+            request (Optional[Union[google.cloud.vision_v1p4beta1.types.DeleteProductRequest, dict]]):
                 The request object. Request message for the
                 `DeleteProduct` method.
             name (:class:`str`):
@@ -1497,13 +1526,15 @@ class ProductSearchAsyncClient:
 
     async def create_reference_image(
         self,
-        request: Union[product_search_service.CreateReferenceImageRequest, dict] = None,
+        request: Optional[
+            Union[product_search_service.CreateReferenceImageRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        reference_image: product_search_service.ReferenceImage = None,
-        reference_image_id: str = None,
+        parent: Optional[str] = None,
+        reference_image: Optional[product_search_service.ReferenceImage] = None,
+        reference_image_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> product_search_service.ReferenceImage:
         r"""Creates and returns a new ReferenceImage resource.
@@ -1560,7 +1591,7 @@ class ProductSearchAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vision_v1p4beta1.types.CreateReferenceImageRequest, dict]):
+            request (Optional[Union[google.cloud.vision_v1p4beta1.types.CreateReferenceImageRequest, dict]]):
                 The request object. Request message for the
                 `CreateReferenceImage` method.
             parent (:class:`str`):
@@ -1658,11 +1689,13 @@ class ProductSearchAsyncClient:
 
     async def delete_reference_image(
         self,
-        request: Union[product_search_service.DeleteReferenceImageRequest, dict] = None,
+        request: Optional[
+            Union[product_search_service.DeleteReferenceImageRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Permanently deletes a reference image.
@@ -1697,7 +1730,7 @@ class ProductSearchAsyncClient:
                 await client.delete_reference_image(request=request)
 
         Args:
-            request (Union[google.cloud.vision_v1p4beta1.types.DeleteReferenceImageRequest, dict]):
+            request (Optional[Union[google.cloud.vision_v1p4beta1.types.DeleteReferenceImageRequest, dict]]):
                 The request object. Request message for the
                 `DeleteReferenceImage` method.
             name (:class:`str`):
@@ -1768,11 +1801,13 @@ class ProductSearchAsyncClient:
 
     async def list_reference_images(
         self,
-        request: Union[product_search_service.ListReferenceImagesRequest, dict] = None,
+        request: Optional[
+            Union[product_search_service.ListReferenceImagesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListReferenceImagesAsyncPager:
         r"""Lists reference images.
@@ -1811,7 +1846,7 @@ class ProductSearchAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.vision_v1p4beta1.types.ListReferenceImagesRequest, dict]):
+            request (Optional[Union[google.cloud.vision_v1p4beta1.types.ListReferenceImagesRequest, dict]]):
                 The request object. Request message for the
                 `ListReferenceImages` method.
             parent (:class:`str`):
@@ -1901,11 +1936,13 @@ class ProductSearchAsyncClient:
 
     async def get_reference_image(
         self,
-        request: Union[product_search_service.GetReferenceImageRequest, dict] = None,
+        request: Optional[
+            Union[product_search_service.GetReferenceImageRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> product_search_service.ReferenceImage:
         r"""Gets information associated with a ReferenceImage.
@@ -1941,7 +1978,7 @@ class ProductSearchAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vision_v1p4beta1.types.GetReferenceImageRequest, dict]):
+            request (Optional[Union[google.cloud.vision_v1p4beta1.types.GetReferenceImageRequest, dict]]):
                 The request object. Request message for the
                 `GetReferenceImage` method.
             name (:class:`str`):
@@ -2021,14 +2058,14 @@ class ProductSearchAsyncClient:
 
     async def add_product_to_product_set(
         self,
-        request: Union[
-            product_search_service.AddProductToProductSetRequest, dict
+        request: Optional[
+            Union[product_search_service.AddProductToProductSetRequest, dict]
         ] = None,
         *,
-        name: str = None,
-        product: str = None,
+        name: Optional[str] = None,
+        product: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Adds a Product to the specified ProductSet. If the Product is
@@ -2066,7 +2103,7 @@ class ProductSearchAsyncClient:
                 await client.add_product_to_product_set(request=request)
 
         Args:
-            request (Union[google.cloud.vision_v1p4beta1.types.AddProductToProductSetRequest, dict]):
+            request (Optional[Union[google.cloud.vision_v1p4beta1.types.AddProductToProductSetRequest, dict]]):
                 The request object. Request message for the
                 `AddProductToProductSet` method.
             name (:class:`str`):
@@ -2145,14 +2182,14 @@ class ProductSearchAsyncClient:
 
     async def remove_product_from_product_set(
         self,
-        request: Union[
-            product_search_service.RemoveProductFromProductSetRequest, dict
+        request: Optional[
+            Union[product_search_service.RemoveProductFromProductSetRequest, dict]
         ] = None,
         *,
-        name: str = None,
-        product: str = None,
+        name: Optional[str] = None,
+        product: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Removes a Product from the specified ProductSet.
@@ -2182,7 +2219,7 @@ class ProductSearchAsyncClient:
                 await client.remove_product_from_product_set(request=request)
 
         Args:
-            request (Union[google.cloud.vision_v1p4beta1.types.RemoveProductFromProductSetRequest, dict]):
+            request (Optional[Union[google.cloud.vision_v1p4beta1.types.RemoveProductFromProductSetRequest, dict]]):
                 The request object. Request message for the
                 `RemoveProductFromProductSet` method.
             name (:class:`str`):
@@ -2261,13 +2298,13 @@ class ProductSearchAsyncClient:
 
     async def list_products_in_product_set(
         self,
-        request: Union[
-            product_search_service.ListProductsInProductSetRequest, dict
+        request: Optional[
+            Union[product_search_service.ListProductsInProductSetRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListProductsInProductSetAsyncPager:
         r"""Lists the Products in a ProductSet, in an unspecified order. If
@@ -2307,7 +2344,7 @@ class ProductSearchAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.vision_v1p4beta1.types.ListProductsInProductSetRequest, dict]):
+            request (Optional[Union[google.cloud.vision_v1p4beta1.types.ListProductsInProductSetRequest, dict]]):
                 The request object. Request message for the
                 `ListProductsInProductSet` method.
             name (:class:`str`):
@@ -2398,12 +2435,16 @@ class ProductSearchAsyncClient:
 
     async def import_product_sets(
         self,
-        request: Union[product_search_service.ImportProductSetsRequest, dict] = None,
+        request: Optional[
+            Union[product_search_service.ImportProductSetsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        input_config: product_search_service.ImportProductSetsInputConfig = None,
+        parent: Optional[str] = None,
+        input_config: Optional[
+            product_search_service.ImportProductSetsInputConfig
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Asynchronous API that imports a list of reference images to
@@ -2444,13 +2485,13 @@ class ProductSearchAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.vision_v1p4beta1.types.ImportProductSetsRequest, dict]):
+            request (Optional[Union[google.cloud.vision_v1p4beta1.types.ImportProductSetsRequest, dict]]):
                 The request object. Request message for the
                 `ImportProductSets` method.
             parent (:class:`str`):
@@ -2551,11 +2592,13 @@ class ProductSearchAsyncClient:
 
     async def purge_products(
         self,
-        request: Union[product_search_service.PurgeProductsRequest, dict] = None,
+        request: Optional[
+            Union[product_search_service.PurgeProductsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Asynchronous API to delete all Products in a ProductSet or all
@@ -2611,13 +2654,13 @@ class ProductSearchAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.vision_v1p4beta1.types.PurgeProductsRequest, dict]):
+            request (Optional[Union[google.cloud.vision_v1p4beta1.types.PurgeProductsRequest, dict]]):
                 The request object. Request message for the
                 `PurgeProducts` method.
             parent (:class:`str`):
@@ -2708,14 +2751,9 @@ class ProductSearchAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-vision",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ProductSearchAsyncClient",)

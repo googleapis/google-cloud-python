@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-vision"
+    "name": "google-cloud-vision",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -34,7 +35,7 @@
           },
           {
             "name": "requests",
-            "type": "Sequence[google.cloud.vision_v1p2beta1.types.AsyncAnnotateFileRequest]"
+            "type": "MutableSequence[google.cloud.vision_v1p2beta1.types.AsyncAnnotateFileRequest]"
           },
           {
             "name": "retry",
@@ -114,7 +115,7 @@
           },
           {
             "name": "requests",
-            "type": "Sequence[google.cloud.vision_v1p2beta1.types.AsyncAnnotateFileRequest]"
+            "type": "MutableSequence[google.cloud.vision_v1p2beta1.types.AsyncAnnotateFileRequest]"
           },
           {
             "name": "retry",
@@ -195,7 +196,7 @@
           },
           {
             "name": "requests",
-            "type": "Sequence[google.cloud.vision_v1p2beta1.types.AnnotateImageRequest]"
+            "type": "MutableSequence[google.cloud.vision_v1p2beta1.types.AnnotateImageRequest]"
           },
           {
             "name": "retry",
@@ -275,7 +276,7 @@
           },
           {
             "name": "requests",
-            "type": "Sequence[google.cloud.vision_v1p2beta1.types.AnnotateImageRequest]"
+            "type": "MutableSequence[google.cloud.vision_v1p2beta1.types.AnnotateImageRequest]"
           },
           {
             "name": "retry",

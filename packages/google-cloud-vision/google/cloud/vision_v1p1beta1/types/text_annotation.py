@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.vision_v1p1beta1.types import geometry
@@ -42,7 +44,7 @@ class TextAnnotation(proto.Message):
     message definition below for more detail.
 
     Attributes:
-        pages (Sequence[google.cloud.vision_v1p1beta1.types.Page]):
+        pages (MutableSequence[google.cloud.vision_v1p1beta1.types.Page]):
             List of pages detected by OCR.
         text (str):
             UTF-8 text detected on the pages.
@@ -60,11 +62,11 @@ class TextAnnotation(proto.Message):
                 Confidence of detected language. Range [0, 1].
         """
 
-        language_code = proto.Field(
+        language_code: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        confidence = proto.Field(
+        confidence: float = proto.Field(
             proto.FLOAT,
             number=2,
         )
@@ -88,12 +90,12 @@ class TextAnnotation(proto.Message):
             HYPHEN = 4
             LINE_BREAK = 5
 
-        type_ = proto.Field(
+        type_: "TextAnnotation.DetectedBreak.BreakType" = proto.Field(
             proto.ENUM,
             number=1,
             enum="TextAnnotation.DetectedBreak.BreakType",
         )
-        is_prefix = proto.Field(
+        is_prefix: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
@@ -102,30 +104,32 @@ class TextAnnotation(proto.Message):
         r"""Additional information detected on the structural component.
 
         Attributes:
-            detected_languages (Sequence[google.cloud.vision_v1p1beta1.types.TextAnnotation.DetectedLanguage]):
+            detected_languages (MutableSequence[google.cloud.vision_v1p1beta1.types.TextAnnotation.DetectedLanguage]):
                 A list of detected languages together with
                 confidence.
             detected_break (google.cloud.vision_v1p1beta1.types.TextAnnotation.DetectedBreak):
                 Detected start or end of a text segment.
         """
 
-        detected_languages = proto.RepeatedField(
+        detected_languages: MutableSequence[
+            "TextAnnotation.DetectedLanguage"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="TextAnnotation.DetectedLanguage",
         )
-        detected_break = proto.Field(
+        detected_break: "TextAnnotation.DetectedBreak" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="TextAnnotation.DetectedBreak",
         )
 
-    pages = proto.RepeatedField(
+    pages: MutableSequence["Page"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Page",
     )
-    text = proto.Field(
+    text: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -141,32 +145,32 @@ class Page(proto.Message):
             Page width in pixels.
         height (int):
             Page height in pixels.
-        blocks (Sequence[google.cloud.vision_v1p1beta1.types.Block]):
+        blocks (MutableSequence[google.cloud.vision_v1p1beta1.types.Block]):
             List of blocks of text, images etc on this
             page.
         confidence (float):
             Confidence of the OCR results on the page. Range [0, 1].
     """
 
-    property = proto.Field(
+    property: "TextAnnotation.TextProperty" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TextAnnotation.TextProperty",
     )
-    width = proto.Field(
+    width: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    height = proto.Field(
+    height: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    blocks = proto.RepeatedField(
+    blocks: MutableSequence["Block"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="Block",
     )
-    confidence = proto.Field(
+    confidence: float = proto.Field(
         proto.FLOAT,
         number=5,
     )
@@ -191,7 +195,7 @@ class Block(proto.Message):
             -  when it's rotated 180 degrees around the top-left corner
                it becomes: 2----3 \| \| 1----0 and the vertice order
                will still be (0, 1, 2, 3).
-        paragraphs (Sequence[google.cloud.vision_v1p1beta1.types.Paragraph]):
+        paragraphs (MutableSequence[google.cloud.vision_v1p1beta1.types.Paragraph]):
             List of paragraphs in this block (if this
             blocks is of type text).
         block_type (google.cloud.vision_v1p1beta1.types.Block.BlockType):
@@ -210,27 +214,27 @@ class Block(proto.Message):
         RULER = 4
         BARCODE = 5
 
-    property = proto.Field(
+    property: "TextAnnotation.TextProperty" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TextAnnotation.TextProperty",
     )
-    bounding_box = proto.Field(
+    bounding_box: geometry.BoundingPoly = proto.Field(
         proto.MESSAGE,
         number=2,
         message=geometry.BoundingPoly,
     )
-    paragraphs = proto.RepeatedField(
+    paragraphs: MutableSequence["Paragraph"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="Paragraph",
     )
-    block_type = proto.Field(
+    block_type: BlockType = proto.Field(
         proto.ENUM,
         number=4,
         enum=BlockType,
     )
-    confidence = proto.Field(
+    confidence: float = proto.Field(
         proto.FLOAT,
         number=5,
     )
@@ -256,29 +260,29 @@ class Paragraph(proto.Message):
             -  when it's rotated 180 degrees around the top-left corner
                it becomes: 2----3 \| \| 1----0 and the vertice order
                will still be (0, 1, 2, 3).
-        words (Sequence[google.cloud.vision_v1p1beta1.types.Word]):
+        words (MutableSequence[google.cloud.vision_v1p1beta1.types.Word]):
             List of words in this paragraph.
         confidence (float):
             Confidence of the OCR results for the paragraph. Range [0,
             1].
     """
 
-    property = proto.Field(
+    property: "TextAnnotation.TextProperty" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TextAnnotation.TextProperty",
     )
-    bounding_box = proto.Field(
+    bounding_box: geometry.BoundingPoly = proto.Field(
         proto.MESSAGE,
         number=2,
         message=geometry.BoundingPoly,
     )
-    words = proto.RepeatedField(
+    words: MutableSequence["Word"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="Word",
     )
-    confidence = proto.Field(
+    confidence: float = proto.Field(
         proto.FLOAT,
         number=4,
     )
@@ -302,7 +306,7 @@ class Word(proto.Message):
             -  when it's rotated 180 degrees around the top-left corner
                it becomes: 2----3 \| \| 1----0 and the vertice order
                will still be (0, 1, 2, 3).
-        symbols (Sequence[google.cloud.vision_v1p1beta1.types.Symbol]):
+        symbols (MutableSequence[google.cloud.vision_v1p1beta1.types.Symbol]):
             List of symbols in the word.
             The order of the symbols follows the natural
             reading order.
@@ -310,22 +314,22 @@ class Word(proto.Message):
             Confidence of the OCR results for the word. Range [0, 1].
     """
 
-    property = proto.Field(
+    property: "TextAnnotation.TextProperty" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TextAnnotation.TextProperty",
     )
-    bounding_box = proto.Field(
+    bounding_box: geometry.BoundingPoly = proto.Field(
         proto.MESSAGE,
         number=2,
         message=geometry.BoundingPoly,
     )
-    symbols = proto.RepeatedField(
+    symbols: MutableSequence["Symbol"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="Symbol",
     )
-    confidence = proto.Field(
+    confidence: float = proto.Field(
         proto.FLOAT,
         number=4,
     )
@@ -357,21 +361,21 @@ class Symbol(proto.Message):
             Confidence of the OCR results for the symbol. Range [0, 1].
     """
 
-    property = proto.Field(
+    property: "TextAnnotation.TextProperty" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TextAnnotation.TextProperty",
     )
-    bounding_box = proto.Field(
+    bounding_box: geometry.BoundingPoly = proto.Field(
         proto.MESSAGE,
         number=2,
         message=geometry.BoundingPoly,
     )
-    text = proto.Field(
+    text: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    confidence = proto.Field(
+    confidence: float = proto.Field(
         proto.FLOAT,
         number=4,
     )

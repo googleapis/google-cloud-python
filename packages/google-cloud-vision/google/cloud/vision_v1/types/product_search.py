@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.vision_v1.types import geometry
@@ -44,7 +46,7 @@ class ProductSearchParams(proto.Message):
 
             Format is:
             ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``.
-        product_categories (Sequence[str]):
+        product_categories (MutableSequence[str]):
             The list of product categories to search in.
             Currently, we only consider the first category,
             and either "homegoods-v2", "apparel-v2",
@@ -70,20 +72,20 @@ class ProductSearchParams(proto.Message):
             instead of an '='.
     """
 
-    bounding_poly = proto.Field(
+    bounding_poly: geometry.BoundingPoly = proto.Field(
         proto.MESSAGE,
         number=9,
         message=geometry.BoundingPoly,
     )
-    product_set = proto.Field(
+    product_set: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    product_categories = proto.RepeatedField(
+    product_categories: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=8,
     )
@@ -98,9 +100,9 @@ class ProductSearchResults(proto.Message):
             results. Products added to the product set and
             products removed from the product set after this
             time are not reflected in the current results.
-        results (Sequence[google.cloud.vision_v1.types.ProductSearchResults.Result]):
+        results (MutableSequence[google.cloud.vision_v1.types.ProductSearchResults.Result]):
             List of results, one for each product match.
-        product_grouped_results (Sequence[google.cloud.vision_v1.types.ProductSearchResults.GroupedResult]):
+        product_grouped_results (MutableSequence[google.cloud.vision_v1.types.ProductSearchResults.GroupedResult]):
             List of results grouped by products detected
             in the query image. Each entry corresponds to
             one bounding polygon in the query image, and
@@ -123,16 +125,16 @@ class ProductSearchResults(proto.Message):
                 product that is the closest match to the query.
         """
 
-        product = proto.Field(
+        product: product_search_service.Product = proto.Field(
             proto.MESSAGE,
             number=1,
             message=product_search_service.Product,
         )
-        score = proto.Field(
+        score: float = proto.Field(
             proto.FLOAT,
             number=2,
         )
-        image = proto.Field(
+        image: str = proto.Field(
             proto.STRING,
             number=3,
         )
@@ -154,19 +156,19 @@ class ProductSearchResults(proto.Message):
                 Score of the result. Range [0, 1].
         """
 
-        mid = proto.Field(
+        mid: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        language_code = proto.Field(
+        language_code: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        score = proto.Field(
+        score: float = proto.Field(
             proto.FLOAT,
             number=4,
         )
@@ -179,40 +181,42 @@ class ProductSearchResults(proto.Message):
             bounding_poly (google.cloud.vision_v1.types.BoundingPoly):
                 The bounding polygon around the product
                 detected in the query image.
-            results (Sequence[google.cloud.vision_v1.types.ProductSearchResults.Result]):
+            results (MutableSequence[google.cloud.vision_v1.types.ProductSearchResults.Result]):
                 List of results, one for each product match.
-            object_annotations (Sequence[google.cloud.vision_v1.types.ProductSearchResults.ObjectAnnotation]):
+            object_annotations (MutableSequence[google.cloud.vision_v1.types.ProductSearchResults.ObjectAnnotation]):
                 List of generic predictions for the object in
                 the bounding box.
         """
 
-        bounding_poly = proto.Field(
+        bounding_poly: geometry.BoundingPoly = proto.Field(
             proto.MESSAGE,
             number=1,
             message=geometry.BoundingPoly,
         )
-        results = proto.RepeatedField(
+        results: MutableSequence["ProductSearchResults.Result"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="ProductSearchResults.Result",
         )
-        object_annotations = proto.RepeatedField(
+        object_annotations: MutableSequence[
+            "ProductSearchResults.ObjectAnnotation"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="ProductSearchResults.ObjectAnnotation",
         )
 
-    index_time = proto.Field(
+    index_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    results = proto.RepeatedField(
+    results: MutableSequence[Result] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=Result,
     )
-    product_grouped_results = proto.RepeatedField(
+    product_grouped_results: MutableSequence[GroupedResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=GroupedResult,

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -30,7 +32,7 @@ class FaceRecognitionParams(proto.Message):
     r"""Parameters for a celebrity recognition request.
 
     Attributes:
-        celebrity_set (Sequence[str]):
+        celebrity_set (MutableSequence[str]):
             The resource names for one or more
             [CelebritySet][google.cloud.vision.v1p4beta1.CelebritySet]s.
             A celebrity set is preloaded and can be specified as
@@ -39,7 +41,7 @@ class FaceRecognitionParams(proto.Message):
             Celebrities in the CelebritySets.
     """
 
-    celebrity_set = proto.RepeatedField(
+    celebrity_set: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -58,15 +60,15 @@ class Celebrity(proto.Message):
             The Celebrity's description.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -83,12 +85,12 @@ class FaceRecognitionResult(proto.Message):
             Recognition confidence. Range [0, 1].
     """
 
-    celebrity = proto.Field(
+    celebrity: "Celebrity" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Celebrity",
     )
-    confidence = proto.Field(
+    confidence: float = proto.Field(
         proto.FLOAT,
         number=2,
     )

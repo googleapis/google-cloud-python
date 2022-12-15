@@ -16,8 +16,20 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
+
+from google.cloud.vision_v1p1beta1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -56,7 +68,7 @@ class ImageAnnotatorClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[ImageAnnotatorTransport]:
         """Returns an appropriate transport class.
 
@@ -313,8 +325,8 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ImageAnnotatorTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, ImageAnnotatorTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the image annotator client.
@@ -328,7 +340,7 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
             transport (Union[str, ImageAnnotatorTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -358,6 +370,7 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -410,11 +423,15 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
 
     def batch_annotate_images(
         self,
-        request: Union[image_annotator.BatchAnnotateImagesRequest, dict] = None,
+        request: Optional[
+            Union[image_annotator.BatchAnnotateImagesRequest, dict]
+        ] = None,
         *,
-        requests: Sequence[image_annotator.AnnotateImageRequest] = None,
+        requests: Optional[
+            MutableSequence[image_annotator.AnnotateImageRequest]
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> image_annotator.BatchAnnotateImagesResponse:
         r"""Run image detection and annotation for a batch of
@@ -449,7 +466,7 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
             request (Union[google.cloud.vision_v1p1beta1.types.BatchAnnotateImagesRequest, dict]):
                 The request object. Multiple image annotation requests
                 are batched into a single service call.
-            requests (Sequence[google.cloud.vision_v1p1beta1.types.AnnotateImageRequest]):
+            requests (MutableSequence[google.cloud.vision_v1p1beta1.types.AnnotateImageRequest]):
                 Required. Individual image annotation
                 requests for this batch.
 
@@ -521,14 +538,9 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-vision",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ImageAnnotatorClient",)

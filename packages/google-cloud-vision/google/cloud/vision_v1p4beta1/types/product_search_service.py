@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.vision_v1p4beta1.types import geometry
@@ -84,7 +86,7 @@ class Product(proto.Message):
             "toys-v2". The legacy categories "homegoods",
             "apparel", and "toys" are still supported, but
             these should not be used for new products.
-        product_labels (Sequence[google.cloud.vision_v1p4beta1.types.Product.KeyValue]):
+        product_labels (MutableSequence[google.cloud.vision_v1p4beta1.types.Product.KeyValue]):
             Key-value pairs that can be attached to a product. At query
             time, constraints can be specified based on the
             product_labels.
@@ -115,32 +117,32 @@ class Product(proto.Message):
                 bytes.
         """
 
-        key = proto.Field(
+        key: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        value = proto.Field(
+        value: str = proto.Field(
             proto.STRING,
             number=2,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    product_category = proto.Field(
+    product_category: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    product_labels = proto.RepeatedField(
+    product_labels: MutableSequence[KeyValue] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=KeyValue,
@@ -182,20 +184,20 @@ class ProductSet(proto.Message):
             ProductSet.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    index_time = proto.Field(
+    index_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    index_error = proto.Field(
+    index_error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=4,
         message=status_pb2.Status,
@@ -220,7 +222,7 @@ class ReferenceImage(proto.Message):
             image.
 
             The URI must start with ``gs://``.
-        bounding_polys (Sequence[google.cloud.vision_v1p4beta1.types.BoundingPoly]):
+        bounding_polys (MutableSequence[google.cloud.vision_v1p4beta1.types.BoundingPoly]):
             Optional. Bounding polygons around the areas
             of interest in the reference image. If this
             field is empty, the system will try to detect
@@ -233,15 +235,15 @@ class ReferenceImage(proto.Message):
             1:4 or less (i.e. 1:3 is ok; 1:5 is not).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    bounding_polys = proto.RepeatedField(
+    bounding_polys: MutableSequence[geometry.BoundingPoly] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=geometry.BoundingPoly,
@@ -267,16 +269,16 @@ class CreateProductRequest(proto.Message):
             cannot contain the character ``/``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    product = proto.Field(
+    product: "Product" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Product",
     )
-    product_id = proto.Field(
+    product_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -299,15 +301,15 @@ class ListProductsRequest(proto.Message):
             if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -317,7 +319,7 @@ class ListProductsResponse(proto.Message):
     r"""Response message for the ``ListProducts`` method.
 
     Attributes:
-        products (Sequence[google.cloud.vision_v1p4beta1.types.Product]):
+        products (MutableSequence[google.cloud.vision_v1p4beta1.types.Product]):
             List of products.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -329,12 +331,12 @@ class ListProductsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    products = proto.RepeatedField(
+    products: MutableSequence["Product"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Product",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -351,7 +353,7 @@ class GetProductRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -372,12 +374,12 @@ class UpdateProductRequest(proto.Message):
             ``product_labels``, ``display_name``, and ``description``.
     """
 
-    product = proto.Field(
+    product: "Product" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Product",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -395,7 +397,7 @@ class DeleteProductRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -420,16 +422,16 @@ class CreateProductSetRequest(proto.Message):
             cannot contain the character ``/``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    product_set = proto.Field(
+    product_set: "ProductSet" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ProductSet",
     )
-    product_set_id = proto.Field(
+    product_set_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -452,15 +454,15 @@ class ListProductSetsRequest(proto.Message):
             if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -470,7 +472,7 @@ class ListProductSetsResponse(proto.Message):
     r"""Response message for the ``ListProductSets`` method.
 
     Attributes:
-        product_sets (Sequence[google.cloud.vision_v1p4beta1.types.ProductSet]):
+        product_sets (MutableSequence[google.cloud.vision_v1p4beta1.types.ProductSet]):
             List of ProductSets.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -482,12 +484,12 @@ class ListProductSetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    product_sets = proto.RepeatedField(
+    product_sets: MutableSequence["ProductSet"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ProductSet",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -504,7 +506,7 @@ class GetProductSetRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -524,12 +526,12 @@ class UpdateProductSetRequest(proto.Message):
             ``display_name``.
     """
 
-    product_set = proto.Field(
+    product_set: "ProductSet" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ProductSet",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -547,7 +549,7 @@ class DeleteProductSetRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -574,16 +576,16 @@ class CreateReferenceImageRequest(proto.Message):
             characters long. It cannot contain the character ``/``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    reference_image = proto.Field(
+    reference_image: "ReferenceImage" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ReferenceImage",
     )
-    reference_image_id = proto.Field(
+    reference_image_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -610,15 +612,15 @@ class ListReferenceImagesRequest(proto.Message):
             Defaults to the first page if not specified.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -628,7 +630,7 @@ class ListReferenceImagesResponse(proto.Message):
     r"""Response message for the ``ListReferenceImages`` method.
 
     Attributes:
-        reference_images (Sequence[google.cloud.vision_v1p4beta1.types.ReferenceImage]):
+        reference_images (MutableSequence[google.cloud.vision_v1p4beta1.types.ReferenceImage]):
             The list of reference images.
         page_size (int):
             The maximum number of items to return.
@@ -642,16 +644,16 @@ class ListReferenceImagesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    reference_images = proto.RepeatedField(
+    reference_images: MutableSequence["ReferenceImage"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ReferenceImage",
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -669,7 +671,7 @@ class GetReferenceImageRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -688,7 +690,7 @@ class DeleteReferenceImageRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -711,11 +713,11 @@ class AddProductToProductSetRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    product = proto.Field(
+    product: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -738,11 +740,11 @@ class RemoveProductFromProductSetRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    product = proto.Field(
+    product: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -766,15 +768,15 @@ class ListProductsInProductSetRequest(proto.Message):
             if any.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -784,7 +786,7 @@ class ListProductsInProductSetResponse(proto.Message):
     r"""Response message for the ``ListProductsInProductSet`` method.
 
     Attributes:
-        products (Sequence[google.cloud.vision_v1p4beta1.types.Product]):
+        products (MutableSequence[google.cloud.vision_v1p4beta1.types.Product]):
             The list of Products.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -796,12 +798,12 @@ class ListProductsInProductSetResponse(proto.Message):
     def raw_page(self):
         return self
 
-    products = proto.RepeatedField(
+    products: MutableSequence["Product"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Product",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -888,7 +890,7 @@ class ImportProductSetsGcsSource(proto.Message):
             too large to process (larger than 20MP).
     """
 
-    csv_file_uri = proto.Field(
+    csv_file_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -908,7 +910,7 @@ class ImportProductSetsInputConfig(proto.Message):
             This field is a member of `oneof`_ ``source``.
     """
 
-    gcs_source = proto.Field(
+    gcs_source: "ImportProductSetsGcsSource" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="source",
@@ -930,11 +932,11 @@ class ImportProductSetsRequest(proto.Message):
             requests.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    input_config = proto.Field(
+    input_config: "ImportProductSetsInputConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ImportProductSetsInputConfig",
@@ -951,9 +953,9 @@ class ImportProductSetsResponse(proto.Message):
     field.
 
     Attributes:
-        reference_images (Sequence[google.cloud.vision_v1p4beta1.types.ReferenceImage]):
+        reference_images (MutableSequence[google.cloud.vision_v1p4beta1.types.ReferenceImage]):
             The list of reference_images that are imported successfully.
-        statuses (Sequence[google.rpc.status_pb2.Status]):
+        statuses (MutableSequence[google.rpc.status_pb2.Status]):
             The rpc status for each ImportProductSet request, including
             both successes and errors.
 
@@ -963,12 +965,12 @@ class ImportProductSetsResponse(proto.Message):
             line 0.
     """
 
-    reference_images = proto.RepeatedField(
+    reference_images: MutableSequence["ReferenceImage"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ReferenceImage",
     )
-    statuses = proto.RepeatedField(
+    statuses: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=status_pb2.Status,
@@ -1004,17 +1006,17 @@ class BatchOperationMetadata(proto.Message):
         FAILED = 3
         CANCELLED = 4
 
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
     )
-    submit_time = proto.Field(
+    submit_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -1032,7 +1034,7 @@ class ProductSetPurgeConfig(proto.Message):
             ProductSets, the Product will still be deleted.
     """
 
-    product_set_id = proto.Field(
+    product_set_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1069,22 +1071,22 @@ class PurgeProductsRequest(proto.Message):
             value to true to actually perform the purge.
     """
 
-    product_set_purge_config = proto.Field(
+    product_set_purge_config: "ProductSetPurgeConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="target",
         message="ProductSetPurgeConfig",
     )
-    delete_orphan_products = proto.Field(
+    delete_orphan_products: bool = proto.Field(
         proto.BOOL,
         number=3,
         oneof="target",
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
