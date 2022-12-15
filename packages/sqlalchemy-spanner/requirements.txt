@@ -280,9 +280,9 @@ pep517==0.13.0 \
     # via
     #   -r requirements.in
     #   build
-pip-tools==6.8.0 \
-    --hash=sha256:39e8aee465446e02278d80dbebd4325d1dd8633248f43213c73a25f58e7d8a55 \
-    --hash=sha256:3e5cd4acbf383d19bdfdeab04738b6313ebf4ad22ce49bf529c729061eabfab8
+pip-tools==6.12.0 \
+    --hash=sha256:8e22fbc84ede7ca522ba4b033c4fcf6a6419adabc75d24747be3d8262504489a \
+    --hash=sha256:f441603c63b16f4af0dd5026f7522a49eddec2bc8a4a4979af44e1f6b0a1c13e
     # via -r requirements.in
 proto-plus==1.22.1 \
     --hash=sha256:6c7dfd122dfef8019ff654746be4f5b1d9c80bba787fe9611b508dd88be3a2fa \
