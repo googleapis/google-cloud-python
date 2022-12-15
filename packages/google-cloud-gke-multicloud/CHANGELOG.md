@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/python-gke-multicloud/compare/v0.2.2...v0.3.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.gke_multicloud.__version__` ([de41e74](https://github.com/googleapis/python-gke-multicloud/commit/de41e74ea9308d01af05605d128d7feeea33b209))
+* Add typing to proto.Message based class attributes ([de41e74](https://github.com/googleapis/python-gke-multicloud/commit/de41e74ea9308d01af05605d128d7feeea33b209))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([de41e74](https://github.com/googleapis/python-gke-multicloud/commit/de41e74ea9308d01af05605d128d7feeea33b209))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([71ad415](https://github.com/googleapis/python-gke-multicloud/commit/71ad41570864c1617ee6d4d5e33f07c037a8dba2))
+* Drop usage of pkg_resources ([71ad415](https://github.com/googleapis/python-gke-multicloud/commit/71ad41570864c1617ee6d4d5e33f07c037a8dba2))
+* Fix timeout default values ([71ad415](https://github.com/googleapis/python-gke-multicloud/commit/71ad41570864c1617ee6d4d5e33f07c037a8dba2))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([de41e74](https://github.com/googleapis/python-gke-multicloud/commit/de41e74ea9308d01af05605d128d7feeea33b209))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([71ad415](https://github.com/googleapis/python-gke-multicloud/commit/71ad41570864c1617ee6d4d5e33f07c037a8dba2))
+
 ## [0.2.2](https://github.com/googleapis/python-gke-multicloud/compare/v0.2.1...v0.2.2) (2022-10-10)
 
 
