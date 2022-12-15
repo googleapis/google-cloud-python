@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/python-bigquery-analyticshub/compare/v0.1.1...v0.2.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.bigquery.analyticshub.__version__` ([94635d0](https://github.com/googleapis/python-bigquery-analyticshub/commit/94635d09004db127100aa73656436be8cb11b400))
+* Add typing to proto.Message based class attributes ([94635d0](https://github.com/googleapis/python-bigquery-analyticshub/commit/94635d09004db127100aa73656436be8cb11b400))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([94635d0](https://github.com/googleapis/python-bigquery-analyticshub/commit/94635d09004db127100aa73656436be8cb11b400))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([919901e](https://github.com/googleapis/python-bigquery-analyticshub/commit/919901e4a15887b5f9a0bcf8326509d4962f9aab))
+* Drop usage of pkg_resources ([919901e](https://github.com/googleapis/python-bigquery-analyticshub/commit/919901e4a15887b5f9a0bcf8326509d4962f9aab))
+* Fix timeout default values ([919901e](https://github.com/googleapis/python-bigquery-analyticshub/commit/919901e4a15887b5f9a0bcf8326509d4962f9aab))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([94635d0](https://github.com/googleapis/python-bigquery-analyticshub/commit/94635d09004db127100aa73656436be8cb11b400))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([919901e](https://github.com/googleapis/python-bigquery-analyticshub/commit/919901e4a15887b5f9a0bcf8326509d4962f9aab))
+
 ## [0.1.1](https://github.com/googleapis/python-bigquery-analyticshub/compare/v0.1.0...v0.1.1) (2022-10-10)
 
 
