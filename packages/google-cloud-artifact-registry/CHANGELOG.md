@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-artifact-registry/compare/v1.4.0...v1.4.1) (2022-12-08)
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([c6e2c56](https://github.com/googleapis/python-artifact-registry/commit/c6e2c5683d135ce34b3aa86ff0262967d4a8000a))
+* Drop usage of pkg_resources ([c6e2c56](https://github.com/googleapis/python-artifact-registry/commit/c6e2c5683d135ce34b3aa86ff0262967d4a8000a))
+* Fix timeout default values ([c6e2c56](https://github.com/googleapis/python-artifact-registry/commit/c6e2c5683d135ce34b3aa86ff0262967d4a8000a))
+
+
+### Documentation
+
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([c6e2c56](https://github.com/googleapis/python-artifact-registry/commit/c6e2c5683d135ce34b3aa86ff0262967d4a8000a))
+
 ## [1.4.0](https://github.com/googleapis/python-artifact-registry/compare/v1.3.3...v1.4.0) (2022-11-16)
 
 
