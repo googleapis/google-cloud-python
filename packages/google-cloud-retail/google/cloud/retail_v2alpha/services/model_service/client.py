@@ -99,11 +99,11 @@ class ModelServiceClientMeta(type):
 class ModelServiceClient(metaclass=ModelServiceClientMeta):
     """Service for performing CRUD operations on models. Recommendation
     models contain all the metadata necessary to generate a set of
-    models for the Predict() api. A model is queried indirectly via a
-    ServingConfig, which associates a model with a given Placement (e.g.
-    Frequently Bought Together on Home Page).
+    models for the ``Predict()`` API. A model is queried indirectly via
+    a ServingConfig, which associates a model with a given Placement
+    (e.g. Frequently Bought Together on Home Page).
 
-    This service allows customers to e.g.:
+    This service allows you to do the following:
 
     -  Initiate training of a model.
     -  Pause training of an existing model.
@@ -540,13 +540,15 @@ class ModelServiceClient(metaclass=ModelServiceClientMeta):
             parent (str):
                 Required. The parent resource under which to create the
                 model. Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             model (google.cloud.retail_v2alpha.types.Model):
-                Required. The payload of the [Model] to create.
+                Required. The payload of the
+                [Model][google.cloud.retail.v2alpha.Model] to create.
+
                 This corresponds to the ``model`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -565,7 +567,7 @@ class ModelServiceClient(metaclass=ModelServiceClientMeta):
                    [Model][google.cloud.retail.v2alpha.Model] can be
                    associated with a
                    [ServingConfig][google.cloud.retail.v2alpha.ServingConfig]
-                   and then queried through the Predict api.
+                   and then queried through the Predict API.
 
         """
         # Create or coerce a protobuf request object.
@@ -663,7 +665,7 @@ class ModelServiceClient(metaclass=ModelServiceClientMeta):
                 model.
             name (str):
                 Required. The name of the model to pause. Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -681,7 +683,7 @@ class ModelServiceClient(metaclass=ModelServiceClientMeta):
                    [Model][google.cloud.retail.v2alpha.Model] can be
                    associated with a
                    [ServingConfig][google.cloud.retail.v2alpha.ServingConfig]
-                   and then queried through the Predict api.
+                   and then queried through the Predict API.
 
         """
         # Create or coerce a protobuf request object.
@@ -769,7 +771,7 @@ class ModelServiceClient(metaclass=ModelServiceClientMeta):
                 model.
             name (str):
                 Required. The name of the model to resume. Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -787,7 +789,7 @@ class ModelServiceClient(metaclass=ModelServiceClientMeta):
                    [Model][google.cloud.retail.v2alpha.Model] can be
                    associated with a
                    [ServingConfig][google.cloud.retail.v2alpha.ServingConfig]
-                   and then queried through the Predict api.
+                   and then queried through the Predict API.
 
         """
         # Create or coerce a protobuf request object.
@@ -870,9 +872,10 @@ class ModelServiceClient(metaclass=ModelServiceClientMeta):
             request (Union[google.cloud.retail_v2alpha.types.DeleteModelRequest, dict]):
                 The request object. Request for deleting a model.
             name (str):
-                Required. The resource name of the [Model] to delete.
+                Required. The resource name of the
+                [Model][google.cloud.retail.v2alpha.Model] to delete.
                 Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -966,7 +969,7 @@ class ModelServiceClient(metaclass=ModelServiceClientMeta):
                 associated with a resource.
             parent (str):
                 Required. The parent for which to list models. Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1047,8 +1050,8 @@ class ModelServiceClient(metaclass=ModelServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_model.Model:
         r"""Update of model metadata. Only fields that currently can be
-        updated are: filtering_option, periodic_tuning_state. If other
-        values are provided, this API method will ignore them.
+        updated are: ``filtering_option`` and ``periodic_tuning_state``.
+        If other values are provided, this API method ignores them.
 
         .. code-block:: python
 
@@ -1089,14 +1092,16 @@ class ModelServiceClient(metaclass=ModelServiceClientMeta):
                 The request object. Request for updating an existing
                 model.
             model (google.cloud.retail_v2alpha.types.Model):
-                Required. The body of the updated [Model].
+                Required. The body of the updated
+                [Model][google.cloud.retail.v2alpha.Model].
+
                 This corresponds to the ``model`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Optional. Indicates which fields in
                 the provided 'model' to update. If not
-                set, will by default update all fields.
+                set, by default updates all fields.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1114,7 +1119,7 @@ class ModelServiceClient(metaclass=ModelServiceClientMeta):
                    [Model][google.cloud.retail.v2alpha.Model] can be
                    associated with a
                    [ServingConfig][google.cloud.retail.v2alpha.ServingConfig]
-                   and then queried through the Predict api.
+                   and then queried through the Predict API.
 
         """
         # Create or coerce a protobuf request object.
@@ -1212,7 +1217,7 @@ class ModelServiceClient(metaclass=ModelServiceClientMeta):
             name (str):
                 Required. The resource name of the model to tune.
                 Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

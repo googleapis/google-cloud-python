@@ -744,6 +744,7 @@ def test_create_serving_config(request_type, transport: str = "grpc"):
             replacement_control_ids=["replacement_control_ids_value"],
             ignore_control_ids=["ignore_control_ids_value"],
             diversity_level="diversity_level_value",
+            diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
@@ -772,6 +773,10 @@ def test_create_serving_config(request_type, transport: str = "grpc"):
     assert response.replacement_control_ids == ["replacement_control_ids_value"]
     assert response.ignore_control_ids == ["ignore_control_ids_value"]
     assert response.diversity_level == "diversity_level_value"
+    assert (
+        response.diversity_type
+        == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
+    )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
@@ -829,6 +834,7 @@ async def test_create_serving_config_async(
                 replacement_control_ids=["replacement_control_ids_value"],
                 ignore_control_ids=["ignore_control_ids_value"],
                 diversity_level="diversity_level_value",
+                diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
@@ -858,6 +864,10 @@ async def test_create_serving_config_async(
     assert response.replacement_control_ids == ["replacement_control_ids_value"]
     assert response.ignore_control_ids == ["ignore_control_ids_value"]
     assert response.diversity_level == "diversity_level_value"
+    assert (
+        response.diversity_type
+        == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
+    )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
@@ -1310,6 +1320,7 @@ def test_update_serving_config(request_type, transport: str = "grpc"):
             replacement_control_ids=["replacement_control_ids_value"],
             ignore_control_ids=["ignore_control_ids_value"],
             diversity_level="diversity_level_value",
+            diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
@@ -1338,6 +1349,10 @@ def test_update_serving_config(request_type, transport: str = "grpc"):
     assert response.replacement_control_ids == ["replacement_control_ids_value"]
     assert response.ignore_control_ids == ["ignore_control_ids_value"]
     assert response.diversity_level == "diversity_level_value"
+    assert (
+        response.diversity_type
+        == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
+    )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
@@ -1395,6 +1410,7 @@ async def test_update_serving_config_async(
                 replacement_control_ids=["replacement_control_ids_value"],
                 ignore_control_ids=["ignore_control_ids_value"],
                 diversity_level="diversity_level_value",
+                diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
@@ -1424,6 +1440,10 @@ async def test_update_serving_config_async(
     assert response.replacement_control_ids == ["replacement_control_ids_value"]
     assert response.ignore_control_ids == ["ignore_control_ids_value"]
     assert response.diversity_level == "diversity_level_value"
+    assert (
+        response.diversity_type
+        == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
+    )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
@@ -1631,6 +1651,7 @@ def test_get_serving_config(request_type, transport: str = "grpc"):
             replacement_control_ids=["replacement_control_ids_value"],
             ignore_control_ids=["ignore_control_ids_value"],
             diversity_level="diversity_level_value",
+            diversity_type=serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
@@ -1659,6 +1680,10 @@ def test_get_serving_config(request_type, transport: str = "grpc"):
     assert response.replacement_control_ids == ["replacement_control_ids_value"]
     assert response.ignore_control_ids == ["ignore_control_ids_value"]
     assert response.diversity_level == "diversity_level_value"
+    assert (
+        response.diversity_type
+        == serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
+    )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
@@ -1716,6 +1741,7 @@ async def test_get_serving_config_async(
                 replacement_control_ids=["replacement_control_ids_value"],
                 ignore_control_ids=["ignore_control_ids_value"],
                 diversity_level="diversity_level_value",
+                diversity_type=serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
@@ -1745,6 +1771,10 @@ async def test_get_serving_config_async(
     assert response.replacement_control_ids == ["replacement_control_ids_value"]
     assert response.ignore_control_ids == ["ignore_control_ids_value"]
     assert response.diversity_level == "diversity_level_value"
+    assert (
+        response.diversity_type
+        == serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
+    )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
@@ -2383,6 +2413,7 @@ def test_add_control(request_type, transport: str = "grpc"):
             replacement_control_ids=["replacement_control_ids_value"],
             ignore_control_ids=["ignore_control_ids_value"],
             diversity_level="diversity_level_value",
+            diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
@@ -2411,6 +2442,10 @@ def test_add_control(request_type, transport: str = "grpc"):
     assert response.replacement_control_ids == ["replacement_control_ids_value"]
     assert response.ignore_control_ids == ["ignore_control_ids_value"]
     assert response.diversity_level == "diversity_level_value"
+    assert (
+        response.diversity_type
+        == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
+    )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
@@ -2464,6 +2499,7 @@ async def test_add_control_async(
                 replacement_control_ids=["replacement_control_ids_value"],
                 ignore_control_ids=["ignore_control_ids_value"],
                 diversity_level="diversity_level_value",
+                diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
@@ -2493,6 +2529,10 @@ async def test_add_control_async(
     assert response.replacement_control_ids == ["replacement_control_ids_value"]
     assert response.ignore_control_ids == ["ignore_control_ids_value"]
     assert response.diversity_level == "diversity_level_value"
+    assert (
+        response.diversity_type
+        == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
+    )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
@@ -2680,6 +2720,7 @@ def test_remove_control(request_type, transport: str = "grpc"):
             replacement_control_ids=["replacement_control_ids_value"],
             ignore_control_ids=["ignore_control_ids_value"],
             diversity_level="diversity_level_value",
+            diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
@@ -2708,6 +2749,10 @@ def test_remove_control(request_type, transport: str = "grpc"):
     assert response.replacement_control_ids == ["replacement_control_ids_value"]
     assert response.ignore_control_ids == ["ignore_control_ids_value"]
     assert response.diversity_level == "diversity_level_value"
+    assert (
+        response.diversity_type
+        == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
+    )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
@@ -2761,6 +2806,7 @@ async def test_remove_control_async(
                 replacement_control_ids=["replacement_control_ids_value"],
                 ignore_control_ids=["ignore_control_ids_value"],
                 diversity_level="diversity_level_value",
+                diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
@@ -2790,6 +2836,10 @@ async def test_remove_control_async(
     assert response.replacement_control_ids == ["replacement_control_ids_value"]
     assert response.ignore_control_ids == ["ignore_control_ids_value"]
     assert response.diversity_level == "diversity_level_value"
+    assert (
+        response.diversity_type
+        == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
+    )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 

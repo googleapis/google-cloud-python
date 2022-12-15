@@ -43,7 +43,7 @@ class PredictRequest(proto.Message):
             Recommendations AI serving config or placement. Before you
             can request predictions from your model, you must create at
             least one serving config or placement for it. For more
-            information, see [Managing serving configurations]
+            information, see [Manage serving configs]
             (https://cloud.google.com/retail/docs/manage-configs).
 
             The full list of available serving configs can be seen at
@@ -68,14 +68,13 @@ class PredictRequest(proto.Message):
             [UserInfo.user_id][google.cloud.retail.v2alpha.UserInfo.user_id]
             unset.
         page_size (int):
-            Maximum number of results to return per page.
-            Set this property to the number of prediction
-            results needed. If zero, the service will choose
-            a reasonable default. The maximum allowed value
-            is 100. Values above 100 will be coerced to 100.
+            Maximum number of results to return. Set this
+            property to the number of prediction results
+            needed. If zero, the service will choose a
+            reasonable default. The maximum allowed value is
+            100. Values above 100 will be coerced to 100.
         page_token (str):
-            This field is not used for now; leave it
-            unset.
+            This field is not used; leave it unset.
         filter (str):
             Filter for restricting prediction results with a length
             limit of 5,000 characters. Accepts values for tags and the
@@ -104,12 +103,11 @@ class PredictRequest(proto.Message):
             -  filterOutOfStockItems
 
             If your filter blocks all prediction results, the API will
-            return generic (unfiltered) popular products. If you only
-            want results strictly matching the filters, set
-            ``strictFiltering`` to True in ``PredictRequest.params`` to
-            receive empty results instead. Note that the API will never
-            return items with storageStatus of "EXPIRED" or "DELETED"
-            regardless of filter choices.
+            return *no* results. If instead you want empty result sets
+            to return generic (unfiltered) popular products, set
+            ``strictFiltering`` to False in ``PredictRequest.params``.
+            Note that the API will never return items with storageStatus
+            of "EXPIRED" or "DELETED" regardless of filter choices.
 
             If ``filterSyntaxV2`` is set to true under the ``params``
             field, then attribute-based expressions are expected instead
@@ -137,7 +135,7 @@ class PredictRequest(proto.Message):
                'score' corresponding to each returned product will be
                set in the ``results.metadata`` field in the prediction
                response. The given 'score' indicates the probability of
-               an product being clicked/purchased given the user's
+               a product being clicked/purchased given the user's
                context and history.
             -  ``strictFiltering``: Boolean. True by default. If set to
                false, the service will return generic (unfiltered)

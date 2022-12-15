@@ -602,6 +602,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
 
                 # Initialize request argument(s)
                 request = retail_v2alpha.CollectUserEventRequest(
+                    prebuilt_rule="prebuilt_rule_value",
                     parent="parent_value",
                     user_event="user_event_value",
                 )
@@ -810,13 +811,13 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Bulk import of User events. Request processing might
-        be synchronous. Events that already exist are skipped.
-        Use this method for backfilling historical user events.
-        Operation.response is of type ImportResponse. Note that
-        it is possible for a subset of the items to be
-        successfully inserted. Operation.metadata is of type
-        ImportMetadata.
+        r"""Bulk import of User events. Request processing might be
+        synchronous. Events that already exist are skipped. Use this
+        method for backfilling historical user events.
+
+        ``Operation.response`` is of type ``ImportResponse``. Note that
+        it is possible for a subset of the items to be successfully
+        inserted. ``Operation.metadata`` is of type ``ImportMetadata``.
 
         .. code-block:: python
 
@@ -921,15 +922,15 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Starts a user event rejoin operation with latest
-        product catalog. Events will not be annotated with
-        detailed product information if product is missing from
-        the catalog at the time the user event is ingested, and
-        these events are stored as unjoined events with a
-        limited usage on training and serving. This method can
-        be used to start a join operation on specified events
-        with latest version of product catalog. It can also be
-        used to correct events joined with the wrong product
+        r"""Starts a user-event rejoin operation with latest
+        product catalog. Events are not annotated with detailed
+        product information for products that are missing from
+        the catalog when the user event is ingested. These
+        events are stored as unjoined events with limited usage
+        on training and serving. You can use this method to
+        start a join operation on specified events with the
+        latest version of product catalog. You can also use this
+        method to correct events joined with the wrong product
         catalog. A rejoin operation can take hours or days to
         complete.
 

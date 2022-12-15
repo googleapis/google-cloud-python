@@ -506,7 +506,6 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
                 control.facet_spec.facet_key.key = "key_value"
                 control.display_name = "display_name_value"
                 control.solution_types = ['SOLUTION_TYPE_SEARCH']
-                control.search_solution_use_case = ['SEARCH_SOLUTION_USE_CASE_BROWSE']
 
                 request = retail_v2alpha.CreateControlRequest(
                     parent="parent_value",
@@ -554,10 +553,10 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
 
         Returns:
             google.cloud.retail_v2alpha.types.Control:
-                Configures dynamic serving time
-                metadata that is used to pre and post
-                process search/recommendation model
-                results.
+                Configures dynamic metadata that can be linked to a
+                   [ServingConfig][google.cloud.retail.v2alpha.ServingConfig]
+                   and affect search or recommendation results at
+                   serving time.
 
         """
         # Create or coerce a protobuf request object.
@@ -713,7 +712,7 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
 
         [Control][google.cloud.retail.v2alpha.Control] cannot be set to
         a different oneof field, if so an INVALID_ARGUMENT is returned.
-        If the [Control][google.cloud.retail.v2alpha.Control] to delete
+        If the [Control][google.cloud.retail.v2alpha.Control] to update
         does not exist, a NOT_FOUND error is returned.
 
         .. code-block:: python
@@ -736,7 +735,6 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
                 control.facet_spec.facet_key.key = "key_value"
                 control.display_name = "display_name_value"
                 control.solution_types = ['SOLUTION_TYPE_SEARCH']
-                control.search_solution_use_case = ['SEARCH_SOLUTION_USE_CASE_BROWSE']
 
                 request = retail_v2alpha.UpdateControlRequest(
                     control=control,
@@ -776,10 +774,10 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
 
         Returns:
             google.cloud.retail_v2alpha.types.Control:
-                Configures dynamic serving time
-                metadata that is used to pre and post
-                process search/recommendation model
-                results.
+                Configures dynamic metadata that can be linked to a
+                   [ServingConfig][google.cloud.retail.v2alpha.ServingConfig]
+                   and affect search or recommendation results at
+                   serving time.
 
         """
         # Create or coerce a protobuf request object.
@@ -869,7 +867,7 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
             request (Union[google.cloud.retail_v2alpha.types.GetControlRequest, dict]):
                 The request object. Request for GetControl method.
             name (str):
-                Required. The resource name of the Control to delete.
+                Required. The resource name of the Control to get.
                 Format:
                 ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/controls/{control_id}``
 
@@ -884,10 +882,10 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
 
         Returns:
             google.cloud.retail_v2alpha.types.Control:
-                Configures dynamic serving time
-                metadata that is used to pre and post
-                process search/recommendation model
-                results.
+                Configures dynamic metadata that can be linked to a
+                   [ServingConfig][google.cloud.retail.v2alpha.ServingConfig]
+                   and affect search or recommendation results at
+                   serving time.
 
         """
         # Create or coerce a protobuf request object.
@@ -941,7 +939,8 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListControlsPager:
-        r"""Lists all Controls linked to this catalog.
+        r"""Lists all Controls by their parent
+        [Catalog][google.cloud.retail.v2alpha.Catalog].
 
         .. code-block:: python
 

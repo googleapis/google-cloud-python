@@ -36,11 +36,11 @@ class ModelServiceGrpcTransport(ModelServiceTransport):
 
     Service for performing CRUD operations on models. Recommendation
     models contain all the metadata necessary to generate a set of
-    models for the Predict() api. A model is queried indirectly via a
-    ServingConfig, which associates a model with a given Placement (e.g.
-    Frequently Bought Together on Home Page).
+    models for the ``Predict()`` API. A model is queried indirectly via
+    a ServingConfig, which associates a model with a given Placement
+    (e.g. Frequently Bought Together on Home Page).
 
-    This service allows customers to e.g.:
+    This service allows you to do the following:
 
     -  Initiate training of a model.
     -  Pause training of an existing model.
@@ -391,8 +391,8 @@ class ModelServiceGrpcTransport(ModelServiceTransport):
         r"""Return a callable for the update model method over gRPC.
 
         Update of model metadata. Only fields that currently can be
-        updated are: filtering_option, periodic_tuning_state. If other
-        values are provided, this API method will ignore them.
+        updated are: ``filtering_option`` and ``periodic_tuning_state``.
+        If other values are provided, this API method ignores them.
 
         Returns:
             Callable[[~.UpdateModelRequest],

@@ -43,9 +43,8 @@ class SearchRequest(proto.Message):
             ``projects/*/locations/global/catalogs/default_catalog/servingConfigs/default_serving_config``
             or the name of the legacy placement resource, such as
             ``projects/*/locations/global/catalogs/default_catalog/placements/default_search``.
-            This field is used to identify the serving configuration
-            name and the set of models that will be used to make the
-            search.
+            This field is used to identify the serving config name and
+            the set of models that will be used to make the search.
         branch (str):
             The branch resource name, such as
             ``projects/*/locations/global/catalogs/default_catalog/branches/0``.
@@ -273,7 +272,7 @@ class SearchRequest(proto.Message):
 
             To represent full path of category, use '>' sign to separate
             different hierarchies. If '>' is part of the category name,
-            please replace it with other character(s).
+            replace it with other character(s).
 
             Category pages include special pages such as sales or
             promotions. For instance, a special sale page may have the
@@ -285,6 +284,15 @@ class SearchRequest(proto.Message):
             product search and faceted search.
         personalization_spec (google.cloud.retail_v2alpha.types.SearchRequest.PersonalizationSpec):
             The specification for personalization.
+
+            Notice that if both
+            [ServingConfig.personalization_spec][google.cloud.retail.v2alpha.ServingConfig.personalization_spec]
+            and
+            [SearchRequest.personalization_spec][google.cloud.retail.v2alpha.SearchRequest.personalization_spec]
+            are set.
+            [SearchRequest.personalization_spec][google.cloud.retail.v2alpha.SearchRequest.personalization_spec]
+            will override
+            [ServingConfig.personalization_spec][google.cloud.retail.v2alpha.ServingConfig.personalization_spec].
         labels (MutableMapping[str, str]):
             The labels applied to a resource must meet the following
             requirements:
@@ -340,7 +348,7 @@ class SearchRequest(proto.Message):
                 Required. The facet key specification.
             limit (int):
                 Maximum of facet values that should be returned for this
-                facet. If unspecified, defaults to 20. The maximum allowed
+                facet. If unspecified, defaults to 50. The maximum allowed
                 value is 300. Values above 300 will be coerced to 300.
 
                 If this field is negative, an INVALID_ARGUMENT is returned.
@@ -1042,6 +1050,23 @@ class SearchResponse(proto.Message):
                 ``{key: "pickupInStore.store1" value { number_value: 10 }}``
                 means a there are 10 variants in this product are available
                 in the store "store1".
+            personal_labels (MutableSequence[str]):
+                Specifies previous events related to this product for this
+                user based on
+                [UserEvent][google.cloud.retail.v2alpha.UserEvent] with same
+                [SearchRequest.visitor_id][google.cloud.retail.v2alpha.SearchRequest.visitor_id]
+                or
+                [UserInfo.user_id][google.cloud.retail.v2alpha.UserInfo.user_id].
+
+                This is set only when
+                [SearchRequest.PersonalizationSpec.mode][google.cloud.retail.v2alpha.SearchRequest.PersonalizationSpec.mode]
+                is
+                [SearchRequest.PersonalizationSpec.Mode.AUTO][google.cloud.retail.v2alpha.SearchRequest.PersonalizationSpec.Mode.AUTO].
+
+                Possible values:
+
+                -  ``purchased``: Indicates that this product has been
+                   purchased before.
         """
 
         id: str = proto.Field(
@@ -1070,6 +1095,10 @@ class SearchResponse(proto.Message):
             proto.MESSAGE,
             number=5,
             message=struct_pb2.Value,
+        )
+        personal_labels: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=7,
         )
 
     class Facet(proto.Message):

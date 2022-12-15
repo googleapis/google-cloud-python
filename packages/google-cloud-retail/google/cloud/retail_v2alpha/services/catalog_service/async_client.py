@@ -755,7 +755,7 @@ class CatalogServiceAsyncClient:
                 method.
             name (:class:`str`):
                 Required. Full CompletionConfig resource name. Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/completionConfig
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/completionConfig``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1354,6 +1354,95 @@ class CatalogServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.remove_catalog_attribute,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("attributes_config", request.attributes_config),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def batch_remove_catalog_attributes(
+        self,
+        request: Optional[
+            Union[catalog_service.BatchRemoveCatalogAttributesRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> catalog_service.BatchRemoveCatalogAttributesResponse:
+        r"""Removes all specified
+        [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute]s
+        from the
+        [AttributesConfig][google.cloud.retail.v2alpha.AttributesConfig].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import retail_v2alpha
+
+            async def sample_batch_remove_catalog_attributes():
+                # Create a client
+                client = retail_v2alpha.CatalogServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = retail_v2alpha.BatchRemoveCatalogAttributesRequest(
+                    attributes_config="attributes_config_value",
+                    attribute_keys=['attribute_keys_value1', 'attribute_keys_value2'],
+                )
+
+                # Make the request
+                response = await client.batch_remove_catalog_attributes(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.retail_v2alpha.types.BatchRemoveCatalogAttributesRequest, dict]]):
+                The request object. Request for
+                [CatalogService.BatchRemoveCatalogAttributes][google.cloud.retail.v2alpha.CatalogService.BatchRemoveCatalogAttributes]
+                method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.retail_v2alpha.types.BatchRemoveCatalogAttributesResponse:
+                Response of the
+                   [CatalogService.BatchRemoveCatalogAttributes][google.cloud.retail.v2alpha.CatalogService.BatchRemoveCatalogAttributes].
+
+        """
+        # Create or coerce a protobuf request object.
+        request = catalog_service.BatchRemoveCatalogAttributesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.batch_remove_catalog_attributes,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )

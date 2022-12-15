@@ -175,6 +175,11 @@ class CatalogServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.batch_remove_catalog_attributes: gapic_v1.method.wrap_method(
+                self.batch_remove_catalog_attributes,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.replace_catalog_attribute: gapic_v1.method.wrap_method(
                 self.replace_catalog_attribute,
                 default_timeout=None,
@@ -284,6 +289,18 @@ class CatalogServiceTransport(abc.ABC):
     ) -> Callable[
         [catalog_service.RemoveCatalogAttributeRequest],
         Union[catalog.AttributesConfig, Awaitable[catalog.AttributesConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_remove_catalog_attributes(
+        self,
+    ) -> Callable[
+        [catalog_service.BatchRemoveCatalogAttributesRequest],
+        Union[
+            catalog_service.BatchRemoveCatalogAttributesResponse,
+            Awaitable[catalog_service.BatchRemoveCatalogAttributesResponse],
+        ],
     ]:
         raise NotImplementedError()
 

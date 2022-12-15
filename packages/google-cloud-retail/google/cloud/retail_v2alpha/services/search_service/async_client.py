@@ -53,8 +53,8 @@ from .transports.grpc_asyncio import SearchServiceGrpcAsyncIOTransport
 class SearchServiceAsyncClient:
     """Service for search.
     This feature is only available for users who have Retail Search
-    enabled. Please enable Retail Search on Cloud Console before
-    using this feature.
+    enabled. Enable Retail Search on Cloud Console before using this
+    feature.
     """
 
     _client: SearchServiceClient
@@ -230,8 +230,8 @@ class SearchServiceAsyncClient:
     ) -> pagers.SearchAsyncPager:
         r"""Performs a search.
         This feature is only available for users who have Retail
-        Search enabled. Please enable Retail Search on Cloud
-        Console before using this feature.
+        Search enabled. Enable Retail Search on Cloud Console
+        before using this feature.
 
         .. code-block:: python
 

@@ -43,7 +43,6 @@ def sample_create_control():
     control.facet_spec.facet_key.key = "key_value"
     control.display_name = "display_name_value"
     control.solution_types = ['SOLUTION_TYPE_SEARCH']
-    control.search_solution_use_case = ['SEARCH_SOLUTION_USE_CASE_BROWSE']
 
     request = retail_v2alpha.CreateControlRequest(
         parent="parent_value",

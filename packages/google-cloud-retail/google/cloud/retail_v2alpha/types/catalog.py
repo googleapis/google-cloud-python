@@ -27,6 +27,7 @@ __protobuf__ = proto.module(
         "AttributesConfig",
         "CompletionConfig",
         "MerchantCenterLink",
+        "MerchantCenterFeedFilter",
         "MerchantCenterLinkingConfig",
         "Catalog",
     },
@@ -136,14 +137,15 @@ class CatalogAttribute(proto.Message):
             APIs. This field is ``False`` for pre-loaded
             [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute]s.
 
-            Only pre-loaded
-            [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute]s
+            Only pre-loaded [catalog
+            attributes][google.cloud.retail.v2alpha.CatalogAttribute]
             that are neither in use by products nor predefined can be
-            deleted.
-            [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute]s
-            that are either in use by products or are predefined cannot
-            be deleted; however, their configuration properties will
-            reset to default values upon removal request.
+            deleted. [Catalog
+            attributes][google.cloud.retail.v2alpha.CatalogAttribute]
+            that are either in use by products or are predefined
+            attributes cannot be deleted; however, their configuration
+            properties will reset to default values upon removal
+            request.
 
             After catalog changes, it takes about 10 minutes for this
             field to update.
@@ -158,6 +160,8 @@ class CatalogAttribute(proto.Message):
             attribute values are indexed so that it can be filtered,
             faceted, or boosted in
             [SearchService.Search][google.cloud.retail.v2alpha.SearchService.Search].
+
+            Must be specified, otherwise throws INVALID_FORMAT error.
         dynamic_facetable_option (google.cloud.retail_v2alpha.types.CatalogAttribute.DynamicFacetableOption):
             If DYNAMIC_FACETABLE_ENABLED, attribute values are available
             for dynamic facet. Could only be DYNAMIC_FACETABLE_DISABLED
@@ -165,6 +169,8 @@ class CatalogAttribute(proto.Message):
             [CatalogAttribute.indexable_option][google.cloud.retail.v2alpha.CatalogAttribute.indexable_option]
             is INDEXABLE_DISABLED. Otherwise, an INVALID_ARGUMENT error
             is returned.
+
+            Must be specified, otherwise throws INVALID_FORMAT error.
         searchable_option (google.cloud.retail_v2alpha.types.CatalogAttribute.SearchableOption):
             When
             [AttributesConfig.attribute_config_level][google.cloud.retail.v2alpha.AttributesConfig.attribute_config_level]
@@ -177,6 +183,8 @@ class CatalogAttribute(proto.Message):
             [SearchService.Search][google.cloud.retail.v2alpha.SearchService.Search],
             as there are no text values associated to numerical
             attributes.
+
+            Must be specified, otherwise throws INVALID_FORMAT error.
         recommendations_filtering_option (google.cloud.retail_v2alpha.types.RecommendationsFilteringOption):
             When
             [AttributesConfig.attribute_config_level][google.cloud.retail.v2alpha.AttributesConfig.attribute_config_level]
@@ -185,6 +193,14 @@ class CatalogAttribute(proto.Message):
             filterable for recommendations. This option works for
             categorical features only, does not work for numerical
             features, inventory filtering.
+        exact_searchable_option (google.cloud.retail_v2alpha.types.CatalogAttribute.ExactSearchableOption):
+            If EXACT_SEARCHABLE_ENABLED, attribute values will be exact
+            searchable. This property only applies to textual custom
+            attributes and requires indexable set to enabled to enable
+            exact-searchable.
+        retrievable_option (google.cloud.retail_v2alpha.types.CatalogAttribute.RetrievableOption):
+            If RETRIEVABLE_ENABLED, attribute values are retrievable in
+            the search results.
     """
 
     class AttributeType(proto.Enum):
@@ -212,6 +228,20 @@ class CatalogAttribute(proto.Message):
         SEARCHABLE_OPTION_UNSPECIFIED = 0
         SEARCHABLE_ENABLED = 1
         SEARCHABLE_DISABLED = 2
+
+    class ExactSearchableOption(proto.Enum):
+        r"""The status of the exact-searchable option of a catalog
+        attribute.
+        """
+        EXACT_SEARCHABLE_OPTION_UNSPECIFIED = 0
+        EXACT_SEARCHABLE_ENABLED = 1
+        EXACT_SEARCHABLE_DISABLED = 2
+
+    class RetrievableOption(proto.Enum):
+        r"""The status of the retrievable option of a catalog attribute."""
+        RETRIEVABLE_OPTION_UNSPECIFIED = 0
+        RETRIEVABLE_ENABLED = 1
+        RETRIEVABLE_DISABLED = 2
 
     key: str = proto.Field(
         proto.STRING,
@@ -247,6 +277,16 @@ class CatalogAttribute(proto.Message):
             number=8,
             enum=common.RecommendationsFilteringOption,
         )
+    )
+    exact_searchable_option: ExactSearchableOption = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=ExactSearchableOption,
+    )
+    retrievable_option: RetrievableOption = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum=RetrievableOption,
     )
 
 
@@ -423,23 +463,23 @@ class MerchantCenterLink(proto.Message):
     Attributes:
         merchant_center_account_id (int):
             Required. The linked `Merchant center account
-            id <https://developers.google.com/shopping-content/guides/accountstatuses>`__.
+            ID <https://developers.google.com/shopping-content/guides/accountstatuses>`__.
             The account must be a standalone account or a sub-account of
             a MCA.
         branch_id (str):
-            The branch id (e.g. 0/1/2) within this catalog that products
+            The branch ID (e.g. 0/1/2) within this catalog that products
             from merchant_center_account_id are streamed to. When
             updating this field, an empty value will use the currently
             configured default branch. However, changing the default
             branch later on won't change the linked branch here.
 
-            A single branch id can only have one linked merchant center
-            account id.
+            A single branch ID can only have one linked merchant center
+            account ID.
         destinations (MutableSequence[str]):
             String representing the destination to import for, all if
-            left empty. List of possible values can be found here.
-            [https://support.google.com/merchants/answer/7501026] List
-            of allowed string values: "Shopping_ads",
+            left empty. List of possible values is given in `Included
+            destination <https://support.google.com/merchants/answer/7501026>`__.
+            List of allowed string values: "Shopping_ads",
             "Buy_on_google_listings", "Display_ads", "Local_inventory
             \_ads", "Free_listings", "Free_local_listings" NOTE: The
             string values are case sensitive.
@@ -462,6 +502,11 @@ class MerchantCenterLink(proto.Message):
             be performed.
 
             Example value: ``en``.
+        feeds (MutableSequence[google.cloud.retail_v2alpha.types.MerchantCenterFeedFilter]):
+            Criteria for the Merchant Center feeds to be
+            ingested via the link. All offers will be
+            ingested if the list is empty. Otherwise the
+            offers will be ingested from selected feeds.
     """
 
     merchant_center_account_id: int = proto.Field(
@@ -483,6 +528,32 @@ class MerchantCenterLink(proto.Message):
     language_code: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    feeds: MutableSequence["MerchantCenterFeedFilter"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="MerchantCenterFeedFilter",
+    )
+
+
+class MerchantCenterFeedFilter(proto.Message):
+    r"""Merchant Center Feed filter criterion.
+
+    Attributes:
+        primary_feed_id (int):
+            Merchant Center primary feed ID.
+        primary_feed_name (str):
+            Merchant Center primary feed name. The name
+            is used for the display purposes only.
+    """
+
+    primary_feed_id: int = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    primary_feed_name: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

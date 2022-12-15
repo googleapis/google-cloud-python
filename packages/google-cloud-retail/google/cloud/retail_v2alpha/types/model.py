@@ -33,7 +33,7 @@ class Model(proto.Message):
     [Model][google.cloud.retail.v2alpha.Model]. A
     [Model][google.cloud.retail.v2alpha.Model] can be associated with a
     [ServingConfig][google.cloud.retail.v2alpha.ServingConfig] and then
-    queried through the Predict api.
+    queried through the Predict API.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -47,29 +47,28 @@ class Model(proto.Message):
             Required. The fully qualified resource name of the model.
 
             Format:
-            projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}``
             catalog_id has char limit of 50. recommendation_model_id has
             char limit of 40.
         display_name (str):
             Required. The display name of the model.
             Should be human readable, used to display
-            Recommendation Models in the Retail Cloud Cosole
-            Dashboard. UTF-8 encoded string with limit of
-            1024 characters.
+            Recommendation Models in the Retail Cloud
+            Console Dashboard. UTF-8 encoded string with
+            limit of 1024 characters.
         training_state (google.cloud.retail_v2alpha.types.Model.TrainingState):
-            Optional. The training state that the model
-            is in (e.g. TRAINING or PAUSED).
+            Optional. The training state that the model is in (e.g.
+            ``TRAINING`` or ``PAUSED``).
 
-            Since part of the cost of running the service is
-            frequency of training - this can be used to
-            determine when to train model in order to
-            control cost. If not specified: the default
-            value for CreateModel method is TRAINING. the
-            default value for UpdateModel method is to keep
-            the state the same as before.
+            Since part of the cost of running the service is frequency
+            of training - this can be used to determine when to train
+            model in order to control cost. If not specified: the
+            default value for ``CreateModel`` method is ``TRAINING``.
+            The default value for ``UpdateModel`` method is to keep the
+            state the same as before.
         serving_state (google.cloud.retail_v2alpha.types.Model.ServingState):
-            Output only. The serving state of the model: ACTIVE,
-            NOT_ACTIVE.
+            Output only. The serving state of the model: ``ACTIVE``,
+            ``NOT_ACTIVE``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp the Recommendation
             Model was created at.
@@ -83,8 +82,20 @@ class Model(proto.Message):
 
             Currently supported values: ``recommended-for-you``,
             ``others-you-may-like``, ``frequently-bought-together``,
-            ``page-optimization``, 'similar-items', 'buy-it-again',
-            ``recently-viewed``\ (readonly value).
+            ``page-optimization``, ``similar-items``, ``buy-it-again``,
+            ``on-sale-items``, and ``recently-viewed``\ (readonly
+            value).
+
+            This field together with
+            [optimization_objective][google.cloud.retail.v2alpha.Model.optimization_objective]
+            describe model metadata to use to control model training and
+            serving. See https://cloud.google.com/retail/docs/models for
+            more details on what the model metadata control and which
+            combination of parameters are valid. For invalid
+            combinations of parameters (e.g. type =
+            ``frequently-bought-together`` and optimization_objective =
+            ``ctr``), you receive an error 400 if you try to
+            create/update a recommendation with this set of knobs.
         optimization_objective (str):
             Optional. The optimization objective e.g. ``cvr``.
 
@@ -99,12 +110,23 @@ class Model(proto.Message):
             ``others-you-may-like`` => ``ctr``
 
             ``frequently-bought-together`` => ``revenue_per_order``
+
+            This field together with
+            [optimization_objective][google.cloud.retail.v2alpha.Model.type]
+            describe model metadata to use to control model training and
+            serving. See https://cloud.google.com/retail/docs/models for
+            more details on what the model metadata control and which
+            combination of parameters are valid. For invalid
+            combinations of parameters (e.g. type =
+            ``frequently-bought-together`` and optimization_objective =
+            ``ctr``), you receive an error 400 if you try to
+            create/update a recommendation with this set of knobs.
         periodic_tuning_state (google.cloud.retail_v2alpha.types.Model.PeriodicTuningState):
             Optional. The state of periodic tuning.
 
             The period we use is 3 months - to do a one-off tune earlier
-            use the TuneModel method. Default value is
-            PERIODIC_TUNING_ENABLED.
+            use the ``TuneModel`` method. Default value is
+            ``PERIODIC_TUNING_ENABLED``.
         last_tune_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the latest
             successful tune finished.
@@ -116,15 +138,16 @@ class Model(proto.Message):
             implies no tune is goig on.
         data_state (google.cloud.retail_v2alpha.types.Model.DataState):
             Output only. The state of data requirements for this model:
-            DATA_OK and DATA_ERROR.
+            ``DATA_OK`` and ``DATA_ERROR``.
 
             Recommendation model cannot be trained if the data is in
-            DATA_ERROR state. Recommendation model can have DATA_ERROR
-            state even if serving state is ACTIVE: models were trained
-            successfully before, but cannot be refreshed because model
-            no longer has sufficient data for training.
+            ``DATA_ERROR`` state. Recommendation model can have
+            ``DATA_ERROR`` state even if serving state is ``ACTIVE``:
+            models were trained successfully before, but cannot be
+            refreshed because model no longer has sufficient data for
+            training.
         filtering_option (google.cloud.retail_v2alpha.types.RecommendationsFilteringOption):
-            Optional. If RECOMMENDATIONS_FILTERING_ENABLED,
+            Optional. If ``RECOMMENDATIONS_FILTERING_ENABLED``,
             recommendation filtering by attributes is enabled for the
             model.
         serving_config_lists (MutableSequence[google.cloud.retail_v2alpha.types.Model.ServingConfigList]):
@@ -147,12 +170,12 @@ class Model(proto.Message):
         TRAINING = 2
 
     class PeriodicTuningState(proto.Enum):
-        r"""Describes whether periodic tuning is enabled for this model
-        or not. Periodic tuning is scheduled at most every three months.
-        You can start a tuning process manually by using the ModelTune
-        method, which starts a tuning process immediately and resets the
-        quarterly schedule. Enabling or disabling periodic tuning does
-        not affect any current tuning processes.
+        r"""Describes whether periodic tuning is enabled for this model or not.
+        Periodic tuning is scheduled at most every three months. You can
+        start a tuning process manually by using the ``TuneModel`` method,
+        which starts a tuning process immediately and resets the quarterly
+        schedule. Enabling or disabling periodic tuning does not affect any
+        current tuning processes.
         """
         PERIODIC_TUNING_STATE_UNSPECIFIED = 0
         PERIODIC_TUNING_DISABLED = 1
@@ -171,8 +194,8 @@ class Model(proto.Message):
         r"""The PageOptimizationConfig for model training.
 
         This determines how many panels to optimize for, and which serving
-        configurations to consider for each panel. The purpose of this model
-        is to optimize which
+        configs to consider for each panel. The purpose of this model is to
+        optimize which
         [ServingConfig][google.cloud.retail.v2alpha.ServingConfig] to show
         on which panels in way that optimizes the visitors shopping journey.
 
@@ -231,9 +254,9 @@ class Model(proto.Message):
                 serving_config_id (str):
                     This has to be a valid
                     [ServingConfig][google.cloud.retail.v2alpha.ServingConfig]
-                    identifier. e.g. for a ServingConfig with full name:
-                    ``projects/*/locations/global/catalogs/default_catalog/servingConfigs/my_candidate_config``
-                    this would be 'my_candidate_config'
+                    identifier. For example, for a ServingConfig with full name:
+                    ``projects/*/locations/global/catalogs/default_catalog/servingConfigs/my_candidate_config``,
+                    this would be ``my_candidate_config``.
 
                     This field is a member of `oneof`_ ``candidate``.
             """
@@ -255,11 +278,10 @@ class Model(proto.Message):
                 candidates (MutableSequence[google.cloud.retail_v2alpha.types.Model.PageOptimizationConfig.Candidate]):
                     Required. The candidates to consider on the
                     panel.
-                    Limit = 10.
                 default_candidate (google.cloud.retail_v2alpha.types.Model.PageOptimizationConfig.Candidate):
-                    Required. The default candidate (in case the
-                    model fails at serving time, we can fall back to
-                    the default).
+                    Required. The default candidate. If the model
+                    fails at serving time, we fall back to the
+                    default.
             """
 
             display_name: str = proto.Field(
@@ -297,13 +319,13 @@ class Model(proto.Message):
         )
 
     class ServingConfigList(proto.Message):
-        r"""Represents an ordered combination of valid serving configs, which /
-        may be used for PAGE_OPTIMIZATION recommendations.
+        r"""Represents an ordered combination of valid serving configs, which
+        can be used for ``PAGE_OPTIMIZATION`` recommendations.
 
         Attributes:
             serving_config_ids (MutableSequence[str]):
                 Optional. A set of valid serving configs that may be used
-                for PAGE_OPTIMIZATION.
+                for ``PAGE_OPTIMIZATION``.
         """
 
         serving_config_ids: MutableSequence[str] = proto.RepeatedField(

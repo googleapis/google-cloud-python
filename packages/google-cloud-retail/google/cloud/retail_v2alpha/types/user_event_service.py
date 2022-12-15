@@ -40,6 +40,13 @@ class WriteUserEventRequest(proto.Message):
             ``projects/1234/locations/global/catalogs/default_catalog``.
         user_event (google.cloud.retail_v2alpha.types.UserEvent):
             Required. User event to write.
+        write_async (bool):
+            If set to true, the user event will be
+            written asynchronously after validation, and the
+            API will respond without waiting for the write.
+            Therefore, silent failures can occur even if the
+            API returns success. In case of silent failures,
+            error messages can be found in Stackdriver logs.
     """
 
     parent: str = proto.Field(
@@ -51,12 +58,23 @@ class WriteUserEventRequest(proto.Message):
         number=2,
         message=gcr_user_event.UserEvent,
     )
+    write_async: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class CollectUserEventRequest(proto.Message):
     r"""Request message for CollectUserEvent method.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
+        prebuilt_rule (str):
+            The prebuilt rule name that can convert a specific type of
+            raw_json. For example: "default_schema/v1.0".
+
+            This field is a member of `oneof`_ ``conversion_rule``.
         parent (str):
             Required. The parent catalog name, such as
             ``projects/1234/locations/global/catalogs/default_catalog``.
@@ -74,8 +92,18 @@ class CollectUserEventRequest(proto.Message):
             prevents browser caching of otherwise identical
             get requests. The name is abbreviated to reduce
             the payload bytes.
+        raw_json (str):
+            An arbitrary serialized JSON string that contains necessary
+            information that can comprise a user event. When this field
+            is specified, the user_event field will be ignored. Note:
+            line-delimited JSON is not supported, a single JSON only.
     """
 
+    prebuilt_rule: str = proto.Field(
+        proto.STRING,
+        number=6,
+        oneof="conversion_rule",
+    )
     parent: str = proto.Field(
         proto.STRING,
         number=1,
@@ -92,6 +120,10 @@ class CollectUserEventRequest(proto.Message):
         proto.INT64,
         number=4,
     )
+    raw_json: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class RejoinUserEventsRequest(proto.Message):
@@ -105,18 +137,18 @@ class RejoinUserEventsRequest(proto.Message):
             The type of the user event rejoin to define the scope and
             range of the user events to be rejoined with the latest
             product catalog. Defaults to
-            USER_EVENT_REJOIN_SCOPE_UNSPECIFIED if this field is not
+            ``USER_EVENT_REJOIN_SCOPE_UNSPECIFIED`` if this field is not
             set, or set to an invalid integer value.
     """
 
     class UserEventRejoinScope(proto.Enum):
         r"""The scope of user events to be rejoined with the latest product
         catalog. If the rejoining aims at reducing number of unjoined
-        events, set UserEventRejoinScope to UNJOINED_EVENTS. If the
+        events, set ``UserEventRejoinScope`` to ``UNJOINED_EVENTS``. If the
         rejoining aims at correcting product catalog information in joined
-        events, set UserEventRejoinScope to JOINED_EVENTS. If all events
-        needs to be rejoined, set UserEventRejoinScope to
-        USER_EVENT_REJOIN_SCOPE_UNSPECIFIED.
+        events, set ``UserEventRejoinScope`` to ``JOINED_EVENTS``. If all
+        events needs to be rejoined, set ``UserEventRejoinScope`` to
+        ``USER_EVENT_REJOIN_SCOPE_UNSPECIFIED``.
         """
         USER_EVENT_REJOIN_SCOPE_UNSPECIFIED = 0
         JOINED_EVENTS = 1
@@ -134,7 +166,7 @@ class RejoinUserEventsRequest(proto.Message):
 
 
 class RejoinUserEventsResponse(proto.Message):
-    r"""Response message for RejoinUserEvents method.
+    r"""Response message for ``RejoinUserEvents`` method.
 
     Attributes:
         rejoined_user_events_count (int):
@@ -149,7 +181,7 @@ class RejoinUserEventsResponse(proto.Message):
 
 
 class RejoinUserEventsMetadata(proto.Message):
-    r"""Metadata for RejoinUserEvents method."""
+    r"""Metadata for ``RejoinUserEvents`` method."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

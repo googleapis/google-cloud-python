@@ -45,12 +45,14 @@ class CreateModelRequest(proto.Message):
         parent (str):
             Required. The parent resource under which to create the
             model. Format:
-            projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}``
         model (google.cloud.retail_v2alpha.types.Model):
-            Required. The payload of the [Model] to create.
+            Required. The payload of the
+            [Model][google.cloud.retail.v2alpha.Model] to create.
         dry_run (bool):
-            Optional. Whether to run a dry_run to validate the request
-            (without actually creating the model).
+            Optional. Whether to run a dry run to
+            validate the request (without actually creating
+            the model).
     """
 
     parent: str = proto.Field(
@@ -73,11 +75,12 @@ class UpdateModelRequest(proto.Message):
 
     Attributes:
         model (google.cloud.retail_v2alpha.types.Model):
-            Required. The body of the updated [Model].
+            Required. The body of the updated
+            [Model][google.cloud.retail.v2alpha.Model].
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. Indicates which fields in the
-            provided 'model' to update. If not set, will by
-            default update all fields.
+            provided 'model' to update. If not set, by
+            default updates all fields.
     """
 
     model: gcr_model.Model = proto.Field(
@@ -98,7 +101,7 @@ class PauseModelRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the model to pause. Format:
-            projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}``
     """
 
     name: str = proto.Field(
@@ -113,7 +116,7 @@ class ResumeModelRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the model to resume. Format:
-            projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}``
     """
 
     name: str = proto.Field(
@@ -128,7 +131,7 @@ class ListModelsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent for which to list models. Format:
-            projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}``
         page_size (int):
             Optional. Maximum number of results to
             return. If unspecified, defaults to 50. Max
@@ -158,9 +161,10 @@ class DeleteModelRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the [Model] to delete.
+            Required. The resource name of the
+            [Model][google.cloud.retail.v2alpha.Model] to delete.
             Format:
-            projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}``
     """
 
     name: str = proto.Field(
@@ -202,7 +206,7 @@ class TuneModelRequest(proto.Message):
     Attributes:
         name (str):
             Required. The resource name of the model to tune. Format:
-            projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}``
     """
 
     name: str = proto.Field(
@@ -218,7 +222,7 @@ class CreateModelMetadata(proto.Message):
         model (str):
             The resource name of the model that this create applies to.
             Format:
-            projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}``
     """
 
     model: str = proto.Field(
@@ -234,7 +238,7 @@ class TuneModelMetadata(proto.Message):
         model (str):
             The resource name of the model that this tune applies to.
             Format:
-            projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}``
     """
 
     model: str = proto.Field(

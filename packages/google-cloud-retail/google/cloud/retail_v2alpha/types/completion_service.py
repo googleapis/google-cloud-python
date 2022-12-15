@@ -65,8 +65,10 @@ class CompleteQueryRequest(proto.Message):
             Languages <https://tools.ietf.org/html/bcp47>`__. The
             maximum number of language codes is 3.
         device_type (str):
-            The device type context for completion suggestions. It is
-            useful to apply different suggestions on different device
+            The device type context for completion suggestions. We
+            recommend that you leave this field empty.
+
+            It can apply different suggestions on different device
             types, e.g. ``DESKTOP``, ``MOBILE``. If it is empty, the
             suggestions are across all device types.
 
@@ -102,6 +104,11 @@ class CompleteQueryRequest(proto.Message):
 
             The maximum allowed max suggestions is 20. If it is set
             higher, it will be capped by 20.
+        enable_attribute_suggestions (bool):
+            If true, attribute suggestions are enabled
+            and provided in response.
+            This field is only available for "cloud-retail"
+            dataset.
     """
 
     catalog: str = proto.Field(
@@ -131,6 +138,10 @@ class CompleteQueryRequest(proto.Message):
     max_suggestions: int = proto.Field(
         proto.INT32,
         number=5,
+    )
+    enable_attribute_suggestions: bool = proto.Field(
+        proto.BOOL,
+        number=9,
     )
 
 
@@ -171,6 +182,15 @@ class CompleteQueryResponse(proto.Message):
 
             Recent searches are deduplicated. More recent searches will
             be reserved when duplication happens.
+        attribute_results (MutableMapping[str, google.cloud.retail_v2alpha.types.CompleteQueryResponse.AttributeResult]):
+            A map of matched attribute suggestions. This field is only
+            available for "cloud-retail" dataset.
+
+            Current supported keys:
+
+            -  ``brands``
+
+            -  ``categories``
     """
 
     class CompletionResult(proto.Message):
@@ -215,6 +235,19 @@ class CompleteQueryResponse(proto.Message):
             number=1,
         )
 
+    class AttributeResult(proto.Message):
+        r"""Resource that represents attribute results.
+
+        Attributes:
+            suggestions (MutableSequence[str]):
+                The list of suggestions for the attribute.
+        """
+
+        suggestions: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+
     completion_results: MutableSequence[CompletionResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
@@ -228,6 +261,12 @@ class CompleteQueryResponse(proto.Message):
         proto.MESSAGE,
         number=3,
         message=RecentSearchResult,
+    )
+    attribute_results: MutableMapping[str, AttributeResult] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=4,
+        message=AttributeResult,
     )
 
 

@@ -46,6 +46,15 @@ class Product(proto.Message):
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
             The timestamp when this product becomes unavailable for
             [SearchService.Search][google.cloud.retail.v2alpha.SearchService.Search].
+            Note that this is only applicable to
+            [Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
+            and
+            [Type.COLLECTION][google.cloud.retail.v2alpha.Product.Type.COLLECTION],
+            and ignored for
+            [Type.VARIANT][google.cloud.retail.v2alpha.Product.Type.VARIANT].
+            In general, we suggest the users to delete the stale
+            products explicitly, instead of using this field to
+            determine staleness.
 
             If it is set, the
             [Product][google.cloud.retail.v2alpha.Product] is not
@@ -70,7 +79,16 @@ class Product(proto.Message):
 
             This field is a member of `oneof`_ ``expiration``.
         ttl (google.protobuf.duration_pb2.Duration):
-            Input only. The TTL (time to live) of the product.
+            Input only. The TTL (time to live) of the product. Note that
+            this is only applicable to
+            [Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
+            and
+            [Type.COLLECTION][google.cloud.retail.v2alpha.Product.Type.COLLECTION],
+            and ignored for
+            [Type.VARIANT][google.cloud.retail.v2alpha.Product.Type.VARIANT].
+            In general, we suggest the users to delete the stale
+            products explicitly, instead of using this field to
+            determine staleness.
 
             If it is set, it must be a non-negative value, and
             [expire_time][google.cloud.retail.v2alpha.Product.expire_time]
@@ -150,7 +168,7 @@ class Product(proto.Message):
             [Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
             or
             [Type.VARIANT][google.cloud.retail.v2alpha.Product.Type.VARIANT]
-            otherwise and INVALID_ARGUMENT error is thrown. Should not
+            otherwise an INVALID_ARGUMENT error is thrown. Should not
             set it for other types. A maximum of 1000 values are
             allowed. Otherwise, an INVALID_ARGUMENT error is return.
         gtin (str):
@@ -182,7 +200,7 @@ class Product(proto.Message):
 
             To represent full path of category, use '>' sign to separate
             different hierarchies. If '>' is part of the category name,
-            please replace it with other character(s).
+            replace it with other character(s).
 
             For example, if a shoes product belongs to both ["Shoes &
             Accessories" -> "Shoes"] and ["Sports & Fitness" ->
@@ -318,6 +336,12 @@ class Product(proto.Message):
             [Product][google.cloud.retail.v2alpha.Product] becomes
             available for
             [SearchService.Search][google.cloud.retail.v2alpha.SearchService.Search].
+            Note that this is only applicable to
+            [Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
+            and
+            [Type.COLLECTION][google.cloud.retail.v2alpha.Product.Type.COLLECTION],
+            and ignored for
+            [Type.VARIANT][google.cloud.retail.v2alpha.Product.Type.VARIANT].
         availability (google.cloud.retail_v2alpha.types.Product.Availability):
             The online availability of the
             [Product][google.cloud.retail.v2alpha.Product]. Default to
@@ -518,6 +542,9 @@ class Product(proto.Message):
             Note: Returning more fields in
             [SearchResponse][google.cloud.retail.v2alpha.SearchResponse]
             can increase response payload size and serving latency.
+
+            This field is deprecated. Use the retrievable site-wide
+            control instead.
         variants (MutableSequence[google.cloud.retail_v2alpha.types.Product]):
             Output only. Product variants grouped together on primary
             product which share similar product attributes. It's
@@ -530,6 +557,16 @@ class Product(proto.Message):
             Note: This field is OUTPUT_ONLY for
             [ProductService.GetProduct][google.cloud.retail.v2alpha.ProductService.GetProduct].
             Do not set this field in API requests.
+        local_inventories (MutableSequence[google.cloud.retail_v2alpha.types.LocalInventory]):
+            Output only. A list of local inventories specific to
+            different places.
+
+            This is only available for users who have Retail Search
+            enabled, and it can be managed by
+            [ProductService.AddLocalInventories][google.cloud.retail.v2alpha.ProductService.AddLocalInventories]
+            and
+            [ProductService.RemoveLocalInventories][google.cloud.retail.v2alpha.ProductService.RemoveLocalInventories]
+            APIs.
     """
 
     class Type(proto.Enum):
@@ -700,6 +737,11 @@ class Product(proto.Message):
         proto.MESSAGE,
         number=31,
         message="Product",
+    )
+    local_inventories: MutableSequence[common.LocalInventory] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=35,
+        message=common.LocalInventory,
     )
 
 

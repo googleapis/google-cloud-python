@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CollectUserEvent
+# Snippet for BatchRemoveCatalogAttributes
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-retail
 
 
-# [START retail_v2alpha_generated_UserEventService_CollectUserEvent_async]
+# [START retail_v2alpha_generated_CatalogService_BatchRemoveCatalogAttributes_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,21 +34,20 @@
 from google.cloud import retail_v2alpha
 
 
-async def sample_collect_user_event():
+def sample_batch_remove_catalog_attributes():
     # Create a client
-    client = retail_v2alpha.UserEventServiceAsyncClient()
+    client = retail_v2alpha.CatalogServiceClient()
 
     # Initialize request argument(s)
-    request = retail_v2alpha.CollectUserEventRequest(
-        prebuilt_rule="prebuilt_rule_value",
-        parent="parent_value",
-        user_event="user_event_value",
+    request = retail_v2alpha.BatchRemoveCatalogAttributesRequest(
+        attributes_config="attributes_config_value",
+        attribute_keys=['attribute_keys_value1', 'attribute_keys_value2'],
     )
 
     # Make the request
-    response = await client.collect_user_event(request=request)
+    response = client.batch_remove_catalog_attributes(request=request)
 
     # Handle the response
     print(response)
 
-# [END retail_v2alpha_generated_UserEventService_CollectUserEvent_async]
+# [END retail_v2alpha_generated_CatalogService_BatchRemoveCatalogAttributes_sync]

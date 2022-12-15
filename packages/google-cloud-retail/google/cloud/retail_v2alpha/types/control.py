@@ -28,8 +28,9 @@ __protobuf__ = proto.module(
 
 
 class Control(proto.Message):
-    r"""Configures dynamic serving time metadata that is used to pre
-    and post process search/recommendation model results.
+    r"""Configures dynamic metadata that can be linked to a
+    [ServingConfig][google.cloud.retail.v2alpha.ServingConfig] and
+    affect search or recommendation results at serving time.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -40,8 +41,10 @@ class Control(proto.Message):
 
     Attributes:
         facet_spec (google.cloud.retail_v2alpha.types.SearchRequest.FacetSpec):
-            A facet specification to perform faceted
-            search.
+            A facet specification to perform faceted search.
+
+            Note that this field is deprecated and will throw
+            NOT_IMPLEMENTED if used for creating a control.
 
             This field is a member of `oneof`_ ``control``.
         rule (google.cloud.retail_v2alpha.types.Rule):
@@ -62,25 +65,29 @@ class Control(proto.Message):
             limit of 128 characters. Otherwise, an INVALID_ARGUMENT
             error is thrown.
         associated_serving_config_ids (MutableSequence[str]):
-            Output only. List of serving configuration
-            ids that that are associated with this control.
+            Output only. List of [serving
+            config][google.cloud.retail.v2alpha.ServingConfig] ids that
+            are associated with this control in the same
+            [Catalog][google.cloud.retail.v2alpha.Catalog].
+
             Note the association is managed via the
-            ServingConfig, this is an output only
-            denormalizeed  view. Assumed to be in the same
-            catalog.
+            [ServingConfig][google.cloud.retail.v2alpha.ServingConfig],
+            this is an output only denormalized view.
         solution_types (MutableSequence[google.cloud.retail_v2alpha.types.SolutionType]):
-            Required. Immutable. The solution types that the serving
-            config is used for. Currently we support setting only one
-            type of solution at creation time.
+            Required. Immutable. The solution types that the control is
+            used for. Currently we support setting only one type of
+            solution at creation time.
 
             Only ``SOLUTION_TYPE_SEARCH`` value is supported at the
             moment. If no solution type is provided at creation time,
-            will default to SOLUTION_TYPE_SEARCH.
+            will default to
+            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2alpha.SolutionType.SOLUTION_TYPE_SEARCH].
         search_solution_use_case (MutableSequence[google.cloud.retail_v2alpha.types.SearchSolutionUseCase]):
-            Required. Specifies the use case for the control. Affects
-            what condition fields can be set. Only settable by search
-            controls. Will default to SEARCH_SOLUTION_USE_CASE_SEARCH if
-            not specified. Currently only allow one
+            Specifies the use case for the control. Affects what
+            condition fields can be set. Only settable by search
+            controls. Will default to
+            [SEARCH_SOLUTION_USE_CASE_SEARCH][google.cloud.retail.v2alpha.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH]
+            if not specified. Currently only allow one
             search_solution_use_case per control.
     """
 

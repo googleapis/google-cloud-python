@@ -299,7 +299,7 @@ class ControlServiceGrpcTransport(ControlServiceTransport):
 
         [Control][google.cloud.retail.v2alpha.Control] cannot be set to
         a different oneof field, if so an INVALID_ARGUMENT is returned.
-        If the [Control][google.cloud.retail.v2alpha.Control] to delete
+        If the [Control][google.cloud.retail.v2alpha.Control] to update
         does not exist, a NOT_FOUND error is returned.
 
         Returns:
@@ -354,7 +354,8 @@ class ControlServiceGrpcTransport(ControlServiceTransport):
     ]:
         r"""Return a callable for the list controls method over gRPC.
 
-        Lists all Controls linked to this catalog.
+        Lists all Controls by their parent
+        [Catalog][google.cloud.retail.v2alpha.Catalog].
 
         Returns:
             Callable[[~.ListControlsRequest],
