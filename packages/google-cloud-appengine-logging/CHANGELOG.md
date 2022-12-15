@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-appengine-logging/compare/v1.1.6...v1.2.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.appengine_logging.__version__` ([d3fe8be](https://github.com/googleapis/python-appengine-logging/commit/d3fe8befad49f9f400cc0e908330db5331b002ca))
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([#133](https://github.com/googleapis/python-appengine-logging/issues/133)) ([0d56105](https://github.com/googleapis/python-appengine-logging/commit/0d561057418b715932e7e734f59f7dd6342225cf))
+
 ## [1.1.6](https://github.com/googleapis/python-appengine-logging/compare/v1.1.5...v1.1.6) (2022-10-07)
 
 
