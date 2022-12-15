@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -44,12 +46,12 @@ class DroppedLabels(proto.Message):
     clients to resolve any ambiguities.
 
     Attributes:
-        label (Mapping[str, str]):
+        label (MutableMapping[str, str]):
             Map from label to its value, for all labels
             dropped in any aggregation.
     """
 
-    label = proto.MapField(
+    label: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=1,

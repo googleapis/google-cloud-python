@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.monitoring_v3.types import alert
@@ -59,11 +61,11 @@ class CreateAlertPolicyRequest(proto.Message):
             the new policy, including a new ``[ALERT_POLICY_ID]`` value.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    alert_policy = proto.Field(
+    alert_policy: alert.AlertPolicy = proto.Field(
         proto.MESSAGE,
         number=2,
         message=alert.AlertPolicy,
@@ -82,7 +84,7 @@ class GetAlertPolicyRequest(proto.Message):
                 projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -130,23 +132,23 @@ class ListAlertPoliciesRequest(proto.Message):
             results from the previous method call.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -156,7 +158,7 @@ class ListAlertPoliciesResponse(proto.Message):
     r"""The protocol for the ``ListAlertPolicies`` response.
 
     Attributes:
-        alert_policies (Sequence[google.cloud.monitoring_v3.types.AlertPolicy]):
+        alert_policies (MutableSequence[google.cloud.monitoring_v3.types.AlertPolicy]):
             The returned alert policies.
         next_page_token (str):
             If there might be more results than were returned, then this
@@ -173,16 +175,16 @@ class ListAlertPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    alert_policies = proto.RepeatedField(
+    alert_policies: MutableSequence[alert.AlertPolicy] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=alert.AlertPolicy,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    total_size = proto.Field(
+    total_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
@@ -227,12 +229,12 @@ class UpdateAlertPolicyRequest(proto.Message):
             ``update_mask`` are ignored.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    alert_policy = proto.Field(
+    alert_policy: alert.AlertPolicy = proto.Field(
         proto.MESSAGE,
         number=3,
         message=alert.AlertPolicy,
@@ -254,7 +256,7 @@ class DeleteAlertPolicyRequest(proto.Message):
             [AlertPolicy][google.monitoring.v3.AlertPolicy].
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=3,
     )

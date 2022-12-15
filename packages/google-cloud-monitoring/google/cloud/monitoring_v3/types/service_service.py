@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.monitoring_v3.types import service as gm_service
@@ -58,15 +60,15 @@ class CreateServiceRequest(proto.Message):
             Required. The ``Service`` to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    service_id = proto.Field(
+    service_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    service = proto.Field(
+    service: gm_service.Service = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gm_service.Service,
@@ -85,7 +87,7 @@ class GetServiceRequest(proto.Message):
                 projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -140,19 +142,19 @@ class ListServicesRequest(proto.Message):
             additional results from the previous method call.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -162,7 +164,7 @@ class ListServicesResponse(proto.Message):
     r"""The ``ListServices`` response.
 
     Attributes:
-        services (Sequence[google.cloud.monitoring_v3.types.Service]):
+        services (MutableSequence[google.cloud.monitoring_v3.types.Service]):
             The ``Service``\ s matching the specified filter.
         next_page_token (str):
             If there are more results than have been returned, then this
@@ -175,12 +177,12 @@ class ListServicesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    services = proto.RepeatedField(
+    services: MutableSequence[gm_service.Service] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gm_service.Service,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -198,12 +200,12 @@ class UpdateServiceRequest(proto.Message):
             use for the update.
     """
 
-    service = proto.Field(
+    service: gm_service.Service = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gm_service.Service,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -223,7 +225,7 @@ class DeleteServiceRequest(proto.Message):
                 projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -250,15 +252,15 @@ class CreateServiceLevelObjectiveRequest(proto.Message):
             ``ServiceLevelObjective`` exists with this name.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    service_level_objective_id = proto.Field(
+    service_level_objective_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    service_level_objective = proto.Field(
+    service_level_objective: gm_service.ServiceLevelObjective = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gm_service.ServiceLevelObjective,
@@ -285,11 +287,11 @@ class GetServiceLevelObjectiveRequest(proto.Message):
             ``RequestBasedSli`` spelling out how the SLI is computed.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: gm_service.ServiceLevelObjective.View = proto.Field(
         proto.ENUM,
         number=2,
         enum=gm_service.ServiceLevelObjective.View,
@@ -330,23 +332,23 @@ class ListServiceLevelObjectivesRequest(proto.Message):
             ``RequestBasedSli`` spelling out how the SLI is computed.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    view = proto.Field(
+    view: gm_service.ServiceLevelObjective.View = proto.Field(
         proto.ENUM,
         number=5,
         enum=gm_service.ServiceLevelObjective.View,
@@ -357,7 +359,7 @@ class ListServiceLevelObjectivesResponse(proto.Message):
     r"""The ``ListServiceLevelObjectives`` response.
 
     Attributes:
-        service_level_objectives (Sequence[google.cloud.monitoring_v3.types.ServiceLevelObjective]):
+        service_level_objectives (MutableSequence[google.cloud.monitoring_v3.types.ServiceLevelObjective]):
             The ``ServiceLevelObjective``\ s matching the specified
             filter.
         next_page_token (str):
@@ -371,12 +373,14 @@ class ListServiceLevelObjectivesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    service_level_objectives = proto.RepeatedField(
+    service_level_objectives: MutableSequence[
+        gm_service.ServiceLevelObjective
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gm_service.ServiceLevelObjective,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -394,12 +398,12 @@ class UpdateServiceLevelObjectiveRequest(proto.Message):
             use for the update.
     """
 
-    service_level_objective = proto.Field(
+    service_level_objective: gm_service.ServiceLevelObjective = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gm_service.ServiceLevelObjective,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -419,7 +423,7 @@ class DeleteServiceLevelObjectiveRequest(proto.Message):
                 projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]/serviceLevelObjectives/[SLO_NAME]
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

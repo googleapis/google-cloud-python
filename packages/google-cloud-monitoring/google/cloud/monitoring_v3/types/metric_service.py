@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.api import metric_pb2  # type: ignore
@@ -78,19 +80,19 @@ class ListMonitoredResourceDescriptorsRequest(proto.Message):
             additional results from the previous method call.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -100,7 +102,7 @@ class ListMonitoredResourceDescriptorsResponse(proto.Message):
     r"""The ``ListMonitoredResourceDescriptors`` response.
 
     Attributes:
-        resource_descriptors (Sequence[google.api.monitored_resource_pb2.MonitoredResourceDescriptor]):
+        resource_descriptors (MutableSequence[google.api.monitored_resource_pb2.MonitoredResourceDescriptor]):
             The monitored resource descriptors that are available to
             this project and that match ``filter``, if present.
         next_page_token (str):
@@ -114,12 +116,14 @@ class ListMonitoredResourceDescriptorsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    resource_descriptors = proto.RepeatedField(
+    resource_descriptors: MutableSequence[
+        monitored_resource_pb2.MonitoredResourceDescriptor
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=monitored_resource_pb2.MonitoredResourceDescriptor,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -141,7 +145,7 @@ class GetMonitoredResourceDescriptorRequest(proto.Message):
             ``cloudsql_database``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -180,19 +184,19 @@ class ListMetricDescriptorsRequest(proto.Message):
             additional results from the previous method call.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -202,7 +206,7 @@ class ListMetricDescriptorsResponse(proto.Message):
     r"""The ``ListMetricDescriptors`` response.
 
     Attributes:
-        metric_descriptors (Sequence[google.api.metric_pb2.MetricDescriptor]):
+        metric_descriptors (MutableSequence[google.api.metric_pb2.MetricDescriptor]):
             The metric descriptors that are available to the project and
             that match the value of ``filter``, if present.
         next_page_token (str):
@@ -216,12 +220,14 @@ class ListMetricDescriptorsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    metric_descriptors = proto.RepeatedField(
+    metric_descriptors: MutableSequence[
+        metric_pb2.MetricDescriptor
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=metric_pb2.MetricDescriptor,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -243,7 +249,7 @@ class GetMetricDescriptorRequest(proto.Message):
             ``"compute.googleapis.com/instance/disk/read_bytes_count"``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -264,11 +270,11 @@ class CreateMetricDescriptorRequest(proto.Message):
             descriptor.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    metric_descriptor = proto.Field(
+    metric_descriptor: metric_pb2.MetricDescriptor = proto.Field(
         proto.MESSAGE,
         number=2,
         message=metric_pb2.MetricDescriptor,
@@ -291,7 +297,7 @@ class DeleteMetricDescriptorRequest(proto.Message):
             ``"custom.googleapis.com/my_test_metric"``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -365,43 +371,43 @@ class ListTimeSeriesRequest(proto.Message):
         FULL = 0
         HEADERS = 1
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    interval = proto.Field(
+    interval: common.TimeInterval = proto.Field(
         proto.MESSAGE,
         number=4,
         message=common.TimeInterval,
     )
-    aggregation = proto.Field(
+    aggregation: common.Aggregation = proto.Field(
         proto.MESSAGE,
         number=5,
         message=common.Aggregation,
     )
-    secondary_aggregation = proto.Field(
+    secondary_aggregation: common.Aggregation = proto.Field(
         proto.MESSAGE,
         number=11,
         message=common.Aggregation,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    view = proto.Field(
+    view: TimeSeriesView = proto.Field(
         proto.ENUM,
         number=7,
         enum=TimeSeriesView,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=8,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=9,
     )
@@ -411,7 +417,7 @@ class ListTimeSeriesResponse(proto.Message):
     r"""The ``ListTimeSeries`` response.
 
     Attributes:
-        time_series (Sequence[google.cloud.monitoring_v3.types.TimeSeries]):
+        time_series (MutableSequence[google.cloud.monitoring_v3.types.TimeSeries]):
             One or more time series that match the filter
             included in the request.
         next_page_token (str):
@@ -419,7 +425,7 @@ class ListTimeSeriesResponse(proto.Message):
             field is set to a non-empty value. To see the additional
             results, use that value as ``page_token`` in the next call
             to this method.
-        execution_errors (Sequence[google.rpc.status_pb2.Status]):
+        execution_errors (MutableSequence[google.rpc.status_pb2.Status]):
             Query execution errors that may have caused
             the time series data returned to be incomplete.
         unit (str):
@@ -435,21 +441,21 @@ class ListTimeSeriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    time_series = proto.RepeatedField(
+    time_series: MutableSequence[gm_metric.TimeSeries] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gm_metric.TimeSeries,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    execution_errors = proto.RepeatedField(
+    execution_errors: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=status_pb2.Status,
     )
-    unit = proto.Field(
+    unit: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -467,7 +473,7 @@ class CreateTimeSeriesRequest(proto.Message):
             ::
 
                 projects/[PROJECT_ID_OR_NUMBER]
-        time_series (Sequence[google.cloud.monitoring_v3.types.TimeSeries]):
+        time_series (MutableSequence[google.cloud.monitoring_v3.types.TimeSeries]):
             Required. The new data to be added to a list of time series.
             Adds at most one data point to each of several time series.
             The new data point must be more recent than any other point
@@ -479,11 +485,11 @@ class CreateTimeSeriesRequest(proto.Message):
             request is 200.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    time_series = proto.RepeatedField(
+    time_series: MutableSequence[gm_metric.TimeSeries] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=gm_metric.TimeSeries,
@@ -502,12 +508,12 @@ class CreateTimeSeriesError(proto.Message):
             ``time_series``.
     """
 
-    time_series = proto.Field(
+    time_series: gm_metric.TimeSeries = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gm_metric.TimeSeries,
     )
-    status = proto.Field(
+    status: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=2,
         message=status_pb2.Status,
@@ -524,7 +530,7 @@ class CreateTimeSeriesSummary(proto.Message):
         success_point_count (int):
             The number of points that were successfully
             written.
-        errors (Sequence[google.cloud.monitoring_v3.types.CreateTimeSeriesSummary.Error]):
+        errors (MutableSequence[google.cloud.monitoring_v3.types.CreateTimeSeriesSummary.Error]):
             The number of points that failed to be
             written. Order is not guaranteed.
     """
@@ -540,25 +546,25 @@ class CreateTimeSeriesSummary(proto.Message):
                 ``status``.
         """
 
-        status = proto.Field(
+        status: status_pb2.Status = proto.Field(
             proto.MESSAGE,
             number=1,
             message=status_pb2.Status,
         )
-        point_count = proto.Field(
+        point_count: int = proto.Field(
             proto.INT32,
             number=2,
         )
 
-    total_point_count = proto.Field(
+    total_point_count: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    success_point_count = proto.Field(
+    success_point_count: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    errors = proto.RepeatedField(
+    errors: MutableSequence[Error] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=Error,
@@ -591,19 +597,19 @@ class QueryTimeSeriesRequest(proto.Message):
             additional results from the previous method call.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=9,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=10,
     )
@@ -615,14 +621,14 @@ class QueryTimeSeriesResponse(proto.Message):
     Attributes:
         time_series_descriptor (google.cloud.monitoring_v3.types.TimeSeriesDescriptor):
             The descriptor for the time series data.
-        time_series_data (Sequence[google.cloud.monitoring_v3.types.TimeSeriesData]):
+        time_series_data (MutableSequence[google.cloud.monitoring_v3.types.TimeSeriesData]):
             The time series data.
         next_page_token (str):
             If there are more results than have been returned, then this
             field is set to a non-empty value. To see the additional
             results, use that value as ``page_token`` in the next call
             to this method.
-        partial_errors (Sequence[google.rpc.status_pb2.Status]):
+        partial_errors (MutableSequence[google.rpc.status_pb2.Status]):
             Query execution errors that may have caused
             the time series data returned to be incomplete.
             The available data will be available in the
@@ -633,21 +639,21 @@ class QueryTimeSeriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    time_series_descriptor = proto.Field(
+    time_series_descriptor: gm_metric.TimeSeriesDescriptor = proto.Field(
         proto.MESSAGE,
         number=8,
         message=gm_metric.TimeSeriesDescriptor,
     )
-    time_series_data = proto.RepeatedField(
+    time_series_data: MutableSequence[gm_metric.TimeSeriesData] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message=gm_metric.TimeSeriesData,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    partial_errors = proto.RepeatedField(
+    partial_errors: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message=status_pb2.Status,
@@ -659,7 +665,7 @@ class QueryErrorList(proto.Message):
     errors.
 
     Attributes:
-        errors (Sequence[google.cloud.monitoring_v3.types.QueryError]):
+        errors (MutableSequence[google.cloud.monitoring_v3.types.QueryError]):
             Errors in parsing the time series query
             language text. The number of errors in the
             response may be limited.
@@ -667,12 +673,12 @@ class QueryErrorList(proto.Message):
             A summary of all the errors.
     """
 
-    errors = proto.RepeatedField(
+    errors: MutableSequence[gm_metric.QueryError] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gm_metric.QueryError,
     )
-    error_summary = proto.Field(
+    error_summary: str = proto.Field(
         proto.STRING,
         number=2,
     )

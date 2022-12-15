@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.monitoring_v3.types import uptime
@@ -59,15 +61,15 @@ class ListUptimeCheckConfigsRequest(proto.Message):
             results from the previous method call.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -77,7 +79,7 @@ class ListUptimeCheckConfigsResponse(proto.Message):
     r"""The protocol for the ``ListUptimeCheckConfigs`` response.
 
     Attributes:
-        uptime_check_configs (Sequence[google.cloud.monitoring_v3.types.UptimeCheckConfig]):
+        uptime_check_configs (MutableSequence[google.cloud.monitoring_v3.types.UptimeCheckConfig]):
             The returned Uptime check configurations.
         next_page_token (str):
             This field represents the pagination token to retrieve the
@@ -96,16 +98,18 @@ class ListUptimeCheckConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    uptime_check_configs = proto.RepeatedField(
+    uptime_check_configs: MutableSequence[
+        uptime.UptimeCheckConfig
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=uptime.UptimeCheckConfig,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    total_size = proto.Field(
+    total_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -124,7 +128,7 @@ class GetUptimeCheckConfigRequest(proto.Message):
                 projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -146,11 +150,11 @@ class CreateUptimeCheckConfigRequest(proto.Message):
             Required. The new Uptime check configuration.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uptime_check_config = proto.Field(
+    uptime_check_config: uptime.UptimeCheckConfig = proto.Field(
         proto.MESSAGE,
         number=2,
         message=uptime.UptimeCheckConfig,
@@ -183,12 +187,12 @@ class UpdateUptimeCheckConfigRequest(proto.Message):
             ``content_matchers``, and ``selected_regions``.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    uptime_check_config = proto.Field(
+    uptime_check_config: uptime.UptimeCheckConfig = proto.Field(
         proto.MESSAGE,
         number=3,
         message=uptime.UptimeCheckConfig,
@@ -208,7 +212,7 @@ class DeleteUptimeCheckConfigRequest(proto.Message):
                 projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -233,11 +237,11 @@ class ListUptimeCheckIpsRequest(proto.Message):
             not yet implemented
     """
 
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -247,7 +251,7 @@ class ListUptimeCheckIpsResponse(proto.Message):
     r"""The protocol for the ``ListUptimeCheckIps`` response.
 
     Attributes:
-        uptime_check_ips (Sequence[google.cloud.monitoring_v3.types.UptimeCheckIp]):
+        uptime_check_ips (MutableSequence[google.cloud.monitoring_v3.types.UptimeCheckIp]):
             The returned list of IP addresses (including
             region and location) that the checkers run from.
         next_page_token (str):
@@ -263,12 +267,12 @@ class ListUptimeCheckIpsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    uptime_check_ips = proto.RepeatedField(
+    uptime_check_ips: MutableSequence[uptime.UptimeCheckIp] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=uptime.UptimeCheckIp,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )

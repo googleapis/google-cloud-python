@@ -16,8 +16,19 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
+
+from google.cloud.monitoring_v3 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -156,9 +167,9 @@ class QueryServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, QueryServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the query service client.
@@ -202,10 +213,10 @@ class QueryServiceAsyncClient:
 
     async def query_time_series(
         self,
-        request: Union[metric_service.QueryTimeSeriesRequest, dict] = None,
+        request: Optional[Union[metric_service.QueryTimeSeriesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.QueryTimeSeriesAsyncPager:
         r"""Queries time series using Monitoring Query Language.
@@ -240,7 +251,7 @@ class QueryServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.monitoring_v3.types.QueryTimeSeriesRequest, dict]):
+            request (Optional[Union[google.cloud.monitoring_v3.types.QueryTimeSeriesRequest, dict]]):
                 The request object. The `QueryTimeSeries` request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -300,14 +311,9 @@ class QueryServiceAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-monitoring",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("QueryServiceAsyncClient",)

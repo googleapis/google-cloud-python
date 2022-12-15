@@ -1217,6 +1217,7 @@ def test_get_notification_channel_descriptor(request_type, transport: str = "grp
             display_name="display_name_value",
             description="description_value",
             supported_tiers=[common.ServiceTier.SERVICE_TIER_BASIC],
+            launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
         )
         response = client.get_notification_channel_descriptor(request)
 
@@ -1232,6 +1233,7 @@ def test_get_notification_channel_descriptor(request_type, transport: str = "grp
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.supported_tiers == [common.ServiceTier.SERVICE_TIER_BASIC]
+    assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
 
 
 def test_get_notification_channel_descriptor_empty_call():
@@ -1278,6 +1280,7 @@ async def test_get_notification_channel_descriptor_async(
                 display_name="display_name_value",
                 description="description_value",
                 supported_tiers=[common.ServiceTier.SERVICE_TIER_BASIC],
+                launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
             )
         )
         response = await client.get_notification_channel_descriptor(request)
@@ -1294,6 +1297,7 @@ async def test_get_notification_channel_descriptor_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.supported_tiers == [common.ServiceTier.SERVICE_TIER_BASIC]
+    assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
 
 
 @pytest.mark.asyncio

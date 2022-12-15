@@ -2,7 +2,8 @@
 
 .. include:: multiprocessing.rst
 
-Api Reference
+
+API Reference
 -------------
 .. toctree::
     :maxdepth: 2
@@ -11,20 +12,22 @@ Api Reference
     monitoring_v3/services
     monitoring_v3/types
 
+
 Migration Guide
 ---------------
 
-See the guide below for instructions on migrating to the 2.x release of this library.
+See the guide below for instructions on migrating to the latest version.
 
 .. toctree::
     :maxdepth: 2
 
-    UPGRADING
+    UPGRADING
+
 
 Changelog
 ---------
 
-For a list of all previous ``google-cloud-monitoring`` releases.
+For a list of all ``google-cloud-monitoring`` releases:
 
 .. toctree::
     :maxdepth: 2

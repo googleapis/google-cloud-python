@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import duration_pb2  # type: ignore
@@ -90,7 +92,7 @@ class Service(proto.Message):
         telemetry (google.cloud.monitoring_v3.types.Service.Telemetry):
             Configuration for how to query telemetry on a
             Service.
-        user_labels (Mapping[str, str]):
+        user_labels (MutableMapping[str, str]):
             Labels which have been used to annotate the
             service. Label keys must start with a letter.
             Label keys and values may contain lowercase
@@ -121,7 +123,7 @@ class Service(proto.Message):
                 https://cloud.google.com/monitoring/api/resources#tag_gae_app
         """
 
-        module_id = proto.Field(
+        module_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -138,7 +140,7 @@ class Service(proto.Message):
                 https://cloud.google.com/monitoring/api/resources#tag_api
         """
 
-        service = proto.Field(
+        service: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -167,19 +169,19 @@ class Service(proto.Message):
                 in Istio metrics.
         """
 
-        location = proto.Field(
+        location: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        cluster_name = proto.Field(
+        cluster_name: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        service_namespace = proto.Field(
+        service_namespace: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        service_name = proto.Field(
+        service_name: str = proto.Field(
             proto.STRING,
             number=4,
         )
@@ -204,15 +206,15 @@ class Service(proto.Message):
                 in Istio metrics.
         """
 
-        mesh_uid = proto.Field(
+        mesh_uid: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        service_namespace = proto.Field(
+        service_namespace: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        service_name = proto.Field(
+        service_name: str = proto.Field(
             proto.STRING,
             number=4,
         )
@@ -241,15 +243,15 @@ class Service(proto.Message):
                 metrics <https://cloud.google.com/monitoring/api/metrics_istio>`__.
         """
 
-        mesh_uid = proto.Field(
+        mesh_uid: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        canonical_service_namespace = proto.Field(
+        canonical_service_namespace: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        canonical_service = proto.Field(
+        canonical_service: str = proto.Field(
             proto.STRING,
             number=4,
         )
@@ -264,61 +266,61 @@ class Service(proto.Message):
                 https://cloud.google.com/apis/design/resource_names.
         """
 
-        resource_name = proto.Field(
+        resource_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    custom = proto.Field(
+    custom: Custom = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="identifier",
         message=Custom,
     )
-    app_engine = proto.Field(
+    app_engine: AppEngine = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="identifier",
         message=AppEngine,
     )
-    cloud_endpoints = proto.Field(
+    cloud_endpoints: CloudEndpoints = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="identifier",
         message=CloudEndpoints,
     )
-    cluster_istio = proto.Field(
+    cluster_istio: ClusterIstio = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="identifier",
         message=ClusterIstio,
     )
-    mesh_istio = proto.Field(
+    mesh_istio: MeshIstio = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="identifier",
         message=MeshIstio,
     )
-    istio_canonical_service = proto.Field(
+    istio_canonical_service: IstioCanonicalService = proto.Field(
         proto.MESSAGE,
         number=11,
         oneof="identifier",
         message=IstioCanonicalService,
     )
-    telemetry = proto.Field(
+    telemetry: Telemetry = proto.Field(
         proto.MESSAGE,
         number=13,
         message=Telemetry,
     )
-    user_labels = proto.MapField(
+    user_labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=14,
@@ -371,7 +373,7 @@ class ServiceLevelObjective(proto.Message):
             ``WEEK``, ``FORTNIGHT``, and ``MONTH`` are supported.
 
             This field is a member of `oneof`_ ``period``.
-        user_labels (Mapping[str, str]):
+        user_labels (MutableMapping[str, str]):
             Labels which have been used to annotate the
             service-level objective. Label keys must start
             with a letter. Label keys and values may contain
@@ -394,36 +396,36 @@ class ServiceLevelObjective(proto.Message):
         FULL = 2
         EXPLICIT = 1
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    service_level_indicator = proto.Field(
+    service_level_indicator: "ServiceLevelIndicator" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="ServiceLevelIndicator",
     )
-    goal = proto.Field(
+    goal: float = proto.Field(
         proto.DOUBLE,
         number=4,
     )
-    rolling_period = proto.Field(
+    rolling_period: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="period",
         message=duration_pb2.Duration,
     )
-    calendar_period = proto.Field(
+    calendar_period: calendar_period_pb2.CalendarPeriod = proto.Field(
         proto.ENUM,
         number=6,
         oneof="period",
         enum=calendar_period_pb2.CalendarPeriod,
     )
-    user_labels = proto.MapField(
+    user_labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=12,
@@ -469,19 +471,19 @@ class ServiceLevelIndicator(proto.Message):
             This field is a member of `oneof`_ ``type``.
     """
 
-    basic_sli = proto.Field(
+    basic_sli: "BasicSli" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="type",
         message="BasicSli",
     )
-    request_based = proto.Field(
+    request_based: "RequestBasedSli" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="type",
         message="RequestBasedSli",
     )
-    windows_based = proto.Field(
+    windows_based: "WindowsBasedSli" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="type",
@@ -505,7 +507,7 @@ class BasicSli(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        method (Sequence[str]):
+        method (MutableSequence[str]):
             OPTIONAL: The set of RPCs to which this SLI
             is relevant. Telemetry from other methods will
             not be used to calculate performance for this
@@ -513,7 +515,7 @@ class BasicSli(proto.Message):
             Service's methods. For service types that don't
             support breaking down by method, setting this
             field will result in an error.
-        location (Sequence[str]):
+        location (MutableSequence[str]):
             OPTIONAL: The set of locations to which this
             SLI is relevant. Telemetry from other locations
             will not be used to calculate performance for
@@ -522,7 +524,7 @@ class BasicSli(proto.Message):
             service types that don't support breaking down
             by location, setting this field will result in
             an error.
-        version (Sequence[str]):
+        version (MutableSequence[str]):
             OPTIONAL: The set of API versions to which
             this SLI is relevant. Telemetry from other API
             versions will not be used to calculate
@@ -556,31 +558,31 @@ class BasicSli(proto.Message):
                 this service that return in no more than ``threshold``.
         """
 
-        threshold = proto.Field(
+        threshold: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=3,
             message=duration_pb2.Duration,
         )
 
-    method = proto.RepeatedField(
+    method: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
-    location = proto.RepeatedField(
+    location: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
     )
-    version = proto.RepeatedField(
+    version: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=9,
     )
-    availability = proto.Field(
+    availability: AvailabilityCriteria = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="sli_criteria",
         message=AvailabilityCriteria,
     )
-    latency = proto.Field(
+    latency: LatencyCriteria = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="sli_criteria",
@@ -598,11 +600,11 @@ class Range(proto.Message):
             Range maximum.
     """
 
-    min_ = proto.Field(
+    min_: float = proto.Field(
         proto.DOUBLE,
         number=1,
     )
-    max_ = proto.Field(
+    max_: float = proto.Field(
         proto.DOUBLE,
         number=2,
     )
@@ -635,13 +637,13 @@ class RequestBasedSli(proto.Message):
             This field is a member of `oneof`_ ``method``.
     """
 
-    good_total_ratio = proto.Field(
+    good_total_ratio: "TimeSeriesRatio" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="method",
         message="TimeSeriesRatio",
     )
-    distribution_cut = proto.Field(
+    distribution_cut: "DistributionCut" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="method",
@@ -683,15 +685,15 @@ class TimeSeriesRatio(proto.Message):
             or ``MetricKind = CUMULATIVE``.
     """
 
-    good_service_filter = proto.Field(
+    good_service_filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    bad_service_filter = proto.Field(
+    bad_service_filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    total_service_filter = proto.Field(
+    total_service_filter: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -718,11 +720,11 @@ class DistributionCut(proto.Message):
             value.
     """
 
-    distribution_filter = proto.Field(
+    distribution_filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    range_ = proto.Field(
+    range_: "Range" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="Range",
@@ -794,19 +796,19 @@ class WindowsBasedSli(proto.Message):
                 counted as good.
         """
 
-        performance = proto.Field(
+        performance: "RequestBasedSli" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="type",
             message="RequestBasedSli",
         )
-        basic_sli_performance = proto.Field(
+        basic_sli_performance: "BasicSli" = proto.Field(
             proto.MESSAGE,
             number=3,
             oneof="type",
             message="BasicSli",
         )
-        threshold = proto.Field(
+        threshold: float = proto.Field(
             proto.DOUBLE,
             number=2,
         )
@@ -830,40 +832,40 @@ class WindowsBasedSli(proto.Message):
                 value.
         """
 
-        time_series = proto.Field(
+        time_series: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        range_ = proto.Field(
+        range_: "Range" = proto.Field(
             proto.MESSAGE,
             number=4,
             message="Range",
         )
 
-    good_bad_metric_filter = proto.Field(
+    good_bad_metric_filter: str = proto.Field(
         proto.STRING,
         number=5,
         oneof="window_criterion",
     )
-    good_total_ratio_threshold = proto.Field(
+    good_total_ratio_threshold: PerformanceThreshold = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="window_criterion",
         message=PerformanceThreshold,
     )
-    metric_mean_in_range = proto.Field(
+    metric_mean_in_range: MetricRange = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="window_criterion",
         message=MetricRange,
     )
-    metric_sum_in_range = proto.Field(
+    metric_sum_in_range: MetricRange = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="window_criterion",
         message=MetricRange,
     )
-    window_period = proto.Field(
+    window_period: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=4,
         message=duration_pb2.Duration,

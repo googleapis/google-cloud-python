@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.api import monitored_resource_pb2  # type: ignore
@@ -97,27 +99,27 @@ class InternalChecker(proto.Message):
         CREATING = 1
         RUNNING = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    network = proto.Field(
+    network: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    gcp_zone = proto.Field(
+    gcp_zone: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    peer_project_id = proto.Field(
+    peer_project_id: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=7,
         enum=State,
@@ -189,14 +191,14 @@ class UptimeCheckConfig(proto.Message):
             The maximum amount of time to wait for the
             request to complete (must be between 1 and 60
             seconds). Required.
-        content_matchers (Sequence[google.cloud.monitoring_v3.types.UptimeCheckConfig.ContentMatcher]):
+        content_matchers (MutableSequence[google.cloud.monitoring_v3.types.UptimeCheckConfig.ContentMatcher]):
             The content that is expected to appear in the data returned
             by the target server against which the check is run.
             Currently, only the first entry in the ``content_matchers``
             list is supported, and additional entries will be ignored.
             This field is optional and should only be specified if a
             content match is required as part of the/ Uptime check.
-        selected_regions (Sequence[google.cloud.monitoring_v3.types.UptimeCheckRegion]):
+        selected_regions (MutableSequence[google.cloud.monitoring_v3.types.UptimeCheckRegion]):
             The list of regions from which the check will
             be run. Some regions contain one location, and
             others contain more than one. If this field is
@@ -211,7 +213,7 @@ class UptimeCheckConfig(proto.Message):
             provide 'selected_regions' when is_internal is ``true``, or
             to provide 'internal_checkers' when is_internal is
             ``false``.
-        internal_checkers (Sequence[google.cloud.monitoring_v3.types.InternalChecker]):
+        internal_checkers (MutableSequence[google.cloud.monitoring_v3.types.InternalChecker]):
             The internal checkers that this check will egress from. If
             ``is_internal`` is ``true`` and this list is empty, the
             check will egress from all the InternalCheckers configured
@@ -232,11 +234,11 @@ class UptimeCheckConfig(proto.Message):
                 The resource type of the group members.
         """
 
-        group_id = proto.Field(
+        group_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        resource_type = proto.Field(
+        resource_type: "GroupResourceType" = proto.Field(
             proto.ENUM,
             number=2,
             enum="GroupResourceType",
@@ -275,7 +277,7 @@ class UptimeCheckConfig(proto.Message):
                 responsible for encrypting the headers. On Get/List calls,
                 if ``mask_headers`` is set to ``true`` then the headers will
                 be obscured with ``******.``
-            headers (Mapping[str, str]):
+            headers (MutableMapping[str, str]):
                 The list of headers to send as part of the
                 Uptime check request. If two headers have the
                 same key and different values, they should be
@@ -347,56 +349,56 @@ class UptimeCheckConfig(proto.Message):
                     the HTTP server.
             """
 
-            username = proto.Field(
+            username: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            password = proto.Field(
+            password: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
 
-        request_method = proto.Field(
+        request_method: "UptimeCheckConfig.HttpCheck.RequestMethod" = proto.Field(
             proto.ENUM,
             number=8,
             enum="UptimeCheckConfig.HttpCheck.RequestMethod",
         )
-        use_ssl = proto.Field(
+        use_ssl: bool = proto.Field(
             proto.BOOL,
             number=1,
         )
-        path = proto.Field(
+        path: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        port = proto.Field(
+        port: int = proto.Field(
             proto.INT32,
             number=3,
         )
-        auth_info = proto.Field(
+        auth_info: "UptimeCheckConfig.HttpCheck.BasicAuthentication" = proto.Field(
             proto.MESSAGE,
             number=4,
             message="UptimeCheckConfig.HttpCheck.BasicAuthentication",
         )
-        mask_headers = proto.Field(
+        mask_headers: bool = proto.Field(
             proto.BOOL,
             number=5,
         )
-        headers = proto.MapField(
+        headers: MutableMapping[str, str] = proto.MapField(
             proto.STRING,
             proto.STRING,
             number=6,
         )
-        content_type = proto.Field(
+        content_type: "UptimeCheckConfig.HttpCheck.ContentType" = proto.Field(
             proto.ENUM,
             number=9,
             enum="UptimeCheckConfig.HttpCheck.ContentType",
         )
-        validate_ssl = proto.Field(
+        validate_ssl: bool = proto.Field(
             proto.BOOL,
             number=7,
         )
-        body = proto.Field(
+        body: bytes = proto.Field(
             proto.BYTES,
             number=10,
         )
@@ -411,7 +413,7 @@ class UptimeCheckConfig(proto.Message):
                 ``monitored_resource``) to construct the full URL. Required.
         """
 
-        port = proto.Field(
+        port: int = proto.Field(
             proto.INT32,
             number=1,
         )
@@ -442,73 +444,73 @@ class UptimeCheckConfig(proto.Message):
             MATCHES_REGEX = 3
             NOT_MATCHES_REGEX = 4
 
-        content = proto.Field(
+        content: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        matcher = proto.Field(
+        matcher: "UptimeCheckConfig.ContentMatcher.ContentMatcherOption" = proto.Field(
             proto.ENUM,
             number=2,
             enum="UptimeCheckConfig.ContentMatcher.ContentMatcherOption",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    monitored_resource = proto.Field(
+    monitored_resource: monitored_resource_pb2.MonitoredResource = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="resource",
         message=monitored_resource_pb2.MonitoredResource,
     )
-    resource_group = proto.Field(
+    resource_group: ResourceGroup = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="resource",
         message=ResourceGroup,
     )
-    http_check = proto.Field(
+    http_check: HttpCheck = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="check_request_type",
         message=HttpCheck,
     )
-    tcp_check = proto.Field(
+    tcp_check: TcpCheck = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="check_request_type",
         message=TcpCheck,
     )
-    period = proto.Field(
+    period: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=7,
         message=duration_pb2.Duration,
     )
-    timeout = proto.Field(
+    timeout: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=8,
         message=duration_pb2.Duration,
     )
-    content_matchers = proto.RepeatedField(
+    content_matchers: MutableSequence[ContentMatcher] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message=ContentMatcher,
     )
-    selected_regions = proto.RepeatedField(
+    selected_regions: MutableSequence["UptimeCheckRegion"] = proto.RepeatedField(
         proto.ENUM,
         number=10,
         enum="UptimeCheckRegion",
     )
-    is_internal = proto.Field(
+    is_internal: bool = proto.Field(
         proto.BOOL,
         number=15,
     )
-    internal_checkers = proto.RepeatedField(
+    internal_checkers: MutableSequence["InternalChecker"] = proto.RepeatedField(
         proto.MESSAGE,
         number=14,
         message="InternalChecker",
@@ -540,16 +542,16 @@ class UptimeCheckIp(proto.Message):
             or IPv6 format.
     """
 
-    region = proto.Field(
+    region: "UptimeCheckRegion" = proto.Field(
         proto.ENUM,
         number=1,
         enum="UptimeCheckRegion",
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    ip_address = proto.Field(
+    ip_address: str = proto.Field(
         proto.STRING,
         number=3,
     )

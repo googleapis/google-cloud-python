@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-monitoring"
+    "name": "google-cloud-monitoring",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -1990,7 +1991,7 @@
           },
           {
             "name": "time_series",
-            "type": "Sequence[google.cloud.monitoring_v3.types.TimeSeries]"
+            "type": "MutableSequence[google.cloud.monitoring_v3.types.TimeSeries]"
           },
           {
             "name": "retry",
@@ -2071,7 +2072,7 @@
           },
           {
             "name": "time_series",
-            "type": "Sequence[google.cloud.monitoring_v3.types.TimeSeries]"
+            "type": "MutableSequence[google.cloud.monitoring_v3.types.TimeSeries]"
           },
           {
             "name": "retry",
@@ -2153,7 +2154,7 @@
           },
           {
             "name": "time_series",
-            "type": "Sequence[google.cloud.monitoring_v3.types.TimeSeries]"
+            "type": "MutableSequence[google.cloud.monitoring_v3.types.TimeSeries]"
           },
           {
             "name": "retry",
@@ -2234,7 +2235,7 @@
           },
           {
             "name": "time_series",
-            "type": "Sequence[google.cloud.monitoring_v3.types.TimeSeries]"
+            "type": "MutableSequence[google.cloud.monitoring_v3.types.TimeSeries]"
           },
           {
             "name": "retry",

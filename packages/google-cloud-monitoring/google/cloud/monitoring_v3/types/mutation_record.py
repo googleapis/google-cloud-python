@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -37,12 +39,12 @@ class MutationRecord(proto.Message):
             change.
     """
 
-    mutate_time = proto.Field(
+    mutate_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    mutated_by = proto.Field(
+    mutated_by: str = proto.Field(
         proto.STRING,
         number=2,
     )

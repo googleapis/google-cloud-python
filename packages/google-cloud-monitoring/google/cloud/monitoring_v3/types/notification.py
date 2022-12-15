@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.api import label_pb2  # type: ignore
@@ -61,13 +63,13 @@ class NotificationChannelDescriptor(proto.Message):
             notification channel type. The description may
             include a description of the properties of the
             channel and pointers to external documentation.
-        labels (Sequence[google.api.label_pb2.LabelDescriptor]):
+        labels (MutableSequence[google.api.label_pb2.LabelDescriptor]):
             The set of labels that must be defined to
             identify a particular channel of the
             corresponding type. Each label includes a
             description for how that field should be
             populated.
-        supported_tiers (Sequence[google.cloud.monitoring_v3.types.ServiceTier]):
+        supported_tiers (MutableSequence[google.cloud.monitoring_v3.types.ServiceTier]):
             The tiers that support this notification channel; the
             project service tier must be one of the supported_tiers.
         launch_stage (google.api.launch_stage_pb2.LaunchStage):
@@ -75,33 +77,33 @@ class NotificationChannelDescriptor(proto.Message):
             type.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    labels = proto.RepeatedField(
+    labels: MutableSequence[label_pb2.LabelDescriptor] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=label_pb2.LabelDescriptor,
     )
-    supported_tiers = proto.RepeatedField(
+    supported_tiers: MutableSequence[common.ServiceTier] = proto.RepeatedField(
         proto.ENUM,
         number=5,
         enum=common.ServiceTier,
     )
-    launch_stage = proto.Field(
+    launch_stage: launch_stage_pb2.LaunchStage = proto.Field(
         proto.ENUM,
         number=7,
         enum=launch_stage_pb2.LaunchStage,
@@ -144,14 +146,14 @@ class NotificationChannel(proto.Message):
             provide additional details, beyond the display
             name, for the channel. This may not exceed 1024
             Unicode characters.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Configuration fields that define the channel and its
             behavior. The permissible and required labels are specified
             in the
             [NotificationChannelDescriptor.labels][google.monitoring.v3.NotificationChannelDescriptor.labels]
             of the ``NotificationChannelDescriptor`` corresponding to
             the ``type`` field.
-        user_labels (Mapping[str, str]):
+        user_labels (MutableMapping[str, str]):
             User-supplied key/value data that does not need to conform
             to the corresponding ``NotificationChannelDescriptor``'s
             schema, unlike the ``labels`` field. This field is intended
@@ -199,7 +201,7 @@ class NotificationChannel(proto.Message):
             future.
         creation_record (google.cloud.monitoring_v3.types.MutationRecord):
             Record of the creation of this channel.
-        mutation_records (Sequence[google.cloud.monitoring_v3.types.MutationRecord]):
+        mutation_records (MutableSequence[google.cloud.monitoring_v3.types.MutationRecord]):
             Records of the modification of this channel.
     """
 
@@ -215,48 +217,50 @@ class NotificationChannel(proto.Message):
         UNVERIFIED = 1
         VERIFIED = 2
 
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
     )
-    user_labels = proto.MapField(
+    user_labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=8,
     )
-    verification_status = proto.Field(
+    verification_status: VerificationStatus = proto.Field(
         proto.ENUM,
         number=9,
         enum=VerificationStatus,
     )
-    enabled = proto.Field(
+    enabled: wrappers_pb2.BoolValue = proto.Field(
         proto.MESSAGE,
         number=11,
         message=wrappers_pb2.BoolValue,
     )
-    creation_record = proto.Field(
+    creation_record: mutation_record.MutationRecord = proto.Field(
         proto.MESSAGE,
         number=12,
         message=mutation_record.MutationRecord,
     )
-    mutation_records = proto.RepeatedField(
+    mutation_records: MutableSequence[
+        mutation_record.MutationRecord
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=13,
         message=mutation_record.MutationRecord,

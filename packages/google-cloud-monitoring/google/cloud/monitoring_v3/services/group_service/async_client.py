@@ -16,8 +16,19 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
+
+from google.cloud.monitoring_v3 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -169,9 +180,9 @@ class GroupServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, GroupServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the group service client.
@@ -215,11 +226,11 @@ class GroupServiceAsyncClient:
 
     async def list_groups(
         self,
-        request: Union[group_service.ListGroupsRequest, dict] = None,
+        request: Optional[Union[group_service.ListGroupsRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListGroupsAsyncPager:
         r"""Lists the existing groups.
@@ -253,7 +264,7 @@ class GroupServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.monitoring_v3.types.ListGroupsRequest, dict]):
+            request (Optional[Union[google.cloud.monitoring_v3.types.ListGroupsRequest, dict]]):
                 The request object. The `ListGroup` request.
             name (:class:`str`):
                 Required. The
@@ -343,11 +354,11 @@ class GroupServiceAsyncClient:
 
     async def get_group(
         self,
-        request: Union[group_service.GetGroupRequest, dict] = None,
+        request: Optional[Union[group_service.GetGroupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> group.Group:
         r"""Gets a single group.
@@ -379,7 +390,7 @@ class GroupServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.monitoring_v3.types.GetGroupRequest, dict]):
+            request (Optional[Union[google.cloud.monitoring_v3.types.GetGroupRequest, dict]]):
                 The request object. The `GetGroup` request.
             name (:class:`str`):
                 Required. The group to retrieve. The format is:
@@ -487,12 +498,12 @@ class GroupServiceAsyncClient:
 
     async def create_group(
         self,
-        request: Union[group_service.CreateGroupRequest, dict] = None,
+        request: Optional[Union[group_service.CreateGroupRequest, dict]] = None,
         *,
-        name: str = None,
-        group: gm_group.Group = None,
+        name: Optional[str] = None,
+        group: Optional[gm_group.Group] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gm_group.Group:
         r"""Creates a new group.
@@ -524,7 +535,7 @@ class GroupServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.monitoring_v3.types.CreateGroupRequest, dict]):
+            request (Optional[Union[google.cloud.monitoring_v3.types.CreateGroupRequest, dict]]):
                 The request object. The `CreateGroup` request.
             name (:class:`str`):
                 Required. The
@@ -634,11 +645,11 @@ class GroupServiceAsyncClient:
 
     async def update_group(
         self,
-        request: Union[group_service.UpdateGroupRequest, dict] = None,
+        request: Optional[Union[group_service.UpdateGroupRequest, dict]] = None,
         *,
-        group: gm_group.Group = None,
+        group: Optional[gm_group.Group] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gm_group.Group:
         r"""Updates an existing group. You can change any group attributes
@@ -670,7 +681,7 @@ class GroupServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.monitoring_v3.types.UpdateGroupRequest, dict]):
+            request (Optional[Union[google.cloud.monitoring_v3.types.UpdateGroupRequest, dict]]):
                 The request object. The `UpdateGroup` request.
             group (:class:`google.cloud.monitoring_v3.types.Group`):
                 Required. The new definition of the group. All fields of
@@ -778,11 +789,11 @@ class GroupServiceAsyncClient:
 
     async def delete_group(
         self,
-        request: Union[group_service.DeleteGroupRequest, dict] = None,
+        request: Optional[Union[group_service.DeleteGroupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an existing group.
@@ -811,7 +822,7 @@ class GroupServiceAsyncClient:
                 await client.delete_group(request=request)
 
         Args:
-            request (Union[google.cloud.monitoring_v3.types.DeleteGroupRequest, dict]):
+            request (Optional[Union[google.cloud.monitoring_v3.types.DeleteGroupRequest, dict]]):
                 The request object. The `DeleteGroup` request. The
                 default behavior is to be able to delete a single group
                 without any descendants.
@@ -881,11 +892,11 @@ class GroupServiceAsyncClient:
 
     async def list_group_members(
         self,
-        request: Union[group_service.ListGroupMembersRequest, dict] = None,
+        request: Optional[Union[group_service.ListGroupMembersRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListGroupMembersAsyncPager:
         r"""Lists the monitored resources that are members of a
@@ -919,7 +930,7 @@ class GroupServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.monitoring_v3.types.ListGroupMembersRequest, dict]):
+            request (Optional[Union[google.cloud.monitoring_v3.types.ListGroupMembersRequest, dict]]):
                 The request object. The `ListGroupMembers` request.
             name (:class:`str`):
                 Required. The group whose members are listed. The format
@@ -1013,14 +1024,9 @@ class GroupServiceAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-monitoring",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("GroupServiceAsyncClient",)

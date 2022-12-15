@@ -1172,6 +1172,7 @@ def test_get_monitored_resource_descriptor(request_type, transport: str = "grpc"
             type="type_value",
             display_name="display_name_value",
             description="description_value",
+            launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
         )
         response = client.get_monitored_resource_descriptor(request)
 
@@ -1186,6 +1187,7 @@ def test_get_monitored_resource_descriptor(request_type, transport: str = "grpc"
     assert response.type == "type_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
 
 
 def test_get_monitored_resource_descriptor_empty_call():
@@ -1231,6 +1233,7 @@ async def test_get_monitored_resource_descriptor_async(
                 type="type_value",
                 display_name="display_name_value",
                 description="description_value",
+                launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
             )
         )
         response = await client.get_monitored_resource_descriptor(request)
@@ -1246,6 +1249,7 @@ async def test_get_monitored_resource_descriptor_async(
     assert response.type == "type_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
 
 
 @pytest.mark.asyncio
@@ -1877,6 +1881,8 @@ def test_get_metric_descriptor(request_type, transport: str = "grpc"):
             unit="unit_value",
             description="description_value",
             display_name="display_name_value",
+            launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
+            monitored_resource_types=["monitored_resource_types_value"],
         )
         response = client.get_metric_descriptor(request)
 
@@ -1894,6 +1900,8 @@ def test_get_metric_descriptor(request_type, transport: str = "grpc"):
     assert response.unit == "unit_value"
     assert response.description == "description_value"
     assert response.display_name == "display_name_value"
+    assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
+    assert response.monitored_resource_types == ["monitored_resource_types_value"]
 
 
 def test_get_metric_descriptor_empty_call():
@@ -1942,6 +1950,8 @@ async def test_get_metric_descriptor_async(
                 unit="unit_value",
                 description="description_value",
                 display_name="display_name_value",
+                launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
+                monitored_resource_types=["monitored_resource_types_value"],
             )
         )
         response = await client.get_metric_descriptor(request)
@@ -1960,6 +1970,8 @@ async def test_get_metric_descriptor_async(
     assert response.unit == "unit_value"
     assert response.description == "description_value"
     assert response.display_name == "display_name_value"
+    assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
+    assert response.monitored_resource_types == ["monitored_resource_types_value"]
 
 
 @pytest.mark.asyncio
@@ -2148,6 +2160,8 @@ def test_create_metric_descriptor(request_type, transport: str = "grpc"):
             unit="unit_value",
             description="description_value",
             display_name="display_name_value",
+            launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
+            monitored_resource_types=["monitored_resource_types_value"],
         )
         response = client.create_metric_descriptor(request)
 
@@ -2165,6 +2179,8 @@ def test_create_metric_descriptor(request_type, transport: str = "grpc"):
     assert response.unit == "unit_value"
     assert response.description == "description_value"
     assert response.display_name == "display_name_value"
+    assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
+    assert response.monitored_resource_types == ["monitored_resource_types_value"]
 
 
 def test_create_metric_descriptor_empty_call():
@@ -2213,6 +2229,8 @@ async def test_create_metric_descriptor_async(
                 unit="unit_value",
                 description="description_value",
                 display_name="display_name_value",
+                launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
+                monitored_resource_types=["monitored_resource_types_value"],
             )
         )
         response = await client.create_metric_descriptor(request)
@@ -2231,6 +2249,8 @@ async def test_create_metric_descriptor_async(
     assert response.unit == "unit_value"
     assert response.description == "description_value"
     assert response.display_name == "display_name_value"
+    assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
+    assert response.monitored_resource_types == ["monitored_resource_types_value"]
 
 
 @pytest.mark.asyncio

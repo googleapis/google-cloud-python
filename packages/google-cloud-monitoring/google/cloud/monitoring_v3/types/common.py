@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.api import distribution_pb2  # type: ignore
@@ -93,27 +95,27 @@ class TypedValue(proto.Message):
             This field is a member of `oneof`_ ``value``.
     """
 
-    bool_value = proto.Field(
+    bool_value: bool = proto.Field(
         proto.BOOL,
         number=1,
         oneof="value",
     )
-    int64_value = proto.Field(
+    int64_value: int = proto.Field(
         proto.INT64,
         number=2,
         oneof="value",
     )
-    double_value = proto.Field(
+    double_value: float = proto.Field(
         proto.DOUBLE,
         number=3,
         oneof="value",
     )
-    string_value = proto.Field(
+    string_value: str = proto.Field(
         proto.STRING,
         number=4,
         oneof="value",
     )
-    distribution_value = proto.Field(
+    distribution_value: distribution_pb2.Distribution = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="value",
@@ -169,12 +171,12 @@ class TimeInterval(proto.Message):
             end time.
     """
 
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
@@ -266,7 +268,7 @@ class Aggregation(proto.Message):
             then ``per_series_aligner`` must be specified, and must not
             be ``ALIGN_NONE``. An ``alignment_period`` must also be
             specified; otherwise, an error is returned.
-        group_by_fields (Sequence[str]):
+        group_by_fields (MutableSequence[str]):
             The set of fields to preserve when ``cross_series_reducer``
             is specified. The ``group_by_fields`` determine how the time
             series are partitioned into subsets prior to applying the
@@ -340,22 +342,22 @@ class Aggregation(proto.Message):
         REDUCE_PERCENTILE_50 = 11
         REDUCE_PERCENTILE_05 = 12
 
-    alignment_period = proto.Field(
+    alignment_period: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=1,
         message=duration_pb2.Duration,
     )
-    per_series_aligner = proto.Field(
+    per_series_aligner: Aligner = proto.Field(
         proto.ENUM,
         number=2,
         enum=Aligner,
     )
-    cross_series_reducer = proto.Field(
+    cross_series_reducer: Reducer = proto.Field(
         proto.ENUM,
         number=4,
         enum=Reducer,
     )
-    group_by_fields = proto.RepeatedField(
+    group_by_fields: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )

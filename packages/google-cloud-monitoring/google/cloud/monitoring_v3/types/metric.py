@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.api import label_pb2  # type: ignore
@@ -55,12 +57,12 @@ class Point(proto.Message):
             The value of the data point.
     """
 
-    interval = proto.Field(
+    interval: common.TimeInterval = proto.Field(
         proto.MESSAGE,
         number=1,
         message=common.TimeInterval,
     )
-    value = proto.Field(
+    value: common.TypedValue = proto.Field(
         proto.MESSAGE,
         number=2,
         message=common.TypedValue,
@@ -111,7 +113,7 @@ class TimeSeries(proto.Message):
             When creating a time series, this field is optional. If
             present, it must be the same as the type of the data in the
             ``points`` field.
-        points (Sequence[google.cloud.monitoring_v3.types.Point]):
+        points (MutableSequence[google.cloud.monitoring_v3.types.Point]):
             The data points of this time series. When listing time
             series, points are returned in reverse time order.
 
@@ -128,37 +130,37 @@ class TimeSeries(proto.Message):
             of the stored metric values.
     """
 
-    metric = proto.Field(
+    metric: metric_pb2.Metric = proto.Field(
         proto.MESSAGE,
         number=1,
         message=metric_pb2.Metric,
     )
-    resource = proto.Field(
+    resource: monitored_resource_pb2.MonitoredResource = proto.Field(
         proto.MESSAGE,
         number=2,
         message=monitored_resource_pb2.MonitoredResource,
     )
-    metadata = proto.Field(
+    metadata: monitored_resource_pb2.MonitoredResourceMetadata = proto.Field(
         proto.MESSAGE,
         number=7,
         message=monitored_resource_pb2.MonitoredResourceMetadata,
     )
-    metric_kind = proto.Field(
+    metric_kind: metric_pb2.MetricDescriptor.MetricKind = proto.Field(
         proto.ENUM,
         number=3,
         enum=metric_pb2.MetricDescriptor.MetricKind,
     )
-    value_type = proto.Field(
+    value_type: metric_pb2.MetricDescriptor.ValueType = proto.Field(
         proto.ENUM,
         number=4,
         enum=metric_pb2.MetricDescriptor.ValueType,
     )
-    points = proto.RepeatedField(
+    points: MutableSequence["Point"] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="Point",
     )
-    unit = proto.Field(
+    unit: str = proto.Field(
         proto.STRING,
         number=8,
     )
@@ -168,9 +170,9 @@ class TimeSeriesDescriptor(proto.Message):
     r"""A descriptor for the labels and points in a time series.
 
     Attributes:
-        label_descriptors (Sequence[google.api.label_pb2.LabelDescriptor]):
+        label_descriptors (MutableSequence[google.api.label_pb2.LabelDescriptor]):
             Descriptors for the labels.
-        point_descriptors (Sequence[google.cloud.monitoring_v3.types.TimeSeriesDescriptor.ValueDescriptor]):
+        point_descriptors (MutableSequence[google.cloud.monitoring_v3.types.TimeSeriesDescriptor.ValueDescriptor]):
             Descriptors for the point data value columns.
     """
 
@@ -191,31 +193,31 @@ class TimeSeriesDescriptor(proto.Message):
                 if ``value_type`` is INTEGER, DOUBLE, DISTRIBUTION.
         """
 
-        key = proto.Field(
+        key: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        value_type = proto.Field(
+        value_type: metric_pb2.MetricDescriptor.ValueType = proto.Field(
             proto.ENUM,
             number=2,
             enum=metric_pb2.MetricDescriptor.ValueType,
         )
-        metric_kind = proto.Field(
+        metric_kind: metric_pb2.MetricDescriptor.MetricKind = proto.Field(
             proto.ENUM,
             number=3,
             enum=metric_pb2.MetricDescriptor.MetricKind,
         )
-        unit = proto.Field(
+        unit: str = proto.Field(
             proto.STRING,
             number=4,
         )
 
-    label_descriptors = proto.RepeatedField(
+    label_descriptors: MutableSequence[label_pb2.LabelDescriptor] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=label_pb2.LabelDescriptor,
     )
-    point_descriptors = proto.RepeatedField(
+    point_descriptors: MutableSequence[ValueDescriptor] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=ValueDescriptor,
@@ -227,13 +229,13 @@ class TimeSeriesData(proto.Message):
     TimeSeriesDescriptor.
 
     Attributes:
-        label_values (Sequence[google.cloud.monitoring_v3.types.LabelValue]):
+        label_values (MutableSequence[google.cloud.monitoring_v3.types.LabelValue]):
             The values of the labels in the time series identifier,
             given in the same order as the ``label_descriptors`` field
             of the TimeSeriesDescriptor associated with this object.
             Each value must have a value of the type given in the
             corresponding entry of ``label_descriptors``.
-        point_data (Sequence[google.cloud.monitoring_v3.types.TimeSeriesData.PointData]):
+        point_data (MutableSequence[google.cloud.monitoring_v3.types.TimeSeriesData.PointData]):
             The points in the time series.
     """
 
@@ -244,29 +246,29 @@ class TimeSeriesData(proto.Message):
         with this object.
 
         Attributes:
-            values (Sequence[google.cloud.monitoring_v3.types.TypedValue]):
+            values (MutableSequence[google.cloud.monitoring_v3.types.TypedValue]):
                 The values that make up the point.
             time_interval (google.cloud.monitoring_v3.types.TimeInterval):
                 The time interval associated with the point.
         """
 
-        values = proto.RepeatedField(
+        values: MutableSequence[common.TypedValue] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=common.TypedValue,
         )
-        time_interval = proto.Field(
+        time_interval: common.TimeInterval = proto.Field(
             proto.MESSAGE,
             number=2,
             message=common.TimeInterval,
         )
 
-    label_values = proto.RepeatedField(
+    label_values: MutableSequence["LabelValue"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="LabelValue",
     )
-    point_data = proto.RepeatedField(
+    point_data: MutableSequence[PointData] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=PointData,
@@ -298,17 +300,17 @@ class LabelValue(proto.Message):
             This field is a member of `oneof`_ ``value``.
     """
 
-    bool_value = proto.Field(
+    bool_value: bool = proto.Field(
         proto.BOOL,
         number=1,
         oneof="value",
     )
-    int64_value = proto.Field(
+    int64_value: int = proto.Field(
         proto.INT64,
         number=2,
         oneof="value",
     )
-    string_value = proto.Field(
+    string_value: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="value",
@@ -327,12 +329,12 @@ class QueryError(proto.Message):
             The error message.
     """
 
-    locator = proto.Field(
+    locator: "TextLocator" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TextLocator",
     )
-    message = proto.Field(
+    message: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -398,35 +400,35 @@ class TextLocator(proto.Message):
                 index even though the text is UTF-8.
         """
 
-        line = proto.Field(
+        line: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        column = proto.Field(
+        column: int = proto.Field(
             proto.INT32,
             number=2,
         )
 
-    source = proto.Field(
+    source: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    start_position = proto.Field(
+    start_position: Position = proto.Field(
         proto.MESSAGE,
         number=2,
         message=Position,
     )
-    end_position = proto.Field(
+    end_position: Position = proto.Field(
         proto.MESSAGE,
         number=3,
         message=Position,
     )
-    nested_locator = proto.Field(
+    nested_locator: "TextLocator" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="TextLocator",
     )
-    nesting_reason = proto.Field(
+    nesting_reason: str = proto.Field(
         proto.STRING,
         number=5,
     )

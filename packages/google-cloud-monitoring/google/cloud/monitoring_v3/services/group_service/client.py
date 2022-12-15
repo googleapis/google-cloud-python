@@ -16,8 +16,20 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
+
+from google.cloud.monitoring_v3 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -58,7 +70,7 @@ class GroupServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[GroupServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -340,8 +352,8 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, GroupServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, GroupServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the group service client.
@@ -355,7 +367,7 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
             transport (Union[str, GroupServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -385,6 +397,7 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -437,11 +450,11 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
 
     def list_groups(
         self,
-        request: Union[group_service.ListGroupsRequest, dict] = None,
+        request: Optional[Union[group_service.ListGroupsRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListGroupsPager:
         r"""Lists the existing groups.
@@ -556,11 +569,11 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
 
     def get_group(
         self,
-        request: Union[group_service.GetGroupRequest, dict] = None,
+        request: Optional[Union[group_service.GetGroupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> group.Group:
         r"""Gets a single group.
@@ -691,12 +704,12 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
 
     def create_group(
         self,
-        request: Union[group_service.CreateGroupRequest, dict] = None,
+        request: Optional[Union[group_service.CreateGroupRequest, dict]] = None,
         *,
-        name: str = None,
-        group: gm_group.Group = None,
+        name: Optional[str] = None,
+        group: Optional[gm_group.Group] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gm_group.Group:
         r"""Creates a new group.
@@ -838,11 +851,11 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
 
     def update_group(
         self,
-        request: Union[group_service.UpdateGroupRequest, dict] = None,
+        request: Optional[Union[group_service.UpdateGroupRequest, dict]] = None,
         *,
-        group: gm_group.Group = None,
+        group: Optional[gm_group.Group] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gm_group.Group:
         r"""Updates an existing group. You can change any group attributes
@@ -973,11 +986,11 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
 
     def delete_group(
         self,
-        request: Union[group_service.DeleteGroupRequest, dict] = None,
+        request: Optional[Union[group_service.DeleteGroupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an existing group.
@@ -1067,11 +1080,11 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
 
     def list_group_members(
         self,
-        request: Union[group_service.ListGroupMembersRequest, dict] = None,
+        request: Optional[Union[group_service.ListGroupMembersRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListGroupMembersPager:
         r"""Lists the monitored resources that are members of a
@@ -1197,14 +1210,9 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-monitoring",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("GroupServiceClient",)

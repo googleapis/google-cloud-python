@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.monitoring_v3.types import common
@@ -67,7 +69,7 @@ class AlertPolicy(proto.Message):
             underlying problems detected by the alerting
             policy. Notification channels that have limited
             capacity might not show this documentation.
-        user_labels (Mapping[str, str]):
+        user_labels (MutableMapping[str, str]):
             User-supplied key/value data to be used for organizing and
             identifying the ``AlertPolicy`` objects.
 
@@ -76,7 +78,7 @@ class AlertPolicy(proto.Message):
             is smaller. Labels and values can contain only lowercase
             letters, numerals, underscores, and dashes. Keys must begin
             with a letter.
-        conditions (Sequence[google.cloud.monitoring_v3.types.AlertPolicy.Condition]):
+        conditions (MutableSequence[google.cloud.monitoring_v3.types.AlertPolicy.Condition]):
             A list of conditions for the policy. The conditions are
             combined by AND or OR according to the ``combiner`` field.
             If the combined conditions evaluate to true, then an
@@ -102,7 +104,7 @@ class AlertPolicy(proto.Message):
             is invalid. OK if the alert policy is valid. If
             not OK, the alert policy will not generate
             incidents.
-        notification_channels (Sequence[str]):
+        notification_channels (MutableSequence[str]):
             Identifies the notification channels to which notifications
             should be sent when incidents are opened or closed or when
             new violations occur on an already opened incident. Each
@@ -156,11 +158,11 @@ class AlertPolicy(proto.Message):
                 more information.
         """
 
-        content = proto.Field(
+        content: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        mime_type = proto.Field(
+        mime_type: str = proto.Field(
             proto.STRING,
             number=2,
         )
@@ -272,12 +274,12 @@ class AlertPolicy(proto.Message):
                     This field is a member of `oneof`_ ``type``.
             """
 
-            count = proto.Field(
+            count: int = proto.Field(
                 proto.INT32,
                 number=1,
                 oneof="type",
             )
-            percent = proto.Field(
+            percent: float = proto.Field(
                 proto.DOUBLE,
                 number=2,
                 oneof="type",
@@ -302,7 +304,7 @@ class AlertPolicy(proto.Message):
                     type and the resource type. Optionally, it can specify
                     resource labels and metric labels. This field must not
                     exceed 2048 Unicode characters in length.
-                aggregations (Sequence[google.cloud.monitoring_v3.types.Aggregation]):
+                aggregations (MutableSequence[google.cloud.monitoring_v3.types.Aggregation]):
                     Specifies the alignment of data points in individual time
                     series as well as how to combine the retrieved time series
                     together (such as when aggregating multiple streams on each
@@ -328,7 +330,7 @@ class AlertPolicy(proto.Message):
                     contain restrictions on resource type, resource labels, and
                     metric labels. This field may not exceed 2048 Unicode
                     characters in length.
-                denominator_aggregations (Sequence[google.cloud.monitoring_v3.types.Aggregation]):
+                denominator_aggregations (MutableSequence[google.cloud.monitoring_v3.types.Aggregation]):
                     Specifies the alignment of data points in individual time
                     series selected by ``denominatorFilter`` as well as how to
                     combine the retrieved time series together (such as when
@@ -378,47 +380,51 @@ class AlertPolicy(proto.Message):
                     data stops arriving.
             """
 
-            filter = proto.Field(
+            filter: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
-            aggregations = proto.RepeatedField(
+            aggregations: MutableSequence[common.Aggregation] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=8,
                 message=common.Aggregation,
             )
-            denominator_filter = proto.Field(
+            denominator_filter: str = proto.Field(
                 proto.STRING,
                 number=9,
             )
-            denominator_aggregations = proto.RepeatedField(
+            denominator_aggregations: MutableSequence[
+                common.Aggregation
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=10,
                 message=common.Aggregation,
             )
-            comparison = proto.Field(
+            comparison: common.ComparisonType = proto.Field(
                 proto.ENUM,
                 number=4,
                 enum=common.ComparisonType,
             )
-            threshold_value = proto.Field(
+            threshold_value: float = proto.Field(
                 proto.DOUBLE,
                 number=5,
             )
-            duration = proto.Field(
+            duration: duration_pb2.Duration = proto.Field(
                 proto.MESSAGE,
                 number=6,
                 message=duration_pb2.Duration,
             )
-            trigger = proto.Field(
+            trigger: "AlertPolicy.Condition.Trigger" = proto.Field(
                 proto.MESSAGE,
                 number=7,
                 message="AlertPolicy.Condition.Trigger",
             )
-            evaluation_missing_data = proto.Field(
-                proto.ENUM,
-                number=11,
-                enum="AlertPolicy.Condition.EvaluationMissingData",
+            evaluation_missing_data: "AlertPolicy.Condition.EvaluationMissingData" = (
+                proto.Field(
+                    proto.ENUM,
+                    number=11,
+                    enum="AlertPolicy.Condition.EvaluationMissingData",
+                )
             )
 
         class MetricAbsence(proto.Message):
@@ -443,7 +449,7 @@ class AlertPolicy(proto.Message):
                     type and the resource type. Optionally, it can specify
                     resource labels and metric labels. This field must not
                     exceed 2048 Unicode characters in length.
-                aggregations (Sequence[google.cloud.monitoring_v3.types.Aggregation]):
+                aggregations (MutableSequence[google.cloud.monitoring_v3.types.Aggregation]):
                     Specifies the alignment of data points in individual time
                     series as well as how to combine the retrieved time series
                     together (such as when aggregating multiple streams on each
@@ -471,21 +477,21 @@ class AlertPolicy(proto.Message):
                     identified by ``filter`` and ``aggregations``.
             """
 
-            filter = proto.Field(
+            filter: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            aggregations = proto.RepeatedField(
+            aggregations: MutableSequence[common.Aggregation] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=5,
                 message=common.Aggregation,
             )
-            duration = proto.Field(
+            duration: duration_pb2.Duration = proto.Field(
                 proto.MESSAGE,
                 number=2,
                 message=duration_pb2.Duration,
             )
-            trigger = proto.Field(
+            trigger: "AlertPolicy.Condition.Trigger" = proto.Field(
                 proto.MESSAGE,
                 number=3,
                 message="AlertPolicy.Condition.Trigger",
@@ -502,7 +508,7 @@ class AlertPolicy(proto.Message):
                     Required. A logs-based filter. See `Advanced Logs
                     Queries <https://cloud.google.com/logging/docs/view/advanced-queries>`__
                     for how this filter should be constructed.
-                label_extractors (Mapping[str, str]):
+                label_extractors (MutableMapping[str, str]):
                     Optional. A map from a label key to an extractor expression,
                     which is used to extract the value for this label key. Each
                     entry in this map is a specification for how data should be
@@ -517,11 +523,11 @@ class AlertPolicy(proto.Message):
                     for syntax and examples.
             """
 
-            filter = proto.Field(
+            filter: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            label_extractors = proto.MapField(
+            label_extractors: MutableMapping[str, str] = proto.MapField(
                 proto.STRING,
                 proto.STRING,
                 number=2,
@@ -563,53 +569,55 @@ class AlertPolicy(proto.Message):
                     data stops arriving.
             """
 
-            query = proto.Field(
+            query: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            duration = proto.Field(
+            duration: duration_pb2.Duration = proto.Field(
                 proto.MESSAGE,
                 number=2,
                 message=duration_pb2.Duration,
             )
-            trigger = proto.Field(
+            trigger: "AlertPolicy.Condition.Trigger" = proto.Field(
                 proto.MESSAGE,
                 number=3,
                 message="AlertPolicy.Condition.Trigger",
             )
-            evaluation_missing_data = proto.Field(
-                proto.ENUM,
-                number=4,
-                enum="AlertPolicy.Condition.EvaluationMissingData",
+            evaluation_missing_data: "AlertPolicy.Condition.EvaluationMissingData" = (
+                proto.Field(
+                    proto.ENUM,
+                    number=4,
+                    enum="AlertPolicy.Condition.EvaluationMissingData",
+                )
             )
 
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=12,
         )
-        display_name = proto.Field(
+        display_name: str = proto.Field(
             proto.STRING,
             number=6,
         )
-        condition_threshold = proto.Field(
+        condition_threshold: "AlertPolicy.Condition.MetricThreshold" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="condition",
             message="AlertPolicy.Condition.MetricThreshold",
         )
-        condition_absent = proto.Field(
+        condition_absent: "AlertPolicy.Condition.MetricAbsence" = proto.Field(
             proto.MESSAGE,
             number=2,
             oneof="condition",
             message="AlertPolicy.Condition.MetricAbsence",
         )
-        condition_matched_log = proto.Field(
+        condition_matched_log: "AlertPolicy.Condition.LogMatch" = proto.Field(
             proto.MESSAGE,
             number=20,
             oneof="condition",
             message="AlertPolicy.Condition.LogMatch",
         )
-        condition_monitoring_query_language = proto.Field(
+        condition_monitoring_query_language: "AlertPolicy.Condition.MonitoringQueryLanguageCondition" = proto.Field(
             proto.MESSAGE,
             number=19,
             oneof="condition",
@@ -641,76 +649,78 @@ class AlertPolicy(proto.Message):
                     Not more than one notification per ``period``.
             """
 
-            period = proto.Field(
+            period: duration_pb2.Duration = proto.Field(
                 proto.MESSAGE,
                 number=1,
                 message=duration_pb2.Duration,
             )
 
-        notification_rate_limit = proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message="AlertPolicy.AlertStrategy.NotificationRateLimit",
+        notification_rate_limit: "AlertPolicy.AlertStrategy.NotificationRateLimit" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="AlertPolicy.AlertStrategy.NotificationRateLimit",
+            )
         )
-        auto_close = proto.Field(
+        auto_close: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=3,
             message=duration_pb2.Duration,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    documentation = proto.Field(
+    documentation: Documentation = proto.Field(
         proto.MESSAGE,
         number=13,
         message=Documentation,
     )
-    user_labels = proto.MapField(
+    user_labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=16,
     )
-    conditions = proto.RepeatedField(
+    conditions: MutableSequence[Condition] = proto.RepeatedField(
         proto.MESSAGE,
         number=12,
         message=Condition,
     )
-    combiner = proto.Field(
+    combiner: ConditionCombinerType = proto.Field(
         proto.ENUM,
         number=6,
         enum=ConditionCombinerType,
     )
-    enabled = proto.Field(
+    enabled: wrappers_pb2.BoolValue = proto.Field(
         proto.MESSAGE,
         number=17,
         message=wrappers_pb2.BoolValue,
     )
-    validity = proto.Field(
+    validity: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=18,
         message=status_pb2.Status,
     )
-    notification_channels = proto.RepeatedField(
+    notification_channels: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=14,
     )
-    creation_record = proto.Field(
+    creation_record: gm_mutation_record.MutationRecord = proto.Field(
         proto.MESSAGE,
         number=10,
         message=gm_mutation_record.MutationRecord,
     )
-    mutation_record = proto.Field(
+    mutation_record: gm_mutation_record.MutationRecord = proto.Field(
         proto.MESSAGE,
         number=11,
         message=gm_mutation_record.MutationRecord,
     )
-    alert_strategy = proto.Field(
+    alert_strategy: AlertStrategy = proto.Field(
         proto.MESSAGE,
         number=21,
         message=AlertStrategy,

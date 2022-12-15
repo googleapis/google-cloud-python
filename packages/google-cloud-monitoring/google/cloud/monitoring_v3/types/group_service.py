@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.api import monitored_resource_pb2  # type: ignore
@@ -103,30 +105,30 @@ class ListGroupsRequest(proto.Message):
             additional results from the previous method call.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    children_of_group = proto.Field(
+    children_of_group: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="filter",
     )
-    ancestors_of_group = proto.Field(
+    ancestors_of_group: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="filter",
     )
-    descendants_of_group = proto.Field(
+    descendants_of_group: str = proto.Field(
         proto.STRING,
         number=4,
         oneof="filter",
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -136,7 +138,7 @@ class ListGroupsResponse(proto.Message):
     r"""The ``ListGroups`` response.
 
     Attributes:
-        group (Sequence[google.cloud.monitoring_v3.types.Group]):
+        group (MutableSequence[google.cloud.monitoring_v3.types.Group]):
             The groups that match the specified filters.
         next_page_token (str):
             If there are more results than have been returned, then this
@@ -149,12 +151,12 @@ class ListGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    group = proto.RepeatedField(
+    group: MutableSequence[gm_group.Group] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gm_group.Group,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -172,7 +174,7 @@ class GetGroupRequest(proto.Message):
                 projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -198,16 +200,16 @@ class CreateGroupRequest(proto.Message):
             create the group.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    group = proto.Field(
+    group: gm_group.Group = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gm_group.Group,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -226,12 +228,12 @@ class UpdateGroupRequest(proto.Message):
             update the existing group.
     """
 
-    group = proto.Field(
+    group: gm_group.Group = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gm_group.Group,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -256,11 +258,11 @@ class DeleteGroupRequest(proto.Message):
             value is false.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    recursive = proto.Field(
+    recursive: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -305,23 +307,23 @@ class ListGroupMembersRequest(proto.Message):
             minute is returned.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    interval = proto.Field(
+    interval: common.TimeInterval = proto.Field(
         proto.MESSAGE,
         number=6,
         message=common.TimeInterval,
@@ -332,7 +334,7 @@ class ListGroupMembersResponse(proto.Message):
     r"""The ``ListGroupMembers`` response.
 
     Attributes:
-        members (Sequence[google.api.monitored_resource_pb2.MonitoredResource]):
+        members (MutableSequence[google.api.monitored_resource_pb2.MonitoredResource]):
             A set of monitored resources in the group.
         next_page_token (str):
             If there are more results than have been returned, then this
@@ -348,16 +350,18 @@ class ListGroupMembersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    members = proto.RepeatedField(
+    members: MutableSequence[
+        monitored_resource_pb2.MonitoredResource
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=monitored_resource_pb2.MonitoredResource,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    total_size = proto.Field(
+    total_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
