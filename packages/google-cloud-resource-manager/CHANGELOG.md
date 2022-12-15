@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## [1.7.0](https://github.com/googleapis/python-resource-manager/compare/v1.6.3...v1.7.0) (2022-12-15)
+
+
+### Features
+
+* Add typing to proto.Message based class attributes ([4f0f409](https://github.com/googleapis/python-resource-manager/commit/4f0f40973e4d57e0628cb6adf66e4984f889fd19))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([4f0f409](https://github.com/googleapis/python-resource-manager/commit/4f0f40973e4d57e0628cb6adf66e4984f889fd19))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([4f0f409](https://github.com/googleapis/python-resource-manager/commit/4f0f40973e4d57e0628cb6adf66e4984f889fd19))
+* Drop usage of pkg_resources ([4f0f409](https://github.com/googleapis/python-resource-manager/commit/4f0f40973e4d57e0628cb6adf66e4984f889fd19))
+* Fix timeout default values ([4f0f409](https://github.com/googleapis/python-resource-manager/commit/4f0f40973e4d57e0628cb6adf66e4984f889fd19))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([4f0f409](https://github.com/googleapis/python-resource-manager/commit/4f0f40973e4d57e0628cb6adf66e4984f889fd19))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([4f0f409](https://github.com/googleapis/python-resource-manager/commit/4f0f40973e4d57e0628cb6adf66e4984f889fd19))
+
 ## [1.6.3](https://github.com/googleapis/python-resource-manager/compare/v1.6.2...v1.6.3) (2022-10-07)
 
 
