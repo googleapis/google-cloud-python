@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-contact-center-insights/compare/v1.4.5...v1.5.0) (2022-12-15)
+
+
+### Features
+
+* Add Configurable Analysis, Bulk Upload, Bulk Analyze, Delete Issue Apis ([#270](https://github.com/googleapis/python-contact-center-insights/issues/270)) ([368ea48](https://github.com/googleapis/python-contact-center-insights/commit/368ea485a5e4f69e441df78afa310b2c6032019c))
+* Add support for `google.cloud.contact_center_insights.__version__` ([6ce3eec](https://github.com/googleapis/python-contact-center-insights/commit/6ce3eeca9b3c151cf4a98c7b72fbe901c5e7fcf6))
+* Add typing to proto.Message based class attributes ([6ce3eec](https://github.com/googleapis/python-contact-center-insights/commit/6ce3eeca9b3c151cf4a98c7b72fbe901c5e7fcf6))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([6ce3eec](https://github.com/googleapis/python-contact-center-insights/commit/6ce3eeca9b3c151cf4a98c7b72fbe901c5e7fcf6))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([bddefbb](https://github.com/googleapis/python-contact-center-insights/commit/bddefbb9f1a44d05986c17b62bea29222c3f23b2))
+* Drop usage of pkg_resources ([bddefbb](https://github.com/googleapis/python-contact-center-insights/commit/bddefbb9f1a44d05986c17b62bea29222c3f23b2))
+* Fix timeout default values ([bddefbb](https://github.com/googleapis/python-contact-center-insights/commit/bddefbb9f1a44d05986c17b62bea29222c3f23b2))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([6ce3eec](https://github.com/googleapis/python-contact-center-insights/commit/6ce3eeca9b3c151cf4a98c7b72fbe901c5e7fcf6))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([bddefbb](https://github.com/googleapis/python-contact-center-insights/commit/bddefbb9f1a44d05986c17b62bea29222c3f23b2))
+
 ## [1.4.5](https://github.com/googleapis/python-contact-center-insights/compare/v1.4.4...v1.4.5) (2022-10-08)
 
 
