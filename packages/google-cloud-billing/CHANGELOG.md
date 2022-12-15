@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-billing/compare/v1.7.3...v1.8.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.billing.__version__` ([76f87d4](https://github.com/googleapis/python-billing/commit/76f87d4c170d2305883a8744e1d9a4e5c952955f))
+* Add typing to proto.Message based class attributes ([76f87d4](https://github.com/googleapis/python-billing/commit/76f87d4c170d2305883a8744e1d9a4e5c952955f))
+* Added Sku.geo_taxonomy ([76f87d4](https://github.com/googleapis/python-billing/commit/76f87d4c170d2305883a8744e1d9a4e5c952955f))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([76f87d4](https://github.com/googleapis/python-billing/commit/76f87d4c170d2305883a8744e1d9a4e5c952955f))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([4119740](https://github.com/googleapis/python-billing/commit/41197401fc024763cb96cc2090f2f22dbb58677c))
+* Drop usage of pkg_resources ([4119740](https://github.com/googleapis/python-billing/commit/41197401fc024763cb96cc2090f2f22dbb58677c))
+* Fix timeout default values ([4119740](https://github.com/googleapis/python-billing/commit/41197401fc024763cb96cc2090f2f22dbb58677c))
+* More oauth scopes ([76f87d4](https://github.com/googleapis/python-billing/commit/76f87d4c170d2305883a8744e1d9a4e5c952955f))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([76f87d4](https://github.com/googleapis/python-billing/commit/76f87d4c170d2305883a8744e1d9a4e5c952955f))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([4119740](https://github.com/googleapis/python-billing/commit/41197401fc024763cb96cc2090f2f22dbb58677c))
+
 ## [1.7.3](https://github.com/googleapis/python-billing/compare/v1.7.2...v1.7.3) (2022-10-07)
 
 
