@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.11.0](https://github.com/googleapis/python-tasks/compare/v2.10.4...v2.11.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.tasks.__version__` ([d51539f](https://github.com/googleapis/python-tasks/commit/d51539fc4e6b7b5a3f6f34d014752f3a8989b016))
+* Add typing to proto.Message based class attributes ([d51539f](https://github.com/googleapis/python-tasks/commit/d51539fc4e6b7b5a3f6f34d014752f3a8989b016))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([d51539f](https://github.com/googleapis/python-tasks/commit/d51539fc4e6b7b5a3f6f34d014752f3a8989b016))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([5752acb](https://github.com/googleapis/python-tasks/commit/5752acb09be8771f6695de4928444c47849fafc4))
+* Drop usage of pkg_resources ([5752acb](https://github.com/googleapis/python-tasks/commit/5752acb09be8771f6695de4928444c47849fafc4))
+* Fix timeout default values ([5752acb](https://github.com/googleapis/python-tasks/commit/5752acb09be8771f6695de4928444c47849fafc4))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([d51539f](https://github.com/googleapis/python-tasks/commit/d51539fc4e6b7b5a3f6f34d014752f3a8989b016))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([5752acb](https://github.com/googleapis/python-tasks/commit/5752acb09be8771f6695de4928444c47849fafc4))
+
 ## [2.10.4](https://github.com/googleapis/python-tasks/compare/v2.10.3...v2.10.4) (2022-10-07)
 
 
