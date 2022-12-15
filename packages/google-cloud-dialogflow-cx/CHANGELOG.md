@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.14.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.13.5...v1.14.0) (2022-12-15)
+
+
+### Features
+
+* Add files field to finding's list of attributes ([ff576ee](https://github.com/googleapis/python-dialogflow-cx/commit/ff576eefe4a202327fd3de6e98da1cca24ddad4e))
+* Add support for `google.cloud.dialogflowcx.__version__` ([ff576ee](https://github.com/googleapis/python-dialogflow-cx/commit/ff576eefe4a202327fd3de6e98da1cca24ddad4e))
+* Add typing to proto.Message based class attributes ([ff576ee](https://github.com/googleapis/python-dialogflow-cx/commit/ff576eefe4a202327fd3de6e98da1cca24ddad4e))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([ff576ee](https://github.com/googleapis/python-dialogflow-cx/commit/ff576eefe4a202327fd3de6e98da1cca24ddad4e))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([ff576ee](https://github.com/googleapis/python-dialogflow-cx/commit/ff576eefe4a202327fd3de6e98da1cca24ddad4e))
+* Drop usage of pkg_resources ([ff576ee](https://github.com/googleapis/python-dialogflow-cx/commit/ff576eefe4a202327fd3de6e98da1cca24ddad4e))
+* Fix timeout default values ([ff576ee](https://github.com/googleapis/python-dialogflow-cx/commit/ff576eefe4a202327fd3de6e98da1cca24ddad4e))
+
+
+### Documentation
+
+* Clarified Agent Assist max retention is 30 days ([ff576ee](https://github.com/googleapis/python-dialogflow-cx/commit/ff576eefe4a202327fd3de6e98da1cca24ddad4e))
+* Clarify interactive logging TTL behavior ([ff576ee](https://github.com/googleapis/python-dialogflow-cx/commit/ff576eefe4a202327fd3de6e98da1cca24ddad4e))
+* **samples:** Snippetgen handling of repeated enum field ([ff576ee](https://github.com/googleapis/python-dialogflow-cx/commit/ff576eefe4a202327fd3de6e98da1cca24ddad4e))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([ff576ee](https://github.com/googleapis/python-dialogflow-cx/commit/ff576eefe4a202327fd3de6e98da1cca24ddad4e))
+
 ## [1.13.5](https://github.com/googleapis/python-dialogflow-cx/compare/v1.13.4...v1.13.5) (2022-10-26)
 
 
