@@ -117,6 +117,11 @@ def test_large_file_write_from_stream_w_encryption_key(
 
     _check_blob_hash(blob, info)
 
+    blob_without_key = shared_bucket.blob("LargeFile")
+    with tempfile.TemporaryFile() as tmp:
+        with pytest.raises(exceptions.BadRequest):
+            storage_client.download_blob_to_file(blob_without_key, tmp)
+
     with tempfile.NamedTemporaryFile() as temp_f:
         with open(temp_f.name, "wb") as file_obj:
             storage_client.download_blob_to_file(blob, file_obj)
