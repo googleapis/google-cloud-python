@@ -4,6 +4,35 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.14.0](https://github.com/googleapis/python-container/compare/v2.13.0...v2.14.0) (2022-12-15)
+
+
+### Features
+
+* Add API to enable GKE Gateway controller ([944001d](https://github.com/googleapis/python-container/commit/944001d24215b0757da36898c26b8e22ca3f7a12))
+* Add compact placement feature for node pools ([944001d](https://github.com/googleapis/python-container/commit/944001d24215b0757da36898c26b8e22ca3f7a12))
+* Add nodeconfig resource_labels api ([944001d](https://github.com/googleapis/python-container/commit/944001d24215b0757da36898c26b8e22ca3f7a12))
+* Add support for `google.cloud.container.__version__` ([944001d](https://github.com/googleapis/python-container/commit/944001d24215b0757da36898c26b8e22ca3f7a12))
+* Add support for specifying stack type for clusters. This will allow clusters to be created as dual stack or toggled between IPV4 and dual stack ([#323](https://github.com/googleapis/python-container/issues/323)) ([5c1d04f](https://github.com/googleapis/python-container/commit/5c1d04f874b64aabc378aa18370e0b6be503a886))
+* Add typing to proto.Message based class attributes ([944001d](https://github.com/googleapis/python-container/commit/944001d24215b0757da36898c26b8e22ca3f7a12))
+* GKE cluster's control plan/node-pool network isolation ([944001d](https://github.com/googleapis/python-container/commit/944001d24215b0757da36898c26b8e22ca3f7a12))
+* **v1:** Add a FastSocket API ([4d61084](https://github.com/googleapis/python-container/commit/4d61084846ae9583140b04a4c68da070479d79b9))
+* **v1beta1:** Add a FastSocket API ([#319](https://github.com/googleapis/python-container/issues/319)) ([5072864](https://github.com/googleapis/python-container/commit/50728649c915df27e8876af572ef824a26a660b7))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([944001d](https://github.com/googleapis/python-container/commit/944001d24215b0757da36898c26b8e22ca3f7a12))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([25c47a8](https://github.com/googleapis/python-container/commit/25c47a8433050c1cfcdf033dff16b3dcaedb1a9b))
+* Drop usage of pkg_resources ([25c47a8](https://github.com/googleapis/python-container/commit/25c47a8433050c1cfcdf033dff16b3dcaedb1a9b))
+* Fix timeout default values ([25c47a8](https://github.com/googleapis/python-container/commit/25c47a8433050c1cfcdf033dff16b3dcaedb1a9b))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([944001d](https://github.com/googleapis/python-container/commit/944001d24215b0757da36898c26b8e22ca3f7a12))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([25c47a8](https://github.com/googleapis/python-container/commit/25c47a8433050c1cfcdf033dff16b3dcaedb1a9b))
+
 ## [2.13.0](https://github.com/googleapis/python-container/compare/v2.12.2...v2.13.0) (2022-10-26)
 
 
