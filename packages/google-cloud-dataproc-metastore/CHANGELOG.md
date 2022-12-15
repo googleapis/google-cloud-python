@@ -1,5 +1,34 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-dataproc-metastore/compare/v1.6.3...v1.7.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.metastore.__version__` ([1c64e1a](https://github.com/googleapis/python-dataproc-metastore/commit/1c64e1a8887c2518600adbfa5b91dc4248876b85))
+* Add typing to proto.Message based class attributes ([1c64e1a](https://github.com/googleapis/python-dataproc-metastore/commit/1c64e1a8887c2518600adbfa5b91dc4248876b85))
+* Added DatabaseType field ([1c64e1a](https://github.com/googleapis/python-dataproc-metastore/commit/1c64e1a8887c2518600adbfa5b91dc4248876b85))
+* Added EncryptionConfig field ([1c64e1a](https://github.com/googleapis/python-dataproc-metastore/commit/1c64e1a8887c2518600adbfa5b91dc4248876b85))
+* Added federation API ([1c64e1a](https://github.com/googleapis/python-dataproc-metastore/commit/1c64e1a8887c2518600adbfa5b91dc4248876b85))
+* Added NetworkConfig field ([1c64e1a](https://github.com/googleapis/python-dataproc-metastore/commit/1c64e1a8887c2518600adbfa5b91dc4248876b85))
+* Added TelemetryConfiguration field ([1c64e1a](https://github.com/googleapis/python-dataproc-metastore/commit/1c64e1a8887c2518600adbfa5b91dc4248876b85))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([1c64e1a](https://github.com/googleapis/python-dataproc-metastore/commit/1c64e1a8887c2518600adbfa5b91dc4248876b85))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([8cd4a8e](https://github.com/googleapis/python-dataproc-metastore/commit/8cd4a8e87779cc0c3098b5fdb2cd70c4b809ca3c))
+* Drop usage of pkg_resources ([8cd4a8e](https://github.com/googleapis/python-dataproc-metastore/commit/8cd4a8e87779cc0c3098b5fdb2cd70c4b809ca3c))
+* Fix timeout default values ([8cd4a8e](https://github.com/googleapis/python-dataproc-metastore/commit/8cd4a8e87779cc0c3098b5fdb2cd70c4b809ca3c))
+
+
+### Documentation
+
+* Fix formatting for subnetwork field pattern ([#190](https://github.com/googleapis/python-dataproc-metastore/issues/190)) ([5527625](https://github.com/googleapis/python-dataproc-metastore/commit/5527625b9b0cc1d9c1089ad5c721333a218014e1))
+* Fix formatting for subnetwork field pattern ([#191](https://github.com/googleapis/python-dataproc-metastore/issues/191)) ([ed78105](https://github.com/googleapis/python-dataproc-metastore/commit/ed78105c38c43d0cb165756b2b3945acbd31731d))
+* **samples:** Snippetgen handling of repeated enum field ([1c64e1a](https://github.com/googleapis/python-dataproc-metastore/commit/1c64e1a8887c2518600adbfa5b91dc4248876b85))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([8cd4a8e](https://github.com/googleapis/python-dataproc-metastore/commit/8cd4a8e87779cc0c3098b5fdb2cd70c4b809ca3c))
+
 ## [1.6.3](https://github.com/googleapis/python-dataproc-metastore/compare/v1.6.2...v1.6.3) (2022-10-07)
 
 
