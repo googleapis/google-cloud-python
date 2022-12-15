@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.4.1](https://github.com/googleapis/python-api-keys/compare/v0.4.0...v0.4.1) (2022-12-14)
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([7ad93f1](https://github.com/googleapis/python-api-keys/commit/7ad93f184874ee42207e230e41d3a4e078380867))
+* Drop usage of pkg_resources ([7ad93f1](https://github.com/googleapis/python-api-keys/commit/7ad93f184874ee42207e230e41d3a4e078380867))
+* Fix timeout default values ([7ad93f1](https://github.com/googleapis/python-api-keys/commit/7ad93f184874ee42207e230e41d3a4e078380867))
+
+
+### Documentation
+
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([7ad93f1](https://github.com/googleapis/python-api-keys/commit/7ad93f184874ee42207e230e41d3a4e078380867))
+
 ## [0.4.0](https://github.com/googleapis/python-api-keys/compare/v0.3.0...v0.4.0) (2022-11-16)
 
 
