@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+## [1.7.0](https://github.com/googleapis/python-datalabeling/compare/v1.6.3...v1.7.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.datalabeling.__version__` ([14ac512](https://github.com/googleapis/python-datalabeling/commit/14ac512fcf193197083f39dca33a9e3a65505355))
+* Add typing to proto.Message based class attributes ([14ac512](https://github.com/googleapis/python-datalabeling/commit/14ac512fcf193197083f39dca33a9e3a65505355))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([14ac512](https://github.com/googleapis/python-datalabeling/commit/14ac512fcf193197083f39dca33a9e3a65505355))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([440dc7d](https://github.com/googleapis/python-datalabeling/commit/440dc7d99b498f037af06230d7d14ce347f12d61))
+* Drop usage of pkg_resources ([440dc7d](https://github.com/googleapis/python-datalabeling/commit/440dc7d99b498f037af06230d7d14ce347f12d61))
+* Fix timeout default values ([440dc7d](https://github.com/googleapis/python-datalabeling/commit/440dc7d99b498f037af06230d7d14ce347f12d61))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([14ac512](https://github.com/googleapis/python-datalabeling/commit/14ac512fcf193197083f39dca33a9e3a65505355))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([440dc7d](https://github.com/googleapis/python-datalabeling/commit/440dc7d99b498f037af06230d7d14ce347f12d61))
+
 ## [1.6.3](https://github.com/googleapis/python-datalabeling/compare/v1.6.2...v1.6.3) (2022-10-07)
 
 
