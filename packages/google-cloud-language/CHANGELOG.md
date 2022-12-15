@@ -4,6 +4,34 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## [2.7.0](https://github.com/googleapis/python-language/compare/v2.6.1...v2.7.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.language.__version__` ([3ff2900](https://github.com/googleapis/python-language/commit/3ff2900b0d4c00d408dc9743d80bb034677be978))
+* Add typing to proto.Message based class attributes ([3ff2900](https://github.com/googleapis/python-language/commit/3ff2900b0d4c00d408dc9743d80bb034677be978))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([3ff2900](https://github.com/googleapis/python-language/commit/3ff2900b0d4c00d408dc9743d80bb034677be978))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([fa4547f](https://github.com/googleapis/python-language/commit/fa4547f61179b9e8a4065bdd0a2bd7760b033985))
+* Drop usage of pkg_resources ([fa4547f](https://github.com/googleapis/python-language/commit/fa4547f61179b9e8a4065bdd0a2bd7760b033985))
+* Fix timeout default values ([fa4547f](https://github.com/googleapis/python-language/commit/fa4547f61179b9e8a4065bdd0a2bd7760b033985))
+
+
+### Miscellaneous Chores
+
+* Release-please updates snippet metadata ([cb52907](https://github.com/googleapis/python-language/commit/cb5290723a1f13d6ea3929cdf2fce103ee464910))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([3ff2900](https://github.com/googleapis/python-language/commit/3ff2900b0d4c00d408dc9743d80bb034677be978))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([fa4547f](https://github.com/googleapis/python-language/commit/fa4547f61179b9e8a4065bdd0a2bd7760b033985))
+* Specify client library version requirement in samples/v1/language_classify_text.py ([#388](https://github.com/googleapis/python-language/issues/388)) ([bff4a65](https://github.com/googleapis/python-language/commit/bff4a65b6a3bb28bf205cdc2fcf5ad914665c453))
+
 ## [2.6.1](https://github.com/googleapis/python-language/compare/v2.6.0...v2.6.1) (2022-10-10)
 
 
