@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/python-channel/compare/v1.10.0...v1.11.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.channel.__version__` ([0eb8ef8](https://github.com/googleapis/python-channel/commit/0eb8ef824ba7aa0d5184796272b4a0c801834293))
+* Add support for granular repricing configurations via SkuGroups in Cloud Channel Repricing APIs ([#218](https://github.com/googleapis/python-channel/issues/218)) ([5dae98c](https://github.com/googleapis/python-channel/commit/5dae98ccadb18635d7fdb1a2074b0f24409ab4f4))
+* Add typing to proto.Message based class attributes ([0eb8ef8](https://github.com/googleapis/python-channel/commit/0eb8ef824ba7aa0d5184796272b4a0c801834293))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([0eb8ef8](https://github.com/googleapis/python-channel/commit/0eb8ef824ba7aa0d5184796272b4a0c801834293))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([7fb1fd0](https://github.com/googleapis/python-channel/commit/7fb1fd089fd12b9e72f4e0249b7e9cea2f41b76b))
+* Drop usage of pkg_resources ([7fb1fd0](https://github.com/googleapis/python-channel/commit/7fb1fd089fd12b9e72f4e0249b7e9cea2f41b76b))
+* Fix timeout default values ([7fb1fd0](https://github.com/googleapis/python-channel/commit/7fb1fd089fd12b9e72f4e0249b7e9cea2f41b76b))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([0eb8ef8](https://github.com/googleapis/python-channel/commit/0eb8ef824ba7aa0d5184796272b4a0c801834293))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([7fb1fd0](https://github.com/googleapis/python-channel/commit/7fb1fd089fd12b9e72f4e0249b7e9cea2f41b76b))
+
 ## [1.10.0](https://github.com/googleapis/python-channel/compare/v1.9.3...v1.10.0) (2022-10-18)
 
 
