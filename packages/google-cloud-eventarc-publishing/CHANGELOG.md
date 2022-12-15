@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/python-eventarc-publishing/compare/v0.4.2...v0.5.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.eventarc_publishing.__version__` ([9c61149](https://github.com/googleapis/python-eventarc-publishing/commit/9c61149b5ab2896807783fde2984aa83eda8c357))
+* Add typing to proto.Message based class attributes ([9c61149](https://github.com/googleapis/python-eventarc-publishing/commit/9c61149b5ab2896807783fde2984aa83eda8c357))
+* Introduce the event publishing using JSON representation of CloudEvents ([9c61149](https://github.com/googleapis/python-eventarc-publishing/commit/9c61149b5ab2896807783fde2984aa83eda8c357))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([9c61149](https://github.com/googleapis/python-eventarc-publishing/commit/9c61149b5ab2896807783fde2984aa83eda8c357))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([a0b28f9](https://github.com/googleapis/python-eventarc-publishing/commit/a0b28f99301905dab3fb30092ff6a4ac3be7f492))
+* Drop usage of pkg_resources ([a0b28f9](https://github.com/googleapis/python-eventarc-publishing/commit/a0b28f99301905dab3fb30092ff6a4ac3be7f492))
+* Fix timeout default values ([a0b28f9](https://github.com/googleapis/python-eventarc-publishing/commit/a0b28f99301905dab3fb30092ff6a4ac3be7f492))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([9c61149](https://github.com/googleapis/python-eventarc-publishing/commit/9c61149b5ab2896807783fde2984aa83eda8c357))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([a0b28f9](https://github.com/googleapis/python-eventarc-publishing/commit/a0b28f99301905dab3fb30092ff6a4ac3be7f492))
+
 ## [0.4.2](https://github.com/googleapis/python-eventarc-publishing/compare/v0.4.1...v0.4.2) (2022-10-10)
 
 
