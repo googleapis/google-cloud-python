@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.17.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.16.2...v2.17.0) (2022-12-14)
+
+
+### Features
+
+* Add estimated number of rows to CreateReadSession response ([#542](https://github.com/googleapis/python-bigquery-storage/issues/542)) ([16c19a4](https://github.com/googleapis/python-bigquery-storage/commit/16c19a45b8172e64fb8e7c1d68ecf6a1c73048f9))
+* Add missing_value_interpretations to AppendRowsRequest ([#529](https://github.com/googleapis/python-bigquery-storage/issues/529)) ([2ba8bae](https://github.com/googleapis/python-bigquery-storage/commit/2ba8bae95356f04010bd099b1cebe38d0a6378d5))
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([5e2fc1e](https://github.com/googleapis/python-bigquery-storage/commit/5e2fc1e8db4f76110aa70413838d710e64093b13))
+* Drop usage of pkg_resources ([5e2fc1e](https://github.com/googleapis/python-bigquery-storage/commit/5e2fc1e8db4f76110aa70413838d710e64093b13))
+* Fix timeout default values ([5e2fc1e](https://github.com/googleapis/python-bigquery-storage/commit/5e2fc1e8db4f76110aa70413838d710e64093b13))
+
+
+### Documentation
+
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([5e2fc1e](https://github.com/googleapis/python-bigquery-storage/commit/5e2fc1e8db4f76110aa70413838d710e64093b13))
+
 ## [2.16.2](https://github.com/googleapis/python-bigquery-storage/compare/v2.16.1...v2.16.2) (2022-10-07)
 
 
