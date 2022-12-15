@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-essential-contacts/compare/v1.2.3...v1.3.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.essential_contacts.__version__` ([c0944f7](https://github.com/googleapis/python-essential-contacts/commit/c0944f7dcaf602caec054993037579465c88a97f))
+* Add typing to proto.Message based class attributes ([c0944f7](https://github.com/googleapis/python-essential-contacts/commit/c0944f7dcaf602caec054993037579465c88a97f))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([c0944f7](https://github.com/googleapis/python-essential-contacts/commit/c0944f7dcaf602caec054993037579465c88a97f))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([6db782b](https://github.com/googleapis/python-essential-contacts/commit/6db782b46285fee632b227e4870c426e9b39e38d))
+* Drop usage of pkg_resources ([6db782b](https://github.com/googleapis/python-essential-contacts/commit/6db782b46285fee632b227e4870c426e9b39e38d))
+* Fix timeout default values ([6db782b](https://github.com/googleapis/python-essential-contacts/commit/6db782b46285fee632b227e4870c426e9b39e38d))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([c0944f7](https://github.com/googleapis/python-essential-contacts/commit/c0944f7dcaf602caec054993037579465c88a97f))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([6db782b](https://github.com/googleapis/python-essential-contacts/commit/6db782b46285fee632b227e4870c426e9b39e38d))
+
 ## [1.2.3](https://github.com/googleapis/python-essential-contacts/compare/v1.2.2...v1.2.3) (2022-10-07)
 
 
