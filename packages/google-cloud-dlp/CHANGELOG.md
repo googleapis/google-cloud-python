@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.10.0](https://github.com/googleapis/python-dlp/compare/v3.9.2...v3.10.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.dlp.__version__` ([bf3e815](https://github.com/googleapis/python-dlp/commit/bf3e8155d4a56b3016e9313c6b543f2d356eab6b))
+* Add typing to proto.Message based class attributes ([bf3e815](https://github.com/googleapis/python-dlp/commit/bf3e8155d4a56b3016e9313c6b543f2d356eab6b))
+* ExcludeByHotword added as an ExclusionRule type ([bf3e815](https://github.com/googleapis/python-dlp/commit/bf3e8155d4a56b3016e9313c6b543f2d356eab6b))
+* NEW_ZEALAND added as a LocationCategory value ([bf3e815](https://github.com/googleapis/python-dlp/commit/bf3e8155d4a56b3016e9313c6b543f2d356eab6b))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([bf3e815](https://github.com/googleapis/python-dlp/commit/bf3e8155d4a56b3016e9313c6b543f2d356eab6b))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([2e9826d](https://github.com/googleapis/python-dlp/commit/2e9826d20e10916a07be781c5098caf47a0b0b10))
+* Drop usage of pkg_resources ([2e9826d](https://github.com/googleapis/python-dlp/commit/2e9826d20e10916a07be781c5098caf47a0b0b10))
+* Fix timeout default values ([2e9826d](https://github.com/googleapis/python-dlp/commit/2e9826d20e10916a07be781c5098caf47a0b0b10))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([bf3e815](https://github.com/googleapis/python-dlp/commit/bf3e8155d4a56b3016e9313c6b543f2d356eab6b))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([2e9826d](https://github.com/googleapis/python-dlp/commit/2e9826d20e10916a07be781c5098caf47a0b0b10))
+
 ## [3.9.2](https://github.com/googleapis/python-dlp/compare/v3.9.1...v3.9.2) (2022-10-07)
 
 
