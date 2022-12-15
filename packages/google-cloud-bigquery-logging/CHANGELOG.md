@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/googleapis/python-bigquery-logging/compare/v1.0.7...v1.1.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.bigquery_logging.__version__` ([04714c4](https://github.com/googleapis/python-bigquery-logging/commit/04714c4845c1bbf46adba1bdd73d19a60dc6f163))
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([#133](https://github.com/googleapis/python-bigquery-logging/issues/133)) ([07f89d2](https://github.com/googleapis/python-bigquery-logging/commit/07f89d2dee98b4a37ce53184bf99d6a4dbb50e2a))
+
 ## [1.0.7](https://github.com/googleapis/python-bigquery-logging/compare/v1.0.6...v1.0.7) (2022-10-07)
 
 
