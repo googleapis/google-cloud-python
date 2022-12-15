@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/python-appengine-admin/compare/v1.7.0...v1.7.1) (2022-12-08)
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([a086ce0](https://github.com/googleapis/python-appengine-admin/commit/a086ce0d68a2790bb46390fe5d2c7d9b2db235c0))
+* Drop usage of pkg_resources ([a086ce0](https://github.com/googleapis/python-appengine-admin/commit/a086ce0d68a2790bb46390fe5d2c7d9b2db235c0))
+* Fix timeout default values ([a086ce0](https://github.com/googleapis/python-appengine-admin/commit/a086ce0d68a2790bb46390fe5d2c7d9b2db235c0))
+
+
+### Documentation
+
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([a086ce0](https://github.com/googleapis/python-appengine-admin/commit/a086ce0d68a2790bb46390fe5d2c7d9b2db235c0))
+
 ## [1.7.0](https://github.com/googleapis/python-appengine-admin/compare/v1.6.0...v1.7.0) (2022-11-16)
 
 
