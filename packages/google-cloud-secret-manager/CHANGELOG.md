@@ -1,5 +1,28 @@
 # Changelog
 
+## [2.13.0](https://github.com/googleapis/python-secret-manager/compare/v2.12.6...v2.13.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.secretmanager.__version__` ([5530112](https://github.com/googleapis/python-secret-manager/commit/5530112ecb5a932d3abe875dcaabaf6ca7a108d5))
+* Add typing to proto.Message based class attributes ([5530112](https://github.com/googleapis/python-secret-manager/commit/5530112ecb5a932d3abe875dcaabaf6ca7a108d5))
+* Regenerate client for v1beta1 ([dc9b1e3](https://github.com/googleapis/python-secret-manager/commit/dc9b1e38da2ecf6470ff5669f14ebad86dda4756))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([5530112](https://github.com/googleapis/python-secret-manager/commit/5530112ecb5a932d3abe875dcaabaf6ca7a108d5))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([dc9b1e3](https://github.com/googleapis/python-secret-manager/commit/dc9b1e38da2ecf6470ff5669f14ebad86dda4756))
+* Drop usage of pkg_resources ([dc9b1e3](https://github.com/googleapis/python-secret-manager/commit/dc9b1e38da2ecf6470ff5669f14ebad86dda4756))
+* Fix timeout default values ([dc9b1e3](https://github.com/googleapis/python-secret-manager/commit/dc9b1e38da2ecf6470ff5669f14ebad86dda4756))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([5530112](https://github.com/googleapis/python-secret-manager/commit/5530112ecb5a932d3abe875dcaabaf6ca7a108d5))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([dc9b1e3](https://github.com/googleapis/python-secret-manager/commit/dc9b1e38da2ecf6470ff5669f14ebad86dda4756))
+
 ## [2.12.6](https://github.com/googleapis/python-secret-manager/compare/v2.12.5...v2.12.6) (2022-10-10)
 
 
