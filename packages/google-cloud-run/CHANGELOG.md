@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/python-run/compare/v0.4.2...v0.5.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.run.__version__` ([a19c445](https://github.com/googleapis/python-run/commit/a19c445b86b4b5897bbf171369a9b674f90cf803))
+* Add typing to proto.Message based class attributes ([a19c445](https://github.com/googleapis/python-run/commit/a19c445b86b4b5897bbf171369a9b674f90cf803))
+* Adds Cloud Run Jobs v2 API client libraries ([a19c445](https://github.com/googleapis/python-run/commit/a19c445b86b4b5897bbf171369a9b674f90cf803))
+* Adds Startup and Liveness probes to Cloud Run v2 API client libraries ([#60](https://github.com/googleapis/python-run/issues/60)) ([d4d22ec](https://github.com/googleapis/python-run/commit/d4d22ecf187d7b370f10d627ece28255cbe9c804))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([a19c445](https://github.com/googleapis/python-run/commit/a19c445b86b4b5897bbf171369a9b674f90cf803))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([cfedfb2](https://github.com/googleapis/python-run/commit/cfedfb23c599bc010efdfd4d2f435f5d4861020a))
+* Drop usage of pkg_resources ([cfedfb2](https://github.com/googleapis/python-run/commit/cfedfb23c599bc010efdfd4d2f435f5d4861020a))
+* Fix timeout default values ([cfedfb2](https://github.com/googleapis/python-run/commit/cfedfb23c599bc010efdfd4d2f435f5d4861020a))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([a19c445](https://github.com/googleapis/python-run/commit/a19c445b86b4b5897bbf171369a9b674f90cf803))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([cfedfb2](https://github.com/googleapis/python-run/commit/cfedfb23c599bc010efdfd4d2f435f5d4861020a))
+
 ## [0.4.2](https://github.com/googleapis/python-run/compare/v0.4.1...v0.4.2) (2022-10-10)
 
 
