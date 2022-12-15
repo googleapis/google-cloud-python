@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-functions/compare/v1.8.3...v1.9.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.functions.__version__` ([8fa10be](https://github.com/googleapis/python-functions/commit/8fa10be9991622bfba4a5f974917281ff79bd04e))
+* Add typing to proto.Message based class attributes ([8fa10be](https://github.com/googleapis/python-functions/commit/8fa10be9991622bfba4a5f974917281ff79bd04e))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([8fa10be](https://github.com/googleapis/python-functions/commit/8fa10be9991622bfba4a5f974917281ff79bd04e))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([716d441](https://github.com/googleapis/python-functions/commit/716d4413770dc29bd8c3cd21ac5d4abce8053521))
+* Drop usage of pkg_resources ([716d441](https://github.com/googleapis/python-functions/commit/716d4413770dc29bd8c3cd21ac5d4abce8053521))
+* Fix timeout default values ([716d441](https://github.com/googleapis/python-functions/commit/716d4413770dc29bd8c3cd21ac5d4abce8053521))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([8fa10be](https://github.com/googleapis/python-functions/commit/8fa10be9991622bfba4a5f974917281ff79bd04e))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([716d441](https://github.com/googleapis/python-functions/commit/716d4413770dc29bd8c3cd21ac5d4abce8053521))
+
 ## [1.8.3](https://github.com/googleapis/python-functions/compare/v1.8.2...v1.8.3) (2022-10-07)
 
 
