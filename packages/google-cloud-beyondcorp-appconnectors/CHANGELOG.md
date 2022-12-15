@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/python-beyondcorp-appconnectors/compare/v0.2.2...v0.3.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.beyondcorp_appconnectors.__version__` ([b64f9c1](https://github.com/googleapis/python-beyondcorp-appconnectors/commit/b64f9c1c7623e832e25b20e549269fc32f9731bf))
+* Add typing to proto.Message based class attributes ([b64f9c1](https://github.com/googleapis/python-beyondcorp-appconnectors/commit/b64f9c1c7623e832e25b20e549269fc32f9731bf))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([b64f9c1](https://github.com/googleapis/python-beyondcorp-appconnectors/commit/b64f9c1c7623e832e25b20e549269fc32f9731bf))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([09a8da2](https://github.com/googleapis/python-beyondcorp-appconnectors/commit/09a8da2f32df82484219618179cf301bd57f824d))
+* Drop usage of pkg_resources ([09a8da2](https://github.com/googleapis/python-beyondcorp-appconnectors/commit/09a8da2f32df82484219618179cf301bd57f824d))
+* Fix timeout default values ([09a8da2](https://github.com/googleapis/python-beyondcorp-appconnectors/commit/09a8da2f32df82484219618179cf301bd57f824d))
+
+
+### Documentation
+
+* Fix minor docstring formatting ([b64f9c1](https://github.com/googleapis/python-beyondcorp-appconnectors/commit/b64f9c1c7623e832e25b20e549269fc32f9731bf))
+* **samples:** Snippetgen handling of repeated enum field ([b64f9c1](https://github.com/googleapis/python-beyondcorp-appconnectors/commit/b64f9c1c7623e832e25b20e549269fc32f9731bf))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([09a8da2](https://github.com/googleapis/python-beyondcorp-appconnectors/commit/09a8da2f32df82484219618179cf301bd57f824d))
+
 ## [0.2.2](https://github.com/googleapis/python-beyondcorp-appconnectors/compare/v0.2.1...v0.2.2) (2022-10-10)
 
 
