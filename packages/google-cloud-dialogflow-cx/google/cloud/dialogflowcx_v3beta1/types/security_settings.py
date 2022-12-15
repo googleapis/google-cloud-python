@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -42,7 +44,7 @@ class GetSecuritySettingsRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/securitySettings/<security settings ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -62,12 +64,12 @@ class UpdateSecuritySettingsRequest(proto.Message):
             fields will be updated.
     """
 
-    security_settings = proto.Field(
+    security_settings: "SecuritySettings" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="SecuritySettings",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -89,15 +91,15 @@ class ListSecuritySettingsRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -107,7 +109,7 @@ class ListSecuritySettingsResponse(proto.Message):
     r"""The response message for [SecuritySettings.ListSecuritySettings][].
 
     Attributes:
-        security_settings (Sequence[google.cloud.dialogflowcx_v3beta1.types.SecuritySettings]):
+        security_settings (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.SecuritySettings]):
             The list of security settings.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -119,12 +121,12 @@ class ListSecuritySettingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    security_settings = proto.RepeatedField(
+    security_settings: MutableSequence["SecuritySettings"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SecuritySettings",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -143,11 +145,11 @@ class CreateSecuritySettingsRequest(proto.Message):
             Required. The security settings to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    security_settings = proto.Field(
+    security_settings: "SecuritySettings" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="SecuritySettings",
@@ -165,7 +167,7 @@ class DeleteSecuritySettingsRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/securitySettings/<Security Settings ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -243,16 +245,14 @@ class SecuritySettings(proto.Message):
             Cloud logging, which is owned by the user - not
             Dialogflow.
             User must set a value lower than Dialogflow's
-            default 365d TTL. Setting a value higher than
-            that has no effect.
-            A missing value or setting to 0 also means we
-            use Dialogflow's default TTL.
-            Note: Interaction logging is a limited access
-            feature. Talk to your Google representative to
-            check availability for you.
+            default 365d TTL (30 days for Agent Assist
+            traffic), higher value will be ignored and use
+            default. Setting a value higher than that has no
+            effect. A missing value or setting to 0 also
+            means we use default TTL.
 
             This field is a member of `oneof`_ ``data_retention``.
-        purge_data_types (Sequence[google.cloud.dialogflowcx_v3beta1.types.SecuritySettings.PurgeDataType]):
+        purge_data_types (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.SecuritySettings.PurgeDataType]):
             List of types of data to remove when
             retention settings triggers purge.
         audio_export_settings (google.cloud.dialogflowcx_v3beta1.types.SecuritySettings.AudioExportSettings):
@@ -333,19 +333,19 @@ class SecuritySettings(proto.Message):
             MP3 = 2
             OGG = 3
 
-        gcs_bucket = proto.Field(
+        gcs_bucket: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        audio_export_pattern = proto.Field(
+        audio_export_pattern: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        enable_audio_redaction = proto.Field(
+        enable_audio_redaction: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
-        audio_format = proto.Field(
+        audio_format: "SecuritySettings.AudioExportSettings.AudioFormat" = proto.Field(
             proto.ENUM,
             number=4,
             enum="SecuritySettings.AudioExportSettings.AudioFormat",
@@ -362,53 +362,53 @@ class SecuritySettings(proto.Message):
                 analyzers.
         """
 
-        enable_insights_export = proto.Field(
+        enable_insights_export: bool = proto.Field(
             proto.BOOL,
             number=1,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    redaction_strategy = proto.Field(
+    redaction_strategy: RedactionStrategy = proto.Field(
         proto.ENUM,
         number=3,
         enum=RedactionStrategy,
     )
-    redaction_scope = proto.Field(
+    redaction_scope: RedactionScope = proto.Field(
         proto.ENUM,
         number=4,
         enum=RedactionScope,
     )
-    inspect_template = proto.Field(
+    inspect_template: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    deidentify_template = proto.Field(
+    deidentify_template: str = proto.Field(
         proto.STRING,
         number=17,
     )
-    retention_window_days = proto.Field(
+    retention_window_days: int = proto.Field(
         proto.INT32,
         number=6,
         oneof="data_retention",
     )
-    purge_data_types = proto.RepeatedField(
+    purge_data_types: MutableSequence[PurgeDataType] = proto.RepeatedField(
         proto.ENUM,
         number=8,
         enum=PurgeDataType,
     )
-    audio_export_settings = proto.Field(
+    audio_export_settings: AudioExportSettings = proto.Field(
         proto.MESSAGE,
         number=12,
         message=AudioExportSettings,
     )
-    insights_export_settings = proto.Field(
+    insights_export_settings: InsightsExportSettings = proto.Field(
         proto.MESSAGE,
         number=13,
         message=InsightsExportSettings,

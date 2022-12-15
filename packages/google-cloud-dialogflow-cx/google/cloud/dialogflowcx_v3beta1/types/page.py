@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import fulfillment
@@ -75,7 +77,7 @@ class Page(proto.Message):
         form (google.cloud.dialogflowcx_v3beta1.types.Form):
             The form associated with the page, used for
             collecting parameters relevant to the page.
-        transition_route_groups (Sequence[str]):
+        transition_route_groups (MutableSequence[str]):
             Ordered list of
             [``TransitionRouteGroups``][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
             associated with the page. Transition route groups must be
@@ -91,7 +93,7 @@ class Page(proto.Message):
                takes precedence.
 
             Format:\ ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<TransitionRouteGroup ID>``.
-        transition_routes (Sequence[google.cloud.dialogflowcx_v3beta1.types.TransitionRoute]):
+        transition_routes (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.TransitionRoute]):
             A list of transitions for the transition rules of this page.
             They route the conversation to another page in the same
             flow, or another flow.
@@ -113,40 +115,40 @@ class Page(proto.Message):
             -  TransitionRoutes defined in the [transition route
                groups][google.cloud.dialogflow.cx.v3beta1.Page.transition_route_groups]
                with only condition specified.
-        event_handlers (Sequence[google.cloud.dialogflowcx_v3beta1.types.EventHandler]):
+        event_handlers (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.EventHandler]):
             Handlers associated with the page to handle
             events such as webhook errors, no match or no
             input.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    entry_fulfillment = proto.Field(
+    entry_fulfillment: fulfillment.Fulfillment = proto.Field(
         proto.MESSAGE,
         number=7,
         message=fulfillment.Fulfillment,
     )
-    form = proto.Field(
+    form: "Form" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="Form",
     )
-    transition_route_groups = proto.RepeatedField(
+    transition_route_groups: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=11,
     )
-    transition_routes = proto.RepeatedField(
+    transition_routes: MutableSequence["TransitionRoute"] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message="TransitionRoute",
     )
-    event_handlers = proto.RepeatedField(
+    event_handlers: MutableSequence["EventHandler"] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message="EventHandler",
@@ -163,7 +165,7 @@ class Form(proto.Message):
     [session][google.cloud.dialogflow.cx.v3beta1.SessionInfo.parameters].
 
     Attributes:
-        parameters (Sequence[google.cloud.dialogflowcx_v3beta1.types.Form.Parameter]):
+        parameters (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Form.Parameter]):
             Parameters to collect from the user.
     """
 
@@ -217,7 +219,7 @@ class Form(proto.Message):
                     Required. The fulfillment to provide the
                     initial prompt that the agent can present to the
                     user in order to fill the parameter.
-                reprompt_event_handlers (Sequence[google.cloud.dialogflowcx_v3beta1.types.EventHandler]):
+                reprompt_event_handlers (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.EventHandler]):
                     The handlers for parameter-level events, used to provide
                     reprompt for the parameter or transition to a different
                     page/flow. The supported events are:
@@ -257,49 +259,51 @@ class Form(proto.Message):
                     be re-prompted.
             """
 
-            initial_prompt_fulfillment = proto.Field(
+            initial_prompt_fulfillment: fulfillment.Fulfillment = proto.Field(
                 proto.MESSAGE,
                 number=3,
                 message=fulfillment.Fulfillment,
             )
-            reprompt_event_handlers = proto.RepeatedField(
+            reprompt_event_handlers: MutableSequence[
+                "EventHandler"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=5,
                 message="EventHandler",
             )
 
-        display_name = proto.Field(
+        display_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        required = proto.Field(
+        required: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
-        entity_type = proto.Field(
+        entity_type: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        is_list = proto.Field(
+        is_list: bool = proto.Field(
             proto.BOOL,
             number=4,
         )
-        fill_behavior = proto.Field(
+        fill_behavior: "Form.Parameter.FillBehavior" = proto.Field(
             proto.MESSAGE,
             number=7,
             message="Form.Parameter.FillBehavior",
         )
-        default_value = proto.Field(
+        default_value: struct_pb2.Value = proto.Field(
             proto.MESSAGE,
             number=9,
             message=struct_pb2.Value,
         )
-        redact = proto.Field(
+        redact: bool = proto.Field(
             proto.BOOL,
             number=11,
         )
 
-    parameters = proto.RepeatedField(
+    parameters: MutableSequence[Parameter] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=Parameter,
@@ -355,25 +359,25 @@ class EventHandler(proto.Message):
             This field is a member of `oneof`_ ``target``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    event = proto.Field(
+    event: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    trigger_fulfillment = proto.Field(
+    trigger_fulfillment: fulfillment.Fulfillment = proto.Field(
         proto.MESSAGE,
         number=5,
         message=fulfillment.Fulfillment,
     )
-    target_page = proto.Field(
+    target_page: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="target",
     )
-    target_flow = proto.Field(
+    target_flow: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="target",
@@ -448,29 +452,29 @@ class TransitionRoute(proto.Message):
             This field is a member of `oneof`_ ``target``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    intent = proto.Field(
+    intent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    condition = proto.Field(
+    condition: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    trigger_fulfillment = proto.Field(
+    trigger_fulfillment: fulfillment.Fulfillment = proto.Field(
         proto.MESSAGE,
         number=3,
         message=fulfillment.Fulfillment,
     )
-    target_page = proto.Field(
+    target_page: str = proto.Field(
         proto.STRING,
         number=4,
         oneof="target",
     )
-    target_flow = proto.Field(
+    target_flow: str = proto.Field(
         proto.STRING,
         number=5,
         oneof="target",
@@ -519,19 +523,19 @@ class ListPagesRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -542,7 +546,7 @@ class ListPagesResponse(proto.Message):
     [Pages.ListPages][google.cloud.dialogflow.cx.v3beta1.Pages.ListPages].
 
     Attributes:
-        pages (Sequence[google.cloud.dialogflowcx_v3beta1.types.Page]):
+        pages (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Page]):
             The list of pages. There will be a maximum number of items
             returned based on the page_size field in the request.
         next_page_token (str):
@@ -555,12 +559,12 @@ class ListPagesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    pages = proto.RepeatedField(
+    pages: MutableSequence["Page"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Page",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -602,11 +606,11 @@ class GetPageRequest(proto.Message):
             before they can be used.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -649,16 +653,16 @@ class CreatePageRequest(proto.Message):
             before they can be used.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page = proto.Field(
+    page: "Page" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Page",
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -702,16 +706,16 @@ class UpdatePageRequest(proto.Message):
             updated.
     """
 
-    page = proto.Field(
+    page: "Page" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Page",
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -740,11 +744,11 @@ class DeletePageRequest(proto.Message):
                cleared).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=2,
     )

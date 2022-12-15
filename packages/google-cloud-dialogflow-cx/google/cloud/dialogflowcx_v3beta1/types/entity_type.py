@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -79,10 +81,10 @@ class EntityType(proto.Message):
         auto_expansion_mode (google.cloud.dialogflowcx_v3beta1.types.EntityType.AutoExpansionMode):
             Indicates whether the entity type can be
             automatically expanded.
-        entities (Sequence[google.cloud.dialogflowcx_v3beta1.types.EntityType.Entity]):
+        entities (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.EntityType.Entity]):
             The collection of entity entries associated
             with the entity type.
-        excluded_phrases (Sequence[google.cloud.dialogflowcx_v3beta1.types.EntityType.ExcludedPhrase]):
+        excluded_phrases (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.EntityType.ExcludedPhrase]):
             Collection of exceptional words and phrases that shouldn't
             be matched. For example, if you have a size entity type with
             entry ``giant``\ (an adjective), you might consider adding
@@ -133,7 +135,7 @@ class EntityType(proto.Message):
 
                 -  A string that can contain references to other entity
                    types (with or without aliases).
-            synonyms (Sequence[str]):
+            synonyms (MutableSequence[str]):
                 Required. A collection of value synonyms. For example, if
                 the entity type is *vegetable*, and ``value`` is
                 *scallions*, a synonym could be *green onions*.
@@ -144,11 +146,11 @@ class EntityType(proto.Message):
                    ``value``.
         """
 
-        value = proto.Field(
+        value: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        synonyms = proto.RepeatedField(
+        synonyms: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
@@ -161,44 +163,44 @@ class EntityType(proto.Message):
                 Required. The word or phrase to be excluded.
         """
 
-        value = proto.Field(
+        value: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    kind = proto.Field(
+    kind: Kind = proto.Field(
         proto.ENUM,
         number=3,
         enum=Kind,
     )
-    auto_expansion_mode = proto.Field(
+    auto_expansion_mode: AutoExpansionMode = proto.Field(
         proto.ENUM,
         number=4,
         enum=AutoExpansionMode,
     )
-    entities = proto.RepeatedField(
+    entities: MutableSequence[Entity] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=Entity,
     )
-    excluded_phrases = proto.RepeatedField(
+    excluded_phrases: MutableSequence[ExcludedPhrase] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=ExcludedPhrase,
     )
-    enable_fuzzy_extraction = proto.Field(
+    enable_fuzzy_extraction: bool = proto.Field(
         proto.BOOL,
         number=7,
     )
-    redact = proto.Field(
+    redact: bool = proto.Field(
         proto.BOOL,
         number=9,
     )
@@ -233,19 +235,19 @@ class ListEntityTypesRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -256,7 +258,7 @@ class ListEntityTypesResponse(proto.Message):
     [EntityTypes.ListEntityTypes][google.cloud.dialogflow.cx.v3beta1.EntityTypes.ListEntityTypes].
 
     Attributes:
-        entity_types (Sequence[google.cloud.dialogflowcx_v3beta1.types.EntityType]):
+        entity_types (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.EntityType]):
             The list of entity types. There will be a maximum number of
             items returned based on the page_size field in the request.
         next_page_token (str):
@@ -269,12 +271,12 @@ class ListEntityTypesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    entity_types = proto.RepeatedField(
+    entity_types: MutableSequence["EntityType"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="EntityType",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -303,11 +305,11 @@ class GetEntityTypeRequest(proto.Message):
             before they can be used.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -337,16 +339,16 @@ class CreateEntityTypeRequest(proto.Message):
             before they can be used.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    entity_type = proto.Field(
+    entity_type: "EntityType" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="EntityType",
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -375,16 +377,16 @@ class UpdateEntityTypeRequest(proto.Message):
             The mask to control which fields get updated.
     """
 
-    entity_type = proto.Field(
+    entity_type: "EntityType" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="EntityType",
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -415,11 +417,11 @@ class DeleteEntityTypeRequest(proto.Message):
                of the entity type will be removed).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=2,
     )

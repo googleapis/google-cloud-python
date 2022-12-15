@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import struct_pb2  # type: ignore
@@ -120,7 +122,7 @@ class ResponseMessage(proto.Message):
         r"""The text response message.
 
         Attributes:
-            text (Sequence[str]):
+            text (MutableSequence[str]):
                 Required. A collection of text responses.
             allow_playback_interruption (bool):
                 Output only. Whether the playback of this
@@ -129,11 +131,11 @@ class ResponseMessage(proto.Message):
                 Dialogflow request.
         """
 
-        text = proto.RepeatedField(
+        text: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        allow_playback_interruption = proto.Field(
+        allow_playback_interruption: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
@@ -162,7 +164,7 @@ class ResponseMessage(proto.Message):
                 Dialogflow doesn't impose any structure on this.
         """
 
-        metadata = proto.Field(
+        metadata: struct_pb2.Struct = proto.Field(
             proto.MESSAGE,
             number=1,
             message=struct_pb2.Struct,
@@ -194,7 +196,7 @@ class ResponseMessage(proto.Message):
                 any structure on this.
         """
 
-        metadata = proto.Field(
+        metadata: struct_pb2.Struct = proto.Field(
             proto.MESSAGE,
             number=1,
             message=struct_pb2.Struct,
@@ -229,17 +231,17 @@ class ResponseMessage(proto.Message):
                 Dialogflow request.
         """
 
-        text = proto.Field(
+        text: str = proto.Field(
             proto.STRING,
             number=1,
             oneof="source",
         )
-        ssml = proto.Field(
+        ssml: str = proto.Field(
             proto.STRING,
             number=2,
             oneof="source",
         )
-        allow_playback_interruption = proto.Field(
+        allow_playback_interruption: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
@@ -267,11 +269,11 @@ class ResponseMessage(proto.Message):
                 Dialogflow request.
         """
 
-        audio_uri = proto.Field(
+        audio_uri: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        allow_playback_interruption = proto.Field(
+        allow_playback_interruption: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
@@ -286,7 +288,7 @@ class ResponseMessage(proto.Message):
         defined by the user.
 
         Attributes:
-            segments (Sequence[google.cloud.dialogflowcx_v3.types.ResponseMessage.MixedAudio.Segment]):
+            segments (MutableSequence[google.cloud.dialogflowcx_v3.types.ResponseMessage.MixedAudio.Segment]):
                 Segments this audio response is composed of.
         """
 
@@ -320,22 +322,24 @@ class ResponseMessage(proto.Message):
                     Dialogflow request.
             """
 
-            audio = proto.Field(
+            audio: bytes = proto.Field(
                 proto.BYTES,
                 number=1,
                 oneof="content",
             )
-            uri = proto.Field(
+            uri: str = proto.Field(
                 proto.STRING,
                 number=2,
                 oneof="content",
             )
-            allow_playback_interruption = proto.Field(
+            allow_playback_interruption: bool = proto.Field(
                 proto.BOOL,
                 number=3,
             )
 
-        segments = proto.RepeatedField(
+        segments: MutableSequence[
+            "ResponseMessage.MixedAudio.Segment"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="ResponseMessage.MixedAudio.Segment",
@@ -356,61 +360,61 @@ class ResponseMessage(proto.Message):
                 This field is a member of `oneof`_ ``endpoint``.
         """
 
-        phone_number = proto.Field(
+        phone_number: str = proto.Field(
             proto.STRING,
             number=1,
             oneof="endpoint",
         )
 
-    text = proto.Field(
+    text: Text = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="message",
         message=Text,
     )
-    payload = proto.Field(
+    payload: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="message",
         message=struct_pb2.Struct,
     )
-    conversation_success = proto.Field(
+    conversation_success: ConversationSuccess = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="message",
         message=ConversationSuccess,
     )
-    output_audio_text = proto.Field(
+    output_audio_text: OutputAudioText = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="message",
         message=OutputAudioText,
     )
-    live_agent_handoff = proto.Field(
+    live_agent_handoff: LiveAgentHandoff = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="message",
         message=LiveAgentHandoff,
     )
-    end_interaction = proto.Field(
+    end_interaction: EndInteraction = proto.Field(
         proto.MESSAGE,
         number=11,
         oneof="message",
         message=EndInteraction,
     )
-    play_audio = proto.Field(
+    play_audio: PlayAudio = proto.Field(
         proto.MESSAGE,
         number=12,
         oneof="message",
         message=PlayAudio,
     )
-    mixed_audio = proto.Field(
+    mixed_audio: MixedAudio = proto.Field(
         proto.MESSAGE,
         number=13,
         oneof="message",
         message=MixedAudio,
     )
-    telephony_transfer_call = proto.Field(
+    telephony_transfer_call: TelephonyTransferCall = proto.Field(
         proto.MESSAGE,
         number=18,
         oneof="message",

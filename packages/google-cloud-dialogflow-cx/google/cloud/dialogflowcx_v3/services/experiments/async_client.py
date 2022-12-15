@@ -16,8 +16,19 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
+
+from google.cloud.dialogflowcx_v3 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -164,9 +175,9 @@ class ExperimentsAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ExperimentsTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the experiments client.
@@ -210,11 +221,11 @@ class ExperimentsAsyncClient:
 
     async def list_experiments(
         self,
-        request: Union[experiment.ListExperimentsRequest, dict] = None,
+        request: Optional[Union[experiment.ListExperimentsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListExperimentsAsyncPager:
         r"""Returns the list of all experiments in the specified
@@ -248,7 +259,7 @@ class ExperimentsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3.types.ListExperimentsRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3.types.ListExperimentsRequest, dict]]):
                 The request object. The request message for
                 [Experiments.ListExperiments][google.cloud.dialogflow.cx.v3.Experiments.ListExperiments].
             parent (:class:`str`):
@@ -328,11 +339,11 @@ class ExperimentsAsyncClient:
 
     async def get_experiment(
         self,
-        request: Union[experiment.GetExperimentRequest, dict] = None,
+        request: Optional[Union[experiment.GetExperimentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> experiment.Experiment:
         r"""Retrieves the specified
@@ -365,7 +376,7 @@ class ExperimentsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3.types.GetExperimentRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3.types.GetExperimentRequest, dict]]):
                 The request object. The request message for
                 [Experiments.GetExperiment][google.cloud.dialogflow.cx.v3.Experiments.GetExperiment].
             name (:class:`str`):
@@ -433,12 +444,12 @@ class ExperimentsAsyncClient:
 
     async def create_experiment(
         self,
-        request: Union[gcdc_experiment.CreateExperimentRequest, dict] = None,
+        request: Optional[Union[gcdc_experiment.CreateExperimentRequest, dict]] = None,
         *,
-        parent: str = None,
-        experiment: gcdc_experiment.Experiment = None,
+        parent: Optional[str] = None,
+        experiment: Optional[gcdc_experiment.Experiment] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_experiment.Experiment:
         r"""Creates an
@@ -477,7 +488,7 @@ class ExperimentsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3.types.CreateExperimentRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3.types.CreateExperimentRequest, dict]]):
                 The request object. The request message for
                 [Experiments.CreateExperiment][google.cloud.dialogflow.cx.v3.Experiments.CreateExperiment].
             parent (:class:`str`):
@@ -554,12 +565,12 @@ class ExperimentsAsyncClient:
 
     async def update_experiment(
         self,
-        request: Union[gcdc_experiment.UpdateExperimentRequest, dict] = None,
+        request: Optional[Union[gcdc_experiment.UpdateExperimentRequest, dict]] = None,
         *,
-        experiment: gcdc_experiment.Experiment = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        experiment: Optional[gcdc_experiment.Experiment] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_experiment.Experiment:
         r"""Updates the specified
@@ -595,7 +606,7 @@ class ExperimentsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3.types.UpdateExperimentRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3.types.UpdateExperimentRequest, dict]]):
                 The request object. The request message for
                 [Experiments.UpdateExperiment][google.cloud.dialogflow.cx.v3.Experiments.UpdateExperiment].
             experiment (:class:`google.cloud.dialogflowcx_v3.types.Experiment`):
@@ -670,11 +681,11 @@ class ExperimentsAsyncClient:
 
     async def delete_experiment(
         self,
-        request: Union[experiment.DeleteExperimentRequest, dict] = None,
+        request: Optional[Union[experiment.DeleteExperimentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified
@@ -704,7 +715,7 @@ class ExperimentsAsyncClient:
                 await client.delete_experiment(request=request)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3.types.DeleteExperimentRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3.types.DeleteExperimentRequest, dict]]):
                 The request object. The request message for
                 [Experiments.DeleteExperiment][google.cloud.dialogflow.cx.v3.Experiments.DeleteExperiment].
             name (:class:`str`):
@@ -763,11 +774,11 @@ class ExperimentsAsyncClient:
 
     async def start_experiment(
         self,
-        request: Union[experiment.StartExperimentRequest, dict] = None,
+        request: Optional[Union[experiment.StartExperimentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> experiment.Experiment:
         r"""Starts the specified
@@ -801,7 +812,7 @@ class ExperimentsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3.types.StartExperimentRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3.types.StartExperimentRequest, dict]]):
                 The request object. The request message for
                 [Experiments.StartExperiment][google.cloud.dialogflow.cx.v3.Experiments.StartExperiment].
             name (:class:`str`):
@@ -868,11 +879,11 @@ class ExperimentsAsyncClient:
 
     async def stop_experiment(
         self,
-        request: Union[experiment.StopExperimentRequest, dict] = None,
+        request: Optional[Union[experiment.StopExperimentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> experiment.Experiment:
         r"""Stops the specified
@@ -906,7 +917,7 @@ class ExperimentsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3.types.StopExperimentRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3.types.StopExperimentRequest, dict]]):
                 The request object. The request message for
                 [Experiments.StopExperiment][google.cloud.dialogflow.cx.v3.Experiments.StopExperiment].
             name (:class:`str`):
@@ -973,10 +984,10 @@ class ExperimentsAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1027,10 +1038,10 @@ class ExperimentsAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1081,10 +1092,10 @@ class ExperimentsAsyncClient:
 
     async def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -1135,10 +1146,10 @@ class ExperimentsAsyncClient:
 
     async def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1189,10 +1200,10 @@ class ExperimentsAsyncClient:
 
     async def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -1248,14 +1259,9 @@ class ExperimentsAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dialogflowcx",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ExperimentsAsyncClient",)

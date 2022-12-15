@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import response_message
@@ -49,7 +51,7 @@ class Fulfillment(proto.Message):
     or both.
 
     Attributes:
-        messages (Sequence[google.cloud.dialogflowcx_v3beta1.types.ResponseMessage]):
+        messages (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.ResponseMessage]):
             The list of rich message responses to present
             to the user.
         webhook (str):
@@ -76,10 +78,10 @@ class Fulfillment(proto.Message):
             the webhook service to identify which fulfillment is being
             called, but it could be used for other purposes. This field
             is required if ``webhook`` is specified.
-        set_parameter_actions (Sequence[google.cloud.dialogflowcx_v3beta1.types.Fulfillment.SetParameterAction]):
+        set_parameter_actions (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Fulfillment.SetParameterAction]):
             Set parameter values before executing the
             webhook.
-        conditional_cases (Sequence[google.cloud.dialogflowcx_v3beta1.types.Fulfillment.ConditionalCases]):
+        conditional_cases (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Fulfillment.ConditionalCases]):
             Conditional cases for this fulfillment.
     """
 
@@ -94,11 +96,11 @@ class Fulfillment(proto.Message):
                 clears the parameter.
         """
 
-        parameter = proto.Field(
+        parameter: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        value = proto.Field(
+        value: struct_pb2.Value = proto.Field(
             proto.MESSAGE,
             number=2,
             message=struct_pb2.Value,
@@ -110,7 +112,7 @@ class Fulfillment(proto.Message):
         all the rest ignored.
 
         Attributes:
-            cases (Sequence[google.cloud.dialogflowcx_v3beta1.types.Fulfillment.ConditionalCases.Case]):
+            cases (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Fulfillment.ConditionalCases.Case]):
                 A list of cascading if-else conditions.
         """
 
@@ -128,7 +130,7 @@ class Fulfillment(proto.Message):
 
                     See the `conditions
                     reference <https://cloud.google.com/dialogflow/cx/docs/reference/condition>`__.
-                case_content (Sequence[google.cloud.dialogflowcx_v3beta1.types.Fulfillment.ConditionalCases.Case.CaseContent]):
+                case_content (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Fulfillment.ConditionalCases.Case.CaseContent]):
                     A list of case content.
             """
 
@@ -154,58 +156,62 @@ class Fulfillment(proto.Message):
                         This field is a member of `oneof`_ ``cases_or_message``.
                 """
 
-                message = proto.Field(
+                message: response_message.ResponseMessage = proto.Field(
                     proto.MESSAGE,
                     number=1,
                     oneof="cases_or_message",
                     message=response_message.ResponseMessage,
                 )
-                additional_cases = proto.Field(
+                additional_cases: "Fulfillment.ConditionalCases" = proto.Field(
                     proto.MESSAGE,
                     number=2,
                     oneof="cases_or_message",
                     message="Fulfillment.ConditionalCases",
                 )
 
-            condition = proto.Field(
+            condition: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            case_content = proto.RepeatedField(
+            case_content: MutableSequence[
+                "Fulfillment.ConditionalCases.Case.CaseContent"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="Fulfillment.ConditionalCases.Case.CaseContent",
             )
 
-        cases = proto.RepeatedField(
+        cases: MutableSequence[
+            "Fulfillment.ConditionalCases.Case"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Fulfillment.ConditionalCases.Case",
         )
 
-    messages = proto.RepeatedField(
+    messages: MutableSequence[response_message.ResponseMessage] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=response_message.ResponseMessage,
     )
-    webhook = proto.Field(
+    webhook: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    return_partial_responses = proto.Field(
+    return_partial_responses: bool = proto.Field(
         proto.BOOL,
         number=8,
     )
-    tag = proto.Field(
+    tag: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    set_parameter_actions = proto.RepeatedField(
+    set_parameter_actions: MutableSequence[SetParameterAction] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=SetParameterAction,
     )
-    conditional_cases = proto.RepeatedField(
+    conditional_cases: MutableSequence[ConditionalCases] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=ConditionalCases,

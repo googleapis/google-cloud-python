@@ -16,8 +16,19 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
+
+from google.cloud.dialogflowcx_v3 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -182,9 +193,9 @@ class EnvironmentsAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, EnvironmentsTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the environments client.
@@ -228,11 +239,11 @@ class EnvironmentsAsyncClient:
 
     async def list_environments(
         self,
-        request: Union[environment.ListEnvironmentsRequest, dict] = None,
+        request: Optional[Union[environment.ListEnvironmentsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEnvironmentsAsyncPager:
         r"""Returns the list of all environments in the specified
@@ -266,7 +277,7 @@ class EnvironmentsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3.types.ListEnvironmentsRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3.types.ListEnvironmentsRequest, dict]]):
                 The request object. The request message for
                 [Environments.ListEnvironments][google.cloud.dialogflow.cx.v3.Environments.ListEnvironments].
             parent (:class:`str`):
@@ -346,11 +357,11 @@ class EnvironmentsAsyncClient:
 
     async def get_environment(
         self,
-        request: Union[environment.GetEnvironmentRequest, dict] = None,
+        request: Optional[Union[environment.GetEnvironmentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> environment.Environment:
         r"""Retrieves the specified
@@ -383,7 +394,7 @@ class EnvironmentsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3.types.GetEnvironmentRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3.types.GetEnvironmentRequest, dict]]):
                 The request object. The request message for
                 [Environments.GetEnvironment][google.cloud.dialogflow.cx.v3.Environments.GetEnvironment].
             name (:class:`str`):
@@ -464,12 +475,14 @@ class EnvironmentsAsyncClient:
 
     async def create_environment(
         self,
-        request: Union[gcdc_environment.CreateEnvironmentRequest, dict] = None,
+        request: Optional[
+            Union[gcdc_environment.CreateEnvironmentRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        environment: gcdc_environment.Environment = None,
+        parent: Optional[str] = None,
+        environment: Optional[gcdc_environment.Environment] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates an
@@ -516,13 +529,13 @@ class EnvironmentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3.types.CreateEnvironmentRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3.types.CreateEnvironmentRequest, dict]]):
                 The request object. The request message for
                 [Environments.CreateEnvironment][google.cloud.dialogflow.cx.v3.Environments.CreateEnvironment].
             parent (:class:`str`):
@@ -618,12 +631,14 @@ class EnvironmentsAsyncClient:
 
     async def update_environment(
         self,
-        request: Union[gcdc_environment.UpdateEnvironmentRequest, dict] = None,
+        request: Optional[
+            Union[gcdc_environment.UpdateEnvironmentRequest, dict]
+        ] = None,
         *,
-        environment: gcdc_environment.Environment = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        environment: Optional[gcdc_environment.Environment] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the specified
@@ -668,13 +683,13 @@ class EnvironmentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3.types.UpdateEnvironmentRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3.types.UpdateEnvironmentRequest, dict]]):
                 The request object. The request message for
                 [Environments.UpdateEnvironment][google.cloud.dialogflow.cx.v3.Environments.UpdateEnvironment].
             environment (:class:`google.cloud.dialogflowcx_v3.types.Environment`):
@@ -768,11 +783,11 @@ class EnvironmentsAsyncClient:
 
     async def delete_environment(
         self,
-        request: Union[environment.DeleteEnvironmentRequest, dict] = None,
+        request: Optional[Union[environment.DeleteEnvironmentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified
@@ -802,7 +817,7 @@ class EnvironmentsAsyncClient:
                 await client.delete_environment(request=request)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3.types.DeleteEnvironmentRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3.types.DeleteEnvironmentRequest, dict]]):
                 The request object. The request message for
                 [Environments.DeleteEnvironment][google.cloud.dialogflow.cx.v3.Environments.DeleteEnvironment].
             name (:class:`str`):
@@ -861,11 +876,13 @@ class EnvironmentsAsyncClient:
 
     async def lookup_environment_history(
         self,
-        request: Union[environment.LookupEnvironmentHistoryRequest, dict] = None,
+        request: Optional[
+            Union[environment.LookupEnvironmentHistoryRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.LookupEnvironmentHistoryAsyncPager:
         r"""Looks up the history of the specified
@@ -899,7 +916,7 @@ class EnvironmentsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3.types.LookupEnvironmentHistoryRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3.types.LookupEnvironmentHistoryRequest, dict]]):
                 The request object. The request message for
                 [Environments.LookupEnvironmentHistory][google.cloud.dialogflow.cx.v3.Environments.LookupEnvironmentHistory].
             name (:class:`str`):
@@ -978,10 +995,10 @@ class EnvironmentsAsyncClient:
 
     async def run_continuous_test(
         self,
-        request: Union[environment.RunContinuousTestRequest, dict] = None,
+        request: Optional[Union[environment.RunContinuousTestRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Kicks off a continuous test under the specified
@@ -1022,13 +1039,13 @@ class EnvironmentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3.types.RunContinuousTestRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3.types.RunContinuousTestRequest, dict]]):
                 The request object. The request message for
                 [Environments.RunContinuousTest][google.cloud.dialogflow.cx.v3.Environments.RunContinuousTest].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1087,11 +1104,13 @@ class EnvironmentsAsyncClient:
 
     async def list_continuous_test_results(
         self,
-        request: Union[environment.ListContinuousTestResultsRequest, dict] = None,
+        request: Optional[
+            Union[environment.ListContinuousTestResultsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListContinuousTestResultsAsyncPager:
         r"""Fetches a list of continuous test results for a given
@@ -1125,7 +1144,7 @@ class EnvironmentsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3.types.ListContinuousTestResultsRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3.types.ListContinuousTestResultsRequest, dict]]):
                 The request object. The request message for
                 [Environments.ListContinuousTestResults][google.cloud.dialogflow.cx.v3.Environments.ListContinuousTestResults].
             parent (:class:`str`):
@@ -1203,10 +1222,10 @@ class EnvironmentsAsyncClient:
 
     async def deploy_flow(
         self,
-        request: Union[environment.DeployFlowRequest, dict] = None,
+        request: Optional[Union[environment.DeployFlowRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deploys a flow to the specified
@@ -1248,13 +1267,13 @@ class EnvironmentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3.types.DeployFlowRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3.types.DeployFlowRequest, dict]]):
                 The request object. The request message for
                 [Environments.DeployFlow][google.cloud.dialogflow.cx.v3.Environments.DeployFlow].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1313,10 +1332,10 @@ class EnvironmentsAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1367,10 +1386,10 @@ class EnvironmentsAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1421,10 +1440,10 @@ class EnvironmentsAsyncClient:
 
     async def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -1475,10 +1494,10 @@ class EnvironmentsAsyncClient:
 
     async def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1529,10 +1548,10 @@ class EnvironmentsAsyncClient:
 
     async def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -1588,14 +1607,9 @@ class EnvironmentsAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dialogflowcx",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("EnvironmentsAsyncClient",)

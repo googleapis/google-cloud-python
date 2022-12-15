@@ -16,8 +16,20 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
+
+from google.cloud.dialogflowcx_v3beta1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -66,7 +78,7 @@ class FlowsClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[FlowsTransport]:
         """Returns an appropriate transport class.
 
@@ -469,8 +481,8 @@ class FlowsClient(metaclass=FlowsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, FlowsTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, FlowsTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the flows client.
@@ -484,7 +496,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
             transport (Union[str, FlowsTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -514,6 +526,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -566,12 +579,12 @@ class FlowsClient(metaclass=FlowsClientMeta):
 
     def create_flow(
         self,
-        request: Union[gcdc_flow.CreateFlowRequest, dict] = None,
+        request: Optional[Union[gcdc_flow.CreateFlowRequest, dict]] = None,
         *,
-        parent: str = None,
-        flow: gcdc_flow.Flow = None,
+        parent: Optional[str] = None,
+        flow: Optional[gcdc_flow.Flow] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_flow.Flow:
         r"""Creates a flow in the specified agent.
@@ -705,11 +718,11 @@ class FlowsClient(metaclass=FlowsClientMeta):
 
     def delete_flow(
         self,
-        request: Union[flow.DeleteFlowRequest, dict] = None,
+        request: Optional[Union[flow.DeleteFlowRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a specified flow.
@@ -795,11 +808,11 @@ class FlowsClient(metaclass=FlowsClientMeta):
 
     def list_flows(
         self,
-        request: Union[flow.ListFlowsRequest, dict] = None,
+        request: Optional[Union[flow.ListFlowsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListFlowsPager:
         r"""Returns the list of all flows in the specified agent.
@@ -910,11 +923,11 @@ class FlowsClient(metaclass=FlowsClientMeta):
 
     def get_flow(
         self,
-        request: Union[flow.GetFlowRequest, dict] = None,
+        request: Optional[Union[flow.GetFlowRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> flow.Flow:
         r"""Retrieves the specified flow.
@@ -1033,12 +1046,12 @@ class FlowsClient(metaclass=FlowsClientMeta):
 
     def update_flow(
         self,
-        request: Union[gcdc_flow.UpdateFlowRequest, dict] = None,
+        request: Optional[Union[gcdc_flow.UpdateFlowRequest, dict]] = None,
         *,
-        flow: gcdc_flow.Flow = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        flow: Optional[gcdc_flow.Flow] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_flow.Flow:
         r"""Updates the specified flow.
@@ -1174,11 +1187,11 @@ class FlowsClient(metaclass=FlowsClientMeta):
 
     def train_flow(
         self,
-        request: Union[flow.TrainFlowRequest, dict] = None,
+        request: Optional[Union[flow.TrainFlowRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Trains the specified flow. Note that only the flow in 'draft'
@@ -1313,10 +1326,10 @@ class FlowsClient(metaclass=FlowsClientMeta):
 
     def validate_flow(
         self,
-        request: Union[flow.ValidateFlowRequest, dict] = None,
+        request: Optional[Union[flow.ValidateFlowRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> flow.FlowValidationResult:
         r"""Validates the specified flow and creates or updates
@@ -1397,11 +1410,11 @@ class FlowsClient(metaclass=FlowsClientMeta):
 
     def get_flow_validation_result(
         self,
-        request: Union[flow.GetFlowValidationResultRequest, dict] = None,
+        request: Optional[Union[flow.GetFlowValidationResultRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> flow.FlowValidationResult:
         r"""Gets the latest flow validation result. Flow
@@ -1502,10 +1515,10 @@ class FlowsClient(metaclass=FlowsClientMeta):
 
     def import_flow(
         self,
-        request: Union[flow.ImportFlowRequest, dict] = None,
+        request: Optional[Union[flow.ImportFlowRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Imports the specified flow to the specified agent from a binary
@@ -1615,10 +1628,10 @@ class FlowsClient(metaclass=FlowsClientMeta):
 
     def export_flow(
         self,
-        request: Union[flow.ExportFlowRequest, dict] = None,
+        request: Optional[Union[flow.ExportFlowRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Exports the specified flow to a binary file.
@@ -1738,10 +1751,10 @@ class FlowsClient(metaclass=FlowsClientMeta):
 
     def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1792,10 +1805,10 @@ class FlowsClient(metaclass=FlowsClientMeta):
 
     def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1846,10 +1859,10 @@ class FlowsClient(metaclass=FlowsClientMeta):
 
     def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -1900,10 +1913,10 @@ class FlowsClient(metaclass=FlowsClientMeta):
 
     def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1954,10 +1967,10 @@ class FlowsClient(metaclass=FlowsClientMeta):
 
     def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -2007,14 +2020,9 @@ class FlowsClient(metaclass=FlowsClientMeta):
         return response
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dialogflowcx",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("FlowsClient",)

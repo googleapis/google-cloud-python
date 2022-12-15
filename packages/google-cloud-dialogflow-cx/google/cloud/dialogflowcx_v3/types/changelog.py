@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -63,19 +65,19 @@ class ListChangelogsRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -86,7 +88,7 @@ class ListChangelogsResponse(proto.Message):
     [Changelogs.ListChangelogs][google.cloud.dialogflow.cx.v3.Changelogs.ListChangelogs].
 
     Attributes:
-        changelogs (Sequence[google.cloud.dialogflowcx_v3.types.Changelog]):
+        changelogs (MutableSequence[google.cloud.dialogflowcx_v3.types.Changelog]):
             The list of changelogs. There will be a maximum number of
             items returned based on the page_size field in the request.
             The changelogs will be ordered by timestamp.
@@ -100,12 +102,12 @@ class ListChangelogsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    changelogs = proto.RepeatedField(
+    changelogs: MutableSequence["Changelog"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Changelog",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -121,7 +123,7 @@ class GetChangelogRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/changelogs/<Changelog ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -149,31 +151,31 @@ class Changelog(proto.Message):
             The timestamp of the change.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    user_email = proto.Field(
+    user_email: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    action = proto.Field(
+    action: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    resource = proto.Field(
+    resource: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,

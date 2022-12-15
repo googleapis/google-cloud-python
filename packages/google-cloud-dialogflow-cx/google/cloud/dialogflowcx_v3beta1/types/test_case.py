@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import flow as gcdc_flow
@@ -84,7 +86,7 @@ class TestCase(proto.Message):
             [TestCases.CreateTestCase][google.cloud.dialogflow.cx.v3beta1.TestCases.CreateTestCase]
             will populate the name automatically. Otherwise use format:
             ``projects/<Project ID>/locations/<LocationID>/agents/ <AgentID>/testCases/<TestCase ID>``.
-        tags (Sequence[str]):
+        tags (MutableSequence[str]):
             Tags are short descriptions that users may
             apply to test cases for organizational and
             filtering purposes. Each tag should start with
@@ -98,7 +100,7 @@ class TestCase(proto.Message):
             case. Limit of 400 characters.
         test_config (google.cloud.dialogflowcx_v3beta1.types.TestConfig):
             Config for the test case.
-        test_case_conversation_turns (Sequence[google.cloud.dialogflowcx_v3beta1.types.ConversationTurn]):
+        test_case_conversation_turns (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.ConversationTurn]):
             The conversation turns uttered when the test
             case was created, in chronological order. These
             include the canonical set of agent utterances
@@ -110,38 +112,40 @@ class TestCase(proto.Message):
             The latest test result.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    tags = proto.RepeatedField(
+    tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    notes = proto.Field(
+    notes: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    test_config = proto.Field(
+    test_config: "TestConfig" = proto.Field(
         proto.MESSAGE,
         number=13,
         message="TestConfig",
     )
-    test_case_conversation_turns = proto.RepeatedField(
+    test_case_conversation_turns: MutableSequence[
+        "ConversationTurn"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="ConversationTurn",
     )
-    creation_time = proto.Field(
+    creation_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
     )
-    last_test_result = proto.Field(
+    last_test_result: "TestCaseResult" = proto.Field(
         proto.MESSAGE,
         number=12,
         message="TestCaseResult",
@@ -159,7 +163,7 @@ class TestCaseResult(proto.Message):
         environment (str):
             Environment where the test was run. If not
             set, it indicates the draft environment.
-        conversation_turns (Sequence[google.cloud.dialogflowcx_v3beta1.types.ConversationTurn]):
+        conversation_turns (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.ConversationTurn]):
             The conversation turns uttered during the
             test case replay in chronological order.
         test_result (google.cloud.dialogflowcx_v3beta1.types.TestResult):
@@ -169,25 +173,25 @@ class TestCaseResult(proto.Message):
             The time that the test was run.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    environment = proto.Field(
+    environment: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    conversation_turns = proto.RepeatedField(
+    conversation_turns: MutableSequence["ConversationTurn"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="ConversationTurn",
     )
-    test_result = proto.Field(
+    test_result: "TestResult" = proto.Field(
         proto.ENUM,
         number=4,
         enum="TestResult",
     )
-    test_time = proto.Field(
+    test_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
@@ -198,7 +202,7 @@ class TestConfig(proto.Message):
     r"""Represents configurations for a test case.
 
     Attributes:
-        tracking_parameters (Sequence[str]):
+        tracking_parameters (MutableSequence[str]):
             Session parameters to be compared when
             calculating differences.
         flow (str):
@@ -222,15 +226,15 @@ class TestConfig(proto.Message):
             start flow.
     """
 
-    tracking_parameters = proto.RepeatedField(
+    tracking_parameters: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    flow = proto.Field(
+    flow: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page = proto.Field(
+    page: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -271,21 +275,21 @@ class ConversationTurn(proto.Message):
                 Whether sentiment analysis is enabled.
         """
 
-        input = proto.Field(
+        input: session.QueryInput = proto.Field(
             proto.MESSAGE,
             number=5,
             message=session.QueryInput,
         )
-        injected_parameters = proto.Field(
+        injected_parameters: struct_pb2.Struct = proto.Field(
             proto.MESSAGE,
             number=2,
             message=struct_pb2.Struct,
         )
-        is_webhook_enabled = proto.Field(
+        is_webhook_enabled: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
-        enable_sentiment_analysis = proto.Field(
+        enable_sentiment_analysis: bool = proto.Field(
             proto.BOOL,
             number=7,
         )
@@ -297,7 +301,7 @@ class ConversationTurn(proto.Message):
             session_parameters (google.protobuf.struct_pb2.Struct):
                 The session parameters available to the bot
                 at this point.
-            differences (Sequence[google.cloud.dialogflowcx_v3beta1.types.TestRunDifference]):
+            differences (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.TestRunDifference]):
                 Output only. If this is part of a [result conversation
                 turn][TestCaseResult.conversation_turns], the list of
                 differences between the original run and the replay for this
@@ -315,7 +319,7 @@ class ConversationTurn(proto.Message):
                 The [Page][google.cloud.dialogflow.cx.v3beta1.Page] on which
                 the utterance was spoken. Only name and displayName will be
                 set.
-            text_responses (Sequence[google.cloud.dialogflowcx_v3beta1.types.ResponseMessage.Text]):
+            text_responses (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.ResponseMessage.Text]):
                 The
                 [text][google.cloud.dialogflow.cx.v3beta1.ResponseMessage.Text]
                 responses from the agent for the turn.
@@ -324,48 +328,50 @@ class ConversationTurn(proto.Message):
                 result. If set, other output is empty.
         """
 
-        session_parameters = proto.Field(
+        session_parameters: struct_pb2.Struct = proto.Field(
             proto.MESSAGE,
             number=4,
             message=struct_pb2.Struct,
         )
-        differences = proto.RepeatedField(
+        differences: MutableSequence["TestRunDifference"] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message="TestRunDifference",
         )
-        diagnostic_info = proto.Field(
+        diagnostic_info: struct_pb2.Struct = proto.Field(
             proto.MESSAGE,
             number=6,
             message=struct_pb2.Struct,
         )
-        triggered_intent = proto.Field(
+        triggered_intent: gcdc_intent.Intent = proto.Field(
             proto.MESSAGE,
             number=7,
             message=gcdc_intent.Intent,
         )
-        current_page = proto.Field(
+        current_page: gcdc_page.Page = proto.Field(
             proto.MESSAGE,
             number=8,
             message=gcdc_page.Page,
         )
-        text_responses = proto.RepeatedField(
+        text_responses: MutableSequence[
+            response_message.ResponseMessage.Text
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=9,
             message=response_message.ResponseMessage.Text,
         )
-        status = proto.Field(
+        status: status_pb2.Status = proto.Field(
             proto.MESSAGE,
             number=10,
             message=status_pb2.Status,
         )
 
-    user_input = proto.Field(
+    user_input: UserInput = proto.Field(
         proto.MESSAGE,
         number=1,
         message=UserInput,
     )
-    virtual_agent_output = proto.Field(
+    virtual_agent_output: VirtualAgentOutput = proto.Field(
         proto.MESSAGE,
         number=2,
         message=VirtualAgentOutput,
@@ -392,12 +398,12 @@ class TestRunDifference(proto.Message):
         PARAMETERS = 3
         UTTERANCE = 4
 
-    type_ = proto.Field(
+    type_: DiffType = proto.Field(
         proto.ENUM,
         number=1,
         enum=DiffType,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -410,7 +416,7 @@ class TransitionCoverage(proto.Message):
     of a parent's test cases.
 
     Attributes:
-        transitions (Sequence[google.cloud.dialogflowcx_v3beta1.types.TransitionCoverage.Transition]):
+        transitions (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.TransitionCoverage.Transition]):
             The list of Transitions present in the agent.
         coverage_score (float):
             The percent of transitions in the agent that
@@ -442,13 +448,13 @@ class TransitionCoverage(proto.Message):
                 This field is a member of `oneof`_ ``kind``.
         """
 
-        page = proto.Field(
+        page: gcdc_page.Page = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="kind",
             message=gcdc_page.Page,
         )
-        flow = proto.Field(
+        flow: gcdc_flow.Flow = proto.Field(
             proto.MESSAGE,
             number=2,
             oneof="kind",
@@ -486,43 +492,43 @@ class TransitionCoverage(proto.Message):
                 This field is a member of `oneof`_ ``detail``.
         """
 
-        source = proto.Field(
+        source: "TransitionCoverage.TransitionNode" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="TransitionCoverage.TransitionNode",
         )
-        index = proto.Field(
+        index: int = proto.Field(
             proto.INT32,
             number=4,
         )
-        target = proto.Field(
+        target: "TransitionCoverage.TransitionNode" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="TransitionCoverage.TransitionNode",
         )
-        covered = proto.Field(
+        covered: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
-        transition_route = proto.Field(
+        transition_route: gcdc_page.TransitionRoute = proto.Field(
             proto.MESSAGE,
             number=5,
             oneof="detail",
             message=gcdc_page.TransitionRoute,
         )
-        event_handler = proto.Field(
+        event_handler: gcdc_page.EventHandler = proto.Field(
             proto.MESSAGE,
             number=6,
             oneof="detail",
             message=gcdc_page.EventHandler,
         )
 
-    transitions = proto.RepeatedField(
+    transitions: MutableSequence[Transition] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=Transition,
     )
-    coverage_score = proto.Field(
+    coverage_score: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
@@ -535,7 +541,7 @@ class TransitionRouteGroupCoverage(proto.Message):
     group.
 
     Attributes:
-        coverages (Sequence[google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroupCoverage.Coverage]):
+        coverages (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroupCoverage.Coverage]):
             Transition route group coverages.
         coverage_score (float):
             The percent of transition routes in all the
@@ -549,7 +555,7 @@ class TransitionRouteGroupCoverage(proto.Message):
             route_group (google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroup):
                 Transition route group metadata. Only name
                 and displayName will be set.
-            transitions (Sequence[google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroupCoverage.Coverage.Transition]):
+            transitions (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroupCoverage.Coverage.Transition]):
                 The list of transition routes and coverage in
                 the transition route group.
             coverage_score (float):
@@ -569,37 +575,39 @@ class TransitionRouteGroupCoverage(proto.Message):
                     cases.
             """
 
-            transition_route = proto.Field(
+            transition_route: gcdc_page.TransitionRoute = proto.Field(
                 proto.MESSAGE,
                 number=1,
                 message=gcdc_page.TransitionRoute,
             )
-            covered = proto.Field(
+            covered: bool = proto.Field(
                 proto.BOOL,
                 number=2,
             )
 
-        route_group = proto.Field(
+        route_group: transition_route_group.TransitionRouteGroup = proto.Field(
             proto.MESSAGE,
             number=1,
             message=transition_route_group.TransitionRouteGroup,
         )
-        transitions = proto.RepeatedField(
+        transitions: MutableSequence[
+            "TransitionRouteGroupCoverage.Coverage.Transition"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="TransitionRouteGroupCoverage.Coverage.Transition",
         )
-        coverage_score = proto.Field(
+        coverage_score: float = proto.Field(
             proto.FLOAT,
             number=3,
         )
 
-    coverages = proto.RepeatedField(
+    coverages: MutableSequence[Coverage] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=Coverage,
     )
-    coverage_score = proto.Field(
+    coverage_score: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
@@ -611,7 +619,7 @@ class IntentCoverage(proto.Message):
     test cases.
 
     Attributes:
-        intents (Sequence[google.cloud.dialogflowcx_v3beta1.types.IntentCoverage.Intent]):
+        intents (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.IntentCoverage.Intent]):
             The list of Intents present in the agent
         coverage_score (float):
             The percent of intents in the agent that are
@@ -629,21 +637,21 @@ class IntentCoverage(proto.Message):
                 least one of the agent's test cases.
         """
 
-        intent = proto.Field(
+        intent: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        covered = proto.Field(
+        covered: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
 
-    intents = proto.RepeatedField(
+    intents: MutableSequence[Intent] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=Intent,
     )
-    coverage_score = proto.Field(
+    coverage_score: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
@@ -668,11 +676,11 @@ class CalculateCoverageRequest(proto.Message):
         PAGE_TRANSITION = 2
         TRANSITION_ROUTE_GROUP = 3
 
-    agent = proto.Field(
+    agent: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    type_ = proto.Field(
+    type_: CoverageType = proto.Field(
         proto.ENUM,
         number=2,
         enum=CoverageType,
@@ -709,23 +717,23 @@ class CalculateCoverageResponse(proto.Message):
             This field is a member of `oneof`_ ``coverage_type``.
     """
 
-    agent = proto.Field(
+    agent: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    intent_coverage = proto.Field(
+    intent_coverage: "IntentCoverage" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="coverage_type",
         message="IntentCoverage",
     )
-    transition_coverage = proto.Field(
+    transition_coverage: "TransitionCoverage" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="coverage_type",
         message="TransitionCoverage",
     )
-    route_group_coverage = proto.Field(
+    route_group_coverage: "TransitionRouteGroupCoverage" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="coverage_type",
@@ -763,19 +771,19 @@ class ListTestCasesRequest(proto.Message):
         BASIC = 1
         FULL = 2
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    view = proto.Field(
+    view: TestCaseView = proto.Field(
         proto.ENUM,
         number=4,
         enum=TestCaseView,
@@ -787,7 +795,7 @@ class ListTestCasesResponse(proto.Message):
     [TestCases.ListTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.ListTestCases].
 
     Attributes:
-        test_cases (Sequence[google.cloud.dialogflowcx_v3beta1.types.TestCase]):
+        test_cases (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.TestCase]):
             The list of test cases. There will be a maximum number of
             items returned based on the page_size field in the request.
         next_page_token (str):
@@ -800,12 +808,12 @@ class ListTestCasesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    test_cases = proto.RepeatedField(
+    test_cases: MutableSequence["TestCase"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="TestCase",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -819,16 +827,16 @@ class BatchDeleteTestCasesRequest(proto.Message):
         parent (str):
             Required. The agent to delete test cases from. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
-        names (Sequence[str]):
+        names (MutableSequence[str]):
             Required. Format of test case names:
             ``projects/<Project ID>/locations/ <Location ID>/agents/<AgentID>/testCases/<TestCase ID>``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    names = proto.RepeatedField(
+    names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -846,11 +854,11 @@ class CreateTestCaseRequest(proto.Message):
             Required. The test case to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    test_case = proto.Field(
+    test_case: "TestCase" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="TestCase",
@@ -873,12 +881,12 @@ class UpdateTestCaseRequest(proto.Message):
             cannot be updated.
     """
 
-    test_case = proto.Field(
+    test_case: "TestCase" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TestCase",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -895,7 +903,7 @@ class GetTestCaseRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/testCases/<TestCase ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -915,11 +923,11 @@ class RunTestCaseRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    environment = proto.Field(
+    environment: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -934,7 +942,7 @@ class RunTestCaseResponse(proto.Message):
             The result.
     """
 
-    result = proto.Field(
+    result: "TestCaseResult" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="TestCaseResult",
@@ -960,20 +968,20 @@ class BatchRunTestCasesRequest(proto.Message):
         environment (str):
             Optional. If not set, draft environment is assumed. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
-        test_cases (Sequence[str]):
+        test_cases (MutableSequence[str]):
             Required. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/testCases/<TestCase ID>``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    environment = proto.Field(
+    environment: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    test_cases = proto.RepeatedField(
+    test_cases: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -984,13 +992,13 @@ class BatchRunTestCasesResponse(proto.Message):
     [TestCases.BatchRunTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.BatchRunTestCases].
 
     Attributes:
-        results (Sequence[google.cloud.dialogflowcx_v3beta1.types.TestCaseResult]):
+        results (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.TestCaseResult]):
             The test case results. The detailed [conversation
             turns][google.cloud.dialogflow.cx.v3beta1.TestCaseResult.conversation_turns]
             are empty in this response.
     """
 
-    results = proto.RepeatedField(
+    results: MutableSequence["TestCaseResult"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="TestCaseResult",
@@ -1003,11 +1011,11 @@ class BatchRunTestCasesMetadata(proto.Message):
     long running operation.
 
     Attributes:
-        errors (Sequence[google.cloud.dialogflowcx_v3beta1.types.TestError]):
+        errors (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.TestError]):
             The test errors.
     """
 
-    errors = proto.RepeatedField(
+    errors: MutableSequence["TestError"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="TestError",
@@ -1026,16 +1034,16 @@ class TestError(proto.Message):
             The timestamp when the test was completed.
     """
 
-    test_case = proto.Field(
+    test_case: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    status = proto.Field(
+    status: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=2,
         message=status_pb2.Status,
     )
-    test_time = proto.Field(
+    test_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -1076,16 +1084,16 @@ class ImportTestCasesRequest(proto.Message):
             This field is a member of `oneof`_ ``source``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    gcs_uri = proto.Field(
+    gcs_uri: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="source",
     )
-    content = proto.Field(
+    content: bytes = proto.Field(
         proto.BYTES,
         number=3,
         oneof="source",
@@ -1097,12 +1105,12 @@ class ImportTestCasesResponse(proto.Message):
     [TestCases.ImportTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.ImportTestCases].
 
     Attributes:
-        names (Sequence[str]):
+        names (MutableSequence[str]):
             The unique identifiers of the new test cases. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/testCases/<TestCase ID>``.
     """
 
-    names = proto.RepeatedField(
+    names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -1114,11 +1122,11 @@ class ImportTestCasesMetadata(proto.Message):
     long running operation.
 
     Attributes:
-        errors (Sequence[google.cloud.dialogflowcx_v3beta1.types.TestCaseError]):
+        errors (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.TestCaseError]):
             Errors for failed test cases.
     """
 
-    errors = proto.RepeatedField(
+    errors: MutableSequence["TestCaseError"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="TestCaseError",
@@ -1135,12 +1143,12 @@ class TestCaseError(proto.Message):
             The status associated with the test case.
     """
 
-    test_case = proto.Field(
+    test_case: "TestCase" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TestCase",
     )
-    status = proto.Field(
+    status: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=2,
         message=status_pb2.Status,
@@ -1194,21 +1202,21 @@ class ExportTestCasesRequest(proto.Message):
         BLOB = 1
         JSON = 2
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    gcs_uri = proto.Field(
+    gcs_uri: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="destination",
     )
-    data_format = proto.Field(
+    data_format: DataFormat = proto.Field(
         proto.ENUM,
         number=3,
         enum=DataFormat,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1238,12 +1246,12 @@ class ExportTestCasesResponse(proto.Message):
             This field is a member of `oneof`_ ``destination``.
     """
 
-    gcs_uri = proto.Field(
+    gcs_uri: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="destination",
     )
-    content = proto.Field(
+    content: bytes = proto.Field(
         proto.BYTES,
         number=2,
         oneof="destination",
@@ -1302,19 +1310,19 @@ class ListTestCaseResultsRequest(proto.Message):
                1602540713.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1325,7 +1333,7 @@ class ListTestCaseResultsResponse(proto.Message):
     [TestCases.ListTestCaseResults][google.cloud.dialogflow.cx.v3beta1.TestCases.ListTestCaseResults].
 
     Attributes:
-        test_case_results (Sequence[google.cloud.dialogflowcx_v3beta1.types.TestCaseResult]):
+        test_case_results (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.TestCaseResult]):
             The list of test case results.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -1337,12 +1345,12 @@ class ListTestCaseResultsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    test_case_results = proto.RepeatedField(
+    test_case_results: MutableSequence["TestCaseResult"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="TestCaseResult",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1358,7 +1366,7 @@ class GetTestCaseResultRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/testCases/<TestCase ID>/results/<TestCaseResult ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

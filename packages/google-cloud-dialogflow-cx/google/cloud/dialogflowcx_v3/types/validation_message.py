@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -32,10 +34,10 @@ class ValidationMessage(proto.Message):
         resource_type (google.cloud.dialogflowcx_v3.types.ValidationMessage.ResourceType):
             The type of the resources where the message
             is found.
-        resources (Sequence[str]):
+        resources (MutableSequence[str]):
             The names of the resources where the message
             is found.
-        resource_names (Sequence[google.cloud.dialogflowcx_v3.types.ResourceName]):
+        resource_names (MutableSequence[google.cloud.dialogflowcx_v3.types.ResourceName]):
             The resource names of the resources where the
             message is found.
         severity (google.cloud.dialogflowcx_v3.types.ValidationMessage.Severity):
@@ -68,26 +70,26 @@ class ValidationMessage(proto.Message):
         WARNING = 2
         ERROR = 3
 
-    resource_type = proto.Field(
+    resource_type: ResourceType = proto.Field(
         proto.ENUM,
         number=1,
         enum=ResourceType,
     )
-    resources = proto.RepeatedField(
+    resources: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    resource_names = proto.RepeatedField(
+    resource_names: MutableSequence["ResourceName"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="ResourceName",
     )
-    severity = proto.Field(
+    severity: Severity = proto.Field(
         proto.ENUM,
         number=3,
         enum=Severity,
     )
-    detail = proto.Field(
+    detail: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -103,11 +105,11 @@ class ResourceName(proto.Message):
             Display name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )

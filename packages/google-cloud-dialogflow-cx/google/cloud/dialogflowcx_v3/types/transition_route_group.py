@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import page
@@ -49,20 +51,20 @@ class TransitionRouteGroup(proto.Message):
             transition route group, unique within the flow.
             The display name can be no longer than 30
             characters.
-        transition_routes (Sequence[google.cloud.dialogflowcx_v3.types.TransitionRoute]):
+        transition_routes (MutableSequence[google.cloud.dialogflowcx_v3.types.TransitionRoute]):
             Transition routes associated with the
             [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup].
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    transition_routes = proto.RepeatedField(
+    transition_routes: MutableSequence[page.TransitionRoute] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=page.TransitionRoute,
@@ -100,19 +102,19 @@ class ListTransitionRouteGroupsRequest(proto.Message):
             before they can be used.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -123,7 +125,7 @@ class ListTransitionRouteGroupsResponse(proto.Message):
     [TransitionRouteGroups.ListTransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.ListTransitionRouteGroups].
 
     Attributes:
-        transition_route_groups (Sequence[google.cloud.dialogflowcx_v3.types.TransitionRouteGroup]):
+        transition_route_groups (MutableSequence[google.cloud.dialogflowcx_v3.types.TransitionRouteGroup]):
             The list of transition route groups. There will be a maximum
             number of items returned based on the page_size field in the
             request. The list may in some cases be empty or contain
@@ -139,12 +141,14 @@ class ListTransitionRouteGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    transition_route_groups = proto.RepeatedField(
+    transition_route_groups: MutableSequence[
+        "TransitionRouteGroup"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="TransitionRouteGroup",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -176,11 +180,11 @@ class GetTransitionRouteGroupRequest(proto.Message):
             before they can be used.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -215,16 +219,16 @@ class CreateTransitionRouteGroupRequest(proto.Message):
             before they can be used.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    transition_route_group = proto.Field(
+    transition_route_group: "TransitionRouteGroup" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="TransitionRouteGroup",
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -256,17 +260,17 @@ class UpdateTransitionRouteGroupRequest(proto.Message):
             before they can be used.
     """
 
-    transition_route_group = proto.Field(
+    transition_route_group: "TransitionRouteGroup" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TransitionRouteGroup",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -294,11 +298,11 @@ class DeleteTransitionRouteGroupRequest(proto.Message):
                transition route group, as well as any reference to it.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=2,
     )

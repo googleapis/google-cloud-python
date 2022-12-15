@@ -16,8 +16,19 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
+
+from google.cloud.dialogflowcx_v3beta1 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -185,9 +196,9 @@ class SecuritySettingsServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, SecuritySettingsServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the security settings service client.
@@ -231,14 +242,14 @@ class SecuritySettingsServiceAsyncClient:
 
     async def create_security_settings(
         self,
-        request: Union[
-            gcdc_security_settings.CreateSecuritySettingsRequest, dict
+        request: Optional[
+            Union[gcdc_security_settings.CreateSecuritySettingsRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        security_settings: gcdc_security_settings.SecuritySettings = None,
+        parent: Optional[str] = None,
+        security_settings: Optional[gcdc_security_settings.SecuritySettings] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_security_settings.SecuritySettings:
         r"""Create security settings in the specified location.
@@ -275,7 +286,7 @@ class SecuritySettingsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3beta1.types.CreateSecuritySettingsRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3beta1.types.CreateSecuritySettingsRequest, dict]]):
                 The request object. The request message for
                 [SecuritySettings.CreateSecuritySettings][].
             parent (:class:`str`):
@@ -356,11 +367,13 @@ class SecuritySettingsServiceAsyncClient:
 
     async def get_security_settings(
         self,
-        request: Union[security_settings.GetSecuritySettingsRequest, dict] = None,
+        request: Optional[
+            Union[security_settings.GetSecuritySettingsRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> security_settings.SecuritySettings:
         r"""Retrieves the specified
@@ -394,7 +407,7 @@ class SecuritySettingsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3beta1.types.GetSecuritySettingsRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3beta1.types.GetSecuritySettingsRequest, dict]]):
                 The request object. The request message for
                 [SecuritySettingsService.GetSecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService.GetSecuritySettings].
             name (:class:`str`):
@@ -464,14 +477,14 @@ class SecuritySettingsServiceAsyncClient:
 
     async def update_security_settings(
         self,
-        request: Union[
-            gcdc_security_settings.UpdateSecuritySettingsRequest, dict
+        request: Optional[
+            Union[gcdc_security_settings.UpdateSecuritySettingsRequest, dict]
         ] = None,
         *,
-        security_settings: gcdc_security_settings.SecuritySettings = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        security_settings: Optional[gcdc_security_settings.SecuritySettings] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_security_settings.SecuritySettings:
         r"""Updates the specified
@@ -508,7 +521,7 @@ class SecuritySettingsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3beta1.types.UpdateSecuritySettingsRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3beta1.types.UpdateSecuritySettingsRequest, dict]]):
                 The request object. The request message for
                 [SecuritySettingsService.UpdateSecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService.UpdateSecuritySettings].
             security_settings (:class:`google.cloud.dialogflowcx_v3beta1.types.SecuritySettings`):
@@ -590,11 +603,13 @@ class SecuritySettingsServiceAsyncClient:
 
     async def list_security_settings(
         self,
-        request: Union[security_settings.ListSecuritySettingsRequest, dict] = None,
+        request: Optional[
+            Union[security_settings.ListSecuritySettingsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSecuritySettingsAsyncPager:
         r"""Returns the list of all security settings in the
@@ -628,7 +643,7 @@ class SecuritySettingsServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3beta1.types.ListSecuritySettingsRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3beta1.types.ListSecuritySettingsRequest, dict]]):
                 The request object. The request message for
                 [SecuritySettings.ListSecuritySettings][].
             parent (:class:`str`):
@@ -707,11 +722,13 @@ class SecuritySettingsServiceAsyncClient:
 
     async def delete_security_settings(
         self,
-        request: Union[security_settings.DeleteSecuritySettingsRequest, dict] = None,
+        request: Optional[
+            Union[security_settings.DeleteSecuritySettingsRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified
@@ -741,7 +758,7 @@ class SecuritySettingsServiceAsyncClient:
                 await client.delete_security_settings(request=request)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3beta1.types.DeleteSecuritySettingsRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3beta1.types.DeleteSecuritySettingsRequest, dict]]):
                 The request object. The request message for
                 [SecuritySettings.DeleteSecuritySettings][].
             name (:class:`str`):
@@ -800,10 +817,10 @@ class SecuritySettingsServiceAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -854,10 +871,10 @@ class SecuritySettingsServiceAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -908,10 +925,10 @@ class SecuritySettingsServiceAsyncClient:
 
     async def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -962,10 +979,10 @@ class SecuritySettingsServiceAsyncClient:
 
     async def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1016,10 +1033,10 @@ class SecuritySettingsServiceAsyncClient:
 
     async def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -1075,14 +1092,9 @@ class SecuritySettingsServiceAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dialogflowcx",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("SecuritySettingsServiceAsyncClient",)

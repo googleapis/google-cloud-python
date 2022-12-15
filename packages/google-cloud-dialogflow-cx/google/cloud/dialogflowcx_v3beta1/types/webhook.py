@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import response_message
@@ -95,10 +97,10 @@ class Webhook(proto.Message):
                 The user name for HTTP Basic authentication.
             password (str):
                 The password for HTTP Basic authentication.
-            request_headers (Mapping[str, str]):
+            request_headers (MutableMapping[str, str]):
                 The HTTP request headers to send together
                 with webhook requests.
-            allowed_ca_certs (Sequence[bytes]):
+            allowed_ca_certs (MutableSequence[bytes]):
                 Optional. Specifies a list of allowed custom CA certificates
                 (in DER format) for HTTPS verification. This overrides the
                 default SSL trust store. If this is empty or unspecified,
@@ -115,24 +117,24 @@ class Webhook(proto.Message):
                         -extfile <(printf "\nsubjectAltName='DNS:www.example.com'")
         """
 
-        uri = proto.Field(
+        uri: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        username = proto.Field(
+        username: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        password = proto.Field(
+        password: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        request_headers = proto.MapField(
+        request_headers: MutableMapping[str, str] = proto.MapField(
             proto.STRING,
             proto.STRING,
             number=4,
         )
-        allowed_ca_certs = proto.RepeatedField(
+        allowed_ca_certs: MutableSequence[bytes] = proto.RepeatedField(
             proto.BYTES,
             number=5,
         )
@@ -154,42 +156,42 @@ class Webhook(proto.Message):
                 webhook.
         """
 
-        service = proto.Field(
+        service: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        generic_web_service = proto.Field(
+        generic_web_service: "Webhook.GenericWebService" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="Webhook.GenericWebService",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    generic_web_service = proto.Field(
+    generic_web_service: GenericWebService = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="webhook",
         message=GenericWebService,
     )
-    service_directory = proto.Field(
+    service_directory: ServiceDirectoryConfig = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="webhook",
         message=ServiceDirectoryConfig,
     )
-    timeout = proto.Field(
+    timeout: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=6,
         message=duration_pb2.Duration,
     )
-    disabled = proto.Field(
+    disabled: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -211,15 +213,15 @@ class ListWebhooksRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -230,7 +232,7 @@ class ListWebhooksResponse(proto.Message):
     [Webhooks.ListWebhooks][google.cloud.dialogflow.cx.v3beta1.Webhooks.ListWebhooks].
 
     Attributes:
-        webhooks (Sequence[google.cloud.dialogflowcx_v3beta1.types.Webhook]):
+        webhooks (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Webhook]):
             The list of webhooks. There will be a maximum number of
             items returned based on the page_size field in the request.
         next_page_token (str):
@@ -243,12 +245,12 @@ class ListWebhooksResponse(proto.Message):
     def raw_page(self):
         return self
 
-    webhooks = proto.RepeatedField(
+    webhooks: MutableSequence["Webhook"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Webhook",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -264,7 +266,7 @@ class GetWebhookRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/webhooks/<Webhook ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -282,11 +284,11 @@ class CreateWebhookRequest(proto.Message):
             Required. The webhook to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    webhook = proto.Field(
+    webhook: "Webhook" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Webhook",
@@ -306,12 +308,12 @@ class UpdateWebhookRequest(proto.Message):
             updated.
     """
 
-    webhook = proto.Field(
+    webhook: "Webhook" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Webhook",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -341,11 +343,11 @@ class DeleteWebhookRequest(proto.Message):
                fulfillments that point to this webhook will be removed).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -410,7 +412,7 @@ class WebhookRequest(proto.Message):
             Information about page status.
         session_info (google.cloud.dialogflowcx_v3beta1.types.SessionInfo):
             Information about session status.
-        messages (Sequence[google.cloud.dialogflowcx_v3beta1.types.ResponseMessage]):
+        messages (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.ResponseMessage]):
             The list of rich message responses to present to the user.
             Webhook can choose to append or replace this list in
             [WebhookResponse.fulfillment_response][google.cloud.dialogflow.cx.v3beta1.WebhookResponse.fulfillment_response];
@@ -438,7 +440,7 @@ class WebhookRequest(proto.Message):
                 called, but it could be used for other purposes.
         """
 
-        tag = proto.Field(
+        tag: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -454,7 +456,7 @@ class WebhookRequest(proto.Message):
             display_name (str):
                 Always present. The display name of the last matched
                 [intent][google.cloud.dialogflow.cx.v3beta1.Intent].
-            parameters (Mapping[str, google.cloud.dialogflowcx_v3beta1.types.WebhookRequest.IntentInfo.IntentParameterValue]):
+            parameters (MutableMapping[str, google.cloud.dialogflowcx_v3beta1.types.WebhookRequest.IntentInfo.IntentParameterValue]):
                 Parameters identified as a result of intent
                 matching. This is a map of the name of the
                 identified parameter to the value of the
@@ -479,31 +481,33 @@ class WebhookRequest(proto.Message):
                     parameter extracted from user utterance.
             """
 
-            original_value = proto.Field(
+            original_value: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            resolved_value = proto.Field(
+            resolved_value: struct_pb2.Value = proto.Field(
                 proto.MESSAGE,
                 number=2,
                 message=struct_pb2.Value,
             )
 
-        last_matched_intent = proto.Field(
+        last_matched_intent: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        display_name = proto.Field(
+        display_name: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        parameters = proto.MapField(
+        parameters: MutableMapping[
+            str, "WebhookRequest.IntentInfo.IntentParameterValue"
+        ] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=2,
             message="WebhookRequest.IntentInfo.IntentParameterValue",
         )
-        confidence = proto.Field(
+        confidence: float = proto.Field(
             proto.FLOAT,
             number=4,
         )
@@ -521,74 +525,74 @@ class WebhookRequest(proto.Message):
                 of score (positive or negative).
         """
 
-        score = proto.Field(
+        score: float = proto.Field(
             proto.FLOAT,
             number=1,
         )
-        magnitude = proto.Field(
+        magnitude: float = proto.Field(
             proto.FLOAT,
             number=2,
         )
 
-    detect_intent_response_id = proto.Field(
+    detect_intent_response_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    text = proto.Field(
+    text: str = proto.Field(
         proto.STRING,
         number=10,
         oneof="query",
     )
-    trigger_intent = proto.Field(
+    trigger_intent: str = proto.Field(
         proto.STRING,
         number=11,
         oneof="query",
     )
-    transcript = proto.Field(
+    transcript: str = proto.Field(
         proto.STRING,
         number=12,
         oneof="query",
     )
-    trigger_event = proto.Field(
+    trigger_event: str = proto.Field(
         proto.STRING,
         number=14,
         oneof="query",
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=15,
     )
-    fulfillment_info = proto.Field(
+    fulfillment_info: FulfillmentInfo = proto.Field(
         proto.MESSAGE,
         number=6,
         message=FulfillmentInfo,
     )
-    intent_info = proto.Field(
+    intent_info: IntentInfo = proto.Field(
         proto.MESSAGE,
         number=3,
         message=IntentInfo,
     )
-    page_info = proto.Field(
+    page_info: "PageInfo" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="PageInfo",
     )
-    session_info = proto.Field(
+    session_info: "SessionInfo" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="SessionInfo",
     )
-    messages = proto.RepeatedField(
+    messages: MutableSequence[response_message.ResponseMessage] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=response_message.ResponseMessage,
     )
-    payload = proto.Field(
+    payload: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=8,
         message=struct_pb2.Struct,
     )
-    sentiment_analysis_result = proto.Field(
+    sentiment_analysis_result: SentimentAnalysisResult = proto.Field(
         proto.MESSAGE,
         number=9,
         message=SentimentAnalysisResult,
@@ -638,7 +642,7 @@ class WebhookResponse(proto.Message):
         r"""Represents a fulfillment response to the user.
 
         Attributes:
-            messages (Sequence[google.cloud.dialogflowcx_v3beta1.types.ResponseMessage]):
+            messages (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.ResponseMessage]):
                 The list of rich message responses to present
                 to the user.
             merge_behavior (google.cloud.dialogflowcx_v3beta1.types.WebhookResponse.FulfillmentResponse.MergeBehavior):
@@ -651,43 +655,47 @@ class WebhookResponse(proto.Message):
             APPEND = 1
             REPLACE = 2
 
-        messages = proto.RepeatedField(
+        messages: MutableSequence[
+            response_message.ResponseMessage
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=response_message.ResponseMessage,
         )
-        merge_behavior = proto.Field(
-            proto.ENUM,
-            number=2,
-            enum="WebhookResponse.FulfillmentResponse.MergeBehavior",
+        merge_behavior: "WebhookResponse.FulfillmentResponse.MergeBehavior" = (
+            proto.Field(
+                proto.ENUM,
+                number=2,
+                enum="WebhookResponse.FulfillmentResponse.MergeBehavior",
+            )
         )
 
-    fulfillment_response = proto.Field(
+    fulfillment_response: FulfillmentResponse = proto.Field(
         proto.MESSAGE,
         number=1,
         message=FulfillmentResponse,
     )
-    page_info = proto.Field(
+    page_info: "PageInfo" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="PageInfo",
     )
-    session_info = proto.Field(
+    session_info: "SessionInfo" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="SessionInfo",
     )
-    payload = proto.Field(
+    payload: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=4,
         message=struct_pb2.Struct,
     )
-    target_page = proto.Field(
+    target_page: str = proto.Field(
         proto.STRING,
         number=5,
         oneof="transition",
     )
-    target_flow = proto.Field(
+    target_flow: str = proto.Field(
         proto.STRING,
         number=6,
         oneof="transition",
@@ -724,7 +732,7 @@ class PageInfo(proto.Message):
         r"""Represents form information.
 
         Attributes:
-            parameter_info (Sequence[google.cloud.dialogflowcx_v3beta1.types.PageInfo.FormInfo.ParameterInfo]):
+            parameter_info (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.PageInfo.FormInfo.ParameterInfo]):
                 Optional for both
                 [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest]
                 and
@@ -785,44 +793,46 @@ class PageInfo(proto.Message):
                 INVALID = 2
                 FILLED = 3
 
-            display_name = proto.Field(
+            display_name: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            required = proto.Field(
+            required: bool = proto.Field(
                 proto.BOOL,
                 number=2,
             )
-            state = proto.Field(
+            state: "PageInfo.FormInfo.ParameterInfo.ParameterState" = proto.Field(
                 proto.ENUM,
                 number=3,
                 enum="PageInfo.FormInfo.ParameterInfo.ParameterState",
             )
-            value = proto.Field(
+            value: struct_pb2.Value = proto.Field(
                 proto.MESSAGE,
                 number=4,
                 message=struct_pb2.Value,
             )
-            just_collected = proto.Field(
+            just_collected: bool = proto.Field(
                 proto.BOOL,
                 number=5,
             )
 
-        parameter_info = proto.RepeatedField(
+        parameter_info: MutableSequence[
+            "PageInfo.FormInfo.ParameterInfo"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="PageInfo.FormInfo.ParameterInfo",
         )
 
-    current_page = proto.Field(
+    current_page: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    form_info = proto.Field(
+    form_info: FormInfo = proto.Field(
         proto.MESSAGE,
         number=3,
         message=FormInfo,
@@ -847,7 +857,7 @@ class SessionInfo(proto.Message):
             or
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>``
             if environment is specified.
-        parameters (Mapping[str, google.protobuf.struct_pb2.Value]):
+        parameters (MutableMapping[str, google.protobuf.struct_pb2.Value]):
             Optional for
             [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest].
             Optional for
@@ -860,11 +870,11 @@ class SessionInfo(proto.Message):
             The map is keyed by parameters' display names.
     """
 
-    session = proto.Field(
+    session: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    parameters = proto.MapField(
+    parameters: MutableMapping[str, struct_pb2.Value] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=2,

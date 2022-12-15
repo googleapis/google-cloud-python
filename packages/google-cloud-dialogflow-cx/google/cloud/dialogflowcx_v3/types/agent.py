@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import (
@@ -52,7 +54,7 @@ class SpeechToTextSettings(proto.Message):
             recognition.
     """
 
-    enable_speech_adaptation = proto.Field(
+    enable_speech_adaptation: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
@@ -91,7 +93,7 @@ class Agent(proto.Message):
             field cannot be set by the
             [Agents.UpdateAgent][google.cloud.dialogflow.cx.v3.Agents.UpdateAgent]
             method.
-        supported_language_codes (Sequence[str]):
+        supported_language_codes (MutableSequence[str]):
             The list of all languages supported by the agent (except for
             the ``default_language_code``).
         time_zone (str):
@@ -139,60 +141,60 @@ class Agent(proto.Message):
             level.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    default_language_code = proto.Field(
+    default_language_code: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    supported_language_codes = proto.RepeatedField(
+    supported_language_codes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    time_zone = proto.Field(
+    time_zone: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    avatar_uri = proto.Field(
+    avatar_uri: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    speech_to_text_settings = proto.Field(
+    speech_to_text_settings: "SpeechToTextSettings" = proto.Field(
         proto.MESSAGE,
         number=13,
         message="SpeechToTextSettings",
     )
-    start_flow = proto.Field(
+    start_flow: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    security_settings = proto.Field(
+    security_settings: str = proto.Field(
         proto.STRING,
         number=17,
     )
-    enable_stackdriver_logging = proto.Field(
+    enable_stackdriver_logging: bool = proto.Field(
         proto.BOOL,
         number=18,
     )
-    enable_spell_correction = proto.Field(
+    enable_spell_correction: bool = proto.Field(
         proto.BOOL,
         number=20,
     )
-    locked = proto.Field(
+    locked: bool = proto.Field(
         proto.BOOL,
         number=27,
     )
-    advanced_settings = proto.Field(
+    advanced_settings: gcdc_advanced_settings.AdvancedSettings = proto.Field(
         proto.MESSAGE,
         number=22,
         message=gcdc_advanced_settings.AdvancedSettings,
@@ -215,15 +217,15 @@ class ListAgentsRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -234,7 +236,7 @@ class ListAgentsResponse(proto.Message):
     [Agents.ListAgents][google.cloud.dialogflow.cx.v3.Agents.ListAgents].
 
     Attributes:
-        agents (Sequence[google.cloud.dialogflowcx_v3.types.Agent]):
+        agents (MutableSequence[google.cloud.dialogflowcx_v3.types.Agent]):
             The list of agents. There will be a maximum number of items
             returned based on the page_size field in the request.
         next_page_token (str):
@@ -247,12 +249,12 @@ class ListAgentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    agents = proto.RepeatedField(
+    agents: MutableSequence["Agent"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Agent",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -268,7 +270,7 @@ class GetAgentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -286,11 +288,11 @@ class CreateAgentRequest(proto.Message):
             Required. The agent to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    agent = proto.Field(
+    agent: "Agent" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Agent",
@@ -310,12 +312,12 @@ class UpdateAgentRequest(proto.Message):
             updated.
     """
 
-    agent = proto.Field(
+    agent: "Agent" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Agent",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -332,7 +334,7 @@ class DeleteAgentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -372,20 +374,20 @@ class ExportAgentRequest(proto.Message):
         DATA_FORMAT_UNSPECIFIED = 0
         BLOB = 1
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    agent_uri = proto.Field(
+    agent_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    data_format = proto.Field(
+    data_format: DataFormat = proto.Field(
         proto.ENUM,
         number=3,
         enum=DataFormat,
     )
-    environment = proto.Field(
+    environment: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -415,12 +417,12 @@ class ExportAgentResponse(proto.Message):
             This field is a member of `oneof`_ ``agent``.
     """
 
-    agent_uri = proto.Field(
+    agent_uri: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="agent",
     )
-    agent_content = proto.Field(
+    agent_content: bytes = proto.Field(
         proto.BYTES,
         number=2,
         oneof="agent",
@@ -469,21 +471,21 @@ class RestoreAgentRequest(proto.Message):
         KEEP = 1
         FALLBACK = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    agent_uri = proto.Field(
+    agent_uri: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="agent",
     )
-    agent_content = proto.Field(
+    agent_content: bytes = proto.Field(
         proto.BYTES,
         number=3,
         oneof="agent",
     )
-    restore_option = proto.Field(
+    restore_option: RestoreOption = proto.Field(
         proto.ENUM,
         number=5,
         enum=RestoreOption,
@@ -503,11 +505,11 @@ class ValidateAgentRequest(proto.Message):
             language is used.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -526,11 +528,11 @@ class GetAgentValidationResultRequest(proto.Message):
             language is used.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -545,15 +547,17 @@ class AgentValidationResult(proto.Message):
             The unique identifier of the agent validation result.
             Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/validationResult``.
-        flow_validation_results (Sequence[google.cloud.dialogflowcx_v3.types.FlowValidationResult]):
+        flow_validation_results (MutableSequence[google.cloud.dialogflowcx_v3.types.FlowValidationResult]):
             Contains all flow validation results.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    flow_validation_results = proto.RepeatedField(
+    flow_validation_results: MutableSequence[
+        flow.FlowValidationResult
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=flow.FlowValidationResult,

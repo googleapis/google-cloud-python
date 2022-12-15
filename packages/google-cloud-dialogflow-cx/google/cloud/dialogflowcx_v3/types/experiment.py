@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import duration_pb2  # type: ignore
@@ -96,7 +98,7 @@ class Experiment(proto.Message):
             enabled, default value and maximum will be 30
             days. If auto-rollout is enabled, default value
             and maximum will be 6 days.
-        variants_history (Sequence[google.cloud.dialogflowcx_v3.types.VariantsHistory]):
+        variants_history (MutableSequence[google.cloud.dialogflowcx_v3.types.VariantsHistory]):
             The history of updates to the experiment
             variants.
     """
@@ -128,11 +130,11 @@ class Experiment(proto.Message):
                 This field is a member of `oneof`_ ``variants``.
         """
 
-        condition = proto.Field(
+        condition: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        version_variants = proto.Field(
+        version_variants: "VersionVariants" = proto.Field(
             proto.MESSAGE,
             number=2,
             oneof="variants",
@@ -144,7 +146,7 @@ class Experiment(proto.Message):
         optimize and the confidence interval.
 
         Attributes:
-            version_metrics (Sequence[google.cloud.dialogflowcx_v3.types.Experiment.Result.VersionMetrics]):
+            version_metrics (MutableSequence[google.cloud.dialogflowcx_v3.types.Experiment.Result.VersionMetrics]):
                 Version variants and metrics.
             last_update_time (google.protobuf.timestamp_pb2.Timestamp):
                 The last time the experiment's stats data was
@@ -186,19 +188,19 @@ class Experiment(proto.Message):
                     Upper bound of the interval.
             """
 
-            confidence_level = proto.Field(
+            confidence_level: float = proto.Field(
                 proto.DOUBLE,
                 number=1,
             )
-            ratio = proto.Field(
+            ratio: float = proto.Field(
                 proto.DOUBLE,
                 number=2,
             )
-            lower_bound = proto.Field(
+            lower_bound: float = proto.Field(
                 proto.DOUBLE,
                 number=3,
             )
-            upper_bound = proto.Field(
+            upper_bound: float = proto.Field(
                 proto.DOUBLE,
                 number=4,
             )
@@ -233,27 +235,27 @@ class Experiment(proto.Message):
                     than all other treatments in the experiment
             """
 
-            type_ = proto.Field(
+            type_: "Experiment.Result.MetricType" = proto.Field(
                 proto.ENUM,
                 number=1,
                 enum="Experiment.Result.MetricType",
             )
-            count_type = proto.Field(
+            count_type: "Experiment.Result.CountType" = proto.Field(
                 proto.ENUM,
                 number=5,
                 enum="Experiment.Result.CountType",
             )
-            ratio = proto.Field(
+            ratio: float = proto.Field(
                 proto.DOUBLE,
                 number=2,
                 oneof="value",
             )
-            count = proto.Field(
+            count: float = proto.Field(
                 proto.DOUBLE,
                 number=4,
                 oneof="value",
             )
-            confidence_interval = proto.Field(
+            confidence_interval: "Experiment.Result.ConfidenceInterval" = proto.Field(
                 proto.MESSAGE,
                 number=3,
                 message="Experiment.Result.ConfidenceInterval",
@@ -267,7 +269,7 @@ class Experiment(proto.Message):
                     The name of the flow
                     [Version][google.cloud.dialogflow.cx.v3.Version]. Format:
                     ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
-                metrics (Sequence[google.cloud.dialogflowcx_v3.types.Experiment.Result.Metric]):
+                metrics (MutableSequence[google.cloud.dialogflowcx_v3.types.Experiment.Result.Metric]):
                     The metrics and corresponding confidence
                     intervals in the inference result.
                 session_count (int):
@@ -275,98 +277,100 @@ class Experiment(proto.Message):
                     this version.
             """
 
-            version = proto.Field(
+            version: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            metrics = proto.RepeatedField(
+            metrics: MutableSequence["Experiment.Result.Metric"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="Experiment.Result.Metric",
             )
-            session_count = proto.Field(
+            session_count: int = proto.Field(
                 proto.INT32,
                 number=3,
             )
 
-        version_metrics = proto.RepeatedField(
+        version_metrics: MutableSequence[
+            "Experiment.Result.VersionMetrics"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Experiment.Result.VersionMetrics",
         )
-        last_update_time = proto.Field(
+        last_update_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=2,
             message=timestamp_pb2.Timestamp,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=4,
         enum=State,
     )
-    definition = proto.Field(
+    definition: Definition = proto.Field(
         proto.MESSAGE,
         number=5,
         message=Definition,
     )
-    rollout_config = proto.Field(
+    rollout_config: "RolloutConfig" = proto.Field(
         proto.MESSAGE,
         number=14,
         message="RolloutConfig",
     )
-    rollout_state = proto.Field(
+    rollout_state: "RolloutState" = proto.Field(
         proto.MESSAGE,
         number=15,
         message="RolloutState",
     )
-    rollout_failure_reason = proto.Field(
+    rollout_failure_reason: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    result = proto.Field(
+    result: Result = proto.Field(
         proto.MESSAGE,
         number=6,
         message=Result,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    last_update_time = proto.Field(
+    last_update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
     )
-    experiment_length = proto.Field(
+    experiment_length: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=11,
         message=duration_pb2.Duration,
     )
-    variants_history = proto.RepeatedField(
+    variants_history: MutableSequence["VariantsHistory"] = proto.RepeatedField(
         proto.MESSAGE,
         number=12,
         message="VariantsHistory",
@@ -377,7 +381,7 @@ class VersionVariants(proto.Message):
     r"""A list of flow version variants.
 
     Attributes:
-        variants (Sequence[google.cloud.dialogflowcx_v3.types.VersionVariants.Variant]):
+        variants (MutableSequence[google.cloud.dialogflowcx_v3.types.VersionVariants.Variant]):
             A list of flow version variants.
     """
 
@@ -396,20 +400,20 @@ class VersionVariants(proto.Message):
                 Whether the variant is for the control group.
         """
 
-        version = proto.Field(
+        version: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        traffic_allocation = proto.Field(
+        traffic_allocation: float = proto.Field(
             proto.FLOAT,
             number=2,
         )
-        is_control_group = proto.Field(
+        is_control_group: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
 
-    variants = proto.RepeatedField(
+    variants: MutableSequence[Variant] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=Variant,
@@ -430,13 +434,13 @@ class VariantsHistory(proto.Message):
             Update time of the variants.
     """
 
-    version_variants = proto.Field(
+    version_variants: "VersionVariants" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="variants",
         message="VersionVariants",
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
@@ -447,7 +451,7 @@ class RolloutConfig(proto.Message):
     r"""The configuration for auto rollout.
 
     Attributes:
-        rollout_steps (Sequence[google.cloud.dialogflowcx_v3.types.RolloutConfig.RolloutStep]):
+        rollout_steps (MutableSequence[google.cloud.dialogflowcx_v3.types.RolloutConfig.RolloutStep]):
             Steps to roll out a flow version. Steps
             should be sorted by percentage in ascending
             order.
@@ -482,30 +486,30 @@ class RolloutConfig(proto.Message):
                 hour.
         """
 
-        display_name = proto.Field(
+        display_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        traffic_percent = proto.Field(
+        traffic_percent: int = proto.Field(
             proto.INT32,
             number=2,
         )
-        min_duration = proto.Field(
+        min_duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=3,
             message=duration_pb2.Duration,
         )
 
-    rollout_steps = proto.RepeatedField(
+    rollout_steps: MutableSequence[RolloutStep] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=RolloutStep,
     )
-    rollout_condition = proto.Field(
+    rollout_condition: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    failure_condition = proto.Field(
+    failure_condition: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -525,15 +529,15 @@ class RolloutState(proto.Message):
             Start time of the current step.
     """
 
-    step = proto.Field(
+    step: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    step_index = proto.Field(
+    step_index: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
@@ -558,15 +562,15 @@ class ListExperimentsRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -577,7 +581,7 @@ class ListExperimentsResponse(proto.Message):
     [Experiments.ListExperiments][google.cloud.dialogflow.cx.v3.Experiments.ListExperiments].
 
     Attributes:
-        experiments (Sequence[google.cloud.dialogflowcx_v3.types.Experiment]):
+        experiments (MutableSequence[google.cloud.dialogflowcx_v3.types.Experiment]):
             The list of experiments. There will be a maximum number of
             items returned based on the page_size field in the request.
             The list may in some cases be empty or contain fewer entries
@@ -592,12 +596,12 @@ class ListExperimentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    experiments = proto.RepeatedField(
+    experiments: MutableSequence["Experiment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Experiment",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -615,7 +619,7 @@ class GetExperimentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/experiments/<Experiment ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -636,11 +640,11 @@ class CreateExperimentRequest(proto.Message):
             Required. The experiment to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    experiment = proto.Field(
+    experiment: "Experiment" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Experiment",
@@ -659,12 +663,12 @@ class UpdateExperimentRequest(proto.Message):
             get updated.
     """
 
-    experiment = proto.Field(
+    experiment: "Experiment" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Experiment",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -683,7 +687,7 @@ class DeleteExperimentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/experiments/<Experiment ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -699,7 +703,7 @@ class StartExperimentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/experiments/<Experiment ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -715,7 +719,7 @@ class StopExperimentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/experiments/<Experiment ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import test_case
@@ -70,7 +72,7 @@ class Environment(proto.Message):
             environment. The maximum length is 500
             characters. If exceeded, the request is
             rejected.
-        version_configs (Sequence[google.cloud.dialogflowcx_v3.types.Environment.VersionConfig]):
+        version_configs (MutableSequence[google.cloud.dialogflowcx_v3.types.Environment.VersionConfig]):
             Required. A list of configurations for flow versions. You
             should include version configs for all flows that are
             reachable from [``Start Flow``][Agent.start_flow] in the
@@ -95,7 +97,7 @@ class Environment(proto.Message):
                 ID>/flows/<Flow ID>/versions/<Version ID>.
         """
 
-        version = proto.Field(
+        version: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -104,7 +106,7 @@ class Environment(proto.Message):
         r"""The configuration for continuous tests.
 
         Attributes:
-            test_cases (Sequence[str]):
+            test_cases (MutableSequence[str]):
                 A list of test case names to run. They should be under the
                 same agent. Format of each test case name:
                 ``projects/<Project ID>/locations/ <Location ID>/agents/<AgentID>/testCases/<TestCase ID>``
@@ -119,15 +121,15 @@ class Environment(proto.Message):
                 false.
         """
 
-        test_cases = proto.RepeatedField(
+        test_cases: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        enable_continuous_run = proto.Field(
+        enable_continuous_run: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
-        enable_predeployment_run = proto.Field(
+        enable_predeployment_run: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
@@ -136,7 +138,7 @@ class Environment(proto.Message):
         r"""Configuration for webhooks.
 
         Attributes:
-            webhook_overrides (Sequence[google.cloud.dialogflowcx_v3.types.Webhook]):
+            webhook_overrides (MutableSequence[google.cloud.dialogflowcx_v3.types.Webhook]):
                 The list of webhooks to override for the agent environment.
                 The webhook must exist in the agent. You can override fields
                 in
@@ -145,40 +147,40 @@ class Environment(proto.Message):
                 [``service_directory``][google.cloud.dialogflow.cx.v3.Webhook.service_directory].
         """
 
-        webhook_overrides = proto.RepeatedField(
+        webhook_overrides: MutableSequence[webhook.Webhook] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=webhook.Webhook,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    version_configs = proto.RepeatedField(
+    version_configs: MutableSequence[VersionConfig] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=VersionConfig,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    test_cases_config = proto.Field(
+    test_cases_config: TestCasesConfig = proto.Field(
         proto.MESSAGE,
         number=7,
         message=TestCasesConfig,
     )
-    webhook_config = proto.Field(
+    webhook_config: WebhookConfig = proto.Field(
         proto.MESSAGE,
         number=10,
         message=WebhookConfig,
@@ -202,15 +204,15 @@ class ListEnvironmentsRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -221,7 +223,7 @@ class ListEnvironmentsResponse(proto.Message):
     [Environments.ListEnvironments][google.cloud.dialogflow.cx.v3.Environments.ListEnvironments].
 
     Attributes:
-        environments (Sequence[google.cloud.dialogflowcx_v3.types.Environment]):
+        environments (MutableSequence[google.cloud.dialogflowcx_v3.types.Environment]):
             The list of environments. There will be a maximum number of
             items returned based on the page_size field in the request.
             The list may in some cases be empty or contain fewer entries
@@ -236,12 +238,12 @@ class ListEnvironmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    environments = proto.RepeatedField(
+    environments: MutableSequence["Environment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Environment",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -259,7 +261,7 @@ class GetEnvironmentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -280,11 +282,11 @@ class CreateEnvironmentRequest(proto.Message):
             Required. The environment to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    environment = proto.Field(
+    environment: "Environment" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Environment",
@@ -303,12 +305,12 @@ class UpdateEnvironmentRequest(proto.Message):
             get updated.
     """
 
-    environment = proto.Field(
+    environment: "Environment" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Environment",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -327,7 +329,7 @@ class DeleteEnvironmentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -350,15 +352,15 @@ class LookupEnvironmentHistoryRequest(proto.Message):
             request.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -369,7 +371,7 @@ class LookupEnvironmentHistoryResponse(proto.Message):
     [Environments.LookupEnvironmentHistory][google.cloud.dialogflow.cx.v3.Environments.LookupEnvironmentHistory].
 
     Attributes:
-        environments (Sequence[google.cloud.dialogflowcx_v3.types.Environment]):
+        environments (MutableSequence[google.cloud.dialogflowcx_v3.types.Environment]):
             Represents a list of snapshots for an environment. Time of
             the snapshots is stored in
             [``update_time``][google.cloud.dialogflow.cx.v3.Environment.update_time].
@@ -383,12 +385,12 @@ class LookupEnvironmentHistoryResponse(proto.Message):
     def raw_page(self):
         return self
 
-    environments = proto.RepeatedField(
+    environments: MutableSequence["Environment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Environment",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -406,7 +408,7 @@ class ContinuousTestResult(proto.Message):
             The result of this continuous test run, i.e.
             whether all the tests in this continuous test
             run pass or not.
-        test_case_results (Sequence[str]):
+        test_case_results (MutableSequence[str]):
             A list of individual test case results names
             in this continuous test run.
         run_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -421,20 +423,20 @@ class ContinuousTestResult(proto.Message):
         PASSED = 1
         FAILED = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    result = proto.Field(
+    result: AggregatedTestResult = proto.Field(
         proto.ENUM,
         number=2,
         enum=AggregatedTestResult,
     )
-    test_case_results = proto.RepeatedField(
+    test_case_results: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    run_time = proto.Field(
+    run_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
@@ -451,7 +453,7 @@ class RunContinuousTestRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
     """
 
-    environment = proto.Field(
+    environment: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -466,7 +468,7 @@ class RunContinuousTestResponse(proto.Message):
             The result for a continuous test run.
     """
 
-    continuous_test_result = proto.Field(
+    continuous_test_result: "ContinuousTestResult" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ContinuousTestResult",
@@ -479,11 +481,11 @@ class RunContinuousTestMetadata(proto.Message):
     long running operation.
 
     Attributes:
-        errors (Sequence[google.cloud.dialogflowcx_v3.types.TestError]):
+        errors (MutableSequence[google.cloud.dialogflowcx_v3.types.TestError]):
             The test errors.
     """
 
-    errors = proto.RepeatedField(
+    errors: MutableSequence[test_case.TestError] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=test_case.TestError,
@@ -506,15 +508,15 @@ class ListContinuousTestResultsRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -524,7 +526,7 @@ class ListContinuousTestResultsResponse(proto.Message):
     r"""The response message for [Environments.ListTestCaseResults][].
 
     Attributes:
-        continuous_test_results (Sequence[google.cloud.dialogflowcx_v3.types.ContinuousTestResult]):
+        continuous_test_results (MutableSequence[google.cloud.dialogflowcx_v3.types.ContinuousTestResult]):
             The list of continuous test results.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -536,12 +538,14 @@ class ListContinuousTestResultsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    continuous_test_results = proto.RepeatedField(
+    continuous_test_results: MutableSequence[
+        "ContinuousTestResult"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ContinuousTestResult",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -560,11 +564,11 @@ class DeployFlowRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/ flows/<Flow ID>/versions/<Version ID>``.
     """
 
-    environment = proto.Field(
+    environment: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    flow_version = proto.Field(
+    flow_version: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -585,12 +589,12 @@ class DeployFlowResponse(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/ environments/<Environment ID>/deployments/<Deployment ID>``.
     """
 
-    environment = proto.Field(
+    environment: "Environment" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Environment",
     )
-    deployment = proto.Field(
+    deployment: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -602,11 +606,11 @@ class DeployFlowMetadata(proto.Message):
     long running operation.
 
     Attributes:
-        test_errors (Sequence[google.cloud.dialogflowcx_v3.types.TestError]):
+        test_errors (MutableSequence[google.cloud.dialogflowcx_v3.types.TestError]):
             Errors of running deployment tests.
     """
 
-    test_errors = proto.RepeatedField(
+    test_errors: MutableSequence[test_case.TestError] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=test_case.TestError,

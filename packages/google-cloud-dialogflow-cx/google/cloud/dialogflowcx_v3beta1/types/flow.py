@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import page
@@ -76,16 +78,16 @@ class NluSettings(proto.Message):
         MODEL_TRAINING_MODE_AUTOMATIC = 1
         MODEL_TRAINING_MODE_MANUAL = 2
 
-    model_type = proto.Field(
+    model_type: ModelType = proto.Field(
         proto.ENUM,
         number=1,
         enum=ModelType,
     )
-    classification_threshold = proto.Field(
+    classification_threshold: float = proto.Field(
         proto.FLOAT,
         number=3,
     )
-    model_training_mode = proto.Field(
+    model_training_mode: ModelTrainingMode = proto.Field(
         proto.ENUM,
         number=4,
         enum=ModelTrainingMode,
@@ -121,7 +123,7 @@ class Flow(proto.Message):
             The description of the flow. The maximum
             length is 500 characters. If exceeded, the
             request is rejected.
-        transition_routes (Sequence[google.cloud.dialogflowcx_v3beta1.types.TransitionRoute]):
+        transition_routes (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.TransitionRoute]):
             A flow's transition routes serve two purposes:
 
             -  They are responsible for matching the user's first
@@ -140,7 +142,7 @@ class Flow(proto.Message):
 
             TransitionRoutes with intent specified are inherited by
             pages in the flow.
-        event_handlers (Sequence[google.cloud.dialogflowcx_v3beta1.types.EventHandler]):
+        event_handlers (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.EventHandler]):
             A flow's event handlers serve two purposes:
 
             -  They are responsible for handling events (e.g. no match,
@@ -156,7 +158,7 @@ class Flow(proto.Message):
             these handlers are evaluated on a first-match basis. The
             first one that matches the event get executed, with the rest
             being ignored.
-        transition_route_groups (Sequence[str]):
+        transition_route_groups (MutableSequence[str]):
             A flow's transition route group serve two purposes:
 
             -  They are responsible for matching the user's first
@@ -171,33 +173,33 @@ class Flow(proto.Message):
             NLU related settings of the flow.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    transition_routes = proto.RepeatedField(
+    transition_routes: MutableSequence[page.TransitionRoute] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=page.TransitionRoute,
     )
-    event_handlers = proto.RepeatedField(
+    event_handlers: MutableSequence[page.EventHandler] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message=page.EventHandler,
     )
-    transition_route_groups = proto.RepeatedField(
+    transition_route_groups: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=15,
     )
-    nlu_settings = proto.Field(
+    nlu_settings: "NluSettings" = proto.Field(
         proto.MESSAGE,
         number=11,
         message="NluSettings",
@@ -229,16 +231,16 @@ class CreateFlowRequest(proto.Message):
             before they can be used.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    flow = proto.Field(
+    flow: "Flow" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Flow",
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -266,11 +268,11 @@ class DeleteFlowRequest(proto.Message):
                cleared).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -306,19 +308,19 @@ class ListFlowsRequest(proto.Message):
             before they can be used.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -329,7 +331,7 @@ class ListFlowsResponse(proto.Message):
     [Flows.ListFlows][google.cloud.dialogflow.cx.v3beta1.Flows.ListFlows].
 
     Attributes:
-        flows (Sequence[google.cloud.dialogflowcx_v3beta1.types.Flow]):
+        flows (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Flow]):
             The list of flows. There will be a maximum number of items
             returned based on the page_size field in the request.
         next_page_token (str):
@@ -342,12 +344,12 @@ class ListFlowsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    flows = proto.RepeatedField(
+    flows: MutableSequence["Flow"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Flow",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -377,11 +379,11 @@ class GetFlowRequest(proto.Message):
             before they can be used.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -413,17 +415,17 @@ class UpdateFlowRequest(proto.Message):
             before they can be used.
     """
 
-    flow = proto.Field(
+    flow: "Flow" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Flow",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -439,7 +441,7 @@ class TrainFlowRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -458,11 +460,11 @@ class ValidateFlowRequest(proto.Message):
             language is used.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -481,11 +483,11 @@ class GetFlowValidationResultRequest(proto.Message):
             language is used.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -499,22 +501,24 @@ class FlowValidationResult(proto.Message):
         name (str):
             The unique identifier of the flow validation result. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/validationResult``.
-        validation_messages (Sequence[google.cloud.dialogflowcx_v3beta1.types.ValidationMessage]):
+        validation_messages (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.ValidationMessage]):
             Contains all validation messages.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Last time the flow was validated.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    validation_messages = proto.RepeatedField(
+    validation_messages: MutableSequence[
+        validation_message.ValidationMessage
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=validation_message.ValidationMessage,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -563,21 +567,21 @@ class ImportFlowRequest(proto.Message):
         KEEP = 1
         FALLBACK = 2
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    flow_uri = proto.Field(
+    flow_uri: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="flow",
     )
-    flow_content = proto.Field(
+    flow_content: bytes = proto.Field(
         proto.BYTES,
         number=3,
         oneof="flow",
     )
-    import_option = proto.Field(
+    import_option: ImportOption = proto.Field(
         proto.ENUM,
         number=4,
         enum=ImportOption,
@@ -594,7 +598,7 @@ class ImportFlowResponse(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
     """
 
-    flow = proto.Field(
+    flow: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -625,15 +629,15 @@ class ExportFlowRequest(proto.Message):
             by the specified flow.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    flow_uri = proto.Field(
+    flow_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    include_referenced_flows = proto.Field(
+    include_referenced_flows: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -663,12 +667,12 @@ class ExportFlowResponse(proto.Message):
             This field is a member of `oneof`_ ``flow``.
     """
 
-    flow_uri = proto.Field(
+    flow_uri: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="flow",
     )
-    flow_content = proto.Field(
+    flow_content: bytes = proto.Field(
         proto.BYTES,
         number=2,
         oneof="flow",

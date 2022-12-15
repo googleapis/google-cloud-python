@@ -16,8 +16,19 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
+
+from google.cloud.dialogflowcx_v3beta1 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -182,9 +193,9 @@ class TransitionRouteGroupsAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, TransitionRouteGroupsTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the transition route groups client.
@@ -228,13 +239,13 @@ class TransitionRouteGroupsAsyncClient:
 
     async def list_transition_route_groups(
         self,
-        request: Union[
-            transition_route_group.ListTransitionRouteGroupsRequest, dict
+        request: Optional[
+            Union[transition_route_group.ListTransitionRouteGroupsRequest, dict]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransitionRouteGroupsAsyncPager:
         r"""Returns the list of all transition route groups in
@@ -268,7 +279,7 @@ class TransitionRouteGroupsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3beta1.types.ListTransitionRouteGroupsRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3beta1.types.ListTransitionRouteGroupsRequest, dict]]):
                 The request object. The request message for
                 [TransitionRouteGroups.ListTransitionRouteGroups][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.ListTransitionRouteGroups].
             parent (:class:`str`):
@@ -347,13 +358,13 @@ class TransitionRouteGroupsAsyncClient:
 
     async def get_transition_route_group(
         self,
-        request: Union[
-            transition_route_group.GetTransitionRouteGroupRequest, dict
+        request: Optional[
+            Union[transition_route_group.GetTransitionRouteGroupRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transition_route_group.TransitionRouteGroup:
         r"""Retrieves the specified
@@ -386,7 +397,7 @@ class TransitionRouteGroupsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3beta1.types.GetTransitionRouteGroupRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3beta1.types.GetTransitionRouteGroupRequest, dict]]):
                 The request object. The request message for
                 [TransitionRouteGroups.GetTransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.GetTransitionRouteGroup].
             name (:class:`str`):
@@ -456,14 +467,16 @@ class TransitionRouteGroupsAsyncClient:
 
     async def create_transition_route_group(
         self,
-        request: Union[
-            gcdc_transition_route_group.CreateTransitionRouteGroupRequest, dict
+        request: Optional[
+            Union[gcdc_transition_route_group.CreateTransitionRouteGroupRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        transition_route_group: gcdc_transition_route_group.TransitionRouteGroup = None,
+        parent: Optional[str] = None,
+        transition_route_group: Optional[
+            gcdc_transition_route_group.TransitionRouteGroup
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_transition_route_group.TransitionRouteGroup:
         r"""Creates an
@@ -505,7 +518,7 @@ class TransitionRouteGroupsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3beta1.types.CreateTransitionRouteGroupRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3beta1.types.CreateTransitionRouteGroupRequest, dict]]):
                 The request object. The request message for
                 [TransitionRouteGroups.CreateTransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.CreateTransitionRouteGroup].
             parent (:class:`str`):
@@ -584,14 +597,16 @@ class TransitionRouteGroupsAsyncClient:
 
     async def update_transition_route_group(
         self,
-        request: Union[
-            gcdc_transition_route_group.UpdateTransitionRouteGroupRequest, dict
+        request: Optional[
+            Union[gcdc_transition_route_group.UpdateTransitionRouteGroupRequest, dict]
         ] = None,
         *,
-        transition_route_group: gcdc_transition_route_group.TransitionRouteGroup = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        transition_route_group: Optional[
+            gcdc_transition_route_group.TransitionRouteGroup
+        ] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_transition_route_group.TransitionRouteGroup:
         r"""Updates the specified
@@ -631,7 +646,7 @@ class TransitionRouteGroupsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3beta1.types.UpdateTransitionRouteGroupRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3beta1.types.UpdateTransitionRouteGroupRequest, dict]]):
                 The request object. The request message for
                 [TransitionRouteGroups.UpdateTransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.UpdateTransitionRouteGroup].
             transition_route_group (:class:`google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroup`):
@@ -710,13 +725,13 @@ class TransitionRouteGroupsAsyncClient:
 
     async def delete_transition_route_group(
         self,
-        request: Union[
-            transition_route_group.DeleteTransitionRouteGroupRequest, dict
+        request: Optional[
+            Union[transition_route_group.DeleteTransitionRouteGroupRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified
@@ -750,7 +765,7 @@ class TransitionRouteGroupsAsyncClient:
                 await client.delete_transition_route_group(request=request)
 
         Args:
-            request (Union[google.cloud.dialogflowcx_v3beta1.types.DeleteTransitionRouteGroupRequest, dict]):
+            request (Optional[Union[google.cloud.dialogflowcx_v3beta1.types.DeleteTransitionRouteGroupRequest, dict]]):
                 The request object. The request message for
                 [TransitionRouteGroups.DeleteTransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.DeleteTransitionRouteGroup].
             name (:class:`str`):
@@ -809,10 +824,10 @@ class TransitionRouteGroupsAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -863,10 +878,10 @@ class TransitionRouteGroupsAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -917,10 +932,10 @@ class TransitionRouteGroupsAsyncClient:
 
     async def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -971,10 +986,10 @@ class TransitionRouteGroupsAsyncClient:
 
     async def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1025,10 +1040,10 @@ class TransitionRouteGroupsAsyncClient:
 
     async def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -1084,14 +1099,9 @@ class TransitionRouteGroupsAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dialogflowcx",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("TransitionRouteGroupsAsyncClient",)

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -62,10 +64,10 @@ class Intent(proto.Message):
         display_name (str):
             Required. The human-readable name of the
             intent, unique within the agent.
-        training_phrases (Sequence[google.cloud.dialogflowcx_v3.types.Intent.TrainingPhrase]):
+        training_phrases (MutableSequence[google.cloud.dialogflowcx_v3.types.Intent.TrainingPhrase]):
             The collection of training phrases the agent
             is trained on to identify the intent.
-        parameters (Sequence[google.cloud.dialogflowcx_v3.types.Intent.Parameter]):
+        parameters (MutableSequence[google.cloud.dialogflowcx_v3.types.Intent.Parameter]):
             The collection of parameters associated with
             the intent.
         priority (int):
@@ -87,7 +89,7 @@ class Intent(proto.Message):
             mistakenly matched, since training phrases
             assigned to fallback intents act as negative
             examples that triggers no-match event.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             The key/value metadata to label an intent. Labels can
             contain lowercase letters, digits and the symbols '-' and
             '_'. International characters are allowed, including letters
@@ -117,7 +119,7 @@ class Intent(proto.Message):
             id (str):
                 Output only. The unique identifier of the
                 training phrase.
-            parts (Sequence[google.cloud.dialogflowcx_v3.types.Intent.TrainingPhrase.Part]):
+            parts (MutableSequence[google.cloud.dialogflowcx_v3.types.Intent.TrainingPhrase.Part]):
                 Required. The ordered list of training phrase parts. The
                 parts are concatenated in order to form the training phrase.
 
@@ -160,25 +162,25 @@ class Intent(proto.Message):
                     phrase.
             """
 
-            text = proto.Field(
+            text: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            parameter_id = proto.Field(
+            parameter_id: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
 
-        id = proto.Field(
+        id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        parts = proto.RepeatedField(
+        parts: MutableSequence["Intent.TrainingPhrase.Part"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="Intent.TrainingPhrase.Part",
         )
-        repeat_count = proto.Field(
+        repeat_count: int = proto.Field(
             proto.INT32,
             number=3,
         )
@@ -214,55 +216,55 @@ class Intent(proto.Message):
                 is enabled.
         """
 
-        id = proto.Field(
+        id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        entity_type = proto.Field(
+        entity_type: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        is_list = proto.Field(
+        is_list: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
-        redact = proto.Field(
+        redact: bool = proto.Field(
             proto.BOOL,
             number=4,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    training_phrases = proto.RepeatedField(
+    training_phrases: MutableSequence[TrainingPhrase] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=TrainingPhrase,
     )
-    parameters = proto.RepeatedField(
+    parameters: MutableSequence[Parameter] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=Parameter,
     )
-    priority = proto.Field(
+    priority: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    is_fallback = proto.Field(
+    is_fallback: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=7,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=8,
     )
@@ -298,24 +300,24 @@ class ListIntentsRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    intent_view = proto.Field(
+    intent_view: "IntentView" = proto.Field(
         proto.ENUM,
         number=5,
         enum="IntentView",
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -326,7 +328,7 @@ class ListIntentsResponse(proto.Message):
     [Intents.ListIntents][google.cloud.dialogflow.cx.v3.Intents.ListIntents].
 
     Attributes:
-        intents (Sequence[google.cloud.dialogflowcx_v3.types.Intent]):
+        intents (MutableSequence[google.cloud.dialogflowcx_v3.types.Intent]):
             The list of intents. There will be a maximum number of items
             returned based on the page_size field in the request.
         next_page_token (str):
@@ -339,12 +341,12 @@ class ListIntentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    intents = proto.RepeatedField(
+    intents: MutableSequence["Intent"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Intent",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -371,11 +373,11 @@ class GetIntentRequest(proto.Message):
             before they can be used.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -403,16 +405,16 @@ class CreateIntentRequest(proto.Message):
             before they can be used.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    intent = proto.Field(
+    intent: "Intent" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Intent",
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -441,16 +443,16 @@ class UpdateIntentRequest(proto.Message):
             updated.
     """
 
-    intent = proto.Field(
+    intent: "Intent" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Intent",
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -467,7 +469,7 @@ class DeleteIntentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

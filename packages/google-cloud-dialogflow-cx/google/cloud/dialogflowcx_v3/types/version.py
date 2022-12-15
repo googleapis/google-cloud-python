@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import flow
@@ -48,7 +50,7 @@ class CreateVersionOperationMetadata(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
     """
 
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -89,29 +91,29 @@ class Version(proto.Message):
         SUCCEEDED = 2
         FAILED = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    nlu_settings = proto.Field(
+    nlu_settings: flow.NluSettings = proto.Field(
         proto.MESSAGE,
         number=4,
         message=flow.NluSettings,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=6,
         enum=State,
@@ -135,15 +137,15 @@ class ListVersionsRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -154,7 +156,7 @@ class ListVersionsResponse(proto.Message):
     [Versions.ListVersions][google.cloud.dialogflow.cx.v3.Versions.ListVersions].
 
     Attributes:
-        versions (Sequence[google.cloud.dialogflowcx_v3.types.Version]):
+        versions (MutableSequence[google.cloud.dialogflowcx_v3.types.Version]):
             A list of versions. There will be a maximum number of items
             returned based on the page_size field in the request. The
             list may in some cases be empty or contain fewer entries
@@ -169,12 +171,12 @@ class ListVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    versions = proto.RepeatedField(
+    versions: MutableSequence["Version"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Version",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -191,7 +193,7 @@ class GetVersionRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -211,11 +213,11 @@ class CreateVersionRequest(proto.Message):
             Required. The version to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    version = proto.Field(
+    version: "Version" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Version",
@@ -235,12 +237,12 @@ class UpdateVersionRequest(proto.Message):
             updated.
     """
 
-    version = proto.Field(
+    version: "Version" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Version",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -259,7 +261,7 @@ class DeleteVersionRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -283,11 +285,11 @@ class LoadVersionRequest(proto.Message):
             (i.e. intents, entities, webhooks).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    allow_override_agent_resources = proto.Field(
+    allow_override_agent_resources: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -320,15 +322,15 @@ class CompareVersionsRequest(proto.Message):
             before they can be used.
     """
 
-    base_version = proto.Field(
+    base_version: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    target_version = proto.Field(
+    target_version: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -349,15 +351,15 @@ class CompareVersionsResponse(proto.Message):
             The timestamp when the two version compares.
     """
 
-    base_version_content_json = proto.Field(
+    base_version_content_json: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    target_version_content_json = proto.Field(
+    target_version_content_json: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    compare_time = proto.Field(
+    compare_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,

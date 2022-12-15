@@ -16,8 +16,20 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
+
+from google.cloud.dialogflowcx_v3 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -63,7 +75,7 @@ class SecuritySettingsServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[SecuritySettingsServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -382,8 +394,8 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, SecuritySettingsServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, SecuritySettingsServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the security settings service client.
@@ -397,7 +409,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
             transport (Union[str, SecuritySettingsServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -427,6 +439,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -479,14 +492,14 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
 
     def create_security_settings(
         self,
-        request: Union[
-            gcdc_security_settings.CreateSecuritySettingsRequest, dict
+        request: Optional[
+            Union[gcdc_security_settings.CreateSecuritySettingsRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        security_settings: gcdc_security_settings.SecuritySettings = None,
+        parent: Optional[str] = None,
+        security_settings: Optional[gcdc_security_settings.SecuritySettings] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_security_settings.SecuritySettings:
         r"""Create security settings in the specified location.
@@ -606,11 +619,13 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
 
     def get_security_settings(
         self,
-        request: Union[security_settings.GetSecuritySettingsRequest, dict] = None,
+        request: Optional[
+            Union[security_settings.GetSecuritySettingsRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> security_settings.SecuritySettings:
         r"""Retrieves the specified
@@ -714,14 +729,14 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
 
     def update_security_settings(
         self,
-        request: Union[
-            gcdc_security_settings.UpdateSecuritySettingsRequest, dict
+        request: Optional[
+            Union[gcdc_security_settings.UpdateSecuritySettingsRequest, dict]
         ] = None,
         *,
-        security_settings: gcdc_security_settings.SecuritySettings = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        security_settings: Optional[gcdc_security_settings.SecuritySettings] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_security_settings.SecuritySettings:
         r"""Updates the specified
@@ -842,11 +857,13 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
 
     def list_security_settings(
         self,
-        request: Union[security_settings.ListSecuritySettingsRequest, dict] = None,
+        request: Optional[
+            Union[security_settings.ListSecuritySettingsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSecuritySettingsPager:
         r"""Returns the list of all security settings in the
@@ -959,11 +976,13 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
 
     def delete_security_settings(
         self,
-        request: Union[security_settings.DeleteSecuritySettingsRequest, dict] = None,
+        request: Optional[
+            Union[security_settings.DeleteSecuritySettingsRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified
@@ -1065,10 +1084,10 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
 
     def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1119,10 +1138,10 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
 
     def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1173,10 +1192,10 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
 
     def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -1227,10 +1246,10 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
 
     def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1281,10 +1300,10 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
 
     def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
@@ -1334,14 +1353,9 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         return response
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dialogflowcx",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("SecuritySettingsServiceClient",)

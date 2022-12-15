@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -59,16 +61,16 @@ class AdvancedSettings(proto.Message):
                 enabled.
         """
 
-        enable_stackdriver_logging = proto.Field(
+        enable_stackdriver_logging: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
-        enable_interaction_logging = proto.Field(
+        enable_interaction_logging: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
 
-    logging_settings = proto.Field(
+    logging_settings: LoggingSettings = proto.Field(
         proto.MESSAGE,
         number=6,
         message=LoggingSettings,
