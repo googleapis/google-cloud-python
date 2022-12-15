@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-ids/compare/v1.2.4...v1.3.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.ids.__version__` ([fd8cfa4](https://github.com/googleapis/python-ids/commit/fd8cfa4a17c334407f31e7c2edea4ea52063b176))
+* Add typing to proto.Message based class attributes ([fd8cfa4](https://github.com/googleapis/python-ids/commit/fd8cfa4a17c334407f31e7c2edea4ea52063b176))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([fd8cfa4](https://github.com/googleapis/python-ids/commit/fd8cfa4a17c334407f31e7c2edea4ea52063b176))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([3e1b599](https://github.com/googleapis/python-ids/commit/3e1b5991d965b52931ff613616f0ed65622efac0))
+* Drop usage of pkg_resources ([3e1b599](https://github.com/googleapis/python-ids/commit/3e1b5991d965b52931ff613616f0ed65622efac0))
+* Fix timeout default values ([3e1b599](https://github.com/googleapis/python-ids/commit/3e1b5991d965b52931ff613616f0ed65622efac0))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([fd8cfa4](https://github.com/googleapis/python-ids/commit/fd8cfa4a17c334407f31e7c2edea4ea52063b176))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([3e1b599](https://github.com/googleapis/python-ids/commit/3e1b5991d965b52931ff613616f0ed65622efac0))
+
 ## [1.2.4](https://github.com/googleapis/python-ids/compare/v1.2.3...v1.2.4) (2022-10-07)
 
 
