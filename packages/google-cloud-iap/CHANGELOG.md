@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-iap/compare/v1.5.4...v1.6.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.iap.__version__` ([828e0bd](https://github.com/googleapis/python-iap/commit/828e0bdc68c1f1c0f8986dec6bd0d99b0bd8f561))
+* Add typing to proto.Message based class attributes ([828e0bd](https://github.com/googleapis/python-iap/commit/828e0bdc68c1f1c0f8986dec6bd0d99b0bd8f561))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([828e0bd](https://github.com/googleapis/python-iap/commit/828e0bdc68c1f1c0f8986dec6bd0d99b0bd8f561))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([2c0f3e5](https://github.com/googleapis/python-iap/commit/2c0f3e5f044b956b02e1389741adeaa0ee2bc259))
+* Drop usage of pkg_resources ([2c0f3e5](https://github.com/googleapis/python-iap/commit/2c0f3e5f044b956b02e1389741adeaa0ee2bc259))
+* Fix timeout default values ([2c0f3e5](https://github.com/googleapis/python-iap/commit/2c0f3e5f044b956b02e1389741adeaa0ee2bc259))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([828e0bd](https://github.com/googleapis/python-iap/commit/828e0bdc68c1f1c0f8986dec6bd0d99b0bd8f561))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([2c0f3e5](https://github.com/googleapis/python-iap/commit/2c0f3e5f044b956b02e1389741adeaa0ee2bc259))
+
 ## [1.5.4](https://github.com/googleapis/python-iap/compare/v1.5.3...v1.5.4) (2022-10-07)
 
 
