@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-security-private-ca/compare/v1.4.3...v1.5.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.security.privateca.__version__` ([f3d00b7](https://github.com/googleapis/python-security-private-ca/commit/f3d00b7a1f1b0b8998c4749770dc85561a7392c6))
+* Add typing to proto.Message based class attributes ([f3d00b7](https://github.com/googleapis/python-security-private-ca/commit/f3d00b7a1f1b0b8998c4749770dc85561a7392c6))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([f3d00b7](https://github.com/googleapis/python-security-private-ca/commit/f3d00b7a1f1b0b8998c4749770dc85561a7392c6))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([3efdd29](https://github.com/googleapis/python-security-private-ca/commit/3efdd293e0abfdc2f5a769a58726480080e55d0d))
+* Drop usage of pkg_resources ([3efdd29](https://github.com/googleapis/python-security-private-ca/commit/3efdd293e0abfdc2f5a769a58726480080e55d0d))
+* Fix timeout default values ([3efdd29](https://github.com/googleapis/python-security-private-ca/commit/3efdd293e0abfdc2f5a769a58726480080e55d0d))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([f3d00b7](https://github.com/googleapis/python-security-private-ca/commit/f3d00b7a1f1b0b8998c4749770dc85561a7392c6))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([3efdd29](https://github.com/googleapis/python-security-private-ca/commit/3efdd293e0abfdc2f5a769a58726480080e55d0d))
+
 ## [1.4.3](https://github.com/googleapis/python-security-private-ca/compare/v1.4.2...v1.4.3) (2022-10-07)
 
 
