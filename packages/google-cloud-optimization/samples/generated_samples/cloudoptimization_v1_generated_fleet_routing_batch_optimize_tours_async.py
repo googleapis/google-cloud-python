@@ -53,7 +53,7 @@ async def sample_batch_optimize_tours():
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = (await operation).result()
 
     # Handle the response
     print(response)

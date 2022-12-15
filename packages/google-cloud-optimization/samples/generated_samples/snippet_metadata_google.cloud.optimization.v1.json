@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-optimization"
+    "name": "google-cloud-optimization",
+    "version": "0.1.0"
   },
   "snippets": [
     {

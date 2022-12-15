@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -54,13 +56,13 @@ class InputConfig(proto.Message):
             model in Cloud Storage.
     """
 
-    gcs_source = proto.Field(
+    gcs_source: "GcsSource" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="source",
         message="GcsSource",
     )
-    data_format = proto.Field(
+    data_format: "DataFormat" = proto.Field(
         proto.ENUM,
         number=2,
         enum="DataFormat",
@@ -83,13 +85,13 @@ class OutputConfig(proto.Message):
             results in Cloud Storage.
     """
 
-    gcs_destination = proto.Field(
+    gcs_destination: "GcsDestination" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="destination",
         message="GcsDestination",
     )
-    data_format = proto.Field(
+    data_format: "DataFormat" = proto.Field(
         proto.ENUM,
         number=2,
         enum="DataFormat",
@@ -106,7 +108,7 @@ class GcsSource(proto.Message):
             location.
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -122,7 +124,7 @@ class GcsDestination(proto.Message):
             location.
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -153,21 +155,21 @@ class AsyncModelMetadata(proto.Message):
         CANCELLED = 3
         FAILED = 4
 
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
     )
-    state_message = proto.Field(
+    state_message: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,

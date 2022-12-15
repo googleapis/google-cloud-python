@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.optimization_v1.types import async_model
@@ -88,7 +90,7 @@ class OptimizeToursRequest(proto.Message):
             This field is a member of `oneof`_ ``_max_validation_errors``.
         search_mode (google.cloud.optimization_v1.types.OptimizeToursRequest.SearchMode):
             Search mode used to solve the request.
-        injected_first_solution_routes (Sequence[google.cloud.optimization_v1.types.ShipmentRoute]):
+        injected_first_solution_routes (MutableSequence[google.cloud.optimization_v1.types.ShipmentRoute]):
             Guide the optimization algorithm in finding a first solution
             that is similar to a previous solution.
 
@@ -131,7 +133,7 @@ class OptimizeToursRequest(proto.Message):
             validation error is not necessarily returned and
             an error indicating infeasibility may be
             returned instead.
-        refresh_details_routes (Sequence[google.cloud.optimization_v1.types.ShipmentRoute]):
+        refresh_details_routes (MutableSequence[google.cloud.optimization_v1.types.ShipmentRoute]):
             If non-empty, the given routes will be refreshed, without
             modifying their underlying sequence of visits or travel
             times: only other details will be updated. This does not
@@ -297,84 +299,86 @@ class OptimizeToursRequest(proto.Message):
         RETURN_FAST = 1
         CONSUME_ALL_AVAILABLE_TIME = 2
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    timeout = proto.Field(
+    timeout: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,
     )
-    model = proto.Field(
+    model: "ShipmentModel" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="ShipmentModel",
     )
-    solving_mode = proto.Field(
+    solving_mode: SolvingMode = proto.Field(
         proto.ENUM,
         number=4,
         enum=SolvingMode,
     )
-    max_validation_errors = proto.Field(
+    max_validation_errors: int = proto.Field(
         proto.INT32,
         number=5,
         optional=True,
     )
-    search_mode = proto.Field(
+    search_mode: SearchMode = proto.Field(
         proto.ENUM,
         number=6,
         enum=SearchMode,
     )
-    injected_first_solution_routes = proto.RepeatedField(
+    injected_first_solution_routes: MutableSequence[
+        "ShipmentRoute"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="ShipmentRoute",
     )
-    injected_solution_constraint = proto.Field(
+    injected_solution_constraint: "InjectedSolutionConstraint" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="InjectedSolutionConstraint",
     )
-    refresh_details_routes = proto.RepeatedField(
+    refresh_details_routes: MutableSequence["ShipmentRoute"] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message="ShipmentRoute",
     )
-    interpret_injected_solutions_using_labels = proto.Field(
+    interpret_injected_solutions_using_labels: bool = proto.Field(
         proto.BOOL,
         number=10,
     )
-    consider_road_traffic = proto.Field(
+    consider_road_traffic: bool = proto.Field(
         proto.BOOL,
         number=11,
     )
-    populate_polylines = proto.Field(
+    populate_polylines: bool = proto.Field(
         proto.BOOL,
         number=12,
     )
-    populate_transition_polylines = proto.Field(
+    populate_transition_polylines: bool = proto.Field(
         proto.BOOL,
         number=13,
     )
-    allow_large_deadline_despite_interruption_risk = proto.Field(
+    allow_large_deadline_despite_interruption_risk: bool = proto.Field(
         proto.BOOL,
         number=14,
     )
-    use_geodesic_distances = proto.Field(
+    use_geodesic_distances: bool = proto.Field(
         proto.BOOL,
         number=15,
     )
-    geodesic_meters_per_second = proto.Field(
+    geodesic_meters_per_second: float = proto.Field(
         proto.DOUBLE,
         number=16,
         optional=True,
     )
-    label = proto.Field(
+    label: str = proto.Field(
         proto.STRING,
         number=17,
     )
-    populate_travel_step_polylines = proto.Field(
+    populate_travel_step_polylines: bool = proto.Field(
         proto.BOOL,
         number=20,
     )
@@ -386,7 +390,7 @@ class OptimizeToursResponse(proto.Message):
     been skipped and the overall cost of the solution.
 
     Attributes:
-        routes (Sequence[google.cloud.optimization_v1.types.ShipmentRoute]):
+        routes (MutableSequence[google.cloud.optimization_v1.types.ShipmentRoute]):
             Routes computed for each vehicle; the i-th
             route corresponds to the i-th vehicle in the
             model.
@@ -394,9 +398,9 @@ class OptimizeToursResponse(proto.Message):
             Copy of the
             [OptimizeToursRequest.label][google.cloud.optimization.v1.OptimizeToursRequest.label],
             if a label was specified in the request.
-        skipped_shipments (Sequence[google.cloud.optimization_v1.types.SkippedShipment]):
+        skipped_shipments (MutableSequence[google.cloud.optimization_v1.types.SkippedShipment]):
             The list of all shipments skipped.
-        validation_errors (Sequence[google.cloud.optimization_v1.types.OptimizeToursValidationError]):
+        validation_errors (MutableSequence[google.cloud.optimization_v1.types.OptimizeToursValidationError]):
             List of all the validation errors that we were able to
             detect independently. See the "MULTIPLE ERRORS" explanation
             for the
@@ -437,7 +441,7 @@ class OptimizeToursResponse(proto.Message):
                 The latest end time for a used vehicle, computed as the
                 maximum over all used vehicles of
                 [ShipmentRoute.vehicle_end_time][google.cloud.optimization.v1.ShipmentRoute.vehicle_end_time].
-            costs (Mapping[str, float]):
+            costs (MutableMapping[str, float]):
                 Cost of the solution, broken down by cost-related request
                 fields. The keys are proto paths, relative to the input
                 OptimizeToursRequest, e.g. "model.shipments.pickups.cost",
@@ -454,64 +458,66 @@ class OptimizeToursResponse(proto.Message):
                 values in the costs map.
         """
 
-        aggregated_route_metrics = proto.Field(
+        aggregated_route_metrics: "AggregatedMetrics" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="AggregatedMetrics",
         )
-        skipped_mandatory_shipment_count = proto.Field(
+        skipped_mandatory_shipment_count: int = proto.Field(
             proto.INT32,
             number=2,
         )
-        used_vehicle_count = proto.Field(
+        used_vehicle_count: int = proto.Field(
             proto.INT32,
             number=3,
         )
-        earliest_vehicle_start_time = proto.Field(
+        earliest_vehicle_start_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=4,
             message=timestamp_pb2.Timestamp,
         )
-        latest_vehicle_end_time = proto.Field(
+        latest_vehicle_end_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=5,
             message=timestamp_pb2.Timestamp,
         )
-        costs = proto.MapField(
+        costs: MutableMapping[str, float] = proto.MapField(
             proto.STRING,
             proto.DOUBLE,
             number=10,
         )
-        total_cost = proto.Field(
+        total_cost: float = proto.Field(
             proto.DOUBLE,
             number=6,
         )
 
-    routes = proto.RepeatedField(
+    routes: MutableSequence["ShipmentRoute"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ShipmentRoute",
     )
-    request_label = proto.Field(
+    request_label: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    skipped_shipments = proto.RepeatedField(
+    skipped_shipments: MutableSequence["SkippedShipment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="SkippedShipment",
     )
-    validation_errors = proto.RepeatedField(
+    validation_errors: MutableSequence[
+        "OptimizeToursValidationError"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="OptimizeToursValidationError",
     )
-    metrics = proto.Field(
+    metrics: Metrics = proto.Field(
         proto.MESSAGE,
         number=6,
         message=Metrics,
     )
-    total_cost = proto.Field(
+    total_cost: float = proto.Field(
         proto.DOUBLE,
         number=2,
     )
@@ -532,7 +538,7 @@ class BatchOptimizeToursRequest(proto.Message):
 
             If no location is specified, a region will be chosen
             automatically.
-        model_configs (Sequence[google.cloud.optimization_v1.types.BatchOptimizeToursRequest.AsyncModelConfig]):
+        model_configs (MutableSequence[google.cloud.optimization_v1.types.BatchOptimizeToursRequest.AsyncModelConfig]):
             Required. Input/Output information each
             purchase model, such as file paths and data
             formats.
@@ -563,30 +569,30 @@ class BatchOptimizeToursRequest(proto.Message):
                 prevents the risk of interruption.
         """
 
-        display_name = proto.Field(
+        display_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        input_config = proto.Field(
+        input_config: async_model.InputConfig = proto.Field(
             proto.MESSAGE,
             number=2,
             message=async_model.InputConfig,
         )
-        output_config = proto.Field(
+        output_config: async_model.OutputConfig = proto.Field(
             proto.MESSAGE,
             number=3,
             message=async_model.OutputConfig,
         )
-        enable_checkpoints = proto.Field(
+        enable_checkpoints: bool = proto.Field(
             proto.BOOL,
             number=4,
         )
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    model_configs = proto.RepeatedField(
+    model_configs: MutableSequence[AsyncModelConfig] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=AsyncModelConfig,
@@ -611,10 +617,10 @@ class ShipmentModel(proto.Message):
     -  the cost of the global duration of the shipments
 
     Attributes:
-        shipments (Sequence[google.cloud.optimization_v1.types.Shipment]):
+        shipments (MutableSequence[google.cloud.optimization_v1.types.Shipment]):
             Set of shipments which must be performed in
             the model.
-        vehicles (Sequence[google.cloud.optimization_v1.types.Vehicle]):
+        vehicles (MutableSequence[google.cloud.optimization_v1.types.Vehicle]):
             Set of vehicles which can be used to perform
             visits.
         max_active_vehicles (int):
@@ -652,7 +658,7 @@ class ShipmentModel(proto.Message):
             job completion, for example. This cost must be in the same
             unit as
             [Shipment.penalty_cost][google.cloud.optimization.v1.Shipment.penalty_cost].
-        duration_distance_matrices (Sequence[google.cloud.optimization_v1.types.ShipmentModel.DurationDistanceMatrix]):
+        duration_distance_matrices (MutableSequence[google.cloud.optimization_v1.types.ShipmentModel.DurationDistanceMatrix]):
             Specifies duration and distance matrices used in the model.
             If this field is empty, Google Maps or geodesic distances
             will be used instead, depending on the value of the
@@ -741,7 +747,7 @@ class ShipmentModel(proto.Message):
                    }
                  }
                }
-        duration_distance_matrix_src_tags (Sequence[str]):
+        duration_distance_matrix_src_tags (MutableSequence[str]):
             Tags defining the sources of the duration and distance
             matrices; ``duration_distance_matrices(i).rows(j)`` defines
             durations and distances from visits with tag
@@ -759,7 +765,7 @@ class ShipmentModel(proto.Message):
             same. All tags must be different and cannot be empty
             strings. If this field is not empty, then
             ``duration_distance_matrices`` must not be empty.
-        duration_distance_matrix_dst_tags (Sequence[str]):
+        duration_distance_matrix_dst_tags (MutableSequence[str]):
             Tags defining the destinations of the duration and distance
             matrices;
             ``duration_distance_matrices(i).rows(j).durations(k)``
@@ -780,18 +786,18 @@ class ShipmentModel(proto.Message):
             same. All tags must be different and cannot be empty
             strings. If this field is not empty, then
             ``duration_distance_matrices`` must not be empty.
-        transition_attributes (Sequence[google.cloud.optimization_v1.types.TransitionAttributes]):
+        transition_attributes (MutableSequence[google.cloud.optimization_v1.types.TransitionAttributes]):
             Transition attributes added to the model.
-        shipment_type_incompatibilities (Sequence[google.cloud.optimization_v1.types.ShipmentTypeIncompatibility]):
+        shipment_type_incompatibilities (MutableSequence[google.cloud.optimization_v1.types.ShipmentTypeIncompatibility]):
             Sets of incompatible shipment_types (see
             ``ShipmentTypeIncompatibility``).
-        shipment_type_requirements (Sequence[google.cloud.optimization_v1.types.ShipmentTypeRequirement]):
+        shipment_type_requirements (MutableSequence[google.cloud.optimization_v1.types.ShipmentTypeRequirement]):
             Sets of ``shipment_type`` requirements (see
             ``ShipmentTypeRequirement``).
-        precedence_rules (Sequence[google.cloud.optimization_v1.types.ShipmentModel.PrecedenceRule]):
+        precedence_rules (MutableSequence[google.cloud.optimization_v1.types.ShipmentModel.PrecedenceRule]):
             Set of precedence rules which must be
             enforced in the model.
-        break_rules (Sequence[google.cloud.optimization_v1.types.ShipmentModel.BreakRule]):
+        break_rules (MutableSequence[google.cloud.optimization_v1.types.ShipmentModel.BreakRule]):
             Deprecated: No longer used. Set of break rules used in the
             model. Each vehicle specifies the ``BreakRule`` that applies
             to it via the
@@ -804,7 +810,7 @@ class ShipmentModel(proto.Message):
         vehicle start locations to visit and vehicle end locations.
 
         Attributes:
-            rows (Sequence[google.cloud.optimization_v1.types.ShipmentModel.DurationDistanceMatrix.Row]):
+            rows (MutableSequence[google.cloud.optimization_v1.types.ShipmentModel.DurationDistanceMatrix.Row]):
                 Specifies the rows of the duration and distance matrix. It
                 must have as many elements as
                 [ShipmentModel.duration_distance_matrix_src_tags][google.cloud.optimization.v1.ShipmentModel.duration_distance_matrix_src_tags].
@@ -824,32 +830,34 @@ class ShipmentModel(proto.Message):
             r"""Specifies a row of the duration and distance matrix.
 
             Attributes:
-                durations (Sequence[google.protobuf.duration_pb2.Duration]):
+                durations (MutableSequence[google.protobuf.duration_pb2.Duration]):
                     Duration values for a given row. It must have as many
                     elements as
                     [ShipmentModel.duration_distance_matrix_dst_tags][google.cloud.optimization.v1.ShipmentModel.duration_distance_matrix_dst_tags].
-                meters (Sequence[float]):
+                meters (MutableSequence[float]):
                     Distance values for a given row. If no costs or constraints
                     refer to distances in the model, this can be left empty;
                     otherwise it must have as many elements as ``durations``.
             """
 
-            durations = proto.RepeatedField(
+            durations: MutableSequence[duration_pb2.Duration] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message=duration_pb2.Duration,
             )
-            meters = proto.RepeatedField(
+            meters: MutableSequence[float] = proto.RepeatedField(
                 proto.DOUBLE,
                 number=2,
             )
 
-        rows = proto.RepeatedField(
+        rows: MutableSequence[
+            "ShipmentModel.DurationDistanceMatrix.Row"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="ShipmentModel.DurationDistanceMatrix.Row",
         )
-        vehicle_start_tag = proto.Field(
+        vehicle_start_tag: str = proto.Field(
             proto.STRING,
             number=2,
         )
@@ -887,25 +895,25 @@ class ShipmentModel(proto.Message):
                 event. It can be negative.
         """
 
-        first_index = proto.Field(
+        first_index: int = proto.Field(
             proto.INT32,
             number=1,
             optional=True,
         )
-        first_is_delivery = proto.Field(
+        first_is_delivery: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
-        second_index = proto.Field(
+        second_index: int = proto.Field(
             proto.INT32,
             number=2,
             optional=True,
         )
-        second_is_delivery = proto.Field(
+        second_is_delivery: bool = proto.Field(
             proto.BOOL,
             number=4,
         )
-        offset_duration = proto.Field(
+        offset_duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=5,
             message=duration_pb2.Duration,
@@ -928,9 +936,9 @@ class ShipmentModel(proto.Message):
         -  or after the vehicle end (ditto, with the vehicle end time).
 
         Attributes:
-            break_requests (Sequence[google.cloud.optimization_v1.types.ShipmentModel.BreakRule.BreakRequest]):
+            break_requests (MutableSequence[google.cloud.optimization_v1.types.ShipmentModel.BreakRule.BreakRequest]):
                 Sequence of breaks. See the ``BreakRequest`` message.
-            frequency_constraints (Sequence[google.cloud.optimization_v1.types.ShipmentModel.BreakRule.FrequencyConstraint]):
+            frequency_constraints (MutableSequence[google.cloud.optimization_v1.types.ShipmentModel.BreakRule.FrequencyConstraint]):
                 Several ``FrequencyConstraint`` may apply. They must all be
                 satisfied by the ``BreakRequest``\ s of this ``BreakRule``.
                 See ``FrequencyConstraint``.
@@ -956,17 +964,17 @@ class ShipmentModel(proto.Message):
                     be positive.
             """
 
-            earliest_start_time = proto.Field(
+            earliest_start_time: timestamp_pb2.Timestamp = proto.Field(
                 proto.MESSAGE,
                 number=1,
                 message=timestamp_pb2.Timestamp,
             )
-            latest_start_time = proto.Field(
+            latest_start_time: timestamp_pb2.Timestamp = proto.Field(
                 proto.MESSAGE,
                 number=2,
                 message=timestamp_pb2.Timestamp,
             )
-            min_duration = proto.Field(
+            min_duration: duration_pb2.Duration = proto.Field(
                 proto.MESSAGE,
                 number=3,
                 message=duration_pb2.Duration,
@@ -1020,91 +1028,103 @@ class ShipmentModel(proto.Message):
                     of ``duration >= min_break_duration``. Must be positive.
             """
 
-            min_break_duration = proto.Field(
+            min_break_duration: duration_pb2.Duration = proto.Field(
                 proto.MESSAGE,
                 number=1,
                 message=duration_pb2.Duration,
             )
-            max_inter_break_duration = proto.Field(
+            max_inter_break_duration: duration_pb2.Duration = proto.Field(
                 proto.MESSAGE,
                 number=2,
                 message=duration_pb2.Duration,
             )
 
-        break_requests = proto.RepeatedField(
+        break_requests: MutableSequence[
+            "ShipmentModel.BreakRule.BreakRequest"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="ShipmentModel.BreakRule.BreakRequest",
         )
-        frequency_constraints = proto.RepeatedField(
+        frequency_constraints: MutableSequence[
+            "ShipmentModel.BreakRule.FrequencyConstraint"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="ShipmentModel.BreakRule.FrequencyConstraint",
         )
 
-    shipments = proto.RepeatedField(
+    shipments: MutableSequence["Shipment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Shipment",
     )
-    vehicles = proto.RepeatedField(
+    vehicles: MutableSequence["Vehicle"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="Vehicle",
     )
-    max_active_vehicles = proto.Field(
+    max_active_vehicles: int = proto.Field(
         proto.INT32,
         number=4,
         optional=True,
     )
-    global_start_time = proto.Field(
+    global_start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    global_end_time = proto.Field(
+    global_end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    global_duration_cost_per_hour = proto.Field(
+    global_duration_cost_per_hour: float = proto.Field(
         proto.DOUBLE,
         number=7,
     )
-    duration_distance_matrices = proto.RepeatedField(
+    duration_distance_matrices: MutableSequence[
+        DurationDistanceMatrix
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message=DurationDistanceMatrix,
     )
-    duration_distance_matrix_src_tags = proto.RepeatedField(
+    duration_distance_matrix_src_tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=9,
     )
-    duration_distance_matrix_dst_tags = proto.RepeatedField(
+    duration_distance_matrix_dst_tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=10,
     )
-    transition_attributes = proto.RepeatedField(
+    transition_attributes: MutableSequence[
+        "TransitionAttributes"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message="TransitionAttributes",
     )
-    shipment_type_incompatibilities = proto.RepeatedField(
+    shipment_type_incompatibilities: MutableSequence[
+        "ShipmentTypeIncompatibility"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=12,
         message="ShipmentTypeIncompatibility",
     )
-    shipment_type_requirements = proto.RepeatedField(
+    shipment_type_requirements: MutableSequence[
+        "ShipmentTypeRequirement"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=13,
         message="ShipmentTypeRequirement",
     )
-    precedence_rules = proto.RepeatedField(
+    precedence_rules: MutableSequence[PrecedenceRule] = proto.RepeatedField(
         proto.MESSAGE,
         number=14,
         message=PrecedenceRule,
     )
-    break_rules = proto.RepeatedField(
+    break_rules: MutableSequence[BreakRule] = proto.RepeatedField(
         proto.MESSAGE,
         number=15,
         message=BreakRule,
@@ -1120,17 +1140,17 @@ class Shipment(proto.Message):
     re-increase its spare capacities accordingly).
 
     Attributes:
-        pickups (Sequence[google.cloud.optimization_v1.types.Shipment.VisitRequest]):
+        pickups (MutableSequence[google.cloud.optimization_v1.types.Shipment.VisitRequest]):
             Set of pickup alternatives associated to the
             shipment. If not specified, the vehicle only
             needs to visit a location corresponding to the
             deliveries.
-        deliveries (Sequence[google.cloud.optimization_v1.types.Shipment.VisitRequest]):
+        deliveries (MutableSequence[google.cloud.optimization_v1.types.Shipment.VisitRequest]):
             Set of delivery alternatives associated to
             the shipment. If not specified, the vehicle only
             needs to visit a location corresponding to the
             pickups.
-        load_demands (Mapping[str, google.cloud.optimization_v1.types.Shipment.Load]):
+        load_demands (MutableMapping[str, google.cloud.optimization_v1.types.Shipment.Load]):
             Load demands of the shipment (for example weight, volume,
             number of pallets etc). The keys in the map should be
             identifiers describing the type of the corresponding load,
@@ -1150,11 +1170,11 @@ class Shipment(proto.Message):
             considered infinite, i.e. the shipment must be completed.
 
             This field is a member of `oneof`_ ``_penalty_cost``.
-        allowed_vehicle_indices (Sequence[int]):
+        allowed_vehicle_indices (MutableSequence[int]):
             The set of vehicles that may perform this shipment. If
             empty, all vehicles may perform it. Vehicles are given by
             their index in the ``ShipmentModel``'s ``vehicles`` list.
-        costs_per_vehicle (Sequence[float]):
+        costs_per_vehicle (MutableSequence[float]):
             Specifies the cost that is incurred when this shipment is
             delivered by each vehicle. If specified, it must have
             EITHER:
@@ -1170,7 +1190,7 @@ class Shipment(proto.Message):
             These costs must be in the same unit as ``penalty_cost`` and
             must not be negative. Leave this field empty, if there are
             no such costs.
-        costs_per_vehicle_indices (Sequence[int]):
+        costs_per_vehicle_indices (MutableSequence[int]):
             Indices of the vehicles to which ``costs_per_vehicle``
             applies. If non-empty, it must have the same number of
             elements as ``costs_per_vehicle``. A vehicle index may not
@@ -1258,7 +1278,7 @@ class Shipment(proto.Message):
             removes the related pickup/delivery visits from the
             performing route. ``precedence_rules`` that reference
             ignored shipments will also be ignored.
-        demands (Sequence[google.cloud.optimization_v1.types.CapacityQuantity]):
+        demands (MutableSequence[google.cloud.optimization_v1.types.CapacityQuantity]):
             Deprecated: Use [Shipment.load_demands][] instead.
     """
 
@@ -1292,10 +1312,10 @@ class Shipment(proto.Message):
                 ``arrival_waypoint``. If the shipment model has duration
                 distance matrices, ``departure_waypoint`` must not be
                 specified.
-            tags (Sequence[str]):
+            tags (MutableSequence[str]):
                 Specifies tags attached to the visit request.
                 Empty or duplicate strings are not allowed.
-            time_windows (Sequence[google.cloud.optimization_v1.types.TimeWindow]):
+            time_windows (MutableSequence[google.cloud.optimization_v1.types.TimeWindow]):
                 Time windows which constrain the arrival time at a visit.
                 Note that a vehicle may depart outside of the arrival time
                 window, i.e. arrival time + duration do not need to be
@@ -1322,7 +1342,7 @@ class Shipment(proto.Message):
                 pickup or delivery of a shipment. This cost must be in the
                 same unit as ``Shipment.penalty_cost`` and must not be
                 negative.
-            load_demands (Mapping[str, google.cloud.optimization_v1.types.Shipment.Load]):
+            load_demands (MutableMapping[str, google.cloud.optimization_v1.types.Shipment.Load]):
                 Load demands of this visit request. This is just like
                 [Shipment.load_demands][google.cloud.optimization.v1.Shipment.load_demands]
                 field, except that it only applies to this
@@ -1331,7 +1351,7 @@ class Shipment(proto.Message):
                 [Shipment][google.cloud.optimization.v1.Shipment]. The
                 demands listed here are added to the demands listed in
                 [Shipment.load_demands][google.cloud.optimization.v1.Shipment.load_demands].
-            visit_types (Sequence[str]):
+            visit_types (MutableSequence[str]):
                 Specifies the types of the visit. This may be used to
                 allocate additional time required for a vehicle to complete
                 this visit (see
@@ -1343,63 +1363,63 @@ class Shipment(proto.Message):
                 reported in the response as ``visit_label`` in the
                 corresponding
                 [ShipmentRoute.Visit][google.cloud.optimization.v1.ShipmentRoute.Visit].
-            demands (Sequence[google.cloud.optimization_v1.types.CapacityQuantity]):
+            demands (MutableSequence[google.cloud.optimization_v1.types.CapacityQuantity]):
                 Deprecated: Use [VisitRequest.load_demands][] instead.
         """
 
-        arrival_location = proto.Field(
+        arrival_location: latlng_pb2.LatLng = proto.Field(
             proto.MESSAGE,
             number=1,
             message=latlng_pb2.LatLng,
         )
-        arrival_waypoint = proto.Field(
+        arrival_waypoint: "Waypoint" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="Waypoint",
         )
-        departure_location = proto.Field(
+        departure_location: latlng_pb2.LatLng = proto.Field(
             proto.MESSAGE,
             number=3,
             message=latlng_pb2.LatLng,
         )
-        departure_waypoint = proto.Field(
+        departure_waypoint: "Waypoint" = proto.Field(
             proto.MESSAGE,
             number=4,
             message="Waypoint",
         )
-        tags = proto.RepeatedField(
+        tags: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=5,
         )
-        time_windows = proto.RepeatedField(
+        time_windows: MutableSequence["TimeWindow"] = proto.RepeatedField(
             proto.MESSAGE,
             number=6,
             message="TimeWindow",
         )
-        duration = proto.Field(
+        duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=7,
             message=duration_pb2.Duration,
         )
-        cost = proto.Field(
+        cost: float = proto.Field(
             proto.DOUBLE,
             number=8,
         )
-        load_demands = proto.MapField(
+        load_demands: MutableMapping[str, "Shipment.Load"] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=12,
             message="Shipment.Load",
         )
-        visit_types = proto.RepeatedField(
+        visit_types: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=10,
         )
-        label = proto.Field(
+        label: str = proto.Field(
             proto.STRING,
             number=11,
         )
-        demands = proto.RepeatedField(
+        demands: MutableSequence["CapacityQuantity"] = proto.RepeatedField(
             proto.MESSAGE,
             number=9,
             message="CapacityQuantity",
@@ -1420,72 +1440,72 @@ class Shipment(proto.Message):
                 precision. Must be ≥ 0.
         """
 
-        amount = proto.Field(
+        amount: int = proto.Field(
             proto.INT64,
             number=2,
         )
 
-    pickups = proto.RepeatedField(
+    pickups: MutableSequence[VisitRequest] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=VisitRequest,
     )
-    deliveries = proto.RepeatedField(
+    deliveries: MutableSequence[VisitRequest] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=VisitRequest,
     )
-    load_demands = proto.MapField(
+    load_demands: MutableMapping[str, Load] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=14,
         message=Load,
     )
-    penalty_cost = proto.Field(
+    penalty_cost: float = proto.Field(
         proto.DOUBLE,
         number=4,
         optional=True,
     )
-    allowed_vehicle_indices = proto.RepeatedField(
+    allowed_vehicle_indices: MutableSequence[int] = proto.RepeatedField(
         proto.INT32,
         number=5,
     )
-    costs_per_vehicle = proto.RepeatedField(
+    costs_per_vehicle: MutableSequence[float] = proto.RepeatedField(
         proto.DOUBLE,
         number=6,
     )
-    costs_per_vehicle_indices = proto.RepeatedField(
+    costs_per_vehicle_indices: MutableSequence[int] = proto.RepeatedField(
         proto.INT32,
         number=7,
     )
-    pickup_to_delivery_relative_detour_limit = proto.Field(
+    pickup_to_delivery_relative_detour_limit: float = proto.Field(
         proto.DOUBLE,
         number=8,
         optional=True,
     )
-    pickup_to_delivery_absolute_detour_limit = proto.Field(
+    pickup_to_delivery_absolute_detour_limit: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=9,
         message=duration_pb2.Duration,
     )
-    pickup_to_delivery_time_limit = proto.Field(
+    pickup_to_delivery_time_limit: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=10,
         message=duration_pb2.Duration,
     )
-    shipment_type = proto.Field(
+    shipment_type: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    label = proto.Field(
+    label: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    ignore = proto.Field(
+    ignore: bool = proto.Field(
         proto.BOOL,
         number=13,
     )
-    demands = proto.RepeatedField(
+    demands: MutableSequence["CapacityQuantity"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="CapacityQuantity",
@@ -1498,7 +1518,7 @@ class ShipmentTypeIncompatibility(proto.Message):
     route is restricted based on the incompatibility mode.
 
     Attributes:
-        types (Sequence[str]):
+        types (MutableSequence[str]):
             List of incompatible types. Two shipments having different
             ``shipment_types`` among those listed are "incompatible".
         incompatibility_mode (google.cloud.optimization_v1.types.ShipmentTypeIncompatibility.IncompatibilityMode):
@@ -1513,11 +1533,11 @@ class ShipmentTypeIncompatibility(proto.Message):
         NOT_PERFORMED_BY_SAME_VEHICLE = 1
         NOT_IN_SAME_VEHICLE_SIMULTANEOUSLY = 2
 
-    types = proto.RepeatedField(
+    types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    incompatibility_mode = proto.Field(
+    incompatibility_mode: IncompatibilityMode = proto.Field(
         proto.ENUM,
         number=2,
         enum=IncompatibilityMode,
@@ -1530,10 +1550,10 @@ class ShipmentTypeRequirement(proto.Message):
     requirement mode.
 
     Attributes:
-        required_shipment_type_alternatives (Sequence[str]):
+        required_shipment_type_alternatives (MutableSequence[str]):
             List of alternative shipment types required by the
             ``dependent_shipment_types``.
-        dependent_shipment_types (Sequence[str]):
+        dependent_shipment_types (MutableSequence[str]):
             All shipments with a type in the
             ``dependent_shipment_types`` field require at least one
             shipment of type ``required_shipment_type_alternatives`` to
@@ -1554,15 +1574,15 @@ class ShipmentTypeRequirement(proto.Message):
         IN_SAME_VEHICLE_AT_PICKUP_TIME = 2
         IN_SAME_VEHICLE_AT_DELIVERY_TIME = 3
 
-    required_shipment_type_alternatives = proto.RepeatedField(
+    required_shipment_type_alternatives: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    dependent_shipment_types = proto.RepeatedField(
+    dependent_shipment_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    requirement_mode = proto.Field(
+    requirement_mode: RequirementMode = proto.Field(
         proto.ENUM,
         number=3,
         enum=RequirementMode,
@@ -1608,15 +1628,15 @@ class Vehicle(proto.Message):
             last ``VisitRequest``. If the shipment model has duration
             and distance matrices, ``end_waypoint`` must not be
             specified.
-        start_tags (Sequence[str]):
+        start_tags (MutableSequence[str]):
             Specifies tags attached to the start of the
             vehicle's route.
             Empty or duplicate strings are not allowed.
-        end_tags (Sequence[str]):
+        end_tags (MutableSequence[str]):
             Specifies tags attached to the end of the
             vehicle's route.
             Empty or duplicate strings are not allowed.
-        start_time_windows (Sequence[google.cloud.optimization_v1.types.TimeWindow]):
+        start_time_windows (MutableSequence[google.cloud.optimization_v1.types.TimeWindow]):
             Time windows during which the vehicle may depart its start
             location. They must be within the global time limits (see
             [ShipmentModel.global_*][google.cloud.optimization.v1.ShipmentModel.global_start_time]
@@ -1630,7 +1650,7 @@ class Vehicle(proto.Message):
 
             ``cost_per_hour_after_soft_end_time`` and ``soft_end_time``
             can only be set if there is a single time window.
-        end_time_windows (Sequence[google.cloud.optimization_v1.types.TimeWindow]):
+        end_time_windows (MutableSequence[google.cloud.optimization_v1.types.TimeWindow]):
             Time windows during which the vehicle may arrive at its end
             location. They must be within the global time limits (see
             [ShipmentModel.global_*][google.cloud.optimization.v1.ShipmentModel.global_start_time]
@@ -1665,7 +1685,7 @@ class Vehicle(proto.Message):
             This field is a member of `oneof`_ ``_travel_duration_multiple``.
         unloading_policy (google.cloud.optimization_v1.types.Vehicle.UnloadingPolicy):
             Unloading policy enforced on the vehicle.
-        load_limits (Mapping[str, google.cloud.optimization_v1.types.Vehicle.LoadLimit]):
+        load_limits (MutableMapping[str, google.cloud.optimization_v1.types.Vehicle.LoadLimit]):
             Capacities of the vehicle (weight, volume, # of pallets for
             example). The keys in the map are the identifiers of the
             type of load, consistent with the keys of the
@@ -1728,7 +1748,7 @@ class Vehicle(proto.Message):
             In a given ``OptimizeToursResponse``, the route distance is
             the sum of all its
             [transitions.travel_distance_meters][google.cloud.optimization.v1.ShipmentRoute.Transition.travel_distance_meters].
-        extra_visit_duration_for_visit_type (Mapping[str, google.protobuf.duration_pb2.Duration]):
+        extra_visit_duration_for_visit_type (MutableMapping[str, google.protobuf.duration_pb2.Duration]):
             Specifies a map from visit_types strings to durations. The
             duration is time in addition to
             [VisitRequest.duration][google.cloud.optimization.v1.Shipment.VisitRequest.duration]
@@ -1763,19 +1783,19 @@ class Vehicle(proto.Message):
             it is skipped in the response. If a shipment has a non-empty
             ``allowed_vehicle_indices`` field and all of the allowed
             vehicles are ignored, it is skipped in the response.
-        break_rule_indices (Sequence[int]):
+        break_rule_indices (MutableSequence[int]):
             Deprecated: No longer used. Indices in the ``break_rule``
             field in the source [ShipmentModel][]. They correspond to
             break rules enforced on the vehicle.
 
             As of 2018/03, at most one rule index per vehicle can be
             specified.
-        capacities (Sequence[google.cloud.optimization_v1.types.CapacityQuantity]):
+        capacities (MutableSequence[google.cloud.optimization_v1.types.CapacityQuantity]):
             Deprecated: Use [Vehicle.load_limits][] instead.
-        start_load_intervals (Sequence[google.cloud.optimization_v1.types.CapacityQuantityInterval]):
+        start_load_intervals (MutableSequence[google.cloud.optimization_v1.types.CapacityQuantityInterval]):
             Deprecated: Use [Vehicle.LoadLimit.start_load_interval][]
             instead.
-        end_load_intervals (Sequence[google.cloud.optimization_v1.types.CapacityQuantityInterval]):
+        end_load_intervals (MutableSequence[google.cloud.optimization_v1.types.CapacityQuantityInterval]):
             Deprecated: Use [Vehicle.LoadLimit.end_load_interval][]
             instead.
     """
@@ -1820,10 +1840,10 @@ class Vehicle(proto.Message):
                 along this vehicle's route, the following cost penalty
                 applies (only once per vehicle): (load -
                 [soft_max_load][google.cloud.optimization.v1.Vehicle.LoadLimit.soft_max_load])
-                \*
-                [cost_per_unit_above_soft_max][google.cloud.optimization.v1.Vehicle.LoadLimit.cost_per_unit_above_soft_max].
-                All costs add up and must be in the same unit as
-                [Shipment.penalty_cost][google.cloud.optimization.v1.Shipment.penalty_cost].
+
+                -  [cost_per_unit_above_soft_max][google.cloud.optimization.v1.Vehicle.LoadLimit.cost_per_unit_above_soft_max].
+                   All costs add up and must be in the same unit as
+                   [Shipment.penalty_cost][google.cloud.optimization.v1.Shipment.penalty_cost].
             start_load_interval (google.cloud.optimization_v1.types.Vehicle.LoadLimit.Interval):
                 The acceptable load interval of the vehicle
                 at the start of the route.
@@ -1853,35 +1873,35 @@ class Vehicle(proto.Message):
                     This field is a member of `oneof`_ ``_max``.
             """
 
-            min_ = proto.Field(
+            min_: int = proto.Field(
                 proto.INT64,
                 number=1,
             )
-            max_ = proto.Field(
+            max_: int = proto.Field(
                 proto.INT64,
                 number=2,
                 optional=True,
             )
 
-        max_load = proto.Field(
+        max_load: int = proto.Field(
             proto.INT64,
             number=1,
             optional=True,
         )
-        soft_max_load = proto.Field(
+        soft_max_load: int = proto.Field(
             proto.INT64,
             number=2,
         )
-        cost_per_unit_above_soft_max = proto.Field(
+        cost_per_unit_above_soft_max: float = proto.Field(
             proto.DOUBLE,
             number=3,
         )
-        start_load_interval = proto.Field(
+        start_load_interval: "Vehicle.LoadLimit.Interval" = proto.Field(
             proto.MESSAGE,
             number=4,
             message="Vehicle.LoadLimit.Interval",
         )
-        end_load_interval = proto.Field(
+        end_load_interval: "Vehicle.LoadLimit.Interval" = proto.Field(
             proto.MESSAGE,
             number=5,
             message="Vehicle.LoadLimit.Interval",
@@ -1952,160 +1972,166 @@ class Vehicle(proto.Message):
                 This field is a member of `oneof`_ ``_cost_per_square_hour_after_quadratic_soft_max``.
         """
 
-        max_duration = proto.Field(
+        max_duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=1,
             message=duration_pb2.Duration,
         )
-        soft_max_duration = proto.Field(
+        soft_max_duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=2,
             message=duration_pb2.Duration,
         )
-        cost_per_hour_after_soft_max = proto.Field(
+        cost_per_hour_after_soft_max: float = proto.Field(
             proto.DOUBLE,
             number=3,
             optional=True,
         )
-        quadratic_soft_max_duration = proto.Field(
+        quadratic_soft_max_duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=4,
             message=duration_pb2.Duration,
         )
-        cost_per_square_hour_after_quadratic_soft_max = proto.Field(
+        cost_per_square_hour_after_quadratic_soft_max: float = proto.Field(
             proto.DOUBLE,
             number=5,
             optional=True,
         )
 
-    travel_mode = proto.Field(
+    travel_mode: TravelMode = proto.Field(
         proto.ENUM,
         number=1,
         enum=TravelMode,
     )
-    start_location = proto.Field(
+    start_location: latlng_pb2.LatLng = proto.Field(
         proto.MESSAGE,
         number=3,
         message=latlng_pb2.LatLng,
     )
-    start_waypoint = proto.Field(
+    start_waypoint: "Waypoint" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="Waypoint",
     )
-    end_location = proto.Field(
+    end_location: latlng_pb2.LatLng = proto.Field(
         proto.MESSAGE,
         number=5,
         message=latlng_pb2.LatLng,
     )
-    end_waypoint = proto.Field(
+    end_waypoint: "Waypoint" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="Waypoint",
     )
-    start_tags = proto.RepeatedField(
+    start_tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
-    end_tags = proto.RepeatedField(
+    end_tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
     )
-    start_time_windows = proto.RepeatedField(
+    start_time_windows: MutableSequence["TimeWindow"] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message="TimeWindow",
     )
-    end_time_windows = proto.RepeatedField(
+    end_time_windows: MutableSequence["TimeWindow"] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message="TimeWindow",
     )
-    travel_duration_multiple = proto.Field(
+    travel_duration_multiple: float = proto.Field(
         proto.DOUBLE,
         number=11,
         optional=True,
     )
-    unloading_policy = proto.Field(
+    unloading_policy: UnloadingPolicy = proto.Field(
         proto.ENUM,
         number=12,
         enum=UnloadingPolicy,
     )
-    load_limits = proto.MapField(
+    load_limits: MutableMapping[str, LoadLimit] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=30,
         message=LoadLimit,
     )
-    cost_per_hour = proto.Field(
+    cost_per_hour: float = proto.Field(
         proto.DOUBLE,
         number=16,
     )
-    cost_per_traveled_hour = proto.Field(
+    cost_per_traveled_hour: float = proto.Field(
         proto.DOUBLE,
         number=17,
     )
-    cost_per_kilometer = proto.Field(
+    cost_per_kilometer: float = proto.Field(
         proto.DOUBLE,
         number=18,
     )
-    fixed_cost = proto.Field(
+    fixed_cost: float = proto.Field(
         proto.DOUBLE,
         number=19,
     )
-    used_if_route_is_empty = proto.Field(
+    used_if_route_is_empty: bool = proto.Field(
         proto.BOOL,
         number=20,
     )
-    route_duration_limit = proto.Field(
+    route_duration_limit: DurationLimit = proto.Field(
         proto.MESSAGE,
         number=21,
         message=DurationLimit,
     )
-    travel_duration_limit = proto.Field(
+    travel_duration_limit: DurationLimit = proto.Field(
         proto.MESSAGE,
         number=22,
         message=DurationLimit,
     )
-    route_distance_limit = proto.Field(
+    route_distance_limit: "DistanceLimit" = proto.Field(
         proto.MESSAGE,
         number=23,
         message="DistanceLimit",
     )
-    extra_visit_duration_for_visit_type = proto.MapField(
+    extra_visit_duration_for_visit_type: MutableMapping[
+        str, duration_pb2.Duration
+    ] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=24,
         message=duration_pb2.Duration,
     )
-    break_rule = proto.Field(
+    break_rule: "BreakRule" = proto.Field(
         proto.MESSAGE,
         number=25,
         message="BreakRule",
     )
-    label = proto.Field(
+    label: str = proto.Field(
         proto.STRING,
         number=27,
     )
-    ignore = proto.Field(
+    ignore: bool = proto.Field(
         proto.BOOL,
         number=28,
     )
-    break_rule_indices = proto.RepeatedField(
+    break_rule_indices: MutableSequence[int] = proto.RepeatedField(
         proto.INT32,
         number=29,
     )
-    capacities = proto.RepeatedField(
+    capacities: MutableSequence["CapacityQuantity"] = proto.RepeatedField(
         proto.MESSAGE,
         number=13,
         message="CapacityQuantity",
     )
-    start_load_intervals = proto.RepeatedField(
+    start_load_intervals: MutableSequence[
+        "CapacityQuantityInterval"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=14,
         message="CapacityQuantityInterval",
     )
-    end_load_intervals = proto.RepeatedField(
+    end_load_intervals: MutableSequence[
+        "CapacityQuantityInterval"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=15,
         message="CapacityQuantityInterval",
@@ -2178,32 +2204,32 @@ class TimeWindow(proto.Message):
             This field is a member of `oneof`_ ``_cost_per_hour_after_soft_end_time``.
     """
 
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    soft_start_time = proto.Field(
+    soft_start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    soft_end_time = proto.Field(
+    soft_end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    cost_per_hour_before_soft_start_time = proto.Field(
+    cost_per_hour_before_soft_start_time: float = proto.Field(
         proto.DOUBLE,
         number=5,
         optional=True,
     )
-    cost_per_hour_after_soft_end_time = proto.Field(
+    cost_per_hour_after_soft_end_time: float = proto.Field(
         proto.DOUBLE,
         number=6,
         optional=True,
@@ -2221,11 +2247,11 @@ class CapacityQuantity(proto.Message):
 
     """
 
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    value = proto.Field(
+    value: int = proto.Field(
         proto.INT64,
         number=2,
     )
@@ -2245,16 +2271,16 @@ class CapacityQuantityInterval(proto.Message):
             This field is a member of `oneof`_ ``_max_value``.
     """
 
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    min_value = proto.Field(
+    min_value: int = proto.Field(
         proto.INT64,
         number=2,
         optional=True,
     )
-    max_value = proto.Field(
+    max_value: int = proto.Field(
         proto.INT64,
         number=3,
         optional=True,
@@ -2300,17 +2326,17 @@ class DistanceLimit(proto.Message):
             This field is a member of `oneof`_ ``_cost_per_kilometer_above_soft_max``.
     """
 
-    max_meters = proto.Field(
+    max_meters: int = proto.Field(
         proto.INT64,
         number=1,
         optional=True,
     )
-    soft_max_meters = proto.Field(
+    soft_max_meters: int = proto.Field(
         proto.INT64,
         number=2,
         optional=True,
     )
-    cost_per_kilometer_above_soft_max = proto.Field(
+    cost_per_kilometer_above_soft_max: float = proto.Field(
         proto.DOUBLE,
         number=3,
         optional=True,
@@ -2372,36 +2398,36 @@ class TransitionAttributes(proto.Message):
             and *before* starting the destination visit.
     """
 
-    src_tag = proto.Field(
+    src_tag: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    excluded_src_tag = proto.Field(
+    excluded_src_tag: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    dst_tag = proto.Field(
+    dst_tag: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    excluded_dst_tag = proto.Field(
+    excluded_dst_tag: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    cost = proto.Field(
+    cost: float = proto.Field(
         proto.DOUBLE,
         number=5,
     )
-    cost_per_kilometer = proto.Field(
+    cost_per_kilometer: float = proto.Field(
         proto.DOUBLE,
         number=6,
     )
-    distance_limit = proto.Field(
+    distance_limit: "DistanceLimit" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="DistanceLimit",
     )
-    delay = proto.Field(
+    delay: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=8,
         message=duration_pb2.Duration,
@@ -2442,18 +2468,18 @@ class Waypoint(proto.Message):
             'location'.
     """
 
-    location = proto.Field(
+    location: "Location" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="location_type",
         message="Location",
     )
-    place_id = proto.Field(
+    place_id: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="location_type",
     )
-    side_of_road = proto.Field(
+    side_of_road: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -2477,12 +2503,12 @@ class Location(proto.Message):
             This field is a member of `oneof`_ ``_heading``.
     """
 
-    lat_lng = proto.Field(
+    lat_lng: latlng_pb2.LatLng = proto.Field(
         proto.MESSAGE,
         number=1,
         message=latlng_pb2.LatLng,
     )
-    heading = proto.Field(
+    heading: int = proto.Field(
         proto.INT32,
         number=2,
         optional=True,
@@ -2505,9 +2531,9 @@ class BreakRule(proto.Message):
     -  or after the vehicle end (ditto, with the vehicle end time).
 
     Attributes:
-        break_requests (Sequence[google.cloud.optimization_v1.types.BreakRule.BreakRequest]):
+        break_requests (MutableSequence[google.cloud.optimization_v1.types.BreakRule.BreakRequest]):
             Sequence of breaks. See the ``BreakRequest`` message.
-        frequency_constraints (Sequence[google.cloud.optimization_v1.types.BreakRule.FrequencyConstraint]):
+        frequency_constraints (MutableSequence[google.cloud.optimization_v1.types.BreakRule.FrequencyConstraint]):
             Several ``FrequencyConstraint`` may apply. They must all be
             satisfied by the ``BreakRequest``\ s of this ``BreakRule``.
             See ``FrequencyConstraint``.
@@ -2533,17 +2559,17 @@ class BreakRule(proto.Message):
                 be positive.
         """
 
-        earliest_start_time = proto.Field(
+        earliest_start_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=1,
             message=timestamp_pb2.Timestamp,
         )
-        latest_start_time = proto.Field(
+        latest_start_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=2,
             message=timestamp_pb2.Timestamp,
         )
-        min_duration = proto.Field(
+        min_duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=3,
             message=duration_pb2.Duration,
@@ -2597,23 +2623,23 @@ class BreakRule(proto.Message):
                 of ``duration >= min_break_duration``. Must be positive.
         """
 
-        min_break_duration = proto.Field(
+        min_break_duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=1,
             message=duration_pb2.Duration,
         )
-        max_inter_break_duration = proto.Field(
+        max_inter_break_duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=2,
             message=duration_pb2.Duration,
         )
 
-    break_requests = proto.RepeatedField(
+    break_requests: MutableSequence[BreakRequest] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=BreakRequest,
     )
-    frequency_constraints = proto.RepeatedField(
+    frequency_constraints: MutableSequence[FrequencyConstraint] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=FrequencyConstraint,
@@ -2727,11 +2753,11 @@ class ShipmentRoute(proto.Message):
             Time at which the vehicle starts its route.
         vehicle_end_time (google.protobuf.timestamp_pb2.Timestamp):
             Time at which the vehicle finishes its route.
-        visits (Sequence[google.cloud.optimization_v1.types.ShipmentRoute.Visit]):
+        visits (MutableSequence[google.cloud.optimization_v1.types.ShipmentRoute.Visit]):
             Ordered sequence of visits representing a route. visits[i]
             is the i-th visit in the route. If this field is empty, the
             vehicle is considered as unused.
-        transitions (Sequence[google.cloud.optimization_v1.types.ShipmentRoute.Transition]):
+        transitions (MutableSequence[google.cloud.optimization_v1.types.ShipmentRoute.Transition]):
             Ordered list of transitions for the route.
         has_traffic_infeasibilities (bool):
             When
@@ -2760,7 +2786,7 @@ class ShipmentRoute(proto.Message):
             is only populated if
             [OptimizeToursRequest.populate_polylines][google.cloud.optimization.v1.OptimizeToursRequest.populate_polylines]
             is set to true.
-        breaks (Sequence[google.cloud.optimization_v1.types.ShipmentRoute.Break]):
+        breaks (MutableSequence[google.cloud.optimization_v1.types.ShipmentRoute.Break]):
             Breaks scheduled for the vehicle performing this route. The
             ``breaks`` sequence represents time intervals, each starting
             at the corresponding ``start_time`` and lasting ``duration``
@@ -2774,7 +2800,7 @@ class ShipmentRoute(proto.Message):
             or
             [ShipmentRoute.visits][google.cloud.optimization.v1.ShipmentRoute.visits],
             depending on the context.
-        route_costs (Mapping[str, float]):
+        route_costs (MutableMapping[str, float]):
             Cost of the route, broken down by cost-related request
             fields. The keys are proto paths, relative to the input
             OptimizeToursRequest, e.g. "model.shipments.pickups.cost",
@@ -2788,7 +2814,7 @@ class ShipmentRoute(proto.Message):
         route_total_cost (float):
             Total cost of the route. The sum of all costs
             in the cost map.
-        end_loads (Sequence[google.cloud.optimization_v1.types.CapacityQuantity]):
+        end_loads (MutableSequence[google.cloud.optimization_v1.types.CapacityQuantity]):
             Deprecated: Use [ShipmentRoute.Transition.loads][] instead.
             Vehicle loads upon arrival at its end location, for each
             type specified in
@@ -2797,7 +2823,7 @@ class ShipmentRoute(proto.Message):
             Exception: we omit loads for quantity types unconstrained by
             intervals and that don't have any non-zero demand on the
             route.
-        travel_steps (Sequence[google.cloud.optimization_v1.types.ShipmentRoute.TravelStep]):
+        travel_steps (MutableSequence[google.cloud.optimization_v1.types.ShipmentRoute.TravelStep]):
             Deprecated: Use [ShipmentRoute.Transition][] instead.
             Ordered list of travel steps for the route.
         vehicle_detour (google.protobuf.duration_pb2.Duration):
@@ -2828,12 +2854,12 @@ class ShipmentRoute(proto.Message):
                 Duration of the delay.
         """
 
-        start_time = proto.Field(
+        start_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=1,
             message=timestamp_pb2.Timestamp,
         )
-        duration = proto.Field(
+        duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=2,
             message=duration_pb2.Duration,
@@ -2857,7 +2883,7 @@ class ShipmentRoute(proto.Message):
                 Time at which the visit starts. Note that the vehicle may
                 arrive earlier than this at the visit location. Times are
                 consistent with the ``ShipmentModel``.
-            load_demands (Mapping[str, google.cloud.optimization_v1.types.Shipment.Load]):
+            load_demands (MutableMapping[str, google.cloud.optimization_v1.types.Shipment.Load]):
                 Total visit load demand as the sum of the shipment and the
                 visit request ``load_demands``. The values are negative if
                 the visit is a delivery. Demands are reported for the same
@@ -2891,7 +2917,7 @@ class ShipmentRoute(proto.Message):
                 Copy of the corresponding
                 [VisitRequest.label][google.cloud.optimization.v1.Shipment.VisitRequest.label],
                 if specified in the ``VisitRequest``.
-            arrival_loads (Sequence[google.cloud.optimization_v1.types.CapacityQuantity]):
+            arrival_loads (MutableSequence[google.cloud.optimization_v1.types.CapacityQuantity]):
                 Deprecated: Use [ShipmentRoute.Transition.loads][] instead.
                 Vehicle loads upon arrival at the visit location, for each
                 type specified in
@@ -2905,57 +2931,57 @@ class ShipmentRoute(proto.Message):
             delay_before_start (google.cloud.optimization_v1.types.ShipmentRoute.Delay):
                 Deprecated: Use [ShipmentRoute.Transition.delay_duration][]
                 instead.
-            demands (Sequence[google.cloud.optimization_v1.types.CapacityQuantity]):
+            demands (MutableSequence[google.cloud.optimization_v1.types.CapacityQuantity]):
                 Deprecated: Use [Visit.load_demands][] instead.
         """
 
-        shipment_index = proto.Field(
+        shipment_index: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        is_pickup = proto.Field(
+        is_pickup: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
-        visit_request_index = proto.Field(
+        visit_request_index: int = proto.Field(
             proto.INT32,
             number=3,
         )
-        start_time = proto.Field(
+        start_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=4,
             message=timestamp_pb2.Timestamp,
         )
-        load_demands = proto.MapField(
+        load_demands: MutableMapping[str, "Shipment.Load"] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=11,
             message="Shipment.Load",
         )
-        detour = proto.Field(
+        detour: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=6,
             message=duration_pb2.Duration,
         )
-        shipment_label = proto.Field(
+        shipment_label: str = proto.Field(
             proto.STRING,
             number=7,
         )
-        visit_label = proto.Field(
+        visit_label: str = proto.Field(
             proto.STRING,
             number=8,
         )
-        arrival_loads = proto.RepeatedField(
+        arrival_loads: MutableSequence["CapacityQuantity"] = proto.RepeatedField(
             proto.MESSAGE,
             number=9,
             message="CapacityQuantity",
         )
-        delay_before_start = proto.Field(
+        delay_before_start: "ShipmentRoute.Delay" = proto.Field(
             proto.MESSAGE,
             number=10,
             message="ShipmentRoute.Delay",
         )
-        demands = proto.RepeatedField(
+        demands: MutableSequence["CapacityQuantity"] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message="CapacityQuantity",
@@ -3017,7 +3043,7 @@ class ShipmentRoute(proto.Message):
                 [populate_transition_polylines]
                 [google.cloud.optimization.v1.OptimizeToursRequest.populate_transition_polylines]
                 is set to true.
-            vehicle_loads (Mapping[str, google.cloud.optimization_v1.types.ShipmentRoute.VehicleLoad]):
+            vehicle_loads (MutableMapping[str, google.cloud.optimization_v1.types.ShipmentRoute.VehicleLoad]):
                 Vehicle loads during this transition, for each type that
                 either appears in this vehicle's
                 [Vehicle.load_limits][google.cloud.optimization.v1.Vehicle.load_limits],
@@ -3030,60 +3056,62 @@ class ShipmentRoute(proto.Message):
                 ``load_demands`` are either added or subtracted to get the
                 next transition's loads, depending on whether the visit was
                 a pickup or a delivery.
-            loads (Sequence[google.cloud.optimization_v1.types.CapacityQuantity]):
+            loads (MutableSequence[google.cloud.optimization_v1.types.CapacityQuantity]):
                 Deprecated: Use [Transition.vehicle_loads][] instead.
         """
 
-        travel_duration = proto.Field(
+        travel_duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=1,
             message=duration_pb2.Duration,
         )
-        travel_distance_meters = proto.Field(
+        travel_distance_meters: float = proto.Field(
             proto.DOUBLE,
             number=2,
         )
-        traffic_info_unavailable = proto.Field(
+        traffic_info_unavailable: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
-        delay_duration = proto.Field(
+        delay_duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=4,
             message=duration_pb2.Duration,
         )
-        break_duration = proto.Field(
+        break_duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=5,
             message=duration_pb2.Duration,
         )
-        wait_duration = proto.Field(
+        wait_duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=6,
             message=duration_pb2.Duration,
         )
-        total_duration = proto.Field(
+        total_duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=7,
             message=duration_pb2.Duration,
         )
-        start_time = proto.Field(
+        start_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=8,
             message=timestamp_pb2.Timestamp,
         )
-        route_polyline = proto.Field(
+        route_polyline: "ShipmentRoute.EncodedPolyline" = proto.Field(
             proto.MESSAGE,
             number=9,
             message="ShipmentRoute.EncodedPolyline",
         )
-        vehicle_loads = proto.MapField(
+        vehicle_loads: MutableMapping[
+            str, "ShipmentRoute.VehicleLoad"
+        ] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=11,
             message="ShipmentRoute.VehicleLoad",
         )
-        loads = proto.RepeatedField(
+        loads: MutableSequence["CapacityQuantity"] = proto.RepeatedField(
             proto.MESSAGE,
             number=10,
             message="CapacityQuantity",
@@ -3101,7 +3129,7 @@ class ShipmentRoute(proto.Message):
                 [Transition.vehicle_loads][google.cloud.optimization.v1.ShipmentRoute.Transition.vehicle_loads].
         """
 
-        amount = proto.Field(
+        amount: int = proto.Field(
             proto.INT64,
             number=1,
         )
@@ -3118,7 +3146,7 @@ class ShipmentRoute(proto.Message):
                 polyline.
         """
 
-        points = proto.Field(
+        points: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -3133,12 +3161,12 @@ class ShipmentRoute(proto.Message):
                 Duration of a break.
         """
 
-        start_time = proto.Field(
+        start_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=1,
             message=timestamp_pb2.Timestamp,
         )
-        duration = proto.Field(
+        duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=2,
             message=duration_pb2.Duration,
@@ -3180,97 +3208,97 @@ class ShipmentRoute(proto.Message):
                 is set to true.
         """
 
-        duration = proto.Field(
+        duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=1,
             message=duration_pb2.Duration,
         )
-        distance_meters = proto.Field(
+        distance_meters: float = proto.Field(
             proto.DOUBLE,
             number=2,
         )
-        traffic_info_unavailable = proto.Field(
+        traffic_info_unavailable: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
-        route_polyline = proto.Field(
+        route_polyline: "ShipmentRoute.EncodedPolyline" = proto.Field(
             proto.MESSAGE,
             number=4,
             message="ShipmentRoute.EncodedPolyline",
         )
 
-    vehicle_index = proto.Field(
+    vehicle_index: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    vehicle_label = proto.Field(
+    vehicle_label: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    vehicle_start_time = proto.Field(
+    vehicle_start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    vehicle_end_time = proto.Field(
+    vehicle_end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    visits = proto.RepeatedField(
+    visits: MutableSequence[Visit] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=Visit,
     )
-    transitions = proto.RepeatedField(
+    transitions: MutableSequence[Transition] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message=Transition,
     )
-    has_traffic_infeasibilities = proto.Field(
+    has_traffic_infeasibilities: bool = proto.Field(
         proto.BOOL,
         number=9,
     )
-    route_polyline = proto.Field(
+    route_polyline: EncodedPolyline = proto.Field(
         proto.MESSAGE,
         number=10,
         message=EncodedPolyline,
     )
-    breaks = proto.RepeatedField(
+    breaks: MutableSequence[Break] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message=Break,
     )
-    metrics = proto.Field(
+    metrics: "AggregatedMetrics" = proto.Field(
         proto.MESSAGE,
         number=12,
         message="AggregatedMetrics",
     )
-    route_costs = proto.MapField(
+    route_costs: MutableMapping[str, float] = proto.MapField(
         proto.STRING,
         proto.DOUBLE,
         number=17,
     )
-    route_total_cost = proto.Field(
+    route_total_cost: float = proto.Field(
         proto.DOUBLE,
         number=18,
     )
-    end_loads = proto.RepeatedField(
+    end_loads: MutableSequence["CapacityQuantity"] = proto.RepeatedField(
         proto.MESSAGE,
         number=13,
         message="CapacityQuantity",
     )
-    travel_steps = proto.RepeatedField(
+    travel_steps: MutableSequence[TravelStep] = proto.RepeatedField(
         proto.MESSAGE,
         number=14,
         message=TravelStep,
     )
-    vehicle_detour = proto.Field(
+    vehicle_detour: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=15,
         message=duration_pb2.Duration,
     )
-    delay_before_vehicle_end = proto.Field(
+    delay_before_vehicle_end: Delay = proto.Field(
         proto.MESSAGE,
         number=16,
         message=Delay,
@@ -3290,7 +3318,7 @@ class SkippedShipment(proto.Message):
             Copy of the corresponding
             [Shipment.label][google.cloud.optimization.v1.Shipment.label],
             if specified in the ``Shipment``.
-        reasons (Sequence[google.cloud.optimization_v1.types.SkippedShipment.Reason]):
+        reasons (MutableSequence[google.cloud.optimization_v1.types.SkippedShipment.Reason]):
             A list of reasons that explain why the shipment was skipped.
             See comment above ``Reason``.
     """
@@ -3355,30 +3383,30 @@ class SkippedShipment(proto.Message):
             CANNOT_BE_PERFORMED_WITHIN_VEHICLE_TIME_WINDOWS = 6
             VEHICLE_NOT_ALLOWED = 7
 
-        code = proto.Field(
+        code: "SkippedShipment.Reason.Code" = proto.Field(
             proto.ENUM,
             number=1,
             enum="SkippedShipment.Reason.Code",
         )
-        example_vehicle_index = proto.Field(
+        example_vehicle_index: int = proto.Field(
             proto.INT32,
             number=2,
             optional=True,
         )
-        example_exceeded_capacity_type = proto.Field(
+        example_exceeded_capacity_type: str = proto.Field(
             proto.STRING,
             number=3,
         )
 
-    index = proto.Field(
+    index: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    label = proto.Field(
+    label: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    reasons = proto.RepeatedField(
+    reasons: MutableSequence[Reason] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=Reason,
@@ -3417,22 +3445,20 @@ class AggregatedMetrics(proto.Message):
             Total visit duration for a route or a
             solution.
         total_duration (google.protobuf.duration_pb2.Duration):
-            The total duration should be equal to the sum of all
-            durations above. For routes, it also corresponds to
-            [ShipmentRoute.vehicle_end_time][google.cloud.optimization.v1.ShipmentRoute.vehicle_end_time]
-            -
+            The total duration should be equal to the sum of all durations above. For routes, it also corresponds to [ShipmentRoute.vehicle_end_time][google.cloud.optimization.v1.ShipmentRoute.vehicle_end_time]
+
             [ShipmentRoute.vehicle_start_time][google.cloud.optimization.v1.ShipmentRoute.vehicle_start_time].
         travel_distance_meters (float):
             Total travel distance for a route or a
             solution.
-        max_loads (Mapping[str, google.cloud.optimization_v1.types.ShipmentRoute.VehicleLoad]):
+        max_loads (MutableMapping[str, google.cloud.optimization_v1.types.ShipmentRoute.VehicleLoad]):
             Maximum load achieved over the entire route (resp.
             solution), for each of the quantities on this route (resp.
             solution), computed as the maximum over all
             [Transition.vehicle_loads][google.cloud.optimization.v1.ShipmentRoute.Transition.vehicle_loads]
             (resp.
             [ShipmentRoute.metrics.max_loads][google.cloud.optimization.v1.AggregatedMetrics.max_loads].
-        costs (Mapping[str, float]):
+        costs (MutableMapping[str, float]):
             Deprecated: Use [ShipmentRoute.route_costs][] and
             [OptimizeToursResponse.Metrics.costs][] instead.
         total_cost (float):
@@ -3440,56 +3466,56 @@ class AggregatedMetrics(proto.Message):
             [OptimizeToursResponse.Metrics.total_cost][] instead.
     """
 
-    performed_shipment_count = proto.Field(
+    performed_shipment_count: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    travel_duration = proto.Field(
+    travel_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,
     )
-    wait_duration = proto.Field(
+    wait_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=3,
         message=duration_pb2.Duration,
     )
-    delay_duration = proto.Field(
+    delay_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=4,
         message=duration_pb2.Duration,
     )
-    break_duration = proto.Field(
+    break_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=5,
         message=duration_pb2.Duration,
     )
-    visit_duration = proto.Field(
+    visit_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=6,
         message=duration_pb2.Duration,
     )
-    total_duration = proto.Field(
+    total_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=7,
         message=duration_pb2.Duration,
     )
-    travel_distance_meters = proto.Field(
+    travel_distance_meters: float = proto.Field(
         proto.DOUBLE,
         number=8,
     )
-    max_loads = proto.MapField(
+    max_loads: MutableMapping[str, "ShipmentRoute.VehicleLoad"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=9,
         message="ShipmentRoute.VehicleLoad",
     )
-    costs = proto.MapField(
+    costs: MutableMapping[str, float] = proto.MapField(
         proto.STRING,
         proto.DOUBLE,
         number=10,
     )
-    total_cost = proto.Field(
+    total_cost: float = proto.Field(
         proto.DOUBLE,
         number=11,
     )
@@ -3501,16 +3527,16 @@ class InjectedSolutionConstraint(proto.Message):
     constrained.
 
     Attributes:
-        routes (Sequence[google.cloud.optimization_v1.types.ShipmentRoute]):
+        routes (MutableSequence[google.cloud.optimization_v1.types.ShipmentRoute]):
             Routes of the solution to inject. Some routes may be omitted
             from the original solution. The routes and skipped shipments
             must satisfy the basic validity assumptions listed for
             ``injected_first_solution_routes``.
-        skipped_shipments (Sequence[google.cloud.optimization_v1.types.SkippedShipment]):
+        skipped_shipments (MutableSequence[google.cloud.optimization_v1.types.SkippedShipment]):
             Skipped shipments of the solution to inject. Some may be
             omitted from the original solution. See the ``routes``
             field.
-        constraint_relaxations (Sequence[google.cloud.optimization_v1.types.InjectedSolutionConstraint.ConstraintRelaxation]):
+        constraint_relaxations (MutableSequence[google.cloud.optimization_v1.types.InjectedSolutionConstraint.ConstraintRelaxation]):
             For zero or more groups of vehicles,
             specifies when and how much to relax
             constraints. If this field is empty, all
@@ -3524,10 +3550,10 @@ class InjectedSolutionConstraint(proto.Message):
         they cannot be performed.
 
         Attributes:
-            relaxations (Sequence[google.cloud.optimization_v1.types.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation]):
+            relaxations (MutableSequence[google.cloud.optimization_v1.types.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation]):
                 All the visit constraint relaxations that will apply to
                 visits on routes with vehicles in ``vehicle_indices``.
-            vehicle_indices (Sequence[int]):
+            vehicle_indices (MutableSequence[int]):
                 Specifies the vehicle indices to which the visit constraint
                 ``relaxations`` apply. If empty, this is considered the
                 default and the ``relaxations`` apply to all vehicles that
@@ -3615,42 +3641,44 @@ class InjectedSolutionConstraint(proto.Message):
                 RELAX_VISIT_TIMES_AND_SEQUENCE_AFTER_THRESHOLD = 2
                 RELAX_ALL_AFTER_THRESHOLD = 3
 
-            level = proto.Field(
+            level: "InjectedSolutionConstraint.ConstraintRelaxation.Relaxation.Level" = proto.Field(
                 proto.ENUM,
                 number=1,
                 enum="InjectedSolutionConstraint.ConstraintRelaxation.Relaxation.Level",
             )
-            threshold_time = proto.Field(
+            threshold_time: timestamp_pb2.Timestamp = proto.Field(
                 proto.MESSAGE,
                 number=2,
                 message=timestamp_pb2.Timestamp,
             )
-            threshold_visit_count = proto.Field(
+            threshold_visit_count: int = proto.Field(
                 proto.INT32,
                 number=3,
             )
 
-        relaxations = proto.RepeatedField(
+        relaxations: MutableSequence[
+            "InjectedSolutionConstraint.ConstraintRelaxation.Relaxation"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="InjectedSolutionConstraint.ConstraintRelaxation.Relaxation",
         )
-        vehicle_indices = proto.RepeatedField(
+        vehicle_indices: MutableSequence[int] = proto.RepeatedField(
             proto.INT32,
             number=2,
         )
 
-    routes = proto.RepeatedField(
+    routes: MutableSequence["ShipmentRoute"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ShipmentRoute",
     )
-    skipped_shipments = proto.RepeatedField(
+    skipped_shipments: MutableSequence["SkippedShipment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="SkippedShipment",
     )
-    constraint_relaxations = proto.RepeatedField(
+    constraint_relaxations: MutableSequence[ConstraintRelaxation] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=ConstraintRelaxation,
@@ -3994,7 +4022,7 @@ class OptimizeToursValidationError(proto.Message):
                -  GRAPH_ARC_DURATION_EXCEEDS_GLOBAL_DURATION = 5801;
         display_name (str):
             The error display name.
-        fields (Sequence[google.cloud.optimization_v1.types.OptimizeToursValidationError.FieldReference]):
+        fields (MutableSequence[google.cloud.optimization_v1.types.OptimizeToursValidationError.FieldReference]):
             An error context may involve 0, 1 (most of the time) or more
             fields. For example, referring to vehicle #4 and shipment
             #2's first pickup can be done as follows:
@@ -4057,44 +4085,44 @@ class OptimizeToursValidationError(proto.Message):
                 Recursively nested sub-field, if needed.
         """
 
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        index = proto.Field(
+        index: int = proto.Field(
             proto.INT32,
             number=2,
             oneof="index_or_key",
         )
-        key = proto.Field(
+        key: str = proto.Field(
             proto.STRING,
             number=4,
             oneof="index_or_key",
         )
-        sub_field = proto.Field(
+        sub_field: "OptimizeToursValidationError.FieldReference" = proto.Field(
             proto.MESSAGE,
             number=3,
             message="OptimizeToursValidationError.FieldReference",
         )
 
-    code = proto.Field(
+    code: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    fields = proto.RepeatedField(
+    fields: MutableSequence[FieldReference] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=FieldReference,
     )
-    error_message = proto.Field(
+    error_message: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    offending_values = proto.Field(
+    offending_values: str = proto.Field(
         proto.STRING,
         number=5,
     )
