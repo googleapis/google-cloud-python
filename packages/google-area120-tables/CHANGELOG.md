@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.10.1](https://github.com/googleapis/python-area120-tables/compare/v0.10.0...v0.10.1) (2022-12-14)
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([4392d33](https://github.com/googleapis/python-area120-tables/commit/4392d33bf965c7a8db803d0fac9af4df02391a97))
+* Drop usage of pkg_resources ([4392d33](https://github.com/googleapis/python-area120-tables/commit/4392d33bf965c7a8db803d0fac9af4df02391a97))
+* Fix timeout default values ([4392d33](https://github.com/googleapis/python-area120-tables/commit/4392d33bf965c7a8db803d0fac9af4df02391a97))
+
+
+### Documentation
+
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([4392d33](https://github.com/googleapis/python-area120-tables/commit/4392d33bf965c7a8db803d0fac9af4df02391a97))
+
 ## [0.10.0](https://github.com/googleapis/python-area120-tables/compare/v0.9.0...v0.10.0) (2022-11-16)
 
 
