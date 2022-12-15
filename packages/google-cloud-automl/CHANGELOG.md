@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.9.0](https://github.com/googleapis/python-automl/compare/v2.8.3...v2.9.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.automl.__version__` ([ea81cb4](https://github.com/googleapis/python-automl/commit/ea81cb4cf5dedd3b143c502261d978dac590cc20))
+* Add typing to proto.Message based class attributes ([ea81cb4](https://github.com/googleapis/python-automl/commit/ea81cb4cf5dedd3b143c502261d978dac590cc20))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([ea81cb4](https://github.com/googleapis/python-automl/commit/ea81cb4cf5dedd3b143c502261d978dac590cc20))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([ad2a2d7](https://github.com/googleapis/python-automl/commit/ad2a2d7806593d5f1f19a62562dbf110504b4097))
+* Drop usage of pkg_resources ([ad2a2d7](https://github.com/googleapis/python-automl/commit/ad2a2d7806593d5f1f19a62562dbf110504b4097))
+* Fix timeout default values ([ad2a2d7](https://github.com/googleapis/python-automl/commit/ad2a2d7806593d5f1f19a62562dbf110504b4097))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([ea81cb4](https://github.com/googleapis/python-automl/commit/ea81cb4cf5dedd3b143c502261d978dac590cc20))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([ad2a2d7](https://github.com/googleapis/python-automl/commit/ad2a2d7806593d5f1f19a62562dbf110504b4097))
+
 ## [2.8.3](https://github.com/googleapis/python-automl/compare/v2.8.2...v2.8.3) (2022-10-07)
 
 
