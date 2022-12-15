@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-dataplex/compare/v1.1.2...v1.2.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.dataplex.__version__` ([18e2a32](https://github.com/googleapis/python-dataplex/commit/18e2a32c425f6a7ca0684392a796e18547ea408a))
+* Add support for notebook tasks ([#100](https://github.com/googleapis/python-dataplex/issues/100)) ([64d9c48](https://github.com/googleapis/python-dataplex/commit/64d9c481df1c2737189dcb575c69f2968c0aa034))
+* Add typing to proto.Message based class attributes ([18e2a32](https://github.com/googleapis/python-dataplex/commit/18e2a32c425f6a7ca0684392a796e18547ea408a))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([18e2a32](https://github.com/googleapis/python-dataplex/commit/18e2a32c425f6a7ca0684392a796e18547ea408a))
+* **deps:** Allow protobuf 3.19.5 ([#103](https://github.com/googleapis/python-dataplex/issues/103)) ([65adbb3](https://github.com/googleapis/python-dataplex/commit/65adbb31c94794f27a78b309550c519734a7b030))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([1e94a02](https://github.com/googleapis/python-dataplex/commit/1e94a024024638d5d7d31f7bba4408b3f0b3d5d1))
+* Drop usage of pkg_resources ([1e94a02](https://github.com/googleapis/python-dataplex/commit/1e94a024024638d5d7d31f7bba4408b3f0b3d5d1))
+* Fix timeout default values ([1e94a02](https://github.com/googleapis/python-dataplex/commit/1e94a024024638d5d7d31f7bba4408b3f0b3d5d1))
+
+
+### Documentation
+
+* Fix minor docstring formatting ([#113](https://github.com/googleapis/python-dataplex/issues/113)) ([0dc28b3](https://github.com/googleapis/python-dataplex/commit/0dc28b3c0f2c5be59a279c9ff859607d25906e84))
+* **samples:** Snippetgen handling of repeated enum field ([18e2a32](https://github.com/googleapis/python-dataplex/commit/18e2a32c425f6a7ca0684392a796e18547ea408a))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([1e94a02](https://github.com/googleapis/python-dataplex/commit/1e94a024024638d5d7d31f7bba4408b3f0b3d5d1))
+
 ## [1.1.2](https://github.com/googleapis/python-dataplex/compare/v1.1.1...v1.1.2) (2022-09-29)
 
 
