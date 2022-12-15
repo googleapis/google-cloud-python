@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.7.0](https://github.com/googleapis/python-dataflow-client/compare/v0.6.2...v0.7.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.dataflow.__version__` ([5f36251](https://github.com/googleapis/python-dataflow-client/commit/5f362512a1c36b1c5ce27fa175afb57fc5b375bc))
+* Add typing to proto.Message based class attributes ([5f36251](https://github.com/googleapis/python-dataflow-client/commit/5f362512a1c36b1c5ce27fa175afb57fc5b375bc))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([5f36251](https://github.com/googleapis/python-dataflow-client/commit/5f362512a1c36b1c5ce27fa175afb57fc5b375bc))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([9b9083c](https://github.com/googleapis/python-dataflow-client/commit/9b9083c177dd2b19cf218a4c0574159b9c162135))
+* Drop usage of pkg_resources ([9b9083c](https://github.com/googleapis/python-dataflow-client/commit/9b9083c177dd2b19cf218a4c0574159b9c162135))
+* Fix timeout default values ([9b9083c](https://github.com/googleapis/python-dataflow-client/commit/9b9083c177dd2b19cf218a4c0574159b9c162135))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([5f36251](https://github.com/googleapis/python-dataflow-client/commit/5f362512a1c36b1c5ce27fa175afb57fc5b375bc))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([9b9083c](https://github.com/googleapis/python-dataflow-client/commit/9b9083c177dd2b19cf218a4c0574159b9c162135))
+
 ## [0.6.2](https://github.com/googleapis/python-dataflow-client/compare/v0.6.1...v0.6.2) (2022-10-10)
 
 
