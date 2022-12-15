@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.10.0](https://github.com/googleapis/python-containeranalysis/compare/v2.9.3...v2.10.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.devtools.containeranalysis.__version__` ([3d91a44](https://github.com/googleapis/python-containeranalysis/commit/3d91a44b7152fba0508d4d3099e51f18348b0512))
+* Add typing to proto.Message based class attributes ([3d91a44](https://github.com/googleapis/python-containeranalysis/commit/3d91a44b7152fba0508d4d3099e51f18348b0512))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([3d91a44](https://github.com/googleapis/python-containeranalysis/commit/3d91a44b7152fba0508d4d3099e51f18348b0512))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([8a0a4b6](https://github.com/googleapis/python-containeranalysis/commit/8a0a4b635de8992b9f5984a337cabaf92017400a))
+* Drop usage of pkg_resources ([8a0a4b6](https://github.com/googleapis/python-containeranalysis/commit/8a0a4b635de8992b9f5984a337cabaf92017400a))
+* Fix timeout default values ([8a0a4b6](https://github.com/googleapis/python-containeranalysis/commit/8a0a4b635de8992b9f5984a337cabaf92017400a))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([3d91a44](https://github.com/googleapis/python-containeranalysis/commit/3d91a44b7152fba0508d4d3099e51f18348b0512))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([8a0a4b6](https://github.com/googleapis/python-containeranalysis/commit/8a0a4b635de8992b9f5984a337cabaf92017400a))
+
 ## [2.9.3](https://github.com/googleapis/python-containeranalysis/compare/v2.9.2...v2.9.3) (2022-10-07)
 
 
