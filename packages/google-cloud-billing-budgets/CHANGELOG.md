@@ -1,4 +1,26 @@
 # Changelog
+## [1.8.0](https://github.com/googleapis/python-billingbudgets/compare/v1.7.3...v1.8.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.billing.budgets.__version__` ([058966c](https://github.com/googleapis/python-billingbudgets/commit/058966c5a1c9aac9ccfe3c2e32a396f92a006e34))
+* Add typing to proto.Message based class attributes ([058966c](https://github.com/googleapis/python-billingbudgets/commit/058966c5a1c9aac9ccfe3c2e32a396f92a006e34))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([058966c](https://github.com/googleapis/python-billingbudgets/commit/058966c5a1c9aac9ccfe3c2e32a396f92a006e34))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([f4997b1](https://github.com/googleapis/python-billingbudgets/commit/f4997b1cf61539f0f5da82d1ec9a71d8a3fc15b7))
+* Drop usage of pkg_resources ([f4997b1](https://github.com/googleapis/python-billingbudgets/commit/f4997b1cf61539f0f5da82d1ec9a71d8a3fc15b7))
+* Fix timeout default values ([f4997b1](https://github.com/googleapis/python-billingbudgets/commit/f4997b1cf61539f0f5da82d1ec9a71d8a3fc15b7))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([058966c](https://github.com/googleapis/python-billingbudgets/commit/058966c5a1c9aac9ccfe3c2e32a396f92a006e34))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([f4997b1](https://github.com/googleapis/python-billingbudgets/commit/f4997b1cf61539f0f5da82d1ec9a71d8a3fc15b7))
+
 ## [1.7.3](https://github.com/googleapis/python-billingbudgets/compare/v1.7.2...v1.7.3) (2022-10-07)
 
 
