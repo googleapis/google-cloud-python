@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.12.0](https://github.com/googleapis/python-monitoring/compare/v2.11.3...v2.12.0) (2022-12-15)
+
+
+### Features
+
+* Add typing to proto.Message based class attributes ([eaaca48](https://github.com/googleapis/python-monitoring/commit/eaaca4815872d78725893b0aa26ffd96d84d58d5))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([eaaca48](https://github.com/googleapis/python-monitoring/commit/eaaca4815872d78725893b0aa26ffd96d84d58d5))
+* Add metric label example to the snippet ([#509](https://github.com/googleapis/python-monitoring/issues/509)) ([48b4e35](https://github.com/googleapis/python-monitoring/commit/48b4e35dee6066035b91214ccb44022f539cb007))
+* Add missing argument description ([#504](https://github.com/googleapis/python-monitoring/issues/504)) ([8d54a7e](https://github.com/googleapis/python-monitoring/commit/8d54a7e337b094e42ab544078f160c15ebc55921))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([eaaca48](https://github.com/googleapis/python-monitoring/commit/eaaca4815872d78725893b0aa26ffd96d84d58d5))
+* Drop usage of pkg_resources ([eaaca48](https://github.com/googleapis/python-monitoring/commit/eaaca4815872d78725893b0aa26ffd96d84d58d5))
+* Fix timeout default values ([eaaca48](https://github.com/googleapis/python-monitoring/commit/eaaca4815872d78725893b0aa26ffd96d84d58d5))
+* Remove duplicate variable declaration ([#503](https://github.com/googleapis/python-monitoring/issues/503)) ([99a981c](https://github.com/googleapis/python-monitoring/commit/99a981c9b4a53597020a30503e028ecc554b4d68))
+
+
+### Documentation
+
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([eaaca48](https://github.com/googleapis/python-monitoring/commit/eaaca4815872d78725893b0aa26ffd96d84d58d5))
+
 ## [2.11.3](https://github.com/googleapis/python-monitoring/compare/v2.11.2...v2.11.3) (2022-10-07)
 
 
