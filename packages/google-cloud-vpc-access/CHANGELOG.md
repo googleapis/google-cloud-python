@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-vpc-access/compare/v1.5.2...v1.6.0) (2022-12-08)
+
+
+### Features
+
+* add support for `google.cloud.vpcaccess.__version__` ([ac907b5](https://github.com/googleapis/python-vpc-access/commit/ac907b5cceeaae6dc36c8959790636f07e47aa03))
+* Add typing to proto.Message based class attributes ([ac907b5](https://github.com/googleapis/python-vpc-access/commit/ac907b5cceeaae6dc36c8959790636f07e47aa03))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([ac907b5](https://github.com/googleapis/python-vpc-access/commit/ac907b5cceeaae6dc36c8959790636f07e47aa03))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([c039a98](https://github.com/googleapis/python-vpc-access/commit/c039a987e201800741336799eec361a4043ceca7))
+* Drop usage of pkg_resources ([c039a98](https://github.com/googleapis/python-vpc-access/commit/c039a987e201800741336799eec361a4043ceca7))
+* Fix timeout default values ([c039a98](https://github.com/googleapis/python-vpc-access/commit/c039a987e201800741336799eec361a4043ceca7))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([ac907b5](https://github.com/googleapis/python-vpc-access/commit/ac907b5cceeaae6dc36c8959790636f07e47aa03))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([c039a98](https://github.com/googleapis/python-vpc-access/commit/c039a987e201800741336799eec361a4043ceca7))
+
 ## [1.5.2](https://github.com/googleapis/python-vpc-access/compare/v1.5.1...v1.5.2) (2022-10-07)
 
 
