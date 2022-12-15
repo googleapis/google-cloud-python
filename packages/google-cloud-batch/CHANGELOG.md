@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.6.0](https://github.com/googleapis/python-batch/compare/v0.5.0...v0.6.0) (2022-12-15)
+
+
+### Features
+
+* Add InstancePolicy.boot_disk ([7e275de](https://github.com/googleapis/python-batch/commit/7e275de7ad29f3f410439469a83969a0b94716b0))
+
+
+### Bug Fixes
+
+* Removed unused endpoints for IAM methods ([7e275de](https://github.com/googleapis/python-batch/commit/7e275de7ad29f3f410439469a83969a0b94716b0))
+* **rest:** Remove unsupported HTTP bindings for IAMPolicy RPCs ([7e275de](https://github.com/googleapis/python-batch/commit/7e275de7ad29f3f410439469a83969a0b94716b0))
+* ServiceAccount.scopes is no longer deprecated ([7e275de](https://github.com/googleapis/python-batch/commit/7e275de7ad29f3f410439469a83969a0b94716b0))
+
 ## [0.5.0](https://github.com/googleapis/python-batch/compare/v0.4.1...v0.5.0) (2022-12-07)
 
 
