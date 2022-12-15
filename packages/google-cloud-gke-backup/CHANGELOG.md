@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/python-gke-backup/compare/v0.2.2...v0.3.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.gke_backup.__version__` ([f754a3a](https://github.com/googleapis/python-gke-backup/commit/f754a3aee9de6da2419d3b792e900bc0c0bfd732))
+* Add typing to proto.Message based class attributes ([f754a3a](https://github.com/googleapis/python-gke-backup/commit/f754a3aee9de6da2419d3b792e900bc0c0bfd732))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([f754a3a](https://github.com/googleapis/python-gke-backup/commit/f754a3aee9de6da2419d3b792e900bc0c0bfd732))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([58b2855](https://github.com/googleapis/python-gke-backup/commit/58b2855280fce1cd11a4300cb10742d153480439))
+* Drop usage of pkg_resources ([58b2855](https://github.com/googleapis/python-gke-backup/commit/58b2855280fce1cd11a4300cb10742d153480439))
+* Fix timeout default values ([58b2855](https://github.com/googleapis/python-gke-backup/commit/58b2855280fce1cd11a4300cb10742d153480439))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([f754a3a](https://github.com/googleapis/python-gke-backup/commit/f754a3aee9de6da2419d3b792e900bc0c0bfd732))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([58b2855](https://github.com/googleapis/python-gke-backup/commit/58b2855280fce1cd11a4300cb10742d153480439))
+
 ## [0.2.2](https://github.com/googleapis/python-gke-backup/compare/v0.2.1...v0.2.2) (2022-10-10)
 
 
