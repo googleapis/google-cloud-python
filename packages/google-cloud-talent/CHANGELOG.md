@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [2.8.0](https://github.com/googleapis/python-talent/compare/v2.7.3...v2.8.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.talent.__version__` ([ce10fe2](https://github.com/googleapis/python-talent/commit/ce10fe20975a3ce66ec1d7572449ec4d2f1fa55c))
+* Add typing to proto.Message based class attributes ([ce10fe2](https://github.com/googleapis/python-talent/commit/ce10fe20975a3ce66ec1d7572449ec4d2f1fa55c))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([ce10fe2](https://github.com/googleapis/python-talent/commit/ce10fe20975a3ce66ec1d7572449ec4d2f1fa55c))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([1b16d16](https://github.com/googleapis/python-talent/commit/1b16d1635cb66b0ae18c21a5cc017291b05078bf))
+* Drop usage of pkg_resources ([1b16d16](https://github.com/googleapis/python-talent/commit/1b16d1635cb66b0ae18c21a5cc017291b05078bf))
+* Fix timeout default values ([1b16d16](https://github.com/googleapis/python-talent/commit/1b16d1635cb66b0ae18c21a5cc017291b05078bf))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([ce10fe2](https://github.com/googleapis/python-talent/commit/ce10fe20975a3ce66ec1d7572449ec4d2f1fa55c))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([1b16d16](https://github.com/googleapis/python-talent/commit/1b16d1635cb66b0ae18c21a5cc017291b05078bf))
+
 ## [2.7.3](https://github.com/googleapis/python-talent/compare/v2.7.2...v2.7.3) (2022-10-07)
 
 
