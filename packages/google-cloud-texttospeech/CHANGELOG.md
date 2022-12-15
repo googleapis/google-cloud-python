@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.13.0](https://github.com/googleapis/python-texttospeech/compare/v2.12.3...v2.13.0) (2022-12-15)
+
+
+### Features
+
+* Add LRS API ([07227a0](https://github.com/googleapis/python-texttospeech/commit/07227a06b555d590fc35055ec229f22c6d8dd139))
+* Add support for `google.cloud.texttospeech.__version__` ([a2a534c](https://github.com/googleapis/python-texttospeech/commit/a2a534ceccbad9114cb30599129eb168ab60cb5f))
+* Add typing to proto.Message based class attributes ([a2a534c](https://github.com/googleapis/python-texttospeech/commit/a2a534ceccbad9114cb30599129eb168ab60cb5f))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([a2a534c](https://github.com/googleapis/python-texttospeech/commit/a2a534ceccbad9114cb30599129eb168ab60cb5f))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([07227a0](https://github.com/googleapis/python-texttospeech/commit/07227a06b555d590fc35055ec229f22c6d8dd139))
+* Drop usage of pkg_resources ([07227a0](https://github.com/googleapis/python-texttospeech/commit/07227a06b555d590fc35055ec229f22c6d8dd139))
+* Fix timeout default values ([07227a0](https://github.com/googleapis/python-texttospeech/commit/07227a06b555d590fc35055ec229f22c6d8dd139))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([a2a534c](https://github.com/googleapis/python-texttospeech/commit/a2a534ceccbad9114cb30599129eb168ab60cb5f))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([07227a0](https://github.com/googleapis/python-texttospeech/commit/07227a06b555d590fc35055ec229f22c6d8dd139))
+
 ## [2.12.3](https://github.com/googleapis/python-texttospeech/compare/v2.12.2...v2.12.3) (2022-10-07)
 
 
