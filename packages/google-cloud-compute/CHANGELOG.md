@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-compute/compare/v1.7.0...v1.8.0) (2022-12-14)
+
+
+### Features
+
+* Add NetworkAttachments ([#373](https://github.com/googleapis/python-compute/issues/373)) ([e416c65](https://github.com/googleapis/python-compute/commit/e416c6562bb228d572ebc0cd7e9a654c9483e5d7))
+
 ## [1.7.0](https://github.com/googleapis/python-compute/compare/v1.6.1...v1.7.0) (2022-12-07)
 
 
