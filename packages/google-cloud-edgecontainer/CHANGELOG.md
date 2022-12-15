@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/python-edgecontainer/compare/v0.2.1...v0.3.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.edgecontainer.__version__` ([f389e2d](https://github.com/googleapis/python-edgecontainer/commit/f389e2d224b6eeee2cb5337f2f6312d39140d897))
+* Add typing to proto.Message based class attributes ([f389e2d](https://github.com/googleapis/python-edgecontainer/commit/f389e2d224b6eeee2cb5337f2f6312d39140d897))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([f389e2d](https://github.com/googleapis/python-edgecontainer/commit/f389e2d224b6eeee2cb5337f2f6312d39140d897))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([f72016a](https://github.com/googleapis/python-edgecontainer/commit/f72016a4f5970a401853c054be3b9b07bd1c5ac2))
+* Drop usage of pkg_resources ([f72016a](https://github.com/googleapis/python-edgecontainer/commit/f72016a4f5970a401853c054be3b9b07bd1c5ac2))
+* Fix timeout default values ([f72016a](https://github.com/googleapis/python-edgecontainer/commit/f72016a4f5970a401853c054be3b9b07bd1c5ac2))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([f389e2d](https://github.com/googleapis/python-edgecontainer/commit/f389e2d224b6eeee2cb5337f2f6312d39140d897))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([f72016a](https://github.com/googleapis/python-edgecontainer/commit/f72016a4f5970a401853c054be3b9b07bd1c5ac2))
+
 ## [0.2.1](https://github.com/googleapis/python-edgecontainer/compare/v0.2.0...v0.2.1) (2022-10-10)
 
 
