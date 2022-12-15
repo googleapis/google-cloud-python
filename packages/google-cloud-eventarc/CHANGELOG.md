@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-eventarc/compare/v1.6.3...v1.7.0) (2022-12-15)
+
+
+### Features
+
+* Add CMEK support to Eventarc client library ([6ba2726](https://github.com/googleapis/python-eventarc/commit/6ba27265ef643fc0d6e85994d15b1dab5ce496e8))
+* Add support for `google.cloud.eventarc.__version__` ([6ba2726](https://github.com/googleapis/python-eventarc/commit/6ba27265ef643fc0d6e85994d15b1dab5ce496e8))
+* Add typing to proto.Message based class attributes ([6ba2726](https://github.com/googleapis/python-eventarc/commit/6ba27265ef643fc0d6e85994d15b1dab5ce496e8))
+* Update Eventarc Channel to support custom events ([6ba2726](https://github.com/googleapis/python-eventarc/commit/6ba27265ef643fc0d6e85994d15b1dab5ce496e8))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([6ba2726](https://github.com/googleapis/python-eventarc/commit/6ba27265ef643fc0d6e85994d15b1dab5ce496e8))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([cc353d1](https://github.com/googleapis/python-eventarc/commit/cc353d199aa23ccdd5b6aecbf98ce077538e6c3c))
+* Drop usage of pkg_resources ([cc353d1](https://github.com/googleapis/python-eventarc/commit/cc353d199aa23ccdd5b6aecbf98ce077538e6c3c))
+* Fix timeout default values ([cc353d1](https://github.com/googleapis/python-eventarc/commit/cc353d199aa23ccdd5b6aecbf98ce077538e6c3c))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([6ba2726](https://github.com/googleapis/python-eventarc/commit/6ba27265ef643fc0d6e85994d15b1dab5ce496e8))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([cc353d1](https://github.com/googleapis/python-eventarc/commit/cc353d199aa23ccdd5b6aecbf98ce077538e6c3c))
+
 ## [1.6.3](https://github.com/googleapis/python-eventarc/compare/v1.6.2...v1.6.3) (2022-10-07)
 
 
