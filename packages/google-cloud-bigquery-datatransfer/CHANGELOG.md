@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.8.0](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.7.3...v3.8.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.bigquery_datatransfer.__version__` ([c333464](https://github.com/googleapis/python-bigquery-datatransfer/commit/c3334647fd103e2f10466f1daecde51a89aae727))
+* Add typing to proto.Message based class attributes ([c333464](https://github.com/googleapis/python-bigquery-datatransfer/commit/c3334647fd103e2f10466f1daecde51a89aae727))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([c333464](https://github.com/googleapis/python-bigquery-datatransfer/commit/c3334647fd103e2f10466f1daecde51a89aae727))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([20be9ee](https://github.com/googleapis/python-bigquery-datatransfer/commit/20be9ee41126f3c38ef9a6070e7a6fad5a7712d1))
+* Drop usage of pkg_resources ([20be9ee](https://github.com/googleapis/python-bigquery-datatransfer/commit/20be9ee41126f3c38ef9a6070e7a6fad5a7712d1))
+* Fix timeout default values ([20be9ee](https://github.com/googleapis/python-bigquery-datatransfer/commit/20be9ee41126f3c38ef9a6070e7a6fad5a7712d1))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([c333464](https://github.com/googleapis/python-bigquery-datatransfer/commit/c3334647fd103e2f10466f1daecde51a89aae727))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([20be9ee](https://github.com/googleapis/python-bigquery-datatransfer/commit/20be9ee41126f3c38ef9a6070e7a6fad5a7712d1))
+
 ## [3.7.3](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.7.2...v3.7.3) (2022-10-07)
 
 
