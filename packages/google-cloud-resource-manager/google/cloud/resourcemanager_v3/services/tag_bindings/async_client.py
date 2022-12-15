@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -24,7 +34,8 @@ from google.api_core import retry as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.resourcemanager_v3 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -162,9 +173,9 @@ class TagBindingsAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, TagBindingsTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the tag bindings client.
@@ -208,11 +219,11 @@ class TagBindingsAsyncClient:
 
     async def list_tag_bindings(
         self,
-        request: Union[tag_bindings.ListTagBindingsRequest, dict] = None,
+        request: Optional[Union[tag_bindings.ListTagBindingsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTagBindingsAsyncPager:
         r"""Lists the TagBindings for the given cloud resource, as specified
@@ -250,7 +261,7 @@ class TagBindingsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.resourcemanager_v3.types.ListTagBindingsRequest, dict]):
+            request (Optional[Union[google.cloud.resourcemanager_v3.types.ListTagBindingsRequest, dict]]):
                 The request object. The request message to list all
                 TagBindings for a parent.
             parent (:class:`str`):
@@ -332,11 +343,11 @@ class TagBindingsAsyncClient:
 
     async def create_tag_binding(
         self,
-        request: Union[tag_bindings.CreateTagBindingRequest, dict] = None,
+        request: Optional[Union[tag_bindings.CreateTagBindingRequest, dict]] = None,
         *,
-        tag_binding: tag_bindings.TagBinding = None,
+        tag_binding: Optional[tag_bindings.TagBinding] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a TagBinding between a TagValue and a cloud
@@ -366,13 +377,13 @@ class TagBindingsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.resourcemanager_v3.types.CreateTagBindingRequest, dict]):
+            request (Optional[Union[google.cloud.resourcemanager_v3.types.CreateTagBindingRequest, dict]]):
                 The request object. The request message to create a
                 TagBinding.
             tag_binding (:class:`google.cloud.resourcemanager_v3.types.TagBinding`):
@@ -445,11 +456,11 @@ class TagBindingsAsyncClient:
 
     async def delete_tag_binding(
         self,
-        request: Union[tag_bindings.DeleteTagBindingRequest, dict] = None,
+        request: Optional[Union[tag_bindings.DeleteTagBindingRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a TagBinding.
@@ -479,13 +490,13 @@ class TagBindingsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.resourcemanager_v3.types.DeleteTagBindingRequest, dict]):
+            request (Optional[Union[google.cloud.resourcemanager_v3.types.DeleteTagBindingRequest, dict]]):
                 The request object. The request message to delete a
                 TagBinding.
             name (:class:`str`):
@@ -575,14 +586,9 @@ class TagBindingsAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-resourcemanager",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("TagBindingsAsyncClient",)

@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -24,7 +34,8 @@ from google.api_core import retry as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.resourcemanager_v3 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -160,9 +171,9 @@ class TagValuesAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, TagValuesTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the tag values client.
@@ -206,11 +217,11 @@ class TagValuesAsyncClient:
 
     async def list_tag_values(
         self,
-        request: Union[tag_values.ListTagValuesRequest, dict] = None,
+        request: Optional[Union[tag_values.ListTagValuesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTagValuesAsyncPager:
         r"""Lists all TagValues for a specific TagKey.
@@ -243,7 +254,7 @@ class TagValuesAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.resourcemanager_v3.types.ListTagValuesRequest, dict]):
+            request (Optional[Union[google.cloud.resourcemanager_v3.types.ListTagValuesRequest, dict]]):
                 The request object. The request message for listing
                 TagValues for the specified TagKey.
             parent (:class:`str`):
@@ -323,11 +334,11 @@ class TagValuesAsyncClient:
 
     async def get_tag_value(
         self,
-        request: Union[tag_values.GetTagValueRequest, dict] = None,
+        request: Optional[Union[tag_values.GetTagValueRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tag_values.TagValue:
         r"""Retrieves TagValue. If the TagValue or namespaced name does not
@@ -361,7 +372,7 @@ class TagValuesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.resourcemanager_v3.types.GetTagValueRequest, dict]):
+            request (Optional[Union[google.cloud.resourcemanager_v3.types.GetTagValueRequest, dict]]):
                 The request object. The request message for getting a
                 TagValue.
             name (:class:`str`):
@@ -438,11 +449,11 @@ class TagValuesAsyncClient:
 
     async def create_tag_value(
         self,
-        request: Union[tag_values.CreateTagValueRequest, dict] = None,
+        request: Optional[Union[tag_values.CreateTagValueRequest, dict]] = None,
         *,
-        tag_value: tag_values.TagValue = None,
+        tag_value: Optional[tag_values.TagValue] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a TagValue as a child of the specified
@@ -479,13 +490,13 @@ class TagValuesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.resourcemanager_v3.types.CreateTagValueRequest, dict]):
+            request (Optional[Union[google.cloud.resourcemanager_v3.types.CreateTagValueRequest, dict]]):
                 The request object. The request message for creating a
                 TagValue.
             tag_value (:class:`google.cloud.resourcemanager_v3.types.TagValue`):
@@ -557,12 +568,12 @@ class TagValuesAsyncClient:
 
     async def update_tag_value(
         self,
-        request: Union[tag_values.UpdateTagValueRequest, dict] = None,
+        request: Optional[Union[tag_values.UpdateTagValueRequest, dict]] = None,
         *,
-        tag_value: tag_values.TagValue = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        tag_value: Optional[tag_values.TagValue] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the attributes of the TagValue resource.
@@ -595,13 +606,13 @@ class TagValuesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.resourcemanager_v3.types.UpdateTagValueRequest, dict]):
+            request (Optional[Union[google.cloud.resourcemanager_v3.types.UpdateTagValueRequest, dict]]):
                 The request object. The request message for updating a
                 TagValue.
             tag_value (:class:`google.cloud.resourcemanager_v3.types.TagValue`):
@@ -691,11 +702,11 @@ class TagValuesAsyncClient:
 
     async def delete_tag_value(
         self,
-        request: Union[tag_values.DeleteTagValueRequest, dict] = None,
+        request: Optional[Union[tag_values.DeleteTagValueRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a TagValue. The TagValue cannot have any
@@ -726,13 +737,13 @@ class TagValuesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.resourcemanager_v3.types.DeleteTagValueRequest, dict]):
+            request (Optional[Union[google.cloud.resourcemanager_v3.types.DeleteTagValueRequest, dict]]):
                 The request object. The request message for deleting a
                 TagValue.
             name (:class:`str`):
@@ -810,11 +821,11 @@ class TagValuesAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the access control policy for a TagValue. The returned
@@ -853,7 +864,7 @@ class TagValuesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -991,11 +1002,11 @@ class TagValuesAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the access control policy on a TagValue, replacing any
@@ -1032,7 +1043,7 @@ class TagValuesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -1161,12 +1172,12 @@ class TagValuesAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
-        resource: str = None,
-        permissions: Sequence[str] = None,
+        resource: Optional[str] = None,
+        permissions: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns permissions that a caller has on the specified TagValue.
@@ -1204,7 +1215,7 @@ class TagValuesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             resource (:class:`str`):
@@ -1216,7 +1227,7 @@ class TagValuesAsyncClient:
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            permissions (:class:`Sequence[str]`):
+            permissions (:class:`MutableSequence[str]`):
                 The set of permissions to check for the ``resource``.
                 Permissions with wildcards (such as '*' or 'storage.*')
                 are not allowed. For more information see `IAM
@@ -1287,14 +1298,9 @@ class TagValuesAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-resourcemanager",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("TagValuesAsyncClient",)

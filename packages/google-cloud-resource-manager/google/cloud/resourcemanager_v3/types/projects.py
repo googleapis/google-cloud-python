@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -85,7 +87,7 @@ class Project(proto.Message):
             resource. This may be sent on update and delete
             requests to ensure the client has an up-to-date
             value before proceeding.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. The labels associated with this project.
 
             Label keys must be between 1 and 63 characters long and must
@@ -112,47 +114,47 @@ class Project(proto.Message):
         ACTIVE = 1
         DELETE_REQUESTED = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=4,
         enum=State,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    delete_time = proto.Field(
+    delete_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=10,
@@ -170,7 +172,7 @@ class GetProjectRequest(proto.Message):
             ``projects/415104041262``).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -204,19 +206,19 @@ class ListProjectsRequest(proto.Message):
             projects are returned.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    show_deleted = proto.Field(
+    show_deleted: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -235,7 +237,7 @@ class ListProjectsResponse(proto.Message):
     ``page_size`` and still have a ``next_page_token``.
 
     Attributes:
-        projects (Sequence[google.cloud.resourcemanager_v3.types.Project]):
+        projects (MutableSequence[google.cloud.resourcemanager_v3.types.Project]):
             The list of Projects under the parent. This
             list can be paginated.
         next_page_token (str):
@@ -258,12 +260,12 @@ class ListProjectsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    projects = proto.RepeatedField(
+    projects: MutableSequence["Project"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Project",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -329,15 +331,15 @@ class SearchProjectsRequest(proto.Message):
             server picks an appropriate default.
     """
 
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -353,7 +355,7 @@ class SearchProjectsResponse(proto.Message):
     request to retrieve the next request page.
 
     Attributes:
-        projects (Sequence[google.cloud.resourcemanager_v3.types.Project]):
+        projects (MutableSequence[google.cloud.resourcemanager_v3.types.Project]):
             The list of Projects that matched the list
             filter query. This list can be paginated.
         next_page_token (str):
@@ -376,12 +378,12 @@ class SearchProjectsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    projects = proto.RepeatedField(
+    projects: MutableSequence["Project"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Project",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -406,7 +408,7 @@ class CreateProjectRequest(proto.Message):
             parent will be set to that Organization.
     """
 
-    project = proto.Field(
+    project: "Project" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Project",
@@ -431,16 +433,16 @@ class CreateProjectMetadata(proto.Message):
             complete.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    gettable = proto.Field(
+    gettable: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    ready = proto.Field(
+    ready: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -464,12 +466,12 @@ class UpdateProjectRequest(proto.Message):
             update fields.
     """
 
-    project = proto.Field(
+    project: "Project" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Project",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -496,11 +498,11 @@ class MoveProjectRequest(proto.Message):
             under.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    destination_parent = proto.Field(
+    destination_parent: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -523,7 +525,7 @@ class DeleteProjectRequest(proto.Message):
             ``projects/415104041262``).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -548,7 +550,7 @@ class UndeleteProjectRequest(proto.Message):
             Required.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

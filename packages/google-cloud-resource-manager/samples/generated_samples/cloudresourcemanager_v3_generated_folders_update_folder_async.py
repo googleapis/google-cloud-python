@@ -20,7 +20,7 @@
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-resourcemanager
+#   python3 -m pip install google-cloud-resource-manager
 
 
 # [START cloudresourcemanager_v3_generated_Folders_UpdateFolder_async]
@@ -51,7 +51,7 @@ async def sample_update_folder():
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = (await operation).result()
 
     # Handle the response
     print(response)

@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -24,7 +34,8 @@ from google.api_core import retry as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
+
+from google.cloud.resourcemanager_v3 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -158,9 +169,9 @@ class ProjectsAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ProjectsTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the projects client.
@@ -204,11 +215,11 @@ class ProjectsAsyncClient:
 
     async def get_project(
         self,
-        request: Union[projects.GetProjectRequest, dict] = None,
+        request: Optional[Union[projects.GetProjectRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> projects.Project:
         r"""Retrieves the project identified by the specified ``name`` (for
@@ -244,7 +255,7 @@ class ProjectsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.resourcemanager_v3.types.GetProjectRequest, dict]):
+            request (Optional[Union[google.cloud.resourcemanager_v3.types.GetProjectRequest, dict]]):
                 The request object. The request sent to the
                 [GetProject][google.cloud.resourcemanager.v3.Projects.GetProject]
                 method.
@@ -322,11 +333,11 @@ class ProjectsAsyncClient:
 
     async def list_projects(
         self,
-        request: Union[projects.ListProjectsRequest, dict] = None,
+        request: Optional[Union[projects.ListProjectsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListProjectsAsyncPager:
         r"""Lists projects that are direct children of the specified folder
@@ -365,7 +376,7 @@ class ProjectsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.resourcemanager_v3.types.ListProjectsRequest, dict]):
+            request (Optional[Union[google.cloud.resourcemanager_v3.types.ListProjectsRequest, dict]]):
                 The request object. The request sent to the
                 [ListProjects][google.cloud.resourcemanager.v3.Projects.ListProjects]
                 method.
@@ -458,11 +469,11 @@ class ProjectsAsyncClient:
 
     async def search_projects(
         self,
-        request: Union[projects.SearchProjectsRequest, dict] = None,
+        request: Optional[Union[projects.SearchProjectsRequest, dict]] = None,
         *,
-        query: str = None,
+        query: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchProjectsAsyncPager:
         r"""Search for projects that the caller has both
@@ -506,7 +517,7 @@ class ProjectsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.resourcemanager_v3.types.SearchProjectsRequest, dict]):
+            request (Optional[Union[google.cloud.resourcemanager_v3.types.SearchProjectsRequest, dict]]):
                 The request object. The request sent to the
                 [SearchProjects][google.cloud.resourcemanager.v3.Projects.SearchProjects]
                 method.
@@ -623,11 +634,11 @@ class ProjectsAsyncClient:
 
     async def create_project(
         self,
-        request: Union[projects.CreateProjectRequest, dict] = None,
+        request: Optional[Union[projects.CreateProjectRequest, dict]] = None,
         *,
-        project: projects.Project = None,
+        project: Optional[projects.Project] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Request that a new project be created. The result is an
@@ -661,13 +672,13 @@ class ProjectsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.resourcemanager_v3.types.CreateProjectRequest, dict]):
+            request (Optional[Union[google.cloud.resourcemanager_v3.types.CreateProjectRequest, dict]]):
                 The request object. The request sent to the
                 [CreateProject][google.cloud.resourcemanager.v3.Projects.CreateProject]
                 method.
@@ -747,12 +758,12 @@ class ProjectsAsyncClient:
 
     async def update_project(
         self,
-        request: Union[projects.UpdateProjectRequest, dict] = None,
+        request: Optional[Union[projects.UpdateProjectRequest, dict]] = None,
         *,
-        project: projects.Project = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        project: Optional[projects.Project] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the ``display_name`` and labels of the project
@@ -787,13 +798,13 @@ class ProjectsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.resourcemanager_v3.types.UpdateProjectRequest, dict]):
+            request (Optional[Union[google.cloud.resourcemanager_v3.types.UpdateProjectRequest, dict]]):
                 The request object. The request sent to the
                 [UpdateProject][google.cloud.resourcemanager.v3.Projects.UpdateProject]
                 method.
@@ -887,12 +898,12 @@ class ProjectsAsyncClient:
 
     async def move_project(
         self,
-        request: Union[projects.MoveProjectRequest, dict] = None,
+        request: Optional[Union[projects.MoveProjectRequest, dict]] = None,
         *,
-        name: str = None,
-        destination_parent: str = None,
+        name: Optional[str] = None,
+        destination_parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Move a project to another place in your resource hierarchy,
@@ -934,13 +945,13 @@ class ProjectsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.resourcemanager_v3.types.MoveProjectRequest, dict]):
+            request (Optional[Union[google.cloud.resourcemanager_v3.types.MoveProjectRequest, dict]]):
                 The request object. The request sent to
                 [MoveProject][google.cloud.resourcemanager.v3.Projects.MoveProject]
                 method.
@@ -1027,11 +1038,11 @@ class ProjectsAsyncClient:
 
     async def delete_project(
         self,
-        request: Union[projects.DeleteProjectRequest, dict] = None,
+        request: Optional[Union[projects.DeleteProjectRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Marks the project identified by the specified ``name`` (for
@@ -1095,13 +1106,13 @@ class ProjectsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.resourcemanager_v3.types.DeleteProjectRequest, dict]):
+            request (Optional[Union[google.cloud.resourcemanager_v3.types.DeleteProjectRequest, dict]]):
                 The request object. [DeleteProject][google.cloud.resourcemanager.v3.Projects.DeleteProject]
                 method.
             name (:class:`str`):
@@ -1178,11 +1189,11 @@ class ProjectsAsyncClient:
 
     async def undelete_project(
         self,
-        request: Union[projects.UndeleteProjectRequest, dict] = None,
+        request: Optional[Union[projects.UndeleteProjectRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Restores the project identified by the specified ``name`` (for
@@ -1219,13 +1230,13 @@ class ProjectsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.resourcemanager_v3.types.UndeleteProjectRequest, dict]):
+            request (Optional[Union[google.cloud.resourcemanager_v3.types.UndeleteProjectRequest, dict]]):
                 The request object. The request sent to the
                 [UndeleteProject]
                 [google.cloud.resourcemanager.v3.Projects.UndeleteProject]
@@ -1306,11 +1317,11 @@ class ProjectsAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Returns the IAM access control policy for the
@@ -1345,7 +1356,7 @@ class ProjectsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -1483,11 +1494,11 @@ class ProjectsAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM access control policy for the specified project.
@@ -1571,7 +1582,7 @@ class ProjectsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -1700,12 +1711,12 @@ class ProjectsAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
-        resource: str = None,
-        permissions: Sequence[str] = None,
+        resource: Optional[str] = None,
+        permissions: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns permissions that a caller has on the
@@ -1740,7 +1751,7 @@ class ProjectsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             resource (:class:`str`):
@@ -1752,7 +1763,7 @@ class ProjectsAsyncClient:
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            permissions (:class:`Sequence[str]`):
+            permissions (:class:`MutableSequence[str]`):
                 The set of permissions to check for the ``resource``.
                 Permissions with wildcards (such as '*' or 'storage.*')
                 are not allowed. For more information see `IAM
@@ -1823,14 +1834,9 @@ class ProjectsAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-resourcemanager",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ProjectsAsyncClient",)

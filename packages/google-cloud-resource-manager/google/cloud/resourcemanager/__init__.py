@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.resourcemanager import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.resourcemanager_v3.services.folders.async_client import (
     FoldersAsyncClient,

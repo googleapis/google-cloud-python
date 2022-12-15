@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -71,37 +73,37 @@ class TagKey(proto.Message):
             for details.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    short_name = proto.Field(
+    short_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    namespaced_name = proto.Field(
+    namespaced_name: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=8,
     )
@@ -128,15 +130,15 @@ class ListTagKeysRequest(proto.Message):
             continue from.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -146,7 +148,7 @@ class ListTagKeysResponse(proto.Message):
     r"""The ListTagKeys response message.
 
     Attributes:
-        tag_keys (Sequence[google.cloud.resourcemanager_v3.types.TagKey]):
+        tag_keys (MutableSequence[google.cloud.resourcemanager_v3.types.TagKey]):
             List of TagKeys that live under the specified
             parent in the request.
         next_page_token (str):
@@ -159,12 +161,12 @@ class ListTagKeysResponse(proto.Message):
     def raw_page(self):
         return self
 
-    tag_keys = proto.RepeatedField(
+    tag_keys: MutableSequence["TagKey"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="TagKey",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -179,7 +181,7 @@ class GetTagKeyRequest(proto.Message):
             such as ``tagKeys/123``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -199,12 +201,12 @@ class CreateTagKeyRequest(proto.Message):
             actually perform the action.
     """
 
-    tag_key = proto.Field(
+    tag_key: "TagKey" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TagKey",
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -234,17 +236,17 @@ class UpdateTagKeyRequest(proto.Message):
             perform the action.
     """
 
-    tag_key = proto.Field(
+    tag_key: "TagKey" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TagKey",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -272,15 +274,15 @@ class DeleteTagKeyRequest(proto.Message):
             used for optimistic concurrency.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=3,
     )

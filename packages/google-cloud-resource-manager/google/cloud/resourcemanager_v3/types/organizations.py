@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -81,40 +83,40 @@ class Organization(proto.Message):
         ACTIVE = 1
         DELETE_REQUESTED = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    directory_customer_id = proto.Field(
+    directory_customer_id: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="owner",
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=4,
         enum=State,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    delete_time = proto.Field(
+    delete_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=8,
     )
@@ -132,7 +134,7 @@ class GetOrganizationRequest(proto.Message):
             "organizations/1234".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -174,15 +176,15 @@ class SearchOrganizationsRequest(proto.Message):
                resources corresponding to the domain ``google.com``.
     """
 
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -192,7 +194,7 @@ class SearchOrganizationsResponse(proto.Message):
     r"""The response returned from the ``SearchOrganizations`` method.
 
     Attributes:
-        organizations (Sequence[google.cloud.resourcemanager_v3.types.Organization]):
+        organizations (MutableSequence[google.cloud.resourcemanager_v3.types.Organization]):
             The list of Organizations that matched the
             search query, possibly paginated.
         next_page_token (str):
@@ -210,12 +212,12 @@ class SearchOrganizationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    organizations = proto.RepeatedField(
+    organizations: MutableSequence["Organization"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Organization",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )

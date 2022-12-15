@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-resourcemanager"
+    "name": "google-cloud-resource-manager",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -1334,7 +1335,7 @@
           },
           {
             "name": "permissions",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -1418,7 +1419,7 @@
           },
           {
             "name": "permissions",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -2477,7 +2478,7 @@
           },
           {
             "name": "permissions",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -2561,7 +2562,7 @@
           },
           {
             "name": "permissions",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -3942,7 +3943,7 @@
           },
           {
             "name": "permissions",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -4026,7 +4027,7 @@
           },
           {
             "name": "permissions",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -5890,7 +5891,7 @@
           },
           {
             "name": "permissions",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -5974,7 +5975,7 @@
           },
           {
             "name": "permissions",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -7194,7 +7195,7 @@
           },
           {
             "name": "permissions",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -7278,7 +7279,7 @@
           },
           {
             "name": "permissions",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",

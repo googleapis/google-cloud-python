@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -50,15 +52,15 @@ class TagBinding(proto.Message):
             ``tagValues/456``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    tag_value = proto.Field(
+    tag_value: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -80,12 +82,12 @@ class CreateTagBindingRequest(proto.Message):
             but not actually perform the action.
     """
 
-    tag_binding = proto.Field(
+    tag_binding: "TagBinding" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TagBinding",
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -105,7 +107,7 @@ class DeleteTagBindingRequest(proto.Message):
             ``tagBindings/%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F123/tagValues/456``).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -132,15 +134,15 @@ class ListTagBindingsRequest(proto.Message):
             should continue from.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -150,7 +152,7 @@ class ListTagBindingsResponse(proto.Message):
     r"""The ListTagBindings response.
 
     Attributes:
-        tag_bindings (Sequence[google.cloud.resourcemanager_v3.types.TagBinding]):
+        tag_bindings (MutableSequence[google.cloud.resourcemanager_v3.types.TagBinding]):
             A possibly paginated list of TagBindings for
             the specified TagValue or resource.
         next_page_token (str):
@@ -173,12 +175,12 @@ class ListTagBindingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    tag_bindings = proto.RepeatedField(
+    tag_bindings: MutableSequence["TagBinding"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="TagBinding",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )

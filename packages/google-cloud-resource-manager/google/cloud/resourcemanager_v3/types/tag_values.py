@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -75,37 +77,37 @@ class TagValue(proto.Message):
             UpdateTagValueRequest for details.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    short_name = proto.Field(
+    short_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    namespaced_name = proto.Field(
+    namespaced_name: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=8,
     )
@@ -131,15 +133,15 @@ class ListTagValuesRequest(proto.Message):
             should continue from.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -149,7 +151,7 @@ class ListTagValuesResponse(proto.Message):
     r"""The ListTagValues response.
 
     Attributes:
-        tag_values (Sequence[google.cloud.resourcemanager_v3.types.TagValue]):
+        tag_values (MutableSequence[google.cloud.resourcemanager_v3.types.TagValue]):
             A possibly paginated list of TagValues that
             are direct descendants of the specified parent
             TagKey.
@@ -164,12 +166,12 @@ class ListTagValuesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    tag_values = proto.RepeatedField(
+    tag_values: MutableSequence["TagValue"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="TagValue",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -184,7 +186,7 @@ class GetTagValueRequest(proto.Message):
             format ``tagValues/456``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -204,12 +206,12 @@ class CreateTagValueRequest(proto.Message):
             but not actually perform the action.
     """
 
-    tag_value = proto.Field(
+    tag_value: "TagValue" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TagValue",
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -237,17 +239,17 @@ class UpdateTagValueRequest(proto.Message):
             actually perform the action.
     """
 
-    tag_value = proto.Field(
+    tag_value: "TagValue" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TagValue",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -274,15 +276,15 @@ class DeleteTagValueRequest(proto.Message):
             be used for optimistic concurrency.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=3,
     )
