@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-vm-migration/compare/v1.3.3...v1.4.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.vmmigration.__version__` ([10abf02](https://github.com/googleapis/python-vm-migration/commit/10abf02cfd5aa474d4a78de135e34836d3e4fd03))
+* Add typing to proto.Message based class attributes ([10abf02](https://github.com/googleapis/python-vm-migration/commit/10abf02cfd5aa474d4a78de135e34836d3e4fd03))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([10abf02](https://github.com/googleapis/python-vm-migration/commit/10abf02cfd5aa474d4a78de135e34836d3e4fd03))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([fbef486](https://github.com/googleapis/python-vm-migration/commit/fbef486e187c595a1eb74837166c190787837a92))
+* Drop usage of pkg_resources ([fbef486](https://github.com/googleapis/python-vm-migration/commit/fbef486e187c595a1eb74837166c190787837a92))
+* Fix timeout default values ([fbef486](https://github.com/googleapis/python-vm-migration/commit/fbef486e187c595a1eb74837166c190787837a92))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([10abf02](https://github.com/googleapis/python-vm-migration/commit/10abf02cfd5aa474d4a78de135e34836d3e4fd03))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([fbef486](https://github.com/googleapis/python-vm-migration/commit/fbef486e187c595a1eb74837166c190787837a92))
+
 ## [1.3.3](https://github.com/googleapis/python-vm-migration/compare/v1.3.2...v1.3.3) (2022-10-07)
 
 
