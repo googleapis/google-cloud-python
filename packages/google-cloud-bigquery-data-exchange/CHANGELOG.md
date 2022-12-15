@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-bigquery-data-exchange/compare/v0.3.2...v0.4.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.bigquery_data_exchange.__version__` ([ca18099](https://github.com/googleapis/python-bigquery-data-exchange/commit/ca180995c0b22c20cb5023943fe6c6e67ddae4ee))
+* Add typing to proto.Message based class attributes ([ca18099](https://github.com/googleapis/python-bigquery-data-exchange/commit/ca180995c0b22c20cb5023943fe6c6e67ddae4ee))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([ca18099](https://github.com/googleapis/python-bigquery-data-exchange/commit/ca180995c0b22c20cb5023943fe6c6e67ddae4ee))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([2ded2d4](https://github.com/googleapis/python-bigquery-data-exchange/commit/2ded2d42a678be1af65546639bb1dae5eae19268))
+* Drop usage of pkg_resources ([2ded2d4](https://github.com/googleapis/python-bigquery-data-exchange/commit/2ded2d42a678be1af65546639bb1dae5eae19268))
+* Fix timeout default values ([2ded2d4](https://github.com/googleapis/python-bigquery-data-exchange/commit/2ded2d42a678be1af65546639bb1dae5eae19268))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([ca18099](https://github.com/googleapis/python-bigquery-data-exchange/commit/ca180995c0b22c20cb5023943fe6c6e67ddae4ee))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([2ded2d4](https://github.com/googleapis/python-bigquery-data-exchange/commit/2ded2d42a678be1af65546639bb1dae5eae19268))
+
 ## [0.3.2](https://github.com/googleapis/python-bigquery-data-exchange/compare/v0.3.1...v0.3.2) (2022-10-07)
 
 
