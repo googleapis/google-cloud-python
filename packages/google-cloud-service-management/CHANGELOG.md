@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-service-management/compare/v1.3.3...v1.4.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.servicemanagement.__version__` ([9c86c72](https://github.com/googleapis/python-service-management/commit/9c86c7250b6fdea6cacdd6a031525a35966b281c))
+* Add typing to proto.Message based class attributes ([9c86c72](https://github.com/googleapis/python-service-management/commit/9c86c7250b6fdea6cacdd6a031525a35966b281c))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([9c86c72](https://github.com/googleapis/python-service-management/commit/9c86c7250b6fdea6cacdd6a031525a35966b281c))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([c5f88eb](https://github.com/googleapis/python-service-management/commit/c5f88eb83b40ca345ef36ca2c2d754036d0a5e46))
+* Drop usage of pkg_resources ([c5f88eb](https://github.com/googleapis/python-service-management/commit/c5f88eb83b40ca345ef36ca2c2d754036d0a5e46))
+* Fix timeout default values ([c5f88eb](https://github.com/googleapis/python-service-management/commit/c5f88eb83b40ca345ef36ca2c2d754036d0a5e46))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([9c86c72](https://github.com/googleapis/python-service-management/commit/9c86c7250b6fdea6cacdd6a031525a35966b281c))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([c5f88eb](https://github.com/googleapis/python-service-management/commit/c5f88eb83b40ca345ef36ca2c2d754036d0a5e46))
+
 ## [1.3.3](https://github.com/googleapis/python-service-management/compare/v1.3.2...v1.3.3) (2022-10-07)
 
 
