@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/python-assured-workloads/compare/v1.8.0...v1.8.1) (2022-12-08)
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([6a0ac97](https://github.com/googleapis/python-assured-workloads/commit/6a0ac977e84b20fea502dc6ffeea8af160c34411))
+* Drop usage of pkg_resources ([6a0ac97](https://github.com/googleapis/python-assured-workloads/commit/6a0ac977e84b20fea502dc6ffeea8af160c34411))
+* Fix timeout default values ([6a0ac97](https://github.com/googleapis/python-assured-workloads/commit/6a0ac977e84b20fea502dc6ffeea8af160c34411))
+
+
+### Documentation
+
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([6a0ac97](https://github.com/googleapis/python-assured-workloads/commit/6a0ac977e84b20fea502dc6ffeea8af160c34411))
+
 ## [1.8.0](https://github.com/googleapis/python-assured-workloads/compare/v1.7.0...v1.8.0) (2022-11-16)
 
 
