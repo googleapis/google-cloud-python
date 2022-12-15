@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-tpu/compare/v1.5.2...v1.6.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.tpu.__version__` ([7bb593a](https://github.com/googleapis/python-tpu/commit/7bb593a5f9813c94210628bf447220a30fa74f8b))
+* Add typing to proto.Message based class attributes ([7bb593a](https://github.com/googleapis/python-tpu/commit/7bb593a5f9813c94210628bf447220a30fa74f8b))
+* Publishing TPU v2 API ([ac1bc46](https://github.com/googleapis/python-tpu/commit/ac1bc467ebffc8c8457d7dd08daf45cdc5826662))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([7bb593a](https://github.com/googleapis/python-tpu/commit/7bb593a5f9813c94210628bf447220a30fa74f8b))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([ac1bc46](https://github.com/googleapis/python-tpu/commit/ac1bc467ebffc8c8457d7dd08daf45cdc5826662))
+* Drop usage of pkg_resources ([ac1bc46](https://github.com/googleapis/python-tpu/commit/ac1bc467ebffc8c8457d7dd08daf45cdc5826662))
+* Fix incorrect resource annotations for TPU v2alpha1 API ([ac1bc46](https://github.com/googleapis/python-tpu/commit/ac1bc467ebffc8c8457d7dd08daf45cdc5826662))
+* Fix timeout default values ([ac1bc46](https://github.com/googleapis/python-tpu/commit/ac1bc467ebffc8c8457d7dd08daf45cdc5826662))
+
+
+### Documentation
+
+* Minor updates in comments ([#201](https://github.com/googleapis/python-tpu/issues/201)) ([0519c68](https://github.com/googleapis/python-tpu/commit/0519c684182432d210b67b885e31e7d91adfbf45))
+* **samples:** Snippetgen handling of repeated enum field ([7bb593a](https://github.com/googleapis/python-tpu/commit/7bb593a5f9813c94210628bf447220a30fa74f8b))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([ac1bc46](https://github.com/googleapis/python-tpu/commit/ac1bc467ebffc8c8457d7dd08daf45cdc5826662))
+
 ## [1.5.2](https://github.com/googleapis/python-tpu/compare/v1.5.1...v1.5.2) (2022-10-07)
 
 
