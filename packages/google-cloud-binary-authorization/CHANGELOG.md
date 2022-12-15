@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-binary-authorization/compare/v1.3.3...v1.4.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.binaryauthorization.__version__` ([2df0de1](https://github.com/googleapis/python-binary-authorization/commit/2df0de1accecdb7c72d054fe53aaf3fe4af5846f))
+* Add typing to proto.Message based class attributes ([2df0de1](https://github.com/googleapis/python-binary-authorization/commit/2df0de1accecdb7c72d054fe53aaf3fe4af5846f))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([2df0de1](https://github.com/googleapis/python-binary-authorization/commit/2df0de1accecdb7c72d054fe53aaf3fe4af5846f))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([b3128a5](https://github.com/googleapis/python-binary-authorization/commit/b3128a5c482fce5f606792db7ca0e5bfca46fca4))
+* Drop usage of pkg_resources ([b3128a5](https://github.com/googleapis/python-binary-authorization/commit/b3128a5c482fce5f606792db7ca0e5bfca46fca4))
+* Fix timeout default values ([b3128a5](https://github.com/googleapis/python-binary-authorization/commit/b3128a5c482fce5f606792db7ca0e5bfca46fca4))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([2df0de1](https://github.com/googleapis/python-binary-authorization/commit/2df0de1accecdb7c72d054fe53aaf3fe4af5846f))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([b3128a5](https://github.com/googleapis/python-binary-authorization/commit/b3128a5c482fce5f606792db7ca0e5bfca46fca4))
+
 ## [1.3.3](https://github.com/googleapis/python-binary-authorization/compare/v1.3.2...v1.3.3) (2022-10-07)
 
 
