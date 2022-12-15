@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/googleapis/python-iam-logging/compare/v1.0.6...v1.1.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.iam_logging.__version__` ([09d3a67](https://github.com/googleapis/python-iam-logging/commit/09d3a676caabe804b679bb82ea770d3ef6da4a0d))
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([#132](https://github.com/googleapis/python-iam-logging/issues/132)) ([20c3d27](https://github.com/googleapis/python-iam-logging/commit/20c3d276ac240737e500cc2a47243b0d3d5f61ea))
+
 ## [1.0.6](https://github.com/googleapis/python-iam-logging/compare/v1.0.5...v1.0.6) (2022-10-07)
 
 
