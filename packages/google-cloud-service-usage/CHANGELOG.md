@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-service-usage/compare/v1.4.3...v1.5.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.service_usage.__version__` ([c13d3f6](https://github.com/googleapis/python-service-usage/commit/c13d3f63188f5171e4af1f13757f3b89ee92f408))
+* Add typing to proto.Message based class attributes ([c13d3f6](https://github.com/googleapis/python-service-usage/commit/c13d3f63188f5171e4af1f13757f3b89ee92f408))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([c13d3f6](https://github.com/googleapis/python-service-usage/commit/c13d3f63188f5171e4af1f13757f3b89ee92f408))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([a2eb0d7](https://github.com/googleapis/python-service-usage/commit/a2eb0d7ff9ae9db36c3d0c0ac8c67284c0581ea9))
+* Drop usage of pkg_resources ([a2eb0d7](https://github.com/googleapis/python-service-usage/commit/a2eb0d7ff9ae9db36c3d0c0ac8c67284c0581ea9))
+* Fix timeout default values ([a2eb0d7](https://github.com/googleapis/python-service-usage/commit/a2eb0d7ff9ae9db36c3d0c0ac8c67284c0581ea9))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([c13d3f6](https://github.com/googleapis/python-service-usage/commit/c13d3f63188f5171e4af1f13757f3b89ee92f408))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([a2eb0d7](https://github.com/googleapis/python-service-usage/commit/a2eb0d7ff9ae9db36c3d0c0ac8c67284c0581ea9))
+
 ## [1.4.3](https://github.com/googleapis/python-service-usage/compare/v1.4.2...v1.4.3) (2022-10-07)
 
 
