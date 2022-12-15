@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-storage-transfer/compare/v1.5.2...v1.6.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.storage_transfer.__version__` ([d1754b0](https://github.com/googleapis/python-storage-transfer/commit/d1754b074c896e1704c68e060999994ac98b34e6))
+* Add typing to proto.Message based class attributes ([d1754b0](https://github.com/googleapis/python-storage-transfer/commit/d1754b074c896e1704c68e060999994ac98b34e6))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([d1754b0](https://github.com/googleapis/python-storage-transfer/commit/d1754b074c896e1704c68e060999994ac98b34e6))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([a7aabc5](https://github.com/googleapis/python-storage-transfer/commit/a7aabc53128d85c5c25910e0dd95a31c12c67387))
+* Drop usage of pkg_resources ([a7aabc5](https://github.com/googleapis/python-storage-transfer/commit/a7aabc53128d85c5c25910e0dd95a31c12c67387))
+* Fix timeout default values ([a7aabc5](https://github.com/googleapis/python-storage-transfer/commit/a7aabc53128d85c5c25910e0dd95a31c12c67387))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([d1754b0](https://github.com/googleapis/python-storage-transfer/commit/d1754b074c896e1704c68e060999994ac98b34e6))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([a7aabc5](https://github.com/googleapis/python-storage-transfer/commit/a7aabc53128d85c5c25910e0dd95a31c12c67387))
+
 ## [1.5.2](https://github.com/googleapis/python-storage-transfer/compare/v1.5.1...v1.5.2) (2022-10-07)
 
 
