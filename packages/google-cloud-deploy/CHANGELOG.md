@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-deploy/compare/v1.4.1...v1.5.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.deploy.__version__` ([7e8512a](https://github.com/googleapis/python-deploy/commit/7e8512ae846ec1e356e3a99d64b1664f3c23e268))
+* Add typing to proto.Message based class attributes ([7e8512a](https://github.com/googleapis/python-deploy/commit/7e8512ae846ec1e356e3a99d64b1664f3c23e268))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([7e8512a](https://github.com/googleapis/python-deploy/commit/7e8512ae846ec1e356e3a99d64b1664f3c23e268))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([2e193c3](https://github.com/googleapis/python-deploy/commit/2e193c3e0369a02bd0feba4f7d0fb4a65a3df935))
+* Drop usage of pkg_resources ([2e193c3](https://github.com/googleapis/python-deploy/commit/2e193c3e0369a02bd0feba4f7d0fb4a65a3df935))
+* Fix timeout default values ([2e193c3](https://github.com/googleapis/python-deploy/commit/2e193c3e0369a02bd0feba4f7d0fb4a65a3df935))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([7e8512a](https://github.com/googleapis/python-deploy/commit/7e8512ae846ec1e356e3a99d64b1664f3c23e268))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([2e193c3](https://github.com/googleapis/python-deploy/commit/2e193c3e0369a02bd0feba4f7d0fb4a65a3df935))
+
 ## [1.4.1](https://github.com/googleapis/python-deploy/compare/v1.4.0...v1.4.1) (2022-10-07)
 
 
