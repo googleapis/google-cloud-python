@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-filestore/compare/v1.2.3...v1.3.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.filestore.__version__` ([b427d60](https://github.com/googleapis/python-filestore/commit/b427d60c1330ad22d0822b969582f3935b4a3696))
+* Add typing to proto.Message based class attributes ([b427d60](https://github.com/googleapis/python-filestore/commit/b427d60c1330ad22d0822b969582f3935b4a3696))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([b427d60](https://github.com/googleapis/python-filestore/commit/b427d60c1330ad22d0822b969582f3935b4a3696))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([e7f87de](https://github.com/googleapis/python-filestore/commit/e7f87de5e047cfe4db75f4b3a2d5ebbe53bf8221))
+* Drop usage of pkg_resources ([e7f87de](https://github.com/googleapis/python-filestore/commit/e7f87de5e047cfe4db75f4b3a2d5ebbe53bf8221))
+* Fix timeout default values ([e7f87de](https://github.com/googleapis/python-filestore/commit/e7f87de5e047cfe4db75f4b3a2d5ebbe53bf8221))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([b427d60](https://github.com/googleapis/python-filestore/commit/b427d60c1330ad22d0822b969582f3935b4a3696))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([e7f87de](https://github.com/googleapis/python-filestore/commit/e7f87de5e047cfe4db75f4b3a2d5ebbe53bf8221))
+
 ## [1.2.3](https://github.com/googleapis/python-filestore/compare/v1.2.2...v1.2.3) (2022-10-07)
 
 
