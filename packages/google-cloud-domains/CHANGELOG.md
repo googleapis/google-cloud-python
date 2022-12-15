@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-domains/compare/v1.2.3...v1.3.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.domains.__version__` ([91b157d](https://github.com/googleapis/python-domains/commit/91b157d47f587d28f0617bb21dc6299ec2aa581f))
+* Add typing to proto.Message based class attributes ([91b157d](https://github.com/googleapis/python-domains/commit/91b157d47f587d28f0617bb21dc6299ec2aa581f))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([91b157d](https://github.com/googleapis/python-domains/commit/91b157d47f587d28f0617bb21dc6299ec2aa581f))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([dd3c0d7](https://github.com/googleapis/python-domains/commit/dd3c0d73a0ff0bccab0f0fd4768ff672ea2a438b))
+* Drop usage of pkg_resources ([dd3c0d7](https://github.com/googleapis/python-domains/commit/dd3c0d73a0ff0bccab0f0fd4768ff672ea2a438b))
+* Fix timeout default values ([dd3c0d7](https://github.com/googleapis/python-domains/commit/dd3c0d73a0ff0bccab0f0fd4768ff672ea2a438b))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([91b157d](https://github.com/googleapis/python-domains/commit/91b157d47f587d28f0617bb21dc6299ec2aa581f))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([dd3c0d7](https://github.com/googleapis/python-domains/commit/dd3c0d73a0ff0bccab0f0fd4768ff672ea2a438b))
+
 ## [1.2.3](https://github.com/googleapis/python-domains/compare/v1.2.2...v1.2.3) (2022-10-07)
 
 
