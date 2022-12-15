@@ -33,8 +33,8 @@ class SearchServiceGrpcAsyncIOTransport(SearchServiceTransport):
 
     Service for search.
     This feature is only available for users who have Retail Search
-    enabled. Please enable Retail Search on Cloud Console before
-    using this feature.
+    enabled. Enable Retail Search on Cloud Console before using this
+    feature.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -244,8 +244,8 @@ class SearchServiceGrpcAsyncIOTransport(SearchServiceTransport):
 
         Performs a search.
         This feature is only available for users who have Retail
-        Search enabled. Please enable Retail Search on Cloud
-        Console before using this feature.
+        Search enabled. Enable Retail Search on Cloud Console
+        before using this feature.
 
         Returns:
             Callable[[~.SearchRequest],

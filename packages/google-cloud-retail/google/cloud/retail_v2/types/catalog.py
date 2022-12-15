@@ -132,14 +132,14 @@ class CatalogAttribute(proto.Message):
             APIs. This field is ``False`` for pre-loaded
             [CatalogAttribute][google.cloud.retail.v2.CatalogAttribute]s.
 
-            Only pre-loaded
-            [CatalogAttribute][google.cloud.retail.v2.CatalogAttribute]s
-            that are neither in use by products nor predefined can be
-            deleted.
-            [CatalogAttribute][google.cloud.retail.v2.CatalogAttribute]s
-            that are either in use by products or are predefined cannot
-            be deleted; however, their configuration properties will
-            reset to default values upon removal request.
+            Only pre-loaded [catalog
+            attributes][google.cloud.retail.v2.CatalogAttribute] that
+            are neither in use by products nor predefined can be
+            deleted. [Catalog
+            attributes][google.cloud.retail.v2.CatalogAttribute] that
+            are either in use by products or are predefined attributes
+            cannot be deleted; however, their configuration properties
+            will reset to default values upon removal request.
 
             After catalog changes, it takes about 10 minutes for this
             field to update.
@@ -154,6 +154,8 @@ class CatalogAttribute(proto.Message):
             attribute values are indexed so that it can be filtered,
             faceted, or boosted in
             [SearchService.Search][google.cloud.retail.v2.SearchService.Search].
+
+            Must be specified, otherwise throws INVALID_FORMAT error.
         dynamic_facetable_option (google.cloud.retail_v2.types.CatalogAttribute.DynamicFacetableOption):
             If DYNAMIC_FACETABLE_ENABLED, attribute values are available
             for dynamic facet. Could only be DYNAMIC_FACETABLE_DISABLED
@@ -161,6 +163,8 @@ class CatalogAttribute(proto.Message):
             [CatalogAttribute.indexable_option][google.cloud.retail.v2.CatalogAttribute.indexable_option]
             is INDEXABLE_DISABLED. Otherwise, an INVALID_ARGUMENT error
             is returned.
+
+            Must be specified, otherwise throws INVALID_FORMAT error.
         searchable_option (google.cloud.retail_v2.types.CatalogAttribute.SearchableOption):
             When
             [AttributesConfig.attribute_config_level][google.cloud.retail.v2.AttributesConfig.attribute_config_level]
@@ -173,6 +177,16 @@ class CatalogAttribute(proto.Message):
             [SearchService.Search][google.cloud.retail.v2.SearchService.Search],
             as there are no text values associated to numerical
             attributes.
+
+            Must be specified, otherwise throws INVALID_FORMAT error.
+        exact_searchable_option (google.cloud.retail_v2.types.CatalogAttribute.ExactSearchableOption):
+            If EXACT_SEARCHABLE_ENABLED, attribute values will be exact
+            searchable. This property only applies to textual custom
+            attributes and requires indexable set to enabled to enable
+            exact-searchable.
+        retrievable_option (google.cloud.retail_v2.types.CatalogAttribute.RetrievableOption):
+            If RETRIEVABLE_ENABLED, attribute values are retrievable in
+            the search results.
     """
 
     class AttributeType(proto.Enum):
@@ -201,6 +215,20 @@ class CatalogAttribute(proto.Message):
         SEARCHABLE_ENABLED = 1
         SEARCHABLE_DISABLED = 2
 
+    class ExactSearchableOption(proto.Enum):
+        r"""The status of the exact-searchable option of a catalog
+        attribute.
+        """
+        EXACT_SEARCHABLE_OPTION_UNSPECIFIED = 0
+        EXACT_SEARCHABLE_ENABLED = 1
+        EXACT_SEARCHABLE_DISABLED = 2
+
+    class RetrievableOption(proto.Enum):
+        r"""The status of the retrievable option of a catalog attribute."""
+        RETRIEVABLE_OPTION_UNSPECIFIED = 0
+        RETRIEVABLE_ENABLED = 1
+        RETRIEVABLE_DISABLED = 2
+
     key: str = proto.Field(
         proto.STRING,
         number=1,
@@ -228,6 +256,16 @@ class CatalogAttribute(proto.Message):
         proto.ENUM,
         number=7,
         enum=SearchableOption,
+    )
+    exact_searchable_option: ExactSearchableOption = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=ExactSearchableOption,
+    )
+    retrievable_option: RetrievableOption = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum=RetrievableOption,
     )
 
 

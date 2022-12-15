@@ -1038,7 +1038,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 method.
             name (str):
                 Required. Full CompletionConfig resource name. Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/completionConfig
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/completionConfig``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -92,9 +92,9 @@ class Condition(proto.Message):
                 Value cannot be empty.
                 Value can have at most 3 terms if specified as a
                 partial match. Each space separated string is
-                considered as one term. Example) "a b c" is 3
-                terms and allowed, " a b c d" is 4 terms and not
-                allowed for partial match.
+                considered as one term. For example, "a b c" is
+                3 terms and allowed, but " a b c d" is 4 terms
+                and not allowed for a partial match.
             full_match (bool):
                 Whether this is supposed to be a full or
                 partial match.
@@ -315,7 +315,7 @@ class Rule(proto.Message):
 
     class TwowaySynonymsAction(proto.Message):
         r"""Creates a set of terms that will be treated as synonyms of each
-        other. Example: synonyms of "sneakers" and "shoes".
+        other. Example: synonyms of "sneakers" and "shoes":
 
         -  "sneakers" will use a synonym of "shoes".
         -  "shoes" will use a synonym of "sneakers".

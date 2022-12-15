@@ -261,7 +261,7 @@ class GetCompletionConfigRequest(proto.Message):
     Attributes:
         name (str):
             Required. Full CompletionConfig resource name. Format:
-            projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/completionConfig
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/completionConfig``
     """
 
     name: str = proto.Field(

@@ -43,7 +43,7 @@ class retailCallTransformer(cst.CSTTransformer):
         'add_control': ('serving_config', 'control_id', ),
         'add_fulfillment_places': ('product', 'type_', 'place_ids', 'add_time', 'allow_missing', ),
         'add_local_inventories': ('product', 'local_inventories', 'add_mask', 'add_time', 'allow_missing', ),
-        'collect_user_event': ('parent', 'user_event', 'uri', 'ets', ),
+        'collect_user_event': ('parent', 'user_event', 'prebuilt_rule', 'uri', 'ets', 'raw_json', ),
         'complete_query': ('catalog', 'query', 'visitor_id', 'language_codes', 'device_type', 'dataset', 'max_suggestions', ),
         'create_control': ('parent', 'control', 'control_id', ),
         'create_product': ('parent', 'product', 'product_id', ),
@@ -81,7 +81,7 @@ class retailCallTransformer(cst.CSTTransformer):
         'update_control': ('control', 'update_mask', ),
         'update_product': ('product', 'update_mask', 'allow_missing', ),
         'update_serving_config': ('serving_config', 'update_mask', ),
-        'write_user_event': ('parent', 'user_event', ),
+        'write_user_event': ('parent', 'user_event', 'write_async', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

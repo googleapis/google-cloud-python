@@ -410,7 +410,7 @@ class ServingConfigServiceAsyncClient:
             name (:class:`str`):
                 Required. The resource name of the ServingConfig to
                 delete. Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -634,7 +634,7 @@ class ServingConfigServiceAsyncClient:
             name (:class:`str`):
                 Required. The resource name of the ServingConfig to get.
                 Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -741,7 +741,7 @@ class ServingConfigServiceAsyncClient:
                 method.
             parent (:class:`str`):
                 Required. The catalog resource name. Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -862,7 +862,7 @@ class ServingConfigServiceAsyncClient:
             serving_config (:class:`str`):
                 Required. The source ServingConfig resource name .
                 Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}``
 
                 This corresponds to the ``serving_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -973,7 +973,7 @@ class ServingConfigServiceAsyncClient:
             serving_config (:class:`str`):
                 Required. The source ServingConfig resource name .
                 Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}``
 
                 This corresponds to the ``serving_config`` field
                 on the ``request`` instance; if ``request`` is provided, this

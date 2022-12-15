@@ -34,8 +34,8 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
 
     Auto-completion service for retail.
     This feature is only available for users who have Retail Search
-    enabled. Please enable Retail Search on Cloud Console before
-    using this feature.
+    enabled. Enable Retail Search on Cloud Console before using this
+    feature.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -264,8 +264,8 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
         Completes the specified prefix with keyword
         suggestions.
         This feature is only available for users who have Retail
-        Search enabled. Please enable Retail Search on Cloud
-        Console before using this feature.
+        Search enabled. Enable Retail Search on Cloud Console
+        before using this feature.
 
         Returns:
             Callable[[~.CompleteQueryRequest],
@@ -300,8 +300,8 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
         imported suggestions are indexed successfully and ready
         for serving. The process takes hours.
         This feature is only available for users who have Retail
-        Search enabled. Please enable Retail Search on Cloud
-        Console before using this feature.
+        Search enabled. Enable Retail Search on Cloud Console
+        before using this feature.
 
         Returns:
             Callable[[~.ImportCompletionDataRequest],

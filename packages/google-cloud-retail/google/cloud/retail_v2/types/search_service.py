@@ -43,9 +43,8 @@ class SearchRequest(proto.Message):
             ``projects/*/locations/global/catalogs/default_catalog/servingConfigs/default_serving_config``
             or the name of the legacy placement resource, such as
             ``projects/*/locations/global/catalogs/default_catalog/placements/default_search``.
-            This field is used to identify the serving configuration
-            name and the set of models that will be used to make the
-            search.
+            This field is used to identify the serving config name and
+            the set of models that will be used to make the search.
         branch (str):
             The branch resource name, such as
             ``projects/*/locations/global/catalogs/default_catalog/branches/0``.
@@ -260,7 +259,7 @@ class SearchRequest(proto.Message):
 
             To represent full path of category, use '>' sign to separate
             different hierarchies. If '>' is part of the category name,
-            please replace it with other character(s).
+            replace it with other character(s).
 
             Category pages include special pages such as sales or
             promotions. For instance, a special sale page may have the
@@ -325,7 +324,7 @@ class SearchRequest(proto.Message):
                 Required. The facet key specification.
             limit (int):
                 Maximum of facet values that should be returned for this
-                facet. If unspecified, defaults to 20. The maximum allowed
+                facet. If unspecified, defaults to 50. The maximum allowed
                 value is 300. Values above 300 will be coerced to 300.
 
                 If this field is negative, an INVALID_ARGUMENT is returned.

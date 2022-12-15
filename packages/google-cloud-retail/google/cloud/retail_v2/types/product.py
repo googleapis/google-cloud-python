@@ -46,6 +46,15 @@ class Product(proto.Message):
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
             The timestamp when this product becomes unavailable for
             [SearchService.Search][google.cloud.retail.v2.SearchService.Search].
+            Note that this is only applicable to
+            [Type.PRIMARY][google.cloud.retail.v2.Product.Type.PRIMARY]
+            and
+            [Type.COLLECTION][google.cloud.retail.v2.Product.Type.COLLECTION],
+            and ignored for
+            [Type.VARIANT][google.cloud.retail.v2.Product.Type.VARIANT].
+            In general, we suggest the users to delete the stale
+            products explicitly, instead of using this field to
+            determine staleness.
 
             If it is set, the [Product][google.cloud.retail.v2.Product]
             is not available for
@@ -69,7 +78,16 @@ class Product(proto.Message):
 
             This field is a member of `oneof`_ ``expiration``.
         ttl (google.protobuf.duration_pb2.Duration):
-            Input only. The TTL (time to live) of the product.
+            Input only. The TTL (time to live) of the product. Note that
+            this is only applicable to
+            [Type.PRIMARY][google.cloud.retail.v2.Product.Type.PRIMARY]
+            and
+            [Type.COLLECTION][google.cloud.retail.v2.Product.Type.COLLECTION],
+            and ignored for
+            [Type.VARIANT][google.cloud.retail.v2.Product.Type.VARIANT].
+            In general, we suggest the users to delete the stale
+            products explicitly, instead of using this field to
+            determine staleness.
 
             If it is set, it must be a non-negative value, and
             [expire_time][google.cloud.retail.v2.Product.expire_time] is
@@ -180,7 +198,7 @@ class Product(proto.Message):
 
             To represent full path of category, use '>' sign to separate
             different hierarchies. If '>' is part of the category name,
-            please replace it with other character(s).
+            replace it with other character(s).
 
             For example, if a shoes product belongs to both ["Shoes &
             Accessories" -> "Shoes"] and ["Sports & Fitness" ->
@@ -316,6 +334,12 @@ class Product(proto.Message):
             [Product][google.cloud.retail.v2.Product] becomes available
             for
             [SearchService.Search][google.cloud.retail.v2.SearchService.Search].
+            Note that this is only applicable to
+            [Type.PRIMARY][google.cloud.retail.v2.Product.Type.PRIMARY]
+            and
+            [Type.COLLECTION][google.cloud.retail.v2.Product.Type.COLLECTION],
+            and ignored for
+            [Type.VARIANT][google.cloud.retail.v2.Product.Type.VARIANT].
         availability (google.cloud.retail_v2.types.Product.Availability):
             The online availability of the
             [Product][google.cloud.retail.v2.Product]. Default to
@@ -514,6 +538,9 @@ class Product(proto.Message):
             Note: Returning more fields in
             [SearchResponse][google.cloud.retail.v2.SearchResponse] can
             increase response payload size and serving latency.
+
+            This field is deprecated. Use the retrievable site-wide
+            control instead.
         variants (MutableSequence[google.cloud.retail_v2.types.Product]):
             Output only. Product variants grouped together on primary
             product which share similar product attributes. It's
@@ -531,8 +558,11 @@ class Product(proto.Message):
             different places.
 
             This is only available for users who have Retail Search
-            enabled, and it can be managed by [AddLocalInventories][]
-            and [RemoveLocalInventories][] APIs.
+            enabled, and it can be managed by
+            [ProductService.AddLocalInventories][google.cloud.retail.v2.ProductService.AddLocalInventories]
+            and
+            [ProductService.RemoveLocalInventories][google.cloud.retail.v2.ProductService.RemoveLocalInventories]
+            APIs.
     """
 
     class Type(proto.Enum):
