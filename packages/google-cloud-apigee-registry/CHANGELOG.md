@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.5.1](https://github.com/googleapis/python-apigee-registry/compare/v0.5.0...v0.5.1) (2022-12-14)
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([f1fd8d9](https://github.com/googleapis/python-apigee-registry/commit/f1fd8d9ee3920f4e9e68e2a8000dee98db2b95ac))
+* Drop usage of pkg_resources ([f1fd8d9](https://github.com/googleapis/python-apigee-registry/commit/f1fd8d9ee3920f4e9e68e2a8000dee98db2b95ac))
+* Fix timeout default values ([f1fd8d9](https://github.com/googleapis/python-apigee-registry/commit/f1fd8d9ee3920f4e9e68e2a8000dee98db2b95ac))
+
+
+### Documentation
+
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([f1fd8d9](https://github.com/googleapis/python-apigee-registry/commit/f1fd8d9ee3920f4e9e68e2a8000dee98db2b95ac))
+
 ## [0.5.0](https://github.com/googleapis/python-apigee-registry/compare/v0.4.0...v0.5.0) (2022-11-16)
 
 
