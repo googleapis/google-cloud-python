@@ -19,6 +19,8 @@ import re
 from typing import (
     Dict,
     Mapping,
+    MutableMapping,
+    MutableSequence,
     Optional,
     AsyncIterable,
     Awaitable,
@@ -28,7 +30,8 @@ from typing import (
     Type,
     Union,
 )
-import pkg_resources
+
+from google.cloud.speech_v1 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -45,6 +48,7 @@ except AttributeError:  # pragma: NO COVER
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.speech_v1.types import cloud_speech
+from google.longrunning import operations_pb2
 from google.protobuf import duration_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 from .transports.base import SpeechTransport, DEFAULT_CLIENT_INFO
@@ -164,9 +168,9 @@ class SpeechAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, SpeechTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the speech client.
@@ -210,12 +214,12 @@ class SpeechAsyncClient:
 
     async def recognize(
         self,
-        request: Union[cloud_speech.RecognizeRequest, dict] = None,
+        request: Optional[Union[cloud_speech.RecognizeRequest, dict]] = None,
         *,
-        config: cloud_speech.RecognitionConfig = None,
-        audio: cloud_speech.RecognitionAudio = None,
+        config: Optional[cloud_speech.RecognitionConfig] = None,
+        audio: Optional[cloud_speech.RecognitionAudio] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_speech.RecognizeResponse:
         r"""Performs synchronous speech recognition: receive
@@ -255,7 +259,7 @@ class SpeechAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.speech_v1.types.RecognizeRequest, dict]):
+            request (Optional[Union[google.cloud.speech_v1.types.RecognizeRequest, dict]]):
                 The request object. The top-level message sent by the
                 client for the `Recognize` method.
             config (:class:`google.cloud.speech_v1.types.RecognitionConfig`):
@@ -336,12 +340,12 @@ class SpeechAsyncClient:
 
     async def long_running_recognize(
         self,
-        request: Union[cloud_speech.LongRunningRecognizeRequest, dict] = None,
+        request: Optional[Union[cloud_speech.LongRunningRecognizeRequest, dict]] = None,
         *,
-        config: cloud_speech.RecognitionConfig = None,
-        audio: cloud_speech.RecognitionAudio = None,
+        config: Optional[cloud_speech.RecognitionConfig] = None,
+        audio: Optional[cloud_speech.RecognitionAudio] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Performs asynchronous speech recognition: receive results via
@@ -383,13 +387,13 @@ class SpeechAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.speech_v1.types.LongRunningRecognizeRequest, dict]):
+            request (Optional[Union[google.cloud.speech_v1.types.LongRunningRecognizeRequest, dict]]):
                 The request object. The top-level message sent by the
                 client for the `LongRunningRecognize` method.
             config (:class:`google.cloud.speech_v1.types.RecognitionConfig`):
@@ -473,10 +477,12 @@ class SpeechAsyncClient:
 
     def streaming_recognize(
         self,
-        requests: AsyncIterator[cloud_speech.StreamingRecognizeRequest] = None,
+        requests: Optional[
+            AsyncIterator[cloud_speech.StreamingRecognizeRequest]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[cloud_speech.StreamingRecognizeResponse]]:
         r"""Performs bidirectional streaming speech recognition:
@@ -632,6 +638,114 @@ class SpeechAsyncClient:
         # Done; return the response.
         return response
 
+    async def list_operations(
+        self,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.ListOperationsResponse:
+        r"""Lists operations that match the specified filter in the request.
+
+        Args:
+            request (:class:`~.operations_pb2.ListOperationsRequest`):
+                The request object. Request message for
+                `ListOperations` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.ListOperationsResponse:
+                Response message for ``ListOperations`` method.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.ListOperationsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.list_operations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_operation(
+        self,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.Operation:
+        r"""Gets the latest state of a long-running operation.
+
+        Args:
+            request (:class:`~.operations_pb2.GetOperationRequest`):
+                The request object. Request message for
+                `GetOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.Operation:
+                An ``Operation`` object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.GetOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.get_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def __aenter__(self):
         return self
 
@@ -639,14 +753,9 @@ class SpeechAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-speech",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("SpeechAsyncClient",)

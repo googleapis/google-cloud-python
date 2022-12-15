@@ -19,6 +19,8 @@ import re
 from typing import (
     Dict,
     Mapping,
+    MutableMapping,
+    MutableSequence,
     Optional,
     AsyncIterable,
     Awaitable,
@@ -28,7 +30,8 @@ from typing import (
     Type,
     Union,
 )
-import pkg_resources
+
+from google.cloud.speech_v1p1beta1 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -164,9 +167,9 @@ class SpeechAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, SpeechTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the speech client.
@@ -210,12 +213,12 @@ class SpeechAsyncClient:
 
     async def recognize(
         self,
-        request: Union[cloud_speech.RecognizeRequest, dict] = None,
+        request: Optional[Union[cloud_speech.RecognizeRequest, dict]] = None,
         *,
-        config: cloud_speech.RecognitionConfig = None,
-        audio: cloud_speech.RecognitionAudio = None,
+        config: Optional[cloud_speech.RecognitionConfig] = None,
+        audio: Optional[cloud_speech.RecognitionAudio] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_speech.RecognizeResponse:
         r"""Performs synchronous speech recognition: receive
@@ -255,7 +258,7 @@ class SpeechAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.speech_v1p1beta1.types.RecognizeRequest, dict]):
+            request (Optional[Union[google.cloud.speech_v1p1beta1.types.RecognizeRequest, dict]]):
                 The request object. The top-level message sent by the
                 client for the `Recognize` method.
             config (:class:`google.cloud.speech_v1p1beta1.types.RecognitionConfig`):
@@ -336,12 +339,12 @@ class SpeechAsyncClient:
 
     async def long_running_recognize(
         self,
-        request: Union[cloud_speech.LongRunningRecognizeRequest, dict] = None,
+        request: Optional[Union[cloud_speech.LongRunningRecognizeRequest, dict]] = None,
         *,
-        config: cloud_speech.RecognitionConfig = None,
-        audio: cloud_speech.RecognitionAudio = None,
+        config: Optional[cloud_speech.RecognitionConfig] = None,
+        audio: Optional[cloud_speech.RecognitionAudio] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Performs asynchronous speech recognition: receive results via
@@ -383,13 +386,13 @@ class SpeechAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.speech_v1p1beta1.types.LongRunningRecognizeRequest, dict]):
+            request (Optional[Union[google.cloud.speech_v1p1beta1.types.LongRunningRecognizeRequest, dict]]):
                 The request object. The top-level message sent by the
                 client for the `LongRunningRecognize` method.
             config (:class:`google.cloud.speech_v1p1beta1.types.RecognitionConfig`):
@@ -473,10 +476,12 @@ class SpeechAsyncClient:
 
     def streaming_recognize(
         self,
-        requests: AsyncIterator[cloud_speech.StreamingRecognizeRequest] = None,
+        requests: Optional[
+            AsyncIterator[cloud_speech.StreamingRecognizeRequest]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[cloud_speech.StreamingRecognizeResponse]]:
         r"""Performs bidirectional streaming speech recognition:
@@ -639,14 +644,9 @@ class SpeechAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-speech",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("SpeechAsyncClient",)
