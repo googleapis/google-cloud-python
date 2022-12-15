@@ -2633,6 +2633,12 @@ class ClusterUpdate(proto.Message):
         desired_node_pool_logging_config (google.cloud.container_v1.types.NodePoolLoggingConfig):
             The desired node pool logging configuration
             defaults for the cluster.
+        desired_stack_type (google.cloud.container_v1.types.StackType):
+            The desired stack type of the cluster.
+            If a stack type is provided and does not match
+            the current stack type of the cluster, update
+            will attempt to change the stack type to the new
+            type.
     """
 
     desired_node_version: str = proto.Field(
@@ -2819,6 +2825,11 @@ class ClusterUpdate(proto.Message):
         proto.MESSAGE,
         number=116,
         message="NodePoolLoggingConfig",
+    )
+    desired_stack_type: "StackType" = proto.Field(
+        proto.ENUM,
+        number=119,
+        enum="StackType",
     )
 
 
