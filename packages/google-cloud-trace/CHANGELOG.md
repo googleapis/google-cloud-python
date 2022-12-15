@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## [1.8.0](https://github.com/googleapis/python-trace/compare/v1.7.3...v1.8.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.trace.__version__` ([a45bd77](https://github.com/googleapis/python-trace/commit/a45bd7739b2614d3cff6e607bef1eeeb68b6d115))
+* Add typing to proto.Message based class attributes ([a45bd77](https://github.com/googleapis/python-trace/commit/a45bd7739b2614d3cff6e607bef1eeeb68b6d115))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([a45bd77](https://github.com/googleapis/python-trace/commit/a45bd7739b2614d3cff6e607bef1eeeb68b6d115))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([5cd01da](https://github.com/googleapis/python-trace/commit/5cd01da4001cf06f775661c61ae7edf7a3405a42))
+* Drop usage of pkg_resources ([5cd01da](https://github.com/googleapis/python-trace/commit/5cd01da4001cf06f775661c61ae7edf7a3405a42))
+* Fix timeout default values ([5cd01da](https://github.com/googleapis/python-trace/commit/5cd01da4001cf06f775661c61ae7edf7a3405a42))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([a45bd77](https://github.com/googleapis/python-trace/commit/a45bd7739b2614d3cff6e607bef1eeeb68b6d115))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([5cd01da](https://github.com/googleapis/python-trace/commit/5cd01da4001cf06f775661c61ae7edf7a3405a42))
+
 ## [1.7.3](https://github.com/googleapis/python-trace/compare/v1.7.2...v1.7.3) (2022-10-07)
 
 
