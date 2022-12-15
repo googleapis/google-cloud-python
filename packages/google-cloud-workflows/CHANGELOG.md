@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-workflows/compare/v1.7.4...v1.8.0) (2022-12-08)
+
+
+### Features
+
+* add support for `google.cloud.workflows.__version__` ([f234644](https://github.com/googleapis/python-workflows/commit/f23464470009cbdd0c4893263dbfdeba26c80419))
+* Add typing to proto.Message based class attributes ([f234644](https://github.com/googleapis/python-workflows/commit/f23464470009cbdd0c4893263dbfdeba26c80419))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([f234644](https://github.com/googleapis/python-workflows/commit/f23464470009cbdd0c4893263dbfdeba26c80419))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([566af4a](https://github.com/googleapis/python-workflows/commit/566af4a9d2a4c74f7a43e02b08f30bd8a7eae24f))
+* Drop usage of pkg_resources ([566af4a](https://github.com/googleapis/python-workflows/commit/566af4a9d2a4c74f7a43e02b08f30bd8a7eae24f))
+* Fix timeout default values ([566af4a](https://github.com/googleapis/python-workflows/commit/566af4a9d2a4c74f7a43e02b08f30bd8a7eae24f))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([f234644](https://github.com/googleapis/python-workflows/commit/f23464470009cbdd0c4893263dbfdeba26c80419))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([566af4a](https://github.com/googleapis/python-workflows/commit/566af4a9d2a4c74f7a43e02b08f30bd8a7eae24f))
+
 ## [1.7.4](https://github.com/googleapis/python-workflows/compare/v1.7.3...v1.7.4) (2022-10-07)
 
 
