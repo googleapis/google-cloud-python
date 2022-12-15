@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.10.0](https://github.com/googleapis/python-datacatalog/compare/v3.9.3...v3.10.0) (2022-12-14)
+
+
+### Features
+
+* Add support for `google.cloud.datacatalog.__version__` ([8a4f5f8](https://github.com/googleapis/python-datacatalog/commit/8a4f5f854d217723564f56451d2c19bad47a3734))
+* Add typing to proto.Message based class attributes ([8a4f5f8](https://github.com/googleapis/python-datacatalog/commit/8a4f5f854d217723564f56451d2c19bad47a3734))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([8a4f5f8](https://github.com/googleapis/python-datacatalog/commit/8a4f5f854d217723564f56451d2c19bad47a3734))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([9682965](https://github.com/googleapis/python-datacatalog/commit/968296505e81277bbeaa60c9fac78f3370a60abe))
+* Drop usage of pkg_resources ([9682965](https://github.com/googleapis/python-datacatalog/commit/968296505e81277bbeaa60c9fac78f3370a60abe))
+* Fix timeout default values ([9682965](https://github.com/googleapis/python-datacatalog/commit/968296505e81277bbeaa60c9fac78f3370a60abe))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([8a4f5f8](https://github.com/googleapis/python-datacatalog/commit/8a4f5f854d217723564f56451d2c19bad47a3734))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([9682965](https://github.com/googleapis/python-datacatalog/commit/968296505e81277bbeaa60c9fac78f3370a60abe))
+
 ## [3.9.3](https://github.com/googleapis/python-datacatalog/compare/v3.9.2...v3.9.3) (2022-10-07)
 
 
