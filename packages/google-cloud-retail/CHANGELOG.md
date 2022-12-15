@@ -1,5 +1,39 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/python-retail/compare/v1.10.2...v1.11.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.retail.__version__` ([b113357](https://github.com/googleapis/python-retail/commit/b113357206652f4c6318c05c911055c1ec0ff7cb))
+* Add typing to proto.Message based class attributes ([b113357](https://github.com/googleapis/python-retail/commit/b113357206652f4c6318c05c911055c1ec0ff7cb))
+* **v2alpha:** Allow set feed id in merchant center link ([3ee1ee4](https://github.com/googleapis/python-retail/commit/3ee1ee45313a3642f6289117bf64749c422d1ad7))
+* **v2alpha:** Deprecate retrievable_fields in product attribute ([3ee1ee4](https://github.com/googleapis/python-retail/commit/3ee1ee45313a3642f6289117bf64749c422d1ad7))
+* **v2alpha:** Expose the local inventory data in product data retrieval ([3ee1ee4](https://github.com/googleapis/python-retail/commit/3ee1ee45313a3642f6289117bf64749c422d1ad7))
+* **v2alpha:** Return personal product labels in search response ([3ee1ee4](https://github.com/googleapis/python-retail/commit/3ee1ee45313a3642f6289117bf64749c422d1ad7))
+* **v2alpha:** Support async write mode for WriteUserEvent API ([3ee1ee4](https://github.com/googleapis/python-retail/commit/3ee1ee45313a3642f6289117bf64749c422d1ad7))
+* **v2alpha:** Support attribute suggestion in autocomplete ([3ee1ee4](https://github.com/googleapis/python-retail/commit/3ee1ee45313a3642f6289117bf64749c422d1ad7))
+* **v2alpha:** Support batch remove catalog attribute config ([3ee1ee4](https://github.com/googleapis/python-retail/commit/3ee1ee45313a3642f6289117bf64749c422d1ad7))
+* **v2alpha:** Support collect and import GA4 event format with prebuilt whistle rule ([3ee1ee4](https://github.com/googleapis/python-retail/commit/3ee1ee45313a3642f6289117bf64749c422d1ad7))
+* **v2alpha:** Support data output to GCS ([3ee1ee4](https://github.com/googleapis/python-retail/commit/3ee1ee45313a3642f6289117bf64749c422d1ad7))
+* **v2alpha:** Support diversity type in serving config ([3ee1ee4](https://github.com/googleapis/python-retail/commit/3ee1ee45313a3642f6289117bf64749c422d1ad7))
+* **v2alpha:** Support exact searchable and retrievable in catalog attribute config ([3ee1ee4](https://github.com/googleapis/python-retail/commit/3ee1ee45313a3642f6289117bf64749c422d1ad7))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([b113357](https://github.com/googleapis/python-retail/commit/b113357206652f4c6318c05c911055c1ec0ff7cb))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([6780c7a](https://github.com/googleapis/python-retail/commit/6780c7adc14fb7063597d6c9a514d0b33fc5dcd6))
+* Drop usage of pkg_resources ([6780c7a](https://github.com/googleapis/python-retail/commit/6780c7adc14fb7063597d6c9a514d0b33fc5dcd6))
+* Fix timeout default values ([6780c7a](https://github.com/googleapis/python-retail/commit/6780c7adc14fb7063597d6c9a514d0b33fc5dcd6))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([b113357](https://github.com/googleapis/python-retail/commit/b113357206652f4c6318c05c911055c1ec0ff7cb))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([6780c7a](https://github.com/googleapis/python-retail/commit/6780c7adc14fb7063597d6c9a514d0b33fc5dcd6))
+* **v2alpha:** Keep the API doc up-to-date with recent changes ([3ee1ee4](https://github.com/googleapis/python-retail/commit/3ee1ee45313a3642f6289117bf64749c422d1ad7))
+
 ## [1.10.2](https://github.com/googleapis/python-retail/compare/v1.10.1...v1.10.2) (2022-10-07)
 
 
