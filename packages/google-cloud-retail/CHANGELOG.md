@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/python-retail/compare/v1.11.0...v1.12.0) (2022-12-15)
+
+
+### Features
+
+* Deprecate retrievable_fields in product attribute ([1ba8e50](https://github.com/googleapis/python-retail/commit/1ba8e502166ceffb23a281f554bf04cd823c6868))
+* Support async write mode for WriteUserEvent API ([1ba8e50](https://github.com/googleapis/python-retail/commit/1ba8e502166ceffb23a281f554bf04cd823c6868))
+* Support collect GA4 event format with prebuilt whistle rule ([1ba8e50](https://github.com/googleapis/python-retail/commit/1ba8e502166ceffb23a281f554bf04cd823c6868))
+* Support diversity type in serving config ([1ba8e50](https://github.com/googleapis/python-retail/commit/1ba8e502166ceffb23a281f554bf04cd823c6868))
+* Support exact searchable and retrievable in catalog attribute config ([1ba8e50](https://github.com/googleapis/python-retail/commit/1ba8e502166ceffb23a281f554bf04cd823c6868))
+
+
+### Documentation
+
+* Keep the API doc up-to-date with recent changes ([1ba8e50](https://github.com/googleapis/python-retail/commit/1ba8e502166ceffb23a281f554bf04cd823c6868))
+
 ## [1.11.0](https://github.com/googleapis/python-retail/compare/v1.10.2...v1.11.0) (2022-12-15)
 
 
