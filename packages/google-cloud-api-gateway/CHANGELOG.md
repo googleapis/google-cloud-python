@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.5.1](https://github.com/googleapis/python-api-gateway/compare/v1.5.0...v1.5.1) (2022-12-08)
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([19703a5](https://github.com/googleapis/python-api-gateway/commit/19703a5ab92d011a580840e18c14af3e9ce09fd9))
+* Drop usage of pkg_resources ([19703a5](https://github.com/googleapis/python-api-gateway/commit/19703a5ab92d011a580840e18c14af3e9ce09fd9))
+* Fix timeout default values ([19703a5](https://github.com/googleapis/python-api-gateway/commit/19703a5ab92d011a580840e18c14af3e9ce09fd9))
+
+
+### Documentation
+
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([19703a5](https://github.com/googleapis/python-api-gateway/commit/19703a5ab92d011a580840e18c14af3e9ce09fd9))
+
 ## [1.5.0](https://github.com/googleapis/python-api-gateway/compare/v1.4.0...v1.5.0) (2022-11-16)
 
 
