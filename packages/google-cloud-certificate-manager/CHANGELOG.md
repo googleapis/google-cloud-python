@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-certificate-manager/compare/v1.1.1...v1.2.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.certificate_manager.__version__` ([7ba10a7](https://github.com/googleapis/python-certificate-manager/commit/7ba10a7a3c7b35b10fce05d7e61cb9a180040faf))
+* Add typing to proto.Message based class attributes ([7ba10a7](https://github.com/googleapis/python-certificate-manager/commit/7ba10a7a3c7b35b10fce05d7e61cb9a180040faf))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([7ba10a7](https://github.com/googleapis/python-certificate-manager/commit/7ba10a7a3c7b35b10fce05d7e61cb9a180040faf))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([2cb2cff](https://github.com/googleapis/python-certificate-manager/commit/2cb2cff75b04a8a4462d7400d43b4c1c1768485d))
+* Drop usage of pkg_resources ([2cb2cff](https://github.com/googleapis/python-certificate-manager/commit/2cb2cff75b04a8a4462d7400d43b4c1c1768485d))
+* Fix timeout default values ([2cb2cff](https://github.com/googleapis/python-certificate-manager/commit/2cb2cff75b04a8a4462d7400d43b4c1c1768485d))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([7ba10a7](https://github.com/googleapis/python-certificate-manager/commit/7ba10a7a3c7b35b10fce05d7e61cb9a180040faf))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([2cb2cff](https://github.com/googleapis/python-certificate-manager/commit/2cb2cff75b04a8a4462d7400d43b4c1c1768485d))
+
 ## [1.1.1](https://github.com/googleapis/python-certificate-manager/compare/v1.1.0...v1.1.1) (2022-10-07)
 
 
