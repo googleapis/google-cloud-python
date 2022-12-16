@@ -44,6 +44,7 @@ from .types.catalog import (
     Catalog,
     CatalogAttribute,
     CompletionConfig,
+    MerchantCenterFeedFilter,
     MerchantCenterLink,
     MerchantCenterLinkingConfig,
     ProductLevelConfig,
@@ -99,6 +100,7 @@ from .types.export_config import (
     ExportMetadata,
     ExportProductsResponse,
     ExportUserEventsResponse,
+    GcsOutputResult,
     OutputResult,
 )
 from .types.import_config import (
@@ -244,6 +246,7 @@ __all__ = (
     "ExportProductsResponse",
     "ExportUserEventsResponse",
     "FulfillmentInfo",
+    "GcsOutputResult",
     "GcsSource",
     "GetAttributesConfigRequest",
     "GetCompletionConfigRequest",
@@ -273,6 +276,7 @@ __all__ = (
     "ListServingConfigsRequest",
     "ListServingConfigsResponse",
     "LocalInventory",
+    "MerchantCenterFeedFilter",
     "MerchantCenterLink",
     "MerchantCenterLinkingConfig",
     "Model",

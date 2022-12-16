@@ -350,6 +350,7 @@ class UserEventServiceAsyncClient:
 
                 # Initialize request argument(s)
                 request = retail_v2beta.CollectUserEventRequest(
+                    prebuilt_rule="prebuilt_rule_value",
                     parent="parent_value",
                     user_event="user_event_value",
                 )

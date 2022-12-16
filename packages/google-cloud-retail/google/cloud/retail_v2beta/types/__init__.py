@@ -18,6 +18,7 @@ from .catalog import (
     Catalog,
     CatalogAttribute,
     CompletionConfig,
+    MerchantCenterFeedFilter,
     MerchantCenterLink,
     MerchantCenterLinkingConfig,
     ProductLevelConfig,
@@ -73,6 +74,7 @@ from .export_config import (
     ExportMetadata,
     ExportProductsResponse,
     ExportUserEventsResponse,
+    GcsOutputResult,
     OutputResult,
 )
 from .import_config import (
@@ -160,6 +162,7 @@ __all__ = (
     "Catalog",
     "CatalogAttribute",
     "CompletionConfig",
+    "MerchantCenterFeedFilter",
     "MerchantCenterLink",
     "MerchantCenterLinkingConfig",
     "ProductLevelConfig",
@@ -208,6 +211,7 @@ __all__ = (
     "ExportMetadata",
     "ExportProductsResponse",
     "ExportUserEventsResponse",
+    "GcsOutputResult",
     "OutputResult",
     "BigQuerySource",
     "CompletionDataInputConfig",

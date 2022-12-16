@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
         "ExportUserEventsResponse",
         "OutputResult",
         "BigQueryOutputResult",
+        "GcsOutputResult",
     },
 )
 
@@ -148,17 +149,27 @@ class ExportUserEventsResponse(proto.Message):
 
 
 class OutputResult(proto.Message):
-    r"""Output result.
+    r"""Output result that stores the information about where the
+    exported data is stored.
 
     Attributes:
         bigquery_result (MutableSequence[google.cloud.retail_v2beta.types.BigQueryOutputResult]):
-            Export result in BigQuery.
+            The BigQuery location where the result is
+            stored.
+        gcs_result (MutableSequence[google.cloud.retail_v2beta.types.GcsOutputResult]):
+            The Google Cloud Storage location where the
+            result is stored.
     """
 
     bigquery_result: MutableSequence["BigQueryOutputResult"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="BigQueryOutputResult",
+    )
+    gcs_result: MutableSequence["GcsOutputResult"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="GcsOutputResult",
     )
 
 
@@ -179,6 +190,20 @@ class BigQueryOutputResult(proto.Message):
     table_id: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class GcsOutputResult(proto.Message):
+    r"""A Gcs output result.
+
+    Attributes:
+        output_uri (str):
+            The uri of Gcs output
+    """
+
+    output_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

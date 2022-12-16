@@ -46,6 +46,15 @@ class Product(proto.Message):
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
             The timestamp when this product becomes unavailable for
             [SearchService.Search][google.cloud.retail.v2beta.SearchService.Search].
+            Note that this is only applicable to
+            [Type.PRIMARY][google.cloud.retail.v2beta.Product.Type.PRIMARY]
+            and
+            [Type.COLLECTION][google.cloud.retail.v2beta.Product.Type.COLLECTION],
+            and ignored for
+            [Type.VARIANT][google.cloud.retail.v2beta.Product.Type.VARIANT].
+            In general, we suggest the users to delete the stale
+            products explicitly, instead of using this field to
+            determine staleness.
 
             If it is set, the
             [Product][google.cloud.retail.v2beta.Product] is not
@@ -70,7 +79,16 @@ class Product(proto.Message):
 
             This field is a member of `oneof`_ ``expiration``.
         ttl (google.protobuf.duration_pb2.Duration):
-            Input only. The TTL (time to live) of the product.
+            Input only. The TTL (time to live) of the product. Note that
+            this is only applicable to
+            [Type.PRIMARY][google.cloud.retail.v2beta.Product.Type.PRIMARY]
+            and
+            [Type.COLLECTION][google.cloud.retail.v2beta.Product.Type.COLLECTION],
+            and ignored for
+            [Type.VARIANT][google.cloud.retail.v2beta.Product.Type.VARIANT].
+            In general, we suggest the users to delete the stale
+            products explicitly, instead of using this field to
+            determine staleness.
 
             If it is set, it must be a non-negative value, and
             [expire_time][google.cloud.retail.v2beta.Product.expire_time]
@@ -318,6 +336,12 @@ class Product(proto.Message):
             [Product][google.cloud.retail.v2beta.Product] becomes
             available for
             [SearchService.Search][google.cloud.retail.v2beta.SearchService.Search].
+            Note that this is only applicable to
+            [Type.PRIMARY][google.cloud.retail.v2beta.Product.Type.PRIMARY]
+            and
+            [Type.COLLECTION][google.cloud.retail.v2beta.Product.Type.COLLECTION],
+            and ignored for
+            [Type.VARIANT][google.cloud.retail.v2beta.Product.Type.VARIANT].
         availability (google.cloud.retail_v2beta.types.Product.Availability):
             The online availability of the
             [Product][google.cloud.retail.v2beta.Product]. Default to
@@ -518,6 +542,9 @@ class Product(proto.Message):
             Note: Returning more fields in
             [SearchResponse][google.cloud.retail.v2beta.SearchResponse]
             can increase response payload size and serving latency.
+
+            This field is deprecated. Use the retrievable site-wide
+            control instead.
         variants (MutableSequence[google.cloud.retail_v2beta.types.Product]):
             Output only. Product variants grouped together on primary
             product which share similar product attributes. It's

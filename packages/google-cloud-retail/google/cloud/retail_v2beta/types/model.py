@@ -76,7 +76,8 @@ class Model(proto.Message):
             Currently supported values: ``recommended-for-you``,
             ``others-you-may-like``, ``frequently-bought-together``,
             ``page-optimization``, ``similar-items``, ``buy-it-again``,
-            and ``recently-viewed``\ (readonly value).
+            ``on-sale-items``, and ``recently-viewed``\ (readonly
+            value).
 
             This field together with
             [optimization_objective][google.cloud.retail.v2beta.Model.optimization_objective]
