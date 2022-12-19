@@ -34,3 +34,26 @@ def base_function_def(function_name: str, is_sync: bool) -> libcst.FunctionDef:
     )
 
     return function_def
+
+
+def convert_expression(
+    config_expression: snippet_config_language_pb2.Expression,
+) -> libcst.BaseExpression:
+    value_name = config_expression.WhichOneof("value")
+    if value_name == "string_value":
+        string_value = config_expression.string_value
+        return libcst.SimpleString(value=f'"{string_value}"')
+    else:
+        raise ValueError(
+            f"Conversion from Expression value {value_name} unsupported.")
+
+
+def convert_parameter(
+    config_parameter: snippet_config_language_pb2.Statement.Declaration,
+) -> libcst.Param:
+    # TODO: https://github.com/googleapis/gapic-generator-python/issues/1537, add typing annotation in sample function parameters.
+    param = libcst.Param(
+        name=libcst.Name(value=config_parameter.name),
+        default=convert_expression(config_parameter.value),
+    )
+    return param

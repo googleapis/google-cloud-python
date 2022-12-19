@@ -17,6 +17,7 @@ import libcst
 import pytest
 
 from gapic.configurable_snippetgen import libcst_utils
+from gapic.configurable_snippetgen import snippet_config_language_pb2
 
 
 def _assert_code_equal(node: libcst.CSTNode, code: str) -> str:
@@ -41,3 +42,36 @@ def test_base_function_def(is_sync, expected_code):
 
     # Sometimes it is more convenient to just verify the code.
     _assert_code_equal(node, expected_code)
+
+
+def test_convert_expression_string_value():
+    config_expression = snippet_config_language_pb2.Expression(
+        string_value="hello world"
+    )
+    node = libcst_utils.convert_expression(config_expression)
+    expected_node = libcst.SimpleString(value='"hello world"')
+
+    assert node.deep_equals(expected_node), (node, expected_node)
+
+
+def test_convert_expression_should_raise_error_if_unsupported():
+    config_expression = snippet_config_language_pb2.Expression(
+        default_value=snippet_config_language_pb2.Expression.DefaultValue.DEFAULT_VALUE
+    )
+    with pytest.raises(ValueError):
+        libcst_utils.convert_expression(config_expression)
+
+
+def test_convert_parameter():
+    config_parameter = snippet_config_language_pb2.Statement.Declaration(
+        name="some_variable",
+        value=snippet_config_language_pb2.Expression(
+            string_value="hello world"),
+    )
+    node = libcst_utils.convert_parameter(config_parameter)
+    expected_node = libcst.Param(
+        name=libcst.Name(value="some_variable"),
+        default=libcst.SimpleString(value='"hello world"'),
+    )
+
+    assert node.deep_equals(expected_node), (node, expected_node)

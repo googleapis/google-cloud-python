@@ -104,7 +104,7 @@ def test_code(snippet):
     # https://github.com/googleapis/gapic-generator-python/issues/1522
     # Placeholder code.  We will gradually add to the ConfiguredSnippet class
     # until the generated code is the same as that of the golden file.
-    expected_code = """def sample_create_custom_class_Basic():
+    expected_code = """def sample_create_custom_class_Basic(parent = "projects/[PROJECT]/locations/us", custom_class_id = "passengerships"):
     \"\"
 """
     assert snippet.code == expected_code
