@@ -1,0 +1,30 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+name: foreign-keys-test
+jobs:
+  system-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      emulator-0:
+        image: gcr.io/cloud-spanner-emulator/emulator:latest
+        ports:
+          - 9010:9010
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+      - name: Run Django foreign key test
+        run: sh foreign_key_test.sh
+        env:
+          SPANNER_EMULATOR_HOST: localhost:9010
+          GOOGLE_CLOUD_PROJECT: emulator-test-project
+          GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE: true
+          SPANNER_TEST_INSTANCE: google-cloud-django-backend-tests
