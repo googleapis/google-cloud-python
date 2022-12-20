@@ -118,6 +118,8 @@ def test_create_client_default_credentials():
     assert client is not None
 
 
+# TODO(Mattix23): After code sample from https://github.com/googleapis/python-bigquery/pull/1446
+# is updated from cloud.google.com delete this.
 def test_create_table_nested_repeated_schema(client, to_delete):
     dataset_id = "create_table_nested_repeated_{}".format(_millis())
     project = client.project
