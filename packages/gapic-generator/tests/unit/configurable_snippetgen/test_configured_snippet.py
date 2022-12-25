@@ -17,6 +17,7 @@ from pathlib import Path
 
 from google.protobuf import json_format
 from google.protobuf.compiler import plugin_pb2
+import libcst
 import pytest
 
 from gapic import utils
@@ -81,21 +82,66 @@ def snippet():
     )
 
 
-def test_region_tag(snippet):
-    assert (
-        snippet.region_tag == "speech_v1_config_Adaptation_CreateCustomClass_Basic_sync"
+def test_gapic_module_name(snippet):
+    assert snippet.gapic_module_name == "speech_v1"
+
+
+@pytest.mark.parametrize(
+    "is_sync,expected",
+    [
+        (True, "speech_v1_config_Adaptation_CreateCustomClass_Basic_sync"),
+        (False, "speech_v1_config_Adaptation_CreateCustomClass_Basic_async"),
+    ],
+)
+def test_region_tag(is_sync, expected):
+    snippet = _make_configured_snippet(
+        SPEECH_V1_REQUEST_PATH, CONFIG_JSON_PATH, api_version="v1", is_sync=is_sync
     )
+    assert snippet.region_tag == expected
 
 
 def test_sample_function_name(snippet):
     assert snippet.sample_function_name == "sample_create_custom_class_Basic"
 
 
-def test_filename(snippet):
-    assert (
-        snippet.filename
-        == "speech_v1_generated_Adaptation_create_custom_class_Basic_sync.py"
+@pytest.mark.parametrize(
+    "is_sync,expected",
+    [
+        (True, "AdaptationClient"),
+        (False, "AdaptationAsyncClient"),
+    ],
+)
+def test_client_class_name(is_sync, expected):
+    snippet = _make_configured_snippet(
+        SPEECH_V1_REQUEST_PATH, CONFIG_JSON_PATH, api_version="v1", is_sync=is_sync
     )
+    assert snippet.client_class_name == expected
+
+
+@pytest.mark.parametrize(
+    "is_sync,expected",
+    [
+        (True, "speech_v1_generated_Adaptation_create_custom_class_Basic_sync.py"),
+        (False, "speech_v1_generated_Adaptation_create_custom_class_Basic_async.py"),
+    ],
+)
+def test_filename(is_sync, expected):
+    snippet = _make_configured_snippet(
+        SPEECH_V1_REQUEST_PATH, CONFIG_JSON_PATH, api_version="v1", is_sync=is_sync
+    )
+    assert snippet.filename == expected
+
+
+def test_AppendToSampleFunctionBody():
+    # Start with a function def with nonempty body to we can be sure the
+    # transformer appends the statement.
+    function_def = libcst.parse_statement("def f():\n    'hello'")
+    statement = libcst.parse_statement("'world'")
+    transformer = configured_snippet._AppendToSampleFunctionBody(statement)
+    updated_function_def = function_def.visit(transformer)
+    expected_function_def = libcst.parse_statement(
+        "def f():\n    'hello'\n    'world'")
+    assert updated_function_def.deep_equals(expected_function_def)
 
 
 def test_code(snippet):
@@ -106,5 +152,6 @@ def test_code(snippet):
     # until the generated code is the same as that of the golden file.
     expected_code = """def sample_create_custom_class_Basic(parent = "projects/[PROJECT]/locations/us", custom_class_id = "passengerships"):
     \"\"
+    client = speech_v1.AdaptationClient()
 """
     assert snippet.code == expected_code
