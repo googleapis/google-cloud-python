@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.4.0](https://github.com/googleapis/python-logging/compare/v3.3.1...v3.4.0) (2022-12-15)
+
+
+### Features
+
+* Add typing to proto.Message based class attributes ([9d505f1](https://github.com/googleapis/python-logging/commit/9d505f1147ccac8632590b4322945a900ff3c5c2))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([9d505f1](https://github.com/googleapis/python-logging/commit/9d505f1147ccac8632590b4322945a900ff3c5c2))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([9d505f1](https://github.com/googleapis/python-logging/commit/9d505f1147ccac8632590b4322945a900ff3c5c2))
+* Drop usage of pkg_resources ([9d505f1](https://github.com/googleapis/python-logging/commit/9d505f1147ccac8632590b4322945a900ff3c5c2))
+* Fix timeout default values ([9d505f1](https://github.com/googleapis/python-logging/commit/9d505f1147ccac8632590b4322945a900ff3c5c2))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([9d505f1](https://github.com/googleapis/python-logging/commit/9d505f1147ccac8632590b4322945a900ff3c5c2))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([9d505f1](https://github.com/googleapis/python-logging/commit/9d505f1147ccac8632590b4322945a900ff3c5c2))
+
 ## [3.3.1](https://github.com/googleapis/python-logging/compare/v3.3.0...v3.3.1) (2022-12-05)
 
 
