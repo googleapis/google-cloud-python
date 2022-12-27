@@ -85,11 +85,9 @@ LIVE_ALL_TYPES_COLUMNS = (
 
 EMULATOR_ALL_TYPES_COLUMNS = LIVE_ALL_TYPES_COLUMNS[:-4]
 # ToDo: Clean up generation of POSTGRES_ALL_TYPES_COLUMNS
-POSTGRES_ALL_TYPES_COLUMNS = (
-    LIVE_ALL_TYPES_COLUMNS[:1]
-    + LIVE_ALL_TYPES_COLUMNS[1:7:2]
-    + LIVE_ALL_TYPES_COLUMNS[9:17:2]
-    + ("jsonb_value",)
+POSTGRES_ALL_TYPES_COLUMNS = LIVE_ALL_TYPES_COLUMNS[:17] + (
+    "jsonb_value",
+    "jsonb_array",
 )
 
 AllTypesRowData = collections.namedtuple("AllTypesRowData", LIVE_ALL_TYPES_COLUMNS)
@@ -137,7 +135,9 @@ LIVE_ALL_TYPES_ROWDATA = (
     AllTypesRowData(pkey=302, bool_array=[True, False, None]),
     AllTypesRowData(pkey=303, bytes_array=[BYTES_1, BYTES_2, None]),
     AllTypesRowData(pkey=304, date_array=[SOME_DATE, None]),
-    AllTypesRowData(pkey=305, float_array=[3.1415926, 2.71828, None]),
+    AllTypesRowData(
+        pkey=305, float_array=[3.1415926, 2.71828, math.inf, -math.inf, None]
+    ),
     AllTypesRowData(pkey=306, string_array=["One", "Two", None]),
     AllTypesRowData(pkey=307, timestamp_array=[SOME_TIME, NANO_TIME, None]),
     AllTypesRowData(pkey=308, numeric_array=[NUMERIC_1, NUMERIC_2, None]),
@@ -168,7 +168,7 @@ EMULATOR_ALL_TYPES_ROWDATA = (
     EmulatorAllTypesRowData(pkey=302, bool_array=[True, False, None]),
     EmulatorAllTypesRowData(pkey=303, bytes_array=[BYTES_1, BYTES_2, None]),
     EmulatorAllTypesRowData(pkey=304, date_array=[SOME_DATE, None]),
-    EmulatorAllTypesRowData(pkey=305, float_array=[3.1415926, 2.71828, None]),
+    EmulatorAllTypesRowData(pkey=305, float_array=[3.1415926, -2.71828, None]),
     EmulatorAllTypesRowData(pkey=306, string_array=["One", "Two", None]),
     EmulatorAllTypesRowData(pkey=307, timestamp_array=[SOME_TIME, NANO_TIME, None]),
 )
@@ -180,12 +180,35 @@ POSTGRES_ALL_TYPES_ROWDATA = (
     PostGresAllTypesRowData(pkey=101, int_value=123),
     PostGresAllTypesRowData(pkey=102, bool_value=False),
     PostGresAllTypesRowData(pkey=103, bytes_value=BYTES_1),
+    PostGresAllTypesRowData(pkey=104, date_value=SOME_DATE),
     PostGresAllTypesRowData(pkey=105, float_value=1.4142136),
     PostGresAllTypesRowData(pkey=106, string_value="VALUE"),
     PostGresAllTypesRowData(pkey=107, timestamp_value=SOME_TIME),
     PostGresAllTypesRowData(pkey=108, timestamp_value=NANO_TIME),
     PostGresAllTypesRowData(pkey=109, numeric_value=NUMERIC_1),
     PostGresAllTypesRowData(pkey=110, jsonb_value=JSON_1),
+    # empty array values
+    PostGresAllTypesRowData(pkey=201, int_array=[]),
+    PostGresAllTypesRowData(pkey=202, bool_array=[]),
+    PostGresAllTypesRowData(pkey=203, bytes_array=[]),
+    PostGresAllTypesRowData(pkey=204, date_array=[]),
+    PostGresAllTypesRowData(pkey=205, float_array=[]),
+    PostGresAllTypesRowData(pkey=206, string_array=[]),
+    PostGresAllTypesRowData(pkey=207, timestamp_array=[]),
+    PostGresAllTypesRowData(pkey=208, numeric_array=[]),
+    PostGresAllTypesRowData(pkey=209, jsonb_array=[]),
+    # non-empty array values, including nulls
+    PostGresAllTypesRowData(pkey=301, int_array=[123, 456, None]),
+    PostGresAllTypesRowData(pkey=302, bool_array=[True, False, None]),
+    PostGresAllTypesRowData(pkey=303, bytes_array=[BYTES_1, BYTES_2, None]),
+    PostGresAllTypesRowData(pkey=304, date_array=[SOME_DATE, SOME_DATE, None]),
+    PostGresAllTypesRowData(
+        pkey=305, float_array=[3.1415926, -2.71828, math.inf, -math.inf, None]
+    ),
+    PostGresAllTypesRowData(pkey=306, string_array=["One", "Two", None]),
+    PostGresAllTypesRowData(pkey=307, timestamp_array=[SOME_TIME, NANO_TIME, None]),
+    PostGresAllTypesRowData(pkey=308, numeric_array=[NUMERIC_1, NUMERIC_2, None]),
+    PostGresAllTypesRowData(pkey=309, jsonb_array=[JSON_1, JSON_2, None]),
 )
 
 if _helpers.USE_EMULATOR:

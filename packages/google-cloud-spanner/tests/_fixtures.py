@@ -130,13 +130,23 @@ CREATE TABLE contacts (
 CREATE TABLE all_types (
     pkey BIGINT NOT NULL,
     int_value INT,
+    int_array INT[],
     bool_value BOOL,
+    bool_array BOOL[],
     bytes_value BYTEA,
+    bytes_array BYTEA[],
     float_value DOUBLE PRECISION,
+    float_array DOUBLE PRECISION[],
     string_value VARCHAR(16),
+    string_array VARCHAR(16)[],
+    date_value DATE,
+    date_array DATE[],
     timestamp_value TIMESTAMPTZ,
+    timestamp_array TIMESTAMPTZ[],
     numeric_value NUMERIC,
+    numeric_array NUMERIC[],
     jsonb_value JSONB,
+    jsonb_array JSONB[],
     PRIMARY KEY (pkey) );
 CREATE TABLE counters (
     name VARCHAR(1024),
