@@ -117,7 +117,6 @@ def client_for_repo(repo_slug) -> Optional[CloudClient]:
 
     return CloudClient(response.json())
 
-REPO_LIST_JSON = "https://api.github.com/orgs/googleapis/repos?per_page=100&page={page_number}"
 REPO_EXCLUSION = [
     # core libraries
     "googleapis/python-api-core",
@@ -150,15 +149,17 @@ def all_clients() -> List[CloudClient]:
 
     while first_request or 'next' in response.links:
         if first_request:
-            url = REPO_LIST_JSON.format(page_number=1)
+            url = "https://api.github.com/search/repositories?page=1"
             first_request = False
         else:
             url = response.links['next']['url']
         headers = {'Authorization': f'token {token}'}
-        response = requests.get(url=url, headers= headers)
-        if len(response.json()) == 0:
+        params = {'per_page': 100, "q": "python- in:name org:googleapis"}
+        response = requests.get(url=url, params=params, headers=headers)
+        repositories = response.json().get("items", [])
+        if len(repositories) == 0:
             break
-        clients.extend(get_clients_batch_from_response_json(response.json()))
+        clients.extend(get_clients_batch_from_response_json(repositories))
 
     # remove empty clients
     return [client for client in clients if client]
