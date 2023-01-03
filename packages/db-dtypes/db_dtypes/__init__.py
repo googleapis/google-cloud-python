@@ -23,8 +23,10 @@ import numpy
 import packaging.version
 import pandas
 import pandas.api.extensions
+from pandas.errors import OutOfBoundsDatetime
 import pyarrow
 import pyarrow.compute
+
 
 from db_dtypes.version import __version__
 from db_dtypes import core
@@ -143,6 +145,7 @@ class TimeArray(core.BaseDatetimeArray):
             second = parsed.group("seconds")
             fraction = parsed.group("fraction")
             nanosecond = int(fraction.ljust(9, "0")[:9]) if fraction else 0
+
             return pandas.Timestamp(
                 year=1970,
                 month=1,
@@ -263,7 +266,17 @@ class DateArray(core.BaseDatetimeArray):
             year = int(match.group("year"))
             month = int(match.group("month"))
             day = int(match.group("day"))
-            return pandas.Timestamp(year=year, month=month, day=day).to_datetime64()
+
+            dateObj = pandas.Timestamp(
+                year=year,
+                month=month,
+                day=day,
+            )
+            if pandas.Timestamp.min < dateObj < pandas.Timestamp.max:
+                return dateObj.to_datetime64()
+            else:  # pragma: NO COVER
+                # TODO(#166): Include these lines in coverage when pandas 2.0 is released.
+                raise OutOfBoundsDatetime("Out of bounds", scalar)  # pragma: NO COVER
         else:
             raise TypeError("Invalid value type", scalar)
 

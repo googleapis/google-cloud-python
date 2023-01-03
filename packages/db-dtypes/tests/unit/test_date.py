@@ -18,6 +18,7 @@ import operator
 import numpy
 import numpy.testing
 import pandas
+from pandas.errors import OutOfBoundsDatetime
 import pandas.testing
 import pytest
 
@@ -143,15 +144,25 @@ def test_date_set_slice_null():
         ("2021-2-99", "day is out of range for month"),
         ("2021-99-1", "month must be in 1[.][.]12"),
         ("10000-1-1", "year 10000 is out of range"),
-        # Outside of min/max values pandas.Timestamp.
+    ],
+)
+def test_date_parsing_errors(value, error):
+    with pytest.raises(ValueError, match=error):
+        pandas.Series([value], dtype="dbdate")
+
+
+@pytest.mark.parametrize(
+    "value, error",
+    [
+        # Values that are outside of the min/max values allowed by pandas.Timestamp
         ("0001-01-01", "Out of bounds"),
         ("9999-12-31", "Out of bounds"),
         ("1677-09-21", "Out of bounds"),
         ("2262-04-12", "Out of bounds"),
     ],
 )
-def test_date_parsing_errors(value, error):
-    with pytest.raises(ValueError, match=error):
+def test_date_parsing_errors_out_of_bounds(value, error):
+    with pytest.raises(OutOfBoundsDatetime, match=error):
         pandas.Series([value], dtype="dbdate")
 
 
