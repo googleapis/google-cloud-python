@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-iap/compare/v1.6.0...v1.7.0) (2023-01-04)
+
+
+### Features
+
+* Add AllowedDomainSettings to the UpdateIapSettingsRequest ([1be4844](https://github.com/googleapis/python-iap/commit/1be48441b21823dbc1ac53f7da7290da7bb66352))
+* Add AttributePropagationSettings to the UpdateIapSettingsRequest ([1be4844](https://github.com/googleapis/python-iap/commit/1be48441b21823dbc1ac53f7da7290da7bb66352))
+* Add remediation_token_generation_enabled to the CsmSettings ([1be4844](https://github.com/googleapis/python-iap/commit/1be48441b21823dbc1ac53f7da7290da7bb66352))
+
 ## [1.6.0](https://github.com/googleapis/python-iap/compare/v1.5.4...v1.6.0) (2022-12-14)
 
 
