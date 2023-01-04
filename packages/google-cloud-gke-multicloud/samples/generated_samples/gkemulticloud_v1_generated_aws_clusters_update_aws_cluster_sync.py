@@ -51,6 +51,7 @@ def sample_update_aws_cluster():
     aws_cluster.control_plane.aws_services_authentication.role_arn = "role_arn_value"
     aws_cluster.control_plane.config_encryption.kms_key_arn = "kms_key_arn_value"
     aws_cluster.authorization.admin_users.username = "username_value"
+    aws_cluster.fleet.project = "project_value"
 
     request = gke_multicloud_v1.UpdateAwsClusterRequest(
         aws_cluster=aws_cluster,

@@ -5,6 +5,145 @@
   "protoPackage": "google.cloud.gkemulticloud.v1",
   "schema": "1.0",
   "services": {
+    "AttachedClusters": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "AttachedClustersClient",
+          "rpcs": {
+            "CreateAttachedCluster": {
+              "methods": [
+                "create_attached_cluster"
+              ]
+            },
+            "DeleteAttachedCluster": {
+              "methods": [
+                "delete_attached_cluster"
+              ]
+            },
+            "GenerateAttachedClusterInstallManifest": {
+              "methods": [
+                "generate_attached_cluster_install_manifest"
+              ]
+            },
+            "GetAttachedCluster": {
+              "methods": [
+                "get_attached_cluster"
+              ]
+            },
+            "GetAttachedServerConfig": {
+              "methods": [
+                "get_attached_server_config"
+              ]
+            },
+            "ImportAttachedCluster": {
+              "methods": [
+                "import_attached_cluster"
+              ]
+            },
+            "ListAttachedClusters": {
+              "methods": [
+                "list_attached_clusters"
+              ]
+            },
+            "UpdateAttachedCluster": {
+              "methods": [
+                "update_attached_cluster"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "AttachedClustersAsyncClient",
+          "rpcs": {
+            "CreateAttachedCluster": {
+              "methods": [
+                "create_attached_cluster"
+              ]
+            },
+            "DeleteAttachedCluster": {
+              "methods": [
+                "delete_attached_cluster"
+              ]
+            },
+            "GenerateAttachedClusterInstallManifest": {
+              "methods": [
+                "generate_attached_cluster_install_manifest"
+              ]
+            },
+            "GetAttachedCluster": {
+              "methods": [
+                "get_attached_cluster"
+              ]
+            },
+            "GetAttachedServerConfig": {
+              "methods": [
+                "get_attached_server_config"
+              ]
+            },
+            "ImportAttachedCluster": {
+              "methods": [
+                "import_attached_cluster"
+              ]
+            },
+            "ListAttachedClusters": {
+              "methods": [
+                "list_attached_clusters"
+              ]
+            },
+            "UpdateAttachedCluster": {
+              "methods": [
+                "update_attached_cluster"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "AttachedClustersClient",
+          "rpcs": {
+            "CreateAttachedCluster": {
+              "methods": [
+                "create_attached_cluster"
+              ]
+            },
+            "DeleteAttachedCluster": {
+              "methods": [
+                "delete_attached_cluster"
+              ]
+            },
+            "GenerateAttachedClusterInstallManifest": {
+              "methods": [
+                "generate_attached_cluster_install_manifest"
+              ]
+            },
+            "GetAttachedCluster": {
+              "methods": [
+                "get_attached_cluster"
+              ]
+            },
+            "GetAttachedServerConfig": {
+              "methods": [
+                "get_attached_server_config"
+              ]
+            },
+            "ImportAttachedCluster": {
+              "methods": [
+                "import_attached_cluster"
+              ]
+            },
+            "ListAttachedClusters": {
+              "methods": [
+                "list_attached_clusters"
+              ]
+            },
+            "UpdateAttachedCluster": {
+              "methods": [
+                "update_attached_cluster"
+              ]
+            }
+          }
+        }
+      }
+    },
     "AwsClusters": {
       "clients": {
         "grpc": {

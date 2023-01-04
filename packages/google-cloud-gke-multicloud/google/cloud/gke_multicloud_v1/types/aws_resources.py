@@ -40,6 +40,9 @@ __protobuf__ = proto.module(
         "AwsProxyConfig",
         "AwsConfigEncryption",
         "AwsInstancePlacement",
+        "AwsAutoscalingGroupMetricsCollection",
+        "AwsClusterError",
+        "AwsNodePoolError",
     },
 )
 
@@ -119,9 +122,15 @@ class AwsCluster(proto.Message):
             Output only. PEM encoded x509 certificate of
             the cluster root of trust.
         fleet (google.cloud.gke_multicloud_v1.types.Fleet):
-            Optional. Fleet configuration.
+            Required. Fleet configuration.
         logging_config (google.cloud.gke_multicloud_v1.types.LoggingConfig):
             Optional. Logging configuration for this
+            cluster.
+        errors (MutableSequence[google.cloud.gke_multicloud_v1.types.AwsClusterError]):
+            Output only. A set of errors found in the
+            cluster.
+        monitoring_config (google.cloud.gke_multicloud_v1.types.MonitoringConfig):
+            Optional. Monitoring configuration for this
             cluster.
     """
 
@@ -216,6 +225,16 @@ class AwsCluster(proto.Message):
         proto.MESSAGE,
         number=19,
         message=common_resources.LoggingConfig,
+    )
+    errors: MutableSequence["AwsClusterError"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=20,
+        message="AwsClusterError",
+    )
+    monitoring_config: common_resources.MonitoringConfig = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message=common_resources.MonitoringConfig,
     )
 
 
@@ -600,6 +619,9 @@ class AwsNodePool(proto.Message):
             Required. The constraint on the maximum
             number of pods that can be run simultaneously on
             a node in the node pool.
+        errors (MutableSequence[google.cloud.gke_multicloud_v1.types.AwsNodePoolError]):
+            Output only. A set of errors found in the
+            node pool.
     """
 
     class State(proto.Enum):
@@ -671,6 +693,11 @@ class AwsNodePool(proto.Message):
         number=27,
         message=common_resources.MaxPodsConstraint,
     )
+    errors: MutableSequence["AwsNodePoolError"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=29,
+        message="AwsNodePoolError",
+    )
 
 
 class AwsNodeConfig(proto.Message):
@@ -728,6 +755,12 @@ class AwsNodeConfig(proto.Message):
             Optional. Placement related info for this
             node. When unspecified, the VPC's default
             tenancy will be used.
+        autoscaling_metrics_collection (google.cloud.gke_multicloud_v1.types.AwsAutoscalingGroupMetricsCollection):
+            Optional. Configuration related to CloudWatch
+            metrics collection on the Auto Scaling group of
+            the node pool.
+            When unspecified, metrics collection is
+            disabled.
     """
 
     instance_type: str = proto.Field(
@@ -785,6 +818,13 @@ class AwsNodeConfig(proto.Message):
         proto.MESSAGE,
         number=14,
         message="AwsInstancePlacement",
+    )
+    autoscaling_metrics_collection: "AwsAutoscalingGroupMetricsCollection" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=15,
+            message="AwsAutoscalingGroupMetricsCollection",
+        )
     )
 
 
@@ -875,8 +915,12 @@ class AwsProxyConfig(proto.Message):
 
     Attributes:
         secret_arn (str):
-            The ARN of the AWS Secret Manager secret that
-            contains the HTTP(S) proxy configuration.
+            The ARN of the AWS Secret Manager secret that contains the
+            HTTP(S) proxy configuration.
+
+            The secret must be a JSON encoded proxy configuration as
+            described in
+            https://cloud.google.com/anthos/clusters/docs/multi-cloud/aws/how-to/use-a-proxy#create_a_proxy_configuration_file
         secret_version (str):
             The version string of the AWS Secret Manager
             secret that contains the HTTP(S) proxy
@@ -933,6 +977,61 @@ class AwsInstancePlacement(proto.Message):
         proto.ENUM,
         number=1,
         enum=Tenancy,
+    )
+
+
+class AwsAutoscalingGroupMetricsCollection(proto.Message):
+    r"""Configuration related to CloudWatch metrics collection in an
+    AWS Auto Scaling group.
+
+    Attributes:
+        granularity (str):
+            Required. The frequency at which EC2 Auto
+            Scaling sends aggregated data to AWS CloudWatch.
+            The only valid value is "1Minute".
+        metrics (MutableSequence[str]):
+            Optional. The metrics to enable. For a list of valid
+            metrics, see
+            https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_EnableMetricsCollection.html.
+            If you specify Granularity and don't specify any metrics,
+            all metrics are enabled.
+    """
+
+    granularity: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    metrics: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class AwsClusterError(proto.Message):
+    r"""AwsClusterError describes errors found on AWS clusters.
+
+    Attributes:
+        message (str):
+            Human-friendly description of the error.
+    """
+
+    message: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class AwsNodePoolError(proto.Message):
+    r"""AwsNodePoolError describes errors found on AWS node pools.
+
+    Attributes:
+        message (str):
+            Human-friendly description of the error.
+    """
+
+    message: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

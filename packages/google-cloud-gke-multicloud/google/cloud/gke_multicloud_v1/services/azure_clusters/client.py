@@ -48,6 +48,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
+from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -619,7 +620,7 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 ``projects/<project-id>/locations/<region>/azureClients/<client-id>``.
 
                 Valid characters are ``/[a-z][0-9]-/``. Cannot be longer
-                than 40 characters.
+                than 63 characters.
 
                 This corresponds to the ``azure_client_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1146,6 +1147,7 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 azure_cluster.control_plane.version = "version_value"
                 azure_cluster.control_plane.ssh_config.authorized_key = "authorized_key_value"
                 azure_cluster.authorization.admin_users.username = "username_value"
+                azure_cluster.fleet.project = "project_value"
 
                 request = gke_multicloud_v1.CreateAzureClusterRequest(
                     parent="parent_value",
@@ -1200,7 +1202,7 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 ``projects/<project-id>/locations/<region>/azureClusters/<cluster-id>``.
 
                 Valid characters are ``/[a-z][0-9]-/``. Cannot be longer
-                than 40 characters.
+                than 63 characters.
 
                 This corresponds to the ``azure_cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1313,6 +1315,7 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 azure_cluster.control_plane.version = "version_value"
                 azure_cluster.control_plane.ssh_config.authorized_key = "authorized_key_value"
                 azure_cluster.authorization.admin_users.username = "username_value"
+                azure_cluster.fleet.project = "project_value"
 
                 request = gke_multicloud_v1.UpdateAzureClusterRequest(
                     azure_cluster=azure_cluster,
@@ -1347,13 +1350,18 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster]:
 
                 -  ``description``.
-                -  ``annotations``.
                 -  ``azureClient``.
                 -  ``control_plane.version``.
                 -  ``control_plane.vm_size``.
+                -  ``annotations``.
                 -  ``authorization.admin_users``.
                 -  ``control_plane.root_volume.size_gib``.
-                -  ``logging_config``
+                -  ``control_plane.proxy_config``.
+                -  ``control_plane.proxy_config.resource_group_id``.
+                -  ``control_plane.proxy_config.secret_id``.
+                -  ``control_plane.ssh_config.authorized_key``.
+                -  ``logging_config.component_config.enable_components``
+                -  ``monitoring_config.managed_prometheus_config.enabled``.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1991,7 +1999,7 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 ``projects/<project-id>/locations/<region>/azureClusters/<cluster-id>/azureNodePools/<node-pool-id>``.
 
                 Valid characters are ``/[a-z][0-9]-/``. Cannot be longer
-                than 40 characters.
+                than 63 characters.
 
                 This corresponds to the ``azure_node_pool_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2139,7 +2147,7 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 -  ``version``.
                 -  ``autoscaling.min_node_count``.
                 -  ``autoscaling.max_node_count``.
-                -  ``config.vm_size``.
+                -  ``config.ssh_config.authorized_key``.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2500,7 +2508,7 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.DeleteAzureNodePoolRequest, dict]):
                 The request object. Delete message for
-                `AzureClusters.DeleteNodePool` method.
+                `AzureClusters.DeleteAzureNodePool` method.
             name (str):
                 Required. The resource name the
                 [AzureNodePool][google.cloud.gkemulticloud.v1.AzureNodePool]
@@ -2716,6 +2724,223 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
             and may cause errors in other clients!
         """
         self.transport.close()
+
+    def list_operations(
+        self,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.ListOperationsResponse:
+        r"""Lists operations that match the specified filter in the request.
+
+        Args:
+            request (:class:`~.operations_pb2.ListOperationsRequest`):
+                The request object. Request message for
+                `ListOperations` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.ListOperationsResponse:
+                Response message for ``ListOperations`` method.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.ListOperationsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.list_operations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_operation(
+        self,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.Operation:
+        r"""Gets the latest state of a long-running operation.
+
+        Args:
+            request (:class:`~.operations_pb2.GetOperationRequest`):
+                The request object. Request message for
+                `GetOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.Operation:
+                An ``Operation`` object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.GetOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.get_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_operation(
+        self,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a long-running operation.
+
+        This method indicates that the client is no longer interested
+        in the operation result. It does not cancel the operation.
+        If the server doesn't support this method, it returns
+        `google.rpc.Code.UNIMPLEMENTED`.
+
+        Args:
+            request (:class:`~.operations_pb2.DeleteOperationRequest`):
+                The request object. Request message for
+                `DeleteOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            None
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.DeleteOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.delete_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    def cancel_operation(
+        self,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Starts asynchronous cancellation on a long-running operation.
+
+        The server makes a best effort to cancel the operation, but success
+        is not guaranteed.  If the server doesn't support this method, it returns
+        `google.rpc.Code.UNIMPLEMENTED`.
+
+        Args:
+            request (:class:`~.operations_pb2.CancelOperationRequest`):
+                The request object. Request message for
+                `CancelOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            None
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.CancelOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.cancel_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

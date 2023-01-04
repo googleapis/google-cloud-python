@@ -28,6 +28,8 @@ __protobuf__ = proto.module(
         "Fleet",
         "LoggingConfig",
         "LoggingComponentConfig",
+        "MonitoringConfig",
+        "ManagedPrometheusConfig",
     },
 )
 
@@ -94,6 +96,17 @@ class OperationMetadata(proto.Message):
         error_detail (str):
             Output only. Human-readable status of any
             error that occurred during the operation.
+        verb (str):
+            Output only. The verb associated with the API
+            method which triggered this operation. Possible
+            values are "create", "delete", "update" and
+            "import".
+        requested_cancellation (bool):
+            Output only. Identifies whether it has been requested
+            cancellation for the operation. Operations that have
+            successfully been cancelled have [Operation.error][] value
+            with a [google.rpc.Status.code][google.rpc.Status.code] of
+            1, corresponding to ``Code.CANCELLED``.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -117,6 +130,14 @@ class OperationMetadata(proto.Message):
     error_detail: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    verb: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    requested_cancellation: bool = proto.Field(
+        proto.BOOL,
+        number=6,
     )
 
 
@@ -225,6 +246,38 @@ class LoggingComponentConfig(proto.Message):
         proto.ENUM,
         number=1,
         enum=Component,
+    )
+
+
+class MonitoringConfig(proto.Message):
+    r"""Parameters that describe the Monitoring configuration in a
+    cluster.
+
+    Attributes:
+        managed_prometheus_config (google.cloud.gke_multicloud_v1.types.ManagedPrometheusConfig):
+            Enable Google Cloud Managed Service for
+            Prometheus in the cluster.
+    """
+
+    managed_prometheus_config: "ManagedPrometheusConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ManagedPrometheusConfig",
+    )
+
+
+class ManagedPrometheusConfig(proto.Message):
+    r"""ManagedPrometheusConfig defines the configuration for
+    Google Cloud Managed Service for Prometheus.
+
+    Attributes:
+        enabled (bool):
+            Enable Managed Collection.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
     )
 
 

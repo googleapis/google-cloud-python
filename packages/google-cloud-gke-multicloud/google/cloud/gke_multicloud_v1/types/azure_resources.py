@@ -41,6 +41,8 @@ __protobuf__ = proto.module(
         "AzureK8sVersionInfo",
         "AzureSshConfig",
         "AzureClusterResources",
+        "AzureClusterError",
+        "AzureNodePoolError",
     },
 )
 
@@ -139,12 +141,18 @@ class AzureCluster(proto.Message):
             Output only. PEM encoded x509 certificate of
             the cluster root of trust.
         fleet (google.cloud.gke_multicloud_v1.types.Fleet):
-            Optional. Fleet configuration.
+            Required. Fleet configuration.
         managed_resources (google.cloud.gke_multicloud_v1.types.AzureClusterResources):
-            Output only. Mananged Azure resources for
-            this cluster.
+            Output only. Managed Azure resources for this
+            cluster.
         logging_config (google.cloud.gke_multicloud_v1.types.LoggingConfig):
             Optional. Logging configuration for this
+            cluster.
+        errors (MutableSequence[google.cloud.gke_multicloud_v1.types.AzureClusterError]):
+            Output only. A set of errors found in the
+            cluster.
+        monitoring_config (google.cloud.gke_multicloud_v1.types.MonitoringConfig):
+            Optional. Monitoring configuration for this
             cluster.
     """
 
@@ -252,6 +260,16 @@ class AzureCluster(proto.Message):
         proto.MESSAGE,
         number=23,
         message=common_resources.LoggingConfig,
+    )
+    errors: MutableSequence["AzureClusterError"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=24,
+        message="AzureClusterError",
+    )
+    monitoring_config: common_resources.MonitoringConfig = proto.Field(
+        proto.MESSAGE,
+        number=25,
+        message=common_resources.MonitoringConfig,
     )
 
 
@@ -487,6 +505,10 @@ class AzureProxyConfig(proto.Message):
         secret_id (str):
             The URL the of the proxy setting secret with its version.
 
+            The secret must be a JSON encoded proxy configuration as
+            described in
+            https://cloud.google.com/anthos/clusters/docs/multi-cloud/azure/how-to/use-a-proxy#create_a_proxy_configuration_file
+
             Secret ids are formatted as
             ``https://<key-vault-name>.vault.azure.net/secrets/<secret-name>/<secret-version>``.
     """
@@ -539,6 +561,7 @@ class AzureConfigEncryption(proto.Message):
         public_key (str):
             Optional. RSA key of the Azure Key Vault
             public key to use for encrypting the data.
+
             This key must be formatted as a PEM-encoded
             SubjectPublicKeyInfo (RFC 5280) in ASN.1 DER
             form. The string must be comprised of a single
@@ -761,6 +784,9 @@ class AzureNodePool(proto.Message):
             nodepool.
 
             When unspecified, it defaults to ``1``.
+        errors (MutableSequence[google.cloud.gke_multicloud_v1.types.AzureNodePoolError]):
+            Output only. A set of errors found in the
+            node pool.
     """
 
     class State(proto.Enum):
@@ -835,6 +861,11 @@ class AzureNodePool(proto.Message):
     azure_availability_zone: str = proto.Field(
         proto.STRING,
         number=23,
+    )
+    errors: MutableSequence["AzureNodePoolError"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=29,
+        message="AzureNodePoolError",
     )
 
 
@@ -1049,6 +1080,35 @@ class AzureClusterResources(proto.Message):
     control_plane_application_security_group_id: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class AzureClusterError(proto.Message):
+    r"""AzureClusterError describes errors found on Azure clusters.
+
+    Attributes:
+        message (str):
+            Human-friendly description of the error.
+    """
+
+    message: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class AzureNodePoolError(proto.Message):
+    r"""AzureNodePoolError describes errors found on Azure node
+    pools.
+
+    Attributes:
+        message (str):
+            Human-friendly description of the error.
+    """
+
+    message: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

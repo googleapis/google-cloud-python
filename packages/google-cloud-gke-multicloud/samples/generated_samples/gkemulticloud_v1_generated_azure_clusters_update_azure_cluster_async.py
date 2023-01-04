@@ -49,6 +49,7 @@ async def sample_update_azure_cluster():
     azure_cluster.control_plane.version = "version_value"
     azure_cluster.control_plane.ssh_config.authorized_key = "authorized_key_value"
     azure_cluster.authorization.admin_users.username = "username_value"
+    azure_cluster.fleet.project = "project_value"
 
     request = gke_multicloud_v1.UpdateAzureClusterRequest(
         azure_cluster=azure_cluster,

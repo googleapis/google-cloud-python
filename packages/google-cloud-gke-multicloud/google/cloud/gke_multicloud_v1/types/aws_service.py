@@ -72,7 +72,7 @@ class CreateAwsClusterRequest(proto.Message):
             ``projects/<project-id>/locations/<region>/awsClusters/<cluster-id>``.
 
             Valid characters are ``/[a-z][0-9]-/``. Cannot be longer
-            than 40 characters.
+            than 63 characters.
         validate_only (bool):
             If set, only validate the request, but do not
             actually create the cluster.
@@ -126,14 +126,17 @@ class UpdateAwsClusterRequest(proto.Message):
             -  ``control_plane.proxy_config``.
             -  ``control_plane.proxy_config.secret_arn``.
             -  ``control_plane.proxy_config.secret_version``.
+            -  ``control_plane.root_volume.size_gib``.
+            -  ``control_plane.root_volume.volume_type``.
             -  ``control_plane.root_volume.iops``.
             -  ``control_plane.root_volume.kms_key_arn``.
-            -  ``control_plane.root_volume.volume_type``.
-            -  ``control_plane.root_volume.size_gib``.
             -  ``control_plane.ssh_config``.
             -  ``control_plane.ssh_config.ec2_key_pair``.
             -  ``control_plane.instance_placement.tenancy``.
-            -  ``logging_config``.
+            -  ``control_plane.iam_instance_profile``.
+            -  ``logging_config.component_config.enable_components``.
+            -  ``control_plane.tags``.
+            -  ``monitoring_config.managed_prometheus_config.enabled``.
     """
 
     aws_cluster: aws_resources.AwsCluster = proto.Field(
@@ -333,7 +336,7 @@ class CreateAwsNodePoolRequest(proto.Message):
             ``projects/<project-id>/locations/<region>/awsClusters/<cluster-id>/awsNodePools/<node-pool-id>``.
 
             Valid characters are ``/[a-z][0-9]-/``. Cannot be longer
-            than 40 characters.
+            than 63 characters.
         validate_only (bool):
             If set, only validate the request, but do not
             actually create the node pool.
@@ -390,6 +393,13 @@ class UpdateAwsNodePoolRequest(proto.Message):
             -  ``config.proxy_config.secret_version``.
             -  ``config.ssh_config``.
             -  ``config.ssh_config.ec2_key_pair``.
+            -  ``config.instance_placement.tenancy``.
+            -  ``config.iam_instance_profile``.
+            -  ``config.labels``.
+            -  ``config.tags``.
+            -  ``config.autoscaling_metrics_collection``.
+            -  ``config.autoscaling_metrics_collection.granularity``.
+            -  ``config.autoscaling_metrics_collection.metrics``.
     """
 
     aws_node_pool: aws_resources.AwsNodePool = proto.Field(
@@ -506,7 +516,7 @@ class ListAwsNodePoolsResponse(proto.Message):
 
 
 class DeleteAwsNodePoolRequest(proto.Message):
-    r"""Request message for ``AwsClusters.DeleteNodePool`` method.
+    r"""Request message for ``AwsClusters.DeleteAwsNodePool`` method.
 
     Attributes:
         name (str):

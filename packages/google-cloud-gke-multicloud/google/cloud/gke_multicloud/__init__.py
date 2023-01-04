@@ -18,6 +18,12 @@ from google.cloud.gke_multicloud import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from google.cloud.gke_multicloud_v1.services.attached_clusters.async_client import (
+    AttachedClustersAsyncClient,
+)
+from google.cloud.gke_multicloud_v1.services.attached_clusters.client import (
+    AttachedClustersClient,
+)
 from google.cloud.gke_multicloud_v1.services.aws_clusters.async_client import (
     AwsClustersAsyncClient,
 )
@@ -30,9 +36,32 @@ from google.cloud.gke_multicloud_v1.services.azure_clusters.async_client import 
 from google.cloud.gke_multicloud_v1.services.azure_clusters.client import (
     AzureClustersClient,
 )
+from google.cloud.gke_multicloud_v1.types.attached_resources import (
+    AttachedCluster,
+    AttachedClusterError,
+    AttachedClustersAuthorization,
+    AttachedClusterUser,
+    AttachedOidcConfig,
+    AttachedPlatformVersionInfo,
+    AttachedServerConfig,
+)
+from google.cloud.gke_multicloud_v1.types.attached_service import (
+    CreateAttachedClusterRequest,
+    DeleteAttachedClusterRequest,
+    GenerateAttachedClusterInstallManifestRequest,
+    GenerateAttachedClusterInstallManifestResponse,
+    GetAttachedClusterRequest,
+    GetAttachedServerConfigRequest,
+    ImportAttachedClusterRequest,
+    ListAttachedClustersRequest,
+    ListAttachedClustersResponse,
+    UpdateAttachedClusterRequest,
+)
 from google.cloud.gke_multicloud_v1.types.aws_resources import (
     AwsAuthorization,
+    AwsAutoscalingGroupMetricsCollection,
     AwsCluster,
+    AwsClusterError,
     AwsClusterNetworking,
     AwsClusterUser,
     AwsConfigEncryption,
@@ -43,6 +72,7 @@ from google.cloud.gke_multicloud_v1.types.aws_resources import (
     AwsNodeConfig,
     AwsNodePool,
     AwsNodePoolAutoscaling,
+    AwsNodePoolError,
     AwsProxyConfig,
     AwsServerConfig,
     AwsServicesAuthentication,
@@ -70,6 +100,7 @@ from google.cloud.gke_multicloud_v1.types.azure_resources import (
     AzureAuthorization,
     AzureClient,
     AzureCluster,
+    AzureClusterError,
     AzureClusterNetworking,
     AzureClusterResources,
     AzureClusterUser,
@@ -81,6 +112,7 @@ from google.cloud.gke_multicloud_v1.types.azure_resources import (
     AzureNodeConfig,
     AzureNodePool,
     AzureNodePoolAutoscaling,
+    AzureNodePoolError,
     AzureProxyConfig,
     AzureServerConfig,
     AzureSshConfig,
@@ -112,19 +144,42 @@ from google.cloud.gke_multicloud_v1.types.common_resources import (
     Fleet,
     LoggingComponentConfig,
     LoggingConfig,
+    ManagedPrometheusConfig,
     MaxPodsConstraint,
+    MonitoringConfig,
     NodeTaint,
     OperationMetadata,
     WorkloadIdentityConfig,
 )
 
 __all__ = (
+    "AttachedClustersClient",
+    "AttachedClustersAsyncClient",
     "AwsClustersClient",
     "AwsClustersAsyncClient",
     "AzureClustersClient",
     "AzureClustersAsyncClient",
+    "AttachedCluster",
+    "AttachedClusterError",
+    "AttachedClustersAuthorization",
+    "AttachedClusterUser",
+    "AttachedOidcConfig",
+    "AttachedPlatformVersionInfo",
+    "AttachedServerConfig",
+    "CreateAttachedClusterRequest",
+    "DeleteAttachedClusterRequest",
+    "GenerateAttachedClusterInstallManifestRequest",
+    "GenerateAttachedClusterInstallManifestResponse",
+    "GetAttachedClusterRequest",
+    "GetAttachedServerConfigRequest",
+    "ImportAttachedClusterRequest",
+    "ListAttachedClustersRequest",
+    "ListAttachedClustersResponse",
+    "UpdateAttachedClusterRequest",
     "AwsAuthorization",
+    "AwsAutoscalingGroupMetricsCollection",
     "AwsCluster",
+    "AwsClusterError",
     "AwsClusterNetworking",
     "AwsClusterUser",
     "AwsConfigEncryption",
@@ -135,6 +190,7 @@ __all__ = (
     "AwsNodeConfig",
     "AwsNodePool",
     "AwsNodePoolAutoscaling",
+    "AwsNodePoolError",
     "AwsProxyConfig",
     "AwsServerConfig",
     "AwsServicesAuthentication",
@@ -158,6 +214,7 @@ __all__ = (
     "AzureAuthorization",
     "AzureClient",
     "AzureCluster",
+    "AzureClusterError",
     "AzureClusterNetworking",
     "AzureClusterResources",
     "AzureClusterUser",
@@ -169,6 +226,7 @@ __all__ = (
     "AzureNodeConfig",
     "AzureNodePool",
     "AzureNodePoolAutoscaling",
+    "AzureNodePoolError",
     "AzureProxyConfig",
     "AzureServerConfig",
     "AzureSshConfig",
@@ -196,7 +254,9 @@ __all__ = (
     "Fleet",
     "LoggingComponentConfig",
     "LoggingConfig",
+    "ManagedPrometheusConfig",
     "MaxPodsConstraint",
+    "MonitoringConfig",
     "NodeTaint",
     "OperationMetadata",
     "WorkloadIdentityConfig",

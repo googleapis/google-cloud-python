@@ -77,7 +77,7 @@ class CreateAzureClusterRequest(proto.Message):
             ``projects/<project-id>/locations/<region>/azureClusters/<cluster-id>``.
 
             Valid characters are ``/[a-z][0-9]-/``. Cannot be longer
-            than 40 characters.
+            than 63 characters.
         validate_only (bool):
             If set, only validate the request, but do not
             actually create the cluster.
@@ -120,13 +120,18 @@ class UpdateAzureClusterRequest(proto.Message):
             [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster]:
 
             -  ``description``.
-            -  ``annotations``.
             -  ``azureClient``.
             -  ``control_plane.version``.
             -  ``control_plane.vm_size``.
+            -  ``annotations``.
             -  ``authorization.admin_users``.
             -  ``control_plane.root_volume.size_gib``.
-            -  ``logging_config``
+            -  ``control_plane.proxy_config``.
+            -  ``control_plane.proxy_config.resource_group_id``.
+            -  ``control_plane.proxy_config.secret_id``.
+            -  ``control_plane.ssh_config.authorized_key``.
+            -  ``logging_config.component_config.enable_components``
+            -  ``monitoring_config.managed_prometheus_config.enabled``.
     """
 
     azure_cluster: azure_resources.AzureCluster = proto.Field(
@@ -326,7 +331,7 @@ class CreateAzureNodePoolRequest(proto.Message):
             ``projects/<project-id>/locations/<region>/azureClusters/<cluster-id>/azureNodePools/<node-pool-id>``.
 
             Valid characters are ``/[a-z][0-9]-/``. Cannot be longer
-            than 40 characters.
+            than 63 characters.
         validate_only (bool):
             If set, only validate the request, but do not
             actually create the node pool.
@@ -373,7 +378,7 @@ class UpdateAzureNodePoolRequest(proto.Message):
             -  ``version``.
             -  ``autoscaling.min_node_count``.
             -  ``autoscaling.max_node_count``.
-            -  ``config.vm_size``.
+            -  ``config.ssh_config.authorized_key``.
     """
 
     azure_node_pool: azure_resources.AzureNodePool = proto.Field(
@@ -492,7 +497,7 @@ class ListAzureNodePoolsResponse(proto.Message):
 
 
 class DeleteAzureNodePoolRequest(proto.Message):
-    r"""Delete message for ``AzureClusters.DeleteNodePool`` method.
+    r"""Delete message for ``AzureClusters.DeleteAzureNodePool`` method.
 
     Attributes:
         name (str):
@@ -600,7 +605,7 @@ class CreateAzureClientRequest(proto.Message):
             ``projects/<project-id>/locations/<region>/azureClients/<client-id>``.
 
             Valid characters are ``/[a-z][0-9]-/``. Cannot be longer
-            than 40 characters.
+            than 63 characters.
         validate_only (bool):
             If set, only validate the request, but do not
             actually create the client.
