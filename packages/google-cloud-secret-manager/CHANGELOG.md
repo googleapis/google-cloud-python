@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.14.0](https://github.com/googleapis/python-secret-manager/compare/v2.13.0...v2.14.0) (2023-01-04)
+
+
+### Features
+
+* Update public API to include annotation support ([#381](https://github.com/googleapis/python-secret-manager/issues/381)) ([68bbbe5](https://github.com/googleapis/python-secret-manager/commit/68bbbe59302d653f849cbac31321208224ad5413))
+
 ## [2.13.0](https://github.com/googleapis/python-secret-manager/compare/v2.12.6...v2.13.0) (2022-12-14)
 
 
