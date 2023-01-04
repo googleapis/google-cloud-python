@@ -1,8 +1,7 @@
 class {{ message.name }}({{ p }}.Message):
     r"""{{ message.meta.doc|rst(indent=4) }}
     {% if message.fields|length %}
-
-    {# Only include note if a oneof has more than one member field. #}
+    {# Only include note if a oneof has more than one member field. #} 
     {% if message.oneof_fields() %}
     {% if message.oneof_fields().values() | map('length') | max > 1 %}
     This message has `oneof`_ fields (mutually exclusive fields).
@@ -11,6 +10,9 @@ class {{ message.name }}({{ p }}.Message):
     members.
 
     {% endif %}
+    {% endif %}
+    {# Use select filter to capture nested values. See https://github.com/googleapis/gapic-generator-python/issues/1083 #} 
+    {%- if message.fields.values() | map(attribute="oneof") | select | list %}
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     {% endif %}
