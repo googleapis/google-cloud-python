@@ -2543,7 +2543,14 @@ def test_create_job_rest(request_type):
                             "ignore_exit_status": True,
                             "background": True,
                             "always_run": True,
-                            "environment": {"variables": {}},
+                            "environment": {
+                                "variables": {},
+                                "secret_variables": {},
+                                "encrypted_variables": {
+                                    "key_name": "key_name_value",
+                                    "cipher_text": "cipher_text_value",
+                                },
+                            },
                             "timeout": {"seconds": 751, "nanos": 543},
                         }
                     ],
@@ -2878,7 +2885,14 @@ def test_create_job_rest_bad_request(
                             "ignore_exit_status": True,
                             "background": True,
                             "always_run": True,
-                            "environment": {"variables": {}},
+                            "environment": {
+                                "variables": {},
+                                "secret_variables": {},
+                                "encrypted_variables": {
+                                    "key_name": "key_name_value",
+                                    "cipher_text": "cipher_text_value",
+                                },
+                            },
                             "timeout": {"seconds": 751, "nanos": 543},
                         }
                     ],

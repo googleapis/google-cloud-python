@@ -528,12 +528,52 @@ class Environment(proto.Message):
         variables (MutableMapping[str, str]):
             A map of environment variable names to
             values.
+        secret_variables (MutableMapping[str, str]):
+            A map of environment variable names to Secret
+            Manager secret names. The VM will access the
+            named secrets to set the value of each
+            environment variable.
+        encrypted_variables (google.cloud.batch_v1.types.Environment.KMSEnvMap):
+            An encrypted JSON dictionary where the
+            key/value pairs correspond to environment
+            variable names and their values.
     """
+
+    class KMSEnvMap(proto.Message):
+        r"""
+
+        Attributes:
+            key_name (str):
+                The name of the KMS key that will be used to
+                decrypt the cipher text.
+            cipher_text (str):
+                The value of the cipherText response from the ``encrypt``
+                method.
+        """
+
+        key_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        cipher_text: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
     variables: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=1,
+    )
+    secret_variables: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
+    encrypted_variables: KMSEnvMap = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=KMSEnvMap,
     )
 
 
