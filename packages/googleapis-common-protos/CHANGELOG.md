@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.57.1](https://github.com/googleapis/python-api-common-protos/compare/v1.57.0...v1.57.1) (2022-12-08)
+
+
+### Bug Fixes
+
+* Mark reference_docs_uri field in google/api/client.proto as deprecated ([#150](https://github.com/googleapis/python-api-common-protos/issues/150)) ([52b5018](https://github.com/googleapis/python-api-common-protos/commit/52b5018abf0902a1e582a406c993b51e0d2aa3cd))
+
 ## [1.57.0](https://github.com/googleapis/python-api-common-protos/compare/v1.56.4...v1.57.0) (2022-11-15)
 
 
