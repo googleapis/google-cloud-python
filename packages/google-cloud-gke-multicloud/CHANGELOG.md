@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-gke-multicloud/compare/v0.3.0...v0.4.0) (2023-01-04)
+
+
+### Features
+
+* Add AWS Autoscaling Group metrics collection for AWS nodepools ([3f1fa55](https://github.com/googleapis/python-gke-multicloud/commit/3f1fa55dcd74aa91dc4cf68302aa94720529e953))
+* Add errors output fields for cluster and nodepool resources ([3f1fa55](https://github.com/googleapis/python-gke-multicloud/commit/3f1fa55dcd74aa91dc4cf68302aa94720529e953))
+* Add monitoring config ([3f1fa55](https://github.com/googleapis/python-gke-multicloud/commit/3f1fa55dcd74aa91dc4cf68302aa94720529e953))
+* Support AttachedClusters ([3f1fa55](https://github.com/googleapis/python-gke-multicloud/commit/3f1fa55dcd74aa91dc4cf68302aa94720529e953))
+
 ## [0.3.0](https://github.com/googleapis/python-gke-multicloud/compare/v0.2.2...v0.3.0) (2022-12-15)
 
 
