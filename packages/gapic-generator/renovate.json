@@ -1,7 +1,11 @@
 {
   "extends": [
       "config:base",
-      "docker:disable",
-      ":disableDependencyDashboard"
+      "group:all",
+      ":disableDependencyDashboard",
+      "schedule:weekly"
+  ],
+  "ignorePaths": [
+    ".kokoro/requirements.txt"
   ]
 }
