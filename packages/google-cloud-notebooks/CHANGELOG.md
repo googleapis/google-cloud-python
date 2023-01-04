@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/googleapis/python-notebooks/compare/v1.5.0...v1.5.1) (2023-01-04)
+
+
+### Documentation
+
+* Minor formatting fixes to reference documentation ([#214](https://github.com/googleapis/python-notebooks/issues/214)) ([17d8096](https://github.com/googleapis/python-notebooks/commit/17d8096ea8691f468829253f2121477481142b36))
+
 ## [1.5.0](https://github.com/googleapis/python-notebooks/compare/v1.4.4...v1.5.0) (2022-12-13)
 
 
