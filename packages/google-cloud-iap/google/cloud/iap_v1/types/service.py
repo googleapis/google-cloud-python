@@ -38,9 +38,11 @@ __protobuf__ = proto.module(
         "CorsSettings",
         "OAuthSettings",
         "ReauthSettings",
+        "AllowedDomainsSettings",
         "ApplicationSettings",
         "CsmSettings",
         "AccessDeniedPageSettings",
+        "AttributePropagationSettings",
         "ListBrandsRequest",
         "ListBrandsResponse",
         "CreateBrandRequest",
@@ -139,7 +141,7 @@ class CreateTunnelDestGroupRequest(proto.Message):
             becomes the final component of the resource name.
 
             This value must be 4-63 characters, and valid characters are
-            ``[a-z][0-9]-``.
+            ``[a-z]-``.
     """
 
     parent: str = proto.Field(
@@ -222,13 +224,14 @@ class TunnelDestGroup(proto.Message):
         name (str):
             Required. Immutable. Identifier for the
             TunnelDestGroup. Must be unique within the
-            project.
+            project and contain only lower case letters
+            (a-z) and dashes (-).
         cidrs (MutableSequence[str]):
-            null List of CIDRs that this group applies
-            to.
+            Unordered list. List of CIDRs that this group
+            applies to.
         fqdns (MutableSequence[str]):
-            null List of FQDNs that this group applies
-            to.
+            Unordered list. List of FQDNs that this group
+            applies to.
     """
 
     name: str = proto.Field(
@@ -334,6 +337,9 @@ class AccessSettings(proto.Message):
         reauth_settings (google.cloud.iap_v1.types.ReauthSettings):
             Settings to configure reauthentication
             policies in IAP.
+        allowed_domains_settings (google.cloud.iap_v1.types.AllowedDomainsSettings):
+            Settings to configure and enable allowed
+            domains.
     """
 
     gcip_settings: "GcipSettings" = proto.Field(
@@ -355,6 +361,11 @@ class AccessSettings(proto.Message):
         proto.MESSAGE,
         number=6,
         message="ReauthSettings",
+    )
+    allowed_domains_settings: "AllowedDomainsSettings" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="AllowedDomainsSettings",
     )
 
 
@@ -435,7 +446,7 @@ class ReauthSettings(proto.Message):
 
     Attributes:
         method (google.cloud.iap_v1.types.ReauthSettings.Method):
-            Reauth method required by the policy.
+            Reauth method requested.
         max_age (google.protobuf.duration_pb2.Duration):
             Reauth session lifetime, how long before a
             user has to reauthenticate again.
@@ -476,19 +487,50 @@ class ReauthSettings(proto.Message):
     )
 
 
+class AllowedDomainsSettings(proto.Message):
+    r"""Configuration for IAP allowed domains. Lets you to restrict
+    access to an app and allow access to only the domains that you
+    list.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        enable (bool):
+            Configuration for customers to opt in for the
+            feature.
+
+            This field is a member of `oneof`_ ``_enable``.
+        domains (MutableSequence[str]):
+            List of trusted domains.
+    """
+
+    enable: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+        optional=True,
+    )
+    domains: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
 class ApplicationSettings(proto.Message):
     r"""Wrapper over application specific settings for IAP.
 
     Attributes:
         csm_settings (google.cloud.iap_v1.types.CsmSettings):
             Settings to configure IAP's behavior for a
-            CSM mesh.
+            service mesh.
         access_denied_page_settings (google.cloud.iap_v1.types.AccessDeniedPageSettings):
             Customization for Access Denied page.
         cookie_domain (google.protobuf.wrappers_pb2.StringValue):
             The Domain value to set for cookies generated
             by IAP. This value is not validated by the API,
             but will be ignored at runtime if invalid.
+        attribute_propagation_settings (google.cloud.iap_v1.types.AttributePropagationSettings):
+            Settings to configure attribute propagation.
     """
 
     csm_settings: "CsmSettings" = proto.Field(
@@ -506,14 +548,19 @@ class ApplicationSettings(proto.Message):
         number=3,
         message=wrappers_pb2.StringValue,
     )
+    attribute_propagation_settings: "AttributePropagationSettings" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="AttributePropagationSettings",
+    )
 
 
 class CsmSettings(proto.Message):
-    r"""Configuration for RCTokens generated for CSM workloads
-    protected by IAP. RCTokens are IAP generated JWTs that can be
-    verified at the application. The RCToken is primarily used for
-    ISTIO deployments, and can be scoped to a single mesh by
-    configuring the audience field accordingly
+    r"""Configuration for RCToken generated for service mesh
+    workloads protected by IAP. RCToken are IAP generated JWTs that
+    can be verified at the application. The RCToken is primarily
+    used for service mesh deployments, and can be scoped to a single
+    mesh by configuring the audience field accordingly.
 
     Attributes:
         rctoken_aud (google.protobuf.wrappers_pb2.StringValue):
@@ -534,6 +581,9 @@ class AccessDeniedPageSettings(proto.Message):
     page when access is denied to users. If IAP prevents access to
     this page, the default IAP error page will be displayed instead.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         access_denied_page_uri (google.protobuf.wrappers_pb2.StringValue):
             The URI to be redirected to when access is
@@ -541,6 +591,11 @@ class AccessDeniedPageSettings(proto.Message):
         generate_troubleshooting_uri (google.protobuf.wrappers_pb2.BoolValue):
             Whether to generate a troubleshooting URL on
             access denied events to this application.
+        remediation_token_generation_enabled (google.protobuf.wrappers_pb2.BoolValue):
+            Whether to generate remediation token on
+            access denied events to this application.
+
+            This field is a member of `oneof`_ ``_remediation_token_generation_enabled``.
     """
 
     access_denied_page_uri: wrappers_pb2.StringValue = proto.Field(
@@ -552,6 +607,95 @@ class AccessDeniedPageSettings(proto.Message):
         proto.MESSAGE,
         number=2,
         message=wrappers_pb2.BoolValue,
+    )
+    remediation_token_generation_enabled: wrappers_pb2.BoolValue = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        optional=True,
+        message=wrappers_pb2.BoolValue,
+    )
+
+
+class AttributePropagationSettings(proto.Message):
+    r"""Configuration for propagating attributes to applications
+    protected by IAP.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        expression (str):
+            Raw string CEL expression. Must return a list of attributes.
+            Maximum of 45 attributes can be selected. Expressions can
+            select different attribute types from ``attributes``:
+            ``attributes.saml_attributes``,
+            ``attributes.iap_attributes``. Limited functions are
+            supported:
+
+            -  ``filter: <list>.filter(<iter_var>, <predicate>)`` ->
+               returns a subset of ``<list>`` where ``<predicate>`` is
+               true for every item.
+            -  ``in: <var> in <list>`` -> returns true if ``<list>``
+               contains ``<var>``
+            -  ``selectByName: <list>.selectByName(<string>)`` ->
+               returns the attribute in ``<list>`` with the given
+               ``<string>`` name, otherwise returns empty.
+            -  ``emitAs: <attribute>.emitAs(<string>)`` -> sets the
+               ``<attribute>`` name field to the given ``<string>`` for
+               propagation in selected output credentials.
+            -  ``strict: <attribute>.strict()`` -> ignore the
+               ``x-goog-iap-attr-`` prefix for the provided
+               ``<attribute>`` when propagating via the ``HEADER``
+               output credential, i.e. request headers.
+            -  ``append: <target_list>.append(<attribute>)`` OR
+               ``<target_list>.append(<list>)`` -> append the provided
+               ``<attribute>`` or ``<list>`` onto the end of
+               ``<target_list>``.
+
+            Example expression:
+            ``attributes.saml_attributes.filter(x, x.name in ['test']).append(attributes.iap_attributes.selectByName('exact').emitAs('custom').strict())``
+
+            This field is a member of `oneof`_ ``_expression``.
+        output_credentials (MutableSequence[google.cloud.iap_v1.types.AttributePropagationSettings.OutputCredentials]):
+            Which output credentials attributes selected
+            by the CEL expression should be propagated in.
+            All attributes will be fully duplicated in each
+            selected output credential.
+        enable (bool):
+            Whether the provided attribute propagation
+            settings should be evaluated on user requests.
+            If set to true, attributes returned from the
+            expression will be propagated in the set output
+            credentials.
+
+            This field is a member of `oneof`_ ``_enable``.
+    """
+
+    class OutputCredentials(proto.Enum):
+        r"""Supported output credentials for attribute propagation. Each
+        output credential maps to a "field" in the response. For
+        example, selecting JWT will propagate all attributes in the IAP
+        JWT, header in the headers, etc.
+        """
+        OUTPUT_CREDENTIALS_UNSPECIFIED = 0
+        HEADER = 1
+        JWT = 2
+        RCTOKEN = 3
+
+    expression: str = proto.Field(
+        proto.STRING,
+        number=1,
+        optional=True,
+    )
+    output_credentials: MutableSequence[OutputCredentials] = proto.RepeatedField(
+        proto.ENUM,
+        number=2,
+        enum=OutputCredentials,
+    )
+    enable: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+        optional=True,
     )
 
 

@@ -16,7 +16,9 @@
 from .service import (
     AccessDeniedPageSettings,
     AccessSettings,
+    AllowedDomainsSettings,
     ApplicationSettings,
+    AttributePropagationSettings,
     Brand,
     CorsSettings,
     CreateBrandRequest,
@@ -49,7 +51,9 @@ from .service import (
 __all__ = (
     "AccessDeniedPageSettings",
     "AccessSettings",
+    "AllowedDomainsSettings",
     "ApplicationSettings",
+    "AttributePropagationSettings",
     "Brand",
     "CorsSettings",
     "CreateBrandRequest",

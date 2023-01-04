@@ -965,7 +965,7 @@ class IdentityAwareProxyAdminServiceAsyncClient:
                 becomes the final component of the resource name.
 
                 This value must be 4-63 characters, and valid characters
-                are ``[a-z][0-9]-``.
+                are ``[a-z]-``.
 
                 This corresponds to the ``tunnel_dest_group_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
