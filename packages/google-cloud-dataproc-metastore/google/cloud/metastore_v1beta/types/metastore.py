@@ -63,6 +63,14 @@ __protobuf__ = proto.module(
         "OperationMetadata",
         "LocationMetadata",
         "DatabaseDumpSpec",
+        "RemoveIamPolicyRequest",
+        "RemoveIamPolicyResponse",
+        "QueryMetadataRequest",
+        "QueryMetadataResponse",
+        "MoveTableToDatabaseRequest",
+        "MoveTableToDatabaseResponse",
+        "AlterMetadataResourceLocationRequest",
+        "AlterMetadataResourceLocationResponse",
     },
 )
 
@@ -1908,6 +1916,183 @@ class DatabaseDumpSpec(proto.Message):
         TYPE_UNSPECIFIED = 0
         MYSQL = 1
         AVRO = 2
+
+
+class RemoveIamPolicyRequest(proto.Message):
+    r"""Request message for
+    [DataprocMetastore.RemoveIamPolicy][google.cloud.metastore.v1beta.DataprocMetastore.RemoveIamPolicy].
+
+    Attributes:
+        resource (str):
+            Required. The relative resource name of the dataplane
+            resource to remove IAM policy, in the following form:
+
+            ``projects/{project_id}/locations/{location_id}/services/{service_id}/databases/{database_id}``
+            or
+            ``projects/{project_id}/locations/{location_id}/services/{service_id}/databases/{database_id}/tables/{table_id}``.
+        asynchronous (bool):
+            Optional. Removes IAM policy attached to
+            database or table asynchronously when it is set.
+            The default is false.
+    """
+
+    resource: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    asynchronous: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+
+
+class RemoveIamPolicyResponse(proto.Message):
+    r"""Response message for
+    [DataprocMetastore.RemoveIamPolicy][google.cloud.metastore.v1beta.DataprocMetastore.RemoveIamPolicy].
+
+    Attributes:
+        success (bool):
+            True if the policy is successfully removed.
+    """
+
+    success: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+
+
+class QueryMetadataRequest(proto.Message):
+    r"""Request message for
+    [DataprocMetastore.QueryMetadata][google.cloud.metastore.v1beta.DataprocMetastore.QueryMetadata].
+
+    Attributes:
+        service (str):
+            Required. The relative resource name of the metastore
+            service to query metadata, in the following format:
+
+            ``projects/{project_id}/locations/{location_id}/services/{service_id}``.
+        query (str):
+            Required. A read-only SQL query to execute
+            against the metadata database. The query cannot
+            change or mutate the data.
+    """
+
+    service: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class QueryMetadataResponse(proto.Message):
+    r"""Response message for
+    [DataprocMetastore.QueryMetadata][google.cloud.metastore.v1beta.DataprocMetastore.QueryMetadata].
+
+    Attributes:
+        result_manifest_uri (str):
+            The manifest URI  is link to a JSON instance
+            in Cloud Storage. This instance manifests
+            immediately along with QueryMetadataResponse.
+            The content of the URI is not retriable until
+            the long-running operation query against the
+            metadata finishes.
+    """
+
+    result_manifest_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class MoveTableToDatabaseRequest(proto.Message):
+    r"""Request message for
+    [DataprocMetastore.MoveTableToDatabase][google.cloud.metastore.v1beta.DataprocMetastore.MoveTableToDatabase].
+
+    Attributes:
+        service (str):
+            Required. The relative resource name of the metastore
+            service to mutate metadata, in the following format:
+
+            ``projects/{project_id}/locations/{location_id}/services/{service_id}``.
+        table_name (str):
+            Required. The name of the table to be moved.
+        db_name (str):
+            Required. The name of the database where the
+            table resides.
+        destination_db_name (str):
+            Required. The name of the database where the
+            table should be moved.
+    """
+
+    service: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    table_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    db_name: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    destination_db_name: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class MoveTableToDatabaseResponse(proto.Message):
+    r"""Response message for
+    [DataprocMetastore.MoveTableToDatabase][google.cloud.metastore.v1beta.DataprocMetastore.MoveTableToDatabase].
+
+    """
+
+
+class AlterMetadataResourceLocationRequest(proto.Message):
+    r"""Request message for
+    [DataprocMetastore.AlterMetadataResourceLocation][google.cloud.metastore.v1beta.DataprocMetastore.AlterMetadataResourceLocation].
+
+    Attributes:
+        service (str):
+            Required. The relative resource name of the metastore
+            service to mutate metadata, in the following format:
+
+            ``projects/{project_id}/locations/{location_id}/services/{service_id}``.
+        resource_name (str):
+            Required. The relative metadata resource name in the
+            following format.
+
+            ``databases/{database_id}`` or
+            ``databases/{database_id}/tables/{table_id}`` or
+            ``databases/{database_id}/tables/{table_id}/partitions/{partition_id}``
+        location_uri (str):
+            Required. The new location URI for the
+            metadata resource.
+    """
+
+    service: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    resource_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    location_uri: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class AlterMetadataResourceLocationResponse(proto.Message):
+    r"""Response message for
+    [DataprocMetastore.AlterMetadataResourceLocation][google.cloud.metastore.v1beta.DataprocMetastore.AlterMetadataResourceLocation].
+
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

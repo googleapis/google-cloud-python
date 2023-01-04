@@ -198,6 +198,26 @@ class DataprocMetastoreTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.remove_iam_policy: gapic_v1.method.wrap_method(
+                self.remove_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.query_metadata: gapic_v1.method.wrap_method(
+                self.query_metadata,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.move_table_to_database: gapic_v1.method.wrap_method(
+                self.move_table_to_database,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.alter_metadata_resource_location: gapic_v1.method.wrap_method(
+                self.alter_metadata_resource_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -350,6 +370,45 @@ class DataprocMetastoreTransport(abc.ABC):
         self,
     ) -> Callable[
         [metastore.DeleteBackupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def remove_iam_policy(
+        self,
+    ) -> Callable[
+        [metastore.RemoveIamPolicyRequest],
+        Union[
+            metastore.RemoveIamPolicyResponse,
+            Awaitable[metastore.RemoveIamPolicyResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def query_metadata(
+        self,
+    ) -> Callable[
+        [metastore.QueryMetadataRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def move_table_to_database(
+        self,
+    ) -> Callable[
+        [metastore.MoveTableToDatabaseRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def alter_metadata_resource_location(
+        self,
+    ) -> Callable[
+        [metastore.AlterMetadataResourceLocationRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

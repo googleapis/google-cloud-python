@@ -657,6 +657,121 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
             )
         return self._stubs["delete_backup"]
 
+    @property
+    def remove_iam_policy(
+        self,
+    ) -> Callable[
+        [metastore.RemoveIamPolicyRequest], metastore.RemoveIamPolicyResponse
+    ]:
+        r"""Return a callable for the remove iam policy method over gRPC.
+
+        Removes the attached IAM policies for a resource
+
+        Returns:
+            Callable[[~.RemoveIamPolicyRequest],
+                    ~.RemoveIamPolicyResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "remove_iam_policy" not in self._stubs:
+            self._stubs["remove_iam_policy"] = self.grpc_channel.unary_unary(
+                "/google.cloud.metastore.v1alpha.DataprocMetastore/RemoveIamPolicy",
+                request_serializer=metastore.RemoveIamPolicyRequest.serialize,
+                response_deserializer=metastore.RemoveIamPolicyResponse.deserialize,
+            )
+        return self._stubs["remove_iam_policy"]
+
+    @property
+    def query_metadata(
+        self,
+    ) -> Callable[[metastore.QueryMetadataRequest], operations_pb2.Operation]:
+        r"""Return a callable for the query metadata method over gRPC.
+
+        Query DPMS metadata.
+
+        Returns:
+            Callable[[~.QueryMetadataRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "query_metadata" not in self._stubs:
+            self._stubs["query_metadata"] = self.grpc_channel.unary_unary(
+                "/google.cloud.metastore.v1alpha.DataprocMetastore/QueryMetadata",
+                request_serializer=metastore.QueryMetadataRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["query_metadata"]
+
+    @property
+    def move_table_to_database(
+        self,
+    ) -> Callable[[metastore.MoveTableToDatabaseRequest], operations_pb2.Operation]:
+        r"""Return a callable for the move table to database method over gRPC.
+
+        Move a table to another database.
+
+        Returns:
+            Callable[[~.MoveTableToDatabaseRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "move_table_to_database" not in self._stubs:
+            self._stubs["move_table_to_database"] = self.grpc_channel.unary_unary(
+                "/google.cloud.metastore.v1alpha.DataprocMetastore/MoveTableToDatabase",
+                request_serializer=metastore.MoveTableToDatabaseRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["move_table_to_database"]
+
+    @property
+    def alter_metadata_resource_location(
+        self,
+    ) -> Callable[
+        [metastore.AlterMetadataResourceLocationRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the alter metadata resource
+        location method over gRPC.
+
+        Alter metadata resource location. The metadata
+        resource can be a database, table, or partition. This
+        functionality only updates the parent directory for the
+        respective metadata resource and does not transfer any
+        existing data to the new location.
+
+        Returns:
+            Callable[[~.AlterMetadataResourceLocationRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "alter_metadata_resource_location" not in self._stubs:
+            self._stubs[
+                "alter_metadata_resource_location"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.metastore.v1alpha.DataprocMetastore/AlterMetadataResourceLocation",
+                request_serializer=metastore.AlterMetadataResourceLocationRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["alter_metadata_resource_location"]
+
     def close(self):
         self.grpc_channel.close()
 

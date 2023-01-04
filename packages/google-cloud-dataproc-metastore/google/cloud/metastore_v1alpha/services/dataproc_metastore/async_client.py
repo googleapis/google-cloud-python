@@ -2115,6 +2115,380 @@ class DataprocMetastoreAsyncClient:
         # Done; return the response.
         return response
 
+    async def remove_iam_policy(
+        self,
+        request: Optional[Union[metastore.RemoveIamPolicyRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> metastore.RemoveIamPolicyResponse:
+        r"""Removes the attached IAM policies for a resource
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import metastore_v1alpha
+
+            async def sample_remove_iam_policy():
+                # Create a client
+                client = metastore_v1alpha.DataprocMetastoreAsyncClient()
+
+                # Initialize request argument(s)
+                request = metastore_v1alpha.RemoveIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = await client.remove_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.metastore_v1alpha.types.RemoveIamPolicyRequest, dict]]):
+                The request object. Request message for
+                [DataprocMetastore.RemoveIamPolicy][google.cloud.metastore.v1alpha.DataprocMetastore.RemoveIamPolicy].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.metastore_v1alpha.types.RemoveIamPolicyResponse:
+                Response message for
+                   [DataprocMetastore.RemoveIamPolicy][google.cloud.metastore.v1alpha.DataprocMetastore.RemoveIamPolicy].
+
+        """
+        # Create or coerce a protobuf request object.
+        request = metastore.RemoveIamPolicyRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.remove_iam_policy,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def query_metadata(
+        self,
+        request: Optional[Union[metastore.QueryMetadataRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Query DPMS metadata.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import metastore_v1alpha
+
+            async def sample_query_metadata():
+                # Create a client
+                client = metastore_v1alpha.DataprocMetastoreAsyncClient()
+
+                # Initialize request argument(s)
+                request = metastore_v1alpha.QueryMetadataRequest(
+                    service="service_value",
+                    query="query_value",
+                )
+
+                # Make the request
+                operation = client.query_metadata(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.metastore_v1alpha.types.QueryMetadataRequest, dict]]):
+                The request object. Request message for
+                [DataprocMetastore.QueryMetadata][google.cloud.metastore.v1alpha.DataprocMetastore.QueryMetadata].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.metastore_v1alpha.types.QueryMetadataResponse` Response message for
+                   [DataprocMetastore.QueryMetadata][google.cloud.metastore.v1alpha.DataprocMetastore.QueryMetadata].
+
+        """
+        # Create or coerce a protobuf request object.
+        request = metastore.QueryMetadataRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.query_metadata,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("service", request.service),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            metastore.QueryMetadataResponse,
+            metadata_type=metastore.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def move_table_to_database(
+        self,
+        request: Optional[Union[metastore.MoveTableToDatabaseRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Move a table to another database.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import metastore_v1alpha
+
+            async def sample_move_table_to_database():
+                # Create a client
+                client = metastore_v1alpha.DataprocMetastoreAsyncClient()
+
+                # Initialize request argument(s)
+                request = metastore_v1alpha.MoveTableToDatabaseRequest(
+                    service="service_value",
+                    table_name="table_name_value",
+                    db_name="db_name_value",
+                    destination_db_name="destination_db_name_value",
+                )
+
+                # Make the request
+                operation = client.move_table_to_database(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.metastore_v1alpha.types.MoveTableToDatabaseRequest, dict]]):
+                The request object. Request message for
+                [DataprocMetastore.MoveTableToDatabase][google.cloud.metastore.v1alpha.DataprocMetastore.MoveTableToDatabase].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.metastore_v1alpha.types.MoveTableToDatabaseResponse` Response message for
+                   [DataprocMetastore.MoveTableToDatabase][google.cloud.metastore.v1alpha.DataprocMetastore.MoveTableToDatabase].
+
+        """
+        # Create or coerce a protobuf request object.
+        request = metastore.MoveTableToDatabaseRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.move_table_to_database,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("service", request.service),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            metastore.MoveTableToDatabaseResponse,
+            metadata_type=metastore.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def alter_metadata_resource_location(
+        self,
+        request: Optional[
+            Union[metastore.AlterMetadataResourceLocationRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Alter metadata resource location. The metadata
+        resource can be a database, table, or partition. This
+        functionality only updates the parent directory for the
+        respective metadata resource and does not transfer any
+        existing data to the new location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import metastore_v1alpha
+
+            async def sample_alter_metadata_resource_location():
+                # Create a client
+                client = metastore_v1alpha.DataprocMetastoreAsyncClient()
+
+                # Initialize request argument(s)
+                request = metastore_v1alpha.AlterMetadataResourceLocationRequest(
+                    service="service_value",
+                    resource_name="resource_name_value",
+                    location_uri="location_uri_value",
+                )
+
+                # Make the request
+                operation = client.alter_metadata_resource_location(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.metastore_v1alpha.types.AlterMetadataResourceLocationRequest, dict]]):
+                The request object. Request message for
+                [DataprocMetastore.AlterMetadataResourceLocation][google.cloud.metastore.v1alpha.DataprocMetastore.AlterMetadataResourceLocation].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.metastore_v1alpha.types.AlterMetadataResourceLocationResponse` Response message for
+                   [DataprocMetastore.AlterMetadataResourceLocation][google.cloud.metastore.v1alpha.DataprocMetastore.AlterMetadataResourceLocation].
+
+        """
+        # Create or coerce a protobuf request object.
+        request = metastore.AlterMetadataResourceLocationRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.alter_metadata_resource_location,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("service", request.service),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            metastore.AlterMetadataResourceLocationResponse,
+            metadata_type=metastore.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def __aenter__(self):
         return self
 

@@ -39,6 +39,7 @@ def partition(
 class metastoreCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'alter_metadata_resource_location': ('service', 'resource_name', 'location_uri', ),
         'create_backup': ('parent', 'backup_id', 'backup', 'request_id', ),
         'create_federation': ('parent', 'federation_id', 'federation', 'request_id', ),
         'create_metadata_import': ('parent', 'metadata_import_id', 'metadata_import', 'request_id', ),
@@ -55,6 +56,9 @@ class metastoreCallTransformer(cst.CSTTransformer):
         'list_federations': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_metadata_imports': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_services': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'move_table_to_database': ('service', 'table_name', 'db_name', 'destination_db_name', ),
+        'query_metadata': ('service', 'query', ),
+        'remove_iam_policy': ('resource', 'asynchronous', ),
         'restore_service': ('service', 'backup', 'restore_type', 'request_id', ),
         'update_federation': ('update_mask', 'federation', 'request_id', ),
         'update_metadata_import': ('update_mask', 'metadata_import', 'request_id', ),
