@@ -12,22 +12,27 @@ Configuring Timeouts
 --------------------
 
 For a number of reasons, methods which invoke API methods may take
-longer than expected or desired.  By default, such methods all time out
-after a default interval, 60.0 seconds.  Rather than blocking your application
-code for that interval, you may choose to configure explicit timeouts
-in your code, using one of three forms:
+longer than expected or desired. By default, such methods are applied a
+default timeout of 60.0 seconds.
 
-- You can pass a single integer or float which functions as the timeout for the
-  entire request. E.g.:
+The python-storage client uses the timeout mechanics of the underlying
+``requests`` HTTP library. The connect timeout is the number of seconds
+to establish a connection to the server. The read timeout is the number
+of seconds the client will wait for the server to send a response.
+In most cases, this is the maximum wait time before the server sends
+the first byte. Please refer to the `requests documentation <https://requests.readthedocs.io/en/latest/user/advanced/#timeouts>`_ for details.
+
+You may also choose to configure explicit timeouts in your code, using one of three forms:
+
+- You can specify a single value for the timeout. The timeout value will be
+  applied to both the connect and the read timeouts. E.g.:
 
 .. code-block:: python
 
    bucket = client.get_bucket(BUCKET_NAME, timeout=300.0)  # five minutes
 
-- You can also be passed as a two-tuple, ``(connect_timeout, read_timeout)``,
-  where the ``connect_timeout`` sets the maximum time required to establish
-  the connection to the server, and the ``read_timeout`` sets the maximum
-  time to wait for a completed response.  E.g.:
+- You can also pass a two-tuple, ``(connect_timeout, read_timeout)``,
+  if you would like to set the values separately. E.g.:
 
 .. code-block:: python
 
