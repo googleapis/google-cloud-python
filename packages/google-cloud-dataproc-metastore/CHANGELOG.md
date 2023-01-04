@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-dataproc-metastore/compare/v1.7.0...v1.8.0) (2023-01-04)
+
+
+### Features
+
+* Added AlterMetadataResourceLocation API ([d8606c5](https://github.com/googleapis/python-dataproc-metastore/commit/d8606c566e9b052add49320a09470bcc9e2fc14b))
+* Added MoveTableToDatabase API ([d8606c5](https://github.com/googleapis/python-dataproc-metastore/commit/d8606c566e9b052add49320a09470bcc9e2fc14b))
+* Added QueryMetadata API ([d8606c5](https://github.com/googleapis/python-dataproc-metastore/commit/d8606c566e9b052add49320a09470bcc9e2fc14b))
+* Added RemoveIamPolicy API ([d8606c5](https://github.com/googleapis/python-dataproc-metastore/commit/d8606c566e9b052add49320a09470bcc9e2fc14b))
+
 ## [1.7.0](https://github.com/googleapis/python-dataproc-metastore/compare/v1.6.3...v1.7.0) (2022-12-15)
 
 
