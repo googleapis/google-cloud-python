@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-artifact-registry/compare/v1.4.1...v1.5.0) (2023-01-03)
+
+
+### Features
+
+* Add location methods ([#211](https://github.com/googleapis/python-artifact-registry/issues/211)) ([2458b5e](https://github.com/googleapis/python-artifact-registry/commit/2458b5e00b1cb7a91254228a37e349816f13f96c))
+
 ## [1.4.1](https://github.com/googleapis/python-artifact-registry/compare/v1.4.0...v1.4.1) (2022-12-08)
 
 
