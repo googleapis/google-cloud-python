@@ -59,10 +59,6 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
-# TODO (numeric enums): This file was generated with the option to
-#   request that the server respond with enums JSON-encoded as
-#   numbers. The code below does not implement that functionality yet.
-
 
 class VmwareEngineRestInterceptor:
     """Interceptor for VmwareEngine.
@@ -79,222 +75,253 @@ class VmwareEngineRestInterceptor:
 
     .. code-block:: python
         class MyCustomVmwareEngineInterceptor(VmwareEngineRestInterceptor):
-            def pre_create_cluster(request, metadata):
+            def pre_create_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_cluster(response):
+            def post_create_cluster(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_hcx_activation_key(request, metadata):
+            def pre_create_hcx_activation_key(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_hcx_activation_key(response):
+            def post_create_hcx_activation_key(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_network_policy(request, metadata):
+            def pre_create_network_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_network_policy(response):
+            def post_create_network_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_private_cloud(request, metadata):
+            def pre_create_private_cloud(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_private_cloud(response):
+            def post_create_private_cloud(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_vmware_engine_network(request, metadata):
+            def pre_create_vmware_engine_network(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_vmware_engine_network(response):
+            def post_create_vmware_engine_network(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_cluster(request, metadata):
+            def pre_delete_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_cluster(response):
+            def post_delete_cluster(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_network_policy(request, metadata):
+            def pre_delete_network_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_network_policy(response):
+            def post_delete_network_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_private_cloud(request, metadata):
+            def pre_delete_private_cloud(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_private_cloud(response):
+            def post_delete_private_cloud(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_vmware_engine_network(request, metadata):
+            def pre_delete_vmware_engine_network(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_vmware_engine_network(response):
+            def post_delete_vmware_engine_network(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_cluster(request, metadata):
+            def pre_get_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_cluster(response):
+            def post_get_cluster(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_hcx_activation_key(request, metadata):
+            def pre_get_hcx_activation_key(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_hcx_activation_key(response):
+            def post_get_hcx_activation_key(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_network_policy(request, metadata):
+            def pre_get_network_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_network_policy(response):
+            def post_get_network_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_node_type(request, metadata):
+            def pre_get_node_type(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_node_type(response):
+            def post_get_node_type(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_private_cloud(request, metadata):
+            def pre_get_private_cloud(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_private_cloud(response):
+            def post_get_private_cloud(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_vmware_engine_network(request, metadata):
+            def pre_get_vmware_engine_network(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_vmware_engine_network(response):
+            def post_get_vmware_engine_network(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_clusters(request, metadata):
+            def pre_list_clusters(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_clusters(response):
+            def post_list_clusters(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_hcx_activation_keys(request, metadata):
+            def pre_list_hcx_activation_keys(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_hcx_activation_keys(response):
+            def post_list_hcx_activation_keys(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_network_policies(request, metadata):
+            def pre_list_network_policies(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_network_policies(response):
+            def post_list_network_policies(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_node_types(request, metadata):
+            def pre_list_node_types(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_node_types(response):
+            def post_list_node_types(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_private_clouds(request, metadata):
+            def pre_list_private_clouds(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_private_clouds(response):
+            def post_list_private_clouds(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_subnets(request, metadata):
+            def pre_list_subnets(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_subnets(response):
+            def post_list_subnets(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_vmware_engine_networks(request, metadata):
+            def pre_list_vmware_engine_networks(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_vmware_engine_networks(response):
+            def post_list_vmware_engine_networks(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_reset_nsx_credentials(request, metadata):
+            def pre_reset_nsx_credentials(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_reset_nsx_credentials(response):
+            def post_reset_nsx_credentials(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_reset_vcenter_credentials(request, metadata):
+            def pre_reset_vcenter_credentials(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_reset_vcenter_credentials(response):
+            def post_reset_vcenter_credentials(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_show_nsx_credentials(request, metadata):
+            def pre_show_nsx_credentials(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_show_nsx_credentials(response):
+            def post_show_nsx_credentials(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_show_vcenter_credentials(request, metadata):
+            def pre_show_vcenter_credentials(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_show_vcenter_credentials(response):
+            def post_show_vcenter_credentials(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_undelete_private_cloud(request, metadata):
+            def pre_undelete_private_cloud(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_undelete_private_cloud(response):
+            def post_undelete_private_cloud(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_cluster(request, metadata):
+            def pre_update_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_cluster(response):
+            def post_update_cluster(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_network_policy(request, metadata):
+            def pre_update_network_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_network_policy(response):
+            def post_update_network_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_private_cloud(request, metadata):
+            def pre_update_private_cloud(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_private_cloud(response):
+            def post_update_private_cloud(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_vmware_engine_network(request, metadata):
+            def pre_update_vmware_engine_network(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_vmware_engine_network(response):
+            def post_update_vmware_engine_network(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = VmwareEngineRestTransport(interceptor=MyCustomVmwareEngineInterceptor())
         client = VmwareEngineClient(transport=transport)
