@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.0](https://github.com/googleapis/python-batch/compare/v0.6.0...v0.7.0) (2023-01-04)
+
+
+### Features
+
+* Support secret and encrypted environment variables in v1 ([711e132](https://github.com/googleapis/python-batch/commit/711e132711006eb5a63384d8f88716f8b8432616))
+
+
+### Documentation
+
+* Updated documentation for message NetworkInterface ([711e132](https://github.com/googleapis/python-batch/commit/711e132711006eb5a63384d8f88716f8b8432616))
+
 ## [0.6.0](https://github.com/googleapis/python-batch/compare/v0.5.0...v0.6.0) (2022-12-15)
 
 
