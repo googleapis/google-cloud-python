@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.9.0](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.8.0...v3.9.0) (2023-01-04)
+
+
+### Features
+
+* Add location methods ([#416](https://github.com/googleapis/python-bigquery-datatransfer/issues/416)) ([6538b29](https://github.com/googleapis/python-bigquery-datatransfer/commit/6538b29601e91d16e6a2095a256b4b18920d73b9))
+
 ## [3.8.0](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.7.3...v3.8.0) (2022-12-15)
 
 
