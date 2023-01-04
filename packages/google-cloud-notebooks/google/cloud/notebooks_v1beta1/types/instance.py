@@ -92,10 +92,9 @@ class Instance(proto.Message):
 
             This field is a member of `oneof`_ ``environment``.
         post_startup_script (str):
-            Path to a Bash script that automatically runs
-            after a notebook instance fully boots up. The
-            path must be a URL or Cloud Storage path
-            (gs://path-to-file/file-name).
+            Path to a Bash script that automatically runs after a
+            notebook instance fully boots up. The path must be a URL or
+            Cloud Storage path (``gs://path-to-file/file-name``).
         proxy_uri (str):
             Output only. The proxy endpoint that is used
             to access the Jupyter notebook.
@@ -117,12 +116,13 @@ class Instance(proto.Message):
             is used.
         machine_type (str):
             Required. The `Compute Engine machine
-            type </compute/docs/machine-types>`__ of this instance.
+            type <https://cloud.google.com/compute/docs/machine-types>`__
+            of this instance.
         accelerator_config (google.cloud.notebooks_v1beta1.types.Instance.AcceleratorConfig):
             The hardware accelerator used on this instance. If you use
             accelerators, make sure that your configuration has `enough
             vCPUs and memory to support the ``machine_type`` you have
-            selected </compute/docs/gpus/#gpus-list>`__.
+            selected <https://cloud.google.com/compute/docs/gpus/#gpus-list>`__.
         state (google.cloud.notebooks_v1beta1.types.Instance.State):
             Output only. The state of this instance.
         install_gpu_driver (bool):
@@ -142,9 +142,9 @@ class Instance(proto.Message):
         boot_disk_size_gb (int):
             Input only. The size of the boot disk in GB
             attached to this instance, up to a maximum of
-            64000&nbsp;GB (64&nbsp;TB). The minimum
-            recommended value is 100&nbsp;GB. If not
-            specified, this defaults to 100.
+            64000 GB (64 TB). The minimum recommended value
+            is 100 GB. If not specified, this defaults to
+            100.
         data_disk_type (google.cloud.notebooks_v1beta1.types.Instance.DiskType):
             Input only. The type of the data disk attached to this
             instance, defaults to standard persistent disk
@@ -152,10 +152,10 @@ class Instance(proto.Message):
         data_disk_size_gb (int):
             Input only. The size of the data disk in GB
             attached to this instance, up to a maximum of
-            64000&nbsp;GB (64&nbsp;TB). You can choose the
-            size of the data disk based on how big your
-            notebooks and data are. If not specified, this
-            defaults to 100.
+            64000 GB (64 TB). You can choose the size of the
+            data disk based on how big your notebooks and
+            data are. If not specified, this defaults to
+            100.
         no_remove_data_disk (bool):
             Input only. If true, the data disk will not
             be auto deleted when deleting the instance.
@@ -168,7 +168,7 @@ class Instance(proto.Message):
             ``projects/{project_id}/locations/{location}/keyRings/{key_ring_id}/cryptoKeys/{key_id}``
 
             Learn more about `using your own encryption
-            keys </kms/docs/quickstart>`__.
+            keys <https://cloud.google.com/kms/docs/quickstart>`__.
         no_public_ip (bool):
             If true, no public IP will be assigned to
             this instance.
@@ -258,8 +258,8 @@ class Instance(proto.Message):
     class AcceleratorConfig(proto.Message):
         r"""Definition of a hardware accelerator. Note that not all combinations
         of ``type`` and ``core_count`` are valid. Check `GPUs on Compute
-        Engine </compute/docs/gpus/#gpus-list>`__ to find a valid
-        combination. TPUs are not supported.
+        Engine <https://cloud.google.com/compute/docs/gpus/#gpus-list>`__ to
+        find a valid combination. TPUs are not supported.
 
         Attributes:
             type_ (google.cloud.notebooks_v1beta1.types.Instance.AcceleratorType):

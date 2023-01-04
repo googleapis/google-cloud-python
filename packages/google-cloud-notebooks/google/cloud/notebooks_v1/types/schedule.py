@@ -37,8 +37,8 @@ class Schedule(proto.Message):
             ``projects/{project_id}/locations/{location}/schedules/{schedule_id}``
         display_name (str):
             Output only. Display name used for UI purposes. Name can
-            only contain alphanumeric characters, hyphens '-', and
-            underscores '_'.
+            only contain alphanumeric characters, hyphens ``-``, and
+            underscores ``_``.
         description (str):
             A brief description of this environment.
         state (google.cloud.notebooks_v1.types.Schedule.State):
@@ -46,7 +46,7 @@ class Schedule(proto.Message):
         cron_schedule (str):
             Cron-tab formatted schedule by which the job will execute.
             Format: minute, hour, day of month, month, day of week, e.g.
-            0 0 \* \* WED = every Wednesday More examples:
+            ``0 0 * * WED`` = every Wednesday More examples:
             https://crontab.guru/examples.html
         time_zone (str):
             Timezone on which the cron_schedule. The value of this field

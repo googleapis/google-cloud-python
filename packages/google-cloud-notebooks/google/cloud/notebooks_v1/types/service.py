@@ -190,7 +190,7 @@ class ListInstancesResponse(proto.Message):
             call.
         unreachable (MutableSequence[str]):
             Locations that could not be reached. For example,
-            ['us-west1-a', 'us-central1-b']. A ListInstancesResponse
+            ``['us-west1-a', 'us-central1-b']``. A ListInstancesResponse
             will only contain either instances or unreachables,
     """
 
@@ -681,9 +681,8 @@ class RollbackInstanceRequest(proto.Message):
             Required. Format:
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
         target_snapshot (str):
-            Required. The snapshot for rollback.
-            Example:
-            "projects/test-project/global/snapshots/krwlzipynril".
+            Required. The snapshot for rollback. Example:
+            ``projects/test-project/global/snapshots/krwlzipynril``.
     """
 
     name: str = proto.Field(
@@ -1040,8 +1039,8 @@ class ListExecutionsRequest(proto.Message):
             used to continue listing from the last result.
         filter (str):
             Filter applied to resulting executions. Currently only
-            supports filtering executions by a specified schedule_id.
-            Format: ``schedule_id=<Schedule_ID>``
+            supports filtering executions by a specified
+            ``schedule_id``. Format: ``schedule_id=<Schedule_ID>``
         order_by (str):
             Sort by field.
     """

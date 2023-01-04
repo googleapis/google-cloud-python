@@ -85,7 +85,7 @@ class ListRuntimesResponse(proto.Message):
             call.
         unreachable (MutableSequence[str]):
             Locations that could not be reached. For example,
-            ['us-west1', 'us-central1']. A ListRuntimesResponse will
+            ``['us-west1', 'us-central1']``. A ListRuntimesResponse will
             only contain either runtimes or unreachables,
     """
 
@@ -356,12 +356,12 @@ class UpdateRuntimeRequest(proto.Message):
 
             Currently, only the following fields can be updated:
 
-            -  software_config.kernels
-            -  software_config.post_startup_script
-            -  software_config.custom_gpu_driver_path
-            -  software_config.idle_shutdown
-            -  software_config.idle_shutdown_timeout
-            -  software_config.disable_terminal
+            -  ``software_config.kernels``
+            -  ``software_config.post_startup_script``
+            -  ``software_config.custom_gpu_driver_path``
+            -  ``software_config.idle_shutdown``
+            -  ``software_config.idle_shutdown_timeout``
+            -  ``software_config.disable_terminal``
         request_id (str):
             Idempotent request UUID.
     """

@@ -128,12 +128,13 @@ class Instance(proto.Message):
                https://www.googleapis.com/auth/compute
         machine_type (str):
             Required. The `Compute Engine machine
-            type </compute/docs/machine-types>`__ of this instance.
+            type <https://cloud.google.com/compute/docs/machine-types>`__
+            of this instance.
         accelerator_config (google.cloud.notebooks_v1.types.Instance.AcceleratorConfig):
             The hardware accelerator used on this instance. If you use
             accelerators, make sure that your configuration has `enough
             vCPUs and memory to support the ``machine_type`` you have
-            selected </compute/docs/gpus/#gpus-list>`__.
+            selected <https://cloud.google.com/compute/docs/gpus/#gpus-list>`__.
         state (google.cloud.notebooks_v1.types.Instance.State):
             Output only. The state of this instance.
         install_gpu_driver (bool):
@@ -153,9 +154,9 @@ class Instance(proto.Message):
         boot_disk_size_gb (int):
             Input only. The size of the boot disk in GB
             attached to this instance, up to a maximum of
-            64000&nbsp;GB (64&nbsp;TB). The minimum
-            recommended value is 100&nbsp;GB. If not
-            specified, this defaults to 100.
+            64000 GB (64 TB). The minimum recommended value
+            is 100 GB. If not specified, this defaults to
+            100.
         data_disk_type (google.cloud.notebooks_v1.types.Instance.DiskType):
             Input only. The type of the data disk attached to this
             instance, defaults to standard persistent disk
@@ -163,10 +164,10 @@ class Instance(proto.Message):
         data_disk_size_gb (int):
             Input only. The size of the data disk in GB
             attached to this instance, up to a maximum of
-            64000&nbsp;GB (64&nbsp;TB). You can choose the
-            size of the data disk based on how big your
-            notebooks and data are. If not specified, this
-            defaults to 100.
+            64000 GB (64 TB). You can choose the size of the
+            data disk based on how big your notebooks and
+            data are. If not specified, this defaults to
+            100.
         no_remove_data_disk (bool):
             Input only. If true, the data disk will not
             be auto deleted when deleting the instance.
@@ -287,8 +288,8 @@ class Instance(proto.Message):
     class AcceleratorConfig(proto.Message):
         r"""Definition of a hardware accelerator. Note that not all combinations
         of ``type`` and ``core_count`` are valid. Check `GPUs on Compute
-        Engine </compute/docs/gpus/#gpus-list>`__ to find a valid
-        combination. TPUs are not supported.
+        Engine <https://cloud.google.com/compute/docs/gpus/#gpus-list>`__ to
+        find a valid combination. TPUs are not supported.
 
         Attributes:
             type_ (google.cloud.notebooks_v1.types.Instance.AcceleratorType):
@@ -322,10 +323,10 @@ class Instance(proto.Message):
                 the disk for its root filesystem.
             device_name (str):
                 Indicates a unique device name of your choice that is
-                reflected into the /dev/disk/by-id/google-\* tree of a Linux
-                operating system running within the instance. This name can
-                be used to reference the device for mounting, resizing, and
-                so on, from within the instance.
+                reflected into the ``/dev/disk/by-id/google-*`` tree of a
+                Linux operating system running within the instance. This
+                name can be used to reference the device for mounting,
+                resizing, and so on, from within the instance.
 
                 If not specified, the server chooses a default device name
                 to apply to this disk, in the form persistent-disk-x, where
@@ -353,8 +354,8 @@ class Instance(proto.Message):
                 For performance characteristics of SCSI over NVMe, see Local
                 SSD performance. Valid values:
 
-                -  NVME
-                -  SCSI
+                -  ``NVME``
+                -  ``SCSI``
             kind (str):
                 Type of the resource. Always
                 compute#attachedDisk for attached disks.
@@ -364,21 +365,21 @@ class Instance(proto.Message):
                 and aggregate usage data for public and
                 marketplace images.
             mode (str):
-                The mode in which to attach this disk, either READ_WRITE or
-                READ_ONLY. If not specified, the default is to attach the
-                disk in READ_WRITE mode. Valid values:
+                The mode in which to attach this disk, either ``READ_WRITE``
+                or ``READ_ONLY``. If not specified, the default is to attach
+                the disk in ``READ_WRITE`` mode. Valid values:
 
-                -  READ_ONLY
-                -  READ_WRITE
+                -  ``READ_ONLY``
+                -  ``READ_WRITE``
             source (str):
                 Indicates a valid partial or full URL to an
                 existing Persistent Disk resource.
             type_ (str):
-                Indicates the type of the disk, either SCRATCH or
-                PERSISTENT. Valid values:
+                Indicates the type of the disk, either ``SCRATCH`` or
+                ``PERSISTENT``. Valid values:
 
-                -  PERSISTENT
-                -  SCRATCH
+                -  ``PERSISTENT``
+                -  ``SCRATCH``
         """
 
         class GuestOsFeature(proto.Message):
@@ -390,12 +391,12 @@ class Instance(proto.Message):
                     system features to see a list of available options. Valid
                     values:
 
-                    -  FEATURE_TYPE_UNSPECIFIED
-                    -  MULTI_IP_SUBNET
-                    -  SECURE_BOOT
-                    -  UEFI_COMPATIBLE
-                    -  VIRTIO_SCSI_MULTIQUEUE
-                    -  WINDOWS
+                    -  ``FEATURE_TYPE_UNSPECIFIED``
+                    -  ``MULTI_IP_SUBNET``
+                    -  ``SECURE_BOOT``
+                    -  ``UEFI_COMPATIBLE``
+                    -  ``VIRTIO_SCSI_MULTIQUEUE``
+                    -  ``WINDOWS``
             """
 
             type_: str = proto.Field(
@@ -456,8 +457,10 @@ class Instance(proto.Message):
         )
 
     class ShieldedInstanceConfig(proto.Message):
-        r"""A set of Shielded Instance options. Check [Images using supported
-        Shielded VM features] Not all combinations are valid.
+        r"""A set of Shielded Instance options. Check `Images using supported
+        Shielded VM
+        features <https://cloud.google.com/compute/docs/instances/modifying-shielded-vm>`__.
+        Not all combinations are valid.
 
         Attributes:
             enable_secure_boot (bool):
@@ -520,7 +523,7 @@ class Instance(proto.Message):
                 entry is created.
             target_image (str):
                 Target VM Image. Format:
-                ainotebooks-vm/project/image-name/name.
+                ``ainotebooks-vm/project/image-name/name``.
             action (google.cloud.notebooks_v1.types.Instance.UpgradeHistoryEntry.Action):
                 Action. Rolloback or Upgrade.
             target_version (str):

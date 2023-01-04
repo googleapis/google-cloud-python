@@ -155,7 +155,7 @@ class ListInstancesResponse(proto.Message):
             call.
         unreachable (MutableSequence[str]):
             Locations that could not be reached. For example,
-            ['us-west1-a', 'us-central1-b']. A ListInstancesResponse
+            ``['us-west1-a', 'us-central1-b']``. A ListInstancesResponse
             will only contain either instances or unreachables,
     """
 
