@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.11.1](https://github.com/googleapis/python-datastore/compare/v2.11.0...v2.11.1) (2022-12-09)
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([6f6bb63](https://github.com/googleapis/python-datastore/commit/6f6bb63219ac4369d16d39d5ec7b22bffe59c48f))
+* Drop usage of pkg_resources ([6f6bb63](https://github.com/googleapis/python-datastore/commit/6f6bb63219ac4369d16d39d5ec7b22bffe59c48f))
+* Fix timeout default values ([6f6bb63](https://github.com/googleapis/python-datastore/commit/6f6bb63219ac4369d16d39d5ec7b22bffe59c48f))
+
+
+### Documentation
+
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([6f6bb63](https://github.com/googleapis/python-datastore/commit/6f6bb63219ac4369d16d39d5ec7b22bffe59c48f))
+
 ## [2.11.0](https://github.com/googleapis/python-datastore/compare/v2.10.0...v2.11.0) (2022-11-30)
 
 
