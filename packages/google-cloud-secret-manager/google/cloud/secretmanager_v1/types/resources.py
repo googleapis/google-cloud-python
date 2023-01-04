@@ -118,6 +118,21 @@ class Secret(proto.Message):
             modifiable via UpdateSecret. At launch access by alias will
             only be supported on GetSecretVersion and
             AccessSecretVersion.
+        annotations (MutableMapping[str, str]):
+            Optional. Custom metadata about the secret.
+
+            Annotations are distinct from various forms of labels.
+            Annotations exist to allow client tools to store their own
+            state information without requiring a database.
+
+            Annotation keys must be between 1 and 63 characters long,
+            have a UTF-8 encoding of maximum 128 bytes, begin and end
+            with an alphanumeric character ([a-z0-9A-Z]), and may have
+            dashes (-), underscores (_), dots (.), and alphanumerics in
+            between these symbols.
+
+            The total size of annotation keys and values must be less
+            than 16KiB.
     """
 
     name: str = proto.Field(
@@ -169,6 +184,11 @@ class Secret(proto.Message):
         proto.STRING,
         proto.INT64,
         number=11,
+    )
+    annotations: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=13,
     )
 
 

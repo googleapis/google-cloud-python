@@ -432,8 +432,8 @@ class SecretManagerServiceAsyncClient:
 
         Returns:
             google.cloud.secretmanager_v1.types.Secret:
-                A [Secret][google.cloud.secretmanager.v1.Secret] is a logical secret whose value and versions can
-                   be accessed.
+                A [Secret][google.cloud.secretmanager.v1.Secret] is a logical secret whose
+                   value and versions can be accessed.
 
                    A [Secret][google.cloud.secretmanager.v1.Secret] is
                    made up of zero or more
@@ -663,8 +663,8 @@ class SecretManagerServiceAsyncClient:
 
         Returns:
             google.cloud.secretmanager_v1.types.Secret:
-                A [Secret][google.cloud.secretmanager.v1.Secret] is a logical secret whose value and versions can
-                   be accessed.
+                A [Secret][google.cloud.secretmanager.v1.Secret] is a logical secret whose
+                   value and versions can be accessed.
 
                    A [Secret][google.cloud.secretmanager.v1.Secret] is
                    made up of zero or more
@@ -778,8 +778,8 @@ class SecretManagerServiceAsyncClient:
 
         Returns:
             google.cloud.secretmanager_v1.types.Secret:
-                A [Secret][google.cloud.secretmanager.v1.Secret] is a logical secret whose value and versions can
-                   be accessed.
+                A [Secret][google.cloud.secretmanager.v1.Secret] is a logical secret whose
+                   value and versions can be accessed.
 
                    A [Secret][google.cloud.secretmanager.v1.Secret] is
                    made up of zero or more
