@@ -58,8 +58,8 @@ def nth(iterable: Iterable[T], n: int, default: Optional[T] = None) -> Optional[
 
     Args
         iterable (Iterable(T)): An iterable on any type.
-        n (int):                The 'index' of the lement to retrieve.
-        default (Optional(T)):  An optional default elemnt if the iterable has
+        n (int):                The 'index' of the element to retrieve.
+        default (Optional(T)):  An optional default element if the iterable has
                                  fewer than n elements.
     """
     return next(itertools.islice(iterable, n, None), default)
