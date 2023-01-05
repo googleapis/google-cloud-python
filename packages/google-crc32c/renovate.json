@@ -1,6 +1,9 @@
 {
   "extends": [
-    "config:base", ":disableDependencyDashboard"
+    "config:base",
+    "group:all",
+    ":disableDependencyDashboard",
+    "schedule:weekly"
   ],
   "ignorePaths": [".pre-commit-config.yaml", "scripts/dev-requirements.txt"],
   "pip_requirements": {
