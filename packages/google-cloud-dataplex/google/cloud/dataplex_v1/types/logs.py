@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
         "DiscoveryEvent",
         "JobEvent",
         "SessionEvent",
+        "DataScanEvent",
     },
 )
 
@@ -344,8 +345,8 @@ class SessionEvent(proto.Message):
             The status of the event.
         fast_startup_enabled (bool):
             If the session is associated with an
-            Environment with fast startup enabled, and was
-            pre-created before being assigned to a user.
+            environment with fast startup enabled, and was
+            created before being assigned to a user.
         unassigned_duration (google.protobuf.duration_pb2.Duration):
             The idle duration of a warm pooled session
             before it is assigned to user.
@@ -445,6 +446,185 @@ class SessionEvent(proto.Message):
         proto.MESSAGE,
         number=8,
         message=duration_pb2.Duration,
+    )
+
+
+class DataScanEvent(proto.Message):
+    r"""These messages contain information about the execution of a
+    datascan. The monitored resource is 'DataScan'
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        data_source (str):
+            The data source of the data scan
+        job_id (str):
+            The identifier of the specific data scan job
+            this log entry is for.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time when the data scan job started to
+            run.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time when the data scan job finished.
+        type_ (google.cloud.dataplex_v1.types.DataScanEvent.ScanType):
+            The type of the data scan.
+        state (google.cloud.dataplex_v1.types.DataScanEvent.State):
+            The status of the data scan job.
+        message (str):
+            The message describing the data scan job
+            event.
+        spec_version (str):
+            A version identifier of the spec which was
+            used to execute this job.
+        trigger (google.cloud.dataplex_v1.types.DataScanEvent.Trigger):
+            The trigger type of the data scan job.
+        scope (google.cloud.dataplex_v1.types.DataScanEvent.Scope):
+            The scope of the data scan (e.g. full,
+            incremental).
+        data_profile (google.cloud.dataplex_v1.types.DataScanEvent.DataProfileResult):
+            Data profile result for data profile type
+            data scan.
+
+            This field is a member of `oneof`_ ``result``.
+        data_quality (google.cloud.dataplex_v1.types.DataScanEvent.DataQualityResult):
+            Data quality result for data quality type
+            data scan.
+
+            This field is a member of `oneof`_ ``result``.
+    """
+
+    class ScanType(proto.Enum):
+        r"""The type of the data scan."""
+        SCAN_TYPE_UNSPECIFIED = 0
+        DATA_PROFILE = 1
+        DATA_QUALITY = 2
+
+    class State(proto.Enum):
+        r"""The job state of the data scan."""
+        STATE_UNSPECIFIED = 0
+        STARTED = 1
+        SUCCEEDED = 2
+        FAILED = 3
+        CANCELLED = 4
+
+    class Trigger(proto.Enum):
+        r"""The trigger type for the data scan."""
+        TRIGGER_UNSPECIFIED = 0
+        ON_DEMAND = 1
+        SCHEDULE = 2
+
+    class Scope(proto.Enum):
+        r"""The scope of job for the data scan."""
+        SCOPE_UNSPECIFIED = 0
+        FULL = 1
+        INCREMENTAL = 2
+
+    class DataProfileResult(proto.Message):
+        r"""Data profile result for data scan job.
+
+        Attributes:
+            row_count (int):
+                The count of rows processed in the data scan
+                job.
+        """
+
+        row_count: int = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+
+    class DataQualityResult(proto.Message):
+        r"""Data quality result for data scan job.
+
+        Attributes:
+            row_count (int):
+                The count of rows processed in the data scan
+                job.
+            passed (bool):
+                Whether the data quality result was ``pass`` or not.
+            dimension_passed (MutableMapping[str, bool]):
+                The result of each dimension for data quality result. The
+                key of the map is the name of the dimension. The value is
+                the bool value depicting whether the dimension result was
+                ``pass`` or not.
+        """
+
+        row_count: int = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        passed: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        dimension_passed: MutableMapping[str, bool] = proto.MapField(
+            proto.STRING,
+            proto.BOOL,
+            number=3,
+        )
+
+    data_source: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    job_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    type_: ScanType = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=ScanType,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=State,
+    )
+    message: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    spec_version: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    trigger: Trigger = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=Trigger,
+    )
+    scope: Scope = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=Scope,
+    )
+    data_profile: DataProfileResult = proto.Field(
+        proto.MESSAGE,
+        number=101,
+        oneof="result",
+        message=DataProfileResult,
+    )
+    data_quality: DataQualityResult = proto.Field(
+        proto.MESSAGE,
+        number=102,
+        oneof="result",
+        message=DataQualityResult,
     )
 
 

@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-dataplex",
-    "version": "1.2.0"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -1292,6 +1292,1318 @@
         }
       ],
       "title": "dataplex_v1_generated_content_service_update_content_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataScanServiceAsyncClient",
+          "shortName": "DataScanServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataScanServiceAsyncClient.create_data_scan",
+        "method": {
+          "fullName": "google.cloud.dataplex.v1.DataScanService.CreateDataScan",
+          "service": {
+            "fullName": "google.cloud.dataplex.v1.DataScanService",
+            "shortName": "DataScanService"
+          },
+          "shortName": "CreateDataScan"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.CreateDataScanRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "data_scan",
+            "type": "google.cloud.dataplex_v1.types.DataScan"
+          },
+          {
+            "name": "data_scan_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_data_scan"
+      },
+      "description": "Sample for CreateDataScan",
+      "file": "dataplex_v1_generated_data_scan_service_create_data_scan_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataplex_v1_generated_DataScanService_CreateDataScan_async",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataplex_v1_generated_data_scan_service_create_data_scan_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataScanServiceClient",
+          "shortName": "DataScanServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataScanServiceClient.create_data_scan",
+        "method": {
+          "fullName": "google.cloud.dataplex.v1.DataScanService.CreateDataScan",
+          "service": {
+            "fullName": "google.cloud.dataplex.v1.DataScanService",
+            "shortName": "DataScanService"
+          },
+          "shortName": "CreateDataScan"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.CreateDataScanRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "data_scan",
+            "type": "google.cloud.dataplex_v1.types.DataScan"
+          },
+          {
+            "name": "data_scan_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_data_scan"
+      },
+      "description": "Sample for CreateDataScan",
+      "file": "dataplex_v1_generated_data_scan_service_create_data_scan_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataplex_v1_generated_DataScanService_CreateDataScan_sync",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataplex_v1_generated_data_scan_service_create_data_scan_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataScanServiceAsyncClient",
+          "shortName": "DataScanServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataScanServiceAsyncClient.delete_data_scan",
+        "method": {
+          "fullName": "google.cloud.dataplex.v1.DataScanService.DeleteDataScan",
+          "service": {
+            "fullName": "google.cloud.dataplex.v1.DataScanService",
+            "shortName": "DataScanService"
+          },
+          "shortName": "DeleteDataScan"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.DeleteDataScanRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_data_scan"
+      },
+      "description": "Sample for DeleteDataScan",
+      "file": "dataplex_v1_generated_data_scan_service_delete_data_scan_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataplex_v1_generated_DataScanService_DeleteDataScan_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataplex_v1_generated_data_scan_service_delete_data_scan_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataScanServiceClient",
+          "shortName": "DataScanServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataScanServiceClient.delete_data_scan",
+        "method": {
+          "fullName": "google.cloud.dataplex.v1.DataScanService.DeleteDataScan",
+          "service": {
+            "fullName": "google.cloud.dataplex.v1.DataScanService",
+            "shortName": "DataScanService"
+          },
+          "shortName": "DeleteDataScan"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.DeleteDataScanRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_data_scan"
+      },
+      "description": "Sample for DeleteDataScan",
+      "file": "dataplex_v1_generated_data_scan_service_delete_data_scan_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataplex_v1_generated_DataScanService_DeleteDataScan_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataplex_v1_generated_data_scan_service_delete_data_scan_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataScanServiceAsyncClient",
+          "shortName": "DataScanServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataScanServiceAsyncClient.get_data_scan_job",
+        "method": {
+          "fullName": "google.cloud.dataplex.v1.DataScanService.GetDataScanJob",
+          "service": {
+            "fullName": "google.cloud.dataplex.v1.DataScanService",
+            "shortName": "DataScanService"
+          },
+          "shortName": "GetDataScanJob"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.GetDataScanJobRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.DataScanJob",
+        "shortName": "get_data_scan_job"
+      },
+      "description": "Sample for GetDataScanJob",
+      "file": "dataplex_v1_generated_data_scan_service_get_data_scan_job_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataplex_v1_generated_DataScanService_GetDataScanJob_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataplex_v1_generated_data_scan_service_get_data_scan_job_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataScanServiceClient",
+          "shortName": "DataScanServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataScanServiceClient.get_data_scan_job",
+        "method": {
+          "fullName": "google.cloud.dataplex.v1.DataScanService.GetDataScanJob",
+          "service": {
+            "fullName": "google.cloud.dataplex.v1.DataScanService",
+            "shortName": "DataScanService"
+          },
+          "shortName": "GetDataScanJob"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.GetDataScanJobRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.DataScanJob",
+        "shortName": "get_data_scan_job"
+      },
+      "description": "Sample for GetDataScanJob",
+      "file": "dataplex_v1_generated_data_scan_service_get_data_scan_job_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataplex_v1_generated_DataScanService_GetDataScanJob_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataplex_v1_generated_data_scan_service_get_data_scan_job_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataScanServiceAsyncClient",
+          "shortName": "DataScanServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataScanServiceAsyncClient.get_data_scan",
+        "method": {
+          "fullName": "google.cloud.dataplex.v1.DataScanService.GetDataScan",
+          "service": {
+            "fullName": "google.cloud.dataplex.v1.DataScanService",
+            "shortName": "DataScanService"
+          },
+          "shortName": "GetDataScan"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.GetDataScanRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.DataScan",
+        "shortName": "get_data_scan"
+      },
+      "description": "Sample for GetDataScan",
+      "file": "dataplex_v1_generated_data_scan_service_get_data_scan_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataplex_v1_generated_DataScanService_GetDataScan_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataplex_v1_generated_data_scan_service_get_data_scan_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataScanServiceClient",
+          "shortName": "DataScanServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataScanServiceClient.get_data_scan",
+        "method": {
+          "fullName": "google.cloud.dataplex.v1.DataScanService.GetDataScan",
+          "service": {
+            "fullName": "google.cloud.dataplex.v1.DataScanService",
+            "shortName": "DataScanService"
+          },
+          "shortName": "GetDataScan"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.GetDataScanRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.DataScan",
+        "shortName": "get_data_scan"
+      },
+      "description": "Sample for GetDataScan",
+      "file": "dataplex_v1_generated_data_scan_service_get_data_scan_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataplex_v1_generated_DataScanService_GetDataScan_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataplex_v1_generated_data_scan_service_get_data_scan_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataScanServiceAsyncClient",
+          "shortName": "DataScanServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataScanServiceAsyncClient.list_data_scan_jobs",
+        "method": {
+          "fullName": "google.cloud.dataplex.v1.DataScanService.ListDataScanJobs",
+          "service": {
+            "fullName": "google.cloud.dataplex.v1.DataScanService",
+            "shortName": "DataScanService"
+          },
+          "shortName": "ListDataScanJobs"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListDataScanJobsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.data_scan_service.pagers.ListDataScanJobsAsyncPager",
+        "shortName": "list_data_scan_jobs"
+      },
+      "description": "Sample for ListDataScanJobs",
+      "file": "dataplex_v1_generated_data_scan_service_list_data_scan_jobs_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataplex_v1_generated_DataScanService_ListDataScanJobs_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataplex_v1_generated_data_scan_service_list_data_scan_jobs_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataScanServiceClient",
+          "shortName": "DataScanServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataScanServiceClient.list_data_scan_jobs",
+        "method": {
+          "fullName": "google.cloud.dataplex.v1.DataScanService.ListDataScanJobs",
+          "service": {
+            "fullName": "google.cloud.dataplex.v1.DataScanService",
+            "shortName": "DataScanService"
+          },
+          "shortName": "ListDataScanJobs"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListDataScanJobsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.data_scan_service.pagers.ListDataScanJobsPager",
+        "shortName": "list_data_scan_jobs"
+      },
+      "description": "Sample for ListDataScanJobs",
+      "file": "dataplex_v1_generated_data_scan_service_list_data_scan_jobs_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataplex_v1_generated_DataScanService_ListDataScanJobs_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataplex_v1_generated_data_scan_service_list_data_scan_jobs_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataScanServiceAsyncClient",
+          "shortName": "DataScanServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataScanServiceAsyncClient.list_data_scans",
+        "method": {
+          "fullName": "google.cloud.dataplex.v1.DataScanService.ListDataScans",
+          "service": {
+            "fullName": "google.cloud.dataplex.v1.DataScanService",
+            "shortName": "DataScanService"
+          },
+          "shortName": "ListDataScans"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListDataScansRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.data_scan_service.pagers.ListDataScansAsyncPager",
+        "shortName": "list_data_scans"
+      },
+      "description": "Sample for ListDataScans",
+      "file": "dataplex_v1_generated_data_scan_service_list_data_scans_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataplex_v1_generated_DataScanService_ListDataScans_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataplex_v1_generated_data_scan_service_list_data_scans_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataScanServiceClient",
+          "shortName": "DataScanServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataScanServiceClient.list_data_scans",
+        "method": {
+          "fullName": "google.cloud.dataplex.v1.DataScanService.ListDataScans",
+          "service": {
+            "fullName": "google.cloud.dataplex.v1.DataScanService",
+            "shortName": "DataScanService"
+          },
+          "shortName": "ListDataScans"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListDataScansRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.data_scan_service.pagers.ListDataScansPager",
+        "shortName": "list_data_scans"
+      },
+      "description": "Sample for ListDataScans",
+      "file": "dataplex_v1_generated_data_scan_service_list_data_scans_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataplex_v1_generated_DataScanService_ListDataScans_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataplex_v1_generated_data_scan_service_list_data_scans_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataScanServiceAsyncClient",
+          "shortName": "DataScanServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataScanServiceAsyncClient.run_data_scan",
+        "method": {
+          "fullName": "google.cloud.dataplex.v1.DataScanService.RunDataScan",
+          "service": {
+            "fullName": "google.cloud.dataplex.v1.DataScanService",
+            "shortName": "DataScanService"
+          },
+          "shortName": "RunDataScan"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.RunDataScanRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.RunDataScanResponse",
+        "shortName": "run_data_scan"
+      },
+      "description": "Sample for RunDataScan",
+      "file": "dataplex_v1_generated_data_scan_service_run_data_scan_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataplex_v1_generated_DataScanService_RunDataScan_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataplex_v1_generated_data_scan_service_run_data_scan_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataScanServiceClient",
+          "shortName": "DataScanServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataScanServiceClient.run_data_scan",
+        "method": {
+          "fullName": "google.cloud.dataplex.v1.DataScanService.RunDataScan",
+          "service": {
+            "fullName": "google.cloud.dataplex.v1.DataScanService",
+            "shortName": "DataScanService"
+          },
+          "shortName": "RunDataScan"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.RunDataScanRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.RunDataScanResponse",
+        "shortName": "run_data_scan"
+      },
+      "description": "Sample for RunDataScan",
+      "file": "dataplex_v1_generated_data_scan_service_run_data_scan_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataplex_v1_generated_DataScanService_RunDataScan_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataplex_v1_generated_data_scan_service_run_data_scan_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataScanServiceAsyncClient",
+          "shortName": "DataScanServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataScanServiceAsyncClient.update_data_scan",
+        "method": {
+          "fullName": "google.cloud.dataplex.v1.DataScanService.UpdateDataScan",
+          "service": {
+            "fullName": "google.cloud.dataplex.v1.DataScanService",
+            "shortName": "DataScanService"
+          },
+          "shortName": "UpdateDataScan"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.UpdateDataScanRequest"
+          },
+          {
+            "name": "data_scan",
+            "type": "google.cloud.dataplex_v1.types.DataScan"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_data_scan"
+      },
+      "description": "Sample for UpdateDataScan",
+      "file": "dataplex_v1_generated_data_scan_service_update_data_scan_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataplex_v1_generated_DataScanService_UpdateDataScan_async",
+      "segments": [
+        {
+          "end": 58,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 58,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 55,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 59,
+          "start": 56,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataplex_v1_generated_data_scan_service_update_data_scan_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataScanServiceClient",
+          "shortName": "DataScanServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataScanServiceClient.update_data_scan",
+        "method": {
+          "fullName": "google.cloud.dataplex.v1.DataScanService.UpdateDataScan",
+          "service": {
+            "fullName": "google.cloud.dataplex.v1.DataScanService",
+            "shortName": "DataScanService"
+          },
+          "shortName": "UpdateDataScan"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.UpdateDataScanRequest"
+          },
+          {
+            "name": "data_scan",
+            "type": "google.cloud.dataplex_v1.types.DataScan"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_data_scan"
+      },
+      "description": "Sample for UpdateDataScan",
+      "file": "dataplex_v1_generated_data_scan_service_update_data_scan_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataplex_v1_generated_DataScanService_UpdateDataScan_sync",
+      "segments": [
+        {
+          "end": 58,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 58,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 55,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 59,
+          "start": 56,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataplex_v1_generated_data_scan_service_update_data_scan_sync.py"
     },
     {
       "canonical": true,

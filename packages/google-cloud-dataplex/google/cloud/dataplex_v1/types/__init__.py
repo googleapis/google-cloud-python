@@ -22,7 +22,31 @@ from .content import (
     ListContentResponse,
     UpdateContentRequest,
 )
-from .logs import DiscoveryEvent, JobEvent, SessionEvent
+from .data_profile import DataProfileResult, DataProfileSpec
+from .data_quality import (
+    DataQualityDimensionResult,
+    DataQualityResult,
+    DataQualityRule,
+    DataQualityRuleResult,
+    DataQualitySpec,
+)
+from .datascans import (
+    CreateDataScanRequest,
+    DataScan,
+    DataScanJob,
+    DataScanType,
+    DeleteDataScanRequest,
+    GetDataScanJobRequest,
+    GetDataScanRequest,
+    ListDataScanJobsRequest,
+    ListDataScanJobsResponse,
+    ListDataScansRequest,
+    ListDataScansResponse,
+    RunDataScanRequest,
+    RunDataScanResponse,
+    UpdateDataScanRequest,
+)
+from .logs import DataScanEvent, DiscoveryEvent, JobEvent, SessionEvent
 from .metadata_ import (
     CreateEntityRequest,
     CreatePartitionRequest,
@@ -41,6 +65,7 @@ from .metadata_ import (
     StorageSystem,
     UpdateEntityRequest,
 )
+from .processing import DataSource, ScannedData, Trigger
 from .resources import Action, Asset, AssetStatus, Lake, State, Zone
 from .service import (
     CancelJobRequest,
@@ -97,6 +122,28 @@ __all__ = (
     "ListContentRequest",
     "ListContentResponse",
     "UpdateContentRequest",
+    "DataProfileResult",
+    "DataProfileSpec",
+    "DataQualityDimensionResult",
+    "DataQualityResult",
+    "DataQualityRule",
+    "DataQualityRuleResult",
+    "DataQualitySpec",
+    "CreateDataScanRequest",
+    "DataScan",
+    "DataScanJob",
+    "DeleteDataScanRequest",
+    "GetDataScanJobRequest",
+    "GetDataScanRequest",
+    "ListDataScanJobsRequest",
+    "ListDataScanJobsResponse",
+    "ListDataScansRequest",
+    "ListDataScansResponse",
+    "RunDataScanRequest",
+    "RunDataScanResponse",
+    "UpdateDataScanRequest",
+    "DataScanType",
+    "DataScanEvent",
     "DiscoveryEvent",
     "JobEvent",
     "SessionEvent",
@@ -116,6 +163,9 @@ __all__ = (
     "StorageFormat",
     "UpdateEntityRequest",
     "StorageSystem",
+    "DataSource",
+    "ScannedData",
+    "Trigger",
     "Action",
     "Asset",
     "AssetStatus",

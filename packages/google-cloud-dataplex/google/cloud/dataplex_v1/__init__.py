@@ -19,6 +19,10 @@ __version__ = package_version.__version__
 
 
 from .services.content_service import ContentServiceAsyncClient, ContentServiceClient
+from .services.data_scan_service import (
+    DataScanServiceAsyncClient,
+    DataScanServiceClient,
+)
 from .services.dataplex_service import DataplexServiceAsyncClient, DataplexServiceClient
 from .services.metadata_service import MetadataServiceAsyncClient, MetadataServiceClient
 from .types.analyze import Content, Environment, Session
@@ -30,7 +34,31 @@ from .types.content import (
     ListContentResponse,
     UpdateContentRequest,
 )
-from .types.logs import DiscoveryEvent, JobEvent, SessionEvent
+from .types.data_profile import DataProfileResult, DataProfileSpec
+from .types.data_quality import (
+    DataQualityDimensionResult,
+    DataQualityResult,
+    DataQualityRule,
+    DataQualityRuleResult,
+    DataQualitySpec,
+)
+from .types.datascans import (
+    CreateDataScanRequest,
+    DataScan,
+    DataScanJob,
+    DataScanType,
+    DeleteDataScanRequest,
+    GetDataScanJobRequest,
+    GetDataScanRequest,
+    ListDataScanJobsRequest,
+    ListDataScanJobsResponse,
+    ListDataScansRequest,
+    ListDataScansResponse,
+    RunDataScanRequest,
+    RunDataScanResponse,
+    UpdateDataScanRequest,
+)
+from .types.logs import DataScanEvent, DiscoveryEvent, JobEvent, SessionEvent
 from .types.metadata_ import (
     CreateEntityRequest,
     CreatePartitionRequest,
@@ -49,6 +77,7 @@ from .types.metadata_ import (
     StorageSystem,
     UpdateEntityRequest,
 )
+from .types.processing import DataSource, ScannedData, Trigger
 from .types.resources import Action, Asset, AssetStatus, Lake, State, Zone
 from .types.service import (
     CancelJobRequest,
@@ -97,6 +126,7 @@ from .types.tasks import Job, Task
 
 __all__ = (
     "ContentServiceAsyncClient",
+    "DataScanServiceAsyncClient",
     "DataplexServiceAsyncClient",
     "MetadataServiceAsyncClient",
     "Action",
@@ -107,15 +137,30 @@ __all__ = (
     "ContentServiceClient",
     "CreateAssetRequest",
     "CreateContentRequest",
+    "CreateDataScanRequest",
     "CreateEntityRequest",
     "CreateEnvironmentRequest",
     "CreateLakeRequest",
     "CreatePartitionRequest",
     "CreateTaskRequest",
     "CreateZoneRequest",
+    "DataProfileResult",
+    "DataProfileSpec",
+    "DataQualityDimensionResult",
+    "DataQualityResult",
+    "DataQualityRule",
+    "DataQualityRuleResult",
+    "DataQualitySpec",
+    "DataScan",
+    "DataScanEvent",
+    "DataScanJob",
+    "DataScanServiceClient",
+    "DataScanType",
+    "DataSource",
     "DataplexServiceClient",
     "DeleteAssetRequest",
     "DeleteContentRequest",
+    "DeleteDataScanRequest",
     "DeleteEntityRequest",
     "DeleteEnvironmentRequest",
     "DeleteLakeRequest",
@@ -127,6 +172,8 @@ __all__ = (
     "Environment",
     "GetAssetRequest",
     "GetContentRequest",
+    "GetDataScanJobRequest",
+    "GetDataScanRequest",
     "GetEntityRequest",
     "GetEnvironmentRequest",
     "GetJobRequest",
@@ -143,6 +190,10 @@ __all__ = (
     "ListAssetsResponse",
     "ListContentRequest",
     "ListContentResponse",
+    "ListDataScanJobsRequest",
+    "ListDataScanJobsResponse",
+    "ListDataScansRequest",
+    "ListDataScansResponse",
     "ListEntitiesRequest",
     "ListEntitiesResponse",
     "ListEnvironmentsRequest",
@@ -164,6 +215,9 @@ __all__ = (
     "MetadataServiceClient",
     "OperationMetadata",
     "Partition",
+    "RunDataScanRequest",
+    "RunDataScanResponse",
+    "ScannedData",
     "Schema",
     "Session",
     "SessionEvent",
@@ -171,8 +225,10 @@ __all__ = (
     "StorageFormat",
     "StorageSystem",
     "Task",
+    "Trigger",
     "UpdateAssetRequest",
     "UpdateContentRequest",
+    "UpdateDataScanRequest",
     "UpdateEntityRequest",
     "UpdateEnvironmentRequest",
     "UpdateLakeRequest",

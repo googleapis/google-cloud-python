@@ -835,6 +835,9 @@ class StorageFormat(proto.Message):
             - application/x-avro
             - application/x-orc
             - application/x-tfrecord
+            - application/x-parquet+iceberg
+            - application/x-avro+iceberg
+            - application/x-orc+iceberg
             - application/json
             - application/{subtypes}
             - text/csv
@@ -850,6 +853,11 @@ class StorageFormat(proto.Message):
         json (google.cloud.dataplex_v1.types.StorageFormat.JsonOptions):
             Optional. Additional information about CSV
             formatted data.
+
+            This field is a member of `oneof`_ ``options``.
+        iceberg (google.cloud.dataplex_v1.types.StorageFormat.IcebergOptions):
+            Optional. Additional information about
+            iceberg tables.
 
             This field is a member of `oneof`_ ``options``.
     """
@@ -930,6 +938,21 @@ class StorageFormat(proto.Message):
             number=1,
         )
 
+    class IcebergOptions(proto.Message):
+        r"""Describes Iceberg data format.
+
+        Attributes:
+            metadata_location (str):
+                Optional. The location of where the iceberg
+                metadata is present, must be within the table
+                path
+        """
+
+        metadata_location: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
     format_: Format = proto.Field(
         proto.ENUM,
         number=1,
@@ -955,6 +978,12 @@ class StorageFormat(proto.Message):
         number=11,
         oneof="options",
         message=JsonOptions,
+    )
+    iceberg: IcebergOptions = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="options",
+        message=IcebergOptions,
     )
 
 

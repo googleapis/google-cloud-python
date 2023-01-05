@@ -24,6 +24,12 @@ from google.cloud.dataplex_v1.services.content_service.async_client import (
 from google.cloud.dataplex_v1.services.content_service.client import (
     ContentServiceClient,
 )
+from google.cloud.dataplex_v1.services.data_scan_service.async_client import (
+    DataScanServiceAsyncClient,
+)
+from google.cloud.dataplex_v1.services.data_scan_service.client import (
+    DataScanServiceClient,
+)
 from google.cloud.dataplex_v1.services.dataplex_service.async_client import (
     DataplexServiceAsyncClient,
 )
@@ -45,7 +51,39 @@ from google.cloud.dataplex_v1.types.content import (
     ListContentResponse,
     UpdateContentRequest,
 )
-from google.cloud.dataplex_v1.types.logs import DiscoveryEvent, JobEvent, SessionEvent
+from google.cloud.dataplex_v1.types.data_profile import (
+    DataProfileResult,
+    DataProfileSpec,
+)
+from google.cloud.dataplex_v1.types.data_quality import (
+    DataQualityDimensionResult,
+    DataQualityResult,
+    DataQualityRule,
+    DataQualityRuleResult,
+    DataQualitySpec,
+)
+from google.cloud.dataplex_v1.types.datascans import (
+    CreateDataScanRequest,
+    DataScan,
+    DataScanJob,
+    DataScanType,
+    DeleteDataScanRequest,
+    GetDataScanJobRequest,
+    GetDataScanRequest,
+    ListDataScanJobsRequest,
+    ListDataScanJobsResponse,
+    ListDataScansRequest,
+    ListDataScansResponse,
+    RunDataScanRequest,
+    RunDataScanResponse,
+    UpdateDataScanRequest,
+)
+from google.cloud.dataplex_v1.types.logs import (
+    DataScanEvent,
+    DiscoveryEvent,
+    JobEvent,
+    SessionEvent,
+)
 from google.cloud.dataplex_v1.types.metadata_ import (
     CreateEntityRequest,
     CreatePartitionRequest,
@@ -64,6 +102,7 @@ from google.cloud.dataplex_v1.types.metadata_ import (
     StorageSystem,
     UpdateEntityRequest,
 )
+from google.cloud.dataplex_v1.types.processing import DataSource, ScannedData, Trigger
 from google.cloud.dataplex_v1.types.resources import (
     Action,
     Asset,
@@ -122,6 +161,8 @@ __all__ = (
     "ContentServiceAsyncClient",
     "DataplexServiceClient",
     "DataplexServiceAsyncClient",
+    "DataScanServiceClient",
+    "DataScanServiceAsyncClient",
     "MetadataServiceClient",
     "MetadataServiceAsyncClient",
     "Content",
@@ -133,6 +174,28 @@ __all__ = (
     "ListContentRequest",
     "ListContentResponse",
     "UpdateContentRequest",
+    "DataProfileResult",
+    "DataProfileSpec",
+    "DataQualityDimensionResult",
+    "DataQualityResult",
+    "DataQualityRule",
+    "DataQualityRuleResult",
+    "DataQualitySpec",
+    "CreateDataScanRequest",
+    "DataScan",
+    "DataScanJob",
+    "DeleteDataScanRequest",
+    "GetDataScanJobRequest",
+    "GetDataScanRequest",
+    "ListDataScanJobsRequest",
+    "ListDataScanJobsResponse",
+    "ListDataScansRequest",
+    "ListDataScansResponse",
+    "RunDataScanRequest",
+    "RunDataScanResponse",
+    "UpdateDataScanRequest",
+    "DataScanType",
+    "DataScanEvent",
     "DiscoveryEvent",
     "JobEvent",
     "SessionEvent",
@@ -152,6 +215,9 @@ __all__ = (
     "StorageFormat",
     "UpdateEntityRequest",
     "StorageSystem",
+    "DataSource",
+    "ScannedData",
+    "Trigger",
     "Action",
     "Asset",
     "AssetStatus",
