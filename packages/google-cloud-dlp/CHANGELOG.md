@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.10.1](https://github.com/googleapis/python-dlp/compare/v3.10.0...v3.10.1) (2023-01-05)
+
+
+### Documentation
+
+* **samples:** Adding a missing line as suggested by feedback ([#469](https://github.com/googleapis/python-dlp/issues/469)) ([8216416](https://github.com/googleapis/python-dlp/commit/8216416485fe2e450e622b1eba24a097c20ada19))
+
 ## [3.10.0](https://github.com/googleapis/python-dlp/compare/v3.9.2...v3.10.0) (2022-12-15)
 
 
