@@ -987,6 +987,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
             enable_tpu=True,
             tpu_ipv4_cidr_block="tpu_ipv4_cidr_block_value",
             id="id_value",
+            etag="etag_value",
         )
         response = client.get_cluster(request)
 
@@ -1026,6 +1027,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
     assert response.enable_tpu is True
     assert response.tpu_ipv4_cidr_block == "tpu_ipv4_cidr_block_value"
     assert response.id == "id_value"
+    assert response.etag == "etag_value"
 
 
 def test_get_cluster_empty_call():
@@ -1091,6 +1093,7 @@ async def test_get_cluster_async(
                 enable_tpu=True,
                 tpu_ipv4_cidr_block="tpu_ipv4_cidr_block_value",
                 id="id_value",
+                etag="etag_value",
             )
         )
         response = await client.get_cluster(request)
@@ -1131,6 +1134,7 @@ async def test_get_cluster_async(
     assert response.enable_tpu is True
     assert response.tpu_ipv4_cidr_block == "tpu_ipv4_cidr_block_value"
     assert response.id == "id_value"
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.asyncio
@@ -5952,6 +5956,7 @@ def test_get_node_pool(request_type, transport: str = "grpc"):
             status=cluster_service.NodePool.Status.PROVISIONING,
             status_message="status_message_value",
             pod_ipv4_cidr_size=1856,
+            etag="etag_value",
         )
         response = client.get_node_pool(request)
 
@@ -5971,6 +5976,7 @@ def test_get_node_pool(request_type, transport: str = "grpc"):
     assert response.status == cluster_service.NodePool.Status.PROVISIONING
     assert response.status_message == "status_message_value"
     assert response.pod_ipv4_cidr_size == 1856
+    assert response.etag == "etag_value"
 
 
 def test_get_node_pool_empty_call():
@@ -6016,6 +6022,7 @@ async def test_get_node_pool_async(
                 status=cluster_service.NodePool.Status.PROVISIONING,
                 status_message="status_message_value",
                 pod_ipv4_cidr_size=1856,
+                etag="etag_value",
             )
         )
         response = await client.get_node_pool(request)
@@ -6036,6 +6043,7 @@ async def test_get_node_pool_async(
     assert response.status == cluster_service.NodePool.Status.PROVISIONING
     assert response.status_message == "status_message_value"
     assert response.pod_ipv4_cidr_size == 1856
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.asyncio
