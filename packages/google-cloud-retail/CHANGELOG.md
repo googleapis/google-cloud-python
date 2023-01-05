@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/python-retail/compare/v1.12.0...v1.13.0) (2023-01-05)
+
+
+### Features
+
+* **v2beta:** Allow set feed id in merchant center link ([78bf804](https://github.com/googleapis/python-retail/commit/78bf804e4d3aa622605730a5b8eb5613b7f694f8))
+* **v2beta:** Deprecate retrievable_fields in product attribute ([78bf804](https://github.com/googleapis/python-retail/commit/78bf804e4d3aa622605730a5b8eb5613b7f694f8))
+* **v2beta:** Support async write mode for WriteUserEvent API ([78bf804](https://github.com/googleapis/python-retail/commit/78bf804e4d3aa622605730a5b8eb5613b7f694f8))
+* **v2beta:** Support collect and import GA4 event format with prebuilt whistle rule ([78bf804](https://github.com/googleapis/python-retail/commit/78bf804e4d3aa622605730a5b8eb5613b7f694f8))
+* **v2beta:** Support data output to GCS ([78bf804](https://github.com/googleapis/python-retail/commit/78bf804e4d3aa622605730a5b8eb5613b7f694f8))
+* **v2beta:** Support diversity type in serving config ([78bf804](https://github.com/googleapis/python-retail/commit/78bf804e4d3aa622605730a5b8eb5613b7f694f8))
+* **v2beta:** Support exact searchable and retrievable in catalog attribute config ([78bf804](https://github.com/googleapis/python-retail/commit/78bf804e4d3aa622605730a5b8eb5613b7f694f8))
+
+
+### Documentation
+
+* **v2beta:** Keep the API doc up-to-date with recent changes ([78bf804](https://github.com/googleapis/python-retail/commit/78bf804e4d3aa622605730a5b8eb5613b7f694f8))
+
 ## [1.12.0](https://github.com/googleapis/python-retail/compare/v1.11.0...v1.12.0) (2022-12-15)
 
 
