@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.1](https://github.com/googleapis/python-video-stitcher/compare/v0.5.0...v0.5.1) (2023-01-05)
+
+
+### Documentation
+
+* **samples:** Add Media CDN samples ([b905053](https://github.com/googleapis/python-video-stitcher/commit/b9050531174536744f967548829f4325ab4d53e3))
+* **samples:** Move Akamai sample to its own file ([b905053](https://github.com/googleapis/python-video-stitcher/commit/b9050531174536744f967548829f4325ab4d53e3))
+
 ## [0.5.0](https://github.com/googleapis/python-video-stitcher/compare/v0.4.0...v0.5.0) (2022-12-15)
 
 
