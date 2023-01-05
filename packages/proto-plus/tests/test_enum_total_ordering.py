@@ -49,7 +49,11 @@ def test_total_ordering_w_other_enum_type():
 
     for item in enums_test.OtherEnum:
         assert not to_compare == item
-        assert to_compare.SOME_VALUE != item
+        assert type(to_compare).SOME_VALUE != item
+        try:
+            assert to_compare.SOME_VALUE != item
+        except AttributeError:  # Python 3.11.0b3
+            pass
         with pytest.raises(TypeError):
             assert not to_compare < item
         with pytest.raises(TypeError):

@@ -28,7 +28,11 @@ PYTHON_VERSIONS = [
     "3.8",
     "3.9",
     "3.10",
+    "3.11",
 ]
+
+# Error if a python version is missing
+nox.options.error_on_missing_interpreters = True
 
 
 @nox.session(python=PYTHON_VERSIONS)
@@ -64,7 +68,7 @@ def unit(session, proto="python"):
 # Check if protobuf has released wheels for new python versions
 # https://pypi.org/project/protobuf/#files
 # This list will generally be shorter than 'unit'
-@nox.session(python=PYTHON_VERSIONS)
+@nox.session(python=["3.6", "3.7", "3.8", "3.9", "3.10"])
 def unitcpp(session):
     return unit(session, proto="cpp")
 
@@ -74,8 +78,7 @@ def unitupb(session):
     return unit(session, proto="upb")
 
 
-# Just use the most recent version for docs
-@nox.session(python=PYTHON_VERSIONS[-1])
+@nox.session(python="3.9")
 def docs(session):
     """Build the docs."""
 

@@ -16,6 +16,7 @@ branchProtectionRules:
     - 'unit (3.9)'
     - 'unit (3.10, cpp)'
     - 'unit (3.10)'
+    - 'unit (3.11)'
     - cover
     - OwlBot Post Processor
     - 'cla/google'

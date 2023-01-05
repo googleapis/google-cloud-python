@@ -58,8 +58,11 @@ class ProtoEnumMeta(enum.EnumMeta):
         # In 3.7 onwards, we can define an _ignore_ attribute and do some
         # mucking around with that.
         if pb_options in attrs._member_names:
-            idx = attrs._member_names.index(pb_options)
-            attrs._member_names.pop(idx)
+            if isinstance(attrs._member_names, list):
+                idx = attrs._member_names.index(pb_options)
+                attrs._member_names.pop(idx)
+            else:  # Python 3.11.0b3
+                del attrs._member_names[pb_options]
 
         # Make the descriptor.
         enum_desc = descriptor_pb2.EnumDescriptorProto(
