@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-dataplex/compare/v1.2.0...v1.3.0) (2023-01-05)
+
+
+### Features
+
+* Added StorageFormat.iceberg ([16871c0](https://github.com/googleapis/python-dataplex/commit/16871c05637ef68bb99d9dc6b471dc029f368009))
+* DataScans service ([16871c0](https://github.com/googleapis/python-dataplex/commit/16871c05637ef68bb99d9dc6b471dc029f368009))
+
 ## [1.2.0](https://github.com/googleapis/python-dataplex/compare/v1.1.2...v1.2.0) (2022-12-15)
 
 
