@@ -184,7 +184,27 @@ class SpeechAdaptation(proto.Message):
             of its fields, giving it a unique ``custom_class_id``. Refer
             to the inline defined class in phrase hints by its
             ``custom_class_id``.
+        abnf_grammar (google.cloud.speech_v1.types.SpeechAdaptation.ABNFGrammar):
+            Augmented Backus-Naur form (ABNF) is a
+            standardized grammar notation comprised by a set
+            of derivation rules. See specifications:
+            https://www.w3.org/TR/speech-grammar
     """
+
+    class ABNFGrammar(proto.Message):
+        r"""
+
+        Attributes:
+            abnf_strings (MutableSequence[str]):
+                All declarations and rules of an ABNF grammar
+                broken up into multiple strings that will end up
+                concatenated.
+        """
+
+        abnf_strings: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
 
     phrase_sets: MutableSequence["PhraseSet"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -199,6 +219,11 @@ class SpeechAdaptation(proto.Message):
         proto.MESSAGE,
         number=3,
         message="CustomClass",
+    )
+    abnf_grammar: ABNFGrammar = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=ABNFGrammar,
     )
 
 
