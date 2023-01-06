@@ -99,9 +99,10 @@ def test__can_retry_no_retry_message(response_data):
     assert not _client._can_retry(http_client.OK, response_data)
 
 
+@pytest.mark.parametrize("mock_expires_in", [500, "500"])
 @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
-def test__parse_expiry(unused_utcnow):
-    result = _client._parse_expiry({"expires_in": 500})
+def test__parse_expiry(unused_utcnow, mock_expires_in):
+    result = _client._parse_expiry({"expires_in": mock_expires_in})
     assert result == datetime.datetime.min + datetime.timedelta(seconds=500)
 
 
