@@ -250,6 +250,9 @@ def test_manage_table_labels(client, to_delete):
     table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
     table = client.create_table(table)
 
+    # TODO(Mattix23): After code sample from https://github.com/googleapis/python-bigquery/pull/1451
+    # is updated from cloud.google.com delete this.
+
     # [START bigquery_label_table]
     # from google.cloud import bigquery
     # client = bigquery.Client()
