@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,4 +13,4 @@
 # limitations under the License.
 docker:
   image: gcr.io/cloud-devrel-public-resources/owlbot-python-mono-repo:latest
-  digest: sha256:c687968be5aacacd2f6fe82bdcf84124c155b7734b240b11a796e045899635b0
+  digest: sha256:9f9050e25149b9ecf6c41c5b07924982fe6ef026ce3317afe1f4df4279e8e4db
