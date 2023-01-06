@@ -336,7 +336,7 @@ templated_files = gcp.CommonTemplates().py_library(
     samples=True,
     cov_level=100,
     versions=gcp.common.detect_versions(path="./google", default_first=True),
-    unit_test_python_versions=["3.7", "3.8", "3.9", "3.10"],
+    unit_test_python_versions=["3.7", "3.8", "3.9", "3.10", "3.11"],
     system_test_python_versions=["3.10"],
     system_test_external_dependencies=["psutil"],
 )
