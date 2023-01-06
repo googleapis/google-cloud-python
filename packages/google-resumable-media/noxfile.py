@@ -27,7 +27,7 @@ GOOGLE_AUTH = "google-auth >= 1.22.0, < 3.0dev"
 
 DEFAULT_PYTHON_VERSION = "3.8"
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.8"]
-UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10", "3.11"]
 
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
