@@ -21,8 +21,8 @@ In order to add a feature:
 - The feature must be documented in both the API and narrative
   documentation.
 
-- The feature must work fully on the following CPython versions:  2.7,
-  3.5, 3.6, 3.7, 3.8, 3.9 and 3.10 on both UNIX and Windows.
+- The feature must work fully on the following CPython versions:
+  3.7, 3.8, 3.9, 3.10 and 3.11 on both UNIX and Windows.
 
 - The feature must not add unnecessary dependencies (where
   "unnecessary" is of course subjective, but new dependencies should
