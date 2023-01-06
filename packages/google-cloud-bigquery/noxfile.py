@@ -200,12 +200,22 @@ def mypy_samples(session):
     """Run type checks with mypy."""
     session.install("-e", ".[all]")
 
-    session.install("ipython", "pytest")
+    session.install("pytest")
+    for requirements_path in CURRENT_DIRECTORY.glob("samples/*/requirements.txt"):
+        session.install("-r", requirements_path)
     session.install(MYPY_VERSION)
 
     # Just install the dependencies' type info directly, since "mypy --install-types"
     # might require an additional pass.
-    session.install("types-mock", "types-pytz")
+    session.install(
+        "types-mock",
+        "types-pytz",
+        "types-protobuf",
+        "types-python-dateutil",
+        "types-requests",
+        "types-setuptools",
+    )
+
     session.install("typing-extensions")  # for TypedDict in pre-3.8 Python versions
 
     session.run(

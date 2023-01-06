@@ -18,9 +18,9 @@ from google.api_core.exceptions import GoogleAPICallError  # type: ignore
 
 logger = logging.getLogger(__name__)
 try:
-    from opentelemetry import trace
-    from opentelemetry.instrumentation.utils import http_status_to_status_code
-    from opentelemetry.trace.status import Status
+    from opentelemetry import trace  # type: ignore
+    from opentelemetry.instrumentation.utils import http_status_to_status_code  # type: ignore
+    from opentelemetry.trace.status import Status  # type: ignore
 
     HAS_OPENTELEMETRY = True
     _warned_telemetry = True
