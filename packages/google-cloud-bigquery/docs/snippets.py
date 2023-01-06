@@ -168,7 +168,7 @@ def test_create_table_cmek(client, to_delete):
     dataset = bigquery.Dataset(dataset_ref)
     client.create_dataset(dataset)
     to_delete.append(dataset)
-
+    # TODO(Mattix23): When sample is updated in cloud.google.com, delete this one.
     # [START bigquery_create_table_cmek]
     # from google.cloud import bigquery
     # client = bigquery.Client()
