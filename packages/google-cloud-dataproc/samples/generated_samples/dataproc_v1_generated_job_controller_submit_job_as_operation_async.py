@@ -54,7 +54,7 @@ async def sample_submit_job_as_operation():
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = (await operation).result()
 
     # Handle the response
     print(response)

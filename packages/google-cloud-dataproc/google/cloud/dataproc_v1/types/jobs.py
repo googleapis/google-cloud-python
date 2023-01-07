@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -37,6 +39,7 @@ __protobuf__ = proto.module(
         "JobReference",
         "YarnApplication",
         "Job",
+        "DriverSchedulingConfig",
         "JobScheduling",
         "SubmitJobRequest",
         "JobMetadata",
@@ -54,7 +57,7 @@ class LoggingConfig(proto.Message):
     r"""The runtime logging config of the job.
 
     Attributes:
-        driver_log_levels (Mapping[str, google.cloud.dataproc_v1.types.LoggingConfig.Level]):
+        driver_log_levels (MutableMapping[str, google.cloud.dataproc_v1.types.LoggingConfig.Level]):
             The per-package log levels for the driver.
             This may include "root" package name to
             configure rootLogger. Examples:
@@ -77,7 +80,7 @@ class LoggingConfig(proto.Message):
         FATAL = 7
         OFF = 8
 
-    driver_log_levels = proto.MapField(
+    driver_log_levels: MutableMapping[str, Level] = proto.MapField(
         proto.STRING,
         proto.ENUM,
         number=2,
@@ -113,25 +116,25 @@ class HadoopJob(proto.Message):
             ``jar_file_uris``.
 
             This field is a member of `oneof`_ ``driver``.
-        args (Sequence[str]):
+        args (MutableSequence[str]):
             Optional. The arguments to pass to the driver. Do not
             include arguments, such as ``-libjars`` or ``-Dfoo=bar``,
             that can be set as job properties, since a collision may
             occur that causes an incorrect job submission.
-        jar_file_uris (Sequence[str]):
+        jar_file_uris (MutableSequence[str]):
             Optional. Jar file URIs to add to the
             CLASSPATHs of the Hadoop driver and tasks.
-        file_uris (Sequence[str]):
+        file_uris (MutableSequence[str]):
             Optional. HCFS (Hadoop Compatible Filesystem)
             URIs of files to be copied to the working
             directory of Hadoop drivers and distributed
             tasks. Useful for naively parallel tasks.
-        archive_uris (Sequence[str]):
+        archive_uris (MutableSequence[str]):
             Optional. HCFS URIs of archives to be
             extracted in the working directory of Hadoop
             drivers and tasks. Supported file types: .jar,
             .tar, .tar.gz, .tgz, or .zip.
-        properties (Mapping[str, str]):
+        properties (MutableMapping[str, str]):
             Optional. A mapping of property names to values, used to
             configure Hadoop. Properties that conflict with values set
             by the Dataproc API may be overwritten. Can include
@@ -142,38 +145,38 @@ class HadoopJob(proto.Message):
             execution.
     """
 
-    main_jar_file_uri = proto.Field(
+    main_jar_file_uri: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="driver",
     )
-    main_class = proto.Field(
+    main_class: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="driver",
     )
-    args = proto.RepeatedField(
+    args: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    jar_file_uris = proto.RepeatedField(
+    jar_file_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    file_uris = proto.RepeatedField(
+    file_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    archive_uris = proto.RepeatedField(
+    archive_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    properties = proto.MapField(
+    properties: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=7,
     )
-    logging_config = proto.Field(
+    logging_config: "LoggingConfig" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="LoggingConfig",
@@ -182,7 +185,7 @@ class HadoopJob(proto.Message):
 
 class SparkJob(proto.Message):
     r"""A Dataproc job for running `Apache
-    Spark <http://spark.apache.org/>`__ applications on YARN.
+    Spark <https://spark.apache.org/>`__ applications on YARN.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -203,24 +206,24 @@ class SparkJob(proto.Message):
             specified in ``jar_file_uris``.
 
             This field is a member of `oneof`_ ``driver``.
-        args (Sequence[str]):
+        args (MutableSequence[str]):
             Optional. The arguments to pass to the driver. Do not
             include arguments, such as ``--conf``, that can be set as
             job properties, since a collision may occur that causes an
             incorrect job submission.
-        jar_file_uris (Sequence[str]):
+        jar_file_uris (MutableSequence[str]):
             Optional. HCFS URIs of jar files to add to
             the CLASSPATHs of the Spark driver and tasks.
-        file_uris (Sequence[str]):
+        file_uris (MutableSequence[str]):
             Optional. HCFS URIs of files to be placed in
             the working directory of each executor. Useful
             for naively parallel tasks.
-        archive_uris (Sequence[str]):
+        archive_uris (MutableSequence[str]):
             Optional. HCFS URIs of archives to be
             extracted into the working directory of each
             executor. Supported file types: .jar, .tar,
             .tar.gz, .tgz, and .zip.
-        properties (Mapping[str, str]):
+        properties (MutableMapping[str, str]):
             Optional. A mapping of property names to
             values, used to configure Spark. Properties that
             conflict with values set by the Dataproc API may
@@ -232,38 +235,38 @@ class SparkJob(proto.Message):
             execution.
     """
 
-    main_jar_file_uri = proto.Field(
+    main_jar_file_uri: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="driver",
     )
-    main_class = proto.Field(
+    main_class: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="driver",
     )
-    args = proto.RepeatedField(
+    args: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    jar_file_uris = proto.RepeatedField(
+    jar_file_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    file_uris = proto.RepeatedField(
+    file_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    archive_uris = proto.RepeatedField(
+    archive_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    properties = proto.MapField(
+    properties: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=7,
     )
-    logging_config = proto.Field(
+    logging_config: "LoggingConfig" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="LoggingConfig",
@@ -279,28 +282,28 @@ class PySparkJob(proto.Message):
         main_python_file_uri (str):
             Required. The HCFS URI of the main Python
             file to use as the driver. Must be a .py file.
-        args (Sequence[str]):
+        args (MutableSequence[str]):
             Optional. The arguments to pass to the driver. Do not
             include arguments, such as ``--conf``, that can be set as
             job properties, since a collision may occur that causes an
             incorrect job submission.
-        python_file_uris (Sequence[str]):
+        python_file_uris (MutableSequence[str]):
             Optional. HCFS file URIs of Python files to
             pass to the PySpark framework. Supported file
             types: .py, .egg, and .zip.
-        jar_file_uris (Sequence[str]):
+        jar_file_uris (MutableSequence[str]):
             Optional. HCFS URIs of jar files to add to
             the CLASSPATHs of the Python driver and tasks.
-        file_uris (Sequence[str]):
+        file_uris (MutableSequence[str]):
             Optional. HCFS URIs of files to be placed in
             the working directory of each executor. Useful
             for naively parallel tasks.
-        archive_uris (Sequence[str]):
+        archive_uris (MutableSequence[str]):
             Optional. HCFS URIs of archives to be
             extracted into the working directory of each
             executor. Supported file types: .jar, .tar,
             .tar.gz, .tgz, and .zip.
-        properties (Mapping[str, str]):
+        properties (MutableMapping[str, str]):
             Optional. A mapping of property names to
             values, used to configure PySpark. Properties
             that conflict with values set by the Dataproc
@@ -313,36 +316,36 @@ class PySparkJob(proto.Message):
             execution.
     """
 
-    main_python_file_uri = proto.Field(
+    main_python_file_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    args = proto.RepeatedField(
+    args: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    python_file_uris = proto.RepeatedField(
+    python_file_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    jar_file_uris = proto.RepeatedField(
+    jar_file_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    file_uris = proto.RepeatedField(
+    file_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    archive_uris = proto.RepeatedField(
+    archive_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    properties = proto.MapField(
+    properties: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=7,
     )
-    logging_config = proto.Field(
+    logging_config: "LoggingConfig" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="LoggingConfig",
@@ -353,7 +356,7 @@ class QueryList(proto.Message):
     r"""A list of queries to run on a cluster.
 
     Attributes:
-        queries (Sequence[str]):
+        queries (MutableSequence[str]):
             Required. The queries to execute. You do not need to end a
             query expression with a semicolon. Multiple queries can be
             specified in one string by separating each with a semicolon.
@@ -373,7 +376,7 @@ class QueryList(proto.Message):
                 }
     """
 
-    queries = proto.RepeatedField(
+    queries: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -404,48 +407,48 @@ class HiveJob(proto.Message):
             Optional. Whether to continue executing queries if a query
             fails. The default value is ``false``. Setting to ``true``
             can be useful when executing independent parallel queries.
-        script_variables (Mapping[str, str]):
+        script_variables (MutableMapping[str, str]):
             Optional. Mapping of query variable names to values
             (equivalent to the Hive command: ``SET name="value";``).
-        properties (Mapping[str, str]):
+        properties (MutableMapping[str, str]):
             Optional. A mapping of property names and values, used to
             configure Hive. Properties that conflict with values set by
             the Dataproc API may be overwritten. Can include properties
             set in /etc/hadoop/conf/*-site.xml,
             /etc/hive/conf/hive-site.xml, and classes in user code.
-        jar_file_uris (Sequence[str]):
+        jar_file_uris (MutableSequence[str]):
             Optional. HCFS URIs of jar files to add to
             the CLASSPATH of the Hive server and Hadoop
             MapReduce (MR) tasks. Can contain Hive SerDes
             and UDFs.
     """
 
-    query_file_uri = proto.Field(
+    query_file_uri: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="queries",
     )
-    query_list = proto.Field(
+    query_list: "QueryList" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="queries",
         message="QueryList",
     )
-    continue_on_failure = proto.Field(
+    continue_on_failure: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    script_variables = proto.MapField(
+    script_variables: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    properties = proto.MapField(
+    properties: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
     )
-    jar_file_uris = proto.RepeatedField(
+    jar_file_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
@@ -453,7 +456,7 @@ class HiveJob(proto.Message):
 
 class SparkSqlJob(proto.Message):
     r"""A Dataproc job for running `Apache Spark
-    SQL <http://spark.apache.org/sql/>`__ queries.
+    SQL <https://spark.apache.org/sql/>`__ queries.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -472,16 +475,16 @@ class SparkSqlJob(proto.Message):
             A list of queries.
 
             This field is a member of `oneof`_ ``queries``.
-        script_variables (Mapping[str, str]):
+        script_variables (MutableMapping[str, str]):
             Optional. Mapping of query variable names to values
             (equivalent to the Spark SQL command: SET
             ``name="value";``).
-        properties (Mapping[str, str]):
+        properties (MutableMapping[str, str]):
             Optional. A mapping of property names to
             values, used to configure Spark SQL's SparkConf.
             Properties that conflict with values set by the
             Dataproc API may be overwritten.
-        jar_file_uris (Sequence[str]):
+        jar_file_uris (MutableSequence[str]):
             Optional. HCFS URIs of jar files to be added
             to the Spark CLASSPATH.
         logging_config (google.cloud.dataproc_v1.types.LoggingConfig):
@@ -489,32 +492,32 @@ class SparkSqlJob(proto.Message):
             execution.
     """
 
-    query_file_uri = proto.Field(
+    query_file_uri: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="queries",
     )
-    query_list = proto.Field(
+    query_list: "QueryList" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="queries",
         message="QueryList",
     )
-    script_variables = proto.MapField(
+    script_variables: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
     )
-    properties = proto.MapField(
+    properties: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    jar_file_uris = proto.RepeatedField(
+    jar_file_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=56,
     )
-    logging_config = proto.Field(
+    logging_config: "LoggingConfig" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="LoggingConfig",
@@ -546,16 +549,16 @@ class PigJob(proto.Message):
             Optional. Whether to continue executing queries if a query
             fails. The default value is ``false``. Setting to ``true``
             can be useful when executing independent parallel queries.
-        script_variables (Mapping[str, str]):
+        script_variables (MutableMapping[str, str]):
             Optional. Mapping of query variable names to values
             (equivalent to the Pig command: ``name=[value]``).
-        properties (Mapping[str, str]):
+        properties (MutableMapping[str, str]):
             Optional. A mapping of property names to values, used to
             configure Pig. Properties that conflict with values set by
             the Dataproc API may be overwritten. Can include properties
             set in /etc/hadoop/conf/*-site.xml,
             /etc/pig/conf/pig.properties, and classes in user code.
-        jar_file_uris (Sequence[str]):
+        jar_file_uris (MutableSequence[str]):
             Optional. HCFS URIs of jar files to add to
             the CLASSPATH of the Pig Client and Hadoop
             MapReduce (MR) tasks. Can contain Pig UDFs.
@@ -564,36 +567,36 @@ class PigJob(proto.Message):
             execution.
     """
 
-    query_file_uri = proto.Field(
+    query_file_uri: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="queries",
     )
-    query_list = proto.Field(
+    query_list: "QueryList" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="queries",
         message="QueryList",
     )
-    continue_on_failure = proto.Field(
+    continue_on_failure: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    script_variables = proto.MapField(
+    script_variables: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    properties = proto.MapField(
+    properties: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
     )
-    jar_file_uris = proto.RepeatedField(
+    jar_file_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    logging_config = proto.Field(
+    logging_config: "LoggingConfig" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="LoggingConfig",
@@ -609,21 +612,21 @@ class SparkRJob(proto.Message):
         main_r_file_uri (str):
             Required. The HCFS URI of the main R file to
             use as the driver. Must be a .R file.
-        args (Sequence[str]):
+        args (MutableSequence[str]):
             Optional. The arguments to pass to the driver. Do not
             include arguments, such as ``--conf``, that can be set as
             job properties, since a collision may occur that causes an
             incorrect job submission.
-        file_uris (Sequence[str]):
+        file_uris (MutableSequence[str]):
             Optional. HCFS URIs of files to be placed in
             the working directory of each executor. Useful
             for naively parallel tasks.
-        archive_uris (Sequence[str]):
+        archive_uris (MutableSequence[str]):
             Optional. HCFS URIs of archives to be
             extracted into the working directory of each
             executor. Supported file types: .jar, .tar,
             .tar.gz, .tgz, and .zip.
-        properties (Mapping[str, str]):
+        properties (MutableMapping[str, str]):
             Optional. A mapping of property names to
             values, used to configure SparkR. Properties
             that conflict with values set by the Dataproc
@@ -636,28 +639,28 @@ class SparkRJob(proto.Message):
             execution.
     """
 
-    main_r_file_uri = proto.Field(
+    main_r_file_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    args = proto.RepeatedField(
+    args: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    file_uris = proto.RepeatedField(
+    file_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    archive_uris = proto.RepeatedField(
+    archive_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    properties = proto.MapField(
+    properties: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
     )
-    logging_config = proto.Field(
+    logging_config: "LoggingConfig" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="LoggingConfig",
@@ -696,10 +699,10 @@ class PrestoJob(proto.Message):
             Optional. The format in which query output
             will be displayed. See the Presto documentation
             for supported output formats
-        client_tags (Sequence[str]):
+        client_tags (MutableSequence[str]):
             Optional. Presto client tags to attach to
             this query
-        properties (Mapping[str, str]):
+        properties (MutableMapping[str, str]):
             Optional. A mapping of property names to values. Used to set
             Presto `session
             properties <https://prestodb.io/docs/current/sql/set-session.html>`__
@@ -709,35 +712,35 @@ class PrestoJob(proto.Message):
             execution.
     """
 
-    query_file_uri = proto.Field(
+    query_file_uri: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="queries",
     )
-    query_list = proto.Field(
+    query_list: "QueryList" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="queries",
         message="QueryList",
     )
-    continue_on_failure = proto.Field(
+    continue_on_failure: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    output_format = proto.Field(
+    output_format: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    client_tags = proto.RepeatedField(
+    client_tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    properties = proto.MapField(
+    properties: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=6,
     )
-    logging_config = proto.Field(
+    logging_config: "LoggingConfig" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="LoggingConfig",
@@ -754,20 +757,20 @@ class JobPlacement(proto.Message):
         cluster_uuid (str):
             Output only. A cluster UUID generated by the
             Dataproc service when the job is submitted.
-        cluster_labels (Mapping[str, str]):
+        cluster_labels (MutableMapping[str, str]):
             Optional. Cluster labels to identify a
             cluster where the job will be submitted.
     """
 
-    cluster_name = proto.Field(
+    cluster_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    cluster_uuid = proto.Field(
+    cluster_uuid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    cluster_labels = proto.MapField(
+    cluster_labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
@@ -813,21 +816,21 @@ class JobStatus(proto.Message):
         QUEUED = 2
         STALE_STATUS = 3
 
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
     )
-    details = proto.Field(
+    details: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    state_start_time = proto.Field(
+    state_start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    substate = proto.Field(
+    substate: Substate = proto.Field(
         proto.ENUM,
         number=7,
         enum=Substate,
@@ -854,11 +857,11 @@ class JobReference(proto.Message):
             by the server.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    job_id = proto.Field(
+    job_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -903,20 +906,20 @@ class YarnApplication(proto.Message):
         FAILED = 7
         KILLED = 8
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=2,
         enum=State,
     )
-    progress = proto.Field(
+    progress: float = proto.Field(
         proto.FLOAT,
         number=3,
     )
-    tracking_url = proto.Field(
+    tracking_url: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -977,9 +980,9 @@ class Job(proto.Message):
             Output only. The job status. Additional application-specific
             status information may be contained in the type_job and
             yarn_applications fields.
-        status_history (Sequence[google.cloud.dataproc_v1.types.JobStatus]):
+        status_history (MutableSequence[google.cloud.dataproc_v1.types.JobStatus]):
             Output only. The previous job status.
-        yarn_applications (Sequence[google.cloud.dataproc_v1.types.YarnApplication]):
+        yarn_applications (MutableSequence[google.cloud.dataproc_v1.types.YarnApplication]):
             Output only. The collection of YARN applications spun up by
             this job.
 
@@ -993,7 +996,7 @@ class Job(proto.Message):
             control files which may be used as part of job setup and
             handling. If not present, control files may be placed in the
             same location as ``driver_output_uri``.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. The labels to associate with this job. Label
             **keys** must contain 1 to 63 characters, and must conform
             to `RFC 1035 <https://www.ietf.org/rfc/rfc1035.txt>`__.
@@ -1012,106 +1015,135 @@ class Job(proto.Message):
             value is ``false``, the job is still in progress. If
             ``true``, the job is completed, and ``status.state`` field
             will indicate if it was successful, failed, or cancelled.
+        driver_scheduling_config (google.cloud.dataproc_v1.types.DriverSchedulingConfig):
+            Optional. Driver scheduling configuration.
     """
 
-    reference = proto.Field(
+    reference: "JobReference" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="JobReference",
     )
-    placement = proto.Field(
+    placement: "JobPlacement" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="JobPlacement",
     )
-    hadoop_job = proto.Field(
+    hadoop_job: "HadoopJob" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="type_job",
         message="HadoopJob",
     )
-    spark_job = proto.Field(
+    spark_job: "SparkJob" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="type_job",
         message="SparkJob",
     )
-    pyspark_job = proto.Field(
+    pyspark_job: "PySparkJob" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="type_job",
         message="PySparkJob",
     )
-    hive_job = proto.Field(
+    hive_job: "HiveJob" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="type_job",
         message="HiveJob",
     )
-    pig_job = proto.Field(
+    pig_job: "PigJob" = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="type_job",
         message="PigJob",
     )
-    spark_r_job = proto.Field(
+    spark_r_job: "SparkRJob" = proto.Field(
         proto.MESSAGE,
         number=21,
         oneof="type_job",
         message="SparkRJob",
     )
-    spark_sql_job = proto.Field(
+    spark_sql_job: "SparkSqlJob" = proto.Field(
         proto.MESSAGE,
         number=12,
         oneof="type_job",
         message="SparkSqlJob",
     )
-    presto_job = proto.Field(
+    presto_job: "PrestoJob" = proto.Field(
         proto.MESSAGE,
         number=23,
         oneof="type_job",
         message="PrestoJob",
     )
-    status = proto.Field(
+    status: "JobStatus" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="JobStatus",
     )
-    status_history = proto.RepeatedField(
+    status_history: MutableSequence["JobStatus"] = proto.RepeatedField(
         proto.MESSAGE,
         number=13,
         message="JobStatus",
     )
-    yarn_applications = proto.RepeatedField(
+    yarn_applications: MutableSequence["YarnApplication"] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message="YarnApplication",
     )
-    driver_output_resource_uri = proto.Field(
+    driver_output_resource_uri: str = proto.Field(
         proto.STRING,
         number=17,
     )
-    driver_control_files_uri = proto.Field(
+    driver_control_files_uri: str = proto.Field(
         proto.STRING,
         number=15,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=18,
     )
-    scheduling = proto.Field(
+    scheduling: "JobScheduling" = proto.Field(
         proto.MESSAGE,
         number=20,
         message="JobScheduling",
     )
-    job_uuid = proto.Field(
+    job_uuid: str = proto.Field(
         proto.STRING,
         number=22,
     )
-    done = proto.Field(
+    done: bool = proto.Field(
         proto.BOOL,
         number=24,
+    )
+    driver_scheduling_config: "DriverSchedulingConfig" = proto.Field(
+        proto.MESSAGE,
+        number=27,
+        message="DriverSchedulingConfig",
+    )
+
+
+class DriverSchedulingConfig(proto.Message):
+    r"""Driver scheduling configuration.
+
+    Attributes:
+        memory_mb (int):
+            Required. The amount of memory in MB the
+            driver is requesting.
+        vcores (int):
+            Required. The number of vCPUs the driver is
+            requesting.
+    """
+
+    memory_mb: int = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    vcores: int = proto.Field(
+        proto.INT32,
+        number=2,
     )
 
 
@@ -1124,31 +1156,32 @@ class JobScheduling(proto.Message):
             restarted as a result of driver exiting with non-zero code
             before job is reported failed.
 
-            A job may be reported as thrashing if driver exits with
-            non-zero code 4 times within 10 minute window.
+            A job may be reported as thrashing if the driver exits with
+            a non-zero code four times within a 10-minute window.
 
             Maximum value is 10.
 
-            **Note:** Currently, this restartable job option is not
-            supported in Dataproc `workflow
-            template <https://cloud.google.com/dataproc/docs/concepts/workflows/using-workflows#adding_jobs_to_a_template>`__
-            jobs.
+            **Note:** This restartable job option is not supported in
+            Dataproc [workflow templates]
+            (https://cloud.google.com/dataproc/docs/concepts/workflows/using-workflows#adding_jobs_to_a_template).
         max_failures_total (int):
-            Optional. Maximum number of times in total a driver may be
-            restarted as a result of driver exiting with non-zero code
-            before job is reported failed. Maximum value is 240.
+            Optional. Maximum total number of times a driver may be
+            restarted as a result of the driver exiting with a non-zero
+            code. After the maximum number is reached, the job will be
+            reported as failed.
+
+            Maximum value is 240.
 
             **Note:** Currently, this restartable job option is not
             supported in Dataproc `workflow
-            template <https://cloud.google.com/dataproc/docs/concepts/workflows/using-workflows#adding_jobs_to_a_template>`__
-            jobs.
+            templates <https://cloud.google.com/dataproc/docs/concepts/workflows/using-workflows#adding_jobs_to_a_template>`__.
     """
 
-    max_failures_per_hour = proto.Field(
+    max_failures_per_hour: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    max_failures_total = proto.Field(
+    max_failures_total: int = proto.Field(
         proto.INT32,
         number=2,
     )
@@ -1182,20 +1215,20 @@ class SubmitJobRequest(proto.Message):
             characters.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    region = proto.Field(
+    region: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    job = proto.Field(
+    job: "Job" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Job",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1215,20 +1248,20 @@ class JobMetadata(proto.Message):
             Output only. Job submission time.
     """
 
-    job_id = proto.Field(
+    job_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    status = proto.Field(
+    status: "JobStatus" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="JobStatus",
     )
-    operation_type = proto.Field(
+    operation_type: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
@@ -1250,15 +1283,15 @@ class GetJobRequest(proto.Message):
             Required. The job ID.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    region = proto.Field(
+    region: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    job_id = proto.Field(
+    job_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1316,32 +1349,32 @@ class ListJobsRequest(proto.Message):
         ACTIVE = 1
         NON_ACTIVE = 2
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    region = proto.Field(
+    region: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    cluster_name = proto.Field(
+    cluster_name: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    job_state_matcher = proto.Field(
+    job_state_matcher: JobStateMatcher = proto.Field(
         proto.ENUM,
         number=5,
         enum=JobStateMatcher,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -1369,24 +1402,24 @@ class UpdateJobRequest(proto.Message):
             Currently, labels is the only field that can be updated.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    region = proto.Field(
+    region: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    job_id = proto.Field(
+    job_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    job = proto.Field(
+    job: "Job" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="Job",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=5,
         message=field_mask_pb2.FieldMask,
@@ -1397,7 +1430,7 @@ class ListJobsResponse(proto.Message):
     r"""A list of jobs in a project.
 
     Attributes:
-        jobs (Sequence[google.cloud.dataproc_v1.types.Job]):
+        jobs (MutableSequence[google.cloud.dataproc_v1.types.Job]):
             Output only. Jobs list.
         next_page_token (str):
             Optional. This token is included in the response if there
@@ -1410,12 +1443,12 @@ class ListJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    jobs = proto.RepeatedField(
+    jobs: MutableSequence["Job"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Job",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1435,15 +1468,15 @@ class CancelJobRequest(proto.Message):
             Required. The job ID.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    region = proto.Field(
+    region: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    job_id = proto.Field(
+    job_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1463,15 +1496,15 @@ class DeleteJobRequest(proto.Message):
             Required. The job ID.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    region = proto.Field(
+    region: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    job_id = proto.Field(
+    job_id: str = proto.Field(
         proto.STRING,
         number=2,
     )

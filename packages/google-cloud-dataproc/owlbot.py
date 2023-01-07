@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,47 +12,50 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""This script is used to synthesize generated parts of this library."""
-
-import re
+import json
+from pathlib import Path
+import shutil
 
 import synthtool as s
-from synthtool import gcp
+import synthtool.gcp as gcp
 from synthtool.languages import python
 
-common = gcp.CommonTemplates()
+# ----------------------------------------------------------------------------
+# Copy the generated client from the owl-bot staging directory
+# ----------------------------------------------------------------------------
 
-default_version = "v1"
+clean_up_generated_samples = True
+
+# Load the default version defined in .repo-metadata.json.
+default_version = json.load(open(".repo-metadata.json", "rt")).get(
+    "default_version"
+)
 
 for library in s.get_staging_dirs(default_version):
-    # Rename `policy_` to `policy` to avoid breaking change in a GA library
-    # Only replace if a non-alphanumeric (\W) character follows `policy_`
-    s.replace(library / "**/*.py", "policy_(\W)", "policy\g<1>")
+    if clean_up_generated_samples:
+        shutil.rmtree("samples/generated_samples", ignore_errors=True)
+        clean_up_generated_samples = False
 
-    s.move(library, excludes=["docs/index.rst", "nox.py", "README.rst", "setup.py"])
-
+    s.move(library, excludes=["**/gapic_version.py"])
 s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(
-    samples=True,  # set to True only if there are samples
+
+templated_files = gcp.CommonTemplates().py_library(
+    cov_level=100,
     microgenerator=True,
-    cov_level=100
+    versions=gcp.common.detect_versions(path="./google", default_first=True),
 )
-s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
+s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml"])
 
-# ----------------------------------------------------------------------------
-# Samples templates
-# ----------------------------------------------------------------------------
 python.py_samples(skip_readmes=True)
-
-python.configure_previous_major_version_branches()
 
 # Temporarily disable warnings due to
 # https://github.com/googleapis/gapic-generator-python/issues/525
 s.replace("noxfile.py", '[\"\']-W[\"\']', '# "-W"')
 
-s.shell.run(["nox", "-s", "blacken"], hide_output=False)
-
+# run format session for all directories which have a noxfile
+for noxfile in Path(".").glob("**/noxfile.py"):
+    s.shell.run(["nox", "-s", "blacken"], cwd=noxfile.parent, hide_output=False)

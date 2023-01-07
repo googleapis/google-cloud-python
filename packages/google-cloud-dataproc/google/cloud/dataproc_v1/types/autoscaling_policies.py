@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import duration_pb2  # type: ignore
@@ -71,7 +73,7 @@ class AutoscalingPolicy(proto.Message):
         secondary_worker_config (google.cloud.dataproc_v1.types.InstanceGroupAutoscalingPolicyConfig):
             Optional. Describes how the autoscaler will
             operate for secondary workers.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. The labels to associate with this autoscaling
             policy. Label **keys** must contain 1 to 63 characters, and
             must conform to `RFC
@@ -82,31 +84,31 @@ class AutoscalingPolicy(proto.Message):
             32 labels can be associated with an autoscaling policy.
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    basic_algorithm = proto.Field(
+    basic_algorithm: "BasicAutoscalingAlgorithm" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="algorithm",
         message="BasicAutoscalingAlgorithm",
     )
-    worker_config = proto.Field(
+    worker_config: "InstanceGroupAutoscalingPolicyConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="InstanceGroupAutoscalingPolicyConfig",
     )
-    secondary_worker_config = proto.Field(
+    secondary_worker_config: "InstanceGroupAutoscalingPolicyConfig" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="InstanceGroupAutoscalingPolicyConfig",
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=6,
@@ -131,13 +133,13 @@ class BasicAutoscalingAlgorithm(proto.Message):
             Bounds: [2m, 1d]. Default: 2m.
     """
 
-    yarn_config = proto.Field(
+    yarn_config: "BasicYarnAutoscalingConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="config",
         message="BasicYarnAutoscalingConfig",
     )
-    cooldown_period = proto.Field(
+    cooldown_period: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,
@@ -200,24 +202,24 @@ class BasicYarnAutoscalingConfig(proto.Message):
             Bounds: [0.0, 1.0]. Default: 0.0.
     """
 
-    graceful_decommission_timeout = proto.Field(
+    graceful_decommission_timeout: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=5,
         message=duration_pb2.Duration,
     )
-    scale_up_factor = proto.Field(
+    scale_up_factor: float = proto.Field(
         proto.DOUBLE,
         number=1,
     )
-    scale_down_factor = proto.Field(
+    scale_down_factor: float = proto.Field(
         proto.DOUBLE,
         number=2,
     )
-    scale_up_min_worker_fraction = proto.Field(
+    scale_up_min_worker_fraction: float = proto.Field(
         proto.DOUBLE,
         number=3,
     )
-    scale_down_min_worker_fraction = proto.Field(
+    scale_down_min_worker_fraction: float = proto.Field(
         proto.DOUBLE,
         number=4,
     )
@@ -265,15 +267,15 @@ class InstanceGroupAutoscalingPolicyConfig(proto.Message):
             only and no secondary workers.
     """
 
-    min_instances = proto.Field(
+    min_instances: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    max_instances = proto.Field(
+    max_instances: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    weight = proto.Field(
+    weight: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -299,11 +301,11 @@ class CreateAutoscalingPolicyRequest(proto.Message):
             Required. The autoscaling policy to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    policy = proto.Field(
+    policy: "AutoscalingPolicy" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="AutoscalingPolicy",
@@ -328,7 +330,7 @@ class GetAutoscalingPolicyRequest(proto.Message):
                ``projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -342,7 +344,7 @@ class UpdateAutoscalingPolicyRequest(proto.Message):
             Required. The updated autoscaling policy.
     """
 
-    policy = proto.Field(
+    policy: "AutoscalingPolicy" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="AutoscalingPolicy",
@@ -369,7 +371,7 @@ class DeleteAutoscalingPolicyRequest(proto.Message):
                ``projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -401,15 +403,15 @@ class ListAutoscalingPoliciesRequest(proto.Message):
             results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -420,7 +422,7 @@ class ListAutoscalingPoliciesResponse(proto.Message):
     project.
 
     Attributes:
-        policies (Sequence[google.cloud.dataproc_v1.types.AutoscalingPolicy]):
+        policies (MutableSequence[google.cloud.dataproc_v1.types.AutoscalingPolicy]):
             Output only. Autoscaling policies list.
         next_page_token (str):
             Output only. This token is included in the
@@ -431,12 +433,12 @@ class ListAutoscalingPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    policies = proto.RepeatedField(
+    policies: MutableSequence["AutoscalingPolicy"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AutoscalingPolicy",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -72,21 +74,21 @@ class RuntimeConfig(proto.Message):
             Optional. Optional custom container image for
             the job runtime environment. If not specified, a
             default container image will be used.
-        properties (Mapping[str, str]):
+        properties (MutableMapping[str, str]):
             Optional. A mapping of property names to
             values, which are used to configure workload
             execution.
     """
 
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    container_image = proto.Field(
+    container_image: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    properties = proto.MapField(
+    properties: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
@@ -105,12 +107,12 @@ class EnvironmentConfig(proto.Message):
             workload has access to.
     """
 
-    execution_config = proto.Field(
+    execution_config: "ExecutionConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ExecutionConfig",
     )
-    peripherals_config = proto.Field(
+    peripherals_config: "PeripheralsConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="PeripheralsConfig",
@@ -140,7 +142,7 @@ class ExecutionConfig(proto.Message):
             to.
 
             This field is a member of `oneof`_ ``network``.
-        network_tags (Sequence[str]):
+        network_tags (MutableSequence[str]):
             Optional. Tags used for network traffic
             control.
         kms_key (str):
@@ -148,25 +150,25 @@ class ExecutionConfig(proto.Message):
             encryption.
     """
 
-    service_account = proto.Field(
+    service_account: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    network_uri = proto.Field(
+    network_uri: str = proto.Field(
         proto.STRING,
         number=4,
         oneof="network",
     )
-    subnetwork_uri = proto.Field(
+    subnetwork_uri: str = proto.Field(
         proto.STRING,
         number=5,
         oneof="network",
     )
-    network_tags = proto.RepeatedField(
+    network_tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    kms_key = proto.Field(
+    kms_key: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -185,7 +187,7 @@ class SparkHistoryServerConfig(proto.Message):
             -  ``projects/[project_id]/regions/[region]/clusters/[cluster_name]``
     """
 
-    dataproc_cluster = proto.Field(
+    dataproc_cluster: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -207,11 +209,11 @@ class PeripheralsConfig(proto.Message):
             configuration for the workload.
     """
 
-    metastore_service = proto.Field(
+    metastore_service: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    spark_history_server_config = proto.Field(
+    spark_history_server_config: "SparkHistoryServerConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="SparkHistoryServerConfig",
@@ -222,7 +224,7 @@ class RuntimeInfo(proto.Message):
     r"""Runtime information about workload execution.
 
     Attributes:
-        endpoints (Mapping[str, str]):
+        endpoints (MutableMapping[str, str]):
             Output only. Map of remote access endpoints
             (such as web interfaces and APIs) to their URIs.
         output_uri (str):
@@ -233,16 +235,16 @@ class RuntimeInfo(proto.Message):
             of the diagnostics tarball.
     """
 
-    endpoints = proto.MapField(
+    endpoints: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=1,
     )
-    output_uri = proto.Field(
+    output_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    diagnostic_output_uri = proto.Field(
+    diagnostic_output_uri: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -257,7 +259,7 @@ class GkeClusterConfig(proto.Message):
             the same project and region as the Dataproc cluster (the GKE
             cluster can be zonal or regional). Format:
             'projects/{project}/locations/{location}/clusters/{cluster_id}'
-        node_pool_target (Sequence[google.cloud.dataproc_v1.types.GkeNodePoolTarget]):
+        node_pool_target (MutableSequence[google.cloud.dataproc_v1.types.GkeNodePoolTarget]):
             Optional. GKE NodePools where workloads will
             be scheduled. At least one node pool must be
             assigned the 'default' role. Each role can be
@@ -267,11 +269,11 @@ class GkeClusterConfig(proto.Message):
             constructs a default nodePoolTarget.
     """
 
-    gke_cluster_target = proto.Field(
+    gke_cluster_target: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    node_pool_target = proto.RepeatedField(
+    node_pool_target: MutableSequence["GkeNodePoolTarget"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="GkeNodePoolTarget",
@@ -303,17 +305,17 @@ class KubernetesClusterConfig(proto.Message):
             Dataproc cluster running on Kubernetes.
     """
 
-    kubernetes_namespace = proto.Field(
+    kubernetes_namespace: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    gke_cluster_config = proto.Field(
+    gke_cluster_config: "GkeClusterConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="config",
         message="GkeClusterConfig",
     )
-    kubernetes_software_config = proto.Field(
+    kubernetes_software_config: "KubernetesSoftwareConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="KubernetesSoftwareConfig",
@@ -325,14 +327,14 @@ class KubernetesSoftwareConfig(proto.Message):
     on Kubernetes.
 
     Attributes:
-        component_version (Mapping[str, str]):
+        component_version (MutableMapping[str, str]):
             The components that should be installed in
             this Dataproc cluster. The key must be a string
             from the KubernetesComponent enumeration. The
             value is the version of the software to be
             installed.
             At least one entry must be specified.
-        properties (Mapping[str, str]):
+        properties (MutableMapping[str, str]):
             The properties to set on daemon config files.
 
             Property keys are specified in ``prefix:property`` format,
@@ -345,12 +347,12 @@ class KubernetesSoftwareConfig(proto.Message):
             properties <https://cloud.google.com/dataproc/docs/concepts/cluster-properties>`__.
     """
 
-    component_version = proto.MapField(
+    component_version: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=1,
     )
-    properties = proto.MapField(
+    properties: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
@@ -364,7 +366,7 @@ class GkeNodePoolTarget(proto.Message):
         node_pool (str):
             Required. The target GKE NodePool. Format:
             'projects/{project}/locations/{location}/clusters/{cluster}/nodePools/{node_pool}'
-        roles (Sequence[google.cloud.dataproc_v1.types.GkeNodePoolTarget.Role]):
+        roles (MutableSequence[google.cloud.dataproc_v1.types.GkeNodePoolTarget.Role]):
             Required. The types of role for a GKE
             NodePool
         node_pool_config (google.cloud.dataproc_v1.types.GkeNodePoolConfig):
@@ -394,16 +396,16 @@ class GkeNodePoolTarget(proto.Message):
         SPARK_DRIVER = 3
         SPARK_EXECUTOR = 4
 
-    node_pool = proto.Field(
+    node_pool: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    roles = proto.RepeatedField(
+    roles: MutableSequence[Role] = proto.RepeatedField(
         proto.ENUM,
         number=2,
         enum=Role,
     )
-    node_pool_config = proto.Field(
+    node_pool_config: "GkeNodePoolConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="GkeNodePoolConfig",
@@ -417,7 +419,7 @@ class GkeNodePoolConfig(proto.Message):
     Attributes:
         config (google.cloud.dataproc_v1.types.GkeNodePoolConfig.GkeNodeConfig):
             Optional. The node pool configuration.
-        locations (Sequence[str]):
+        locations (MutableSequence[str]):
             Optional. The list of Compute Engine
             `zones <https://cloud.google.com/compute/docs/zones#available>`__
             where NodePool's nodes will be located.
@@ -447,7 +449,7 @@ class GkeNodePoolConfig(proto.Message):
                 node, which is limited by the maximum number of disks
                 allowable per zone (see `Adding Local
                 SSDs <https://cloud.google.com/compute/docs/disks/local-ssd>`__).
-            accelerators (Sequence[google.cloud.dataproc_v1.types.GkeNodePoolConfig.GkeNodePoolAcceleratorConfig]):
+            accelerators (MutableSequence[google.cloud.dataproc_v1.types.GkeNodePoolConfig.GkeNodePoolAcceleratorConfig]):
                 Optional. A list of `hardware
                 accelerators <https://cloud.google.com/compute/docs/gpus>`__
                 to attach to each node.
@@ -460,24 +462,26 @@ class GkeNodePoolConfig(proto.Message):
                 or Intel Sandy Bridge".
         """
 
-        machine_type = proto.Field(
+        machine_type: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        preemptible = proto.Field(
+        preemptible: bool = proto.Field(
             proto.BOOL,
             number=10,
         )
-        local_ssd_count = proto.Field(
+        local_ssd_count: int = proto.Field(
             proto.INT32,
             number=7,
         )
-        accelerators = proto.RepeatedField(
+        accelerators: MutableSequence[
+            "GkeNodePoolConfig.GkeNodePoolAcceleratorConfig"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=11,
             message="GkeNodePoolConfig.GkeNodePoolAcceleratorConfig",
         )
-        min_cpu_platform = proto.Field(
+        min_cpu_platform: str = proto.Field(
             proto.STRING,
             number=13,
         )
@@ -495,11 +499,11 @@ class GkeNodePoolConfig(proto.Message):
                 GPUs on Compute Engine).
         """
 
-        accelerator_count = proto.Field(
+        accelerator_count: int = proto.Field(
             proto.INT64,
             number=1,
         )
-        accelerator_type = proto.Field(
+        accelerator_type: str = proto.Field(
             proto.STRING,
             number=2,
         )
@@ -519,25 +523,25 @@ class GkeNodePoolConfig(proto.Message):
                 up the cluster.
         """
 
-        min_node_count = proto.Field(
+        min_node_count: int = proto.Field(
             proto.INT32,
             number=2,
         )
-        max_node_count = proto.Field(
+        max_node_count: int = proto.Field(
             proto.INT32,
             number=3,
         )
 
-    config = proto.Field(
+    config: GkeNodeConfig = proto.Field(
         proto.MESSAGE,
         number=2,
         message=GkeNodeConfig,
     )
-    locations = proto.RepeatedField(
+    locations: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=13,
     )
-    autoscaling = proto.Field(
+    autoscaling: GkeNodePoolAutoscalingConfig = proto.Field(
         proto.MESSAGE,
         number=4,
         message=GkeNodePoolAutoscalingConfig,

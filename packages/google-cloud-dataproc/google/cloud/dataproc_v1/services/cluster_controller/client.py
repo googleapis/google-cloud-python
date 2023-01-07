@@ -16,8 +16,20 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
+
+from google.cloud.dataproc_v1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -62,7 +74,7 @@ class ClusterControllerClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[ClusterControllerTransport]:
         """Returns an appropriate transport class.
 
@@ -168,6 +180,30 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
                 instance.
         """
         return self._transport
+
+    @staticmethod
+    def node_group_path(
+        project: str,
+        region: str,
+        cluster: str,
+        node_group: str,
+    ) -> str:
+        """Returns a fully-qualified node_group string."""
+        return "projects/{project}/regions/{region}/clusters/{cluster}/nodeGroups/{node_group}".format(
+            project=project,
+            region=region,
+            cluster=cluster,
+            node_group=node_group,
+        )
+
+    @staticmethod
+    def parse_node_group_path(path: str) -> Dict[str, str]:
+        """Parses a node_group path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/clusters/(?P<cluster>.+?)/nodeGroups/(?P<node_group>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
 
     @staticmethod
     def service_path(
@@ -339,8 +375,8 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ClusterControllerTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, ClusterControllerTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the cluster controller client.
@@ -354,7 +390,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
             transport (Union[str, ClusterControllerTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -384,6 +420,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -436,13 +473,13 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
     def create_cluster(
         self,
-        request: Union[clusters.CreateClusterRequest, dict] = None,
+        request: Optional[Union[clusters.CreateClusterRequest, dict]] = None,
         *,
-        project_id: str = None,
-        region: str = None,
-        cluster: clusters.Cluster = None,
+        project_id: Optional[str] = None,
+        region: Optional[str] = None,
+        cluster: Optional[clusters.Cluster] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a cluster in a project. The returned
@@ -584,15 +621,15 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
     def update_cluster(
         self,
-        request: Union[clusters.UpdateClusterRequest, dict] = None,
+        request: Optional[Union[clusters.UpdateClusterRequest, dict]] = None,
         *,
-        project_id: str = None,
-        region: str = None,
-        cluster_name: str = None,
-        cluster: clusters.Cluster = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        project_id: Optional[str] = None,
+        region: Optional[str] = None,
+        cluster_name: Optional[str] = None,
+        cluster: Optional[clusters.Cluster] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates a cluster in a project. The returned
@@ -816,10 +853,10 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
     def stop_cluster(
         self,
-        request: Union[clusters.StopClusterRequest, dict] = None,
+        request: Optional[Union[clusters.StopClusterRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Stops a cluster in a project.
@@ -918,10 +955,10 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
     def start_cluster(
         self,
-        request: Union[clusters.StartClusterRequest, dict] = None,
+        request: Optional[Union[clusters.StartClusterRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Starts a cluster in a project.
@@ -1020,13 +1057,13 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
     def delete_cluster(
         self,
-        request: Union[clusters.DeleteClusterRequest, dict] = None,
+        request: Optional[Union[clusters.DeleteClusterRequest, dict]] = None,
         *,
-        project_id: str = None,
-        region: str = None,
-        cluster_name: str = None,
+        project_id: Optional[str] = None,
+        region: Optional[str] = None,
+        cluster_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a cluster in a project. The returned
@@ -1173,13 +1210,13 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
     def get_cluster(
         self,
-        request: Union[clusters.GetClusterRequest, dict] = None,
+        request: Optional[Union[clusters.GetClusterRequest, dict]] = None,
         *,
-        project_id: str = None,
-        region: str = None,
-        cluster_name: str = None,
+        project_id: Optional[str] = None,
+        region: Optional[str] = None,
+        cluster_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> clusters.Cluster:
         r"""Gets the resource representation for a cluster in a
@@ -1304,13 +1341,13 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
     def list_clusters(
         self,
-        request: Union[clusters.ListClustersRequest, dict] = None,
+        request: Optional[Union[clusters.ListClustersRequest, dict]] = None,
         *,
-        project_id: str = None,
-        region: str = None,
-        filter: str = None,
+        project_id: Optional[str] = None,
+        region: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListClustersPager:
         r"""Lists all regions/{region}/clusters in a project
@@ -1468,13 +1505,13 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
     def diagnose_cluster(
         self,
-        request: Union[clusters.DiagnoseClusterRequest, dict] = None,
+        request: Optional[Union[clusters.DiagnoseClusterRequest, dict]] = None,
         *,
-        project_id: str = None,
-        region: str = None,
-        cluster_name: str = None,
+        project_id: Optional[str] = None,
+        region: Optional[str] = None,
+        cluster_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Gets cluster diagnostic information. The returned
@@ -1631,14 +1668,9 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dataproc",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ClusterControllerClient",)

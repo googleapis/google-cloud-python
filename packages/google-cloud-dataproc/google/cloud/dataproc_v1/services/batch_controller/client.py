@@ -16,8 +16,20 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
+
+from google.cloud.dataproc_v1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -62,7 +74,7 @@ class BatchControllerClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[BatchControllerTransport]:
         """Returns an appropriate transport class.
 
@@ -339,8 +351,8 @@ class BatchControllerClient(metaclass=BatchControllerClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, BatchControllerTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, BatchControllerTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the batch controller client.
@@ -354,7 +366,7 @@ class BatchControllerClient(metaclass=BatchControllerClientMeta):
             transport (Union[str, BatchControllerTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -384,6 +396,7 @@ class BatchControllerClient(metaclass=BatchControllerClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -436,13 +449,13 @@ class BatchControllerClient(metaclass=BatchControllerClientMeta):
 
     def create_batch(
         self,
-        request: Union[batches.CreateBatchRequest, dict] = None,
+        request: Optional[Union[batches.CreateBatchRequest, dict]] = None,
         *,
-        parent: str = None,
-        batch: batches.Batch = None,
-        batch_id: str = None,
+        parent: Optional[str] = None,
+        batch: Optional[batches.Batch] = None,
+        batch_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a batch workload that executes
@@ -579,11 +592,11 @@ class BatchControllerClient(metaclass=BatchControllerClientMeta):
 
     def get_batch(
         self,
-        request: Union[batches.GetBatchRequest, dict] = None,
+        request: Optional[Union[batches.GetBatchRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> batches.Batch:
         r"""Gets the batch workload resource representation.
@@ -681,11 +694,11 @@ class BatchControllerClient(metaclass=BatchControllerClientMeta):
 
     def list_batches(
         self,
-        request: Union[batches.ListBatchesRequest, dict] = None,
+        request: Optional[Union[batches.ListBatchesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBatchesPager:
         r"""Lists batch workloads.
@@ -795,11 +808,11 @@ class BatchControllerClient(metaclass=BatchControllerClientMeta):
 
     def delete_batch(
         self,
-        request: Union[batches.DeleteBatchRequest, dict] = None,
+        request: Optional[Union[batches.DeleteBatchRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the batch workload resource. If the batch is not in
@@ -899,14 +912,9 @@ class BatchControllerClient(metaclass=BatchControllerClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dataproc",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("BatchControllerClient",)

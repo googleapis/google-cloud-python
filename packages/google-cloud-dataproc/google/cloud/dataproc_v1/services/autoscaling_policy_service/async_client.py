@@ -16,8 +16,19 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
+
+from google.cloud.dataproc_v1 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -169,9 +180,9 @@ class AutoscalingPolicyServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, AutoscalingPolicyServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the autoscaling policy service client.
@@ -215,14 +226,14 @@ class AutoscalingPolicyServiceAsyncClient:
 
     async def create_autoscaling_policy(
         self,
-        request: Union[
-            autoscaling_policies.CreateAutoscalingPolicyRequest, dict
+        request: Optional[
+            Union[autoscaling_policies.CreateAutoscalingPolicyRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        policy: autoscaling_policies.AutoscalingPolicy = None,
+        parent: Optional[str] = None,
+        policy: Optional[autoscaling_policies.AutoscalingPolicy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> autoscaling_policies.AutoscalingPolicy:
         r"""Creates new autoscaling policy.
@@ -260,7 +271,7 @@ class AutoscalingPolicyServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataproc_v1.types.CreateAutoscalingPolicyRequest, dict]):
+            request (Optional[Union[google.cloud.dataproc_v1.types.CreateAutoscalingPolicyRequest, dict]]):
                 The request object. A request to create an autoscaling
                 policy.
             parent (:class:`str`):
@@ -346,13 +357,13 @@ class AutoscalingPolicyServiceAsyncClient:
 
     async def update_autoscaling_policy(
         self,
-        request: Union[
-            autoscaling_policies.UpdateAutoscalingPolicyRequest, dict
+        request: Optional[
+            Union[autoscaling_policies.UpdateAutoscalingPolicyRequest, dict]
         ] = None,
         *,
-        policy: autoscaling_policies.AutoscalingPolicy = None,
+        policy: Optional[autoscaling_policies.AutoscalingPolicy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> autoscaling_policies.AutoscalingPolicy:
         r"""Updates (replaces) autoscaling policy.
@@ -392,7 +403,7 @@ class AutoscalingPolicyServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataproc_v1.types.UpdateAutoscalingPolicyRequest, dict]):
+            request (Optional[Union[google.cloud.dataproc_v1.types.UpdateAutoscalingPolicyRequest, dict]]):
                 The request object. A request to update an autoscaling
                 policy.
             policy (:class:`google.cloud.dataproc_v1.types.AutoscalingPolicy`):
@@ -470,11 +481,13 @@ class AutoscalingPolicyServiceAsyncClient:
 
     async def get_autoscaling_policy(
         self,
-        request: Union[autoscaling_policies.GetAutoscalingPolicyRequest, dict] = None,
+        request: Optional[
+            Union[autoscaling_policies.GetAutoscalingPolicyRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> autoscaling_policies.AutoscalingPolicy:
         r"""Retrieves autoscaling policy.
@@ -506,7 +519,7 @@ class AutoscalingPolicyServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataproc_v1.types.GetAutoscalingPolicyRequest, dict]):
+            request (Optional[Union[google.cloud.dataproc_v1.types.GetAutoscalingPolicyRequest, dict]]):
                 The request object. A request to fetch an autoscaling
                 policy.
             name (:class:`str`):
@@ -592,13 +605,13 @@ class AutoscalingPolicyServiceAsyncClient:
 
     async def list_autoscaling_policies(
         self,
-        request: Union[
-            autoscaling_policies.ListAutoscalingPoliciesRequest, dict
+        request: Optional[
+            Union[autoscaling_policies.ListAutoscalingPoliciesRequest, dict]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAutoscalingPoliciesAsyncPager:
         r"""Lists autoscaling policies in the project.
@@ -631,7 +644,7 @@ class AutoscalingPolicyServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dataproc_v1.types.ListAutoscalingPoliciesRequest, dict]):
+            request (Optional[Union[google.cloud.dataproc_v1.types.ListAutoscalingPoliciesRequest, dict]]):
                 The request object. A request to list autoscaling
                 policies in a project.
             parent (:class:`str`):
@@ -729,13 +742,13 @@ class AutoscalingPolicyServiceAsyncClient:
 
     async def delete_autoscaling_policy(
         self,
-        request: Union[
-            autoscaling_policies.DeleteAutoscalingPolicyRequest, dict
+        request: Optional[
+            Union[autoscaling_policies.DeleteAutoscalingPolicyRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an autoscaling policy. It is an error to
@@ -766,7 +779,7 @@ class AutoscalingPolicyServiceAsyncClient:
                 await client.delete_autoscaling_policy(request=request)
 
         Args:
-            request (Union[google.cloud.dataproc_v1.types.DeleteAutoscalingPolicyRequest, dict]):
+            request (Optional[Union[google.cloud.dataproc_v1.types.DeleteAutoscalingPolicyRequest, dict]]):
                 The request object. A request to delete an autoscaling
                 policy.
                 Autoscaling policies in use by one or more clusters will
@@ -842,14 +855,9 @@ class AutoscalingPolicyServiceAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dataproc",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("AutoscalingPolicyServiceAsyncClient",)

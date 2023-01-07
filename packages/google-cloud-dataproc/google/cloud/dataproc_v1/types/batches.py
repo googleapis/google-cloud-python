@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.dataproc_v1.types import shared
@@ -67,20 +69,20 @@ class CreateBatchRequest(proto.Message):
             is 40 characters.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    batch = proto.Field(
+    batch: "Batch" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Batch",
     )
-    batch_id = proto.Field(
+    batch_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -95,7 +97,7 @@ class GetBatchRequest(proto.Message):
             Required. The name of the batch to retrieve.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -119,15 +121,15 @@ class ListBatchesRequest(proto.Message):
             subsequent page.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -137,7 +139,7 @@ class ListBatchesResponse(proto.Message):
     r"""A list of batch workloads.
 
     Attributes:
-        batches (Sequence[google.cloud.dataproc_v1.types.Batch]):
+        batches (MutableSequence[google.cloud.dataproc_v1.types.Batch]):
             The batches from the specified collection.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -149,12 +151,12 @@ class ListBatchesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    batches = proto.RepeatedField(
+    batches: MutableSequence["Batch"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Batch",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -169,7 +171,7 @@ class DeleteBatchRequest(proto.Message):
             delete.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -225,7 +227,7 @@ class Batch(proto.Message):
         creator (str):
             Output only. The email address of the user
             who created the batch.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. The labels to associate with this batch. Label
             **keys** must contain 1 to 63 characters, and must conform
             to `RFC 1035 <https://www.ietf.org/rfc/rfc1035.txt>`__.
@@ -242,7 +244,7 @@ class Batch(proto.Message):
         operation (str):
             Output only. The resource name of the
             operation associated with this batch.
-        state_history (Sequence[google.cloud.dataproc_v1.types.Batch.StateHistory]):
+        state_history (MutableSequence[google.cloud.dataproc_v1.types.Batch.StateHistory]):
             Output only. Historical state information for
             the batch.
     """
@@ -272,101 +274,101 @@ class Batch(proto.Message):
                 the historical state.
         """
 
-        state = proto.Field(
+        state: "Batch.State" = proto.Field(
             proto.ENUM,
             number=1,
             enum="Batch.State",
         )
-        state_message = proto.Field(
+        state_message: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        state_start_time = proto.Field(
+        state_start_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=3,
             message=timestamp_pb2.Timestamp,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uuid = proto.Field(
+    uuid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    pyspark_batch = proto.Field(
+    pyspark_batch: "PySparkBatch" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="batch_config",
         message="PySparkBatch",
     )
-    spark_batch = proto.Field(
+    spark_batch: "SparkBatch" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="batch_config",
         message="SparkBatch",
     )
-    spark_r_batch = proto.Field(
+    spark_r_batch: "SparkRBatch" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="batch_config",
         message="SparkRBatch",
     )
-    spark_sql_batch = proto.Field(
+    spark_sql_batch: "SparkSqlBatch" = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="batch_config",
         message="SparkSqlBatch",
     )
-    runtime_info = proto.Field(
+    runtime_info: shared.RuntimeInfo = proto.Field(
         proto.MESSAGE,
         number=8,
         message=shared.RuntimeInfo,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=9,
         enum=State,
     )
-    state_message = proto.Field(
+    state_message: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    state_time = proto.Field(
+    state_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=11,
         message=timestamp_pb2.Timestamp,
     )
-    creator = proto.Field(
+    creator: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=13,
     )
-    runtime_config = proto.Field(
+    runtime_config: shared.RuntimeConfig = proto.Field(
         proto.MESSAGE,
         number=14,
         message=shared.RuntimeConfig,
     )
-    environment_config = proto.Field(
+    environment_config: shared.EnvironmentConfig = proto.Field(
         proto.MESSAGE,
         number=15,
         message=shared.EnvironmentConfig,
     )
-    operation = proto.Field(
+    operation: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    state_history = proto.RepeatedField(
+    state_history: MutableSequence[StateHistory] = proto.RepeatedField(
         proto.MESSAGE,
         number=17,
         message=StateHistory,
@@ -383,48 +385,48 @@ class PySparkBatch(proto.Message):
             Required. The HCFS URI of the main Python
             file to use as the Spark driver. Must be a .py
             file.
-        args (Sequence[str]):
+        args (MutableSequence[str]):
             Optional. The arguments to pass to the driver. Do not
             include arguments that can be set as batch properties, such
             as ``--conf``, since a collision can occur that causes an
             incorrect batch submission.
-        python_file_uris (Sequence[str]):
+        python_file_uris (MutableSequence[str]):
             Optional. HCFS file URIs of Python files to pass to the
             PySpark framework. Supported file types: ``.py``, ``.egg``,
             and ``.zip``.
-        jar_file_uris (Sequence[str]):
+        jar_file_uris (MutableSequence[str]):
             Optional. HCFS URIs of jar files to add to
             the classpath of the Spark driver and tasks.
-        file_uris (Sequence[str]):
+        file_uris (MutableSequence[str]):
             Optional. HCFS URIs of files to be placed in
             the working directory of each executor.
-        archive_uris (Sequence[str]):
+        archive_uris (MutableSequence[str]):
             Optional. HCFS URIs of archives to be extracted into the
             working directory of each executor. Supported file types:
             ``.jar``, ``.tar``, ``.tar.gz``, ``.tgz``, and ``.zip``.
     """
 
-    main_python_file_uri = proto.Field(
+    main_python_file_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    args = proto.RepeatedField(
+    args: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    python_file_uris = proto.RepeatedField(
+    python_file_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    jar_file_uris = proto.RepeatedField(
+    jar_file_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    file_uris = proto.RepeatedField(
+    file_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    archive_uris = proto.RepeatedField(
+    archive_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
@@ -453,46 +455,46 @@ class SparkBatch(proto.Message):
             specified in ``jar_file_uris``.
 
             This field is a member of `oneof`_ ``driver``.
-        args (Sequence[str]):
+        args (MutableSequence[str]):
             Optional. The arguments to pass to the driver. Do not
             include arguments that can be set as batch properties, such
             as ``--conf``, since a collision can occur that causes an
             incorrect batch submission.
-        jar_file_uris (Sequence[str]):
+        jar_file_uris (MutableSequence[str]):
             Optional. HCFS URIs of jar files to add to
             the classpath of the Spark driver and tasks.
-        file_uris (Sequence[str]):
+        file_uris (MutableSequence[str]):
             Optional. HCFS URIs of files to be placed in
             the working directory of each executor.
-        archive_uris (Sequence[str]):
+        archive_uris (MutableSequence[str]):
             Optional. HCFS URIs of archives to be extracted into the
             working directory of each executor. Supported file types:
             ``.jar``, ``.tar``, ``.tar.gz``, ``.tgz``, and ``.zip``.
     """
 
-    main_jar_file_uri = proto.Field(
+    main_jar_file_uri: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="driver",
     )
-    main_class = proto.Field(
+    main_class: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="driver",
     )
-    args = proto.RepeatedField(
+    args: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    jar_file_uris = proto.RepeatedField(
+    jar_file_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    file_uris = proto.RepeatedField(
+    file_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    archive_uris = proto.RepeatedField(
+    archive_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
@@ -507,33 +509,33 @@ class SparkRBatch(proto.Message):
         main_r_file_uri (str):
             Required. The HCFS URI of the main R file to use as the
             driver. Must be a ``.R`` or ``.r`` file.
-        args (Sequence[str]):
+        args (MutableSequence[str]):
             Optional. The arguments to pass to the Spark driver. Do not
             include arguments that can be set as batch properties, such
             as ``--conf``, since a collision can occur that causes an
             incorrect batch submission.
-        file_uris (Sequence[str]):
+        file_uris (MutableSequence[str]):
             Optional. HCFS URIs of files to be placed in
             the working directory of each executor.
-        archive_uris (Sequence[str]):
+        archive_uris (MutableSequence[str]):
             Optional. HCFS URIs of archives to be extracted into the
             working directory of each executor. Supported file types:
             ``.jar``, ``.tar``, ``.tar.gz``, ``.tgz``, and ``.zip``.
     """
 
-    main_r_file_uri = proto.Field(
+    main_r_file_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    args = proto.RepeatedField(
+    args: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    file_uris = proto.RepeatedField(
+    file_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    archive_uris = proto.RepeatedField(
+    archive_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
@@ -547,25 +549,25 @@ class SparkSqlBatch(proto.Message):
         query_file_uri (str):
             Required. The HCFS URI of the script that
             contains Spark SQL queries to execute.
-        query_variables (Mapping[str, str]):
+        query_variables (MutableMapping[str, str]):
             Optional. Mapping of query variable names to values
             (equivalent to the Spark SQL command:
             ``SET name="value";``).
-        jar_file_uris (Sequence[str]):
+        jar_file_uris (MutableSequence[str]):
             Optional. HCFS URIs of jar files to be added
             to the Spark CLASSPATH.
     """
 
-    query_file_uri = proto.Field(
+    query_file_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    query_variables = proto.MapField(
+    query_variables: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
     )
-    jar_file_uris = proto.RepeatedField(
+    jar_file_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )

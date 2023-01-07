@@ -7,4 +7,5 @@ Services for Google Cloud Dataproc v1 API
     batch_controller
     cluster_controller
     job_controller
+    node_group_controller
     workflow_template_service

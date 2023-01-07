@@ -301,6 +301,50 @@
         }
       }
     },
+    "NodeGroupController": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "NodeGroupControllerClient",
+          "rpcs": {
+            "CreateNodeGroup": {
+              "methods": [
+                "create_node_group"
+              ]
+            },
+            "GetNodeGroup": {
+              "methods": [
+                "get_node_group"
+              ]
+            },
+            "ResizeNodeGroup": {
+              "methods": [
+                "resize_node_group"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "NodeGroupControllerAsyncClient",
+          "rpcs": {
+            "CreateNodeGroup": {
+              "methods": [
+                "create_node_group"
+              ]
+            },
+            "GetNodeGroup": {
+              "methods": [
+                "get_node_group"
+              ]
+            },
+            "ResizeNodeGroup": {
+              "methods": [
+                "resize_node_group"
+              ]
+            }
+          }
+        }
+      }
+    },
     "WorkflowTemplateService": {
       "clients": {
         "grpc": {

@@ -40,6 +40,7 @@ from .batches import (
 from .clusters import (
     AcceleratorConfig,
     AutoscalingConfig,
+    AuxiliaryNodeGroup,
     AuxiliaryServicesConfig,
     Cluster,
     ClusterConfig,
@@ -64,6 +65,7 @@ from .clusters import (
     ListClustersResponse,
     ManagedGroupConfig,
     MetastoreConfig,
+    NodeGroup,
     NodeGroupAffinity,
     NodeInitializationAction,
     ReservationAffinity,
@@ -78,6 +80,7 @@ from .clusters import (
 from .jobs import (
     CancelJobRequest,
     DeleteJobRequest,
+    DriverSchedulingConfig,
     GetJobRequest,
     HadoopJob,
     HiveJob,
@@ -101,10 +104,16 @@ from .jobs import (
     UpdateJobRequest,
     YarnApplication,
 )
+from .node_groups import (
+    CreateNodeGroupRequest,
+    GetNodeGroupRequest,
+    ResizeNodeGroupRequest,
+)
 from .operations import (
     BatchOperationMetadata,
     ClusterOperationMetadata,
     ClusterOperationStatus,
+    NodeGroupOperationMetadata,
 )
 from .shared import (
     EnvironmentConfig,
@@ -168,6 +177,7 @@ __all__ = (
     "SparkSqlBatch",
     "AcceleratorConfig",
     "AutoscalingConfig",
+    "AuxiliaryNodeGroup",
     "AuxiliaryServicesConfig",
     "Cluster",
     "ClusterConfig",
@@ -192,6 +202,7 @@ __all__ = (
     "ListClustersResponse",
     "ManagedGroupConfig",
     "MetastoreConfig",
+    "NodeGroup",
     "NodeGroupAffinity",
     "NodeInitializationAction",
     "ReservationAffinity",
@@ -204,6 +215,7 @@ __all__ = (
     "VirtualClusterConfig",
     "CancelJobRequest",
     "DeleteJobRequest",
+    "DriverSchedulingConfig",
     "GetJobRequest",
     "HadoopJob",
     "HiveJob",
@@ -226,9 +238,13 @@ __all__ = (
     "SubmitJobRequest",
     "UpdateJobRequest",
     "YarnApplication",
+    "CreateNodeGroupRequest",
+    "GetNodeGroupRequest",
+    "ResizeNodeGroupRequest",
     "BatchOperationMetadata",
     "ClusterOperationMetadata",
     "ClusterOperationStatus",
+    "NodeGroupOperationMetadata",
     "EnvironmentConfig",
     "ExecutionConfig",
     "GkeClusterConfig",

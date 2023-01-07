@@ -16,8 +16,20 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
+
+from google.cloud.dataproc_v1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -62,7 +74,7 @@ class WorkflowTemplateServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[WorkflowTemplateServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -168,6 +180,30 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
                 instance.
         """
         return self._transport
+
+    @staticmethod
+    def node_group_path(
+        project: str,
+        region: str,
+        cluster: str,
+        node_group: str,
+    ) -> str:
+        """Returns a fully-qualified node_group string."""
+        return "projects/{project}/regions/{region}/clusters/{cluster}/nodeGroups/{node_group}".format(
+            project=project,
+            region=region,
+            cluster=cluster,
+            node_group=node_group,
+        )
+
+    @staticmethod
+    def parse_node_group_path(path: str) -> Dict[str, str]:
+        """Parses a node_group path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/clusters/(?P<cluster>.+?)/nodeGroups/(?P<node_group>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
 
     @staticmethod
     def service_path(
@@ -361,8 +397,8 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, WorkflowTemplateServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, WorkflowTemplateServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the workflow template service client.
@@ -376,7 +412,7 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
             transport (Union[str, WorkflowTemplateServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -406,6 +442,7 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -458,12 +495,14 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
 
     def create_workflow_template(
         self,
-        request: Union[workflow_templates.CreateWorkflowTemplateRequest, dict] = None,
+        request: Optional[
+            Union[workflow_templates.CreateWorkflowTemplateRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        template: workflow_templates.WorkflowTemplate = None,
+        parent: Optional[str] = None,
+        template: Optional[workflow_templates.WorkflowTemplate] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> workflow_templates.WorkflowTemplate:
         r"""Creates new workflow template.
@@ -587,11 +626,13 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
 
     def get_workflow_template(
         self,
-        request: Union[workflow_templates.GetWorkflowTemplateRequest, dict] = None,
+        request: Optional[
+            Union[workflow_templates.GetWorkflowTemplateRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> workflow_templates.WorkflowTemplate:
         r"""Retrieves the latest workflow template.
@@ -702,14 +743,14 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
 
     def instantiate_workflow_template(
         self,
-        request: Union[
-            workflow_templates.InstantiateWorkflowTemplateRequest, dict
+        request: Optional[
+            Union[workflow_templates.InstantiateWorkflowTemplateRequest, dict]
         ] = None,
         *,
-        name: str = None,
-        parameters: Mapping[str, str] = None,
+        name: Optional[str] = None,
+        parameters: Optional[MutableMapping[str, str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Instantiates a template and begins execution.
@@ -788,7 +829,7 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            parameters (Mapping[str, str]):
+            parameters (MutableMapping[str, str]):
                 Optional. Map from parameter names to
                 values that should be used for those
                 parameters. Values may not exceed 1000
@@ -877,14 +918,14 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
 
     def instantiate_inline_workflow_template(
         self,
-        request: Union[
-            workflow_templates.InstantiateInlineWorkflowTemplateRequest, dict
+        request: Optional[
+            Union[workflow_templates.InstantiateInlineWorkflowTemplateRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        template: workflow_templates.WorkflowTemplate = None,
+        parent: Optional[str] = None,
+        template: Optional[workflow_templates.WorkflowTemplate] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Instantiates a template and begins execution.
@@ -1063,11 +1104,13 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
 
     def update_workflow_template(
         self,
-        request: Union[workflow_templates.UpdateWorkflowTemplateRequest, dict] = None,
+        request: Optional[
+            Union[workflow_templates.UpdateWorkflowTemplateRequest, dict]
+        ] = None,
         *,
-        template: workflow_templates.WorkflowTemplate = None,
+        template: Optional[workflow_templates.WorkflowTemplate] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> workflow_templates.WorkflowTemplate:
         r"""Updates (replaces) workflow template. The updated
@@ -1177,11 +1220,13 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
 
     def list_workflow_templates(
         self,
-        request: Union[workflow_templates.ListWorkflowTemplatesRequest, dict] = None,
+        request: Optional[
+            Union[workflow_templates.ListWorkflowTemplatesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListWorkflowTemplatesPager:
         r"""Lists workflows that match the specified filter in
@@ -1303,11 +1348,13 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
 
     def delete_workflow_template(
         self,
-        request: Union[workflow_templates.DeleteWorkflowTemplateRequest, dict] = None,
+        request: Optional[
+            Union[workflow_templates.DeleteWorkflowTemplateRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a workflow template. It does not cancel
@@ -1419,14 +1466,9 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dataproc",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("WorkflowTemplateServiceClient",)

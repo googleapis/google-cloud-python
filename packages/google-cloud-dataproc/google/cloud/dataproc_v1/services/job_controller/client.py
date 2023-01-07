@@ -16,8 +16,20 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
+
+from google.cloud.dataproc_v1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -57,7 +69,7 @@ class JobControllerClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[JobControllerTransport]:
         """Returns an appropriate transport class.
 
@@ -310,8 +322,8 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, JobControllerTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, JobControllerTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the job controller client.
@@ -325,7 +337,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
             transport (Union[str, JobControllerTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -355,6 +367,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -407,13 +420,13 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
 
     def submit_job(
         self,
-        request: Union[jobs.SubmitJobRequest, dict] = None,
+        request: Optional[Union[jobs.SubmitJobRequest, dict]] = None,
         *,
-        project_id: str = None,
-        region: str = None,
-        job: jobs.Job = None,
+        project_id: Optional[str] = None,
+        region: Optional[str] = None,
+        job: Optional[jobs.Job] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.Job:
         r"""Submits a job to a cluster.
@@ -536,13 +549,13 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
 
     def submit_job_as_operation(
         self,
-        request: Union[jobs.SubmitJobRequest, dict] = None,
+        request: Optional[Union[jobs.SubmitJobRequest, dict]] = None,
         *,
-        project_id: str = None,
-        region: str = None,
-        job: jobs.Job = None,
+        project_id: Optional[str] = None,
+        region: Optional[str] = None,
+        job: Optional[jobs.Job] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Submits job to a cluster.
@@ -682,13 +695,13 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
 
     def get_job(
         self,
-        request: Union[jobs.GetJobRequest, dict] = None,
+        request: Optional[Union[jobs.GetJobRequest, dict]] = None,
         *,
-        project_id: str = None,
-        region: str = None,
-        job_id: str = None,
+        project_id: Optional[str] = None,
+        region: Optional[str] = None,
+        job_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.Job:
         r"""Gets the resource representation for a job in a
@@ -810,13 +823,13 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
 
     def list_jobs(
         self,
-        request: Union[jobs.ListJobsRequest, dict] = None,
+        request: Optional[Union[jobs.ListJobsRequest, dict]] = None,
         *,
-        project_id: str = None,
-        region: str = None,
-        filter: str = None,
+        project_id: Optional[str] = None,
+        region: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobsPager:
         r"""Lists regions/{region}/jobs in a project.
@@ -965,10 +978,10 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
 
     def update_job(
         self,
-        request: Union[jobs.UpdateJobRequest, dict] = None,
+        request: Optional[Union[jobs.UpdateJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.Job:
         r"""Updates a job in a project.
@@ -1056,13 +1069,13 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
 
     def cancel_job(
         self,
-        request: Union[jobs.CancelJobRequest, dict] = None,
+        request: Optional[Union[jobs.CancelJobRequest, dict]] = None,
         *,
-        project_id: str = None,
-        region: str = None,
-        job_id: str = None,
+        project_id: Optional[str] = None,
+        region: Optional[str] = None,
+        job_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.Job:
         r"""Starts a job cancellation request. To access the job resource
@@ -1186,13 +1199,13 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
 
     def delete_job(
         self,
-        request: Union[jobs.DeleteJobRequest, dict] = None,
+        request: Optional[Union[jobs.DeleteJobRequest, dict]] = None,
         *,
-        project_id: str = None,
-        region: str = None,
-        job_id: str = None,
+        project_id: Optional[str] = None,
+        region: Optional[str] = None,
+        job_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the job from the project. If the job is active, the
@@ -1315,14 +1328,9 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dataproc",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("JobControllerClient",)

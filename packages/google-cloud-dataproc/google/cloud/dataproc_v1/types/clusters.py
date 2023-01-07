@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.dataproc_v1.types import shared
@@ -39,6 +41,8 @@ __protobuf__ = proto.module(
         "ManagedGroupConfig",
         "AcceleratorConfig",
         "DiskConfig",
+        "AuxiliaryNodeGroup",
+        "NodeGroup",
         "NodeInitializationAction",
         "ClusterStatus",
         "SecurityConfig",
@@ -73,24 +77,29 @@ class Cluster(proto.Message):
             Required. The Google Cloud Platform project
             ID that the cluster belongs to.
         cluster_name (str):
-            Required. The cluster name. Cluster names
-            within a project must be unique. Names of
-            deleted clusters can be reused.
+            Required. The cluster name, which must be
+            unique within a project. The name must start
+            with a lowercase letter, and can contain up to
+            51 lowercase letters, numbers, and hyphens. It
+            cannot end with a hyphen. The name of a deleted
+            cluster can be reused.
         config (google.cloud.dataproc_v1.types.ClusterConfig):
             Optional. The cluster config for a cluster of
             Compute Engine Instances. Note that Dataproc may
             set default values, and values may change when
             clusters are updated.
         virtual_cluster_config (google.cloud.dataproc_v1.types.VirtualClusterConfig):
-            Optional. The virtual cluster config, used when creating a
+            Optional. The virtual cluster config is used when creating a
             Dataproc cluster that does not directly control the
             underlying compute resources, for example, when creating a
             `Dataproc-on-GKE
-            cluster <https://cloud.google.com/dataproc/docs/concepts/jobs/dataproc-gke#create-a-dataproc-on-gke-cluster>`__.
-            Note that Dataproc may set default values, and values may
-            change when clusters are updated. Exactly one of config or
-            virtualClusterConfig must be specified.
-        labels (Mapping[str, str]):
+            cluster <https://cloud.google.com/dataproc/docs/guides/dpgke/dataproc-gke>`__.
+            Dataproc may set default values, and values may change when
+            clusters are updated. Exactly one of
+            [config][google.cloud.dataproc.v1.Cluster.config] or
+            [virtual_cluster_config][google.cloud.dataproc.v1.Cluster.virtual_cluster_config]
+            must be specified.
+        labels (MutableMapping[str, str]):
             Optional. The labels to associate with this cluster. Label
             **keys** must contain 1 to 63 characters, and must conform
             to `RFC 1035 <https://www.ietf.org/rfc/rfc1035.txt>`__.
@@ -100,7 +109,7 @@ class Cluster(proto.Message):
             32 labels can be associated with a cluster.
         status (google.cloud.dataproc_v1.types.ClusterStatus):
             Output only. Cluster status.
-        status_history (Sequence[google.cloud.dataproc_v1.types.ClusterStatus]):
+        status_history (MutableSequence[google.cloud.dataproc_v1.types.ClusterStatus]):
             Output only. The previous cluster status.
         cluster_uuid (str):
             Output only. A cluster UUID (Unique Universal
@@ -114,44 +123,44 @@ class Cluster(proto.Message):
             purposes only. It may be changed before final release.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    cluster_name = proto.Field(
+    cluster_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    config = proto.Field(
+    config: "ClusterConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="ClusterConfig",
     )
-    virtual_cluster_config = proto.Field(
+    virtual_cluster_config: "VirtualClusterConfig" = proto.Field(
         proto.MESSAGE,
         number=10,
         message="VirtualClusterConfig",
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=8,
     )
-    status = proto.Field(
+    status: "ClusterStatus" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="ClusterStatus",
     )
-    status_history = proto.RepeatedField(
+    status_history: MutableSequence["ClusterStatus"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="ClusterStatus",
     )
-    cluster_uuid = proto.Field(
+    cluster_uuid: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    metrics = proto.Field(
+    metrics: "ClusterMetrics" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="ClusterMetrics",
@@ -203,7 +212,7 @@ class ClusterConfig(proto.Message):
         software_config (google.cloud.dataproc_v1.types.SoftwareConfig):
             Optional. The config settings for cluster
             software.
-        initialization_actions (Sequence[google.cloud.dataproc_v1.types.NodeInitializationAction]):
+        initialization_actions (MutableSequence[google.cloud.dataproc_v1.types.NodeInitializationAction]):
             Optional. Commands to execute on each node after config is
             completed. By default, executables are run on master and all
             worker nodes. You can test a node's ``role`` metadata to run
@@ -237,101 +246,110 @@ class ClusterConfig(proto.Message):
             Optional. Metastore configuration.
         dataproc_metric_config (google.cloud.dataproc_v1.types.DataprocMetricConfig):
             Optional. The config for Dataproc metrics.
+        auxiliary_node_groups (MutableSequence[google.cloud.dataproc_v1.types.AuxiliaryNodeGroup]):
+            Optional. The node group settings.
     """
 
-    config_bucket = proto.Field(
+    config_bucket: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    temp_bucket = proto.Field(
+    temp_bucket: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    gce_cluster_config = proto.Field(
+    gce_cluster_config: "GceClusterConfig" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="GceClusterConfig",
     )
-    master_config = proto.Field(
+    master_config: "InstanceGroupConfig" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="InstanceGroupConfig",
     )
-    worker_config = proto.Field(
+    worker_config: "InstanceGroupConfig" = proto.Field(
         proto.MESSAGE,
         number=10,
         message="InstanceGroupConfig",
     )
-    secondary_worker_config = proto.Field(
+    secondary_worker_config: "InstanceGroupConfig" = proto.Field(
         proto.MESSAGE,
         number=12,
         message="InstanceGroupConfig",
     )
-    software_config = proto.Field(
+    software_config: "SoftwareConfig" = proto.Field(
         proto.MESSAGE,
         number=13,
         message="SoftwareConfig",
     )
-    initialization_actions = proto.RepeatedField(
+    initialization_actions: MutableSequence[
+        "NodeInitializationAction"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message="NodeInitializationAction",
     )
-    encryption_config = proto.Field(
+    encryption_config: "EncryptionConfig" = proto.Field(
         proto.MESSAGE,
         number=15,
         message="EncryptionConfig",
     )
-    autoscaling_config = proto.Field(
+    autoscaling_config: "AutoscalingConfig" = proto.Field(
         proto.MESSAGE,
         number=18,
         message="AutoscalingConfig",
     )
-    security_config = proto.Field(
+    security_config: "SecurityConfig" = proto.Field(
         proto.MESSAGE,
         number=16,
         message="SecurityConfig",
     )
-    lifecycle_config = proto.Field(
+    lifecycle_config: "LifecycleConfig" = proto.Field(
         proto.MESSAGE,
         number=17,
         message="LifecycleConfig",
     )
-    endpoint_config = proto.Field(
+    endpoint_config: "EndpointConfig" = proto.Field(
         proto.MESSAGE,
         number=19,
         message="EndpointConfig",
     )
-    metastore_config = proto.Field(
+    metastore_config: "MetastoreConfig" = proto.Field(
         proto.MESSAGE,
         number=20,
         message="MetastoreConfig",
     )
-    dataproc_metric_config = proto.Field(
+    dataproc_metric_config: "DataprocMetricConfig" = proto.Field(
         proto.MESSAGE,
         number=23,
         message="DataprocMetricConfig",
     )
+    auxiliary_node_groups: MutableSequence["AuxiliaryNodeGroup"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=25,
+        message="AuxiliaryNodeGroup",
+    )
 
 
 class VirtualClusterConfig(proto.Message):
-    r"""Dataproc cluster config for a cluster that does not directly control
-    the underlying compute resources, such as a `Dataproc-on-GKE
-    cluster <https://cloud.google.com/dataproc/docs/concepts/jobs/dataproc-gke#create-a-dataproc-on-gke-cluster>`__.
+    r"""The Dataproc cluster config for a cluster that does not directly
+    control the underlying compute resources, such as a `Dataproc-on-GKE
+    cluster <https://cloud.google.com/dataproc/docs/guides/dpgke/dataproc-gke>`__.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         staging_bucket (str):
-            Optional. A Storage bucket used to stage job dependencies,
-            config files, and job driver console output. If you do not
-            specify a staging bucket, Cloud Dataproc will determine a
-            Cloud Storage location (US, ASIA, or EU) for your cluster's
-            staging bucket according to the Compute Engine zone where
-            your cluster is deployed, and then create and manage this
-            project-level, per-location bucket (see `Dataproc staging
-            and temp
+            Optional. A Cloud Storage bucket used to stage job
+            dependencies, config files, and job driver console output.
+            If you do not specify a staging bucket, Cloud Dataproc will
+            determine a Cloud Storage location (US, ASIA, or EU) for
+            your cluster's staging bucket according to the Compute
+            Engine zone where your cluster is deployed, and then create
+            and manage this project-level, per-location bucket (see
+            `Dataproc staging and temp
             buckets <https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket>`__).
             **This field requires a Cloud Storage bucket name, not a
             ``gs://...`` URI to a Cloud Storage bucket.**
@@ -345,17 +363,17 @@ class VirtualClusterConfig(proto.Message):
             used by this cluster.
     """
 
-    staging_bucket = proto.Field(
+    staging_bucket: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    kubernetes_cluster_config = proto.Field(
+    kubernetes_cluster_config: shared.KubernetesClusterConfig = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="infrastructure_config",
         message=shared.KubernetesClusterConfig,
     )
-    auxiliary_services_config = proto.Field(
+    auxiliary_services_config: "AuxiliaryServicesConfig" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="AuxiliaryServicesConfig",
@@ -374,12 +392,12 @@ class AuxiliaryServicesConfig(proto.Message):
             configuration for the workload.
     """
 
-    metastore_config = proto.Field(
+    metastore_config: "MetastoreConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="MetastoreConfig",
     )
-    spark_history_server_config = proto.Field(
+    spark_history_server_config: shared.SparkHistoryServerConfig = proto.Field(
         proto.MESSAGE,
         number=2,
         message=shared.SparkHistoryServerConfig,
@@ -390,7 +408,7 @@ class EndpointConfig(proto.Message):
     r"""Endpoint config for this cluster
 
     Attributes:
-        http_ports (Mapping[str, str]):
+        http_ports (MutableMapping[str, str]):
             Output only. The map of port descriptions to URLs. Will only
             be populated if enable_http_port_access is true.
         enable_http_port_access (bool):
@@ -399,12 +417,12 @@ class EndpointConfig(proto.Message):
             sources. Defaults to false.
     """
 
-    http_ports = proto.MapField(
+    http_ports: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=1,
     )
-    enable_http_port_access = proto.Field(
+    enable_http_port_access: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -427,7 +445,7 @@ class AutoscalingConfig(proto.Message):
             Dataproc region.
     """
 
-    policy_uri = proto.Field(
+    policy_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -443,7 +461,7 @@ class EncryptionConfig(proto.Message):
             cluster.
     """
 
-    gce_pd_kms_key_name = proto.Field(
+    gce_pd_kms_key_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -513,7 +531,7 @@ class GceClusterConfig(proto.Message):
             If not specified, the `Compute Engine default service
             account <https://cloud.google.com/compute/docs/access/service-accounts#default_service_account>`__
             is used.
-        service_account_scopes (Sequence[str]):
+        service_account_scopes (MutableSequence[str]):
             Optional. The URIs of service account scopes to be included
             in Compute Engine instances. The following base set of
             scopes is always included:
@@ -529,11 +547,11 @@ class GceClusterConfig(proto.Message):
             -  https://www.googleapis.com/auth/bigtable.admin.table
             -  https://www.googleapis.com/auth/bigtable.data
             -  https://www.googleapis.com/auth/devstorage.full_control
-        tags (Sequence[str]):
+        tags (MutableSequence[str]):
             The Compute Engine tags to add to all instances (see
             `Tagging
             instances <https://cloud.google.com/compute/docs/label-or-tag-resources#tags>`__).
-        metadata (Mapping[str, str]):
+        metadata (MutableMapping[str, str]):
             The Compute Engine metadata entries to add to all instances
             (see `Project and instance
             metadata <https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata>`__).
@@ -565,60 +583,60 @@ class GceClusterConfig(proto.Message):
         OUTBOUND = 2
         BIDIRECTIONAL = 3
 
-    zone_uri = proto.Field(
+    zone_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    network_uri = proto.Field(
+    network_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    subnetwork_uri = proto.Field(
+    subnetwork_uri: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    internal_ip_only = proto.Field(
+    internal_ip_only: bool = proto.Field(
         proto.BOOL,
         number=7,
     )
-    private_ipv6_google_access = proto.Field(
+    private_ipv6_google_access: PrivateIpv6GoogleAccess = proto.Field(
         proto.ENUM,
         number=12,
         enum=PrivateIpv6GoogleAccess,
     )
-    service_account = proto.Field(
+    service_account: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    service_account_scopes = proto.RepeatedField(
+    service_account_scopes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    tags = proto.RepeatedField(
+    tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    metadata = proto.MapField(
+    metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
     )
-    reservation_affinity = proto.Field(
+    reservation_affinity: "ReservationAffinity" = proto.Field(
         proto.MESSAGE,
         number=11,
         message="ReservationAffinity",
     )
-    node_group_affinity = proto.Field(
+    node_group_affinity: "NodeGroupAffinity" = proto.Field(
         proto.MESSAGE,
         number=13,
         message="NodeGroupAffinity",
     )
-    shielded_instance_config = proto.Field(
+    shielded_instance_config: "ShieldedInstanceConfig" = proto.Field(
         proto.MESSAGE,
         number=14,
         message="ShieldedInstanceConfig",
     )
-    confidential_instance_config = proto.Field(
+    confidential_instance_config: "ConfidentialInstanceConfig" = proto.Field(
         proto.MESSAGE,
         number=15,
         message="ConfidentialInstanceConfig",
@@ -626,8 +644,9 @@ class GceClusterConfig(proto.Message):
 
 
 class NodeGroupAffinity(proto.Message):
-    r"""Node Group Affinity for clusters using sole-tenant node
-    groups.
+    r"""Node Group Affinity for clusters using sole-tenant node groups.
+    **The Dataproc ``NodeGroupAffinity`` resource is not related to the
+    Dataproc [NodeGroup][google.cloud.dataproc.v1.NodeGroup] resource.**
 
     Attributes:
         node_group_uri (str):
@@ -643,7 +662,7 @@ class NodeGroupAffinity(proto.Message):
             -  ``node-group-1``
     """
 
-    node_group_uri = proto.Field(
+    node_group_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -665,15 +684,15 @@ class ShieldedInstanceConfig(proto.Message):
             integrity monitoring enabled.
     """
 
-    enable_secure_boot = proto.Field(
+    enable_secure_boot: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    enable_vtpm = proto.Field(
+    enable_vtpm: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    enable_integrity_monitoring = proto.Field(
+    enable_integrity_monitoring: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -689,7 +708,7 @@ class ConfidentialInstanceConfig(proto.Message):
             have confidential compute enabled.
     """
 
-    enable_confidential_compute = proto.Field(
+    enable_confidential_compute: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
@@ -708,7 +727,7 @@ class InstanceGroupConfig(proto.Message):
             set to 3**. For standard cluster
             `master_config <#FIELDS.master_config>`__ groups, **must be
             set to 1**.
-        instance_names (Sequence[str]):
+        instance_names (MutableSequence[str]):
             Output only. The list of instance names. Dataproc derives
             the names from ``cluster_name``, ``num_instances``, and the
             instance group.
@@ -766,7 +785,7 @@ class InstanceGroupConfig(proto.Message):
             Instance Group Manager that manages this group.
             This is only used for preemptible instance
             groups.
-        accelerators (Sequence[google.cloud.dataproc_v1.types.AcceleratorConfig]):
+        accelerators (MutableSequence[google.cloud.dataproc_v1.types.AcceleratorConfig]):
             Optional. The Compute Engine accelerator
             configuration for these instances.
         min_cpu_platform (str):
@@ -776,55 +795,52 @@ class InstanceGroupConfig(proto.Message):
     """
 
     class Preemptibility(proto.Enum):
-        r"""Controls the use of [preemptible instances]
-        (https://cloud.google.com/compute/docs/instances/preemptible) within
-        the group.
-        """
+        r"""Controls the use of preemptible instances within the group."""
         PREEMPTIBILITY_UNSPECIFIED = 0
         NON_PREEMPTIBLE = 1
         PREEMPTIBLE = 2
 
-    num_instances = proto.Field(
+    num_instances: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    instance_names = proto.RepeatedField(
+    instance_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    image_uri = proto.Field(
+    image_uri: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    machine_type_uri = proto.Field(
+    machine_type_uri: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    disk_config = proto.Field(
+    disk_config: "DiskConfig" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="DiskConfig",
     )
-    is_preemptible = proto.Field(
+    is_preemptible: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    preemptibility = proto.Field(
+    preemptibility: Preemptibility = proto.Field(
         proto.ENUM,
         number=10,
         enum=Preemptibility,
     )
-    managed_group_config = proto.Field(
+    managed_group_config: "ManagedGroupConfig" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="ManagedGroupConfig",
     )
-    accelerators = proto.RepeatedField(
+    accelerators: MutableSequence["AcceleratorConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message="AcceleratorConfig",
     )
-    min_cpu_platform = proto.Field(
+    min_cpu_platform: str = proto.Field(
         proto.STRING,
         number=9,
     )
@@ -843,11 +859,11 @@ class ManagedGroupConfig(proto.Message):
             Manager for this group.
     """
 
-    instance_template_name = proto.Field(
+    instance_template_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    instance_group_manager_name = proto.Field(
+    instance_group_manager_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -880,11 +896,11 @@ class AcceleratorConfig(proto.Message):
             type exposed to this instance.
     """
 
-    accelerator_type_uri = proto.Field(
+    accelerator_type_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    accelerator_count = proto.Field(
+    accelerator_count: int = proto.Field(
         proto.INT32,
         number=2,
     )
@@ -906,7 +922,7 @@ class DiskConfig(proto.Message):
             Optional. Size in GB of the boot disk
             (default is 500GB).
         num_local_ssds (int):
-            Optional. Number of attached SSDs, from 0 to 4 (default is
+            Optional. Number of attached SSDs, from 0 to 8 (default is
             0). If SSDs are not attached, the boot disk is used to store
             runtime logs and
             `HDFS <https://hadoop.apache.org/docs/r1.2.1/hdfs_user_guide.html>`__
@@ -920,19 +936,97 @@ class DiskConfig(proto.Message):
             performance <https://cloud.google.com/compute/docs/disks/local-ssd#performance>`__.
     """
 
-    boot_disk_type = proto.Field(
+    boot_disk_type: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    boot_disk_size_gb = proto.Field(
+    boot_disk_size_gb: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    num_local_ssds = proto.Field(
+    num_local_ssds: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    local_ssd_interface = proto.Field(
+    local_ssd_interface: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class AuxiliaryNodeGroup(proto.Message):
+    r"""Node group identification and configuration information.
+
+    Attributes:
+        node_group (google.cloud.dataproc_v1.types.NodeGroup):
+            Required. Node group configuration.
+        node_group_id (str):
+            Optional. A node group ID. Generated if not specified.
+
+            The ID must contain only letters (a-z, A-Z), numbers (0-9),
+            underscores (_), and hyphens (-). Cannot begin or end with
+            underscore or hyphen. Must consist of from 3 to 33
+            characters.
+    """
+
+    node_group: "NodeGroup" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="NodeGroup",
+    )
+    node_group_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class NodeGroup(proto.Message):
+    r"""Dataproc Node Group. **The Dataproc ``NodeGroup`` resource is not
+    related to the Dataproc
+    [NodeGroupAffinity][google.cloud.dataproc.v1.NodeGroupAffinity]
+    resource.**
+
+    Attributes:
+        name (str):
+            The Node group `resource name <https://aip.dev/122>`__.
+        roles (MutableSequence[google.cloud.dataproc_v1.types.NodeGroup.Role]):
+            Required. Node group roles.
+        node_group_config (google.cloud.dataproc_v1.types.InstanceGroupConfig):
+            Optional. The node group instance group
+            configuration.
+        labels (MutableMapping[str, str]):
+            Optional. Node group labels.
+
+            -  Label **keys** must consist of from 1 to 63 characters
+               and conform to `RFC
+               1035 <https://www.ietf.org/rfc/rfc1035.txt>`__.
+            -  Label **values** can be empty. If specified, they must
+               consist of from 1 to 63 characters and conform to [RFC
+               1035] (https://www.ietf.org/rfc/rfc1035.txt).
+            -  The node group must have no more than 32 labels.
+    """
+
+    class Role(proto.Enum):
+        r"""Node group roles."""
+        ROLE_UNSPECIFIED = 0
+        DRIVER = 1
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    roles: MutableSequence[Role] = proto.RepeatedField(
+        proto.ENUM,
+        number=2,
+        enum=Role,
+    )
+    node_group_config: "InstanceGroupConfig" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="InstanceGroupConfig",
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
         proto.STRING,
         number=4,
     )
@@ -957,11 +1051,11 @@ class NodeInitializationAction(proto.Message):
             at end of the timeout period.
     """
 
-    executable_file = proto.Field(
+    executable_file: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    execution_timeout = proto.Field(
+    execution_timeout: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,
@@ -1005,21 +1099,21 @@ class ClusterStatus(proto.Message):
         UNHEALTHY = 1
         STALE_STATUS = 2
 
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
     )
-    detail = proto.Field(
+    detail: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    state_start_time = proto.Field(
+    state_start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    substate = proto.Field(
+    substate: Substate = proto.Field(
         proto.ENUM,
         number=4,
         enum=Substate,
@@ -1039,12 +1133,12 @@ class SecurityConfig(proto.Message):
             multi-tenancy user mappings.
     """
 
-    kerberos_config = proto.Field(
+    kerberos_config: "KerberosConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="KerberosConfig",
     )
-    identity_config = proto.Field(
+    identity_config: "IdentityConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="IdentityConfig",
@@ -1126,63 +1220,63 @@ class KerberosConfig(proto.Message):
             of hostnames will be the realm.
     """
 
-    enable_kerberos = proto.Field(
+    enable_kerberos: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    root_principal_password_uri = proto.Field(
+    root_principal_password_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    kms_key_uri = proto.Field(
+    kms_key_uri: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    keystore_uri = proto.Field(
+    keystore_uri: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    truststore_uri = proto.Field(
+    truststore_uri: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    keystore_password_uri = proto.Field(
+    keystore_password_uri: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    key_password_uri = proto.Field(
+    key_password_uri: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    truststore_password_uri = proto.Field(
+    truststore_password_uri: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    cross_realm_trust_realm = proto.Field(
+    cross_realm_trust_realm: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    cross_realm_trust_kdc = proto.Field(
+    cross_realm_trust_kdc: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    cross_realm_trust_admin_server = proto.Field(
+    cross_realm_trust_admin_server: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    cross_realm_trust_shared_password_uri = proto.Field(
+    cross_realm_trust_shared_password_uri: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    kdc_db_key_uri = proto.Field(
+    kdc_db_key_uri: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    tgt_lifetime_hours = proto.Field(
+    tgt_lifetime_hours: int = proto.Field(
         proto.INT32,
         number=14,
     )
-    realm = proto.Field(
+    realm: str = proto.Field(
         proto.STRING,
         number=15,
     )
@@ -1193,11 +1287,11 @@ class IdentityConfig(proto.Message):
     based secure multi-tenancy user mappings.
 
     Attributes:
-        user_service_account_mapping (Mapping[str, str]):
+        user_service_account_mapping (MutableMapping[str, str]):
             Required. Map of user to service account.
     """
 
-    user_service_account_mapping = proto.MapField(
+    user_service_account_mapping: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=1,
@@ -1217,7 +1311,7 @@ class SoftwareConfig(proto.Message):
             "1.2.29"), or the `"preview"
             version <https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions>`__.
             If unspecified, it defaults to the latest Debian version.
-        properties (Mapping[str, str]):
+        properties (MutableMapping[str, str]):
             Optional. The properties to set on daemon config files.
 
             Property keys are specified in ``prefix:property`` format,
@@ -1236,21 +1330,21 @@ class SoftwareConfig(proto.Message):
 
             For more information, see `Cluster
             properties <https://cloud.google.com/dataproc/docs/concepts/cluster-properties>`__.
-        optional_components (Sequence[google.cloud.dataproc_v1.types.Component]):
+        optional_components (MutableSequence[google.cloud.dataproc_v1.types.Component]):
             Optional. The set of components to activate
             on the cluster.
     """
 
-    image_version = proto.Field(
+    image_version: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    properties = proto.MapField(
+    properties: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
     )
-    optional_components = proto.RepeatedField(
+    optional_components: MutableSequence[shared.Component] = proto.RepeatedField(
         proto.ENUM,
         number=3,
         enum=shared.Component,
@@ -1296,24 +1390,24 @@ class LifecycleConfig(proto.Message):
             `Timestamp <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
     """
 
-    idle_delete_ttl = proto.Field(
+    idle_delete_ttl: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=1,
         message=duration_pb2.Duration,
     )
-    auto_delete_time = proto.Field(
+    auto_delete_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="ttl",
         message=timestamp_pb2.Timestamp,
     )
-    auto_delete_ttl = proto.Field(
+    auto_delete_ttl: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="ttl",
         message=duration_pb2.Duration,
     )
-    idle_start_time = proto.Field(
+    idle_start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
@@ -1333,7 +1427,7 @@ class MetastoreConfig(proto.Message):
             -  ``projects/[project_id]/locations/[dataproc_region]/services/[service-name]``
     """
 
-    dataproc_metastore_service = proto.Field(
+    dataproc_metastore_service: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1343,7 +1437,7 @@ class DataprocMetricConfig(proto.Message):
     r"""Dataproc metric config.
 
     Attributes:
-        metrics (Sequence[google.cloud.dataproc_v1.types.DataprocMetricConfig.Metric]):
+        metrics (MutableSequence[google.cloud.dataproc_v1.types.DataprocMetricConfig.Metric]):
             Required. Metrics sources to enable.
     """
 
@@ -1370,7 +1464,7 @@ class DataprocMetricConfig(proto.Message):
                 [Available OSS metrics]
                 (https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics)
                 for more information).
-            metric_overrides (Sequence[str]):
+            metric_overrides (MutableSequence[str]):
                 Optional. Specify one or more [available OSS metrics]
                 (https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics)
                 to collect for the metric course (for the ``SPARK`` metric
@@ -1404,17 +1498,17 @@ class DataprocMetricConfig(proto.Message):
                    default YARN metrics will be collected.
         """
 
-        metric_source = proto.Field(
+        metric_source: "DataprocMetricConfig.MetricSource" = proto.Field(
             proto.ENUM,
             number=1,
             enum="DataprocMetricConfig.MetricSource",
         )
-        metric_overrides = proto.RepeatedField(
+        metric_overrides: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
 
-    metrics = proto.RepeatedField(
+    metrics: MutableSequence[Metric] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=Metric,
@@ -1428,18 +1522,18 @@ class ClusterMetrics(proto.Message):
     only. It may be changed before final release.
 
     Attributes:
-        hdfs_metrics (Mapping[str, int]):
+        hdfs_metrics (MutableMapping[str, int]):
             The HDFS metrics.
-        yarn_metrics (Mapping[str, int]):
+        yarn_metrics (MutableMapping[str, int]):
             The YARN metrics.
     """
 
-    hdfs_metrics = proto.MapField(
+    hdfs_metrics: MutableMapping[str, int] = proto.MapField(
         proto.STRING,
         proto.INT64,
         number=1,
     )
-    yarn_metrics = proto.MapField(
+    yarn_metrics: MutableMapping[str, int] = proto.MapField(
         proto.STRING,
         proto.INT64,
         number=2,
@@ -1478,24 +1572,24 @@ class CreateClusterRequest(proto.Message):
             creation fails.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    region = proto.Field(
+    region: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    cluster = proto.Field(
+    cluster: "Cluster" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Cluster",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    action_on_failed_primary_workers = proto.Field(
+    action_on_failed_primary_workers: shared.FailureAction = proto.Field(
         proto.ENUM,
         number=5,
         enum=shared.FailureAction,
@@ -1606,34 +1700,34 @@ class UpdateClusterRequest(proto.Message):
             characters.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    region = proto.Field(
+    region: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    cluster_name = proto.Field(
+    cluster_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    cluster = proto.Field(
+    cluster: "Cluster" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Cluster",
     )
-    graceful_decommission_timeout = proto.Field(
+    graceful_decommission_timeout: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=6,
         message=duration_pb2.Duration,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=4,
         message=field_mask_pb2.FieldMask,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -1672,23 +1766,23 @@ class StopClusterRequest(proto.Message):
             characters.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    region = proto.Field(
+    region: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    cluster_name = proto.Field(
+    cluster_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    cluster_uuid = proto.Field(
+    cluster_uuid: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1727,23 +1821,23 @@ class StartClusterRequest(proto.Message):
             characters.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    region = proto.Field(
+    region: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    cluster_name = proto.Field(
+    cluster_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    cluster_uuid = proto.Field(
+    cluster_uuid: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1782,23 +1876,23 @@ class DeleteClusterRequest(proto.Message):
             characters.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    region = proto.Field(
+    region: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    cluster_name = proto.Field(
+    cluster_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    cluster_uuid = proto.Field(
+    cluster_uuid: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1819,15 +1913,15 @@ class GetClusterRequest(proto.Message):
             Required. The cluster name.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    region = proto.Field(
+    region: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    cluster_name = proto.Field(
+    cluster_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1871,23 +1965,23 @@ class ListClustersRequest(proto.Message):
             Optional. The standard List page token.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    region = proto.Field(
+    region: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1897,7 +1991,7 @@ class ListClustersResponse(proto.Message):
     r"""The list of all clusters in a project.
 
     Attributes:
-        clusters (Sequence[google.cloud.dataproc_v1.types.Cluster]):
+        clusters (MutableSequence[google.cloud.dataproc_v1.types.Cluster]):
             Output only. The clusters in the project.
         next_page_token (str):
             Output only. This token is included in the response if there
@@ -1910,12 +2004,12 @@ class ListClustersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    clusters = proto.RepeatedField(
+    clusters: MutableSequence["Cluster"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Cluster",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1935,15 +2029,15 @@ class DiagnoseClusterRequest(proto.Message):
             Required. The cluster name.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    region = proto.Field(
+    region: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    cluster_name = proto.Field(
+    cluster_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1960,7 +2054,7 @@ class DiagnoseClusterResults(proto.Message):
             diagnostics.
     """
 
-    output_uri = proto.Field(
+    output_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1975,7 +2069,7 @@ class ReservationAffinity(proto.Message):
         key (str):
             Optional. Corresponds to the label key of
             reservation resource.
-        values (Sequence[str]):
+        values (MutableSequence[str]):
             Optional. Corresponds to the label values of
             reservation resource.
     """
@@ -1989,16 +2083,16 @@ class ReservationAffinity(proto.Message):
         ANY_RESERVATION = 2
         SPECIFIC_RESERVATION = 3
 
-    consume_reservation_type = proto.Field(
+    consume_reservation_type: Type = proto.Field(
         proto.ENUM,
         number=1,
         enum=Type,
     )
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    values = proto.RepeatedField(
+    values: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )

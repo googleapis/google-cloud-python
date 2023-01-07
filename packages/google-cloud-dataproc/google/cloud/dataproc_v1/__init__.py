@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.dataproc import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from .services.autoscaling_policy_service import AutoscalingPolicyServiceClient
 from .services.autoscaling_policy_service import AutoscalingPolicyServiceAsyncClient
@@ -22,6 +26,8 @@ from .services.cluster_controller import ClusterControllerClient
 from .services.cluster_controller import ClusterControllerAsyncClient
 from .services.job_controller import JobControllerClient
 from .services.job_controller import JobControllerAsyncClient
+from .services.node_group_controller import NodeGroupControllerClient
+from .services.node_group_controller import NodeGroupControllerAsyncClient
 from .services.workflow_template_service import WorkflowTemplateServiceClient
 from .services.workflow_template_service import WorkflowTemplateServiceAsyncClient
 
@@ -47,6 +53,7 @@ from .types.batches import SparkRBatch
 from .types.batches import SparkSqlBatch
 from .types.clusters import AcceleratorConfig
 from .types.clusters import AutoscalingConfig
+from .types.clusters import AuxiliaryNodeGroup
 from .types.clusters import AuxiliaryServicesConfig
 from .types.clusters import Cluster
 from .types.clusters import ClusterConfig
@@ -71,6 +78,7 @@ from .types.clusters import ListClustersRequest
 from .types.clusters import ListClustersResponse
 from .types.clusters import ManagedGroupConfig
 from .types.clusters import MetastoreConfig
+from .types.clusters import NodeGroup
 from .types.clusters import NodeGroupAffinity
 from .types.clusters import NodeInitializationAction
 from .types.clusters import ReservationAffinity
@@ -83,6 +91,7 @@ from .types.clusters import UpdateClusterRequest
 from .types.clusters import VirtualClusterConfig
 from .types.jobs import CancelJobRequest
 from .types.jobs import DeleteJobRequest
+from .types.jobs import DriverSchedulingConfig
 from .types.jobs import GetJobRequest
 from .types.jobs import HadoopJob
 from .types.jobs import HiveJob
@@ -105,9 +114,13 @@ from .types.jobs import SparkSqlJob
 from .types.jobs import SubmitJobRequest
 from .types.jobs import UpdateJobRequest
 from .types.jobs import YarnApplication
+from .types.node_groups import CreateNodeGroupRequest
+from .types.node_groups import GetNodeGroupRequest
+from .types.node_groups import ResizeNodeGroupRequest
 from .types.operations import BatchOperationMetadata
 from .types.operations import ClusterOperationMetadata
 from .types.operations import ClusterOperationStatus
+from .types.operations import NodeGroupOperationMetadata
 from .types.shared import EnvironmentConfig
 from .types.shared import ExecutionConfig
 from .types.shared import GkeClusterConfig
@@ -148,11 +161,13 @@ __all__ = (
     "BatchControllerAsyncClient",
     "ClusterControllerAsyncClient",
     "JobControllerAsyncClient",
+    "NodeGroupControllerAsyncClient",
     "WorkflowTemplateServiceAsyncClient",
     "AcceleratorConfig",
     "AutoscalingConfig",
     "AutoscalingPolicy",
     "AutoscalingPolicyServiceClient",
+    "AuxiliaryNodeGroup",
     "AuxiliaryServicesConfig",
     "BasicAutoscalingAlgorithm",
     "BasicYarnAutoscalingConfig",
@@ -174,6 +189,7 @@ __all__ = (
     "CreateAutoscalingPolicyRequest",
     "CreateBatchRequest",
     "CreateClusterRequest",
+    "CreateNodeGroupRequest",
     "CreateWorkflowTemplateRequest",
     "DataprocMetricConfig",
     "DeleteAutoscalingPolicyRequest",
@@ -184,6 +200,7 @@ __all__ = (
     "DiagnoseClusterRequest",
     "DiagnoseClusterResults",
     "DiskConfig",
+    "DriverSchedulingConfig",
     "EncryptionConfig",
     "EndpointConfig",
     "EnvironmentConfig",
@@ -194,6 +211,7 @@ __all__ = (
     "GetBatchRequest",
     "GetClusterRequest",
     "GetJobRequest",
+    "GetNodeGroupRequest",
     "GetWorkflowTemplateRequest",
     "GkeClusterConfig",
     "GkeNodePoolConfig",
@@ -230,7 +248,10 @@ __all__ = (
     "ManagedCluster",
     "ManagedGroupConfig",
     "MetastoreConfig",
+    "NodeGroup",
     "NodeGroupAffinity",
+    "NodeGroupControllerClient",
+    "NodeGroupOperationMetadata",
     "NodeInitializationAction",
     "OrderedJob",
     "ParameterValidation",
@@ -242,6 +263,7 @@ __all__ = (
     "QueryList",
     "RegexValidation",
     "ReservationAffinity",
+    "ResizeNodeGroupRequest",
     "RuntimeConfig",
     "RuntimeInfo",
     "SecurityConfig",

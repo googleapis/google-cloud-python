@@ -16,8 +16,19 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
+
+from google.cloud.dataproc_v1 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -53,6 +64,10 @@ class WorkflowTemplateServiceAsyncClient:
     DEFAULT_ENDPOINT = WorkflowTemplateServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = WorkflowTemplateServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    node_group_path = staticmethod(WorkflowTemplateServiceClient.node_group_path)
+    parse_node_group_path = staticmethod(
+        WorkflowTemplateServiceClient.parse_node_group_path
+    )
     service_path = staticmethod(WorkflowTemplateServiceClient.service_path)
     parse_service_path = staticmethod(WorkflowTemplateServiceClient.parse_service_path)
     workflow_template_path = staticmethod(
@@ -176,9 +191,9 @@ class WorkflowTemplateServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, WorkflowTemplateServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the workflow template service client.
@@ -222,12 +237,14 @@ class WorkflowTemplateServiceAsyncClient:
 
     async def create_workflow_template(
         self,
-        request: Union[workflow_templates.CreateWorkflowTemplateRequest, dict] = None,
+        request: Optional[
+            Union[workflow_templates.CreateWorkflowTemplateRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        template: workflow_templates.WorkflowTemplate = None,
+        parent: Optional[str] = None,
+        template: Optional[workflow_templates.WorkflowTemplate] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> workflow_templates.WorkflowTemplate:
         r"""Creates new workflow template.
@@ -266,7 +283,7 @@ class WorkflowTemplateServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataproc_v1.types.CreateWorkflowTemplateRequest, dict]):
+            request (Optional[Union[google.cloud.dataproc_v1.types.CreateWorkflowTemplateRequest, dict]]):
                 The request object. A request to create a workflow
                 template.
             parent (:class:`str`):
@@ -360,11 +377,13 @@ class WorkflowTemplateServiceAsyncClient:
 
     async def get_workflow_template(
         self,
-        request: Union[workflow_templates.GetWorkflowTemplateRequest, dict] = None,
+        request: Optional[
+            Union[workflow_templates.GetWorkflowTemplateRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> workflow_templates.WorkflowTemplate:
         r"""Retrieves the latest workflow template.
@@ -398,7 +417,7 @@ class WorkflowTemplateServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataproc_v1.types.GetWorkflowTemplateRequest, dict]):
+            request (Optional[Union[google.cloud.dataproc_v1.types.GetWorkflowTemplateRequest, dict]]):
                 The request object. A request to fetch a workflow
                 template.
             name (:class:`str`):
@@ -486,14 +505,14 @@ class WorkflowTemplateServiceAsyncClient:
 
     async def instantiate_workflow_template(
         self,
-        request: Union[
-            workflow_templates.InstantiateWorkflowTemplateRequest, dict
+        request: Optional[
+            Union[workflow_templates.InstantiateWorkflowTemplateRequest, dict]
         ] = None,
         *,
-        name: str = None,
-        parameters: Mapping[str, str] = None,
+        name: Optional[str] = None,
+        parameters: Optional[MutableMapping[str, str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Instantiates a template and begins execution.
@@ -543,13 +562,13 @@ class WorkflowTemplateServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest, dict]):
+            request (Optional[Union[google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest, dict]]):
                 The request object. A request to instantiate a workflow
                 template.
             name (:class:`str`):
@@ -572,7 +591,7 @@ class WorkflowTemplateServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            parameters (:class:`Mapping[str, str]`):
+            parameters (:class:`MutableMapping[str, str]`):
                 Optional. Map from parameter names to
                 values that should be used for those
                 parameters. Values may not exceed 1000
@@ -667,14 +686,14 @@ class WorkflowTemplateServiceAsyncClient:
 
     async def instantiate_inline_workflow_template(
         self,
-        request: Union[
-            workflow_templates.InstantiateInlineWorkflowTemplateRequest, dict
+        request: Optional[
+            Union[workflow_templates.InstantiateInlineWorkflowTemplateRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        template: workflow_templates.WorkflowTemplate = None,
+        parent: Optional[str] = None,
+        template: Optional[workflow_templates.WorkflowTemplate] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Instantiates a template and begins execution.
@@ -736,13 +755,13 @@ class WorkflowTemplateServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataproc_v1.types.InstantiateInlineWorkflowTemplateRequest, dict]):
+            request (Optional[Union[google.cloud.dataproc_v1.types.InstantiateInlineWorkflowTemplateRequest, dict]]):
                 The request object. A request to instantiate an inline
                 workflow template.
             parent (:class:`str`):
@@ -856,11 +875,13 @@ class WorkflowTemplateServiceAsyncClient:
 
     async def update_workflow_template(
         self,
-        request: Union[workflow_templates.UpdateWorkflowTemplateRequest, dict] = None,
+        request: Optional[
+            Union[workflow_templates.UpdateWorkflowTemplateRequest, dict]
+        ] = None,
         *,
-        template: workflow_templates.WorkflowTemplate = None,
+        template: Optional[workflow_templates.WorkflowTemplate] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> workflow_templates.WorkflowTemplate:
         r"""Updates (replaces) workflow template. The updated
@@ -900,7 +921,7 @@ class WorkflowTemplateServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataproc_v1.types.UpdateWorkflowTemplateRequest, dict]):
+            request (Optional[Union[google.cloud.dataproc_v1.types.UpdateWorkflowTemplateRequest, dict]]):
                 The request object. A request to update a workflow
                 template.
             template (:class:`google.cloud.dataproc_v1.types.WorkflowTemplate`):
@@ -979,11 +1000,13 @@ class WorkflowTemplateServiceAsyncClient:
 
     async def list_workflow_templates(
         self,
-        request: Union[workflow_templates.ListWorkflowTemplatesRequest, dict] = None,
+        request: Optional[
+            Union[workflow_templates.ListWorkflowTemplatesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListWorkflowTemplatesAsyncPager:
         r"""Lists workflows that match the specified filter in
@@ -1017,7 +1040,7 @@ class WorkflowTemplateServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dataproc_v1.types.ListWorkflowTemplatesRequest, dict]):
+            request (Optional[Union[google.cloud.dataproc_v1.types.ListWorkflowTemplatesRequest, dict]]):
                 The request object. A request to list workflow templates
                 in a project.
             parent (:class:`str`):
@@ -1116,11 +1139,13 @@ class WorkflowTemplateServiceAsyncClient:
 
     async def delete_workflow_template(
         self,
-        request: Union[workflow_templates.DeleteWorkflowTemplateRequest, dict] = None,
+        request: Optional[
+            Union[workflow_templates.DeleteWorkflowTemplateRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a workflow template. It does not cancel
@@ -1150,7 +1175,7 @@ class WorkflowTemplateServiceAsyncClient:
                 await client.delete_workflow_template(request=request)
 
         Args:
-            request (Union[google.cloud.dataproc_v1.types.DeleteWorkflowTemplateRequest, dict]):
+            request (Optional[Union[google.cloud.dataproc_v1.types.DeleteWorkflowTemplateRequest, dict]]):
                 The request object. A request to delete a workflow
                 template.
                 Currently started workflows will remain running.
@@ -1234,14 +1259,9 @@ class WorkflowTemplateServiceAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-dataproc",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("WorkflowTemplateServiceAsyncClient",)

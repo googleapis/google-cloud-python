@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -24,6 +26,7 @@ __protobuf__ = proto.module(
         "BatchOperationMetadata",
         "ClusterOperationStatus",
         "ClusterOperationMetadata",
+        "NodeGroupOperationMetadata",
     },
 )
 
@@ -44,9 +47,9 @@ class BatchOperationMetadata(proto.Message):
             The operation type.
         description (str):
             Short description of the operation.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels associated with the operation.
-        warnings (Sequence[str]):
+        warnings (MutableSequence[str]):
             Warnings encountered during operation
             execution.
     """
@@ -56,39 +59,39 @@ class BatchOperationMetadata(proto.Message):
         BATCH_OPERATION_TYPE_UNSPECIFIED = 0
         BATCH = 1
 
-    batch = proto.Field(
+    batch: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    batch_uuid = proto.Field(
+    batch_uuid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    done_time = proto.Field(
+    done_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    operation_type = proto.Field(
+    operation_type: BatchOperationType = proto.Field(
         proto.ENUM,
         number=6,
         enum=BatchOperationType,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=8,
     )
-    warnings = proto.RepeatedField(
+    warnings: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=9,
     )
@@ -118,20 +121,20 @@ class ClusterOperationStatus(proto.Message):
         RUNNING = 2
         DONE = 3
 
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
     )
-    inner_state = proto.Field(
+    inner_state: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    details = proto.Field(
+    details: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    state_start_time = proto.Field(
+    state_start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
@@ -149,54 +152,125 @@ class ClusterOperationMetadata(proto.Message):
             Output only. Cluster UUID for the operation.
         status (google.cloud.dataproc_v1.types.ClusterOperationStatus):
             Output only. Current operation status.
-        status_history (Sequence[google.cloud.dataproc_v1.types.ClusterOperationStatus]):
+        status_history (MutableSequence[google.cloud.dataproc_v1.types.ClusterOperationStatus]):
             Output only. The previous operation status.
         operation_type (str):
             Output only. The operation type.
         description (str):
             Output only. Short description of operation.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Output only. Labels associated with the
             operation
-        warnings (Sequence[str]):
+        warnings (MutableSequence[str]):
             Output only. Errors encountered during
             operation execution.
     """
 
-    cluster_name = proto.Field(
+    cluster_name: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    cluster_uuid = proto.Field(
+    cluster_uuid: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    status = proto.Field(
+    status: "ClusterOperationStatus" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="ClusterOperationStatus",
     )
-    status_history = proto.RepeatedField(
+    status_history: MutableSequence["ClusterOperationStatus"] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message="ClusterOperationStatus",
     )
-    operation_type = proto.Field(
+    operation_type: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=13,
     )
-    warnings = proto.RepeatedField(
+    warnings: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=14,
+    )
+
+
+class NodeGroupOperationMetadata(proto.Message):
+    r"""Metadata describing the node group operation.
+
+    Attributes:
+        node_group_id (str):
+            Output only. Node group ID for the operation.
+        cluster_uuid (str):
+            Output only. Cluster UUID associated with the
+            node group operation.
+        status (google.cloud.dataproc_v1.types.ClusterOperationStatus):
+            Output only. Current operation status.
+        status_history (MutableSequence[google.cloud.dataproc_v1.types.ClusterOperationStatus]):
+            Output only. The previous operation status.
+        operation_type (google.cloud.dataproc_v1.types.NodeGroupOperationMetadata.NodeGroupOperationType):
+            The operation type.
+        description (str):
+            Output only. Short description of operation.
+        labels (MutableMapping[str, str]):
+            Output only. Labels associated with the
+            operation.
+        warnings (MutableSequence[str]):
+            Output only. Errors encountered during
+            operation execution.
+    """
+
+    class NodeGroupOperationType(proto.Enum):
+        r"""Operation type for node group resources."""
+        NODE_GROUP_OPERATION_TYPE_UNSPECIFIED = 0
+        CREATE = 1
+        UPDATE = 2
+        DELETE = 3
+        RESIZE = 4
+
+    node_group_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    cluster_uuid: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    status: "ClusterOperationStatus" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ClusterOperationStatus",
+    )
+    status_history: MutableSequence["ClusterOperationStatus"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="ClusterOperationStatus",
+    )
+    operation_type: NodeGroupOperationType = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=NodeGroupOperationType,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=7,
+    )
+    warnings: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=8,
     )
 
 

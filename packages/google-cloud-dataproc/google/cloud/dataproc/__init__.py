@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.dataproc import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.dataproc_v1.services.autoscaling_policy_service.client import (
     AutoscalingPolicyServiceClient,
@@ -35,6 +39,12 @@ from google.cloud.dataproc_v1.services.cluster_controller.async_client import (
 from google.cloud.dataproc_v1.services.job_controller.client import JobControllerClient
 from google.cloud.dataproc_v1.services.job_controller.async_client import (
     JobControllerAsyncClient,
+)
+from google.cloud.dataproc_v1.services.node_group_controller.client import (
+    NodeGroupControllerClient,
+)
+from google.cloud.dataproc_v1.services.node_group_controller.async_client import (
+    NodeGroupControllerAsyncClient,
 )
 from google.cloud.dataproc_v1.services.workflow_template_service.client import (
     WorkflowTemplateServiceClient,
@@ -83,6 +93,7 @@ from google.cloud.dataproc_v1.types.batches import SparkRBatch
 from google.cloud.dataproc_v1.types.batches import SparkSqlBatch
 from google.cloud.dataproc_v1.types.clusters import AcceleratorConfig
 from google.cloud.dataproc_v1.types.clusters import AutoscalingConfig
+from google.cloud.dataproc_v1.types.clusters import AuxiliaryNodeGroup
 from google.cloud.dataproc_v1.types.clusters import AuxiliaryServicesConfig
 from google.cloud.dataproc_v1.types.clusters import Cluster
 from google.cloud.dataproc_v1.types.clusters import ClusterConfig
@@ -107,6 +118,7 @@ from google.cloud.dataproc_v1.types.clusters import ListClustersRequest
 from google.cloud.dataproc_v1.types.clusters import ListClustersResponse
 from google.cloud.dataproc_v1.types.clusters import ManagedGroupConfig
 from google.cloud.dataproc_v1.types.clusters import MetastoreConfig
+from google.cloud.dataproc_v1.types.clusters import NodeGroup
 from google.cloud.dataproc_v1.types.clusters import NodeGroupAffinity
 from google.cloud.dataproc_v1.types.clusters import NodeInitializationAction
 from google.cloud.dataproc_v1.types.clusters import ReservationAffinity
@@ -119,6 +131,7 @@ from google.cloud.dataproc_v1.types.clusters import UpdateClusterRequest
 from google.cloud.dataproc_v1.types.clusters import VirtualClusterConfig
 from google.cloud.dataproc_v1.types.jobs import CancelJobRequest
 from google.cloud.dataproc_v1.types.jobs import DeleteJobRequest
+from google.cloud.dataproc_v1.types.jobs import DriverSchedulingConfig
 from google.cloud.dataproc_v1.types.jobs import GetJobRequest
 from google.cloud.dataproc_v1.types.jobs import HadoopJob
 from google.cloud.dataproc_v1.types.jobs import HiveJob
@@ -141,9 +154,13 @@ from google.cloud.dataproc_v1.types.jobs import SparkSqlJob
 from google.cloud.dataproc_v1.types.jobs import SubmitJobRequest
 from google.cloud.dataproc_v1.types.jobs import UpdateJobRequest
 from google.cloud.dataproc_v1.types.jobs import YarnApplication
+from google.cloud.dataproc_v1.types.node_groups import CreateNodeGroupRequest
+from google.cloud.dataproc_v1.types.node_groups import GetNodeGroupRequest
+from google.cloud.dataproc_v1.types.node_groups import ResizeNodeGroupRequest
 from google.cloud.dataproc_v1.types.operations import BatchOperationMetadata
 from google.cloud.dataproc_v1.types.operations import ClusterOperationMetadata
 from google.cloud.dataproc_v1.types.operations import ClusterOperationStatus
+from google.cloud.dataproc_v1.types.operations import NodeGroupOperationMetadata
 from google.cloud.dataproc_v1.types.shared import EnvironmentConfig
 from google.cloud.dataproc_v1.types.shared import ExecutionConfig
 from google.cloud.dataproc_v1.types.shared import GkeClusterConfig
@@ -202,6 +219,8 @@ __all__ = (
     "ClusterControllerAsyncClient",
     "JobControllerClient",
     "JobControllerAsyncClient",
+    "NodeGroupControllerClient",
+    "NodeGroupControllerAsyncClient",
     "WorkflowTemplateServiceClient",
     "WorkflowTemplateServiceAsyncClient",
     "AutoscalingPolicy",
@@ -226,6 +245,7 @@ __all__ = (
     "SparkSqlBatch",
     "AcceleratorConfig",
     "AutoscalingConfig",
+    "AuxiliaryNodeGroup",
     "AuxiliaryServicesConfig",
     "Cluster",
     "ClusterConfig",
@@ -250,6 +270,7 @@ __all__ = (
     "ListClustersResponse",
     "ManagedGroupConfig",
     "MetastoreConfig",
+    "NodeGroup",
     "NodeGroupAffinity",
     "NodeInitializationAction",
     "ReservationAffinity",
@@ -262,6 +283,7 @@ __all__ = (
     "VirtualClusterConfig",
     "CancelJobRequest",
     "DeleteJobRequest",
+    "DriverSchedulingConfig",
     "GetJobRequest",
     "HadoopJob",
     "HiveJob",
@@ -284,9 +306,13 @@ __all__ = (
     "SubmitJobRequest",
     "UpdateJobRequest",
     "YarnApplication",
+    "CreateNodeGroupRequest",
+    "GetNodeGroupRequest",
+    "ResizeNodeGroupRequest",
     "BatchOperationMetadata",
     "ClusterOperationMetadata",
     "ClusterOperationStatus",
+    "NodeGroupOperationMetadata",
     "EnvironmentConfig",
     "ExecutionConfig",
     "GkeClusterConfig",
