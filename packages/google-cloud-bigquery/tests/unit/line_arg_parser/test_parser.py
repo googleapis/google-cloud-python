@@ -44,7 +44,7 @@ def test_consume_unexpected_eol(parser_class):
     fake_lexer = [Token(TokenType.EOL, lexeme="", pos=0)]
     parser = parser_class(fake_lexer)
 
-    with pytest.raises(ParseError, match=r"Unexpected end of input.*expected COLON.*"):
+    with pytest.raises(ParseError, match=r"Unexpected end of input.*expected.*COLON.*"):
         parser.consume(TokenType.COLON)
 
 
