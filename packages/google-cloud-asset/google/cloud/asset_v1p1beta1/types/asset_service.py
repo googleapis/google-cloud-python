@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.asset_v1p1beta1.types import assets
@@ -44,7 +46,7 @@ class SearchAllResourcesRequest(proto.Message):
             -  Project id (such as "projects/abc")
         query (str):
             Optional. The query statement.
-        asset_types (Sequence[str]):
+        asset_types (MutableSequence[str]):
             Optional. A list of asset types that this
             request searches for. If empty, it will search
             all the supported asset types.
@@ -70,27 +72,27 @@ class SearchAllResourcesRequest(proto.Message):
             example, "  foo ,  bar  desc  ".
     """
 
-    scope = proto.Field(
+    scope: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    asset_types = proto.RepeatedField(
+    asset_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=10,
     )
@@ -100,7 +102,7 @@ class SearchAllResourcesResponse(proto.Message):
     r"""Search all resources response.
 
     Attributes:
-        results (Sequence[google.cloud.asset_v1p1beta1.types.StandardResourceMetadata]):
+        results (MutableSequence[google.cloud.asset_v1p1beta1.types.StandardResourceMetadata]):
             A list of resource that match the search
             query.
         next_page_token (str):
@@ -114,12 +116,12 @@ class SearchAllResourcesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    results = proto.RepeatedField(
+    results: MutableSequence[assets.StandardResourceMetadata] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=assets.StandardResourceMetadata,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -158,19 +160,19 @@ class SearchAllIamPoliciesRequest(proto.Message):
             identical to those in the previous call.
     """
 
-    scope = proto.Field(
+    scope: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -180,7 +182,7 @@ class SearchAllIamPoliciesResponse(proto.Message):
     r"""Search all IAM policies response.
 
     Attributes:
-        results (Sequence[google.cloud.asset_v1p1beta1.types.IamPolicySearchResult]):
+        results (MutableSequence[google.cloud.asset_v1p1beta1.types.IamPolicySearchResult]):
             A list of IamPolicy that match the search
             query. Related information such as the
             associated resource is returned along with the
@@ -195,12 +197,12 @@ class SearchAllIamPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    results = proto.RepeatedField(
+    results: MutableSequence[assets.IamPolicySearchResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=assets.IamPolicySearchResult,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )

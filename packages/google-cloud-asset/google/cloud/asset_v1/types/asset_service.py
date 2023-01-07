@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.asset_v1.types import assets as gca_assets
@@ -106,7 +108,7 @@ class AnalyzeIamPolicyLongrunningMetadata(proto.Message):
             created.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
@@ -133,7 +135,7 @@ class ExportAssetsRequest(proto.Message):
             collection and indexing, there is a volatile
             window during which running the same query may
             get different results.
-        asset_types (Sequence[str]):
+        asset_types (MutableSequence[str]):
             A list of asset types to take a snapshot for. For example:
             "compute.googleapis.com/Disk".
 
@@ -162,7 +164,7 @@ class ExportAssetsRequest(proto.Message):
         output_config (google.cloud.asset_v1.types.OutputConfig):
             Required. Output configuration indicating
             where the results will be output to.
-        relationship_types (Sequence[str]):
+        relationship_types (MutableSequence[str]):
             A list of relationship types to export, for example:
             ``INSTANCE_TO_INSTANCEGROUP``. This field should only be
             specified if content_type=RELATIONSHIP.
@@ -181,30 +183,30 @@ class ExportAssetsRequest(proto.Message):
                for all supported asset types and relationship types.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    asset_types = proto.RepeatedField(
+    asset_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    content_type = proto.Field(
+    content_type: "ContentType" = proto.Field(
         proto.ENUM,
         number=4,
         enum="ContentType",
     )
-    output_config = proto.Field(
+    output_config: "OutputConfig" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="OutputConfig",
     )
-    relationship_types = proto.RepeatedField(
+    relationship_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
@@ -232,17 +234,17 @@ class ExportAssetsResponse(proto.Message):
             it exceeds a single Google Cloud Storage object limit.
     """
 
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    output_config = proto.Field(
+    output_config: "OutputConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="OutputConfig",
     )
-    output_result = proto.Field(
+    output_result: "OutputResult" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="OutputResult",
@@ -270,7 +272,7 @@ class ListAssetsRequest(proto.Message):
             collection and indexing, there is a volatile
             window during which running the same query may
             get different results.
-        asset_types (Sequence[str]):
+        asset_types (MutableSequence[str]):
             A list of asset types to take a snapshot for. For example:
             "compute.googleapis.com/Disk".
 
@@ -306,7 +308,7 @@ class ListAssetsRequest(proto.Message):
             ``ListAssetsRequest``. It is a continuation of a prior
             ``ListAssets`` call, and the API should return the next page
             of assets.
-        relationship_types (Sequence[str]):
+        relationship_types (MutableSequence[str]):
             A list of relationship types to output, for example:
             ``INSTANCE_TO_INSTANCEGROUP``. This field should only be
             specified if content_type=RELATIONSHIP.
@@ -325,33 +327,33 @@ class ListAssetsRequest(proto.Message):
                for all supported asset types and relationship types.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    asset_types = proto.RepeatedField(
+    asset_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    content_type = proto.Field(
+    content_type: "ContentType" = proto.Field(
         proto.ENUM,
         number=4,
         enum="ContentType",
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    relationship_types = proto.RepeatedField(
+    relationship_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
@@ -363,7 +365,7 @@ class ListAssetsResponse(proto.Message):
     Attributes:
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Time the snapshot was taken.
-        assets (Sequence[google.cloud.asset_v1.types.Asset]):
+        assets (MutableSequence[google.cloud.asset_v1.types.Asset]):
             Assets.
         next_page_token (str):
             Token to retrieve the next page of results.
@@ -376,17 +378,17 @@ class ListAssetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    assets = proto.RepeatedField(
+    assets: MutableSequence[gca_assets.Asset] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=gca_assets.Asset,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -402,7 +404,7 @@ class BatchGetAssetsHistoryRequest(proto.Message):
             (such as "organizations/123"), a project ID
             (such as "projects/my-project-id")", or a
             project number (such as "projects/12345").
-        asset_names (Sequence[str]):
+        asset_names (MutableSequence[str]):
             A list of the full names of the assets. See:
             https://cloud.google.com/asset-inventory/docs/resource-name-format
             Example:
@@ -422,7 +424,7 @@ class BatchGetAssetsHistoryRequest(proto.Message):
             not set, the snapshot of the assets at end_time will be
             returned. The returned results contain all temporal assets
             whose time window overlap with read_time_window.
-        relationship_types (Sequence[str]):
+        relationship_types (MutableSequence[str]):
             Optional. A list of relationship types to output, for
             example: ``INSTANCE_TO_INSTANCEGROUP``. This field should
             only be specified if content_type=RELATIONSHIP.
@@ -441,25 +443,25 @@ class BatchGetAssetsHistoryRequest(proto.Message):
                for all supported asset types and relationship types.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    asset_names = proto.RepeatedField(
+    asset_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    content_type = proto.Field(
+    content_type: "ContentType" = proto.Field(
         proto.ENUM,
         number=3,
         enum="ContentType",
     )
-    read_time_window = proto.Field(
+    read_time_window: gca_assets.TimeWindow = proto.Field(
         proto.MESSAGE,
         number=4,
         message=gca_assets.TimeWindow,
     )
-    relationship_types = proto.RepeatedField(
+    relationship_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
@@ -469,11 +471,11 @@ class BatchGetAssetsHistoryResponse(proto.Message):
     r"""Batch get assets history response.
 
     Attributes:
-        assets (Sequence[google.cloud.asset_v1.types.TemporalAsset]):
+        assets (MutableSequence[google.cloud.asset_v1.types.TemporalAsset]):
             A list of assets with valid time windows.
     """
 
-    assets = proto.RepeatedField(
+    assets: MutableSequence[gca_assets.TemporalAsset] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gca_assets.TemporalAsset,
@@ -505,15 +507,15 @@ class CreateFeedRequest(proto.Message):
             organizations/organization_number/feeds/feed_id
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    feed_id = proto.Field(
+    feed_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    feed = proto.Field(
+    feed: "Feed" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Feed",
@@ -531,7 +533,7 @@ class GetFeedRequest(proto.Message):
             organizations/organization_number/feeds/feed_id
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -550,7 +552,7 @@ class ListFeedsRequest(proto.Message):
             "projects/my-project-id").
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -560,11 +562,11 @@ class ListFeedsResponse(proto.Message):
     r"""
 
     Attributes:
-        feeds (Sequence[google.cloud.asset_v1.types.Feed]):
+        feeds (MutableSequence[google.cloud.asset_v1.types.Feed]):
             A list of feeds.
     """
 
-    feeds = proto.RepeatedField(
+    feeds: MutableSequence["Feed"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Feed",
@@ -587,12 +589,12 @@ class UpdateFeedRequest(proto.Message):
             contain fields that are immutable or only set by the server.
     """
 
-    feed = proto.Field(
+    feed: "Feed" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Feed",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -610,7 +612,7 @@ class DeleteFeedRequest(proto.Message):
             organizations/organization_number/feeds/feed_id
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -639,13 +641,13 @@ class OutputConfig(proto.Message):
             This field is a member of `oneof`_ ``destination``.
     """
 
-    gcs_destination = proto.Field(
+    gcs_destination: "GcsDestination" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="destination",
         message="GcsDestination",
     )
-    bigquery_destination = proto.Field(
+    bigquery_destination: "BigQueryDestination" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="destination",
@@ -665,7 +667,7 @@ class OutputResult(proto.Message):
             This field is a member of `oneof`_ ``result``.
     """
 
-    gcs_result = proto.Field(
+    gcs_result: "GcsOutputResult" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="result",
@@ -677,12 +679,12 @@ class GcsOutputResult(proto.Message):
     r"""A Cloud Storage output result.
 
     Attributes:
-        uris (Sequence[str]):
+        uris (MutableSequence[str]):
             List of uris of the Cloud Storage objects. Example:
             "gs://bucket_name/object_name".
     """
 
-    uris = proto.RepeatedField(
+    uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -726,12 +728,12 @@ class GcsDestination(proto.Message):
             This field is a member of `oneof`_ ``object_uri``.
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="object_uri",
     )
-    uri_prefix = proto.Field(
+    uri_prefix: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="object_uri",
@@ -822,24 +824,24 @@ class BigQueryDestination(proto.Message):
             a table.
     """
 
-    dataset = proto.Field(
+    dataset: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    table = proto.Field(
+    table: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    partition_spec = proto.Field(
+    partition_spec: "PartitionSpec" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="PartitionSpec",
     )
-    separate_tables_per_asset_type = proto.Field(
+    separate_tables_per_asset_type: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -866,7 +868,7 @@ class PartitionSpec(proto.Message):
         READ_TIME = 1
         REQUEST_TIME = 2
 
-    partition_key = proto.Field(
+    partition_key: PartitionKey = proto.Field(
         proto.ENUM,
         number=1,
         enum=PartitionKey,
@@ -882,7 +884,7 @@ class PubsubDestination(proto.Message):
             ``projects/PROJECT_ID/topics/TOPIC_ID``.
     """
 
-    topic = proto.Field(
+    topic: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -900,7 +902,7 @@ class FeedOutputConfig(proto.Message):
             This field is a member of `oneof`_ ``destination``.
     """
 
-    pubsub_destination = proto.Field(
+    pubsub_destination: "PubsubDestination" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="destination",
@@ -926,7 +928,7 @@ class Feed(proto.Message):
 
             The client-assigned feed identifier must be unique within
             the parent project/folder/organization.
-        asset_names (Sequence[str]):
+        asset_names (MutableSequence[str]):
             A list of the full names of the assets to receive updates.
             You must specify either or both of asset_names and
             asset_types. Only asset updates matching specified
@@ -936,7 +938,7 @@ class Feed(proto.Message):
             For a list of the full names for supported asset types, see
             `Resource name
             format </asset-inventory/docs/resource-name-format>`__.
-        asset_types (Sequence[str]):
+        asset_types (MutableSequence[str]):
             A list of types of the assets to receive updates. You must
             specify either or both of asset_names and asset_types. Only
             asset updates matching specified asset_names or asset_types
@@ -967,7 +969,7 @@ class Feed(proto.Message):
             See our `user
             guide <https://cloud.google.com/asset-inventory/docs/monitoring-asset-changes-with-condition>`__
             for detailed instructions.
-        relationship_types (Sequence[str]):
+        relationship_types (MutableSequence[str]):
             A list of relationship types to output, for example:
             ``INSTANCE_TO_INSTANCEGROUP``. This field should only be
             specified if content_type=RELATIONSHIP.
@@ -988,34 +990,34 @@ class Feed(proto.Message):
                for all supported asset types and relationship types.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    asset_names = proto.RepeatedField(
+    asset_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    asset_types = proto.RepeatedField(
+    asset_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    content_type = proto.Field(
+    content_type: "ContentType" = proto.Field(
         proto.ENUM,
         number=4,
         enum="ContentType",
     )
-    feed_output_config = proto.Field(
+    feed_output_config: "FeedOutputConfig" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="FeedOutputConfig",
     )
-    condition = proto.Field(
+    condition: expr_pb2.Expr = proto.Field(
         proto.MESSAGE,
         number=6,
         message=expr_pb2.Expr,
     )
-    relationship_types = proto.RepeatedField(
+    relationship_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
@@ -1099,7 +1101,7 @@ class SearchAllResourcesRequest(proto.Message):
                resources that contain "Important" as a word in any of
                the searchable fields and are also located in the
                "us-west1" region or the "global" location.
-        asset_types (Sequence[str]):
+        asset_types (MutableSequence[str]):
             Optional. A list of asset types that this request searches
             for. If empty, it will search all the `searchable asset
             types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types>`__.
@@ -1192,31 +1194,31 @@ class SearchAllResourcesRequest(proto.Message):
             INVALID_ARGUMENT error.
     """
 
-    scope = proto.Field(
+    scope: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    asset_types = proto.RepeatedField(
+    asset_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    read_mask = proto.Field(
+    read_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=8,
         message=field_mask_pb2.FieldMask,
@@ -1227,7 +1229,7 @@ class SearchAllResourcesResponse(proto.Message):
     r"""Search all resources response.
 
     Attributes:
-        results (Sequence[google.cloud.asset_v1.types.ResourceSearchResult]):
+        results (MutableSequence[google.cloud.asset_v1.types.ResourceSearchResult]):
             A list of Resources that match the search
             query. It contains the resource standard
             metadata information.
@@ -1242,12 +1244,12 @@ class SearchAllResourcesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    results = proto.RepeatedField(
+    results: MutableSequence[gca_assets.ResourceSearchResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gca_assets.ResourceSearchResult,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1331,7 +1333,7 @@ class SearchAllIamPoliciesRequest(proto.Message):
             be the value of ``next_page_token`` from the previous
             response. The values of all other method parameters must be
             identical to those in the previous call.
-        asset_types (Sequence[str]):
+        asset_types (MutableSequence[str]):
             Optional. A list of asset types that the IAM policies are
             attached to. If empty, it will search the IAM policies that
             are attached to all the `searchable asset
@@ -1366,27 +1368,27 @@ class SearchAllIamPoliciesRequest(proto.Message):
                ``policy``) are not supported.
     """
 
-    scope = proto.Field(
+    scope: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    asset_types = proto.RepeatedField(
+    asset_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -1396,7 +1398,7 @@ class SearchAllIamPoliciesResponse(proto.Message):
     r"""Search all IAM policies response.
 
     Attributes:
-        results (Sequence[google.cloud.asset_v1.types.IamPolicySearchResult]):
+        results (MutableSequence[google.cloud.asset_v1.types.IamPolicySearchResult]):
             A list of IamPolicy that match the search
             query. Related information such as the
             associated resource is returned along with the
@@ -1411,12 +1413,12 @@ class SearchAllIamPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    results = proto.RepeatedField(
+    results: MutableSequence[gca_assets.IamPolicySearchResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gca_assets.IamPolicySearchResult,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1469,7 +1471,7 @@ class IamPolicyAnalysisQuery(proto.Message):
                 types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#analyzable_asset_types>`__.
         """
 
-        full_resource_name = proto.Field(
+        full_resource_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -1494,7 +1496,7 @@ class IamPolicyAnalysisQuery(proto.Message):
                 supported. You must give a specific identity.
         """
 
-        identity = proto.Field(
+        identity: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -1507,18 +1509,18 @@ class IamPolicyAnalysisQuery(proto.Message):
         roles and permissions should be equal or less than 10.
 
         Attributes:
-            roles (Sequence[str]):
+            roles (MutableSequence[str]):
                 Optional. The roles to appear in result.
-            permissions (Sequence[str]):
+            permissions (MutableSequence[str]):
                 Optional. The permissions to appear in
                 result.
         """
 
-        roles = proto.RepeatedField(
+        roles: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        permissions = proto.RepeatedField(
+        permissions: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
@@ -1631,27 +1633,27 @@ class IamPolicyAnalysisQuery(proto.Message):
                 Default is false.
         """
 
-        expand_groups = proto.Field(
+        expand_groups: bool = proto.Field(
             proto.BOOL,
             number=1,
         )
-        expand_roles = proto.Field(
+        expand_roles: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
-        expand_resources = proto.Field(
+        expand_resources: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
-        output_resource_edges = proto.Field(
+        output_resource_edges: bool = proto.Field(
             proto.BOOL,
             number=4,
         )
-        output_group_edges = proto.Field(
+        output_group_edges: bool = proto.Field(
             proto.BOOL,
             number=5,
         )
-        analyze_service_account_impersonation = proto.Field(
+        analyze_service_account_impersonation: bool = proto.Field(
             proto.BOOL,
             number=6,
         )
@@ -1671,38 +1673,38 @@ class IamPolicyAnalysisQuery(proto.Message):
                 This field is a member of `oneof`_ ``TimeContext``.
         """
 
-        access_time = proto.Field(
+        access_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="TimeContext",
             message=timestamp_pb2.Timestamp,
         )
 
-    scope = proto.Field(
+    scope: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    resource_selector = proto.Field(
+    resource_selector: ResourceSelector = proto.Field(
         proto.MESSAGE,
         number=2,
         message=ResourceSelector,
     )
-    identity_selector = proto.Field(
+    identity_selector: IdentitySelector = proto.Field(
         proto.MESSAGE,
         number=3,
         message=IdentitySelector,
     )
-    access_selector = proto.Field(
+    access_selector: AccessSelector = proto.Field(
         proto.MESSAGE,
         number=4,
         message=AccessSelector,
     )
-    options = proto.Field(
+    options: Options = proto.Field(
         proto.MESSAGE,
         number=5,
         message=Options,
     )
-    condition_context = proto.Field(
+    condition_context: ConditionContext = proto.Field(
         proto.MESSAGE,
         number=6,
         message=ConditionContext,
@@ -1750,16 +1752,16 @@ class AnalyzeIamPolicyRequest(proto.Message):
             Default is empty.
     """
 
-    analysis_query = proto.Field(
+    analysis_query: "IamPolicyAnalysisQuery" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="IamPolicyAnalysisQuery",
     )
-    saved_analysis_query = proto.Field(
+    saved_analysis_query: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    execution_timeout = proto.Field(
+    execution_timeout: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,
@@ -1774,7 +1776,7 @@ class AnalyzeIamPolicyResponse(proto.Message):
         main_analysis (google.cloud.asset_v1.types.AnalyzeIamPolicyResponse.IamPolicyAnalysis):
             The main analysis that matches the original
             request.
-        service_account_impersonation_analysis (Sequence[google.cloud.asset_v1.types.AnalyzeIamPolicyResponse.IamPolicyAnalysis]):
+        service_account_impersonation_analysis (MutableSequence[google.cloud.asset_v1.types.AnalyzeIamPolicyResponse.IamPolicyAnalysis]):
             The service account impersonation analysis if
             [AnalyzeIamPolicyRequest.analyze_service_account_impersonation][]
             is enabled.
@@ -1792,7 +1794,7 @@ class AnalyzeIamPolicyResponse(proto.Message):
         Attributes:
             analysis_query (google.cloud.asset_v1.types.IamPolicyAnalysisQuery):
                 The analysis query.
-            analysis_results (Sequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult]):
+            analysis_results (MutableSequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult]):
                 A list of
                 [IamPolicyAnalysisResult][google.cloud.asset.v1.IamPolicyAnalysisResult]
                 that matches the analysis query, or empty if no result is
@@ -1801,42 +1803,48 @@ class AnalyzeIamPolicyResponse(proto.Message):
                 Represents whether all entries in the
                 [analysis_results][google.cloud.asset.v1.AnalyzeIamPolicyResponse.IamPolicyAnalysis.analysis_results]
                 have been fully explored to answer the query.
-            non_critical_errors (Sequence[google.cloud.asset_v1.types.IamPolicyAnalysisState]):
+            non_critical_errors (MutableSequence[google.cloud.asset_v1.types.IamPolicyAnalysisState]):
                 A list of non-critical errors happened during
                 the query handling.
         """
 
-        analysis_query = proto.Field(
+        analysis_query: "IamPolicyAnalysisQuery" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="IamPolicyAnalysisQuery",
         )
-        analysis_results = proto.RepeatedField(
+        analysis_results: MutableSequence[
+            gca_assets.IamPolicyAnalysisResult
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message=gca_assets.IamPolicyAnalysisResult,
         )
-        fully_explored = proto.Field(
+        fully_explored: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
-        non_critical_errors = proto.RepeatedField(
+        non_critical_errors: MutableSequence[
+            gca_assets.IamPolicyAnalysisState
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message=gca_assets.IamPolicyAnalysisState,
         )
 
-    main_analysis = proto.Field(
+    main_analysis: IamPolicyAnalysis = proto.Field(
         proto.MESSAGE,
         number=1,
         message=IamPolicyAnalysis,
     )
-    service_account_impersonation_analysis = proto.RepeatedField(
+    service_account_impersonation_analysis: MutableSequence[
+        IamPolicyAnalysis
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=IamPolicyAnalysis,
     )
-    fully_explored = proto.Field(
+    fully_explored: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -1882,7 +1890,7 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
                 it will be overwritten with the analysis result.
         """
 
-        uri = proto.Field(
+        uri: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -1941,31 +1949,31 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
             PARTITION_KEY_UNSPECIFIED = 0
             REQUEST_TIME = 1
 
-        dataset = proto.Field(
+        dataset: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        table_prefix = proto.Field(
+        table_prefix: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        partition_key = proto.Field(
+        partition_key: "IamPolicyAnalysisOutputConfig.BigQueryDestination.PartitionKey" = proto.Field(
             proto.ENUM,
             number=3,
             enum="IamPolicyAnalysisOutputConfig.BigQueryDestination.PartitionKey",
         )
-        write_disposition = proto.Field(
+        write_disposition: str = proto.Field(
             proto.STRING,
             number=4,
         )
 
-    gcs_destination = proto.Field(
+    gcs_destination: GcsDestination = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="destination",
         message=GcsDestination,
     )
-    bigquery_destination = proto.Field(
+    bigquery_destination: BigQueryDestination = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="destination",
@@ -2004,16 +2012,16 @@ class AnalyzeIamPolicyLongrunningRequest(proto.Message):
             where the results will be output to.
     """
 
-    analysis_query = proto.Field(
+    analysis_query: "IamPolicyAnalysisQuery" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="IamPolicyAnalysisQuery",
     )
-    saved_analysis_query = proto.Field(
+    saved_analysis_query: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    output_config = proto.Field(
+    output_config: "IamPolicyAnalysisOutputConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="IamPolicyAnalysisOutputConfig",
@@ -2052,7 +2060,7 @@ class SavedQuery(proto.Message):
         last_updater (str):
             Output only. The account's email address who
             has updated this saved query most recently.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels applied on the resource.
             This value should not contain more than 10
             entries. The key and value of each entry must be
@@ -2077,45 +2085,45 @@ class SavedQuery(proto.Message):
                 This field is a member of `oneof`_ ``query_content``.
         """
 
-        iam_policy_analysis_query = proto.Field(
+        iam_policy_analysis_query: "IamPolicyAnalysisQuery" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="query_content",
             message="IamPolicyAnalysisQuery",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    creator = proto.Field(
+    creator: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    last_update_time = proto.Field(
+    last_update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    last_updater = proto.Field(
+    last_updater: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=7,
     )
-    content = proto.Field(
+    content: QueryContent = proto.Field(
         proto.MESSAGE,
         number=8,
         message=QueryContent,
@@ -2150,16 +2158,16 @@ class CreateSavedQueryRequest(proto.Message):
             be ignored.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    saved_query = proto.Field(
+    saved_query: "SavedQuery" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="SavedQuery",
     )
-    saved_query_id = proto.Field(
+    saved_query_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -2178,7 +2186,7 @@ class GetSavedQueryRequest(proto.Message):
             -  organizations/organization_number/savedQueries/saved_query_id
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -2221,19 +2229,19 @@ class ListSavedQueriesRequest(proto.Message):
             page token.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -2243,7 +2251,7 @@ class ListSavedQueriesResponse(proto.Message):
     r"""Response of listing saved queries.
 
     Attributes:
-        saved_queries (Sequence[google.cloud.asset_v1.types.SavedQuery]):
+        saved_queries (MutableSequence[google.cloud.asset_v1.types.SavedQuery]):
             A list of savedQueries.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -2255,12 +2263,12 @@ class ListSavedQueriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    saved_queries = proto.RepeatedField(
+    saved_queries: MutableSequence["SavedQuery"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SavedQuery",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -2283,12 +2291,12 @@ class UpdateSavedQueryRequest(proto.Message):
             Required. The list of fields to update.
     """
 
-    saved_query = proto.Field(
+    saved_query: "SavedQuery" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="SavedQuery",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -2308,7 +2316,7 @@ class DeleteSavedQueryRequest(proto.Message):
             -  organizations/organization_number/savedQueries/saved_query_id
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -2345,15 +2353,15 @@ class AnalyzeMoveRequest(proto.Message):
         FULL = 1
         BASIC = 2
 
-    resource = proto.Field(
+    resource: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    destination_parent = proto.Field(
+    destination_parent: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    view = proto.Field(
+    view: AnalysisView = proto.Field(
         proto.ENUM,
         number=3,
         enum=AnalysisView,
@@ -2364,13 +2372,13 @@ class AnalyzeMoveResponse(proto.Message):
     r"""The response message for resource move analysis.
 
     Attributes:
-        move_analysis (Sequence[google.cloud.asset_v1.types.MoveAnalysis]):
+        move_analysis (MutableSequence[google.cloud.asset_v1.types.MoveAnalysis]):
             The list of analyses returned from performing
             the intended resource move analysis. The
             analysis is grouped by different Cloud services.
     """
 
-    move_analysis = proto.RepeatedField(
+    move_analysis: MutableSequence["MoveAnalysis"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="MoveAnalysis",
@@ -2403,17 +2411,17 @@ class MoveAnalysis(proto.Message):
             This field is a member of `oneof`_ ``result``.
     """
 
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    analysis = proto.Field(
+    analysis: "MoveAnalysisResult" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="result",
         message="MoveAnalysisResult",
     )
-    error = proto.Field(
+    error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="result",
@@ -2425,11 +2433,11 @@ class MoveAnalysisResult(proto.Message):
     r"""An analysis result including blockers and warnings.
 
     Attributes:
-        blockers (Sequence[google.cloud.asset_v1.types.MoveImpact]):
+        blockers (MutableSequence[google.cloud.asset_v1.types.MoveImpact]):
             Blocking information that would prevent the
             target resource from moving to the specified
             destination at runtime.
-        warnings (Sequence[google.cloud.asset_v1.types.MoveImpact]):
+        warnings (MutableSequence[google.cloud.asset_v1.types.MoveImpact]):
             Warning information indicating that moving
             the target resource to the specified destination
             might be unsafe. This can include important
@@ -2437,12 +2445,12 @@ class MoveAnalysisResult(proto.Message):
             but will not block moves at runtime.
     """
 
-    blockers = proto.RepeatedField(
+    blockers: MutableSequence["MoveImpact"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="MoveImpact",
     )
-    warnings = proto.RepeatedField(
+    warnings: MutableSequence["MoveImpact"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="MoveImpact",
@@ -2458,7 +2466,7 @@ class MoveImpact(proto.Message):
             message.
     """
 
-    detail = proto.Field(
+    detail: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -2503,20 +2511,20 @@ class QueryAssetsOutputConfig(proto.Message):
                 The default value is WRITE_EMPTY.
         """
 
-        dataset = proto.Field(
+        dataset: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        table = proto.Field(
+        table: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        write_disposition = proto.Field(
+        write_disposition: str = proto.Field(
             proto.STRING,
             number=3,
         )
 
-    bigquery_destination = proto.Field(
+    bigquery_destination: BigQueryDestination = proto.Field(
         proto.MESSAGE,
         number=1,
         message=BigQueryDestination,
@@ -2606,46 +2614,46 @@ class QueryAssetsRequest(proto.Message):
             passed to a following [QueryAssets] API call.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    statement = proto.Field(
+    statement: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="query",
     )
-    job_reference = proto.Field(
+    job_reference: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="query",
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    timeout = proto.Field(
+    timeout: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=6,
         message=duration_pb2.Duration,
     )
-    read_time_window = proto.Field(
+    read_time_window: gca_assets.TimeWindow = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="time",
         message=gca_assets.TimeWindow,
     )
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="time",
         message=timestamp_pb2.Timestamp,
     )
-    output_config = proto.Field(
+    output_config: "QueryAssetsOutputConfig" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="QueryAssetsOutputConfig",
@@ -2690,27 +2698,27 @@ class QueryAssetsResponse(proto.Message):
             This field is a member of `oneof`_ ``response``.
     """
 
-    job_reference = proto.Field(
+    job_reference: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    done = proto.Field(
+    done: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    error = proto.Field(
+    error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="response",
         message=status_pb2.Status,
     )
-    query_result = proto.Field(
+    query_result: "QueryResult" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="response",
         message="QueryResult",
     )
-    output_config = proto.Field(
+    output_config: "QueryAssetsOutputConfig" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="response",
@@ -2726,7 +2734,7 @@ class QueryResult(proto.Message):
     token to retrieve the results of following pages.
 
     Attributes:
-        rows (Sequence[google.protobuf.struct_pb2.Struct]):
+        rows (MutableSequence[google.protobuf.struct_pb2.Struct]):
             Each row hold a query result in the format of ``Struct``.
         schema (google.cloud.asset_v1.types.TableSchema):
             Describes the format of the [rows].
@@ -2741,21 +2749,21 @@ class QueryResult(proto.Message):
     def raw_page(self):
         return self
 
-    rows = proto.RepeatedField(
+    rows: MutableSequence[struct_pb2.Struct] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=struct_pb2.Struct,
     )
-    schema = proto.Field(
+    schema: "TableSchema" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="TableSchema",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    total_rows = proto.Field(
+    total_rows: int = proto.Field(
         proto.INT64,
         number=4,
     )
@@ -2765,11 +2773,11 @@ class TableSchema(proto.Message):
     r"""BigQuery Compatible table schema.
 
     Attributes:
-        fields (Sequence[google.cloud.asset_v1.types.TableFieldSchema]):
+        fields (MutableSequence[google.cloud.asset_v1.types.TableFieldSchema]):
             Describes the fields in a table.
     """
 
-    fields = proto.RepeatedField(
+    fields: MutableSequence["TableFieldSchema"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="TableFieldSchema",
@@ -2806,24 +2814,24 @@ class TableFieldSchema(proto.Message):
             The field mode. Possible values include
             NULLABLE, REQUIRED and REPEATED. The default
             value is NULLABLE.
-        fields (Sequence[google.cloud.asset_v1.types.TableFieldSchema]):
+        fields (MutableSequence[google.cloud.asset_v1.types.TableFieldSchema]):
             Describes the nested schema fields if the
             type property is set to RECORD.
     """
 
-    field = proto.Field(
+    field: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    mode = proto.Field(
+    mode: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    fields = proto.RepeatedField(
+    fields: MutableSequence["TableFieldSchema"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="TableFieldSchema",
@@ -2850,7 +2858,7 @@ class BatchGetEffectiveIamPoliciesRequest(proto.Message):
 
             To know how to get folder or project id, visit
             `here <https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects>`__.
-        names (Sequence[str]):
+        names (MutableSequence[str]):
             Required. The names refer to the [full_resource_names]
             (https://cloud.google.com/asset-inventory/docs/resource-name-format)
             of `searchable asset
@@ -2859,11 +2867,11 @@ class BatchGetEffectiveIamPoliciesRequest(proto.Message):
             retrieved in a batch.
     """
 
-    scope = proto.Field(
+    scope: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    names = proto.RepeatedField(
+    names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -2874,7 +2882,7 @@ class BatchGetEffectiveIamPoliciesResponse(proto.Message):
     [AssetService.BatchGetEffectiveIamPolicies][google.cloud.asset.v1.AssetService.BatchGetEffectiveIamPolicies].
 
     Attributes:
-        policy_results (Sequence[google.cloud.asset_v1.types.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy]):
+        policy_results (MutableSequence[google.cloud.asset_v1.types.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy]):
             The effective policies for a batch of resources. Note that
             the results order is the same as the order of
             [BatchGetEffectiveIamPoliciesRequest.names][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesRequest.names].
@@ -2895,7 +2903,7 @@ class BatchGetEffectiveIamPoliciesResponse(proto.Message):
                 are computed. This is one of the
                 [BatchGetEffectiveIamPoliciesRequest.names][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesRequest.names]
                 the caller provides in the request.
-            policies (Sequence[google.cloud.asset_v1.types.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo]):
+            policies (MutableSequence[google.cloud.asset_v1.types.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo]):
                 The effective policies for the
                 [full_resource_name][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.full_resource_name].
 
@@ -2931,27 +2939,29 @@ class BatchGetEffectiveIamPoliciesResponse(proto.Message):
                     [attached_resource][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo.attached_resource].
             """
 
-            attached_resource = proto.Field(
+            attached_resource: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            policy = proto.Field(
+            policy: policy_pb2.Policy = proto.Field(
                 proto.MESSAGE,
                 number=2,
                 message=policy_pb2.Policy,
             )
 
-        full_resource_name = proto.Field(
+        full_resource_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        policies = proto.RepeatedField(
+        policies: MutableSequence[
+            "BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo",
         )
 
-    policy_results = proto.RepeatedField(
+    policy_results: MutableSequence[EffectiveIamPolicy] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=EffectiveIamPolicy,

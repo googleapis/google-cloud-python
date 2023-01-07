@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.asset import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.asset_v1.services.asset_service.client import AssetServiceClient
 from google.cloud.asset_v1.services.asset_service.async_client import (

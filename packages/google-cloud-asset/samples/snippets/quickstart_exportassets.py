@@ -55,8 +55,8 @@ def export_assets_bigquery(project_id, dataset, table, content_type):
         request={
             "parent": parent,
             "content_type": content_type,
-            "output_config": output_config
-            }
+            "output_config": output_config,
+        }
     )
     print(response.result())
     # [END asset_quickstart_export_assets_bigquery]

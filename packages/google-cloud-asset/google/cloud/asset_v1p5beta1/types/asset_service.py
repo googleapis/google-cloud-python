@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.asset_v1p5beta1.types import assets as gca_assets
@@ -56,7 +58,7 @@ class ListAssetsRequest(proto.Message):
             delays in resource data collection and indexing,
             there is a volatile window during which running
             the same query may get different results.
-        asset_types (Sequence[str]):
+        asset_types (MutableSequence[str]):
             A list of asset types of which to take a snapshot for. For
             example: "compute.googleapis.com/Disk". If specified, only
             matching assets will be returned. See `Introduction to Cloud
@@ -78,29 +80,29 @@ class ListAssetsRequest(proto.Message):
             of assets.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    asset_types = proto.RepeatedField(
+    asset_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    content_type = proto.Field(
+    content_type: "ContentType" = proto.Field(
         proto.ENUM,
         number=4,
         enum="ContentType",
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -112,7 +114,7 @@ class ListAssetsResponse(proto.Message):
     Attributes:
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Time the snapshot was taken.
-        assets (Sequence[google.cloud.asset_v1p5beta1.types.Asset]):
+        assets (MutableSequence[google.cloud.asset_v1p5beta1.types.Asset]):
             Assets.
         next_page_token (str):
             Token to retrieve the next page of results.
@@ -123,17 +125,17 @@ class ListAssetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    assets = proto.RepeatedField(
+    assets: MutableSequence[gca_assets.Asset] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=gca_assets.Asset,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )

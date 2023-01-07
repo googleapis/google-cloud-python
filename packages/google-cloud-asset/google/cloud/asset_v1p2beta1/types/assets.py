@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.iam.v1 import policy_pb2  # type: ignore
@@ -46,16 +48,16 @@ class TemporalAsset(proto.Message):
             Asset.
     """
 
-    window = proto.Field(
+    window: "TimeWindow" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TimeWindow",
     )
-    deleted = proto.Field(
+    deleted: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    asset = proto.Field(
+    asset: "Asset" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Asset",
@@ -73,12 +75,12 @@ class TimeWindow(proto.Message):
             Current timestamp if not specified.
     """
 
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
@@ -106,7 +108,7 @@ class Asset(proto.Message):
             set on a cloud resource. For each resource,
             there must be at most one Cloud IAM policy set
             on it.
-        ancestors (Sequence[str]):
+        ancestors (MutableSequence[str]):
             Asset's ancestry path in Cloud Resource Manager (CRM)
             hierarchy, represented as a list of relative resource names.
             Ancestry path starts with the closest CRM ancestor and ends
@@ -117,25 +119,25 @@ class Asset(proto.Message):
             "organizations/1234"]
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    asset_type = proto.Field(
+    asset_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    resource = proto.Field(
+    resource: "Resource" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Resource",
     )
-    iam_policy = proto.Field(
+    iam_policy: policy_pb2.Policy = proto.Field(
         proto.MESSAGE,
         number=4,
         message=policy_pb2.Policy,
     )
-    ancestors = proto.RepeatedField(
+    ancestors: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
@@ -184,27 +186,27 @@ class Resource(proto.Message):
             be present.
     """
 
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    discovery_document_uri = proto.Field(
+    discovery_document_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    discovery_name = proto.Field(
+    discovery_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    resource_url = proto.Field(
+    resource_url: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    data = proto.Field(
+    data: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=6,
         message=struct_pb2.Struct,

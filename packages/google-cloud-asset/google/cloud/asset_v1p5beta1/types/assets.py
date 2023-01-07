@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.orgpolicy.v1 import orgpolicy_pb2  # type: ignore
@@ -60,7 +62,7 @@ class Asset(proto.Message):
             set on a cloud resource. For each resource,
             there must be at most one Cloud IAM policy set
             on it.
-        org_policy (Sequence[google.cloud.orgpolicy.v1.orgpolicy_pb2.Policy]):
+        org_policy (MutableSequence[google.cloud.orgpolicy.v1.orgpolicy_pb2.Policy]):
             Representation of the Cloud Organization
             Policy set on an asset. For each asset, there
             could be multiple Organization policies with
@@ -74,7 +76,7 @@ class Asset(proto.Message):
         service_perimeter (google.identity.accesscontextmanager.v1.service_perimeter_pb2.ServicePerimeter):
 
             This field is a member of `oneof`_ ``access_context_policy``.
-        ancestors (Sequence[str]):
+        ancestors (MutableSequence[str]):
             Asset's ancestry path in Cloud Resource Manager (CRM)
             hierarchy, represented as a list of relative resource names.
             Ancestry path starts with the closest CRM ancestor and ends
@@ -85,48 +87,48 @@ class Asset(proto.Message):
             "organizations/1234"]
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    asset_type = proto.Field(
+    asset_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    resource = proto.Field(
+    resource: "Resource" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Resource",
     )
-    iam_policy = proto.Field(
+    iam_policy: policy_pb2.Policy = proto.Field(
         proto.MESSAGE,
         number=4,
         message=policy_pb2.Policy,
     )
-    org_policy = proto.RepeatedField(
+    org_policy: MutableSequence[orgpolicy_pb2.Policy] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=orgpolicy_pb2.Policy,
     )
-    access_policy = proto.Field(
+    access_policy: access_policy_pb2.AccessPolicy = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="access_context_policy",
         message=access_policy_pb2.AccessPolicy,
     )
-    access_level = proto.Field(
+    access_level: access_level_pb2.AccessLevel = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="access_context_policy",
         message=access_level_pb2.AccessLevel,
     )
-    service_perimeter = proto.Field(
+    service_perimeter: service_perimeter_pb2.ServicePerimeter = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="access_context_policy",
         message=service_perimeter_pb2.ServicePerimeter,
     )
-    ancestors = proto.RepeatedField(
+    ancestors: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=10,
     )
@@ -175,27 +177,27 @@ class Resource(proto.Message):
             be present.
     """
 
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    discovery_document_uri = proto.Field(
+    discovery_document_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    discovery_name = proto.Field(
+    discovery_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    resource_url = proto.Field(
+    resource_url: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    data = proto.Field(
+    data: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=6,
         message=struct_pb2.Struct,

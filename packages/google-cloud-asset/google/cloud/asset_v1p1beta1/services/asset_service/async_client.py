@@ -16,8 +16,19 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
+
+from google.cloud.asset_v1p1beta1 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -153,9 +164,9 @@ class AssetServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, AssetServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the asset service client.
@@ -199,13 +210,13 @@ class AssetServiceAsyncClient:
 
     async def search_all_resources(
         self,
-        request: Union[asset_service.SearchAllResourcesRequest, dict] = None,
+        request: Optional[Union[asset_service.SearchAllResourcesRequest, dict]] = None,
         *,
-        scope: str = None,
-        query: str = None,
-        asset_types: Sequence[str] = None,
+        scope: Optional[str] = None,
+        query: Optional[str] = None,
+        asset_types: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAllResourcesAsyncPager:
         r"""Searches all the resources under a given accessible
@@ -244,7 +255,7 @@ class AssetServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.asset_v1p1beta1.types.SearchAllResourcesRequest, dict]):
+            request (Optional[Union[google.cloud.asset_v1p1beta1.types.SearchAllResourcesRequest, dict]]):
                 The request object. Search all resources request.
             scope (:class:`str`):
                 Required. The relative name of an asset. The search is
@@ -264,7 +275,7 @@ class AssetServiceAsyncClient:
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            asset_types (:class:`Sequence[str]`):
+            asset_types (:class:`MutableSequence[str]`):
                 Optional. A list of asset types that
                 this request searches for. If empty, it
                 will search all the supported asset
@@ -354,12 +365,14 @@ class AssetServiceAsyncClient:
 
     async def search_all_iam_policies(
         self,
-        request: Union[asset_service.SearchAllIamPoliciesRequest, dict] = None,
+        request: Optional[
+            Union[asset_service.SearchAllIamPoliciesRequest, dict]
+        ] = None,
         *,
-        scope: str = None,
-        query: str = None,
+        scope: Optional[str] = None,
+        query: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAllIamPoliciesAsyncPager:
         r"""Searches all the IAM policies under a given
@@ -399,7 +412,7 @@ class AssetServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.asset_v1p1beta1.types.SearchAllIamPoliciesRequest, dict]):
+            request (Optional[Union[google.cloud.asset_v1p1beta1.types.SearchAllIamPoliciesRequest, dict]]):
                 The request object. Search all IAM policies request.
             scope (:class:`str`):
                 Required. The relative name of an asset. The search is
@@ -507,14 +520,9 @@ class AssetServiceAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-asset",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("AssetServiceAsyncClient",)

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.iam.v1 import policy_pb2  # type: ignore
@@ -50,7 +52,7 @@ class StandardResourceMetadata(proto.Message):
             One or more paragraphs of text description of
             this resource. Maximum length could be up to 1M
             bytes.
-        additional_attributes (Sequence[str]):
+        additional_attributes (MutableSequence[str]):
             Additional searchable attributes of this
             resource. Informational only. The exact set of
             attributes is subject to change. For example:
@@ -58,12 +60,12 @@ class StandardResourceMetadata(proto.Message):
         location (str):
             Location can be "global", regional like
             "us-east1", or zonal like "us-west1-b".
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels associated with this resource. See `Labelling and
             grouping GCP
             resources <https://cloud.google.com/blog/products/gcp/labelling-and-grouping-your-google-cloud-platform-resources>`__
             for more information.
-        network_tags (Sequence[str]):
+        network_tags (MutableSequence[str]):
             Network tags associated with this resource. Like labels,
             network tags are a type of annotations used to group GCP
             resources. See `Labelling GCP
@@ -71,40 +73,40 @@ class StandardResourceMetadata(proto.Message):
             for more information.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    asset_type = proto.Field(
+    asset_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    project = proto.Field(
+    project: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    additional_attributes = proto.RepeatedField(
+    additional_attributes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=10,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=12,
     )
-    network_tags = proto.RepeatedField(
+    network_tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=13,
     )
@@ -143,7 +145,7 @@ class IamPolicySearchResult(proto.Message):
         r"""Explanation about the IAM policy search result.
 
         Attributes:
-            matched_permissions (Mapping[str, google.cloud.asset_v1p1beta1.types.Permissions]):
+            matched_permissions (MutableMapping[str, google.cloud.asset_v1p1beta1.types.Permissions]):
                 The map from roles to their included permission matching the
                 permission query (e.g. containing
                 ``policy.role.permissions:``). A sample role string:
@@ -152,27 +154,27 @@ class IamPolicySearchResult(proto.Message):
                 populated only if requesting with a permission query.
         """
 
-        matched_permissions = proto.MapField(
+        matched_permissions: MutableMapping[str, "Permissions"] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=1,
             message="Permissions",
         )
 
-    resource = proto.Field(
+    resource: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project = proto.Field(
+    project: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    policy = proto.Field(
+    policy: policy_pb2.Policy = proto.Field(
         proto.MESSAGE,
         number=4,
         message=policy_pb2.Policy,
     )
-    explanation = proto.Field(
+    explanation: Explanation = proto.Field(
         proto.MESSAGE,
         number=5,
         message=Explanation,
@@ -183,12 +185,12 @@ class Permissions(proto.Message):
     r"""IAM permissions
 
     Attributes:
-        permissions (Sequence[str]):
+        permissions (MutableSequence[str]):
             A list of permissions. A sample permission
             string: "compute.disk.get".
     """
 
-    permissions = proto.RepeatedField(
+    permissions: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )

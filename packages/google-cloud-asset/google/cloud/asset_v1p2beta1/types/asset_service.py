@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -69,15 +71,15 @@ class CreateFeedRequest(proto.Message):
             organizations/organization_number/feeds/feed_id
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    feed_id = proto.Field(
+    feed_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    feed = proto.Field(
+    feed: "Feed" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Feed",
@@ -95,7 +97,7 @@ class GetFeedRequest(proto.Message):
             organizations/organization_number/feeds/feed_id
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -114,7 +116,7 @@ class ListFeedsRequest(proto.Message):
             "projects/my-project-id").
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -124,11 +126,11 @@ class ListFeedsResponse(proto.Message):
     r"""
 
     Attributes:
-        feeds (Sequence[google.cloud.asset_v1p2beta1.types.Feed]):
+        feeds (MutableSequence[google.cloud.asset_v1p2beta1.types.Feed]):
             A list of feeds.
     """
 
-    feeds = proto.RepeatedField(
+    feeds: MutableSequence["Feed"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Feed",
@@ -151,12 +153,12 @@ class UpdateFeedRequest(proto.Message):
             contain fields that are immutable or only set by the server.
     """
 
-    feed = proto.Field(
+    feed: "Feed" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Feed",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -174,7 +176,7 @@ class DeleteFeedRequest(proto.Message):
             organizations/organization_number/feeds/feed_id
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -192,7 +194,7 @@ class OutputConfig(proto.Message):
             This field is a member of `oneof`_ ``destination``.
     """
 
-    gcs_destination = proto.Field(
+    gcs_destination: "GcsDestination" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="destination",
@@ -217,7 +219,7 @@ class GcsDestination(proto.Message):
             This field is a member of `oneof`_ ``object_uri``.
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="object_uri",
@@ -233,7 +235,7 @@ class PubsubDestination(proto.Message):
             example: ``projects/PROJECT_ID/topics/TOPIC_ID``.
     """
 
-    topic = proto.Field(
+    topic: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -251,7 +253,7 @@ class FeedOutputConfig(proto.Message):
             This field is a member of `oneof`_ ``destination``.
     """
 
-    pubsub_destination = proto.Field(
+    pubsub_destination: "PubsubDestination" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="destination",
@@ -277,7 +279,7 @@ class Feed(proto.Message):
 
             The client-assigned feed identifier must be unique within
             the parent project/folder/organization.
-        asset_names (Sequence[str]):
+        asset_names (MutableSequence[str]):
             A list of the full names of the assets to receive updates.
             You must specify either or both of asset_names and
             asset_types. Only asset updates matching specified
@@ -287,7 +289,7 @@ class Feed(proto.Message):
             See `Resource
             Names <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__
             for more info.
-        asset_types (Sequence[str]):
+        asset_types (MutableSequence[str]):
             A list of types of the assets to receive updates. You must
             specify either or both of asset_names and asset_types. Only
             asset updates matching specified asset_names and asset_types
@@ -305,24 +307,24 @@ class Feed(proto.Message):
             where the asset updates are published to.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    asset_names = proto.RepeatedField(
+    asset_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    asset_types = proto.RepeatedField(
+    asset_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    content_type = proto.Field(
+    content_type: "ContentType" = proto.Field(
         proto.ENUM,
         number=4,
         enum="ContentType",
     )
-    feed_output_config = proto.Field(
+    feed_output_config: "FeedOutputConfig" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="FeedOutputConfig",

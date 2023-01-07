@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-asset"
+    "name": "google-cloud-asset",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -211,7 +212,7 @@
           },
           {
             "name": "asset_types",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -299,7 +300,7 @@
           },
           {
             "name": "asset_types",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",

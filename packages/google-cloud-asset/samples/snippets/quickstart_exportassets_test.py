@@ -52,7 +52,7 @@ def asset_bucket(storage_client):
         raise e
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def dataset(bigquery_client):
     dataset_id = "{}.{}".format(PROJECT, DATASET)
     dataset = bigquery.Dataset(dataset_id)
@@ -61,8 +61,7 @@ def dataset(bigquery_client):
 
     yield DATASET
 
-    bigquery_client.delete_dataset(
-            dataset_id, delete_contents=True, not_found_ok=False)
+    bigquery_client.delete_dataset(dataset_id, delete_contents=True, not_found_ok=False)
 
 
 def test_export_assets(asset_bucket, dataset, capsys):
@@ -74,12 +73,14 @@ def test_export_assets(asset_bucket, dataset, capsys):
     content_type = asset_v1.ContentType.RESOURCE
     dataset_id = "projects/{}/datasets/{}".format(PROJECT, dataset)
     quickstart_exportassets.export_assets_bigquery(
-        PROJECT, dataset_id, "assettable", content_type)
+        PROJECT, dataset_id, "assettable", content_type
+    )
     out, _ = capsys.readouterr()
     assert dataset_id in out
 
     content_type_r = asset_v1.ContentType.RELATIONSHIP
     quickstart_exportassets.export_assets_bigquery(
-        PROJECT, dataset_id, "assettable", content_type_r)
+        PROJECT, dataset_id, "assettable", content_type_r
+    )
     out_r, _ = capsys.readouterr()
     assert dataset_id in out_r

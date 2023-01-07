@@ -16,8 +16,20 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
+
+from google.cloud.asset_v1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -62,7 +74,7 @@ class AssetServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[AssetServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -433,8 +445,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, AssetServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, AssetServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the asset service client.
@@ -448,7 +460,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             transport (Union[str, AssetServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -478,6 +490,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -530,10 +543,10 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def export_assets(
         self,
-        request: Union[asset_service.ExportAssetsRequest, dict] = None,
+        request: Optional[Union[asset_service.ExportAssetsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Exports assets with time and resource types to a given Cloud
@@ -643,11 +656,11 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def list_assets(
         self,
-        request: Union[asset_service.ListAssetsRequest, dict] = None,
+        request: Optional[Union[asset_service.ListAssetsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAssetsPager:
         r"""Lists assets with time and resource types and returns
@@ -762,10 +775,12 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def batch_get_assets_history(
         self,
-        request: Union[asset_service.BatchGetAssetsHistoryRequest, dict] = None,
+        request: Optional[
+            Union[asset_service.BatchGetAssetsHistoryRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.BatchGetAssetsHistoryResponse:
         r"""Batch gets the update history of assets that overlap a time
@@ -846,11 +861,11 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def create_feed(
         self,
-        request: Union[asset_service.CreateFeedRequest, dict] = None,
+        request: Optional[Union[asset_service.CreateFeedRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.Feed:
         r"""Creates a feed in a parent
@@ -966,11 +981,11 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def get_feed(
         self,
-        request: Union[asset_service.GetFeedRequest, dict] = None,
+        request: Optional[Union[asset_service.GetFeedRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.Feed:
         r"""Gets details about an asset feed.
@@ -1074,11 +1089,11 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def list_feeds(
         self,
-        request: Union[asset_service.ListFeedsRequest, dict] = None,
+        request: Optional[Union[asset_service.ListFeedsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.ListFeedsResponse:
         r"""Lists all asset feeds in a parent
@@ -1178,11 +1193,11 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def update_feed(
         self,
-        request: Union[asset_service.UpdateFeedRequest, dict] = None,
+        request: Optional[Union[asset_service.UpdateFeedRequest, dict]] = None,
         *,
-        feed: asset_service.Feed = None,
+        feed: Optional[asset_service.Feed] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.Feed:
         r"""Updates an asset feed configuration.
@@ -1292,11 +1307,11 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def delete_feed(
         self,
-        request: Union[asset_service.DeleteFeedRequest, dict] = None,
+        request: Optional[Union[asset_service.DeleteFeedRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an asset feed.
@@ -1383,13 +1398,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def search_all_resources(
         self,
-        request: Union[asset_service.SearchAllResourcesRequest, dict] = None,
+        request: Optional[Union[asset_service.SearchAllResourcesRequest, dict]] = None,
         *,
-        scope: str = None,
-        query: str = None,
-        asset_types: Sequence[str] = None,
+        scope: Optional[str] = None,
+        query: Optional[str] = None,
+        asset_types: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAllResourcesPager:
         r"""Searches all Cloud resources within the specified scope, such as
@@ -1513,7 +1528,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            asset_types (Sequence[str]):
+            asset_types (MutableSequence[str]):
                 Optional. A list of asset types that this request
                 searches for. If empty, it will search all the
                 `searchable asset
@@ -1607,12 +1622,14 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def search_all_iam_policies(
         self,
-        request: Union[asset_service.SearchAllIamPoliciesRequest, dict] = None,
+        request: Optional[
+            Union[asset_service.SearchAllIamPoliciesRequest, dict]
+        ] = None,
         *,
-        scope: str = None,
-        query: str = None,
+        scope: Optional[str] = None,
+        query: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAllIamPoliciesPager:
         r"""Searches all IAM policies within the specified scope, such as a
@@ -1794,10 +1811,10 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def analyze_iam_policy(
         self,
-        request: Union[asset_service.AnalyzeIamPolicyRequest, dict] = None,
+        request: Optional[Union[asset_service.AnalyzeIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.AnalyzeIamPolicyResponse:
         r"""Analyzes IAM policies to answer which identities have
@@ -1881,10 +1898,12 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def analyze_iam_policy_longrunning(
         self,
-        request: Union[asset_service.AnalyzeIamPolicyLongrunningRequest, dict] = None,
+        request: Optional[
+            Union[asset_service.AnalyzeIamPolicyLongrunningRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Analyzes IAM policies asynchronously to answer which identities
@@ -2000,10 +2019,10 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def analyze_move(
         self,
-        request: Union[asset_service.AnalyzeMoveRequest, dict] = None,
+        request: Optional[Union[asset_service.AnalyzeMoveRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.AnalyzeMoveResponse:
         r"""Analyze moving a resource to a specified destination
@@ -2088,10 +2107,10 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def query_assets(
         self,
-        request: Union[asset_service.QueryAssetsRequest, dict] = None,
+        request: Optional[Union[asset_service.QueryAssetsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.QueryAssetsResponse:
         r"""Issue a job that queries assets using a SQL statement compatible
@@ -2182,13 +2201,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def create_saved_query(
         self,
-        request: Union[asset_service.CreateSavedQueryRequest, dict] = None,
+        request: Optional[Union[asset_service.CreateSavedQueryRequest, dict]] = None,
         *,
-        parent: str = None,
-        saved_query: asset_service.SavedQuery = None,
-        saved_query_id: str = None,
+        parent: Optional[str] = None,
+        saved_query: Optional[asset_service.SavedQuery] = None,
+        saved_query_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.SavedQuery:
         r"""Creates a saved query in a parent
@@ -2318,11 +2337,11 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def get_saved_query(
         self,
-        request: Union[asset_service.GetSavedQueryRequest, dict] = None,
+        request: Optional[Union[asset_service.GetSavedQueryRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.SavedQuery:
         r"""Gets details about a saved query.
@@ -2423,11 +2442,11 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def list_saved_queries(
         self,
-        request: Union[asset_service.ListSavedQueriesRequest, dict] = None,
+        request: Optional[Union[asset_service.ListSavedQueriesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSavedQueriesPager:
         r"""Lists all saved queries in a parent
@@ -2542,12 +2561,12 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def update_saved_query(
         self,
-        request: Union[asset_service.UpdateSavedQueryRequest, dict] = None,
+        request: Optional[Union[asset_service.UpdateSavedQueryRequest, dict]] = None,
         *,
-        saved_query: asset_service.SavedQuery = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        saved_query: Optional[asset_service.SavedQuery] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.SavedQuery:
         r"""Updates a saved query.
@@ -2660,11 +2679,11 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def delete_saved_query(
         self,
-        request: Union[asset_service.DeleteSavedQueryRequest, dict] = None,
+        request: Optional[Union[asset_service.DeleteSavedQueryRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a saved query.
@@ -2753,10 +2772,12 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def batch_get_effective_iam_policies(
         self,
-        request: Union[asset_service.BatchGetEffectiveIamPoliciesRequest, dict] = None,
+        request: Optional[
+            Union[asset_service.BatchGetEffectiveIamPoliciesRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.BatchGetEffectiveIamPoliciesResponse:
         r"""Gets effective IAM policies for a batch of resources.
@@ -2849,14 +2870,9 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-asset",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("AssetServiceClient",)
