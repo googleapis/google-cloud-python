@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -55,17 +57,17 @@ class CommitResponse(proto.Message):
                 `INVALID_ARGUMENT <https://cloud.google.com/spanner/docs/reference/rest/v1/Code#ENUM_VALUES.INVALID_ARGUMENT>`__.
         """
 
-        mutation_count = proto.Field(
+        mutation_count: int = proto.Field(
             proto.INT64,
             number=1,
         )
 
-    commit_timestamp = proto.Field(
+    commit_timestamp: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    commit_stats = proto.Field(
+    commit_stats: CommitStats = proto.Field(
         proto.MESSAGE,
         number=2,
         message=CommitStats,

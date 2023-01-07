@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.spanner_v1.types import query_plan as gs_query_plan
@@ -40,7 +42,7 @@ class ResultSet(proto.Message):
         metadata (google.cloud.spanner_v1.types.ResultSetMetadata):
             Metadata about the result set, such as row
             type information.
-        rows (Sequence[google.protobuf.struct_pb2.ListValue]):
+        rows (MutableSequence[google.protobuf.struct_pb2.ListValue]):
             Each element in ``rows`` is a row whose format is defined by
             [metadata.row_type][google.spanner.v1.ResultSetMetadata.row_type].
             The ith element in each row matches the ith field in
@@ -60,17 +62,17 @@ class ResultSet(proto.Message):
             [ExecuteSqlRequest.query_mode][google.spanner.v1.ExecuteSqlRequest.query_mode].
     """
 
-    metadata = proto.Field(
+    metadata: "ResultSetMetadata" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ResultSetMetadata",
     )
-    rows = proto.RepeatedField(
+    rows: MutableSequence[struct_pb2.ListValue] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=struct_pb2.ListValue,
     )
-    stats = proto.Field(
+    stats: "ResultSetStats" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="ResultSetStats",
@@ -87,7 +89,7 @@ class PartialResultSet(proto.Message):
             Metadata about the result set, such as row
             type information. Only present in the first
             response.
-        values (Sequence[google.protobuf.struct_pb2.Value]):
+        values (MutableSequence[google.protobuf.struct_pb2.Value]):
             A streamed result set consists of a stream of values, which
             might be split into many ``PartialResultSet`` messages to
             accommodate large rows and/or large values. Every N complete
@@ -192,25 +194,25 @@ class PartialResultSet(proto.Message):
             statements.
     """
 
-    metadata = proto.Field(
+    metadata: "ResultSetMetadata" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ResultSetMetadata",
     )
-    values = proto.RepeatedField(
+    values: MutableSequence[struct_pb2.Value] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=struct_pb2.Value,
     )
-    chunked_value = proto.Field(
+    chunked_value: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    resume_token = proto.Field(
+    resume_token: bytes = proto.Field(
         proto.BYTES,
         number=4,
     )
-    stats = proto.Field(
+    stats: "ResultSetStats" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="ResultSetStats",
@@ -254,17 +256,17 @@ class ResultSetMetadata(proto.Message):
                 ]
     """
 
-    row_type = proto.Field(
+    row_type: gs_type.StructType = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gs_type.StructType,
     )
-    transaction = proto.Field(
+    transaction: gs_transaction.Transaction = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gs_transaction.Transaction,
     )
-    undeclared_parameters = proto.Field(
+    undeclared_parameters: gs_type.StructType = proto.Field(
         proto.MESSAGE,
         number=3,
         message=gs_type.StructType,
@@ -312,22 +314,22 @@ class ResultSetStats(proto.Message):
             This field is a member of `oneof`_ ``row_count``.
     """
 
-    query_plan = proto.Field(
+    query_plan: gs_query_plan.QueryPlan = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gs_query_plan.QueryPlan,
     )
-    query_stats = proto.Field(
+    query_stats: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=2,
         message=struct_pb2.Struct,
     )
-    row_count_exact = proto.Field(
+    row_count_exact: int = proto.Field(
         proto.INT64,
         number=3,
         oneof="row_count",
     )
-    row_count_lower_bound = proto.Field(
+    row_count_lower_bound: int = proto.Field(
         proto.INT64,
         number=4,
         oneof="row_count",

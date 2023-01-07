@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.spanner_v1.types import keys
@@ -98,7 +100,7 @@ class Mutation(proto.Message):
             table (str):
                 Required. The table whose rows will be
                 written.
-            columns (Sequence[str]):
+            columns (MutableSequence[str]):
                 The names of the columns in
                 [table][google.spanner.v1.Mutation.Write.table] to be
                 written.
@@ -106,7 +108,7 @@ class Mutation(proto.Message):
                 The list of columns must contain enough columns to allow
                 Cloud Spanner to derive values for all primary key columns
                 in the row(s) to be modified.
-            values (Sequence[google.protobuf.struct_pb2.ListValue]):
+            values (MutableSequence[google.protobuf.struct_pb2.ListValue]):
                 The values to be written. ``values`` can contain more than
                 one list of values. If it does, then multiple rows are
                 written, one for each entry in ``values``. Each list in
@@ -121,15 +123,15 @@ class Mutation(proto.Message):
                 [here][google.spanner.v1.TypeCode].
         """
 
-        table = proto.Field(
+        table: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        columns = proto.RepeatedField(
+        columns: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
-        values = proto.RepeatedField(
+        values: MutableSequence[struct_pb2.ListValue] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message=struct_pb2.ListValue,
@@ -152,41 +154,41 @@ class Mutation(proto.Message):
                 succeed even if some or all rows do not exist.
         """
 
-        table = proto.Field(
+        table: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        key_set = proto.Field(
+        key_set: keys.KeySet = proto.Field(
             proto.MESSAGE,
             number=2,
             message=keys.KeySet,
         )
 
-    insert = proto.Field(
+    insert: Write = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="operation",
         message=Write,
     )
-    update = proto.Field(
+    update: Write = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="operation",
         message=Write,
     )
-    insert_or_update = proto.Field(
+    insert_or_update: Write = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="operation",
         message=Write,
     )
-    replace = proto.Field(
+    replace: Write = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="operation",
         message=Write,
     )
-    delete = proto.Field(
+    delete: Delete = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="operation",

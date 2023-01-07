@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.spanner_admin_database_v1 import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from .services.database_admin import DatabaseAdminClient
 from .services.database_admin import DatabaseAdminAsyncClient

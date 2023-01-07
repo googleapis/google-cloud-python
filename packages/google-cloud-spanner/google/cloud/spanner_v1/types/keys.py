@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import struct_pb2  # type: ignore
@@ -172,25 +174,25 @@ class KeyRange(proto.Message):
             This field is a member of `oneof`_ ``end_key_type``.
     """
 
-    start_closed = proto.Field(
+    start_closed: struct_pb2.ListValue = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="start_key_type",
         message=struct_pb2.ListValue,
     )
-    start_open = proto.Field(
+    start_open: struct_pb2.ListValue = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="start_key_type",
         message=struct_pb2.ListValue,
     )
-    end_closed = proto.Field(
+    end_closed: struct_pb2.ListValue = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="end_key_type",
         message=struct_pb2.ListValue,
     )
-    end_open = proto.Field(
+    end_open: struct_pb2.ListValue = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="end_key_type",
@@ -208,13 +210,13 @@ class KeySet(proto.Message):
     Spanner behaves as if the key were only specified once.
 
     Attributes:
-        keys (Sequence[google.protobuf.struct_pb2.ListValue]):
+        keys (MutableSequence[google.protobuf.struct_pb2.ListValue]):
             A list of specific keys. Entries in ``keys`` should have
             exactly as many elements as there are columns in the primary
             or index key with which this ``KeySet`` is used. Individual
             key values are encoded as described
             [here][google.spanner.v1.TypeCode].
-        ranges (Sequence[google.cloud.spanner_v1.types.KeyRange]):
+        ranges (MutableSequence[google.cloud.spanner_v1.types.KeyRange]):
             A list of key ranges. See
             [KeyRange][google.spanner.v1.KeyRange] for more information
             about key range specifications.
@@ -225,17 +227,17 @@ class KeySet(proto.Message):
             only yielded once.
     """
 
-    keys = proto.RepeatedField(
+    keys: MutableSequence[struct_pb2.ListValue] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=struct_pb2.ListValue,
     )
-    ranges = proto.RepeatedField(
+    ranges: MutableSequence["KeyRange"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="KeyRange",
     )
-    all_ = proto.Field(
+    all_: bool = proto.Field(
         proto.BOOL,
         number=3,
     )

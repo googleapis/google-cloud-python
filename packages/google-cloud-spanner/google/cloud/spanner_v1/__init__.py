@@ -16,9 +16,9 @@
 #
 from __future__ import absolute_import
 
-import pkg_resources
+from google.cloud.spanner_v1 import gapic_version as package_version
 
-__version__: str = pkg_resources.get_distribution("google-cloud-spanner").version
+__version__: str = package_version.__version__
 
 from .services.spanner import SpannerClient
 from .types.commit_response import CommitResponse

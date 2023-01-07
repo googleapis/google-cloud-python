@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-spanner-admin-database"
+    "name": "google-cloud-spanner-admin-database",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -2666,7 +2667,7 @@
           },
           {
             "name": "permissions",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -2750,7 +2751,7 @@
           },
           {
             "name": "permissions",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -3004,7 +3005,7 @@
           },
           {
             "name": "statements",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -3088,7 +3089,7 @@
           },
           {
             "name": "statements",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",

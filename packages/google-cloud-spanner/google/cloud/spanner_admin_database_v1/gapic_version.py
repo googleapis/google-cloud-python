@@ -1,4 +1,5 @@
-# Copyright 2020 Google LLC All rights reserved.
+# -*- coding: utf-8 -*-
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,10 +12,5 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-import platform
-from google.cloud.spanner_v1 import gapic_version as package_version
-
-PY_VERSION = platform.python_version()
-VERSION = package_version.__version__
-DEFAULT_USER_AGENT = "gl-dbapi/" + VERSION
+#
+__version__ = "3.26.0"  # {x-release-please-version}

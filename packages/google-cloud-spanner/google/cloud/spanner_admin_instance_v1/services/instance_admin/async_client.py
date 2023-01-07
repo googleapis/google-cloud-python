@@ -16,8 +16,19 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
+
+from google.cloud.spanner_admin_instance_v1 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -190,9 +201,9 @@ class InstanceAdminAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, InstanceAdminTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the instance admin client.
@@ -236,11 +247,13 @@ class InstanceAdminAsyncClient:
 
     async def list_instance_configs(
         self,
-        request: Union[spanner_instance_admin.ListInstanceConfigsRequest, dict] = None,
+        request: Optional[
+            Union[spanner_instance_admin.ListInstanceConfigsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstanceConfigsAsyncPager:
         r"""Lists the supported instance configurations for a
@@ -274,7 +287,7 @@ class InstanceAdminAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.spanner_admin_instance_v1.types.ListInstanceConfigsRequest, dict]):
+            request (Optional[Union[google.cloud.spanner_admin_instance_v1.types.ListInstanceConfigsRequest, dict]]):
                 The request object. The request for
                 [ListInstanceConfigs][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs].
             parent (:class:`str`):
@@ -363,11 +376,13 @@ class InstanceAdminAsyncClient:
 
     async def get_instance_config(
         self,
-        request: Union[spanner_instance_admin.GetInstanceConfigRequest, dict] = None,
+        request: Optional[
+            Union[spanner_instance_admin.GetInstanceConfigRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> spanner_instance_admin.InstanceConfig:
         r"""Gets information about a particular instance
@@ -400,7 +415,7 @@ class InstanceAdminAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.spanner_admin_instance_v1.types.GetInstanceConfigRequest, dict]):
+            request (Optional[Union[google.cloud.spanner_admin_instance_v1.types.GetInstanceConfigRequest, dict]]):
                 The request object. The request for
                 [GetInstanceConfigRequest][google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig].
             name (:class:`str`):
@@ -479,13 +494,15 @@ class InstanceAdminAsyncClient:
 
     async def create_instance_config(
         self,
-        request: Union[spanner_instance_admin.CreateInstanceConfigRequest, dict] = None,
+        request: Optional[
+            Union[spanner_instance_admin.CreateInstanceConfigRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        instance_config: spanner_instance_admin.InstanceConfig = None,
-        instance_config_id: str = None,
+        parent: Optional[str] = None,
+        instance_config: Optional[spanner_instance_admin.InstanceConfig] = None,
+        instance_config_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates an instance config and begins preparing it to be used.
@@ -558,13 +575,13 @@ class InstanceAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.spanner_admin_instance_v1.types.CreateInstanceConfigRequest, dict]):
+            request (Optional[Union[google.cloud.spanner_admin_instance_v1.types.CreateInstanceConfigRequest, dict]]):
                 The request object. The request for
                 [CreateInstanceConfigRequest][InstanceAdmin.CreateInstanceConfigRequest].
             parent (:class:`str`):
@@ -668,12 +685,14 @@ class InstanceAdminAsyncClient:
 
     async def update_instance_config(
         self,
-        request: Union[spanner_instance_admin.UpdateInstanceConfigRequest, dict] = None,
+        request: Optional[
+            Union[spanner_instance_admin.UpdateInstanceConfigRequest, dict]
+        ] = None,
         *,
-        instance_config: spanner_instance_admin.InstanceConfig = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        instance_config: Optional[spanner_instance_admin.InstanceConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates an instance config. The returned [long-running
@@ -749,13 +768,13 @@ class InstanceAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.spanner_admin_instance_v1.types.UpdateInstanceConfigRequest, dict]):
+            request (Optional[Union[google.cloud.spanner_admin_instance_v1.types.UpdateInstanceConfigRequest, dict]]):
                 The request object. The request for
                 [UpdateInstanceConfigRequest][InstanceAdmin.UpdateInstanceConfigRequest].
             instance_config (:class:`google.cloud.spanner_admin_instance_v1.types.InstanceConfig`):
@@ -855,11 +874,13 @@ class InstanceAdminAsyncClient:
 
     async def delete_instance_config(
         self,
-        request: Union[spanner_instance_admin.DeleteInstanceConfigRequest, dict] = None,
+        request: Optional[
+            Union[spanner_instance_admin.DeleteInstanceConfigRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the instance config. Deletion is only allowed when no
@@ -896,7 +917,7 @@ class InstanceAdminAsyncClient:
                 await client.delete_instance_config(request=request)
 
         Args:
-            request (Union[google.cloud.spanner_admin_instance_v1.types.DeleteInstanceConfigRequest, dict]):
+            request (Optional[Union[google.cloud.spanner_admin_instance_v1.types.DeleteInstanceConfigRequest, dict]]):
                 The request object. The request for
                 [DeleteInstanceConfigRequest][InstanceAdmin.DeleteInstanceConfigRequest].
             name (:class:`str`):
@@ -954,13 +975,13 @@ class InstanceAdminAsyncClient:
 
     async def list_instance_config_operations(
         self,
-        request: Union[
-            spanner_instance_admin.ListInstanceConfigOperationsRequest, dict
+        request: Optional[
+            Union[spanner_instance_admin.ListInstanceConfigOperationsRequest, dict]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstanceConfigOperationsAsyncPager:
         r"""Lists the user-managed instance config [long-running
@@ -1004,7 +1025,7 @@ class InstanceAdminAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.spanner_admin_instance_v1.types.ListInstanceConfigOperationsRequest, dict]):
+            request (Optional[Union[google.cloud.spanner_admin_instance_v1.types.ListInstanceConfigOperationsRequest, dict]]):
                 The request object. The request for
                 [ListInstanceConfigOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigOperations].
             parent (:class:`str`):
@@ -1082,11 +1103,13 @@ class InstanceAdminAsyncClient:
 
     async def list_instances(
         self,
-        request: Union[spanner_instance_admin.ListInstancesRequest, dict] = None,
+        request: Optional[
+            Union[spanner_instance_admin.ListInstancesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstancesAsyncPager:
         r"""Lists all instances in the given project.
@@ -1119,7 +1142,7 @@ class InstanceAdminAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.spanner_admin_instance_v1.types.ListInstancesRequest, dict]):
+            request (Optional[Union[google.cloud.spanner_admin_instance_v1.types.ListInstancesRequest, dict]]):
                 The request object. The request for
                 [ListInstances][google.spanner.admin.instance.v1.InstanceAdmin.ListInstances].
             parent (:class:`str`):
@@ -1208,11 +1231,13 @@ class InstanceAdminAsyncClient:
 
     async def get_instance(
         self,
-        request: Union[spanner_instance_admin.GetInstanceRequest, dict] = None,
+        request: Optional[
+            Union[spanner_instance_admin.GetInstanceRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> spanner_instance_admin.Instance:
         r"""Gets information about a particular instance.
@@ -1244,7 +1269,7 @@ class InstanceAdminAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.spanner_admin_instance_v1.types.GetInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.spanner_admin_instance_v1.types.GetInstanceRequest, dict]]):
                 The request object. The request for
                 [GetInstance][google.spanner.admin.instance.v1.InstanceAdmin.GetInstance].
             name (:class:`str`):
@@ -1321,13 +1346,15 @@ class InstanceAdminAsyncClient:
 
     async def create_instance(
         self,
-        request: Union[spanner_instance_admin.CreateInstanceRequest, dict] = None,
+        request: Optional[
+            Union[spanner_instance_admin.CreateInstanceRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        instance_id: str = None,
-        instance: spanner_instance_admin.Instance = None,
+        parent: Optional[str] = None,
+        instance_id: Optional[str] = None,
+        instance: Optional[spanner_instance_admin.Instance] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates an instance and begins preparing it to begin serving.
@@ -1401,13 +1428,13 @@ class InstanceAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.spanner_admin_instance_v1.types.CreateInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.spanner_admin_instance_v1.types.CreateInstanceRequest, dict]]):
                 The request object. The request for
                 [CreateInstance][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance].
             parent (:class:`str`):
@@ -1505,12 +1532,14 @@ class InstanceAdminAsyncClient:
 
     async def update_instance(
         self,
-        request: Union[spanner_instance_admin.UpdateInstanceRequest, dict] = None,
+        request: Optional[
+            Union[spanner_instance_admin.UpdateInstanceRequest, dict]
+        ] = None,
         *,
-        instance: spanner_instance_admin.Instance = None,
-        field_mask: field_mask_pb2.FieldMask = None,
+        instance: Optional[spanner_instance_admin.Instance] = None,
+        field_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates an instance, and begins allocating or releasing
@@ -1589,13 +1618,13 @@ class InstanceAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.spanner_admin_instance_v1.types.UpdateInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.spanner_admin_instance_v1.types.UpdateInstanceRequest, dict]]):
                 The request object. The request for
                 [UpdateInstance][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance].
             instance (:class:`google.cloud.spanner_admin_instance_v1.types.Instance`):
@@ -1692,11 +1721,13 @@ class InstanceAdminAsyncClient:
 
     async def delete_instance(
         self,
-        request: Union[spanner_instance_admin.DeleteInstanceRequest, dict] = None,
+        request: Optional[
+            Union[spanner_instance_admin.DeleteInstanceRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an instance.
@@ -1735,7 +1766,7 @@ class InstanceAdminAsyncClient:
                 await client.delete_instance(request=request)
 
         Args:
-            request (Union[google.cloud.spanner_admin_instance_v1.types.DeleteInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.spanner_admin_instance_v1.types.DeleteInstanceRequest, dict]]):
                 The request object. The request for
                 [DeleteInstance][google.spanner.admin.instance.v1.InstanceAdmin.DeleteInstance].
             name (:class:`str`):
@@ -1803,11 +1834,11 @@ class InstanceAdminAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the access control policy on an instance resource. Replaces
@@ -1844,7 +1875,7 @@ class InstanceAdminAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -1973,11 +2004,11 @@ class InstanceAdminAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the access control policy for an instance resource. Returns
@@ -2015,7 +2046,7 @@ class InstanceAdminAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -2154,12 +2185,12 @@ class InstanceAdminAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
-        resource: str = None,
-        permissions: Sequence[str] = None,
+        resource: Optional[str] = None,
+        permissions: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns permissions that the caller has on the specified
@@ -2199,7 +2230,7 @@ class InstanceAdminAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             resource (:class:`str`):
@@ -2211,7 +2242,7 @@ class InstanceAdminAsyncClient:
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            permissions (:class:`Sequence[str]`):
+            permissions (:class:`MutableSequence[str]`):
                 The set of permissions to check for the ``resource``.
                 Permissions with wildcards (such as '*' or 'storage.*')
                 are not allowed. For more information see `IAM
@@ -2282,14 +2313,9 @@ class InstanceAdminAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-spanner-admin-instance",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("InstanceAdminAsyncClient",)

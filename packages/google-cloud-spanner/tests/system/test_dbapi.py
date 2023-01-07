@@ -15,7 +15,6 @@
 import datetime
 import hashlib
 import pickle
-import pkg_resources
 import pytest
 import time
 
@@ -25,6 +24,7 @@ from google.cloud.spanner_dbapi.connection import connect
 from google.cloud.spanner_dbapi.connection import Connection
 from google.cloud.spanner_dbapi.exceptions import ProgrammingError
 from google.cloud.spanner_v1 import JsonObject
+from google.cloud.spanner_v1 import gapic_version as package_version
 from . import _helpers
 
 
@@ -473,11 +473,11 @@ def test_user_agent(shared_instance, dbapi_database):
     conn = connect(shared_instance.name, dbapi_database.name)
     assert (
         conn.instance._client._client_info.user_agent
-        == "gl-dbapi/" + pkg_resources.get_distribution("google-cloud-spanner").version
+        == "gl-dbapi/" + package_version.__version__
     )
     assert (
         conn.instance._client._client_info.client_library_version
-        == pkg_resources.get_distribution("google-cloud-spanner").version
+        == package_version.__version__
     )
 
 

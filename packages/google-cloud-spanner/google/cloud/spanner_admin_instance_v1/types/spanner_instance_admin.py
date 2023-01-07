@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.spanner_admin_instance_v1.types import common
@@ -76,16 +78,16 @@ class ReplicaInfo(proto.Message):
         READ_ONLY = 2
         WITNESS = 3
 
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    type_ = proto.Field(
+    type_: ReplicaType = proto.Field(
         proto.ENUM,
         number=2,
         enum=ReplicaType,
     )
-    default_leader_location = proto.Field(
+    default_leader_location: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -107,11 +109,11 @@ class InstanceConfig(proto.Message):
         config_type (google.cloud.spanner_admin_instance_v1.types.InstanceConfig.Type):
             Output only. Whether this instance config is
             a Google or User Managed Configuration.
-        replicas (Sequence[google.cloud.spanner_admin_instance_v1.types.ReplicaInfo]):
+        replicas (MutableSequence[google.cloud.spanner_admin_instance_v1.types.ReplicaInfo]):
             The geographic placement of nodes in this
             instance configuration and their replication
             properties.
-        optional_replicas (Sequence[google.cloud.spanner_admin_instance_v1.types.ReplicaInfo]):
+        optional_replicas (MutableSequence[google.cloud.spanner_admin_instance_v1.types.ReplicaInfo]):
             Output only. The available optional replicas
             to choose from for user managed configurations.
             Populated for Google managed configurations.
@@ -122,7 +124,7 @@ class InstanceConfig(proto.Message):
             configurations. ``base_config`` must refer to a
             configuration of type GOOGLE_MANAGED in the same project as
             this configuration.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Cloud Labels are a flexible and lightweight mechanism for
             organizing cloud resources into groups that reflect a
             customer's organizational needs and deployment strategies.
@@ -169,7 +171,7 @@ class InstanceConfig(proto.Message):
             If no etag is provided in the call to update
             instance config, then the existing instance
             config is overwritten blindly.
-        leader_options (Sequence[str]):
+        leader_options (MutableSequence[str]):
             Allowed values of the "default_leader" schema option for
             databases in instances that use this instance configuration.
         reconciling (bool):
@@ -193,51 +195,51 @@ class InstanceConfig(proto.Message):
         CREATING = 1
         READY = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    config_type = proto.Field(
+    config_type: Type = proto.Field(
         proto.ENUM,
         number=5,
         enum=Type,
     )
-    replicas = proto.RepeatedField(
+    replicas: MutableSequence["ReplicaInfo"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="ReplicaInfo",
     )
-    optional_replicas = proto.RepeatedField(
+    optional_replicas: MutableSequence["ReplicaInfo"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="ReplicaInfo",
     )
-    base_config = proto.Field(
+    base_config: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=8,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    leader_options = proto.RepeatedField(
+    leader_options: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    reconciling = proto.Field(
+    reconciling: bool = proto.Field(
         proto.BOOL,
         number=10,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=11,
         enum=State,
@@ -293,7 +295,7 @@ class Instance(proto.Message):
             the state must be either omitted or set to ``CREATING``. For
             [UpdateInstance][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance],
             the state must be either omitted or set to ``READY``.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Cloud Labels are a flexible and lightweight mechanism for
             organizing cloud resources into groups that reflect a
             customer's organizational needs and deployment strategies.
@@ -322,7 +324,7 @@ class Instance(proto.Message):
             being disallowed. For example, representing labels as the
             string: name + "*" + value would prove problematic if we
             were to allow "*" in a future release.
-        endpoint_uris (Sequence[str]):
+        endpoint_uris (MutableSequence[str]):
             Deprecated. This field is not populated.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the instance
@@ -338,46 +340,46 @@ class Instance(proto.Message):
         CREATING = 1
         READY = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    config = proto.Field(
+    config: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    node_count = proto.Field(
+    node_count: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    processing_units = proto.Field(
+    processing_units: int = proto.Field(
         proto.INT32,
         number=9,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=6,
         enum=State,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=7,
     )
-    endpoint_uris = proto.RepeatedField(
+    endpoint_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=11,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=12,
         message=timestamp_pb2.Timestamp,
@@ -404,15 +406,15 @@ class ListInstanceConfigsRequest(proto.Message):
             [ListInstanceConfigsResponse][google.spanner.admin.instance.v1.ListInstanceConfigsResponse].
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -423,7 +425,7 @@ class ListInstanceConfigsResponse(proto.Message):
     [ListInstanceConfigs][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs].
 
     Attributes:
-        instance_configs (Sequence[google.cloud.spanner_admin_instance_v1.types.InstanceConfig]):
+        instance_configs (MutableSequence[google.cloud.spanner_admin_instance_v1.types.InstanceConfig]):
             The list of requested instance
             configurations.
         next_page_token (str):
@@ -436,12 +438,12 @@ class ListInstanceConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instance_configs = proto.RepeatedField(
+    instance_configs: MutableSequence["InstanceConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="InstanceConfig",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -458,7 +460,7 @@ class GetInstanceConfigRequest(proto.Message):
             ``projects/<project>/instanceConfigs/<config>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -492,20 +494,20 @@ class CreateInstanceConfigRequest(proto.Message):
             response.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    instance_config_id = proto.Field(
+    instance_config_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    instance_config = proto.Field(
+    instance_config: "InstanceConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="InstanceConfig",
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -539,17 +541,17 @@ class UpdateInstanceConfigRequest(proto.Message):
             response.
     """
 
-    instance_config = proto.Field(
+    instance_config: "InstanceConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="InstanceConfig",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -580,15 +582,15 @@ class DeleteInstanceConfigRequest(proto.Message):
             response.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -663,19 +665,19 @@ class ListInstanceConfigOperationsRequest(proto.Message):
             to the same ``parent`` and with the same ``filter``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -686,7 +688,7 @@ class ListInstanceConfigOperationsResponse(proto.Message):
     [ListInstanceConfigOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigOperations].
 
     Attributes:
-        operations (Sequence[google.longrunning.operations_pb2.Operation]):
+        operations (MutableSequence[google.longrunning.operations_pb2.Operation]):
             The list of matching instance config [long-running
             operations][google.longrunning.Operation]. Each operation's
             name will be prefixed by the instance config's name. The
@@ -703,12 +705,12 @@ class ListInstanceConfigOperationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    operations = proto.RepeatedField(
+    operations: MutableSequence[operations_pb2.Operation] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=operations_pb2.Operation,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -730,11 +732,11 @@ class GetInstanceRequest(proto.Message):
             are returned.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    field_mask = proto.Field(
+    field_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -759,15 +761,15 @@ class CreateInstanceRequest(proto.Message):
             ``<parent>/instances/<instance_id>``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    instance_id = proto.Field(
+    instance_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    instance = proto.Field(
+    instance: "Instance" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Instance",
@@ -816,19 +818,19 @@ class ListInstancesRequest(proto.Message):
                containing "dev".
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -839,7 +841,7 @@ class ListInstancesResponse(proto.Message):
     [ListInstances][google.spanner.admin.instance.v1.InstanceAdmin.ListInstances].
 
     Attributes:
-        instances (Sequence[google.cloud.spanner_admin_instance_v1.types.Instance]):
+        instances (MutableSequence[google.cloud.spanner_admin_instance_v1.types.Instance]):
             The list of requested instances.
         next_page_token (str):
             ``next_page_token`` can be sent in a subsequent
@@ -851,12 +853,12 @@ class ListInstancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instances = proto.RepeatedField(
+    instances: MutableSequence["Instance"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Instance",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -882,12 +884,12 @@ class UpdateInstanceRequest(proto.Message):
             them.
     """
 
-    instance = proto.Field(
+    instance: "Instance" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Instance",
     )
-    field_mask = proto.Field(
+    field_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -904,7 +906,7 @@ class DeleteInstanceRequest(proto.Message):
             of the form ``projects/<project>/instances/<instance>``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -931,22 +933,22 @@ class CreateInstanceMetadata(proto.Message):
             was completed successfully.
     """
 
-    instance = proto.Field(
+    instance: "Instance" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Instance",
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    cancel_time = proto.Field(
+    cancel_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
@@ -974,22 +976,22 @@ class UpdateInstanceMetadata(proto.Message):
             was completed successfully.
     """
 
-    instance = proto.Field(
+    instance: "Instance" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Instance",
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    cancel_time = proto.Field(
+    cancel_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
@@ -1012,17 +1014,17 @@ class CreateInstanceConfigMetadata(proto.Message):
             cancelled.
     """
 
-    instance_config = proto.Field(
+    instance_config: "InstanceConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="InstanceConfig",
     )
-    progress = proto.Field(
+    progress: common.OperationProgress = proto.Field(
         proto.MESSAGE,
         number=2,
         message=common.OperationProgress,
     )
-    cancel_time = proto.Field(
+    cancel_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -1045,17 +1047,17 @@ class UpdateInstanceConfigMetadata(proto.Message):
             cancelled.
     """
 
-    instance_config = proto.Field(
+    instance_config: "InstanceConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="InstanceConfig",
     )
-    progress = proto.Field(
+    progress: common.OperationProgress = proto.Field(
         proto.MESSAGE,
         number=2,
         message=common.OperationProgress,
     )
-    cancel_time = proto.Field(
+    cancel_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,

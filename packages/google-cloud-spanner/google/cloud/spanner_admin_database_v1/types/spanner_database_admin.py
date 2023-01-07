@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.spanner_admin_database_v1.types import backup as gsad_backup
@@ -71,12 +73,12 @@ class RestoreInfo(proto.Message):
             This field is a member of `oneof`_ ``source_info``.
     """
 
-    source_type = proto.Field(
+    source_type: "RestoreSourceType" = proto.Field(
         proto.ENUM,
         number=1,
         enum="RestoreSourceType",
     )
-    backup_info = proto.Field(
+    backup_info: gsad_backup.BackupInfo = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="source_info",
@@ -109,7 +111,7 @@ class Database(proto.Message):
             the encryption configuration for the database.
             For databases that are using Google default or
             other types of encryption, this field is empty.
-        encryption_info (Sequence[google.cloud.spanner_admin_database_v1.types.EncryptionInfo]):
+        encryption_info (MutableSequence[google.cloud.spanner_admin_database_v1.types.EncryptionInfo]):
             Output only. For databases that are using
             customer managed encryption, this field contains
             the encryption information for the database,
@@ -157,49 +159,49 @@ class Database(proto.Message):
         READY = 2
         READY_OPTIMIZING = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=2,
         enum=State,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    restore_info = proto.Field(
+    restore_info: "RestoreInfo" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="RestoreInfo",
     )
-    encryption_config = proto.Field(
+    encryption_config: common.EncryptionConfig = proto.Field(
         proto.MESSAGE,
         number=5,
         message=common.EncryptionConfig,
     )
-    encryption_info = proto.RepeatedField(
+    encryption_info: MutableSequence[common.EncryptionInfo] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message=common.EncryptionInfo,
     )
-    version_retention_period = proto.Field(
+    version_retention_period: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    earliest_version_time = proto.Field(
+    earliest_version_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    default_leader = proto.Field(
+    default_leader: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    database_dialect = proto.Field(
+    database_dialect: common.DatabaseDialect = proto.Field(
         proto.ENUM,
         number=10,
         enum=common.DatabaseDialect,
@@ -226,15 +228,15 @@ class ListDatabasesRequest(proto.Message):
             [ListDatabasesResponse][google.spanner.admin.database.v1.ListDatabasesResponse].
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -245,7 +247,7 @@ class ListDatabasesResponse(proto.Message):
     [ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases].
 
     Attributes:
-        databases (Sequence[google.cloud.spanner_admin_database_v1.types.Database]):
+        databases (MutableSequence[google.cloud.spanner_admin_database_v1.types.Database]):
             Databases that matched the request.
         next_page_token (str):
             ``next_page_token`` can be sent in a subsequent
@@ -257,12 +259,12 @@ class ListDatabasesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    databases = proto.RepeatedField(
+    databases: MutableSequence["Database"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Database",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -284,7 +286,7 @@ class CreateDatabaseRequest(proto.Message):
             between 2 and 30 characters in length. If the database ID is
             a reserved word or if it contains a hyphen, the database ID
             must be enclosed in backticks (:literal:`\``).
-        extra_statements (Sequence[str]):
+        extra_statements (MutableSequence[str]):
             Optional. A list of DDL statements to run
             inside the newly created database. Statements
             can create tables, indexes, etc. These
@@ -301,24 +303,24 @@ class CreateDatabaseRequest(proto.Message):
             Database.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_statement = proto.Field(
+    create_statement: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    extra_statements = proto.RepeatedField(
+    extra_statements: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    encryption_config = proto.Field(
+    encryption_config: common.EncryptionConfig = proto.Field(
         proto.MESSAGE,
         number=4,
         message=common.EncryptionConfig,
     )
-    database_dialect = proto.Field(
+    database_dialect: common.DatabaseDialect = proto.Field(
         proto.ENUM,
         number=5,
         enum=common.DatabaseDialect,
@@ -334,7 +336,7 @@ class CreateDatabaseMetadata(proto.Message):
             The database being created.
     """
 
-    database = proto.Field(
+    database: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -351,7 +353,7 @@ class GetDatabaseRequest(proto.Message):
             ``projects/<project>/instances/<instance>/databases/<database>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -378,7 +380,7 @@ class UpdateDatabaseDdlRequest(proto.Message):
     Attributes:
         database (str):
             Required. The database to update.
-        statements (Sequence[str]):
+        statements (MutableSequence[str]):
             Required. DDL statements to be applied to the
             database.
         operation_id (str):
@@ -405,15 +407,15 @@ class UpdateDatabaseDdlRequest(proto.Message):
             returns ``ALREADY_EXISTS``.
     """
 
-    database = proto.Field(
+    database: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    statements = proto.RepeatedField(
+    statements: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    operation_id = proto.Field(
+    operation_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -426,11 +428,11 @@ class UpdateDatabaseDdlMetadata(proto.Message):
     Attributes:
         database (str):
             The database being modified.
-        statements (Sequence[str]):
+        statements (MutableSequence[str]):
             For an update this list contains all the
             statements. For an individual statement, this
             list contains only that statement.
-        commit_timestamps (Sequence[google.protobuf.timestamp_pb2.Timestamp]):
+        commit_timestamps (MutableSequence[google.protobuf.timestamp_pb2.Timestamp]):
             Reports the commit timestamps of all statements that have
             succeeded so far, where ``commit_timestamps[i]`` is the
             commit timestamp for the statement ``statements[i]``.
@@ -440,7 +442,7 @@ class UpdateDatabaseDdlMetadata(proto.Message):
             constraints. When resources become available the
             operation will resume and this field will be
             false again.
-        progress (Sequence[google.cloud.spanner_admin_database_v1.types.OperationProgress]):
+        progress (MutableSequence[google.cloud.spanner_admin_database_v1.types.OperationProgress]):
             The progress of the
             [UpdateDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl]
             operations. Currently, only index creation statements will
@@ -452,24 +454,24 @@ class UpdateDatabaseDdlMetadata(proto.Message):
             ``statements[i]``.
     """
 
-    database = proto.Field(
+    database: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    statements = proto.RepeatedField(
+    statements: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    commit_timestamps = proto.RepeatedField(
+    commit_timestamps: MutableSequence[timestamp_pb2.Timestamp] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    throttled = proto.Field(
+    throttled: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    progress = proto.RepeatedField(
+    progress: MutableSequence[common.OperationProgress] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=common.OperationProgress,
@@ -485,7 +487,7 @@ class DropDatabaseRequest(proto.Message):
             Required. The database to be dropped.
     """
 
-    database = proto.Field(
+    database: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -502,7 +504,7 @@ class GetDatabaseDdlRequest(proto.Message):
             ``projects/<project>/instances/<instance>/databases/<database>``
     """
 
-    database = proto.Field(
+    database: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -513,13 +515,13 @@ class GetDatabaseDdlResponse(proto.Message):
     [GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl].
 
     Attributes:
-        statements (Sequence[str]):
+        statements (MutableSequence[str]):
             A list of formatted DDL statements defining
             the schema of the database specified in the
             request.
     """
 
-    statements = proto.RepeatedField(
+    statements: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -597,19 +599,19 @@ class ListDatabaseOperationsRequest(proto.Message):
             to the same ``parent`` and with the same ``filter``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -620,7 +622,7 @@ class ListDatabaseOperationsResponse(proto.Message):
     [ListDatabaseOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseOperations].
 
     Attributes:
-        operations (Sequence[google.longrunning.operations_pb2.Operation]):
+        operations (MutableSequence[google.longrunning.operations_pb2.Operation]):
             The list of matching database [long-running
             operations][google.longrunning.Operation]. Each operation's
             name will be prefixed by the database's name. The
@@ -637,12 +639,12 @@ class ListDatabaseOperationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    operations = proto.RepeatedField(
+    operations: MutableSequence[operations_pb2.Operation] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=operations_pb2.Operation,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -684,20 +686,20 @@ class RestoreDatabaseRequest(proto.Message):
             = ``USE_CONFIG_DEFAULT_OR_BACKUP_ENCRYPTION``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    database_id = proto.Field(
+    database_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    backup = proto.Field(
+    backup: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="source",
     )
-    encryption_config = proto.Field(
+    encryption_config: "RestoreDatabaseEncryptionConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="RestoreDatabaseEncryptionConfig",
@@ -727,12 +729,12 @@ class RestoreDatabaseEncryptionConfig(proto.Message):
         GOOGLE_DEFAULT_ENCRYPTION = 2
         CUSTOMER_MANAGED_ENCRYPTION = 3
 
-    encryption_type = proto.Field(
+    encryption_type: EncryptionType = proto.Field(
         proto.ENUM,
         number=1,
         enum=EncryptionType,
     )
-    kms_key_name = proto.Field(
+    kms_key_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -791,32 +793,32 @@ class RestoreDatabaseMetadata(proto.Message):
             if the restore was not successful.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    source_type = proto.Field(
+    source_type: "RestoreSourceType" = proto.Field(
         proto.ENUM,
         number=2,
         enum="RestoreSourceType",
     )
-    backup_info = proto.Field(
+    backup_info: gsad_backup.BackupInfo = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="source_info",
         message=gsad_backup.BackupInfo,
     )
-    progress = proto.Field(
+    progress: common.OperationProgress = proto.Field(
         proto.MESSAGE,
         number=4,
         message=common.OperationProgress,
     )
-    cancel_time = proto.Field(
+    cancel_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    optimize_database_operation_name = proto.Field(
+    optimize_database_operation_name: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -838,11 +840,11 @@ class OptimizeRestoredDatabaseMetadata(proto.Message):
             optimizations.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    progress = proto.Field(
+    progress: common.OperationProgress = proto.Field(
         proto.MESSAGE,
         number=2,
         message=common.OperationProgress,
@@ -862,7 +864,7 @@ class DatabaseRole(proto.Message):
             methods to identify the database role.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -888,15 +890,15 @@ class ListDatabaseRolesRequest(proto.Message):
             [ListDatabaseRolesResponse][google.spanner.admin.database.v1.ListDatabaseRolesResponse].
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -907,7 +909,7 @@ class ListDatabaseRolesResponse(proto.Message):
     [ListDatabaseRoles][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseRoles].
 
     Attributes:
-        database_roles (Sequence[google.cloud.spanner_admin_database_v1.types.DatabaseRole]):
+        database_roles (MutableSequence[google.cloud.spanner_admin_database_v1.types.DatabaseRole]):
             Database roles that matched the request.
         next_page_token (str):
             ``next_page_token`` can be sent in a subsequent
@@ -919,12 +921,12 @@ class ListDatabaseRolesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    database_roles = proto.RepeatedField(
+    database_roles: MutableSequence["DatabaseRole"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="DatabaseRole",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )

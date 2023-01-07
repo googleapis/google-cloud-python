@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.spanner_v1.types import keys
@@ -65,11 +67,11 @@ class CreateSessionRequest(proto.Message):
             Required. The session to create.
     """
 
-    database = proto.Field(
+    database: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    session = proto.Field(
+    session: "Session" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Session",
@@ -97,16 +99,16 @@ class BatchCreateSessionsRequest(proto.Message):
             as necessary).
     """
 
-    database = proto.Field(
+    database: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    session_template = proto.Field(
+    session_template: "Session" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Session",
     )
-    session_count = proto.Field(
+    session_count: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -117,11 +119,11 @@ class BatchCreateSessionsResponse(proto.Message):
     [BatchCreateSessions][google.spanner.v1.Spanner.BatchCreateSessions].
 
     Attributes:
-        session (Sequence[google.cloud.spanner_v1.types.Session]):
+        session (MutableSequence[google.cloud.spanner_v1.types.Session]):
             The freshly created sessions.
     """
 
-    session = proto.RepeatedField(
+    session: MutableSequence["Session"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Session",
@@ -135,7 +137,7 @@ class Session(proto.Message):
         name (str):
             Output only. The name of the session. This is
             always system-assigned.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             The labels for the session.
 
             -  Label keys must be between 1 and 63 characters long and
@@ -160,26 +162,26 @@ class Session(proto.Message):
             The database role which created this session.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    approximate_last_use_time = proto.Field(
+    approximate_last_use_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    creator_role = proto.Field(
+    creator_role: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -194,7 +196,7 @@ class GetSessionRequest(proto.Message):
             retrieve.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -231,19 +233,19 @@ class ListSessionsRequest(proto.Message):
                and the value of the label contains the string "dev".
     """
 
-    database = proto.Field(
+    database: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -254,7 +256,7 @@ class ListSessionsResponse(proto.Message):
     [ListSessions][google.spanner.v1.Spanner.ListSessions].
 
     Attributes:
-        sessions (Sequence[google.cloud.spanner_v1.types.Session]):
+        sessions (MutableSequence[google.cloud.spanner_v1.types.Session]):
             The list of requested sessions.
         next_page_token (str):
             ``next_page_token`` can be sent in a subsequent
@@ -266,12 +268,12 @@ class ListSessionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    sessions = proto.RepeatedField(
+    sessions: MutableSequence["Session"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Session",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -286,7 +288,7 @@ class DeleteSessionRequest(proto.Message):
             Required. The name of the session to delete.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -347,16 +349,16 @@ class RequestOptions(proto.Message):
         PRIORITY_MEDIUM = 2
         PRIORITY_HIGH = 3
 
-    priority = proto.Field(
+    priority: Priority = proto.Field(
         proto.ENUM,
         number=1,
         enum=Priority,
     )
-    request_tag = proto.Field(
+    request_tag: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    transaction_tag = proto.Field(
+    transaction_tag: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -404,7 +406,7 @@ class ExecuteSqlRequest(proto.Message):
 
             It is an error to execute a SQL statement with unbound
             parameters.
-        param_types (Mapping[str, google.cloud.spanner_v1.types.Type]):
+        param_types (MutableMapping[str, google.cloud.spanner_v1.types.Type]):
             It is not always possible for Cloud Spanner to infer the
             right SQL type from a JSON value. For example, values of
             type ``BYTES`` and values of type ``STRING`` both appear in
@@ -525,62 +527,62 @@ class ExecuteSqlRequest(proto.Message):
                 garbage collection fails with an ``INVALID_ARGUMENT`` error.
         """
 
-        optimizer_version = proto.Field(
+        optimizer_version: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        optimizer_statistics_package = proto.Field(
+        optimizer_statistics_package: str = proto.Field(
             proto.STRING,
             number=2,
         )
 
-    session = proto.Field(
+    session: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    transaction = proto.Field(
+    transaction: gs_transaction.TransactionSelector = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gs_transaction.TransactionSelector,
     )
-    sql = proto.Field(
+    sql: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    params = proto.Field(
+    params: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=4,
         message=struct_pb2.Struct,
     )
-    param_types = proto.MapField(
+    param_types: MutableMapping[str, gs_type.Type] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=5,
         message=gs_type.Type,
     )
-    resume_token = proto.Field(
+    resume_token: bytes = proto.Field(
         proto.BYTES,
         number=6,
     )
-    query_mode = proto.Field(
+    query_mode: QueryMode = proto.Field(
         proto.ENUM,
         number=7,
         enum=QueryMode,
     )
-    partition_token = proto.Field(
+    partition_token: bytes = proto.Field(
         proto.BYTES,
         number=8,
     )
-    seqno = proto.Field(
+    seqno: int = proto.Field(
         proto.INT64,
         number=9,
     )
-    query_options = proto.Field(
+    query_options: QueryOptions = proto.Field(
         proto.MESSAGE,
         number=10,
         message=QueryOptions,
     )
-    request_options = proto.Field(
+    request_options: "RequestOptions" = proto.Field(
         proto.MESSAGE,
         number=11,
         message="RequestOptions",
@@ -602,7 +604,7 @@ class ExecuteBatchDmlRequest(proto.Message):
             transactions are not supported. The caller must
             either supply an existing transaction ID or
             begin a new transaction.
-        statements (Sequence[google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.Statement]):
+        statements (MutableSequence[google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.Statement]):
             Required. The list of statements to execute in this batch.
             Statements are executed serially, such that the effects of
             statement ``i`` are visible to statement ``i+1``. Each
@@ -651,7 +653,7 @@ class ExecuteBatchDmlRequest(proto.Message):
 
                 It is an error to execute a SQL statement with unbound
                 parameters.
-            param_types (Mapping[str, google.cloud.spanner_v1.types.Type]):
+            param_types (MutableMapping[str, google.cloud.spanner_v1.types.Type]):
                 It is not always possible for Cloud Spanner to infer the
                 right SQL type from a JSON value. For example, values of
                 type ``BYTES`` and values of type ``STRING`` both appear in
@@ -665,41 +667,41 @@ class ExecuteBatchDmlRequest(proto.Message):
                 SQL types.
         """
 
-        sql = proto.Field(
+        sql: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        params = proto.Field(
+        params: struct_pb2.Struct = proto.Field(
             proto.MESSAGE,
             number=2,
             message=struct_pb2.Struct,
         )
-        param_types = proto.MapField(
+        param_types: MutableMapping[str, gs_type.Type] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=3,
             message=gs_type.Type,
         )
 
-    session = proto.Field(
+    session: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    transaction = proto.Field(
+    transaction: gs_transaction.TransactionSelector = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gs_transaction.TransactionSelector,
     )
-    statements = proto.RepeatedField(
+    statements: MutableSequence[Statement] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=Statement,
     )
-    seqno = proto.Field(
+    seqno: int = proto.Field(
         proto.INT64,
         number=4,
     )
-    request_options = proto.Field(
+    request_options: "RequestOptions" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="RequestOptions",
@@ -742,7 +744,7 @@ class ExecuteBatchDmlResponse(proto.Message):
        were not executed.
 
     Attributes:
-        result_sets (Sequence[google.cloud.spanner_v1.types.ResultSet]):
+        result_sets (MutableSequence[google.cloud.spanner_v1.types.ResultSet]):
             One [ResultSet][google.spanner.v1.ResultSet] for each
             statement in the request that ran successfully, in the same
             order as the statements in the request. Each
@@ -761,12 +763,12 @@ class ExecuteBatchDmlResponse(proto.Message):
             statement.
     """
 
-    result_sets = proto.RepeatedField(
+    result_sets: MutableSequence[result_set.ResultSet] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=result_set.ResultSet,
     )
-    status = proto.Field(
+    status: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=2,
         message=status_pb2.Status,
@@ -798,11 +800,11 @@ class PartitionOptions(proto.Message):
             this maximum count request.
     """
 
-    partition_size_bytes = proto.Field(
+    partition_size_bytes: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    max_partitions = proto.Field(
+    max_partitions: int = proto.Field(
         proto.INT64,
         number=2,
     )
@@ -851,7 +853,7 @@ class PartitionQueryRequest(proto.Message):
 
             It is an error to execute a SQL statement with unbound
             parameters.
-        param_types (Mapping[str, google.cloud.spanner_v1.types.Type]):
+        param_types (MutableMapping[str, google.cloud.spanner_v1.types.Type]):
             It is not always possible for Cloud Spanner to infer the
             right SQL type from a JSON value. For example, values of
             type ``BYTES`` and values of type ``STRING`` both appear in
@@ -867,31 +869,31 @@ class PartitionQueryRequest(proto.Message):
             partitions are created.
     """
 
-    session = proto.Field(
+    session: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    transaction = proto.Field(
+    transaction: gs_transaction.TransactionSelector = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gs_transaction.TransactionSelector,
     )
-    sql = proto.Field(
+    sql: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    params = proto.Field(
+    params: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=4,
         message=struct_pb2.Struct,
     )
-    param_types = proto.MapField(
+    param_types: MutableMapping[str, gs_type.Type] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=5,
         message=gs_type.Type,
     )
-    partition_options = proto.Field(
+    partition_options: "PartitionOptions" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="PartitionOptions",
@@ -922,7 +924,7 @@ class PartitionReadRequest(proto.Message):
             and sorting result rows. See
             [key_set][google.spanner.v1.PartitionReadRequest.key_set]
             for further information.
-        columns (Sequence[str]):
+        columns (MutableSequence[str]):
             The columns of
             [table][google.spanner.v1.PartitionReadRequest.table] to be
             returned for each row matching this request.
@@ -947,33 +949,33 @@ class PartitionReadRequest(proto.Message):
             partitions are created.
     """
 
-    session = proto.Field(
+    session: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    transaction = proto.Field(
+    transaction: gs_transaction.TransactionSelector = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gs_transaction.TransactionSelector,
     )
-    table = proto.Field(
+    table: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    index = proto.Field(
+    index: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    columns = proto.RepeatedField(
+    columns: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    key_set = proto.Field(
+    key_set: keys.KeySet = proto.Field(
         proto.MESSAGE,
         number=6,
         message=keys.KeySet,
     )
-    partition_options = proto.Field(
+    partition_options: "PartitionOptions" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="PartitionOptions",
@@ -993,7 +995,7 @@ class Partition(proto.Message):
             token.
     """
 
-    partition_token = proto.Field(
+    partition_token: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
@@ -1005,18 +1007,18 @@ class PartitionResponse(proto.Message):
     [PartitionRead][google.spanner.v1.Spanner.PartitionRead]
 
     Attributes:
-        partitions (Sequence[google.cloud.spanner_v1.types.Partition]):
+        partitions (MutableSequence[google.cloud.spanner_v1.types.Partition]):
             Partitions created by this request.
         transaction (google.cloud.spanner_v1.types.Transaction):
             Transaction created by this request.
     """
 
-    partitions = proto.RepeatedField(
+    partitions: MutableSequence["Partition"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Partition",
     )
-    transaction = proto.Field(
+    transaction: gs_transaction.Transaction = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gs_transaction.Transaction,
@@ -1046,7 +1048,7 @@ class ReadRequest(proto.Message):
             result rows. See
             [key_set][google.spanner.v1.ReadRequest.key_set] for further
             information.
-        columns (Sequence[str]):
+        columns (MutableSequence[str]):
             Required. The columns of
             [table][google.spanner.v1.ReadRequest.table] to be returned
             for each row matching this request.
@@ -1097,45 +1099,45 @@ class ReadRequest(proto.Message):
             Common options for this request.
     """
 
-    session = proto.Field(
+    session: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    transaction = proto.Field(
+    transaction: gs_transaction.TransactionSelector = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gs_transaction.TransactionSelector,
     )
-    table = proto.Field(
+    table: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    index = proto.Field(
+    index: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    columns = proto.RepeatedField(
+    columns: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    key_set = proto.Field(
+    key_set: keys.KeySet = proto.Field(
         proto.MESSAGE,
         number=6,
         message=keys.KeySet,
     )
-    limit = proto.Field(
+    limit: int = proto.Field(
         proto.INT64,
         number=8,
     )
-    resume_token = proto.Field(
+    resume_token: bytes = proto.Field(
         proto.BYTES,
         number=9,
     )
-    partition_token = proto.Field(
+    partition_token: bytes = proto.Field(
         proto.BYTES,
         number=10,
     )
-    request_options = proto.Field(
+    request_options: "RequestOptions" = proto.Field(
         proto.MESSAGE,
         number=11,
         message="RequestOptions",
@@ -1160,16 +1162,16 @@ class BeginTransactionRequest(proto.Message):
             this transaction instead.
     """
 
-    session = proto.Field(
+    session: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    options = proto.Field(
+    options: gs_transaction.TransactionOptions = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gs_transaction.TransactionOptions,
     )
-    request_options = proto.Field(
+    request_options: "RequestOptions" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="RequestOptions",
@@ -1206,7 +1208,7 @@ class CommitRequest(proto.Message):
             and [Commit][google.spanner.v1.Spanner.Commit] instead.
 
             This field is a member of `oneof`_ ``transaction``.
-        mutations (Sequence[google.cloud.spanner_v1.types.Mutation]):
+        mutations (MutableSequence[google.cloud.spanner_v1.types.Mutation]):
             The mutations to be executed when this
             transaction commits. All mutations are applied
             atomically, in the order they appear in this
@@ -1220,31 +1222,31 @@ class CommitRequest(proto.Message):
             Common options for this request.
     """
 
-    session = proto.Field(
+    session: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    transaction_id = proto.Field(
+    transaction_id: bytes = proto.Field(
         proto.BYTES,
         number=2,
         oneof="transaction",
     )
-    single_use_transaction = proto.Field(
+    single_use_transaction: gs_transaction.TransactionOptions = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="transaction",
         message=gs_transaction.TransactionOptions,
     )
-    mutations = proto.RepeatedField(
+    mutations: MutableSequence[mutation.Mutation] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=mutation.Mutation,
     )
-    return_commit_stats = proto.Field(
+    return_commit_stats: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    request_options = proto.Field(
+    request_options: "RequestOptions" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="RequestOptions",
@@ -1262,11 +1264,11 @@ class RollbackRequest(proto.Message):
             Required. The transaction to roll back.
     """
 
-    session = proto.Field(
+    session: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    transaction_id = proto.Field(
+    transaction_id: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )

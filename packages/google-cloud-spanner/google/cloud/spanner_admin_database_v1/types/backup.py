@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.spanner_admin_database_v1.types import common
@@ -95,7 +97,7 @@ class Backup(proto.Message):
             Output only. Size of the backup in bytes.
         state (google.cloud.spanner_admin_database_v1.types.Backup.State):
             Output only. The current state of the backup.
-        referencing_databases (Sequence[str]):
+        referencing_databases (MutableSequence[str]):
             Output only. The names of the restored databases that
             reference the backup. The database names are of the form
             ``projects/<project>/instances/<instance>/databases/<database>``.
@@ -110,7 +112,7 @@ class Backup(proto.Message):
         database_dialect (google.cloud.spanner_admin_database_v1.types.DatabaseDialect):
             Output only. The database dialect information
             for the backup.
-        referencing_backups (Sequence[str]):
+        referencing_backups (MutableSequence[str]):
             Output only. The names of the destination backups being
             created by copying this source backup. The backup names are
             of the form
@@ -135,57 +137,57 @@ class Backup(proto.Message):
         CREATING = 1
         READY = 2
 
-    database = proto.Field(
+    database: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    version_time = proto.Field(
+    version_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    expire_time = proto.Field(
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    size_bytes = proto.Field(
+    size_bytes: int = proto.Field(
         proto.INT64,
         number=5,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=6,
         enum=State,
     )
-    referencing_databases = proto.RepeatedField(
+    referencing_databases: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
-    encryption_info = proto.Field(
+    encryption_info: common.EncryptionInfo = proto.Field(
         proto.MESSAGE,
         number=8,
         message=common.EncryptionInfo,
     )
-    database_dialect = proto.Field(
+    database_dialect: common.DatabaseDialect = proto.Field(
         proto.ENUM,
         number=10,
         enum=common.DatabaseDialect,
     )
-    referencing_backups = proto.RepeatedField(
+    referencing_backups: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=11,
     )
-    max_expire_time = proto.Field(
+    max_expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=12,
         message=timestamp_pb2.Timestamp,
@@ -220,20 +222,20 @@ class CreateBackupRequest(proto.Message):
             = ``USE_DATABASE_ENCRYPTION``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    backup_id = proto.Field(
+    backup_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    backup = proto.Field(
+    backup: "Backup" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Backup",
     )
-    encryption_config = proto.Field(
+    encryption_config: "CreateBackupEncryptionConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="CreateBackupEncryptionConfig",
@@ -271,20 +273,20 @@ class CreateBackupMetadata(proto.Message):
             1, corresponding to ``Code.CANCELLED``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    database = proto.Field(
+    database: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    progress = proto.Field(
+    progress: common.OperationProgress = proto.Field(
         proto.MESSAGE,
         number=3,
         message=common.OperationProgress,
     )
-    cancel_time = proto.Field(
+    cancel_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
@@ -327,24 +329,24 @@ class CopyBackupRequest(proto.Message):
             = ``USE_CONFIG_DEFAULT_OR_BACKUP_ENCRYPTION``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    backup_id = proto.Field(
+    backup_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    source_backup = proto.Field(
+    source_backup: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    expire_time = proto.Field(
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    encryption_config = proto.Field(
+    encryption_config: "CopyBackupEncryptionConfig" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="CopyBackupEncryptionConfig",
@@ -385,20 +387,20 @@ class CopyBackupMetadata(proto.Message):
             1, corresponding to ``Code.CANCELLED``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    source_backup = proto.Field(
+    source_backup: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    progress = proto.Field(
+    progress: common.OperationProgress = proto.Field(
         proto.MESSAGE,
         number=3,
         message=common.OperationProgress,
     )
-    cancel_time = proto.Field(
+    cancel_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
@@ -426,12 +428,12 @@ class UpdateBackupRequest(proto.Message):
             accidentally by clients that do not know about them.
     """
 
-    backup = proto.Field(
+    backup: "Backup" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Backup",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -448,7 +450,7 @@ class GetBackupRequest(proto.Message):
             ``projects/<project>/instances/<instance>/backups/<backup>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -465,7 +467,7 @@ class DeleteBackupRequest(proto.Message):
             ``projects/<project>/instances/<instance>/backups/<backup>``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -538,19 +540,19 @@ class ListBackupsRequest(proto.Message):
             to the same ``parent`` and with the same ``filter``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -561,7 +563,7 @@ class ListBackupsResponse(proto.Message):
     [ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups].
 
     Attributes:
-        backups (Sequence[google.cloud.spanner_admin_database_v1.types.Backup]):
+        backups (MutableSequence[google.cloud.spanner_admin_database_v1.types.Backup]):
             The list of matching backups. Backups returned are ordered
             by ``create_time`` in descending order, starting from the
             most recent ``create_time``.
@@ -575,12 +577,12 @@ class ListBackupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backups = proto.RepeatedField(
+    backups: MutableSequence["Backup"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Backup",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -694,19 +696,19 @@ class ListBackupOperationsRequest(proto.Message):
             to the same ``parent`` and with the same ``filter``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -717,7 +719,7 @@ class ListBackupOperationsResponse(proto.Message):
     [ListBackupOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupOperations].
 
     Attributes:
-        operations (Sequence[google.longrunning.operations_pb2.Operation]):
+        operations (MutableSequence[google.longrunning.operations_pb2.Operation]):
             The list of matching backup [long-running
             operations][google.longrunning.Operation]. Each operation's
             name will be prefixed by the backup's name. The operation's
@@ -739,12 +741,12 @@ class ListBackupOperationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    operations = proto.RepeatedField(
+    operations: MutableSequence[operations_pb2.Operation] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=operations_pb2.Operation,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -773,21 +775,21 @@ class BackupInfo(proto.Message):
             from.
     """
 
-    backup = proto.Field(
+    backup: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    version_time = proto.Field(
+    version_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    source_database = proto.Field(
+    source_database: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -814,12 +816,12 @@ class CreateBackupEncryptionConfig(proto.Message):
         GOOGLE_DEFAULT_ENCRYPTION = 2
         CUSTOMER_MANAGED_ENCRYPTION = 3
 
-    encryption_type = proto.Field(
+    encryption_type: EncryptionType = proto.Field(
         proto.ENUM,
         number=1,
         enum=EncryptionType,
     )
-    kms_key_name = proto.Field(
+    kms_key_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -846,12 +848,12 @@ class CopyBackupEncryptionConfig(proto.Message):
         GOOGLE_DEFAULT_ENCRYPTION = 2
         CUSTOMER_MANAGED_ENCRYPTION = 3
 
-    encryption_type = proto.Field(
+    encryption_type: EncryptionType = proto.Field(
         proto.ENUM,
         number=1,
         enum=EncryptionType,
     )
-    kms_key_name = proto.Field(
+    kms_key_name: str = proto.Field(
         proto.STRING,
         number=2,
     )

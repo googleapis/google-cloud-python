@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-spanner"
+    "name": "google-cloud-spanner",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -380,7 +381,7 @@
           },
           {
             "name": "mutations",
-            "type": "Sequence[google.cloud.spanner_v1.types.Mutation]"
+            "type": "MutableSequence[google.cloud.spanner_v1.types.Mutation]"
           },
           {
             "name": "single_use_transaction",
@@ -472,7 +473,7 @@
           },
           {
             "name": "mutations",
-            "type": "Sequence[google.cloud.spanner_v1.types.Mutation]"
+            "type": "MutableSequence[google.cloud.spanner_v1.types.Mutation]"
           },
           {
             "name": "single_use_transaction",

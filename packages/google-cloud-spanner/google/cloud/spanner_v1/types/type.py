@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -94,22 +96,22 @@ class Type(proto.Message):
             on the read path.
     """
 
-    code = proto.Field(
+    code: "TypeCode" = proto.Field(
         proto.ENUM,
         number=1,
         enum="TypeCode",
     )
-    array_element_type = proto.Field(
+    array_element_type: "Type" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Type",
     )
-    struct_type = proto.Field(
+    struct_type: "StructType" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="StructType",
     )
-    type_annotation = proto.Field(
+    type_annotation: "TypeAnnotationCode" = proto.Field(
         proto.ENUM,
         number=4,
         enum="TypeAnnotationCode",
@@ -121,7 +123,7 @@ class StructType(proto.Message):
     [STRUCT][google.spanner.v1.TypeCode.STRUCT] type.
 
     Attributes:
-        fields (Sequence[google.cloud.spanner_v1.types.StructType.Field]):
+        fields (MutableSequence[google.cloud.spanner_v1.types.StructType.Field]):
             The list of fields that make up this struct. Order is
             significant, because values of this struct type are
             represented as lists, where the order of field values
@@ -148,17 +150,17 @@ class StructType(proto.Message):
                 The type of the field.
         """
 
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        type_ = proto.Field(
+        type_: "Type" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="Type",
         )
 
-    fields = proto.RepeatedField(
+    fields: MutableSequence[Field] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=Field,

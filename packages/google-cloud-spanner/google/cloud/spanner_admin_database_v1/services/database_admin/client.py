@@ -16,8 +16,20 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
+
+from google.cloud.spanner_admin_database_v1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -67,7 +79,7 @@ class DatabaseAdminClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[DatabaseAdminTransport]:
         """Returns an appropriate transport class.
 
@@ -463,8 +475,8 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DatabaseAdminTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, DatabaseAdminTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the database admin client.
@@ -478,7 +490,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
             transport (Union[str, DatabaseAdminTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -508,6 +520,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -560,11 +573,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def list_databases(
         self,
-        request: Union[spanner_database_admin.ListDatabasesRequest, dict] = None,
+        request: Optional[
+            Union[spanner_database_admin.ListDatabasesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDatabasesPager:
         r"""Lists Cloud Spanner databases.
@@ -676,12 +691,14 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def create_database(
         self,
-        request: Union[spanner_database_admin.CreateDatabaseRequest, dict] = None,
+        request: Optional[
+            Union[spanner_database_admin.CreateDatabaseRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        create_statement: str = None,
+        parent: Optional[str] = None,
+        create_statement: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new Cloud Spanner database and starts to prepare it
@@ -819,11 +836,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def get_database(
         self,
-        request: Union[spanner_database_admin.GetDatabaseRequest, dict] = None,
+        request: Optional[
+            Union[spanner_database_admin.GetDatabaseRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> spanner_database_admin.Database:
         r"""Gets the state of a Cloud Spanner database.
@@ -920,12 +939,14 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def update_database_ddl(
         self,
-        request: Union[spanner_database_admin.UpdateDatabaseDdlRequest, dict] = None,
+        request: Optional[
+            Union[spanner_database_admin.UpdateDatabaseDdlRequest, dict]
+        ] = None,
         *,
-        database: str = None,
-        statements: Sequence[str] = None,
+        database: Optional[str] = None,
+        statements: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the schema of a Cloud Spanner database by
@@ -995,7 +1016,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 This corresponds to the ``database`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            statements (Sequence[str]):
+            statements (MutableSequence[str]):
                 Required. DDL statements to be
                 applied to the database.
 
@@ -1078,11 +1099,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def drop_database(
         self,
-        request: Union[spanner_database_admin.DropDatabaseRequest, dict] = None,
+        request: Optional[
+            Union[spanner_database_admin.DropDatabaseRequest, dict]
+        ] = None,
         *,
-        database: str = None,
+        database: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Drops (aka deletes) a Cloud Spanner database. Completed backups
@@ -1169,11 +1192,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def get_database_ddl(
         self,
-        request: Union[spanner_database_admin.GetDatabaseDdlRequest, dict] = None,
+        request: Optional[
+            Union[spanner_database_admin.GetDatabaseDdlRequest, dict]
+        ] = None,
         *,
-        database: str = None,
+        database: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> spanner_database_admin.GetDatabaseDdlResponse:
         r"""Returns the schema of a Cloud Spanner database as a list of
@@ -1275,11 +1300,11 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def set_iam_policy(
         self,
-        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the access control policy on a database or backup resource.
@@ -1446,11 +1471,11 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def get_iam_policy(
         self,
-        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the access control policy for a database or backup
@@ -1618,12 +1643,12 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def test_iam_permissions(
         self,
-        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
-        resource: str = None,
-        permissions: Sequence[str] = None,
+        resource: Optional[str] = None,
+        permissions: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns permissions that the caller has on the specified
@@ -1678,7 +1703,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            permissions (Sequence[str]):
+            permissions (MutableSequence[str]):
                 The set of permissions to check for the ``resource``.
                 Permissions with wildcards (such as '*' or 'storage.*')
                 are not allowed. For more information see `IAM
@@ -1742,13 +1767,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def create_backup(
         self,
-        request: Union[gsad_backup.CreateBackupRequest, dict] = None,
+        request: Optional[Union[gsad_backup.CreateBackupRequest, dict]] = None,
         *,
-        parent: str = None,
-        backup: gsad_backup.Backup = None,
-        backup_id: str = None,
+        parent: Optional[str] = None,
+        backup: Optional[gsad_backup.Backup] = None,
+        backup_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Starts creating a new Cloud Spanner Backup. The returned backup
@@ -1897,14 +1922,14 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def copy_backup(
         self,
-        request: Union[backup.CopyBackupRequest, dict] = None,
+        request: Optional[Union[backup.CopyBackupRequest, dict]] = None,
         *,
-        parent: str = None,
-        backup_id: str = None,
-        source_backup: str = None,
-        expire_time: timestamp_pb2.Timestamp = None,
+        parent: Optional[str] = None,
+        backup_id: Optional[str] = None,
+        source_backup: Optional[str] = None,
+        expire_time: Optional[timestamp_pb2.Timestamp] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Starts copying a Cloud Spanner Backup. The returned backup
@@ -2070,11 +2095,11 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def get_backup(
         self,
-        request: Union[backup.GetBackupRequest, dict] = None,
+        request: Optional[Union[backup.GetBackupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> backup.Backup:
         r"""Gets metadata on a pending or completed
@@ -2171,12 +2196,12 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def update_backup(
         self,
-        request: Union[gsad_backup.UpdateBackupRequest, dict] = None,
+        request: Optional[Union[gsad_backup.UpdateBackupRequest, dict]] = None,
         *,
-        backup: gsad_backup.Backup = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        backup: Optional[gsad_backup.Backup] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gsad_backup.Backup:
         r"""Updates a pending or completed
@@ -2292,11 +2317,11 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def delete_backup(
         self,
-        request: Union[backup.DeleteBackupRequest, dict] = None,
+        request: Optional[Union[backup.DeleteBackupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a pending or completed
@@ -2384,11 +2409,11 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def list_backups(
         self,
-        request: Union[backup.ListBackupsRequest, dict] = None,
+        request: Optional[Union[backup.ListBackupsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBackupsPager:
         r"""Lists completed and pending backups. Backups returned are
@@ -2501,13 +2526,15 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def restore_database(
         self,
-        request: Union[spanner_database_admin.RestoreDatabaseRequest, dict] = None,
+        request: Optional[
+            Union[spanner_database_admin.RestoreDatabaseRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        database_id: str = None,
-        backup: str = None,
+        parent: Optional[str] = None,
+        database_id: Optional[str] = None,
+        backup: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Create a new database by restoring from a completed backup. The
@@ -2665,13 +2692,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def list_database_operations(
         self,
-        request: Union[
-            spanner_database_admin.ListDatabaseOperationsRequest, dict
+        request: Optional[
+            Union[spanner_database_admin.ListDatabaseOperationsRequest, dict]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDatabaseOperationsPager:
         r"""Lists database
@@ -2794,11 +2821,11 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def list_backup_operations(
         self,
-        request: Union[backup.ListBackupOperationsRequest, dict] = None,
+        request: Optional[Union[backup.ListBackupOperationsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBackupOperationsPager:
         r"""Lists the backup [long-running
@@ -2921,11 +2948,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def list_database_roles(
         self,
-        request: Union[spanner_database_admin.ListDatabaseRolesRequest, dict] = None,
+        request: Optional[
+            Union[spanner_database_admin.ListDatabaseRolesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDatabaseRolesPager:
         r"""Lists Cloud Spanner database roles.
@@ -3050,10 +3079,10 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -3104,10 +3133,10 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -3158,10 +3187,10 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def delete_operation(
         self,
-        request: operations_pb2.DeleteOperationRequest = None,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -3213,10 +3242,10 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -3266,14 +3295,9 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         )
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-spanner-admin-database",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("DatabaseAdminClient",)
