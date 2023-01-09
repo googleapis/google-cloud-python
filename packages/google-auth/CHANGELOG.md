@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.16.0](https://github.com/googleapis/google-auth-library-python/compare/v2.15.0...v2.16.0) (2023-01-09)
+
+
+### Features
+
+* AwsCredentials should not call metadata server if security creds and region are retrievable through the environment variables ([#1195](https://github.com/googleapis/google-auth-library-python/issues/1195)) ([5e27c8f](https://github.com/googleapis/google-auth-library-python/commit/5e27c8f213b2e19ec504a04e1f95fc1333ea9e1e))
+* Wrap all python built-in exceptions into library excpetions ([#1191](https://github.com/googleapis/google-auth-library-python/issues/1191)) ([a83af39](https://github.com/googleapis/google-auth-library-python/commit/a83af399fe98764ee851997bf3078ec45a9b51c9))
+
+
+### Bug Fixes
+
+* Allow get_project_id to take a request ([#1203](https://github.com/googleapis/google-auth-library-python/issues/1203)) ([9a4d23a](https://github.com/googleapis/google-auth-library-python/commit/9a4d23a28eb4b9aa9e457ad053c087a0450eb298))
+* Make OAUTH2.0 client resistant to string type 'expires_in' responses from non-compliant services ([#1208](https://github.com/googleapis/google-auth-library-python/issues/1208)) ([9fc7b1c](https://github.com/googleapis/google-auth-library-python/commit/9fc7b1c5613366cc1ad7186f894cec26a5f2231e))
+
 ## [2.15.0](https://github.com/googleapis/google-auth-library-python/compare/v2.14.1...v2.15.0) (2022-12-01)
 
 
