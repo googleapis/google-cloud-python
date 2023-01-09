@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.58.0](https://github.com/googleapis/python-api-common-protos/compare/v1.57.1...v1.58.0) (2023-01-06)
+
+
+### Features
+
+* Add google/rpc/context/audit_context.proto ([41f1529](https://github.com/googleapis/python-api-common-protos/commit/41f1529500e535ec83e2d72f8e97dfda5469cb72))
+* Add google/rpc/http.proto ([41f1529](https://github.com/googleapis/python-api-common-protos/commit/41f1529500e535ec83e2d72f8e97dfda5469cb72))
+
 ## [1.57.1](https://github.com/googleapis/python-api-common-protos/compare/v1.57.0...v1.57.1) (2022-12-08)
 
 
