@@ -130,6 +130,11 @@
                 "get_migrating_vm"
               ]
             },
+            "GetReplicationCycle": {
+              "methods": [
+                "get_replication_cycle"
+              ]
+            },
             "GetSource": {
               "methods": [
                 "get_source"
@@ -168,6 +173,11 @@
             "ListMigratingVms": {
               "methods": [
                 "list_migrating_vms"
+              ]
+            },
+            "ListReplicationCycles": {
+              "methods": [
+                "list_replication_cycles"
               ]
             },
             "ListSources": {
@@ -355,6 +365,11 @@
                 "get_migrating_vm"
               ]
             },
+            "GetReplicationCycle": {
+              "methods": [
+                "get_replication_cycle"
+              ]
+            },
             "GetSource": {
               "methods": [
                 "get_source"
@@ -393,6 +408,11 @@
             "ListMigratingVms": {
               "methods": [
                 "list_migrating_vms"
+              ]
+            },
+            "ListReplicationCycles": {
+              "methods": [
+                "list_replication_cycles"
               ]
             },
             "ListSources": {

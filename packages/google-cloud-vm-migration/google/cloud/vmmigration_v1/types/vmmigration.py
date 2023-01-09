@@ -31,10 +31,20 @@ __protobuf__ = proto.module(
         "ComputeEngineLicenseType",
         "ComputeEngineBootOption",
         "ReplicationCycle",
+        "CycleStep",
+        "InitializingReplicationStep",
+        "ReplicatingStep",
+        "PostProcessingStep",
         "ReplicationSync",
         "MigratingVm",
         "CloneJob",
+        "CloneStep",
+        "AdaptingOSStep",
+        "PreparingVMDisksStep",
+        "InstantiatingMigratedVMStep",
         "CutoverJob",
+        "CutoverStep",
+        "ShuttingDownSourceVMStep",
         "CreateCloneJobRequest",
         "CancelCloneJobRequest",
         "CancelCloneJobResponse",
@@ -43,6 +53,7 @@ __protobuf__ = proto.module(
         "GetCloneJobRequest",
         "Source",
         "VmwareSourceDetails",
+        "AwsSourceDetails",
         "DatacenterConnector",
         "UpgradeStatus",
         "AvailableUpdates",
@@ -55,7 +66,10 @@ __protobuf__ = proto.module(
         "DeleteSourceRequest",
         "FetchInventoryRequest",
         "VmwareVmDetails",
+        "AwsVmDetails",
+        "AwsSecurityGroup",
         "VmwareVmsDetails",
+        "AwsVmsDetails",
         "FetchInventoryResponse",
         "UtilizationReport",
         "VmUtilizationInfo",
@@ -119,6 +133,10 @@ __protobuf__ = proto.module(
         "GetCutoverJobRequest",
         "OperationMetadata",
         "MigrationError",
+        "AwsSourceVmDetails",
+        "ListReplicationCyclesRequest",
+        "ListReplicationCyclesResponse",
+        "GetReplicationCycleRequest",
     },
 )
 
@@ -164,22 +182,183 @@ class ReplicationCycle(proto.Message):
     replication cycle status.
 
     Attributes:
+        name (str):
+            The identifier of the ReplicationCycle.
+        cycle_number (int):
+            The cycle's ordinal number.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             The time the replication cycle has started.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the replication cycle has ended.
+        total_pause_duration (google.protobuf.duration_pb2.Duration):
+            The accumulated duration the replication
+            cycle was paused.
         progress_percent (int):
             The current progress in percentage of this
-            cycle.
+            cycle. Was replaced by 'steps' field, which
+            breaks down the cycle progression more
+            accurately.
+        steps (MutableSequence[google.cloud.vmmigration_v1.types.CycleStep]):
+            The cycle's steps list representing its
+            progress.
+        state (google.cloud.vmmigration_v1.types.ReplicationCycle.State):
+            State of the ReplicationCycle.
+        error (google.rpc.status_pb2.Status):
+            Provides details on the state of the cycle in
+            case of an error.
     """
 
+    class State(proto.Enum):
+        r"""Possible states of a replication cycle."""
+        STATE_UNSPECIFIED = 0
+        RUNNING = 1
+        PAUSED = 2
+        FAILED = 3
+        SUCCEEDED = 4
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    cycle_number: int = proto.Field(
+        proto.INT32,
+        number=10,
+    )
     start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    total_pause_duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=duration_pb2.Duration,
+    )
     progress_percent: int = proto.Field(
         proto.INT32,
         number=5,
     )
+    steps: MutableSequence["CycleStep"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=9,
+        message="CycleStep",
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=State,
+    )
+    error: status_pb2.Status = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=status_pb2.Status,
+    )
+
+
+class CycleStep(proto.Message):
+    r"""CycleStep holds information about a step progress.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        initializing_replication (google.cloud.vmmigration_v1.types.InitializingReplicationStep):
+            Initializing replication step.
+
+            This field is a member of `oneof`_ ``step``.
+        replicating (google.cloud.vmmigration_v1.types.ReplicatingStep):
+            Replicating step.
+
+            This field is a member of `oneof`_ ``step``.
+        post_processing (google.cloud.vmmigration_v1.types.PostProcessingStep):
+            Post processing step.
+
+            This field is a member of `oneof`_ ``step``.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the cycle step has started.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the cycle step has ended.
+    """
+
+    initializing_replication: "InitializingReplicationStep" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="step",
+        message="InitializingReplicationStep",
+    )
+    replicating: "ReplicatingStep" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="step",
+        message="ReplicatingStep",
+    )
+    post_processing: "PostProcessingStep" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="step",
+        message="PostProcessingStep",
+    )
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class InitializingReplicationStep(proto.Message):
+    r"""InitializingReplicationStep contains specific step details."""
+
+
+class ReplicatingStep(proto.Message):
+    r"""ReplicatingStep contains specific step details.
+
+    Attributes:
+        total_bytes (int):
+            Total bytes to be handled in the step.
+        replicated_bytes (int):
+            Replicated bytes in the step.
+        last_two_minutes_average_bytes_per_second (int):
+            The source disks replication rate for the
+            last 2 minutes in bytes per second.
+        last_thirty_minutes_average_bytes_per_second (int):
+            The source disks replication rate for the
+            last 30 minutes in bytes per second.
+    """
+
+    total_bytes: int = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    replicated_bytes: int = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    last_two_minutes_average_bytes_per_second: int = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    last_thirty_minutes_average_bytes_per_second: int = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+
+
+class PostProcessingStep(proto.Message):
+    r"""PostProcessingStep contains specific step details."""
 
 
 class ReplicationSync(proto.Message):
@@ -211,6 +390,11 @@ class MigratingVm(proto.Message):
             Details of the target VM in Compute Engine.
 
             This field is a member of `oneof`_ ``target_vm_defaults``.
+        aws_source_vm_details (google.cloud.vmmigration_v1.types.AwsSourceVmDetails):
+            Output only. Details of the VM from an AWS
+            source.
+
+            This field is a member of `oneof`_ ``source_vm_details``.
         name (str):
             Output only. The identifier of the
             MigratingVm.
@@ -294,6 +478,12 @@ class MigratingVm(proto.Message):
         number=26,
         oneof="target_vm_defaults",
         message="ComputeEngineTargetDefaults",
+    )
+    aws_source_vm_details: "AwsSourceVmDetails" = proto.Field(
+        proto.MESSAGE,
+        number=29,
+        oneof="source_vm_details",
+        message="AwsSourceVmDetails",
     )
     name: str = proto.Field(
         proto.STRING,
@@ -411,6 +601,9 @@ class CloneJob(proto.Message):
         error (google.rpc.status_pb2.Status):
             Output only. Provides details for the errors
             that led to the Clone Job's state.
+        steps (MutableSequence[google.cloud.vmmigration_v1.types.CloneStep]):
+            Output only. The clone steps list
+            representing its progress.
     """
 
     class State(proto.Enum):
@@ -459,6 +652,82 @@ class CloneJob(proto.Message):
         number=17,
         message=status_pb2.Status,
     )
+    steps: MutableSequence["CloneStep"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=23,
+        message="CloneStep",
+    )
+
+
+class CloneStep(proto.Message):
+    r"""CloneStep holds information about the clone step progress.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        adapting_os (google.cloud.vmmigration_v1.types.AdaptingOSStep):
+            Adapting OS step.
+
+            This field is a member of `oneof`_ ``step``.
+        preparing_vm_disks (google.cloud.vmmigration_v1.types.PreparingVMDisksStep):
+            Preparing VM disks step.
+
+            This field is a member of `oneof`_ ``step``.
+        instantiating_migrated_vm (google.cloud.vmmigration_v1.types.InstantiatingMigratedVMStep):
+            Instantiating migrated VM step.
+
+            This field is a member of `oneof`_ ``step``.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the step has started.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the step has ended.
+    """
+
+    adapting_os: "AdaptingOSStep" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="step",
+        message="AdaptingOSStep",
+    )
+    preparing_vm_disks: "PreparingVMDisksStep" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="step",
+        message="PreparingVMDisksStep",
+    )
+    instantiating_migrated_vm: "InstantiatingMigratedVMStep" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="step",
+        message="InstantiatingMigratedVMStep",
+    )
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class AdaptingOSStep(proto.Message):
+    r"""AdaptingOSStep contains specific step details."""
+
+
+class PreparingVMDisksStep(proto.Message):
+    r"""PreparingVMDisksStep contains specific step details."""
+
+
+class InstantiatingMigratedVMStep(proto.Message):
+    r"""InstantiatingMigratedVMStep contains specific step details."""
 
 
 class CutoverJob(proto.Message):
@@ -498,6 +767,9 @@ class CutoverJob(proto.Message):
         state_message (str):
             Output only. A message providing possible
             extra details about the current state.
+        steps (MutableSequence[google.cloud.vmmigration_v1.types.CutoverStep]):
+            Output only. The cutover steps list
+            representing its progress.
     """
 
     class State(proto.Enum):
@@ -554,6 +826,95 @@ class CutoverJob(proto.Message):
         proto.STRING,
         number=10,
     )
+    steps: MutableSequence["CutoverStep"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=17,
+        message="CutoverStep",
+    )
+
+
+class CutoverStep(proto.Message):
+    r"""CutoverStep holds information about the cutover step
+    progress.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        previous_replication_cycle (google.cloud.vmmigration_v1.types.ReplicationCycle):
+            A replication cycle prior cutover step.
+
+            This field is a member of `oneof`_ ``step``.
+        shutting_down_source_vm (google.cloud.vmmigration_v1.types.ShuttingDownSourceVMStep):
+            Shutting down VM step.
+
+            This field is a member of `oneof`_ ``step``.
+        final_sync (google.cloud.vmmigration_v1.types.ReplicationCycle):
+            Final sync step.
+
+            This field is a member of `oneof`_ ``step``.
+        preparing_vm_disks (google.cloud.vmmigration_v1.types.PreparingVMDisksStep):
+            Preparing VM disks step.
+
+            This field is a member of `oneof`_ ``step``.
+        instantiating_migrated_vm (google.cloud.vmmigration_v1.types.InstantiatingMigratedVMStep):
+            Instantiating migrated VM step.
+
+            This field is a member of `oneof`_ ``step``.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the step has started.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the step has ended.
+    """
+
+    previous_replication_cycle: "ReplicationCycle" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="step",
+        message="ReplicationCycle",
+    )
+    shutting_down_source_vm: "ShuttingDownSourceVMStep" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="step",
+        message="ShuttingDownSourceVMStep",
+    )
+    final_sync: "ReplicationCycle" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="step",
+        message="ReplicationCycle",
+    )
+    preparing_vm_disks: "PreparingVMDisksStep" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="step",
+        message="PreparingVMDisksStep",
+    )
+    instantiating_migrated_vm: "InstantiatingMigratedVMStep" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="step",
+        message="InstantiatingMigratedVMStep",
+    )
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class ShuttingDownSourceVMStep(proto.Message):
+    r"""ShuttingDownSourceVMStep contains specific step details."""
 
 
 class CreateCloneJobRequest(proto.Message):
@@ -724,12 +1085,20 @@ class Source(proto.Message):
     r"""Source message describes a specific vm migration Source
     resource. It contains the source environment information.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         vmware (google.cloud.vmmigration_v1.types.VmwareSourceDetails):
             Vmware type source details.
+
+            This field is a member of `oneof`_ ``source_details``.
+        aws (google.cloud.vmmigration_v1.types.AwsSourceDetails):
+            AWS type source details.
 
             This field is a member of `oneof`_ ``source_details``.
         name (str):
@@ -749,6 +1118,12 @@ class Source(proto.Message):
         number=10,
         oneof="source_details",
         message="VmwareSourceDetails",
+    )
+    aws: "AwsSourceDetails" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="source_details",
+        message="AwsSourceDetails",
     )
     name: str = proto.Field(
         proto.STRING,
@@ -812,11 +1187,137 @@ class VmwareSourceDetails(proto.Message):
     )
 
 
+class AwsSourceDetails(proto.Message):
+    r"""AwsSourceDetails message describes a specific source details
+    for the AWS source type.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        access_key_creds (google.cloud.vmmigration_v1.types.AwsSourceDetails.AccessKeyCredentials):
+            AWS Credentials using access key id and
+            secret.
+
+            This field is a member of `oneof`_ ``credentials_type``.
+        aws_region (str):
+            Immutable. The AWS region that the source VMs
+            will be migrated from.
+        state (google.cloud.vmmigration_v1.types.AwsSourceDetails.State):
+            Output only. State of the source as
+            determined by the health check.
+        error (google.rpc.status_pb2.Status):
+            Output only. Provides details on the state of
+            the Source in case of an error.
+        inventory_tag_list (MutableSequence[google.cloud.vmmigration_v1.types.AwsSourceDetails.Tag]):
+            AWS resource tags to limit the scope of the
+            source inventory.
+        inventory_security_group_names (MutableSequence[str]):
+            AWS security group names to limit the scope
+            of the source inventory.
+        migration_resources_user_tags (MutableMapping[str, str]):
+            User specified tags to add to every M2VM generated resource
+            in AWS. These tags will be set in addition to the default
+            tags that are set as part of the migration process. The tags
+            must not begin with the reserved prefix ``m2vm``.
+        public_ip (str):
+            Output only. The source's public IP. All
+            communication initiated by this source will
+            originate from this IP.
+    """
+
+    class State(proto.Enum):
+        r"""The possible values of the state."""
+        STATE_UNSPECIFIED = 0
+        PENDING = 1
+        FAILED = 2
+        ACTIVE = 3
+
+    class AccessKeyCredentials(proto.Message):
+        r"""Message describing AWS Credentials using access key id and
+        secret.
+
+        Attributes:
+            access_key_id (str):
+                AWS access key ID.
+            secret_access_key (str):
+                Input only. AWS secret access key.
+        """
+
+        access_key_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        secret_access_key: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    class Tag(proto.Message):
+        r"""Tag is an AWS tag representation.
+
+        Attributes:
+            key (str):
+                Key of tag.
+            value (str):
+                Value of tag.
+        """
+
+        key: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        value: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    access_key_creds: AccessKeyCredentials = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        oneof="credentials_type",
+        message=AccessKeyCredentials,
+    )
+    aws_region: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+    error: status_pb2.Status = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=status_pb2.Status,
+    )
+    inventory_tag_list: MutableSequence[Tag] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message=Tag,
+    )
+    inventory_security_group_names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
+    migration_resources_user_tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=8,
+    )
+    public_ip: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+
+
 class DatacenterConnector(proto.Message):
     r"""DatacenterConnector message describes a connector between the
-    Source and GCP, which is installed on a vmware datacenter (an
-    OVA vm installed by the user) to connect the Datacenter to GCP
-    and support vm migration data transfer.
+    Source and Google Cloud, which is installed on a vmware
+    datacenter (an OVA vm installed by the user) to connect the
+    Datacenter to Google Cloud and support vm migration data
+    transfer.
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -843,7 +1344,8 @@ class DatacenterConnector(proto.Message):
             can not be modified.
         bucket (str):
             Output only. The communication channel
-            between the datacenter connector and GCP.
+            between the datacenter connector and Google
+            Cloud.
         state (google.cloud.vmmigration_v1.types.DatacenterConnector.State):
             Output only. State of the
             DatacenterConnector, as determined by the health
@@ -1414,6 +1916,181 @@ class VmwareVmDetails(proto.Message):
     )
 
 
+class AwsVmDetails(proto.Message):
+    r"""AwsVmDetails describes a VM in AWS.
+
+    Attributes:
+        vm_id (str):
+            The VM ID in AWS.
+        display_name (str):
+            The display name of the VM. Note that this
+            value is not necessarily unique.
+        source_id (str):
+            The id of the AWS's source this VM is
+            connected to.
+        source_description (str):
+            The descriptive name of the AWS's source this
+            VM is connected to.
+        power_state (google.cloud.vmmigration_v1.types.AwsVmDetails.PowerState):
+            Output only. The power state of the VM at the
+            moment list was taken.
+        cpu_count (int):
+            The number of cpus the VM has.
+        memory_mb (int):
+            The memory size of the VM in MB.
+        disk_count (int):
+            The number of disks the VM has.
+        committed_storage_mb (int):
+            The total size of the storage allocated to
+            the VM in MB.
+        os_description (str):
+            The VM's OS.
+        boot_option (google.cloud.vmmigration_v1.types.AwsVmDetails.BootOption):
+            The VM Boot Option.
+        instance_type (str):
+            The instance type of the VM.
+        vpc_id (str):
+            The VPC ID the VM belongs to.
+        security_groups (MutableSequence[google.cloud.vmmigration_v1.types.AwsSecurityGroup]):
+            The security groups the VM belongs to.
+        tags (MutableMapping[str, str]):
+            The tags of the VM.
+        zone (str):
+            The AWS zone of the VM.
+        virtualization_type (google.cloud.vmmigration_v1.types.AwsVmDetails.VmVirtualizationType):
+            The virtualization type.
+        architecture (google.cloud.vmmigration_v1.types.AwsVmDetails.VmArchitecture):
+            The CPU architecture.
+    """
+
+    class PowerState(proto.Enum):
+        r"""Possible values for the power state of the VM."""
+        POWER_STATE_UNSPECIFIED = 0
+        ON = 1
+        OFF = 2
+        SUSPENDED = 3
+        PENDING = 4
+
+    class BootOption(proto.Enum):
+        r"""The possible values for the vm boot option."""
+        BOOT_OPTION_UNSPECIFIED = 0
+        EFI = 1
+        BIOS = 2
+
+    class VmVirtualizationType(proto.Enum):
+        r"""Possible values for the virtualization types of the VM."""
+        VM_VIRTUALIZATION_TYPE_UNSPECIFIED = 0
+        HVM = 1
+        PARAVIRTUAL = 2
+
+    class VmArchitecture(proto.Enum):
+        r"""Possible values for the architectures of the VM."""
+        VM_ARCHITECTURE_UNSPECIFIED = 0
+        I386 = 1
+        X86_64 = 2
+        ARM64 = 3
+        X86_64_MAC = 4
+
+    vm_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    source_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    source_description: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    power_state: PowerState = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=PowerState,
+    )
+    cpu_count: int = proto.Field(
+        proto.INT32,
+        number=6,
+    )
+    memory_mb: int = proto.Field(
+        proto.INT32,
+        number=7,
+    )
+    disk_count: int = proto.Field(
+        proto.INT32,
+        number=8,
+    )
+    committed_storage_mb: int = proto.Field(
+        proto.INT64,
+        number=9,
+    )
+    os_description: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    boot_option: BootOption = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=BootOption,
+    )
+    instance_type: str = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    vpc_id: str = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    security_groups: MutableSequence["AwsSecurityGroup"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=14,
+        message="AwsSecurityGroup",
+    )
+    tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=15,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=16,
+    )
+    virtualization_type: VmVirtualizationType = proto.Field(
+        proto.ENUM,
+        number=17,
+        enum=VmVirtualizationType,
+    )
+    architecture: VmArchitecture = proto.Field(
+        proto.ENUM,
+        number=18,
+        enum=VmArchitecture,
+    )
+
+
+class AwsSecurityGroup(proto.Message):
+    r"""AwsSecurityGroup describes a security group of an AWS VM.
+
+    Attributes:
+        id (str):
+            The AWS security group id.
+        name (str):
+            The AWS security group name.
+    """
+
+    id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class VmwareVmsDetails(proto.Message):
     r"""VmwareVmsDetails describes VMs in vCenter.
 
@@ -1429,10 +2106,29 @@ class VmwareVmsDetails(proto.Message):
     )
 
 
+class AwsVmsDetails(proto.Message):
+    r"""AWSVmsDetails describes VMs in AWS.
+
+    Attributes:
+        details (MutableSequence[google.cloud.vmmigration_v1.types.AwsVmDetails]):
+            The details of the AWS VMs.
+    """
+
+    details: MutableSequence["AwsVmDetails"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="AwsVmDetails",
+    )
+
+
 class FetchInventoryResponse(proto.Message):
     r"""Response message for
     [fetchInventory][google.cloud.vmmigration.v1.VmMigration.FetchInventory].
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -1440,6 +2136,11 @@ class FetchInventoryResponse(proto.Message):
         vmware_vms (google.cloud.vmmigration_v1.types.VmwareVmsDetails):
             The description of the VMs in a Source of
             type Vmware.
+
+            This field is a member of `oneof`_ ``SourceVms``.
+        aws_vms (google.cloud.vmmigration_v1.types.AwsVmsDetails):
+            The description of the VMs in a Source of
+            type AWS.
 
             This field is a member of `oneof`_ ``SourceVms``.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -1453,6 +2154,12 @@ class FetchInventoryResponse(proto.Message):
         number=1,
         oneof="SourceVms",
         message="VmwareVmsDetails",
+    )
+    aws_vms: "AwsVmsDetails" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="SourceVms",
+        message="AwsVmsDetails",
     )
     update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -2229,7 +2936,8 @@ class ComputeEngineTargetDetails(proto.Message):
         vm_name (str):
             The name of the VM to create.
         project (str):
-            The GCP target project ID or project name.
+            The Google Cloud target project ID or project
+            name.
         zone (str):
             The zone in which to create the VM.
         machine_type_series (str):
@@ -3726,6 +4434,133 @@ class MigrationError(proto.Message):
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class AwsSourceVmDetails(proto.Message):
+    r"""Represent the source AWS VM details.
+
+    Attributes:
+        firmware (google.cloud.vmmigration_v1.types.AwsSourceVmDetails.Firmware):
+            The firmware type of the source VM.
+        committed_storage_bytes (int):
+            The total size of the disks being migrated in
+            bytes.
+    """
+
+    class Firmware(proto.Enum):
+        r"""Possible values for AWS VM firmware."""
+        FIRMWARE_UNSPECIFIED = 0
+        EFI = 1
+        BIOS = 2
+
+    firmware: Firmware = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Firmware,
+    )
+    committed_storage_bytes: int = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+
+
+class ListReplicationCyclesRequest(proto.Message):
+    r"""Request message for 'LisReplicationCyclesRequest' request.
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns this
+            collection of ReplicationCycles.
+        page_size (int):
+            Optional. The maximum number of replication
+            cycles to return. The service may return fewer
+            than this value. If unspecified, at most 100
+            migrating VMs will be returned. The maximum
+            value is 100; values above 100 will be coerced
+            to 100.
+        page_token (str):
+            Required. A page token, received from a previous
+            ``ListReplicationCycles`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListReplicationCycles`` must match the call that provided
+            the page token.
+        filter (str):
+            Optional. The filter request.
+        order_by (str):
+            Optional. the order by fields for the result.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListReplicationCyclesResponse(proto.Message):
+    r"""Response message for 'ListReplicationCycles' request.
+
+    Attributes:
+        replication_cycles (MutableSequence[google.cloud.vmmigration_v1.types.ReplicationCycle]):
+            Output only. The list of replication cycles
+            response.
+        next_page_token (str):
+            Output only. A token, which can be sent as ``page_token`` to
+            retrieve the next page. If this field is omitted, there are
+            no subsequent pages.
+        unreachable (MutableSequence[str]):
+            Output only. Locations that could not be
+            reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    replication_cycles: MutableSequence["ReplicationCycle"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ReplicationCycle",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetReplicationCycleRequest(proto.Message):
+    r"""Request message for 'GetReplicationCycle' request.
+
+    Attributes:
+        name (str):
+            Required. The name of the ReplicationCycle.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
