@@ -424,7 +424,10 @@ class TestCredentials(object):
 
     def test_get_project_id(self):
         creds = self.make_credentials()
-        assert creds.get_project_id() is None
+        request = mock.create_autospec(transport.Request)
+
+        assert creds.get_project_id(request) is None
+        request.assert_not_called()
 
     def test_with_quota_project(self):
         creds = self.make_credentials(

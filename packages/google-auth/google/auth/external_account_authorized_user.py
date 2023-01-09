@@ -222,12 +222,19 @@ class Credentials(
             (self._refresh_token, self._token_url, self._client_id, self._client_secret)
         )
 
-    def get_project_id(self):
+    def get_project_id(self, request=None):
         """Retrieves the project ID corresponding to the workload identity or workforce pool.
         For workforce pool credentials, it returns the project ID corresponding to
         the workforce_pool_user_project.
 
         When not determinable, None is returned.
+
+        Args:
+            request (google.auth.transport.requests.Request): Request object.
+                Unused here, but passed from _default.default().
+
+        Return:
+          str: project ID is not determinable for this credential type so it returns None
         """
 
         return None
