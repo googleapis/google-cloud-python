@@ -373,7 +373,7 @@ class TestCredentials(object):
         assert credentials.valid
 
         # Assert make_jwt was called
-        assert make_jwt.called_once()
+        assert make_jwt.call_count == 1
 
         assert credentials.token == token
         assert credentials.expiry == expiry
