@@ -50,6 +50,12 @@ from google.cloud.monitoring_v3.services.service_monitoring_service.client impor
 from google.cloud.monitoring_v3.services.service_monitoring_service.async_client import (
     ServiceMonitoringServiceAsyncClient,
 )
+from google.cloud.monitoring_v3.services.snooze_service.client import (
+    SnoozeServiceClient,
+)
+from google.cloud.monitoring_v3.services.snooze_service.async_client import (
+    SnoozeServiceAsyncClient,
+)
 from google.cloud.monitoring_v3.services.uptime_check_service.client import (
     UptimeCheckServiceClient,
 )
@@ -189,6 +195,12 @@ from google.cloud.monitoring_v3.types.service_service import (
     UpdateServiceLevelObjectiveRequest,
 )
 from google.cloud.monitoring_v3.types.service_service import UpdateServiceRequest
+from google.cloud.monitoring_v3.types.snooze import Snooze
+from google.cloud.monitoring_v3.types.snooze_service import CreateSnoozeRequest
+from google.cloud.monitoring_v3.types.snooze_service import GetSnoozeRequest
+from google.cloud.monitoring_v3.types.snooze_service import ListSnoozesRequest
+from google.cloud.monitoring_v3.types.snooze_service import ListSnoozesResponse
+from google.cloud.monitoring_v3.types.snooze_service import UpdateSnoozeRequest
 from google.cloud.monitoring_v3.types.span_context import SpanContext
 from google.cloud.monitoring_v3.types.uptime import InternalChecker
 from google.cloud.monitoring_v3.types.uptime import UptimeCheckConfig
@@ -227,6 +239,8 @@ __all__ = (
     "QueryServiceAsyncClient",
     "ServiceMonitoringServiceClient",
     "ServiceMonitoringServiceAsyncClient",
+    "SnoozeServiceClient",
+    "SnoozeServiceAsyncClient",
     "UptimeCheckServiceClient",
     "UptimeCheckServiceAsyncClient",
     "AlertPolicy",
@@ -311,6 +325,12 @@ __all__ = (
     "ListServicesResponse",
     "UpdateServiceLevelObjectiveRequest",
     "UpdateServiceRequest",
+    "Snooze",
+    "CreateSnoozeRequest",
+    "GetSnoozeRequest",
+    "ListSnoozesRequest",
+    "ListSnoozesResponse",
+    "UpdateSnoozeRequest",
     "SpanContext",
     "InternalChecker",
     "UptimeCheckConfig",

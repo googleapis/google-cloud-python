@@ -499,6 +499,60 @@
         }
       }
     },
+    "SnoozeService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "SnoozeServiceClient",
+          "rpcs": {
+            "CreateSnooze": {
+              "methods": [
+                "create_snooze"
+              ]
+            },
+            "GetSnooze": {
+              "methods": [
+                "get_snooze"
+              ]
+            },
+            "ListSnoozes": {
+              "methods": [
+                "list_snoozes"
+              ]
+            },
+            "UpdateSnooze": {
+              "methods": [
+                "update_snooze"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "SnoozeServiceAsyncClient",
+          "rpcs": {
+            "CreateSnooze": {
+              "methods": [
+                "create_snooze"
+              ]
+            },
+            "GetSnooze": {
+              "methods": [
+                "get_snooze"
+              ]
+            },
+            "ListSnoozes": {
+              "methods": [
+                "list_snoozes"
+              ]
+            },
+            "UpdateSnooze": {
+              "methods": [
+                "update_snooze"
+              ]
+            }
+          }
+        }
+      }
+    },
     "UptimeCheckService": {
       "clients": {
         "grpc": {

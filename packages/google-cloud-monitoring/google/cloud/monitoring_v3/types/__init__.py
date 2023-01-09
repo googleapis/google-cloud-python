@@ -121,6 +121,16 @@ from .service_service import (
     UpdateServiceLevelObjectiveRequest,
     UpdateServiceRequest,
 )
+from .snooze import (
+    Snooze,
+)
+from .snooze_service import (
+    CreateSnoozeRequest,
+    GetSnoozeRequest,
+    ListSnoozesRequest,
+    ListSnoozesResponse,
+    UpdateSnoozeRequest,
+)
 from .span_context import (
     SpanContext,
 )
@@ -225,6 +235,12 @@ __all__ = (
     "ListServicesResponse",
     "UpdateServiceLevelObjectiveRequest",
     "UpdateServiceRequest",
+    "Snooze",
+    "CreateSnoozeRequest",
+    "GetSnoozeRequest",
+    "ListSnoozesRequest",
+    "ListSnoozesResponse",
+    "UpdateSnoozeRequest",
     "SpanContext",
     "InternalChecker",
     "UptimeCheckConfig",

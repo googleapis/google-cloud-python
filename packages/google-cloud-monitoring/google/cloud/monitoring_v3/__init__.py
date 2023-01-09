@@ -30,6 +30,8 @@ from .services.query_service import QueryServiceClient
 from .services.query_service import QueryServiceAsyncClient
 from .services.service_monitoring_service import ServiceMonitoringServiceClient
 from .services.service_monitoring_service import ServiceMonitoringServiceAsyncClient
+from .services.snooze_service import SnoozeServiceClient
+from .services.snooze_service import SnoozeServiceAsyncClient
 from .services.uptime_check_service import UptimeCheckServiceClient
 from .services.uptime_check_service import UptimeCheckServiceAsyncClient
 
@@ -115,6 +117,12 @@ from .types.service_service import ListServicesRequest
 from .types.service_service import ListServicesResponse
 from .types.service_service import UpdateServiceLevelObjectiveRequest
 from .types.service_service import UpdateServiceRequest
+from .types.snooze import Snooze
+from .types.snooze_service import CreateSnoozeRequest
+from .types.snooze_service import GetSnoozeRequest
+from .types.snooze_service import ListSnoozesRequest
+from .types.snooze_service import ListSnoozesResponse
+from .types.snooze_service import UpdateSnoozeRequest
 from .types.span_context import SpanContext
 from .types.uptime import InternalChecker
 from .types.uptime import UptimeCheckConfig
@@ -137,6 +145,7 @@ __all__ = (
     "NotificationChannelServiceAsyncClient",
     "QueryServiceAsyncClient",
     "ServiceMonitoringServiceAsyncClient",
+    "SnoozeServiceAsyncClient",
     "UptimeCheckServiceAsyncClient",
     "Aggregation",
     "AlertPolicy",
@@ -149,6 +158,7 @@ __all__ = (
     "CreateNotificationChannelRequest",
     "CreateServiceLevelObjectiveRequest",
     "CreateServiceRequest",
+    "CreateSnoozeRequest",
     "CreateTimeSeriesError",
     "CreateTimeSeriesRequest",
     "CreateTimeSeriesSummary",
@@ -172,6 +182,7 @@ __all__ = (
     "GetNotificationChannelVerificationCodeResponse",
     "GetServiceLevelObjectiveRequest",
     "GetServiceRequest",
+    "GetSnoozeRequest",
     "GetUptimeCheckConfigRequest",
     "Group",
     "GroupResourceType",
@@ -196,6 +207,8 @@ __all__ = (
     "ListServiceLevelObjectivesResponse",
     "ListServicesRequest",
     "ListServicesResponse",
+    "ListSnoozesRequest",
+    "ListSnoozesResponse",
     "ListTimeSeriesRequest",
     "ListTimeSeriesResponse",
     "ListUptimeCheckConfigsRequest",
@@ -221,6 +234,8 @@ __all__ = (
     "ServiceLevelObjective",
     "ServiceMonitoringServiceClient",
     "ServiceTier",
+    "Snooze",
+    "SnoozeServiceClient",
     "SpanContext",
     "TextLocator",
     "TimeInterval",
@@ -234,6 +249,7 @@ __all__ = (
     "UpdateNotificationChannelRequest",
     "UpdateServiceLevelObjectiveRequest",
     "UpdateServiceRequest",
+    "UpdateSnoozeRequest",
     "UpdateUptimeCheckConfigRequest",
     "UptimeCheckConfig",
     "UptimeCheckIp",
