@@ -38,6 +38,7 @@ ALL_PYTHON = (
     "3.8",
     "3.9",
     "3.10",
+    "3.11",
 )
 
 NEWEST_PYTHON = ALL_PYTHON[-1]
@@ -411,7 +412,7 @@ def snippetgen(session):
     session.run("py.test", "-vv", "tests/snippetgen")
 
 
-@nox.session(python="3.8")
+@nox.session(python="3.9")
 def docs(session):
     """Build the docs."""
 

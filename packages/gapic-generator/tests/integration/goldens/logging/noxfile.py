@@ -27,6 +27,7 @@ ALL_PYTHON = [
     "3.8",
     "3.9",
     "3.10",
+    "3.11",
 ]
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
@@ -36,7 +37,7 @@ PACKAGE_NAME = subprocess.check_output([sys.executable, "setup.py", "--name"], e
 
 BLACK_VERSION = "black==22.3.0"
 BLACK_PATHS = ["docs", "google", "tests", "samples", "noxfile.py", "setup.py"]
-DEFAULT_PYTHON_VERSION = "3.10"
+DEFAULT_PYTHON_VERSION = "3.11"
 
 nox.sessions = [
     "unit",

@@ -26,7 +26,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.8"
+          python-version: "3.9"
           cache: 'pip'
       - name: Install nox.
         run: python -m pip install nox
@@ -36,10 +36,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python "3.10"
+      - name: Set up Python "3.11"
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: "3.11"
           cache: 'pip'
       - name: Install nox.
         run: python -m pip install nox
@@ -52,10 +52,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python "3.10"
+      - name: Set up Python "3.11"
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: "3.11"
           cache: 'pip'
       - name: Install system dependencies.
         run: |
@@ -95,10 +95,10 @@ jobs:
         run: |
           sudo mkdir -p /tmp/workspace/tests/cert/
           sudo chown -R ${USER} /tmp/workspace/
-      - name: Set up Python "3.10"
+      - name: Set up Python "3.11"
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: "3.11"
           cache: 'pip'
       - name: Copy mtls files
         run: cp tests/cert/mtls.* /tmp/workspace/tests/cert/
@@ -131,7 +131,7 @@ jobs:
   showcase-unit:
     strategy:
       matrix:
-        python: ["3.7", "3.8", "3.9", "3.10"]
+        python: ["3.7", "3.8", "3.9", "3.10", "3.11"]
         variant: ['', _alternative_templates, _mixins, _alternative_templates_mixins]
     runs-on: ubuntu-latest
     steps:
@@ -161,10 +161,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python "3.10"
+      - name: Set up Python "3.11"
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: "3.11"
           cache: 'pip'
       - name: Install system dependencies.
         run: |
@@ -189,10 +189,10 @@ jobs:
         variant: ['', _alternative_templates]
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python "3.10"
+      - name: Set up Python "3.11"
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: "3.11"
           cache: 'pip'
       - name: Install system dependencies.
         run: |
@@ -214,10 +214,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python "3.10"
+      - name: Set up Python "3.11"
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: "3.11"
           cache: 'pip'
       - name: Install system dependencies.
         run: |
@@ -230,7 +230,7 @@ jobs:
   unit:
     strategy:
       matrix:
-        python: ["3.7", "3.8", "3.9", "3.10"]
+        python: ["3.7", "3.8", "3.9", "3.10", "3.11"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -251,7 +251,7 @@ jobs:
   fragment:
     strategy:
       matrix:
-        python: ["3.7", "3.8", "3.9", "3.10"]
+        python: ["3.7", "3.8", "3.9", "3.10", "3.11"]
         variant: ['', _alternative_templates]
     runs-on: ubuntu-latest
     steps:
@@ -303,10 +303,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python 3.10
+      - name: Set up Python 3.11
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: "3.11"
           cache: 'pip'
       - name: Install nox.
         run: |
@@ -322,10 +322,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python "3.10"
+      - name: Set up Python "3.11"
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: "3.11"
           cache: 'pip'
       - name: Install autopep8
         run: |
