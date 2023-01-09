@@ -1,6 +1,19 @@
 # Changelog
 
 
+## [1.8.0](https://github.com/googleapis/gapic-generator-python/compare/v1.7.1...v1.8.0) (2023-01-09)
+
+
+### Features
+
+* Add support for python 3.11 ([#1555](https://github.com/googleapis/gapic-generator-python/issues/1555)) ([ece3686](https://github.com/googleapis/gapic-generator-python/commit/ece3686bb8dfd65686209723d9a35501bbde5773))
+
+
+### Documentation
+
+* **client:** Fix typo in get_mtls_endpoint_and_cert_source doc ([#1552](https://github.com/googleapis/gapic-generator-python/issues/1552)) ([57e8abc](https://github.com/googleapis/gapic-generator-python/commit/57e8abc5ec7e2ad430e88e68d98a56a5713acf71))
+* **utils:** Fix typos in nth function docstring ([#1553](https://github.com/googleapis/gapic-generator-python/issues/1553)) ([e4be9ae](https://github.com/googleapis/gapic-generator-python/commit/e4be9aefc3ad08a6708524b1483f3abf6ce68a05))
+
 ## [1.7.1](https://github.com/googleapis/gapic-generator-python/compare/v1.7.0...v1.7.1) (2022-12-13)
 
 
