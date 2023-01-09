@@ -958,7 +958,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "IAMCredentialsClient":
         return self
 
     def __exit__(self, type, value, traceback):

@@ -379,7 +379,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 {% endif %}
     {% endfor %}
 
-    def __enter__(self):
+    def __enter__(self) -> "{{ service.client_name }}":
         return self
 
     def __exit__(self, type, value, traceback):
