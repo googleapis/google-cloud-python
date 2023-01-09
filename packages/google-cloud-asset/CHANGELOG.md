@@ -4,6 +4,32 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.15.0](https://github.com/googleapis/python-asset/compare/v3.14.1...v3.15.0) (2023-01-07)
+
+
+### Features
+
+* Add a new searchable field kmsKeys ([#506](https://github.com/googleapis/python-asset/issues/506)) ([07dd6cc](https://github.com/googleapis/python-asset/commit/07dd6ccc25d032b3fad6a0a262067b7a4fdd5f65))
+* Add support for `google.cloud.asset.__version__` ([6bad165](https://github.com/googleapis/python-asset/commit/6bad165c91a86f7d685801c99cbdf79b3b31dbaf))
+* Add typing to proto.Message based class attributes ([6bad165](https://github.com/googleapis/python-asset/commit/6bad165c91a86f7d685801c99cbdf79b3b31dbaf))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([6bad165](https://github.com/googleapis/python-asset/commit/6bad165c91a86f7d685801c99cbdf79b3b31dbaf))
+* Deprecate searchable field kmsKey ([07dd6cc](https://github.com/googleapis/python-asset/commit/07dd6ccc25d032b3fad6a0a262067b7a4fdd5f65))
+* **deps:** Allow protobuf 3.19.5 ([#508](https://github.com/googleapis/python-asset/issues/508)) ([818abbb](https://github.com/googleapis/python-asset/commit/818abbbcbb829a726d18ba1e7e7e03f997d4256a))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([6bad165](https://github.com/googleapis/python-asset/commit/6bad165c91a86f7d685801c99cbdf79b3b31dbaf))
+* Drop usage of pkg_resources ([6bad165](https://github.com/googleapis/python-asset/commit/6bad165c91a86f7d685801c99cbdf79b3b31dbaf))
+* Fix timeout default values ([6bad165](https://github.com/googleapis/python-asset/commit/6bad165c91a86f7d685801c99cbdf79b3b31dbaf))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([6bad165](https://github.com/googleapis/python-asset/commit/6bad165c91a86f7d685801c99cbdf79b3b31dbaf))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([6bad165](https://github.com/googleapis/python-asset/commit/6bad165c91a86f7d685801c99cbdf79b3b31dbaf))
+* Small change for documentation ([6bad165](https://github.com/googleapis/python-asset/commit/6bad165c91a86f7d685801c99cbdf79b3b31dbaf))
+
 ## [3.14.1](https://github.com/googleapis/python-asset/compare/v3.14.0...v3.14.1) (2022-09-29)
 
 
