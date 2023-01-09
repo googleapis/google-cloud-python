@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.15.0](https://github.com/googleapis/python-container/compare/v2.14.0...v2.15.0) (2023-01-09)
+
+
+### Features
+
+* Add EphemeralStorageLocalSsdConfig and LocalNvmeSsdBlockConfig APIs ([403c1ad](https://github.com/googleapis/python-container/commit/403c1ad328e6d052d9e6aab667bb74b8b6a559b7))
+* Add etags for cluster and node pool update operations ([403c1ad](https://github.com/googleapis/python-container/commit/403c1ad328e6d052d9e6aab667bb74b8b6a559b7))
+* Add support for specifying stack type for clusters ([403c1ad](https://github.com/googleapis/python-container/commit/403c1ad328e6d052d9e6aab667bb74b8b6a559b7))
+* Add WindowsNodeConfig field ([403c1ad](https://github.com/googleapis/python-container/commit/403c1ad328e6d052d9e6aab667bb74b8b6a559b7))
+* CLUSTER_SCOPE option now available in DNSScope ([403c1ad](https://github.com/googleapis/python-container/commit/403c1ad328e6d052d9e6aab667bb74b8b6a559b7))
+* Release GKE CloudDNS Cluster Scope ([403c1ad](https://github.com/googleapis/python-container/commit/403c1ad328e6d052d9e6aab667bb74b8b6a559b7))
+
 ## [2.14.0](https://github.com/googleapis/python-container/compare/v2.13.0...v2.14.0) (2022-12-15)
 
 
