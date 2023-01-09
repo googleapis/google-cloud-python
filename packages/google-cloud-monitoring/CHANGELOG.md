@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.13.0](https://github.com/googleapis/python-monitoring/compare/v2.12.0...v2.13.0) (2023-01-09)
+
+
+### Features
+
+* Added Snooze API support ([#519](https://github.com/googleapis/python-monitoring/issues/519)) ([1d33db7](https://github.com/googleapis/python-monitoring/commit/1d33db7ade09a6ee35e2a4b371bc2d3ba82c8e06))
+
 ## [2.12.0](https://github.com/googleapis/python-monitoring/compare/v2.11.3...v2.12.0) (2022-12-15)
 
 
