@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.1.0](https://github.com/googleapis/python-dataproc/compare/v5.0.3...v5.1.0) (2023-01-07)
+
+
+### Features
+
+* Add support for `google.cloud.dataproc.__version__` ([b3b13c4](https://github.com/googleapis/python-dataproc/commit/b3b13c47129f807f385125bf6c96311793724066))
+* Add typing to proto.Message based class attributes ([b3b13c4](https://github.com/googleapis/python-dataproc/commit/b3b13c47129f807f385125bf6c96311793724066))
+* Added node groups API protos ([b3b13c4](https://github.com/googleapis/python-dataproc/commit/b3b13c47129f807f385125bf6c96311793724066))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([b3b13c4](https://github.com/googleapis/python-dataproc/commit/b3b13c47129f807f385125bf6c96311793724066))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([b3b13c4](https://github.com/googleapis/python-dataproc/commit/b3b13c47129f807f385125bf6c96311793724066))
+* Drop usage of pkg_resources ([b3b13c4](https://github.com/googleapis/python-dataproc/commit/b3b13c47129f807f385125bf6c96311793724066))
+* Fix timeout default values ([b3b13c4](https://github.com/googleapis/python-dataproc/commit/b3b13c47129f807f385125bf6c96311793724066))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([b3b13c4](https://github.com/googleapis/python-dataproc/commit/b3b13c47129f807f385125bf6c96311793724066))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([b3b13c4](https://github.com/googleapis/python-dataproc/commit/b3b13c47129f807f385125bf6c96311793724066))
+
 ## [5.0.3](https://github.com/googleapis/python-dataproc/compare/v5.0.2...v5.0.3) (2022-10-07)
 
 
