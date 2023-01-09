@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.1](https://github.com/googleapis/python-dialogflow-cx/compare/v1.14.0...v1.14.1) (2023-01-06)
+
+
+### Documentation
+
+* **samples:** Update previous month logic to avoid zero-index bug in webhook_prebuilt_telecom sample ([#479](https://github.com/googleapis/python-dialogflow-cx/issues/479)) ([38c188a](https://github.com/googleapis/python-dialogflow-cx/commit/38c188ac7ec89471fdaff3981e8e66c820ff683c))
+
 ## [1.14.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.13.5...v1.14.0) (2022-12-15)
 
 
