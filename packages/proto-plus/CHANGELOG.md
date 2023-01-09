@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.22.2](https://github.com/googleapis/proto-plus-python/compare/v1.22.1...v1.22.2) (2023-01-05)
+
+
+### Bug Fixes
+
+* Add support for Python 3.11 ([#329](https://github.com/googleapis/proto-plus-python/issues/329)) ([5cff3a0](https://github.com/googleapis/proto-plus-python/commit/5cff3a0d703fc90f757f1d150adc0dfd62aa3d2e))
+
+
+### Documentation
+
+* Fix typo in index.rst ([#342](https://github.com/googleapis/proto-plus-python/issues/342)) ([a66a378](https://github.com/googleapis/proto-plus-python/commit/a66a3782802a1088c775a6b29adb15fa0235e1f1))
+
 ## [1.22.1](https://github.com/googleapis/proto-plus-python/compare/v1.22.0...v1.22.1) (2022-08-29)
 
 
