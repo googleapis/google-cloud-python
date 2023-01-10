@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-filestore/compare/v1.3.0...v1.4.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#123](https://github.com/googleapis/python-filestore/issues/123)) ([1fc907a](https://github.com/googleapis/python-filestore/commit/1fc907ae053da031faaf317c3f8bbbc2c1516f6b))
+
 ## [1.3.0](https://github.com/googleapis/python-filestore/compare/v1.2.3...v1.3.0) (2022-12-15)
 
 
