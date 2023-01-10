@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.10.0](https://github.com/googleapis/python-automl/compare/v2.9.0...v2.10.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#461](https://github.com/googleapis/python-automl/issues/461)) ([06d11c6](https://github.com/googleapis/python-automl/commit/06d11c6084cd809edb8927d914d3aab15023e606))
+
 ## [2.9.0](https://github.com/googleapis/python-automl/compare/v2.8.3...v2.9.0) (2022-12-15)
 
 
