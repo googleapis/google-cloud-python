@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-gke-backup/compare/v0.3.0...v0.4.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#45](https://github.com/googleapis/python-gke-backup/issues/45)) ([ebe4ae2](https://github.com/googleapis/python-gke-backup/commit/ebe4ae22f4570ba84695ad84833dd65c38ed7f29))
+
 ## [0.3.0](https://github.com/googleapis/python-gke-backup/compare/v0.2.2...v0.3.0) (2022-12-15)
 
 
