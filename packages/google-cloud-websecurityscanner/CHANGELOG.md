@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## [1.11.0](https://github.com/googleapis/python-websecurityscanner/compare/v1.10.0...v1.11.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#254](https://github.com/googleapis/python-websecurityscanner/issues/254)) ([ad1dbf2](https://github.com/googleapis/python-websecurityscanner/commit/ad1dbf20781ab7a11aa383226b39920ed4f370bd))
+
 ## [1.10.0](https://github.com/googleapis/python-websecurityscanner/compare/v1.9.2...v1.10.0) (2022-12-08)
 
 
