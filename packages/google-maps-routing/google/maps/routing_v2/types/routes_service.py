@@ -325,6 +325,9 @@ class RouteMatrixElement(proto.Message):
     origin/destination pair in the ComputeRouteMatrix API. This
     proto can be streamed to the client.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         origin_index (int):
             Zero-based index of the origin in the

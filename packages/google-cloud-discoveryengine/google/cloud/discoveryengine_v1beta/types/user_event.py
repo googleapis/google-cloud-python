@@ -400,6 +400,8 @@ class PageInfo(proto.Message):
 class SearchInfo(proto.Message):
     r"""Detailed search information.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         search_query (str):
             The user's search query.
@@ -490,6 +492,8 @@ class CompletionInfo(proto.Message):
 
 class TransactionInfo(proto.Message):
     r"""A transaction represents the entire purchase transaction.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         value (float):
@@ -645,6 +649,8 @@ class DocumentInfo(proto.Message):
 class PanelInfo(proto.Message):
     r"""Detailed panel information associated with a user event.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         panel_id (str):
             Required. The panel ID.
@@ -688,6 +694,8 @@ class PanelInfo(proto.Message):
 
 class MediaInfo(proto.Message):
     r"""Media-specific user event information.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         media_progress_duration (google.protobuf.duration_pb2.Duration):
