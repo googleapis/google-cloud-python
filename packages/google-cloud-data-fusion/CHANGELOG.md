@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-data-fusion/compare/v1.6.0...v1.7.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#157](https://github.com/googleapis/python-data-fusion/issues/157)) ([d0ee1e9](https://github.com/googleapis/python-data-fusion/commit/d0ee1e93f1ab8a23c318b5f3c6c44abcde7d6308))
+
 ## [1.6.0](https://github.com/googleapis/python-data-fusion/compare/v1.5.3...v1.6.0) (2022-12-15)
 
 
