@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-edgecontainer/compare/v0.3.0...v0.4.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#15](https://github.com/googleapis/python-edgecontainer/issues/15)) ([c43bbc1](https://github.com/googleapis/python-edgecontainer/commit/c43bbc12171fbf39d1ee760ea61be145e727e807))
+
 ## [0.3.0](https://github.com/googleapis/python-edgecontainer/compare/v0.2.1...v0.3.0) (2022-12-15)
 
 
