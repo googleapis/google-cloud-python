@@ -5,6 +5,20 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.13.12](https://github.com/googleapis/python-pubsub/compare/v2.13.11...v2.13.12) (2023-01-06)
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([060f00b](https://github.com/googleapis/python-pubsub/commit/060f00bcea5cd129be3a2d37078535cc97b4f5e8))
+* Drop usage of pkg_resources ([060f00b](https://github.com/googleapis/python-pubsub/commit/060f00bcea5cd129be3a2d37078535cc97b4f5e8))
+* Fix timeout default values ([060f00b](https://github.com/googleapis/python-pubsub/commit/060f00bcea5cd129be3a2d37078535cc97b4f5e8))
+
+
+### Documentation
+
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([060f00b](https://github.com/googleapis/python-pubsub/commit/060f00bcea5cd129be3a2d37078535cc97b4f5e8))
+
 ## [2.13.11](https://github.com/googleapis/python-pubsub/compare/v2.13.10...v2.13.11) (2022-11-11)
 
 
