@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v0.1.1...google-cloud-vmwareengine-v0.2.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#10812](https://github.com/googleapis/google-cloud-python/issues/10812)) ([e5f88ee](https://github.com/googleapis/google-cloud-python/commit/e5f88eebd47c677850d61ddc3774532723f5505e))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v0.1.0...google-cloud-vmwareengine-v0.1.1) (2022-12-06)
 
 
