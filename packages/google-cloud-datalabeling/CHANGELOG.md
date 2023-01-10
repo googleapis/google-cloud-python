@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+## [1.8.0](https://github.com/googleapis/python-datalabeling/compare/v1.7.0...v1.8.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#297](https://github.com/googleapis/python-datalabeling/issues/297)) ([13a0db1](https://github.com/googleapis/python-datalabeling/commit/13a0db1abbff43ed930f8c3dfef54dcd364e43e5))
+
 ## [1.7.0](https://github.com/googleapis/python-datalabeling/compare/v1.6.3...v1.7.0) (2022-12-14)
 
 
