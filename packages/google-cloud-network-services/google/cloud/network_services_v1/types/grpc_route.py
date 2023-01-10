@@ -122,6 +122,8 @@ class GrpcRoute(proto.Message):
     class MethodMatch(proto.Message):
         r"""Specifies a match against a method.
 
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             type_ (google.cloud.network_services_v1.types.GrpcRoute.MethodMatch.Type):
                 Optional. Specifies how to match against the
@@ -205,6 +207,9 @@ class GrpcRoute(proto.Message):
         r"""Criteria for matching traffic. A RouteMatch will be
         considered to match when all supplied fields match.
 
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             method (google.cloud.network_services_v1.types.GrpcRoute.MethodMatch):
                 Optional. A gRPC method to match against. If
@@ -282,6 +287,9 @@ class GrpcRoute(proto.Message):
         service. Similarly requests from clients can be aborted by for a
         percentage of requests.
 
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             delay (google.cloud.network_services_v1.types.GrpcRoute.FaultInjectionPolicy.Delay):
                 The specification for injecting delay to
@@ -298,6 +306,9 @@ class GrpcRoute(proto.Message):
         class Delay(proto.Message):
             r"""Specification of how client requests are delayed as part of
             fault injection before being sent to a destination.
+
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
             Attributes:
                 fixed_delay (google.protobuf.duration_pb2.Duration):
@@ -328,6 +339,9 @@ class GrpcRoute(proto.Message):
         class Abort(proto.Message):
             r"""Specification of how client requests are aborted as part of
             fault injection before being sent to a destination.
+
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
             Attributes:
                 http_status (int):
