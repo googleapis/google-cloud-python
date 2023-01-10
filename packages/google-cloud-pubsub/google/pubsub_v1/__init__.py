@@ -70,11 +70,16 @@ from .types.pubsub import Topic
 from .types.pubsub import UpdateSnapshotRequest
 from .types.pubsub import UpdateSubscriptionRequest
 from .types.pubsub import UpdateTopicRequest
+from .types.schema import CommitSchemaRequest
 from .types.schema import CreateSchemaRequest
 from .types.schema import DeleteSchemaRequest
+from .types.schema import DeleteSchemaRevisionRequest
 from .types.schema import GetSchemaRequest
+from .types.schema import ListSchemaRevisionsRequest
+from .types.schema import ListSchemaRevisionsResponse
 from .types.schema import ListSchemasRequest
 from .types.schema import ListSchemasResponse
+from .types.schema import RollbackSchemaRequest
 from .types.schema import Schema
 from .types.schema import ValidateMessageRequest
 from .types.schema import ValidateMessageResponse
@@ -89,10 +94,12 @@ __all__ = (
     "SubscriberAsyncClient",
     "AcknowledgeRequest",
     "BigQueryConfig",
+    "CommitSchemaRequest",
     "CreateSchemaRequest",
     "CreateSnapshotRequest",
     "DeadLetterPolicy",
     "DeleteSchemaRequest",
+    "DeleteSchemaRevisionRequest",
     "DeleteSnapshotRequest",
     "DeleteSubscriptionRequest",
     "DeleteTopicRequest",
@@ -104,6 +111,8 @@ __all__ = (
     "GetSnapshotRequest",
     "GetSubscriptionRequest",
     "GetTopicRequest",
+    "ListSchemaRevisionsRequest",
+    "ListSchemaRevisionsResponse",
     "ListSchemasRequest",
     "ListSchemasResponse",
     "ListSnapshotsRequest",
@@ -128,6 +137,7 @@ __all__ = (
     "PushConfig",
     "ReceivedMessage",
     "RetryPolicy",
+    "RollbackSchemaRequest",
     "Schema",
     "SchemaServiceClient",
     "SchemaSettings",

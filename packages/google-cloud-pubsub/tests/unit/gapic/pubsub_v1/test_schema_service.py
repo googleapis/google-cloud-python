@@ -41,6 +41,7 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.oauth2 import service_account
+from google.protobuf import timestamp_pb2  # type: ignore
 from google.pubsub_v1.services.schema_service import SchemaServiceAsyncClient
 from google.pubsub_v1.services.schema_service import SchemaServiceClient
 from google.pubsub_v1.services.schema_service import pagers
@@ -713,6 +714,7 @@ def test_create_schema(request_type, transport: str = "grpc"):
             name="name_value",
             type_=gp_schema.Schema.Type.PROTOCOL_BUFFER,
             definition="definition_value",
+            revision_id="revision_id_value",
         )
         response = client.create_schema(request)
 
@@ -726,6 +728,7 @@ def test_create_schema(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.type_ == gp_schema.Schema.Type.PROTOCOL_BUFFER
     assert response.definition == "definition_value"
+    assert response.revision_id == "revision_id_value"
 
 
 def test_create_schema_empty_call():
@@ -765,6 +768,7 @@ async def test_create_schema_async(
                 name="name_value",
                 type_=gp_schema.Schema.Type.PROTOCOL_BUFFER,
                 definition="definition_value",
+                revision_id="revision_id_value",
             )
         )
         response = await client.create_schema(request)
@@ -779,6 +783,7 @@ async def test_create_schema_async(
     assert response.name == "name_value"
     assert response.type_ == gp_schema.Schema.Type.PROTOCOL_BUFFER
     assert response.definition == "definition_value"
+    assert response.revision_id == "revision_id_value"
 
 
 @pytest.mark.asyncio
@@ -969,6 +974,7 @@ def test_get_schema(request_type, transport: str = "grpc"):
             name="name_value",
             type_=schema.Schema.Type.PROTOCOL_BUFFER,
             definition="definition_value",
+            revision_id="revision_id_value",
         )
         response = client.get_schema(request)
 
@@ -982,6 +988,7 @@ def test_get_schema(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.type_ == schema.Schema.Type.PROTOCOL_BUFFER
     assert response.definition == "definition_value"
+    assert response.revision_id == "revision_id_value"
 
 
 def test_get_schema_empty_call():
@@ -1021,6 +1028,7 @@ async def test_get_schema_async(
                 name="name_value",
                 type_=schema.Schema.Type.PROTOCOL_BUFFER,
                 definition="definition_value",
+                revision_id="revision_id_value",
             )
         )
         response = await client.get_schema(request)
@@ -1035,6 +1043,7 @@ async def test_get_schema_async(
     assert response.name == "name_value"
     assert response.type_ == schema.Schema.Type.PROTOCOL_BUFFER
     assert response.definition == "definition_value"
+    assert response.revision_id == "revision_id_value"
 
 
 @pytest.mark.asyncio
@@ -1599,6 +1608,1212 @@ async def test_list_schemas_async_pages():
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema.ListSchemaRevisionsRequest,
+        dict,
+    ],
+)
+def test_list_schema_revisions(request_type, transport: str = "grpc"):
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_schema_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = schema.ListSchemaRevisionsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_schema_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == schema.ListSchemaRevisionsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSchemaRevisionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_schema_revisions_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_schema_revisions), "__call__"
+    ) as call:
+        client.list_schema_revisions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == schema.ListSchemaRevisionsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_schema_revisions_async(
+    transport: str = "grpc_asyncio", request_type=schema.ListSchemaRevisionsRequest
+):
+    client = SchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_schema_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            schema.ListSchemaRevisionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_schema_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == schema.ListSchemaRevisionsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSchemaRevisionsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_schema_revisions_async_from_dict():
+    await test_list_schema_revisions_async(request_type=dict)
+
+
+def test_list_schema_revisions_field_headers():
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = schema.ListSchemaRevisionsRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_schema_revisions), "__call__"
+    ) as call:
+        call.return_value = schema.ListSchemaRevisionsResponse()
+        client.list_schema_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_schema_revisions_field_headers_async():
+    client = SchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = schema.ListSchemaRevisionsRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_schema_revisions), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            schema.ListSchemaRevisionsResponse()
+        )
+        await client.list_schema_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_list_schema_revisions_flattened():
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_schema_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = schema.ListSchemaRevisionsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_schema_revisions(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_list_schema_revisions_flattened_error():
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_schema_revisions(
+            schema.ListSchemaRevisionsRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_schema_revisions_flattened_async():
+    client = SchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_schema_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = schema.ListSchemaRevisionsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            schema.ListSchemaRevisionsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_schema_revisions(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_schema_revisions_flattened_error_async():
+    client = SchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_schema_revisions(
+            schema.ListSchemaRevisionsRequest(),
+            name="name_value",
+        )
+
+
+def test_list_schema_revisions_pager(transport_name: str = "grpc"):
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_schema_revisions), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            schema.ListSchemaRevisionsResponse(
+                schemas=[
+                    schema.Schema(),
+                    schema.Schema(),
+                    schema.Schema(),
+                ],
+                next_page_token="abc",
+            ),
+            schema.ListSchemaRevisionsResponse(
+                schemas=[],
+                next_page_token="def",
+            ),
+            schema.ListSchemaRevisionsResponse(
+                schemas=[
+                    schema.Schema(),
+                ],
+                next_page_token="ghi",
+            ),
+            schema.ListSchemaRevisionsResponse(
+                schemas=[
+                    schema.Schema(),
+                    schema.Schema(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", ""),)),
+        )
+        pager = client.list_schema_revisions(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, schema.Schema) for i in results)
+
+
+def test_list_schema_revisions_pages(transport_name: str = "grpc"):
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_schema_revisions), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            schema.ListSchemaRevisionsResponse(
+                schemas=[
+                    schema.Schema(),
+                    schema.Schema(),
+                    schema.Schema(),
+                ],
+                next_page_token="abc",
+            ),
+            schema.ListSchemaRevisionsResponse(
+                schemas=[],
+                next_page_token="def",
+            ),
+            schema.ListSchemaRevisionsResponse(
+                schemas=[
+                    schema.Schema(),
+                ],
+                next_page_token="ghi",
+            ),
+            schema.ListSchemaRevisionsResponse(
+                schemas=[
+                    schema.Schema(),
+                    schema.Schema(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_schema_revisions(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_schema_revisions_async_pager():
+    client = SchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_schema_revisions),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            schema.ListSchemaRevisionsResponse(
+                schemas=[
+                    schema.Schema(),
+                    schema.Schema(),
+                    schema.Schema(),
+                ],
+                next_page_token="abc",
+            ),
+            schema.ListSchemaRevisionsResponse(
+                schemas=[],
+                next_page_token="def",
+            ),
+            schema.ListSchemaRevisionsResponse(
+                schemas=[
+                    schema.Schema(),
+                ],
+                next_page_token="ghi",
+            ),
+            schema.ListSchemaRevisionsResponse(
+                schemas=[
+                    schema.Schema(),
+                    schema.Schema(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_schema_revisions(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, schema.Schema) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_schema_revisions_async_pages():
+    client = SchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_schema_revisions),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            schema.ListSchemaRevisionsResponse(
+                schemas=[
+                    schema.Schema(),
+                    schema.Schema(),
+                    schema.Schema(),
+                ],
+                next_page_token="abc",
+            ),
+            schema.ListSchemaRevisionsResponse(
+                schemas=[],
+                next_page_token="def",
+            ),
+            schema.ListSchemaRevisionsResponse(
+                schemas=[
+                    schema.Schema(),
+                ],
+                next_page_token="ghi",
+            ),
+            schema.ListSchemaRevisionsResponse(
+                schemas=[
+                    schema.Schema(),
+                    schema.Schema(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_schema_revisions(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gp_schema.CommitSchemaRequest,
+        dict,
+    ],
+)
+def test_commit_schema(request_type, transport: str = "grpc"):
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.commit_schema), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gp_schema.Schema(
+            name="name_value",
+            type_=gp_schema.Schema.Type.PROTOCOL_BUFFER,
+            definition="definition_value",
+            revision_id="revision_id_value",
+        )
+        response = client.commit_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gp_schema.CommitSchemaRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gp_schema.Schema)
+    assert response.name == "name_value"
+    assert response.type_ == gp_schema.Schema.Type.PROTOCOL_BUFFER
+    assert response.definition == "definition_value"
+    assert response.revision_id == "revision_id_value"
+
+
+def test_commit_schema_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.commit_schema), "__call__") as call:
+        client.commit_schema()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gp_schema.CommitSchemaRequest()
+
+
+@pytest.mark.asyncio
+async def test_commit_schema_async(
+    transport: str = "grpc_asyncio", request_type=gp_schema.CommitSchemaRequest
+):
+    client = SchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.commit_schema), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gp_schema.Schema(
+                name="name_value",
+                type_=gp_schema.Schema.Type.PROTOCOL_BUFFER,
+                definition="definition_value",
+                revision_id="revision_id_value",
+            )
+        )
+        response = await client.commit_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gp_schema.CommitSchemaRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gp_schema.Schema)
+    assert response.name == "name_value"
+    assert response.type_ == gp_schema.Schema.Type.PROTOCOL_BUFFER
+    assert response.definition == "definition_value"
+    assert response.revision_id == "revision_id_value"
+
+
+@pytest.mark.asyncio
+async def test_commit_schema_async_from_dict():
+    await test_commit_schema_async(request_type=dict)
+
+
+def test_commit_schema_field_headers():
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gp_schema.CommitSchemaRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.commit_schema), "__call__") as call:
+        call.return_value = gp_schema.Schema()
+        client.commit_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_commit_schema_field_headers_async():
+    client = SchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gp_schema.CommitSchemaRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.commit_schema), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gp_schema.Schema())
+        await client.commit_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_commit_schema_flattened():
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.commit_schema), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gp_schema.Schema()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.commit_schema(
+            name="name_value",
+            schema=gp_schema.Schema(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].schema
+        mock_val = gp_schema.Schema(name="name_value")
+        assert arg == mock_val
+
+
+def test_commit_schema_flattened_error():
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.commit_schema(
+            gp_schema.CommitSchemaRequest(),
+            name="name_value",
+            schema=gp_schema.Schema(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_commit_schema_flattened_async():
+    client = SchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.commit_schema), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gp_schema.Schema()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gp_schema.Schema())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.commit_schema(
+            name="name_value",
+            schema=gp_schema.Schema(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].schema
+        mock_val = gp_schema.Schema(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_commit_schema_flattened_error_async():
+    client = SchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.commit_schema(
+            gp_schema.CommitSchemaRequest(),
+            name="name_value",
+            schema=gp_schema.Schema(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema.RollbackSchemaRequest,
+        dict,
+    ],
+)
+def test_rollback_schema(request_type, transport: str = "grpc"):
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rollback_schema), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = schema.Schema(
+            name="name_value",
+            type_=schema.Schema.Type.PROTOCOL_BUFFER,
+            definition="definition_value",
+            revision_id="revision_id_value",
+        )
+        response = client.rollback_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == schema.RollbackSchemaRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, schema.Schema)
+    assert response.name == "name_value"
+    assert response.type_ == schema.Schema.Type.PROTOCOL_BUFFER
+    assert response.definition == "definition_value"
+    assert response.revision_id == "revision_id_value"
+
+
+def test_rollback_schema_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rollback_schema), "__call__") as call:
+        client.rollback_schema()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == schema.RollbackSchemaRequest()
+
+
+@pytest.mark.asyncio
+async def test_rollback_schema_async(
+    transport: str = "grpc_asyncio", request_type=schema.RollbackSchemaRequest
+):
+    client = SchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rollback_schema), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            schema.Schema(
+                name="name_value",
+                type_=schema.Schema.Type.PROTOCOL_BUFFER,
+                definition="definition_value",
+                revision_id="revision_id_value",
+            )
+        )
+        response = await client.rollback_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == schema.RollbackSchemaRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, schema.Schema)
+    assert response.name == "name_value"
+    assert response.type_ == schema.Schema.Type.PROTOCOL_BUFFER
+    assert response.definition == "definition_value"
+    assert response.revision_id == "revision_id_value"
+
+
+@pytest.mark.asyncio
+async def test_rollback_schema_async_from_dict():
+    await test_rollback_schema_async(request_type=dict)
+
+
+def test_rollback_schema_field_headers():
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = schema.RollbackSchemaRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rollback_schema), "__call__") as call:
+        call.return_value = schema.Schema()
+        client.rollback_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_rollback_schema_field_headers_async():
+    client = SchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = schema.RollbackSchemaRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rollback_schema), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema.Schema())
+        await client.rollback_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_rollback_schema_flattened():
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rollback_schema), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = schema.Schema()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.rollback_schema(
+            name="name_value",
+            revision_id="revision_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].revision_id
+        mock_val = "revision_id_value"
+        assert arg == mock_val
+
+
+def test_rollback_schema_flattened_error():
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.rollback_schema(
+            schema.RollbackSchemaRequest(),
+            name="name_value",
+            revision_id="revision_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_rollback_schema_flattened_async():
+    client = SchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rollback_schema), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = schema.Schema()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema.Schema())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.rollback_schema(
+            name="name_value",
+            revision_id="revision_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].revision_id
+        mock_val = "revision_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_rollback_schema_flattened_error_async():
+    client = SchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.rollback_schema(
+            schema.RollbackSchemaRequest(),
+            name="name_value",
+            revision_id="revision_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema.DeleteSchemaRevisionRequest,
+        dict,
+    ],
+)
+def test_delete_schema_revision(request_type, transport: str = "grpc"):
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_schema_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = schema.Schema(
+            name="name_value",
+            type_=schema.Schema.Type.PROTOCOL_BUFFER,
+            definition="definition_value",
+            revision_id="revision_id_value",
+        )
+        response = client.delete_schema_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == schema.DeleteSchemaRevisionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, schema.Schema)
+    assert response.name == "name_value"
+    assert response.type_ == schema.Schema.Type.PROTOCOL_BUFFER
+    assert response.definition == "definition_value"
+    assert response.revision_id == "revision_id_value"
+
+
+def test_delete_schema_revision_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_schema_revision), "__call__"
+    ) as call:
+        client.delete_schema_revision()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == schema.DeleteSchemaRevisionRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_schema_revision_async(
+    transport: str = "grpc_asyncio", request_type=schema.DeleteSchemaRevisionRequest
+):
+    client = SchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_schema_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            schema.Schema(
+                name="name_value",
+                type_=schema.Schema.Type.PROTOCOL_BUFFER,
+                definition="definition_value",
+                revision_id="revision_id_value",
+            )
+        )
+        response = await client.delete_schema_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == schema.DeleteSchemaRevisionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, schema.Schema)
+    assert response.name == "name_value"
+    assert response.type_ == schema.Schema.Type.PROTOCOL_BUFFER
+    assert response.definition == "definition_value"
+    assert response.revision_id == "revision_id_value"
+
+
+@pytest.mark.asyncio
+async def test_delete_schema_revision_async_from_dict():
+    await test_delete_schema_revision_async(request_type=dict)
+
+
+def test_delete_schema_revision_field_headers():
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = schema.DeleteSchemaRevisionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_schema_revision), "__call__"
+    ) as call:
+        call.return_value = schema.Schema()
+        client.delete_schema_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_schema_revision_field_headers_async():
+    client = SchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = schema.DeleteSchemaRevisionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_schema_revision), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema.Schema())
+        await client.delete_schema_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_schema_revision_flattened():
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_schema_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = schema.Schema()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_schema_revision(
+            name="name_value",
+            revision_id="revision_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].revision_id
+        mock_val = "revision_id_value"
+        assert arg == mock_val
+
+
+def test_delete_schema_revision_flattened_error():
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_schema_revision(
+            schema.DeleteSchemaRevisionRequest(),
+            name="name_value",
+            revision_id="revision_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_schema_revision_flattened_async():
+    client = SchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_schema_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = schema.Schema()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema.Schema())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_schema_revision(
+            name="name_value",
+            revision_id="revision_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].revision_id
+        mock_val = "revision_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_schema_revision_flattened_error_async():
+    client = SchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_schema_revision(
+            schema.DeleteSchemaRevisionRequest(),
+            name="name_value",
+            revision_id="revision_id_value",
+        )
 
 
 @pytest.mark.parametrize(
@@ -2341,6 +3556,10 @@ def test_schema_service_base_transport():
         "create_schema",
         "get_schema",
         "list_schemas",
+        "list_schema_revisions",
+        "commit_schema",
+        "rollback_schema",
+        "delete_schema_revision",
         "delete_schema",
         "validate_schema",
         "validate_message",

@@ -72,11 +72,16 @@ from google.pubsub_v1.types.pubsub import Topic
 from google.pubsub_v1.types.pubsub import UpdateSnapshotRequest
 from google.pubsub_v1.types.pubsub import UpdateSubscriptionRequest
 from google.pubsub_v1.types.pubsub import UpdateTopicRequest
+from google.pubsub_v1.types.schema import CommitSchemaRequest
 from google.pubsub_v1.types.schema import CreateSchemaRequest
 from google.pubsub_v1.types.schema import DeleteSchemaRequest
+from google.pubsub_v1.types.schema import DeleteSchemaRevisionRequest
 from google.pubsub_v1.types.schema import GetSchemaRequest
+from google.pubsub_v1.types.schema import ListSchemaRevisionsRequest
+from google.pubsub_v1.types.schema import ListSchemaRevisionsResponse
 from google.pubsub_v1.types.schema import ListSchemasRequest
 from google.pubsub_v1.types.schema import ListSchemasResponse
+from google.pubsub_v1.types.schema import RollbackSchemaRequest
 from google.pubsub_v1.types.schema import Schema
 from google.pubsub_v1.types.schema import ValidateMessageRequest
 from google.pubsub_v1.types.schema import ValidateMessageResponse
@@ -137,11 +142,16 @@ __all__ = (
     "UpdateSnapshotRequest",
     "UpdateSubscriptionRequest",
     "UpdateTopicRequest",
+    "CommitSchemaRequest",
     "CreateSchemaRequest",
     "DeleteSchemaRequest",
+    "DeleteSchemaRevisionRequest",
     "GetSchemaRequest",
+    "ListSchemaRevisionsRequest",
+    "ListSchemaRevisionsResponse",
     "ListSchemasRequest",
     "ListSchemasResponse",
+    "RollbackSchemaRequest",
     "Schema",
     "ValidateMessageRequest",
     "ValidateMessageResponse",

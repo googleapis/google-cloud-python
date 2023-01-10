@@ -312,6 +312,113 @@ class SchemaServiceGrpcTransport(SchemaServiceTransport):
         return self._stubs["list_schemas"]
 
     @property
+    def list_schema_revisions(
+        self,
+    ) -> Callable[
+        [schema.ListSchemaRevisionsRequest], schema.ListSchemaRevisionsResponse
+    ]:
+        r"""Return a callable for the list schema revisions method over gRPC.
+
+        Lists all schema revisions for the named schema.
+
+        Returns:
+            Callable[[~.ListSchemaRevisionsRequest],
+                    ~.ListSchemaRevisionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_schema_revisions" not in self._stubs:
+            self._stubs["list_schema_revisions"] = self.grpc_channel.unary_unary(
+                "/google.pubsub.v1.SchemaService/ListSchemaRevisions",
+                request_serializer=schema.ListSchemaRevisionsRequest.serialize,
+                response_deserializer=schema.ListSchemaRevisionsResponse.deserialize,
+            )
+        return self._stubs["list_schema_revisions"]
+
+    @property
+    def commit_schema(
+        self,
+    ) -> Callable[[gp_schema.CommitSchemaRequest], gp_schema.Schema]:
+        r"""Return a callable for the commit schema method over gRPC.
+
+        Commits a new schema revision to an existing schema.
+
+        Returns:
+            Callable[[~.CommitSchemaRequest],
+                    ~.Schema]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "commit_schema" not in self._stubs:
+            self._stubs["commit_schema"] = self.grpc_channel.unary_unary(
+                "/google.pubsub.v1.SchemaService/CommitSchema",
+                request_serializer=gp_schema.CommitSchemaRequest.serialize,
+                response_deserializer=gp_schema.Schema.deserialize,
+            )
+        return self._stubs["commit_schema"]
+
+    @property
+    def rollback_schema(
+        self,
+    ) -> Callable[[schema.RollbackSchemaRequest], schema.Schema]:
+        r"""Return a callable for the rollback schema method over gRPC.
+
+        Creates a new schema revision that is a copy of the provided
+        revision_id.
+
+        Returns:
+            Callable[[~.RollbackSchemaRequest],
+                    ~.Schema]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "rollback_schema" not in self._stubs:
+            self._stubs["rollback_schema"] = self.grpc_channel.unary_unary(
+                "/google.pubsub.v1.SchemaService/RollbackSchema",
+                request_serializer=schema.RollbackSchemaRequest.serialize,
+                response_deserializer=schema.Schema.deserialize,
+            )
+        return self._stubs["rollback_schema"]
+
+    @property
+    def delete_schema_revision(
+        self,
+    ) -> Callable[[schema.DeleteSchemaRevisionRequest], schema.Schema]:
+        r"""Return a callable for the delete schema revision method over gRPC.
+
+        Deletes a specific schema revision.
+
+        Returns:
+            Callable[[~.DeleteSchemaRevisionRequest],
+                    ~.Schema]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_schema_revision" not in self._stubs:
+            self._stubs["delete_schema_revision"] = self.grpc_channel.unary_unary(
+                "/google.pubsub.v1.SchemaService/DeleteSchemaRevision",
+                request_serializer=schema.DeleteSchemaRevisionRequest.serialize,
+                response_deserializer=schema.Schema.deserialize,
+            )
+        return self._stubs["delete_schema_revision"]
+
+    @property
     def delete_schema(self) -> Callable[[schema.DeleteSchemaRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete schema method over gRPC.
 

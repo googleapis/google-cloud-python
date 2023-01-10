@@ -145,6 +145,26 @@ class SchemaServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_schema_revisions: gapic_v1.method.wrap_method(
+                self.list_schema_revisions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.commit_schema: gapic_v1.method.wrap_method(
+                self.commit_schema,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.rollback_schema: gapic_v1.method.wrap_method(
+                self.rollback_schema,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_schema_revision: gapic_v1.method.wrap_method(
+                self.delete_schema_revision,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_schema: gapic_v1.method.wrap_method(
                 self.delete_schema,
                 default_timeout=None,
@@ -194,6 +214,44 @@ class SchemaServiceTransport(abc.ABC):
     ) -> Callable[
         [schema.ListSchemasRequest],
         Union[schema.ListSchemasResponse, Awaitable[schema.ListSchemasResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_schema_revisions(
+        self,
+    ) -> Callable[
+        [schema.ListSchemaRevisionsRequest],
+        Union[
+            schema.ListSchemaRevisionsResponse,
+            Awaitable[schema.ListSchemaRevisionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def commit_schema(
+        self,
+    ) -> Callable[
+        [gp_schema.CommitSchemaRequest],
+        Union[gp_schema.Schema, Awaitable[gp_schema.Schema]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def rollback_schema(
+        self,
+    ) -> Callable[
+        [schema.RollbackSchemaRequest], Union[schema.Schema, Awaitable[schema.Schema]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_schema_revision(
+        self,
+    ) -> Callable[
+        [schema.DeleteSchemaRevisionRequest],
+        Union[schema.Schema, Awaitable[schema.Schema]],
     ]:
         raise NotImplementedError()
 

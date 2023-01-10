@@ -109,6 +109,16 @@ class SchemaSettings(proto.Message):
             deleted.
         encoding (google.pubsub_v1.types.Encoding):
             The encoding of messages validated against ``schema``.
+        first_revision_id (str):
+            The minimum (inclusive) revision allowed for validating
+            messages. If empty or not present, allow any revision to be
+            validated against last_revision or any revision created
+            before.
+        last_revision_id (str):
+            The maximum (inclusive) revision allowed for validating
+            messages. If empty or not present, allow any revision to be
+            validated against first_revision or any revision created
+            after.
     """
 
     schema: str = proto.Field(
@@ -119,6 +129,14 @@ class SchemaSettings(proto.Message):
         proto.ENUM,
         number=2,
         enum=gp_schema.Encoding,
+    )
+    first_revision_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    last_revision_id: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 

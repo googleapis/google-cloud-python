@@ -44,6 +44,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from google.pubsub_v1.services.schema_service import pagers
 from google.pubsub_v1.types import schema
 from google.pubsub_v1.types import schema as gp_schema
@@ -136,7 +137,7 @@ class SchemaServiceAsyncClient:
         The API endpoint is determined in the following order:
         (1) if `client_options.api_endpoint` if provided, use the provided one.
         (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
-        default mTLS endpoint; if the environment variabel is "never", use the default API
+        default mTLS endpoint; if the environment variable is "never", use the default API
         endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
         use the default API endpoint.
 
@@ -553,6 +554,463 @@ class SchemaServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_schema_revisions(
+        self,
+        request: Optional[Union[schema.ListSchemaRevisionsRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListSchemaRevisionsAsyncPager:
+        r"""Lists all schema revisions for the named schema.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import pubsub_v1
+
+            async def sample_list_schema_revisions():
+                # Create a client
+                client = pubsub_v1.SchemaServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.ListSchemaRevisionsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                page_result = client.list_schema_revisions(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.pubsub_v1.types.ListSchemaRevisionsRequest, dict]]):
+                The request object. Request for the
+                `ListSchemaRevisions` method.
+            name (:class:`str`):
+                Required. The name of the schema to
+                list revisions for.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.pubsub_v1.services.schema_service.pagers.ListSchemaRevisionsAsyncPager:
+                Response for the ListSchemaRevisions method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = schema.ListSchemaRevisionsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_schema_revisions,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListSchemaRevisionsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def commit_schema(
+        self,
+        request: Optional[Union[gp_schema.CommitSchemaRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        schema: Optional[gp_schema.Schema] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gp_schema.Schema:
+        r"""Commits a new schema revision to an existing schema.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import pubsub_v1
+
+            async def sample_commit_schema():
+                # Create a client
+                client = pubsub_v1.SchemaServiceAsyncClient()
+
+                # Initialize request argument(s)
+                schema = pubsub_v1.Schema()
+                schema.name = "name_value"
+
+                request = pubsub_v1.CommitSchemaRequest(
+                    name="name_value",
+                    schema=schema,
+                )
+
+                # Make the request
+                response = await client.commit_schema(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.pubsub_v1.types.CommitSchemaRequest, dict]]):
+                The request object. Request for CommitSchema method.
+            name (:class:`str`):
+                Required. The name of the schema we are revising. Format
+                is ``projects/{project}/schemas/{schema}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            schema (:class:`google.pubsub_v1.types.Schema`):
+                Required. The schema revision to
+                commit.
+
+                This corresponds to the ``schema`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.pubsub_v1.types.Schema:
+                A schema resource.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name, schema])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = gp_schema.CommitSchemaRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+        if schema is not None:
+            request.schema = schema
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.commit_schema,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def rollback_schema(
+        self,
+        request: Optional[Union[schema.RollbackSchemaRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        revision_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> schema.Schema:
+        r"""Creates a new schema revision that is a copy of the provided
+        revision_id.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import pubsub_v1
+
+            async def sample_rollback_schema():
+                # Create a client
+                client = pubsub_v1.SchemaServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.RollbackSchemaRequest(
+                    name="name_value",
+                    revision_id="revision_id_value",
+                )
+
+                # Make the request
+                response = await client.rollback_schema(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.pubsub_v1.types.RollbackSchemaRequest, dict]]):
+                The request object. Request for the `RollbackSchema`
+                method.
+            name (:class:`str`):
+                Required. The schema being rolled
+                back with revision id.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            revision_id (:class:`str`):
+                Required. The revision ID to roll
+                back to. It must be a revision of the
+                same schema.
+                  Example: c7cfa2a8
+
+                This corresponds to the ``revision_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.pubsub_v1.types.Schema:
+                A schema resource.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name, revision_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = schema.RollbackSchemaRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+        if revision_id is not None:
+            request.revision_id = revision_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.rollback_schema,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_schema_revision(
+        self,
+        request: Optional[Union[schema.DeleteSchemaRevisionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        revision_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> schema.Schema:
+        r"""Deletes a specific schema revision.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import pubsub_v1
+
+            async def sample_delete_schema_revision():
+                # Create a client
+                client = pubsub_v1.SchemaServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.DeleteSchemaRevisionRequest(
+                    name="name_value",
+                    revision_id="revision_id_value",
+                )
+
+                # Make the request
+                response = await client.delete_schema_revision(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.pubsub_v1.types.DeleteSchemaRevisionRequest, dict]]):
+                The request object. Request for the
+                `DeleteSchemaRevision` method.
+            name (:class:`str`):
+                Required. The name of the schema
+                revision to be deleted, with a revision
+                ID explicitly included.
+                Example:
+                projects/123/schemas/my-schema@c7cfa2a8
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            revision_id (:class:`str`):
+                Required. The revision ID to roll
+                back to. It must be a revision of the
+                same schema.
+                  Example: c7cfa2a8
+
+                This corresponds to the ``revision_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.pubsub_v1.types.Schema:
+                A schema resource.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name, revision_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = schema.DeleteSchemaRevisionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+        if revision_id is not None:
+            request.revision_id = revision_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_schema_revision,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
