@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-deploy/compare/v1.5.0...v1.6.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#147](https://github.com/googleapis/python-deploy/issues/147)) ([13de673](https://github.com/googleapis/python-deploy/commit/13de6730b4471d62fdeb17ab07b381d96004d194))
+
 ## [1.5.0](https://github.com/googleapis/python-deploy/compare/v1.4.1...v1.5.0) (2022-12-15)
 
 
