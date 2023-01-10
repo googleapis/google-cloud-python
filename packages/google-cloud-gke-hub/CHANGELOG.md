@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-gke-hub/compare/v1.6.0...v1.7.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#217](https://github.com/googleapis/python-gke-hub/issues/217)) ([4e16a85](https://github.com/googleapis/python-gke-hub/commit/4e16a85ee9e501a5ebfea7a0f8f87fd57e01d03f))
+
 ## [1.6.0](https://github.com/googleapis/python-gke-hub/compare/v1.5.3...v1.6.0) (2022-12-14)
 
 
