@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-monitoring-metrics-scopes/compare/v1.3.0...v1.4.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#114](https://github.com/googleapis/python-monitoring-metrics-scopes/issues/114)) ([9b23578](https://github.com/googleapis/python-monitoring-metrics-scopes/commit/9b23578fff0ebeea4f138c3f834bb9eec4ac4acc))
+
 ## [1.3.0](https://github.com/googleapis/python-monitoring-metrics-scopes/compare/v1.2.4...v1.3.0) (2022-12-14)
 
 
