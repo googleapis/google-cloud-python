@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-network-connectivity/compare/v1.5.0...v1.6.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#223](https://github.com/googleapis/python-network-connectivity/issues/223)) ([f49f0d8](https://github.com/googleapis/python-network-connectivity/commit/f49f0d86f8a97a46d038073d2085624349142f85))
+
 ## [1.5.0](https://github.com/googleapis/python-network-connectivity/compare/v1.4.4...v1.5.0) (2022-12-08)
 
 
