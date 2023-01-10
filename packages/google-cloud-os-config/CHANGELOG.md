@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/googleapis/python-os-config/compare/v1.13.0...v1.14.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#257](https://github.com/googleapis/python-os-config/issues/257)) ([fa3a63f](https://github.com/googleapis/python-os-config/commit/fa3a63f72b1c1c6603655aae1c1457638f53b489))
+
 ## [1.13.0](https://github.com/googleapis/python-os-config/compare/v1.12.4...v1.13.0) (2022-12-13)
 
 
