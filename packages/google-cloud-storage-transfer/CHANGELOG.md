@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-storage-transfer/compare/v1.6.0...v1.7.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#139](https://github.com/googleapis/python-storage-transfer/issues/139)) ([d561a86](https://github.com/googleapis/python-storage-transfer/commit/d561a865a400f1c6b5ebf1b76d603eb5d3e2e8de))
+
 ## [1.6.0](https://github.com/googleapis/python-storage-transfer/compare/v1.5.2...v1.6.0) (2022-12-15)
 
 
