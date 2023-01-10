@@ -36,6 +36,9 @@ class SearchRequest(proto.Message):
     [SearchService.Search][google.cloud.retail.v2beta.SearchService.Search]
     method.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         placement (str):
             Required. The resource name of the Retail Search serving
@@ -636,6 +639,8 @@ class SearchRequest(proto.Message):
 
     class BoostSpec(proto.Message):
         r"""Boost specification to boost certain items.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
             condition_boost_specs (MutableSequence[google.cloud.retail_v2beta.types.SearchRequest.BoostSpec.ConditionBoostSpec]):

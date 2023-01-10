@@ -598,6 +598,9 @@ class CustomAttribute(proto.Message):
     r"""A custom attribute that is not explicitly modeled in
     [Product][google.cloud.retail.v2beta.Product].
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         text (MutableSequence[str]):
             The textual values of this custom attribute. For example,
