@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.2.0](https://github.com/googleapis/python-dataproc/compare/v5.1.0...v5.2.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#510](https://github.com/googleapis/python-dataproc/issues/510)) ([d1ed81d](https://github.com/googleapis/python-dataproc/commit/d1ed81d193a9ee5e25685fd5b27e0014708c528c))
+
 ## [5.1.0](https://github.com/googleapis/python-dataproc/compare/v5.0.3...v5.1.0) (2023-01-07)
 
 
