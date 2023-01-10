@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-contact-center-insights/compare/v1.5.0...v1.6.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#274](https://github.com/googleapis/python-contact-center-insights/issues/274)) ([5297ff5](https://github.com/googleapis/python-contact-center-insights/commit/5297ff5724ef9ec6dc2a0566ab1791a5249e7199))
+
 ## [1.5.0](https://github.com/googleapis/python-contact-center-insights/compare/v1.4.5...v1.5.0) (2022-12-15)
 
 
