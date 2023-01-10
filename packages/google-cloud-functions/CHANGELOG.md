@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/python-functions/compare/v1.9.0...v1.10.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#237](https://github.com/googleapis/python-functions/issues/237)) ([827f45e](https://github.com/googleapis/python-functions/commit/827f45e9aad7857ee36c09ef65a89a9c6d93dfc6))
+
 ## [1.9.0](https://github.com/googleapis/python-functions/compare/v1.8.3...v1.9.0) (2022-12-14)
 
 
