@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/googleapis/python-run/compare/v0.5.0...v0.6.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#78](https://github.com/googleapis/python-run/issues/78)) ([951b679](https://github.com/googleapis/python-run/commit/951b6794b0357b788097b53fdb2e2e2264536cff))
+
 ## [0.5.0](https://github.com/googleapis/python-run/compare/v0.4.2...v0.5.0) (2022-12-14)
 
 
