@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-ids/compare/v1.3.0...v1.4.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#97](https://github.com/googleapis/python-ids/issues/97)) ([4d3ebb9](https://github.com/googleapis/python-ids/commit/4d3ebb91fade51bc6a38b974f12f0d4caa321b96))
+
 ## [1.3.0](https://github.com/googleapis/python-ids/compare/v1.2.4...v1.3.0) (2022-12-14)
 
 
