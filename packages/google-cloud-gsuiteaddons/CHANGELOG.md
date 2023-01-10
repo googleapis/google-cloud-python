@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/python-gsuiteaddons/compare/v0.1.1...v0.2.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#13](https://github.com/googleapis/python-gsuiteaddons/issues/13)) ([d30436f](https://github.com/googleapis/python-gsuiteaddons/commit/d30436fa933cbb007e86b9b0514bdb73d97bc7a4))
+
 ## [0.1.1](https://github.com/googleapis/python-gsuiteaddons/compare/v0.1.0...v0.1.1) (2022-12-08)
 
 
