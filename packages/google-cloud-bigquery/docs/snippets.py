@@ -118,80 +118,6 @@ def test_create_client_default_credentials():
     assert client is not None
 
 
-# TODO(Mattix23): After code sample from https://github.com/googleapis/python-bigquery/pull/1446
-# is updated from cloud.google.com delete this.
-def test_create_table_nested_repeated_schema(client, to_delete):
-    dataset_id = "create_table_nested_repeated_{}".format(_millis())
-    project = client.project
-    dataset_ref = bigquery.DatasetReference(project, dataset_id)
-    dataset = bigquery.Dataset(dataset_ref)
-    client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    # [START bigquery_nested_repeated_schema]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # project = client.project
-    # dataset_ref = bigquery.DatasetReference(project, 'my_dataset')
-
-    schema = [
-        bigquery.SchemaField("id", "STRING", mode="NULLABLE"),
-        bigquery.SchemaField("first_name", "STRING", mode="NULLABLE"),
-        bigquery.SchemaField("last_name", "STRING", mode="NULLABLE"),
-        bigquery.SchemaField("dob", "DATE", mode="NULLABLE"),
-        bigquery.SchemaField(
-            "addresses",
-            "RECORD",
-            mode="REPEATED",
-            fields=[
-                bigquery.SchemaField("status", "STRING", mode="NULLABLE"),
-                bigquery.SchemaField("address", "STRING", mode="NULLABLE"),
-                bigquery.SchemaField("city", "STRING", mode="NULLABLE"),
-                bigquery.SchemaField("state", "STRING", mode="NULLABLE"),
-                bigquery.SchemaField("zip", "STRING", mode="NULLABLE"),
-                bigquery.SchemaField("numberOfYears", "STRING", mode="NULLABLE"),
-            ],
-        ),
-    ]
-    table_ref = dataset_ref.table("my_table")
-    table = bigquery.Table(table_ref, schema=schema)
-    table = client.create_table(table)  # API request
-
-    print("Created table {}".format(table.full_table_id))
-    # [END bigquery_nested_repeated_schema]
-
-
-def test_create_table_cmek(client, to_delete):
-    dataset_id = "create_table_cmek_{}".format(_millis())
-    project = client.project
-    dataset_ref = bigquery.DatasetReference(project, dataset_id)
-    dataset = bigquery.Dataset(dataset_ref)
-    client.create_dataset(dataset)
-    to_delete.append(dataset)
-    # TODO(Mattix23): When sample is updated in cloud.google.com, delete this one.
-    # [START bigquery_create_table_cmek]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_id = 'my_dataset'
-
-    table_ref = dataset.table("my_table")
-    table = bigquery.Table(table_ref)
-
-    # Set the encryption key to use for the table.
-    # TODO: Replace this key with a key you have created in Cloud KMS.
-    kms_key_name = "projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}".format(
-        "cloud-samples-tests", "us", "test", "test"
-    )
-    table.encryption_configuration = bigquery.EncryptionConfiguration(
-        kms_key_name=kms_key_name
-    )
-
-    table = client.create_table(table)  # API request
-
-    assert table.encryption_configuration.kms_key_name == kms_key_name
-    # [END bigquery_create_table_cmek]
-
-
 def test_create_partitioned_table(client, to_delete):
     dataset_id = "create_table_partitioned_{}".format(_millis())
     project = client.project
@@ -248,27 +174,10 @@ def test_manage_table_labels(client, to_delete):
     to_delete.append(dataset)
 
     table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
-    table = client.create_table(table)
 
-    # TODO(Mattix23): After code sample from https://github.com/googleapis/python-bigquery/pull/1451
-    # is updated from cloud.google.com delete this.
-
-    # [START bigquery_label_table]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # project = client.project
-    # dataset_ref = bigquery.DatasetReference(project, dataset_id)
-    # table_ref = dataset_ref.table('my_table')
-    # table = client.get_table(table_ref)  # API request
-
-    assert table.labels == {}
     labels = {"color": "green"}
     table.labels = labels
-
-    table = client.update_table(table, ["labels"])  # API request
-
-    assert table.labels == labels
-    # [END bigquery_label_table]
+    table = client.create_table(table)
 
     # [START bigquery_get_table_labels]
     # from google.cloud import bigquery

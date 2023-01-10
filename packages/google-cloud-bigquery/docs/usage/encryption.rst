@@ -10,7 +10,7 @@ in the BigQuery documentation for more details.
 Create a new table, using a customer-managed encryption key from
 Cloud KMS to encrypt it.
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/snippets/create_table_cmek.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_create_table_cmek]
