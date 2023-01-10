@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-video-live-stream/compare/v1.1.0...v1.2.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#133](https://github.com/googleapis/python-video-live-stream/issues/133)) ([e6ca5aa](https://github.com/googleapis/python-video-live-stream/commit/e6ca5aabc80f70430dc36a35181d8a50d976af78))
+
 ## [1.1.0](https://github.com/googleapis/python-video-live-stream/compare/v1.0.4...v1.1.0) (2022-12-15)
 
 
