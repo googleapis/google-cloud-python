@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/python-beyondcorp-clientgateways/compare/v0.2.0...v0.3.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#37](https://github.com/googleapis/python-beyondcorp-clientgateways/issues/37)) ([8521176](https://github.com/googleapis/python-beyondcorp-clientgateways/commit/8521176cafcd1af761d687116fdc26f1725aef38))
+
 ## [0.2.0](https://github.com/googleapis/python-beyondcorp-clientgateways/compare/v0.1.3...v0.2.0) (2022-12-15)
 
 
