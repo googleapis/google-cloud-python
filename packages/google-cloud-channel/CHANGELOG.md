@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/python-channel/compare/v1.11.0...v1.12.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#220](https://github.com/googleapis/python-channel/issues/220)) ([4dc0684](https://github.com/googleapis/python-channel/commit/4dc068412363999de98c07976de2fee02c422043))
+
 ## [1.11.0](https://github.com/googleapis/python-channel/compare/v1.10.0...v1.11.0) (2022-12-15)
 
 
