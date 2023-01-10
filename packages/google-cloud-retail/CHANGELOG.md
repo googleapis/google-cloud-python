@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/googleapis/python-retail/compare/v1.13.0...v1.14.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#379](https://github.com/googleapis/python-retail/issues/379)) ([945fd66](https://github.com/googleapis/python-retail/commit/945fd66c014c8dedcdd6677f46fc7c54bf746130))
+
 ## [1.13.0](https://github.com/googleapis/python-retail/compare/v1.12.0...v1.13.0) (2023-01-05)
 
 
