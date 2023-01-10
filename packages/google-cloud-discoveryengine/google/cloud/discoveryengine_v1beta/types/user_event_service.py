@@ -31,6 +31,8 @@ __protobuf__ = proto.module(
 class WriteUserEventRequest(proto.Message):
     r"""Request message for WriteUserEvent method.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         parent (str):
             Required. The parent DataStore resource name, such as
@@ -55,6 +57,8 @@ class WriteUserEventRequest(proto.Message):
 
 class CollectUserEventRequest(proto.Message):
     r"""Request message for CollectUserEvent method.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         parent (str):
