@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-bigquery-logging/compare/v1.1.0...v1.2.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#136](https://github.com/googleapis/python-bigquery-logging/issues/136)) ([eb060d3](https://github.com/googleapis/python-bigquery-logging/commit/eb060d3ff789bcbce6bbfe17606274e1ac5a01ab))
+
 ## [1.1.0](https://github.com/googleapis/python-bigquery-logging/compare/v1.0.7...v1.1.0) (2022-12-15)
 
 
