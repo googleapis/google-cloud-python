@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-managed-identities/compare/v1.6.0...v1.7.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#196](https://github.com/googleapis/python-managed-identities/issues/196)) ([03503b0](https://github.com/googleapis/python-managed-identities/commit/03503b05151696a1cefcaab3ed6799d0c055ca74))
+
 ## [1.6.0](https://github.com/googleapis/python-managed-identities/compare/v1.5.4...v1.6.0) (2022-12-14)
 
 
