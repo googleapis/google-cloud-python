@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## [1.9.0](https://github.com/googleapis/python-trace/compare/v1.8.0...v1.9.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#287](https://github.com/googleapis/python-trace/issues/287)) ([ef5bcb3](https://github.com/googleapis/python-trace/commit/ef5bcb3db51f2ee269bb2dae3e6d6784dca17120))
+
 ## [1.8.0](https://github.com/googleapis/python-trace/compare/v1.7.3...v1.8.0) (2022-12-14)
 
 
