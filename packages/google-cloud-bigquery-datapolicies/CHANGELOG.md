@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/python-bigquery-datapolicies/compare/v0.2.0...v0.3.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#16](https://github.com/googleapis/python-bigquery-datapolicies/issues/16)) ([f548773](https://github.com/googleapis/python-bigquery-datapolicies/commit/f548773a7fab6cc97829c1021831e4850fe6ada5))
+
 ## [0.2.0](https://github.com/googleapis/python-bigquery-datapolicies/compare/v0.1.1...v0.2.0) (2022-12-06)
 
 
