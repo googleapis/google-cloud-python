@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-eventarc/compare/v1.7.0...v1.8.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#186](https://github.com/googleapis/python-eventarc/issues/186)) ([2e3ef53](https://github.com/googleapis/python-eventarc/commit/2e3ef531c0a0dd9c83dafbe8c6b12f5ee1e15387))
+
 ## [1.7.0](https://github.com/googleapis/python-eventarc/compare/v1.6.3...v1.7.0) (2022-12-15)
 
 
