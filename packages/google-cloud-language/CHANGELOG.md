@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## [2.8.0](https://github.com/googleapis/python-language/compare/v2.7.0...v2.8.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#413](https://github.com/googleapis/python-language/issues/413)) ([c156e1e](https://github.com/googleapis/python-language/commit/c156e1e67a3430d55664e3abad27951d4af07daf))
+
 ## [2.7.0](https://github.com/googleapis/python-language/compare/v2.6.1...v2.7.0) (2022-12-14)
 
 
