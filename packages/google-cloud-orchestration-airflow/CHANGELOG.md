@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-orchestration-airflow/compare/v1.5.0...v1.6.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#154](https://github.com/googleapis/python-orchestration-airflow/issues/154)) ([86db9d6](https://github.com/googleapis/python-orchestration-airflow/commit/86db9d6e0ae65d63a3dcad75a0dea61a69cf295f))
+
 ## [1.5.0](https://github.com/googleapis/python-orchestration-airflow/compare/v1.4.4...v1.5.0) (2022-12-13)
 
 
