@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.14.0](https://github.com/googleapis/python-texttospeech/compare/v2.13.0...v2.14.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#353](https://github.com/googleapis/python-texttospeech/issues/353)) ([91e5500](https://github.com/googleapis/python-texttospeech/commit/91e5500cde7939e5c8f37e3134d21742c741892a))
+
 ## [2.13.0](https://github.com/googleapis/python-texttospeech/compare/v2.12.3...v2.13.0) (2022-12-15)
 
 
