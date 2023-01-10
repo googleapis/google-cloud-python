@@ -1,4 +1,11 @@
 # Changelog
+## [1.9.0](https://github.com/googleapis/python-billingbudgets/compare/v1.8.0...v1.9.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#255](https://github.com/googleapis/python-billingbudgets/issues/255)) ([405f3e3](https://github.com/googleapis/python-billingbudgets/commit/405f3e3ae4990c37daf1324d180c99c689468f2d))
+
 ## [1.8.0](https://github.com/googleapis/python-billingbudgets/compare/v1.7.3...v1.8.0) (2022-12-15)
 
 
