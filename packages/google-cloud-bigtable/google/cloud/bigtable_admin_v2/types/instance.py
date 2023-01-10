@@ -40,6 +40,9 @@ class Instance(proto.Message):
     served from all [Clusters][google.bigtable.admin.v2.Cluster] in the
     instance.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             The unique name of the instance. Values are of the form

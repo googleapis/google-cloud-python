@@ -31,6 +31,9 @@ class ResponseParams(proto.Message):
     used to get zone_id and cluster_id from response trailers to tag the
     metrics. This should not be used by customers directly
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         zone_id (str):
             The cloud bigtable zone associated with the
