@@ -1341,6 +1341,7 @@ class AbandonInstancesInstanceGroupManagerRequest(proto.Message):
     A request message for InstanceGroupManagers.AbandonInstances.
     See the method description for details.
 
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
@@ -1402,6 +1403,9 @@ class AbandonInstancesRegionInstanceGroupManagerRequest(proto.Message):
     RegionInstanceGroupManagers.AbandonInstances. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_group_manager (str):
             Name of the managed instance group.
@@ -1459,6 +1463,9 @@ class AcceleratorConfig(proto.Message):
     r"""A specification of the type and number of accelerator cards
     attached to the instance.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         accelerator_count (int):
             The number of the guest accelerator cards
@@ -1496,6 +1503,9 @@ class AcceleratorType(proto.Message):
     you can add to VM instances to improve or accelerate performance
     when working with intensive workloads. For more information,
     read GPUs on Compute Engine.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -1596,6 +1606,8 @@ class AcceleratorType(proto.Message):
 class AcceleratorTypeAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -1677,6 +1689,8 @@ class AcceleratorTypeAggregatedList(proto.Message):
 class AcceleratorTypeList(proto.Message):
     r"""Contains a list of accelerator types.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -1749,6 +1763,8 @@ class AcceleratorTypeList(proto.Message):
 class AcceleratorTypesScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         accelerator_types (MutableSequence[google.cloud.compute_v1.types.AcceleratorType]):
             [Output Only] A list of accelerator types contained in this
@@ -1775,6 +1791,8 @@ class AcceleratorTypesScopedList(proto.Message):
 
 class Accelerators(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         guest_accelerator_count (int):
@@ -1804,6 +1822,9 @@ class Accelerators(proto.Message):
 class AccessConfig(proto.Message):
     r"""An access configuration attached to an instance's network
     interface. Only one access config per instance is supported.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         external_ipv6 (str):
@@ -1955,6 +1976,9 @@ class AddAccessConfigInstanceRequest(proto.Message):
     r"""A request message for Instances.AddAccessConfig. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         access_config_resource (google.cloud.compute_v1.types.AccessConfig):
             The body resource for this request
@@ -2019,6 +2043,9 @@ class AddAssociationFirewallPolicyRequest(proto.Message):
     r"""A request message for FirewallPolicies.AddAssociation. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         firewall_policy (str):
             Name of the firewall policy to update.
@@ -2076,6 +2103,9 @@ class AddAssociationFirewallPolicyRequest(proto.Message):
 class AddAssociationNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for NetworkFirewallPolicies.AddAssociation.
     See the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         firewall_policy (str):
@@ -2141,6 +2171,9 @@ class AddAssociationRegionNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for
     RegionNetworkFirewallPolicies.AddAssociation. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         firewall_policy (str):
@@ -2211,6 +2244,9 @@ class AddHealthCheckTargetPoolRequest(proto.Message):
     r"""A request message for TargetPools.AddHealthCheck. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -2268,6 +2304,9 @@ class AddHealthCheckTargetPoolRequest(proto.Message):
 class AddInstanceTargetPoolRequest(proto.Message):
     r"""A request message for TargetPools.AddInstance. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -2329,6 +2368,9 @@ class AddInstancesInstanceGroupRequest(proto.Message):
     r"""A request message for InstanceGroups.AddInstances. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_group (str):
             The name of the instance group where you are
@@ -2388,6 +2430,9 @@ class AddNodesNodeGroupRequest(proto.Message):
     r"""A request message for NodeGroups.AddNodes. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         node_group (str):
             Name of the NodeGroup resource.
@@ -2445,6 +2490,9 @@ class AddPeeringNetworkRequest(proto.Message):
     r"""A request message for Networks.AddPeering. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         network (str):
             Name of the network resource to add peering
@@ -2496,6 +2544,9 @@ class AddPeeringNetworkRequest(proto.Message):
 class AddResourcePoliciesDiskRequest(proto.Message):
     r"""A request message for Disks.AddResourcePolicies. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         disk (str):
@@ -2556,6 +2607,9 @@ class AddResourcePoliciesInstanceRequest(proto.Message):
     r"""A request message for Instances.AddResourcePolicies. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance (str):
             The instance name for this request.
@@ -2612,6 +2666,9 @@ class AddResourcePoliciesInstanceRequest(proto.Message):
 class AddResourcePoliciesRegionDiskRequest(proto.Message):
     r"""A request message for RegionDisks.AddResourcePolicies. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         disk (str):
@@ -2670,6 +2727,9 @@ class AddRuleFirewallPolicyRequest(proto.Message):
     r"""A request message for FirewallPolicies.AddRule. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         firewall_policy (str):
             Name of the firewall policy to update.
@@ -2714,6 +2774,9 @@ class AddRuleFirewallPolicyRequest(proto.Message):
 class AddRuleNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for NetworkFirewallPolicies.AddRule. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         firewall_policy (str):
@@ -2789,6 +2852,9 @@ class AddRuleNetworkFirewallPolicyRequest(proto.Message):
 class AddRuleRegionNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for RegionNetworkFirewallPolicies.AddRule.
     See the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         firewall_policy (str):
@@ -2871,6 +2937,9 @@ class AddRuleSecurityPolicyRequest(proto.Message):
     r"""A request message for SecurityPolicies.AddRule. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -2907,6 +2976,9 @@ class AddRuleSecurityPolicyRequest(proto.Message):
 class AddSignedUrlKeyBackendBucketRequest(proto.Message):
     r"""A request message for BackendBuckets.AddSignedUrlKey. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         backend_bucket (str):
@@ -2960,6 +3032,9 @@ class AddSignedUrlKeyBackendBucketRequest(proto.Message):
 class AddSignedUrlKeyBackendServiceRequest(proto.Message):
     r"""A request message for BackendServices.AddSignedUrlKey. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         backend_service (str):
@@ -3017,6 +3092,9 @@ class Address(proto.Message):
     \* `Regional (external and
     internal) <https://cloud.google.com/compute/docs/reference/rest/v1/addresses>`__
     For more information, see Reserving a static external IP address.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         address (str):
@@ -3336,6 +3414,8 @@ class Address(proto.Message):
 class AddressAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -3416,6 +3496,8 @@ class AddressAggregatedList(proto.Message):
 class AddressList(proto.Message):
     r"""Contains a list of addresses.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -3488,6 +3570,8 @@ class AddressList(proto.Message):
 class AddressesScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         addresses (MutableSequence[google.cloud.compute_v1.types.Address]):
             [Output Only] A list of addresses contained in this scope.
@@ -3518,6 +3602,9 @@ class AdvancedMachineFeatures(proto.Message):
     corresponding entries in the GuestOsFeatures of an Image (e.g.,
     whether or not the OS in the Image supports nested
     virtualization being enabled or disabled).
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         enable_nested_virtualization (bool):
@@ -3575,6 +3662,9 @@ class AdvancedMachineFeatures(proto.Message):
 class AggregatedListAcceleratorTypesRequest(proto.Message):
     r"""A request message for AcceleratorTypes.AggregatedList. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -3712,6 +3802,9 @@ class AggregatedListAddressesRequest(proto.Message):
     r"""A request message for Addresses.AggregatedList. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -3847,6 +3940,9 @@ class AggregatedListAddressesRequest(proto.Message):
 class AggregatedListAutoscalersRequest(proto.Message):
     r"""A request message for Autoscalers.AggregatedList. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -3984,6 +4080,9 @@ class AggregatedListBackendServicesRequest(proto.Message):
     r"""A request message for BackendServices.AggregatedList. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -4119,6 +4218,9 @@ class AggregatedListBackendServicesRequest(proto.Message):
 class AggregatedListDiskTypesRequest(proto.Message):
     r"""A request message for DiskTypes.AggregatedList. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -4256,6 +4358,9 @@ class AggregatedListDisksRequest(proto.Message):
     r"""A request message for Disks.AggregatedList. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -4391,6 +4496,9 @@ class AggregatedListDisksRequest(proto.Message):
 class AggregatedListForwardingRulesRequest(proto.Message):
     r"""A request message for ForwardingRules.AggregatedList. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -4528,6 +4636,9 @@ class AggregatedListGlobalOperationsRequest(proto.Message):
     r"""A request message for GlobalOperations.AggregatedList. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -4663,6 +4774,9 @@ class AggregatedListGlobalOperationsRequest(proto.Message):
 class AggregatedListHealthChecksRequest(proto.Message):
     r"""A request message for HealthChecks.AggregatedList. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -4800,6 +4914,9 @@ class AggregatedListInstanceGroupManagersRequest(proto.Message):
     r"""A request message for InstanceGroupManagers.AggregatedList.
     See the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -4935,6 +5052,9 @@ class AggregatedListInstanceGroupManagersRequest(proto.Message):
 class AggregatedListInstanceGroupsRequest(proto.Message):
     r"""A request message for InstanceGroups.AggregatedList. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -5072,6 +5192,9 @@ class AggregatedListInstancesRequest(proto.Message):
     r"""A request message for Instances.AggregatedList. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -5207,6 +5330,9 @@ class AggregatedListInstancesRequest(proto.Message):
 class AggregatedListInterconnectAttachmentsRequest(proto.Message):
     r"""A request message for InterconnectAttachments.AggregatedList.
     See the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -5344,6 +5470,9 @@ class AggregatedListMachineTypesRequest(proto.Message):
     r"""A request message for MachineTypes.AggregatedList. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -5479,6 +5608,9 @@ class AggregatedListMachineTypesRequest(proto.Message):
 class AggregatedListNetworkAttachmentsRequest(proto.Message):
     r"""A request message for NetworkAttachments.AggregatedList. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -5617,6 +5749,9 @@ class AggregatedListNetworkEdgeSecurityServicesRequest(proto.Message):
     NetworkEdgeSecurityServices.AggregatedList. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -5752,6 +5887,9 @@ class AggregatedListNetworkEdgeSecurityServicesRequest(proto.Message):
 class AggregatedListNetworkEndpointGroupsRequest(proto.Message):
     r"""A request message for NetworkEndpointGroups.AggregatedList.
     See the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -5889,6 +6027,9 @@ class AggregatedListNodeGroupsRequest(proto.Message):
     r"""A request message for NodeGroups.AggregatedList. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -6024,6 +6165,9 @@ class AggregatedListNodeGroupsRequest(proto.Message):
 class AggregatedListNodeTemplatesRequest(proto.Message):
     r"""A request message for NodeTemplates.AggregatedList. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -6161,6 +6305,9 @@ class AggregatedListNodeTypesRequest(proto.Message):
     r"""A request message for NodeTypes.AggregatedList. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -6296,6 +6443,9 @@ class AggregatedListNodeTypesRequest(proto.Message):
 class AggregatedListPacketMirroringsRequest(proto.Message):
     r"""A request message for PacketMirrorings.AggregatedList. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -6433,6 +6583,9 @@ class AggregatedListPublicDelegatedPrefixesRequest(proto.Message):
     r"""A request message for PublicDelegatedPrefixes.AggregatedList.
     See the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -6568,6 +6721,9 @@ class AggregatedListPublicDelegatedPrefixesRequest(proto.Message):
 class AggregatedListRegionCommitmentsRequest(proto.Message):
     r"""A request message for RegionCommitments.AggregatedList. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -6705,6 +6861,9 @@ class AggregatedListReservationsRequest(proto.Message):
     r"""A request message for Reservations.AggregatedList. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -6840,6 +6999,9 @@ class AggregatedListReservationsRequest(proto.Message):
 class AggregatedListResourcePoliciesRequest(proto.Message):
     r"""A request message for ResourcePolicies.AggregatedList. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -6977,6 +7139,9 @@ class AggregatedListRoutersRequest(proto.Message):
     r"""A request message for Routers.AggregatedList. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -7112,6 +7277,9 @@ class AggregatedListRoutersRequest(proto.Message):
 class AggregatedListSecurityPoliciesRequest(proto.Message):
     r"""A request message for SecurityPolicies.AggregatedList. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -7249,6 +7417,9 @@ class AggregatedListServiceAttachmentsRequest(proto.Message):
     r"""A request message for ServiceAttachments.AggregatedList. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -7384,6 +7555,9 @@ class AggregatedListServiceAttachmentsRequest(proto.Message):
 class AggregatedListSslCertificatesRequest(proto.Message):
     r"""A request message for SslCertificates.AggregatedList. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -7521,6 +7695,9 @@ class AggregatedListSslPoliciesRequest(proto.Message):
     r"""A request message for SslPolicies.AggregatedList. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -7656,6 +7833,9 @@ class AggregatedListSslPoliciesRequest(proto.Message):
 class AggregatedListSubnetworksRequest(proto.Message):
     r"""A request message for Subnetworks.AggregatedList. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -7793,6 +7973,9 @@ class AggregatedListTargetHttpProxiesRequest(proto.Message):
     r"""A request message for TargetHttpProxies.AggregatedList. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -7928,6 +8111,9 @@ class AggregatedListTargetHttpProxiesRequest(proto.Message):
 class AggregatedListTargetHttpsProxiesRequest(proto.Message):
     r"""A request message for TargetHttpsProxies.AggregatedList. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -8065,6 +8251,9 @@ class AggregatedListTargetInstancesRequest(proto.Message):
     r"""A request message for TargetInstances.AggregatedList. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -8200,6 +8389,9 @@ class AggregatedListTargetInstancesRequest(proto.Message):
 class AggregatedListTargetPoolsRequest(proto.Message):
     r"""A request message for TargetPools.AggregatedList. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -8337,6 +8529,9 @@ class AggregatedListTargetTcpProxiesRequest(proto.Message):
     r"""A request message for TargetTcpProxies.AggregatedList. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -8472,6 +8667,9 @@ class AggregatedListTargetTcpProxiesRequest(proto.Message):
 class AggregatedListTargetVpnGatewaysRequest(proto.Message):
     r"""A request message for TargetVpnGateways.AggregatedList. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -8609,6 +8807,9 @@ class AggregatedListUrlMapsRequest(proto.Message):
     r"""A request message for UrlMaps.AggregatedList. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -8744,6 +8945,9 @@ class AggregatedListUrlMapsRequest(proto.Message):
 class AggregatedListVpnGatewaysRequest(proto.Message):
     r"""A request message for VpnGateways.AggregatedList. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -8881,6 +9085,9 @@ class AggregatedListVpnTunnelsRequest(proto.Message):
     r"""A request message for VpnTunnels.AggregatedList. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -9017,6 +9224,9 @@ class AliasIpRange(proto.Message):
     r"""An alias IP range attached to an instance's network
     interface.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         ip_cidr_range (str):
             The IP alias ranges to allocate for this
@@ -9054,6 +9264,8 @@ class AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk(
     proto.Message
 ):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         disk_size_gb (int):
@@ -9095,6 +9307,8 @@ class AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk(
 
 class AllocationSpecificSKUAllocationReservedInstanceProperties(proto.Message):
     r"""Properties of the SKU instances being reserved. Next ID: 9
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         guest_accelerators (MutableSequence[google.cloud.compute_v1.types.AcceleratorConfig]):
@@ -9155,6 +9369,9 @@ class AllocationSpecificSKUReservation(proto.Message):
     r"""This reservation type allows to pre allocate specific
     instance configuration. Next ID: 6
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         assured_count (int):
             [Output Only] Indicates how many instances are actually
@@ -9203,6 +9420,8 @@ class AllocationSpecificSKUReservation(proto.Message):
 
 class Allowed(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         I_p_protocol (str):
@@ -9313,6 +9532,9 @@ class AttachDiskInstanceRequest(proto.Message):
     r"""A request message for Instances.AttachDisk. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         attached_disk_resource (google.cloud.compute_v1.types.AttachedDisk):
             The body resource for this request
@@ -9383,6 +9605,9 @@ class AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest(proto.Message):
     GlobalNetworkEndpointGroups.AttachNetworkEndpoints. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         global_network_endpoint_groups_attach_endpoints_request_resource (google.cloud.compute_v1.types.GlobalNetworkEndpointGroupsAttachEndpointsRequest):
             The body resource for this request
@@ -9436,6 +9661,9 @@ class AttachNetworkEndpointsNetworkEndpointGroupRequest(proto.Message):
     r"""A request message for
     NetworkEndpointGroups.AttachNetworkEndpoints. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         network_endpoint_group (str):
@@ -9496,6 +9724,8 @@ class AttachNetworkEndpointsNetworkEndpointGroupRequest(proto.Message):
 
 class AttachedDisk(proto.Message):
     r"""An instance-attached disk resource.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         architecture (str):
@@ -9770,6 +10000,9 @@ class AttachedDiskInitializeParams(proto.Message):
     exclusive with the source property; you can only define one or the
     other, but not both.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         architecture (str):
             The architecture of the attached disk. Valid values are
@@ -10027,6 +10260,9 @@ class AuditConfig(proto.Message):
     exempts jose@example.com from DATA_READ logging, and
     aliya@example.com from DATA_WRITE logging.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         audit_log_configs (MutableSequence[google.cloud.compute_v1.types.AuditLogConfig]):
             The configuration for logging of each type of
@@ -10065,6 +10301,9 @@ class AuditLogConfig(proto.Message):
     "exempted_members": [ "user:jose@example.com" ] }, { "log_type":
     "DATA_WRITE" } ] } This enables 'DATA_READ' and 'DATA_WRITE'
     logging, while exempting jose@example.com from DATA_READ logging.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         exempted_members (MutableSequence[str]):
@@ -10111,6 +10350,8 @@ class AuditLogConfig(proto.Message):
 class AuthorizationLoggingOptions(proto.Message):
     r"""This is deprecated and has no effect. Do not use.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         permission_type (str):
             This is deprecated and has no effect. Do not
@@ -10147,6 +10388,9 @@ class Autoscaler(proto.Message):
     managed instance groups resource, use the autoscaler resource. For
     regional managed instance groups, use the regionAutoscalers
     resource.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         autoscaling_policy (google.cloud.compute_v1.types.AutoscalingPolicy):
@@ -10336,6 +10580,8 @@ class Autoscaler(proto.Message):
 class AutoscalerAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -10417,6 +10663,8 @@ class AutoscalerAggregatedList(proto.Message):
 class AutoscalerList(proto.Message):
     r"""Contains a list of Autoscaler resources.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -10488,6 +10736,8 @@ class AutoscalerList(proto.Message):
 
 class AutoscalerStatusDetails(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         message (str):
@@ -10619,6 +10869,8 @@ class AutoscalerStatusDetails(proto.Message):
 class AutoscalersScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         autoscalers (MutableSequence[google.cloud.compute_v1.types.Autoscaler]):
             [Output Only] A list of autoscalers contained in this scope.
@@ -10644,6 +10896,8 @@ class AutoscalersScopedList(proto.Message):
 
 class AutoscalingPolicy(proto.Message):
     r"""Cloud Autoscaler policy.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         cool_down_period_sec (int):
@@ -10777,6 +11031,8 @@ class AutoscalingPolicy(proto.Message):
 class AutoscalingPolicyCpuUtilization(proto.Message):
     r"""CPU utilization policy.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         predictive_method (str):
             Indicates whether predictive autoscaling based on CPU metric
@@ -10831,6 +11087,8 @@ class AutoscalingPolicyCpuUtilization(proto.Message):
 
 class AutoscalingPolicyCustomMetricUtilization(proto.Message):
     r"""Custom utilization metric policy.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -10948,6 +11206,9 @@ class AutoscalingPolicyLoadBalancingUtilization(proto.Message):
     r"""Configuration parameters of autoscaling based on load
     balancing.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         utilization_target (float):
             Fraction of backend capacity utilization (set
@@ -10969,6 +11230,9 @@ class AutoscalingPolicyScaleInControl(proto.Message):
     r"""Configuration that allows for slower scale in so that even if
     Autoscaler recommends an abrupt scale in of a MIG, it will be
     throttled as specified by the parameters below.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         max_scaled_in_replicas (google.cloud.compute_v1.types.FixedOrPercent):
@@ -11006,6 +11270,9 @@ class AutoscalingPolicyScalingSchedule(proto.Message):
     a single scaling schedule. A scaling schedule changes the
     minimum number of VM instances an autoscaler can recommend,
     which can trigger scaling out.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         description (str):
@@ -11090,6 +11357,8 @@ class AutoscalingPolicyScalingSchedule(proto.Message):
 
 class Backend(proto.Message):
     r"""Message containing information of one individual backend.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         balancing_mode (str):
@@ -11290,6 +11559,9 @@ class BackendBucket(proto.Message):
     Storage bucket resource is referenced by a URL map of a load
     balancer. For more information, read Backend Buckets.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         bucket_name (str):
             Cloud Storage bucket name.
@@ -11430,6 +11702,9 @@ class BackendBucket(proto.Message):
 class BackendBucketCdnPolicy(proto.Message):
     r"""Message containing Cloud CDN configuration for a backend
     bucket.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         bypass_cache_on_request_headers (MutableSequence[google.cloud.compute_v1.types.BackendBucketCdnPolicyBypassCacheOnRequestHeader]):
@@ -11667,6 +11942,9 @@ class BackendBucketCdnPolicyBypassCacheOnRequestHeader(proto.Message):
     e.g. Pragma or Authorization headers. Values are case insensitive.
     The presence of such a header overrides the cache_mode setting.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         header_name (str):
             The header field name to match on when
@@ -11710,6 +11988,8 @@ class BackendBucketCdnPolicyCacheKeyPolicy(proto.Message):
 class BackendBucketCdnPolicyNegativeCachingPolicy(proto.Message):
     r"""Specify CDN TTLs for response error codes.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         code (int):
             The HTTP status code to define a TTL against.
@@ -11743,6 +12023,8 @@ class BackendBucketCdnPolicyNegativeCachingPolicy(proto.Message):
 
 class BackendBucketList(proto.Message):
     r"""Contains a list of BackendBucket resources.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -11826,6 +12108,9 @@ class BackendService(proto.Message):
     \*
     `Regional <https://cloud.google.com/compute/docs/reference/rest/v1/regionBackendServices>`__
     For more information, see Backend Services.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         affinity_cookie_ttl_sec (int):
@@ -12462,6 +12747,8 @@ class BackendService(proto.Message):
 class BackendServiceAggregatedList(proto.Message):
     r"""Contains a list of BackendServicesScopedList.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -12541,6 +12828,9 @@ class BackendServiceAggregatedList(proto.Message):
 class BackendServiceCdnPolicy(proto.Message):
     r"""Message containing Cloud CDN configuration for a backend
     service.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         bypass_cache_on_request_headers (MutableSequence[google.cloud.compute_v1.types.BackendServiceCdnPolicyBypassCacheOnRequestHeader]):
@@ -12778,6 +13068,9 @@ class BackendServiceCdnPolicyBypassCacheOnRequestHeader(proto.Message):
     e.g. Pragma or Authorization headers. Values are case insensitive.
     The presence of such a header overrides the cache_mode setting.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         header_name (str):
             The header field name to match on when
@@ -12795,6 +13088,8 @@ class BackendServiceCdnPolicyBypassCacheOnRequestHeader(proto.Message):
 
 class BackendServiceCdnPolicyNegativeCachingPolicy(proto.Message):
     r"""Specify CDN TTLs for response error codes.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         code (int):
@@ -12829,6 +13124,8 @@ class BackendServiceCdnPolicyNegativeCachingPolicy(proto.Message):
 
 class BackendServiceConnectionTrackingPolicy(proto.Message):
     r"""Connection Tracking configuration for this BackendService.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         connection_persistence_on_unhealthy_backends (str):
@@ -12969,6 +13266,9 @@ class BackendServiceFailoverPolicy(proto.Message):
     active pool, for up to the duration of the connection draining
     timeout (10 minutes).
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         disable_connection_drain_on_failover (bool):
             This can be set to true only if the protocol
@@ -13023,6 +13323,8 @@ class BackendServiceFailoverPolicy(proto.Message):
 class BackendServiceGroupHealth(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         annotations (MutableMapping[str, str]):
             Metadata defined as annotations on the
@@ -13059,6 +13361,8 @@ class BackendServiceGroupHealth(proto.Message):
 
 class BackendServiceIAP(proto.Message):
     r"""Identity-Aware Proxy
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         enabled (bool):
@@ -13112,6 +13416,8 @@ class BackendServiceIAP(proto.Message):
 
 class BackendServiceList(proto.Message):
     r"""Contains a list of BackendService resources.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -13186,6 +13492,9 @@ class BackendServiceLocalityLoadBalancingPolicyConfig(proto.Message):
     r"""Container for either a built-in LB policy supported by gRPC
     or Envoy or a custom one implemented by the end user.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         custom_policy (google.cloud.compute_v1.types.BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy):
 
@@ -13214,6 +13523,9 @@ class BackendServiceLocalityLoadBalancingPolicyConfig(proto.Message):
 class BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy(proto.Message):
     r"""The configuration for a custom policy implemented by the user
     and deployed with the client.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         data (str):
@@ -13250,6 +13562,8 @@ class BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy(proto.Message)
 
 class BackendServiceLocalityLoadBalancingPolicyConfigPolicy(proto.Message):
     r"""The configuration for a built-in load balancing policy.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         name (str):
@@ -13294,6 +13608,9 @@ class BackendServiceLogConfig(proto.Message):
     r"""The available logging options for the load balancer traffic
     served by this backend service.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         enable (bool):
             Denotes whether to enable logging for the
@@ -13327,6 +13644,8 @@ class BackendServiceLogConfig(proto.Message):
 class BackendServiceReference(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         backend_service (str):
 
@@ -13342,6 +13661,8 @@ class BackendServiceReference(proto.Message):
 
 class BackendServicesScopedList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         backend_services (MutableSequence[google.cloud.compute_v1.types.BackendService]):
@@ -13369,6 +13690,8 @@ class BackendServicesScopedList(proto.Message):
 
 class BfdPacket(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         authentication_present (bool):
@@ -13583,6 +13906,8 @@ class BfdPacket(proto.Message):
 class BfdStatus(proto.Message):
     r"""Next free: 15
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         bfd_session_initialization_mode (str):
             The BFD session initialization mode for this
@@ -13748,6 +14073,8 @@ class BfdStatus(proto.Message):
 class BfdStatusPacketCounts(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         num_rx (int):
             Number of packets received since the
@@ -13797,6 +14124,8 @@ class BfdStatusPacketCounts(proto.Message):
 
 class Binding(proto.Message):
     r"""Associates ``members``, or principals, with a ``role``.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         binding_id (str):
@@ -13893,6 +14222,9 @@ class BulkInsertInstanceRequest(proto.Message):
     r"""A request message for Instances.BulkInsert. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         bulk_insert_instance_resource_resource (google.cloud.compute_v1.types.BulkInsertInstanceResource):
             The body resource for this request
@@ -13944,6 +14276,9 @@ class BulkInsertInstanceResource(proto.Message):
     r"""A transient resource used in compute.instances.bulkInsert and
     compute.regionInstances.bulkInsert . This resource is not
     persisted anywhere, it is used only for processing the requests.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         count (int):
@@ -14054,6 +14389,9 @@ class BulkInsertInstanceResourcePerInstanceProperties(proto.Message):
     r"""Per-instance properties to be set on individual instances. To
     be extended in the future.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             This field is only temporary. It will be
@@ -14072,6 +14410,9 @@ class BulkInsertInstanceResourcePerInstanceProperties(proto.Message):
 class BulkInsertRegionInstanceRequest(proto.Message):
     r"""A request message for RegionInstances.BulkInsert. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         bulk_insert_instance_resource_resource (google.cloud.compute_v1.types.BulkInsertInstanceResource):
@@ -14123,6 +14464,8 @@ class BulkInsertRegionInstanceRequest(proto.Message):
 class CacheInvalidationRule(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         host (str):
             If set, this invalidation rule will only
@@ -14150,6 +14493,9 @@ class CacheInvalidationRule(proto.Message):
 class CacheKeyPolicy(proto.Message):
     r"""Message containing what to include in the cache key for a
     request for Cloud CDN.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         include_host (bool):
@@ -14227,6 +14573,9 @@ class CacheKeyPolicy(proto.Message):
 class CircuitBreakers(proto.Message):
     r"""Settings controlling the volume of requests, connections and
     retries to this backend service.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         max_connections (int):
@@ -14307,6 +14656,9 @@ class CloneRulesFirewallPolicyRequest(proto.Message):
     r"""A request message for FirewallPolicies.CloneRules. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         firewall_policy (str):
             Name of the firewall policy to update.
@@ -14353,6 +14705,9 @@ class CloneRulesFirewallPolicyRequest(proto.Message):
 class CloneRulesNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for NetworkFirewallPolicies.CloneRules. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         firewall_policy (str):
@@ -14407,6 +14762,9 @@ class CloneRulesRegionNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for
     RegionNetworkFirewallPolicies.CloneRules. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         firewall_policy (str):
@@ -14470,6 +14828,9 @@ class Commitment(proto.Message):
     commitments based on vCPUs and memory usage and receive
     discounted rates. For full details, read Signing Up for
     Committed Use Discounts.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         auto_renew (bool):
@@ -14753,6 +15114,8 @@ class Commitment(proto.Message):
 class CommitmentAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -14833,6 +15196,8 @@ class CommitmentAggregatedList(proto.Message):
 class CommitmentList(proto.Message):
     r"""Contains a list of Commitment resources.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -14905,6 +15270,8 @@ class CommitmentList(proto.Message):
 class CommitmentsScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         commitments (MutableSequence[google.cloud.compute_v1.types.Commitment]):
             [Output Only] A list of commitments contained in this scope.
@@ -14930,6 +15297,8 @@ class CommitmentsScopedList(proto.Message):
 
 class Condition(proto.Message):
     r"""This is deprecated and has no effect. Do not use.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         iam (str):
@@ -15024,6 +15393,8 @@ class Condition(proto.Message):
 class ConfidentialInstanceConfig(proto.Message):
     r"""A set of Confidential Instance options.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         enable_confidential_compute (bool):
             Defines whether the instance should have
@@ -15041,6 +15412,8 @@ class ConfidentialInstanceConfig(proto.Message):
 
 class ConnectionDraining(proto.Message):
     r"""Message containing connection draining configuration.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         draining_timeout_sec (int):
@@ -15062,6 +15435,9 @@ class ConnectionDraining(proto.Message):
 class ConsistentHashLoadBalancerSettings(proto.Message):
     r"""This message defines settings for a consistent hash style
     load balancer.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         http_cookie (google.cloud.compute_v1.types.ConsistentHashLoadBalancerSettingsHttpCookie):
@@ -15115,6 +15491,9 @@ class ConsistentHashLoadBalancerSettingsHttpCookie(proto.Message):
     function is based for load balancing policies that use a
     consistent hash.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Name of the cookie.
@@ -15153,6 +15532,9 @@ class CorsPolicy(proto.Message):
     requests. For more information about the W3C recommendation for
     cross-origin resource sharing (CORS), see Fetch API Living
     Standard.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         allow_credentials (bool):
@@ -15241,6 +15623,9 @@ class CreateInstancesInstanceGroupManagerRequest(proto.Message):
     r"""A request message for InstanceGroupManagers.CreateInstances.
     See the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_group_manager (str):
             The name of the managed instance group. It
@@ -15301,6 +15686,9 @@ class CreateInstancesRegionInstanceGroupManagerRequest(proto.Message):
     RegionInstanceGroupManagers.CreateInstances. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_group_manager (str):
             The name of the managed instance group. It
@@ -15359,6 +15747,9 @@ class CreateInstancesRegionInstanceGroupManagerRequest(proto.Message):
 class CreateSnapshotDiskRequest(proto.Message):
     r"""A request message for Disks.CreateSnapshot. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         disk (str):
@@ -15428,6 +15819,9 @@ class CreateSnapshotRegionDiskRequest(proto.Message):
     r"""A request message for RegionDisks.CreateSnapshot. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         disk (str):
             Name of the regional persistent disk to
@@ -15484,6 +15878,8 @@ class CreateSnapshotRegionDiskRequest(proto.Message):
 
 class CustomerEncryptionKey(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         kms_key_name (str):
@@ -15568,6 +15964,8 @@ class CustomerEncryptionKey(proto.Message):
 class CustomerEncryptionKeyProtectedDisk(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         disk_encryption_key (google.cloud.compute_v1.types.CustomerEncryptionKey):
             Decrypts data associated with the disk with a
@@ -15598,6 +15996,8 @@ class CustomerEncryptionKeyProtectedDisk(proto.Message):
 
 class Data(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         key (str):
@@ -15633,6 +16033,9 @@ class Data(proto.Message):
 class DeleteAccessConfigInstanceRequest(proto.Message):
     r"""A request message for Instances.DeleteAccessConfig. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         access_config (str):
@@ -15696,6 +16099,9 @@ class DeleteAddressRequest(proto.Message):
     r"""A request message for Addresses.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         address (str):
             Name of the address resource to delete.
@@ -15745,6 +16151,9 @@ class DeleteAddressRequest(proto.Message):
 class DeleteAutoscalerRequest(proto.Message):
     r"""A request message for Autoscalers.Delete. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         autoscaler (str):
@@ -15796,6 +16205,9 @@ class DeleteBackendBucketRequest(proto.Message):
     r"""A request message for BackendBuckets.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         backend_bucket (str):
             Name of the BackendBucket resource to delete.
@@ -15839,6 +16251,9 @@ class DeleteBackendBucketRequest(proto.Message):
 class DeleteBackendServiceRequest(proto.Message):
     r"""A request message for BackendServices.Delete. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         backend_service (str):
@@ -15884,6 +16299,9 @@ class DeleteBackendServiceRequest(proto.Message):
 class DeleteDiskRequest(proto.Message):
     r"""A request message for Disks.Delete. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         disk (str):
@@ -15935,6 +16353,9 @@ class DeleteExternalVpnGatewayRequest(proto.Message):
     r"""A request message for ExternalVpnGateways.Delete. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         external_vpn_gateway (str):
             Name of the externalVpnGateways to delete.
@@ -15979,6 +16400,9 @@ class DeleteFirewallPolicyRequest(proto.Message):
     r"""A request message for FirewallPolicies.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         firewall_policy (str):
             Name of the firewall policy to delete.
@@ -16016,6 +16440,9 @@ class DeleteFirewallPolicyRequest(proto.Message):
 class DeleteFirewallRequest(proto.Message):
     r"""A request message for Firewalls.Delete. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         firewall (str):
@@ -16060,6 +16487,9 @@ class DeleteFirewallRequest(proto.Message):
 class DeleteForwardingRuleRequest(proto.Message):
     r"""A request message for ForwardingRules.Delete. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         forwarding_rule (str):
@@ -16112,6 +16542,9 @@ class DeleteGlobalAddressRequest(proto.Message):
     r"""A request message for GlobalAddresses.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         address (str):
             Name of the address resource to delete.
@@ -16155,6 +16588,9 @@ class DeleteGlobalAddressRequest(proto.Message):
 class DeleteGlobalForwardingRuleRequest(proto.Message):
     r"""A request message for GlobalForwardingRules.Delete. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         forwarding_rule (str):
@@ -16200,6 +16636,9 @@ class DeleteGlobalForwardingRuleRequest(proto.Message):
 class DeleteGlobalNetworkEndpointGroupRequest(proto.Message):
     r"""A request message for GlobalNetworkEndpointGroups.Delete. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         network_endpoint_group (str):
@@ -16274,6 +16713,9 @@ class DeleteGlobalOrganizationOperationRequest(proto.Message):
     r"""A request message for GlobalOrganizationOperations.Delete.
     See the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         operation (str):
             Name of the Operations resource to delete.
@@ -16304,6 +16746,9 @@ class DeleteGlobalOrganizationOperationResponse(proto.Message):
 class DeleteGlobalPublicDelegatedPrefixeRequest(proto.Message):
     r"""A request message for GlobalPublicDelegatedPrefixes.Delete.
     See the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -16350,6 +16795,9 @@ class DeleteHealthCheckRequest(proto.Message):
     r"""A request message for HealthChecks.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         health_check (str):
             Name of the HealthCheck resource to delete.
@@ -16394,6 +16842,9 @@ class DeleteImageRequest(proto.Message):
     r"""A request message for Images.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         image (str):
             Name of the image resource to delete.
@@ -16437,6 +16888,9 @@ class DeleteImageRequest(proto.Message):
 class DeleteInstanceGroupManagerRequest(proto.Message):
     r"""A request message for InstanceGroupManagers.Delete. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance_group_manager (str):
@@ -16490,6 +16944,9 @@ class DeleteInstanceGroupRequest(proto.Message):
     r"""A request message for InstanceGroups.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_group (str):
             The name of the instance group to delete.
@@ -16541,6 +16998,9 @@ class DeleteInstanceRequest(proto.Message):
     r"""A request message for Instances.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance (str):
             Name of the instance resource to delete.
@@ -16591,6 +17051,9 @@ class DeleteInstanceTemplateRequest(proto.Message):
     r"""A request message for InstanceTemplates.Delete. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_template (str):
             The name of the instance template to delete.
@@ -16634,6 +17097,9 @@ class DeleteInstanceTemplateRequest(proto.Message):
 class DeleteInstancesInstanceGroupManagerRequest(proto.Message):
     r"""A request message for InstanceGroupManagers.DeleteInstances.
     See the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance_group_manager (str):
@@ -16694,6 +17160,9 @@ class DeleteInstancesRegionInstanceGroupManagerRequest(proto.Message):
     RegionInstanceGroupManagers.DeleteInstances. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_group_manager (str):
             Name of the managed instance group.
@@ -16751,6 +17220,9 @@ class DeleteInterconnectAttachmentRequest(proto.Message):
     r"""A request message for InterconnectAttachments.Delete. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         interconnect_attachment (str):
             Name of the interconnect attachment to
@@ -16802,6 +17274,9 @@ class DeleteInterconnectRequest(proto.Message):
     r"""A request message for Interconnects.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         interconnect (str):
             Name of the interconnect to delete.
@@ -16845,6 +17320,9 @@ class DeleteInterconnectRequest(proto.Message):
 class DeleteLicenseRequest(proto.Message):
     r"""A request message for Licenses.Delete. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         license_ (str):
@@ -16890,6 +17368,9 @@ class DeleteMachineImageRequest(proto.Message):
     r"""A request message for MachineImages.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         machine_image (str):
             The name of the machine image to delete.
@@ -16933,6 +17414,9 @@ class DeleteMachineImageRequest(proto.Message):
 class DeleteNetworkAttachmentRequest(proto.Message):
     r"""A request message for NetworkAttachments.Delete. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         network_attachment (str):
@@ -16982,6 +17466,9 @@ class DeleteNetworkAttachmentRequest(proto.Message):
 class DeleteNetworkEdgeSecurityServiceRequest(proto.Message):
     r"""A request message for NetworkEdgeSecurityServices.Delete. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         network_edge_security_service (str):
@@ -17033,6 +17520,9 @@ class DeleteNetworkEdgeSecurityServiceRequest(proto.Message):
 class DeleteNetworkEndpointGroupRequest(proto.Message):
     r"""A request message for NetworkEndpointGroups.Delete. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         network_endpoint_group (str):
@@ -17087,6 +17577,9 @@ class DeleteNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for NetworkFirewallPolicies.Delete. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         firewall_policy (str):
             Name of the firewall policy to delete.
@@ -17131,6 +17624,9 @@ class DeleteNetworkRequest(proto.Message):
     r"""A request message for Networks.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         network (str):
             Name of the network to delete.
@@ -17174,6 +17670,9 @@ class DeleteNetworkRequest(proto.Message):
 class DeleteNodeGroupRequest(proto.Message):
     r"""A request message for NodeGroups.Delete. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         node_group (str):
@@ -17225,6 +17724,9 @@ class DeleteNodeTemplateRequest(proto.Message):
     r"""A request message for NodeTemplates.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         node_template (str):
             Name of the NodeTemplate resource to delete.
@@ -17274,6 +17776,9 @@ class DeleteNodeTemplateRequest(proto.Message):
 class DeleteNodesNodeGroupRequest(proto.Message):
     r"""A request message for NodeGroups.DeleteNodes. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         node_group (str):
@@ -17334,6 +17839,9 @@ class DeleteNodesNodeGroupRequest(proto.Message):
 class DeletePacketMirroringRequest(proto.Message):
     r"""A request message for PacketMirrorings.Delete. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         packet_mirroring (str):
@@ -17461,6 +17969,9 @@ class DeletePublicAdvertisedPrefixeRequest(proto.Message):
     r"""A request message for PublicAdvertisedPrefixes.Delete. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -17505,6 +18016,9 @@ class DeletePublicAdvertisedPrefixeRequest(proto.Message):
 class DeletePublicDelegatedPrefixeRequest(proto.Message):
     r"""A request message for PublicDelegatedPrefixes.Delete. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -17557,6 +18071,9 @@ class DeleteRegionAutoscalerRequest(proto.Message):
     r"""A request message for RegionAutoscalers.Delete. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         autoscaler (str):
             Name of the autoscaler to delete.
@@ -17606,6 +18123,9 @@ class DeleteRegionAutoscalerRequest(proto.Message):
 class DeleteRegionBackendServiceRequest(proto.Message):
     r"""A request message for RegionBackendServices.Delete. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         backend_service (str):
@@ -17658,6 +18178,9 @@ class DeleteRegionDiskRequest(proto.Message):
     r"""A request message for RegionDisks.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         disk (str):
             Name of the regional persistent disk to
@@ -17709,6 +18232,9 @@ class DeleteRegionHealthCheckRequest(proto.Message):
     r"""A request message for RegionHealthChecks.Delete. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         health_check (str):
             Name of the HealthCheck resource to delete.
@@ -17758,6 +18284,9 @@ class DeleteRegionHealthCheckRequest(proto.Message):
 class DeleteRegionHealthCheckServiceRequest(proto.Message):
     r"""A request message for RegionHealthCheckServices.Delete. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         health_check_service (str):
@@ -17811,6 +18340,9 @@ class DeleteRegionInstanceGroupManagerRequest(proto.Message):
     r"""A request message for RegionInstanceGroupManagers.Delete. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_group_manager (str):
             Name of the managed instance group to delete.
@@ -17860,6 +18392,9 @@ class DeleteRegionInstanceGroupManagerRequest(proto.Message):
 class DeleteRegionNetworkEndpointGroupRequest(proto.Message):
     r"""A request message for RegionNetworkEndpointGroups.Delete. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         network_endpoint_group (str):
@@ -17914,6 +18449,9 @@ class DeleteRegionNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for RegionNetworkFirewallPolicies.Delete.
     See the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         firewall_policy (str):
             Name of the firewall policy to delete.
@@ -17963,6 +18501,9 @@ class DeleteRegionNetworkFirewallPolicyRequest(proto.Message):
 class DeleteRegionNotificationEndpointRequest(proto.Message):
     r"""A request message for RegionNotificationEndpoints.Delete. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         notification_endpoint (str):
@@ -18049,6 +18590,9 @@ class DeleteRegionSecurityPolicyRequest(proto.Message):
     r"""A request message for RegionSecurityPolicies.Delete. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -18098,6 +18642,9 @@ class DeleteRegionSecurityPolicyRequest(proto.Message):
 class DeleteRegionSslCertificateRequest(proto.Message):
     r"""A request message for RegionSslCertificates.Delete. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -18149,6 +18696,9 @@ class DeleteRegionSslCertificateRequest(proto.Message):
 class DeleteRegionSslPolicyRequest(proto.Message):
     r"""A request message for RegionSslPolicies.Delete. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -18202,6 +18752,9 @@ class DeleteRegionTargetHttpProxyRequest(proto.Message):
     r"""A request message for RegionTargetHttpProxies.Delete. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -18252,6 +18805,9 @@ class DeleteRegionTargetHttpProxyRequest(proto.Message):
 class DeleteRegionTargetHttpsProxyRequest(proto.Message):
     r"""A request message for RegionTargetHttpsProxies.Delete. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -18304,6 +18860,9 @@ class DeleteRegionTargetTcpProxyRequest(proto.Message):
     r"""A request message for RegionTargetTcpProxies.Delete. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -18355,6 +18914,9 @@ class DeleteRegionUrlMapRequest(proto.Message):
     r"""A request message for RegionUrlMaps.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -18391,6 +18953,9 @@ class DeleteRegionUrlMapRequest(proto.Message):
 class DeleteReservationRequest(proto.Message):
     r"""A request message for Reservations.Delete. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -18442,6 +19007,9 @@ class DeleteResourcePolicyRequest(proto.Message):
     r"""A request message for ResourcePolicies.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -18492,6 +19060,9 @@ class DeleteRouteRequest(proto.Message):
     r"""A request message for Routes.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -18535,6 +19106,9 @@ class DeleteRouteRequest(proto.Message):
 class DeleteRouterRequest(proto.Message):
     r"""A request message for Routers.Delete. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -18586,6 +19160,9 @@ class DeleteSecurityPolicyRequest(proto.Message):
     r"""A request message for SecurityPolicies.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -18629,6 +19206,9 @@ class DeleteSecurityPolicyRequest(proto.Message):
 class DeleteServiceAttachmentRequest(proto.Message):
     r"""A request message for ServiceAttachments.Delete. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -18680,6 +19260,9 @@ class DeleteServiceAttachmentRequest(proto.Message):
 class DeleteSignedUrlKeyBackendBucketRequest(proto.Message):
     r"""A request message for BackendBuckets.DeleteSignedUrlKey. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         backend_bucket (str):
@@ -18733,6 +19316,9 @@ class DeleteSignedUrlKeyBackendServiceRequest(proto.Message):
     r"""A request message for BackendServices.DeleteSignedUrlKey. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         backend_service (str):
             Name of the BackendService resource to which
@@ -18785,6 +19371,9 @@ class DeleteSnapshotRequest(proto.Message):
     r"""A request message for Snapshots.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -18828,6 +19417,9 @@ class DeleteSnapshotRequest(proto.Message):
 class DeleteSslCertificateRequest(proto.Message):
     r"""A request message for SslCertificates.Delete. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -18874,6 +19466,9 @@ class DeleteSslPolicyRequest(proto.Message):
     r"""A request message for SslPolicies.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -18919,6 +19514,9 @@ class DeleteSslPolicyRequest(proto.Message):
 class DeleteSubnetworkRequest(proto.Message):
     r"""A request message for Subnetworks.Delete. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -18970,6 +19568,9 @@ class DeleteTargetGrpcProxyRequest(proto.Message):
     r"""A request message for TargetGrpcProxies.Delete. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -19014,6 +19615,9 @@ class DeleteTargetGrpcProxyRequest(proto.Message):
 class DeleteTargetHttpProxyRequest(proto.Message):
     r"""A request message for TargetHttpProxies.Delete. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -19060,6 +19664,9 @@ class DeleteTargetHttpsProxyRequest(proto.Message):
     r"""A request message for TargetHttpsProxies.Delete. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -19104,6 +19711,9 @@ class DeleteTargetHttpsProxyRequest(proto.Message):
 class DeleteTargetInstanceRequest(proto.Message):
     r"""A request message for TargetInstances.Delete. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -19156,6 +19766,9 @@ class DeleteTargetPoolRequest(proto.Message):
     r"""A request message for TargetPools.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -19206,6 +19819,9 @@ class DeleteTargetSslProxyRequest(proto.Message):
     r"""A request message for TargetSslProxies.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -19251,6 +19867,9 @@ class DeleteTargetTcpProxyRequest(proto.Message):
     r"""A request message for TargetTcpProxies.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -19295,6 +19914,9 @@ class DeleteTargetTcpProxyRequest(proto.Message):
 class DeleteTargetVpnGatewayRequest(proto.Message):
     r"""A request message for TargetVpnGateways.Delete. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -19346,6 +19968,9 @@ class DeleteUrlMapRequest(proto.Message):
     r"""A request message for UrlMaps.Delete. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -19389,6 +20014,9 @@ class DeleteUrlMapRequest(proto.Message):
 class DeleteVpnGatewayRequest(proto.Message):
     r"""A request message for VpnGateways.Delete. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -19439,6 +20067,9 @@ class DeleteVpnGatewayRequest(proto.Message):
 class DeleteVpnTunnelRequest(proto.Message):
     r"""A request message for VpnTunnels.Delete. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -19523,6 +20154,8 @@ class DeleteZoneOperationResponse(proto.Message):
 class Denied(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         I_p_protocol (str):
             The IP protocol to which this rule applies.
@@ -19556,6 +20189,9 @@ class Denied(proto.Message):
 class DeprecateImageRequest(proto.Message):
     r"""A request message for Images.Deprecate. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         deprecation_status_resource (google.cloud.compute_v1.types.DeprecationStatus):
@@ -19606,6 +20242,8 @@ class DeprecateImageRequest(proto.Message):
 
 class DeprecationStatus(proto.Message):
     r"""Deprecation status for a public resource.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         deleted (str):
@@ -19702,6 +20340,9 @@ class DetachDiskInstanceRequest(proto.Message):
     r"""A request message for Instances.DetachDisk. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         device_name (str):
             The device name of the disk to detach. Make a
@@ -19761,6 +20402,9 @@ class DetachNetworkEndpointsGlobalNetworkEndpointGroupRequest(proto.Message):
     GlobalNetworkEndpointGroups.DetachNetworkEndpoints. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         global_network_endpoint_groups_detach_endpoints_request_resource (google.cloud.compute_v1.types.GlobalNetworkEndpointGroupsDetachEndpointsRequest):
             The body resource for this request
@@ -19814,6 +20458,9 @@ class DetachNetworkEndpointsNetworkEndpointGroupRequest(proto.Message):
     r"""A request message for
     NetworkEndpointGroups.DetachNetworkEndpoints. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         network_endpoint_group (str):
@@ -19876,6 +20523,9 @@ class DisableXpnHostProjectRequest(proto.Message):
     r"""A request message for Projects.DisableXpnHost. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -19913,6 +20563,9 @@ class DisableXpnHostProjectRequest(proto.Message):
 class DisableXpnResourceProjectRequest(proto.Message):
     r"""A request message for Projects.DisableXpnResource. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -19966,6 +20619,9 @@ class Disk(proto.Message):
     disk. For more information, read Zonal persistent disks. The
     regionDisks resource represents a regional persistent disk. For more
     information, read Regional resources.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         architecture (str):
@@ -20476,6 +21132,8 @@ class Disk(proto.Message):
 class DiskAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -20556,6 +21214,9 @@ class DiskAggregatedList(proto.Message):
 class DiskInstantiationConfig(proto.Message):
     r"""A specification of the desired way to instantiate a disk in
     the instance template when its created from a source instance.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         auto_delete (bool):
@@ -20649,6 +21310,8 @@ class DiskInstantiationConfig(proto.Message):
 class DiskList(proto.Message):
     r"""A list of Disk resources.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -20721,6 +21384,8 @@ class DiskList(proto.Message):
 class DiskMoveRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         destination_zone (str):
             The URL of the destination zone to move the
@@ -20785,6 +21450,9 @@ class DiskType(proto.Message):
     Zonal persistent disks. The regionDiskTypes resource represents disk
     types for a regional persistent disk. For more information, read
     Regional persistent disks.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -20903,6 +21571,8 @@ class DiskType(proto.Message):
 class DiskTypeAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -20982,6 +21652,8 @@ class DiskTypeAggregatedList(proto.Message):
 class DiskTypeList(proto.Message):
     r"""Contains a list of disk types.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -21054,6 +21726,8 @@ class DiskTypeList(proto.Message):
 class DiskTypesScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         disk_types (MutableSequence[google.cloud.compute_v1.types.DiskType]):
             [Output Only] A list of disk types contained in this scope.
@@ -21111,6 +21785,8 @@ class DisksRemoveResourcePoliciesRequest(proto.Message):
 class DisksResizeRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         size_gb (int):
             The new size of the persistent disk, which is
@@ -21128,6 +21804,8 @@ class DisksResizeRequest(proto.Message):
 
 class DisksScopedList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         disks (MutableSequence[google.cloud.compute_v1.types.Disk]):
@@ -21155,6 +21833,8 @@ class DisksScopedList(proto.Message):
 class DisplayDevice(proto.Message):
     r"""A set of Display Device options
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         enable_display (bool):
             Defines whether the instance has Display
@@ -21172,6 +21852,8 @@ class DisplayDevice(proto.Message):
 
 class DistributionPolicy(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         target_shape (str):
@@ -21213,6 +21895,8 @@ class DistributionPolicy(proto.Message):
 class DistributionPolicyZoneConfiguration(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         zone (str):
             The URL of the zone. The zone must exist in
@@ -21234,6 +21918,9 @@ class Duration(proto.Message):
     as a count of seconds and fractions of seconds at nanosecond
     resolution. It is independent of any calendar and concepts like
     "day" or "month". Range is approximately 10,000 years.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         nanos (int):
@@ -21267,6 +21954,9 @@ class Duration(proto.Message):
 class EnableXpnHostProjectRequest(proto.Message):
     r"""A request message for Projects.EnableXpnHost. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -21305,6 +21995,9 @@ class EnableXpnHostProjectRequest(proto.Message):
 class EnableXpnResourceProjectRequest(proto.Message):
     r"""A request message for Projects.EnableXpnResource. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -21367,6 +22060,8 @@ class Error(proto.Message):
 class ErrorDetails(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         error_info (google.cloud.compute_v1.types.ErrorInfo):
 
@@ -21419,6 +22114,9 @@ class ErrorInfo(proto.Message):
     that is out of stock: { "reason": "STOCKOUT" "domain":
     "spanner.googleapis.com", "metadata": { "availableRegions":
     "us-central1,us-east2" } }
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         domain (str):
@@ -21474,6 +22172,8 @@ class ErrorInfo(proto.Message):
 class Errors(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         code (str):
             [Output Only] The error type identifier for this error.
@@ -21520,6 +22220,8 @@ class Errors(proto.Message):
 
 class ExchangedPeeringRoute(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         dest_range (str):
@@ -21589,6 +22291,8 @@ class ExchangedPeeringRoute(proto.Message):
 
 class ExchangedPeeringRoutesList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -21664,6 +22368,9 @@ class ExpandIpCidrRangeSubnetworkRequest(proto.Message):
     r"""A request message for Subnetworks.ExpandIpCidrRange. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -21737,6 +22444,9 @@ class Expr(proto.Message):
     that evaluates it. See the service documentation for additional
     information.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         description (str):
             Optional. Description of the expression. This
@@ -21796,6 +22506,9 @@ class ExternalVpnGateway(proto.Message):
     the other gateway. For more information about using external VPN
     gateways, see Creating an HA VPN gateway and tunnel pair to a
     peer VPN.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -21935,6 +22648,8 @@ class ExternalVpnGateway(proto.Message):
 class ExternalVpnGatewayInterface(proto.Message):
     r"""The interface for the external VPN gateway.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (int):
             The numeric ID of this interface. The allowed input values
@@ -21969,6 +22684,9 @@ class ExternalVpnGatewayInterface(proto.Message):
 class ExternalVpnGatewayList(proto.Message):
     r"""Response to the list request, and contains a list of
     externalVpnGateways.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         etag (str):
@@ -22051,6 +22769,8 @@ class ExternalVpnGatewayList(proto.Message):
 class FileContentBuffer(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         content (str):
             The raw content in the secure keys file.
@@ -22087,6 +22807,9 @@ class Firewall(proto.Message):
     r"""Represents a Firewall Rule resource. Firewall rules allow or
     deny ingress traffic to, and egress traffic from your instances.
     For more information, read Firewall rules.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         allowed (MutableSequence[google.cloud.compute_v1.types.Allowed]):
@@ -22358,6 +23081,8 @@ class Firewall(proto.Message):
 class FirewallList(proto.Message):
     r"""Contains a list of firewalls.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -22430,6 +23155,8 @@ class FirewallList(proto.Message):
 class FirewallLogConfig(proto.Message):
     r"""The available logging options for a firewall rule.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         enable (bool):
             This field denotes whether to enable logging
@@ -22471,6 +23198,8 @@ class FirewallLogConfig(proto.Message):
 class FirewallPoliciesListAssociationsResponse(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         associations (MutableSequence[google.cloud.compute_v1.types.FirewallPolicyAssociation]):
             A list of associations.
@@ -22496,6 +23225,8 @@ class FirewallPoliciesListAssociationsResponse(proto.Message):
 
 class FirewallPolicy(proto.Message):
     r"""Represents a Firewall Policy resource.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         associations (MutableSequence[google.cloud.compute_v1.types.FirewallPolicyAssociation]):
@@ -22686,6 +23417,8 @@ class FirewallPolicy(proto.Message):
 class FirewallPolicyAssociation(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         attachment_target (str):
             The target that the firewall policy is
@@ -22741,6 +23474,8 @@ class FirewallPolicyAssociation(proto.Message):
 
 class FirewallPolicyList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -22806,6 +23541,9 @@ class FirewallPolicyRule(proto.Message):
     r"""Represents a rule that describes one or more match conditions
     along with the action to be taken when traffic matches this
     condition (allow or deny).
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         action (str):
@@ -23018,6 +23756,8 @@ class FirewallPolicyRuleMatcher(proto.Message):
 class FirewallPolicyRuleMatcherLayer4Config(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         ip_protocol (str):
             The IP protocol to which this rule applies.
@@ -23049,6 +23789,8 @@ class FirewallPolicyRuleMatcherLayer4Config(proto.Message):
 
 class FirewallPolicyRuleSecureTag(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         name (str):
@@ -23089,6 +23831,9 @@ class FirewallPolicyRuleSecureTag(proto.Message):
 class FixedOrPercent(proto.Message):
     r"""Encapsulates numeric value that can be either absolute or
     relative.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         calculated (int):
@@ -23143,6 +23888,9 @@ class ForwardingRule(proto.Message):
     Forwarding rules can also reference target instances and Cloud VPN
     Classic gateways (targetVpnGateway). For more information, read
     Forwarding rule concepts and Using protocol forwarding.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         I_p_address (str):
@@ -23694,6 +24442,8 @@ class ForwardingRule(proto.Message):
 class ForwardingRuleAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -23775,6 +24525,8 @@ class ForwardingRuleAggregatedList(proto.Message):
 class ForwardingRuleList(proto.Message):
     r"""Contains a list of ForwardingRule resources.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -23846,6 +24598,8 @@ class ForwardingRuleList(proto.Message):
 class ForwardingRuleReference(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         forwarding_rule (str):
 
@@ -23864,6 +24618,9 @@ class ForwardingRuleServiceDirectoryRegistration(proto.Message):
     Service Directory. The region and project of the Service
     Directory resource generated from this registration will be the
     same as this Forwarding Rule.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         namespace (str):
@@ -23906,6 +24663,8 @@ class ForwardingRuleServiceDirectoryRegistration(proto.Message):
 class ForwardingRulesScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         forwarding_rules (MutableSequence[google.cloud.compute_v1.types.ForwardingRule]):
             A list of forwarding rules contained in this
@@ -23932,6 +24691,8 @@ class ForwardingRulesScopedList(proto.Message):
 
 class GRPCHealthCheck(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         grpc_service_name (str):
@@ -24091,6 +24852,9 @@ class GetAssociationFirewallPolicyRequest(proto.Message):
     r"""A request message for FirewallPolicies.GetAssociation. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         firewall_policy (str):
             Name of the firewall policy to which the
@@ -24116,6 +24880,9 @@ class GetAssociationFirewallPolicyRequest(proto.Message):
 class GetAssociationNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for NetworkFirewallPolicies.GetAssociation.
     See the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         firewall_policy (str):
@@ -24149,6 +24916,9 @@ class GetAssociationRegionNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for
     RegionNetworkFirewallPolicies.GetAssociation. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         firewall_policy (str):
@@ -24608,6 +25378,9 @@ class GetGlobalOrganizationOperationRequest(proto.Message):
     r"""A request message for GlobalOrganizationOperations.Get. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         operation (str):
             Name of the Operations resource to return.
@@ -24653,6 +25426,9 @@ class GetGlobalPublicDelegatedPrefixeRequest(proto.Message):
 class GetGuestAttributesInstanceRequest(proto.Message):
     r"""A request message for Instances.GetGuestAttributes. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance (str):
@@ -24821,6 +25597,9 @@ class GetIamPolicyBackendServiceRequest(proto.Message):
     r"""A request message for BackendServices.GetIamPolicy. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         options_requested_policy_version (int):
             Requested IAM Policy version.
@@ -24850,6 +25629,9 @@ class GetIamPolicyBackendServiceRequest(proto.Message):
 class GetIamPolicyDiskRequest(proto.Message):
     r"""A request message for Disks.GetIamPolicy. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         options_requested_policy_version (int):
@@ -24887,6 +25669,9 @@ class GetIamPolicyFirewallPolicyRequest(proto.Message):
     r"""A request message for FirewallPolicies.GetIamPolicy. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         options_requested_policy_version (int):
             Requested IAM Policy version.
@@ -24910,6 +25695,9 @@ class GetIamPolicyFirewallPolicyRequest(proto.Message):
 class GetIamPolicyImageRequest(proto.Message):
     r"""A request message for Images.GetIamPolicy. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         options_requested_policy_version (int):
@@ -24940,6 +25728,9 @@ class GetIamPolicyImageRequest(proto.Message):
 class GetIamPolicyInstanceRequest(proto.Message):
     r"""A request message for Instances.GetIamPolicy. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         options_requested_policy_version (int):
@@ -24977,6 +25768,9 @@ class GetIamPolicyInstanceTemplateRequest(proto.Message):
     r"""A request message for InstanceTemplates.GetIamPolicy. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         options_requested_policy_version (int):
             Requested IAM Policy version.
@@ -25006,6 +25800,9 @@ class GetIamPolicyInstanceTemplateRequest(proto.Message):
 class GetIamPolicyLicenseRequest(proto.Message):
     r"""A request message for Licenses.GetIamPolicy. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         options_requested_policy_version (int):
@@ -25037,6 +25834,9 @@ class GetIamPolicyMachineImageRequest(proto.Message):
     r"""A request message for MachineImages.GetIamPolicy. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         options_requested_policy_version (int):
             Requested IAM Policy version.
@@ -25066,6 +25866,9 @@ class GetIamPolicyMachineImageRequest(proto.Message):
 class GetIamPolicyNetworkAttachmentRequest(proto.Message):
     r"""A request message for NetworkAttachments.GetIamPolicy. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         options_requested_policy_version (int):
@@ -25103,6 +25906,9 @@ class GetIamPolicyNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for NetworkFirewallPolicies.GetIamPolicy.
     See the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         options_requested_policy_version (int):
             Requested IAM Policy version.
@@ -25132,6 +25938,9 @@ class GetIamPolicyNetworkFirewallPolicyRequest(proto.Message):
 class GetIamPolicyNodeGroupRequest(proto.Message):
     r"""A request message for NodeGroups.GetIamPolicy. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         options_requested_policy_version (int):
@@ -25169,6 +25978,9 @@ class GetIamPolicyNodeTemplateRequest(proto.Message):
     r"""A request message for NodeTemplates.GetIamPolicy. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         options_requested_policy_version (int):
             Requested IAM Policy version.
@@ -25205,6 +26017,9 @@ class GetIamPolicyRegionBackendServiceRequest(proto.Message):
     r"""A request message for RegionBackendServices.GetIamPolicy. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         options_requested_policy_version (int):
             Requested IAM Policy version.
@@ -25240,6 +26055,9 @@ class GetIamPolicyRegionBackendServiceRequest(proto.Message):
 class GetIamPolicyRegionDiskRequest(proto.Message):
     r"""A request message for RegionDisks.GetIamPolicy. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         options_requested_policy_version (int):
@@ -25278,6 +26096,9 @@ class GetIamPolicyRegionNetworkFirewallPolicyRequest(proto.Message):
     RegionNetworkFirewallPolicies.GetIamPolicy. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         options_requested_policy_version (int):
             Requested IAM Policy version.
@@ -25313,6 +26134,9 @@ class GetIamPolicyRegionNetworkFirewallPolicyRequest(proto.Message):
 class GetIamPolicyReservationRequest(proto.Message):
     r"""A request message for Reservations.GetIamPolicy. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         options_requested_policy_version (int):
@@ -25350,6 +26174,9 @@ class GetIamPolicyResourcePolicyRequest(proto.Message):
     r"""A request message for ResourcePolicies.GetIamPolicy. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         options_requested_policy_version (int):
             Requested IAM Policy version.
@@ -25385,6 +26212,9 @@ class GetIamPolicyResourcePolicyRequest(proto.Message):
 class GetIamPolicyServiceAttachmentRequest(proto.Message):
     r"""A request message for ServiceAttachments.GetIamPolicy. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         options_requested_policy_version (int):
@@ -25422,6 +26252,9 @@ class GetIamPolicySnapshotRequest(proto.Message):
     r"""A request message for Snapshots.GetIamPolicy. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         options_requested_policy_version (int):
             Requested IAM Policy version.
@@ -25451,6 +26284,9 @@ class GetIamPolicySnapshotRequest(proto.Message):
 class GetIamPolicySubnetworkRequest(proto.Message):
     r"""A request message for Subnetworks.GetIamPolicy. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         options_requested_policy_version (int):
@@ -25800,6 +26636,9 @@ class GetMachineTypeRequest(proto.Message):
 class GetNatMappingInfoRoutersRequest(proto.Message):
     r"""A request message for Routers.GetNatMappingInfo. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -26939,6 +27778,9 @@ class GetRuleFirewallPolicyRequest(proto.Message):
     r"""A request message for FirewallPolicies.GetRule. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         firewall_policy (str):
             Name of the firewall policy to which the
@@ -26964,6 +27806,9 @@ class GetRuleFirewallPolicyRequest(proto.Message):
 class GetRuleNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for NetworkFirewallPolicies.GetRule. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         firewall_policy (str):
@@ -26996,6 +27841,9 @@ class GetRuleNetworkFirewallPolicyRequest(proto.Message):
 class GetRuleRegionNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for RegionNetworkFirewallPolicies.GetRule.
     See the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         firewall_policy (str):
@@ -27034,6 +27882,9 @@ class GetRuleRegionNetworkFirewallPolicyRequest(proto.Message):
 class GetRuleSecurityPolicyRequest(proto.Message):
     r"""A request message for SecurityPolicies.GetRule. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         priority (int):
@@ -27114,6 +27965,9 @@ class GetSecurityPolicyRequest(proto.Message):
 class GetSerialPortOutputInstanceRequest(proto.Message):
     r"""A request message for Instances.GetSerialPortOutput. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance (str):
@@ -27633,6 +28487,9 @@ class GetXpnResourcesProjectsRequest(proto.Message):
     r"""A request message for Projects.GetXpnResources. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -27828,6 +28685,8 @@ class GlobalNetworkEndpointGroupsDetachEndpointsRequest(proto.Message):
 class GlobalOrganizationSetPolicyRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         bindings (MutableSequence[google.cloud.compute_v1.types.Binding]):
             Flatten Policy to create a backward
@@ -27870,6 +28729,8 @@ class GlobalOrganizationSetPolicyRequest(proto.Message):
 class GlobalSetLabelsRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         label_fingerprint (str):
             The fingerprint of the previous set of labels
@@ -27906,6 +28767,8 @@ class GlobalSetLabelsRequest(proto.Message):
 
 class GlobalSetPolicyRequest(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         bindings (MutableSequence[google.cloud.compute_v1.types.Binding]):
@@ -27948,6 +28811,8 @@ class GlobalSetPolicyRequest(proto.Message):
 
 class GuestAttributes(proto.Message):
     r"""A guest attributes entry.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         kind (str):
@@ -28015,6 +28880,8 @@ class GuestAttributes(proto.Message):
 class GuestAttributesEntry(proto.Message):
     r"""A guest attributes namespace/key/value entry.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         key (str):
             Key for the guest attribute entry.
@@ -28065,6 +28932,8 @@ class GuestAttributesValue(proto.Message):
 class GuestOsFeature(proto.Message):
     r"""Guest OS features.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         type_ (str):
             The ID of a supported feature. To add multiple values, use
@@ -28104,6 +28973,8 @@ class GuestOsFeature(proto.Message):
 
 class HTTP2HealthCheck(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         host (str):
@@ -28254,6 +29125,8 @@ class HTTP2HealthCheck(proto.Message):
 class HTTPHealthCheck(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         host (str):
             The value of the host header in the HTTP
@@ -28403,6 +29276,8 @@ class HTTPHealthCheck(proto.Message):
 
 class HTTPSHealthCheck(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         host (str):
@@ -28568,6 +29443,9 @@ class HealthCheck(proto.Message):
     balancers must use legacy HTTP health checks
     (``compute.v1.httpHealthChecks``). For more information, see Health
     checks overview.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         check_interval_sec (int):
@@ -28789,6 +29667,8 @@ class HealthCheck(proto.Message):
 class HealthCheckList(proto.Message):
     r"""Contains a list of HealthCheck resources.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -28861,6 +29741,9 @@ class HealthCheckLogConfig(proto.Message):
     r"""Configuration of logging on a health check. If logging is
     enabled, logs will be exported to Stackdriver.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         enable (bool):
             Indicates whether or not to export logs. This
@@ -28884,6 +29767,9 @@ class HealthCheckReference(proto.Message):
     - projects/project-id/global/httpHealthChecks/health-check -
     global/httpHealthChecks/health-check
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         health_check (str):
 
@@ -28899,6 +29785,8 @@ class HealthCheckReference(proto.Message):
 
 class HealthCheckService(proto.Message):
     r"""Represents a Health-Check as a Service resource.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -29086,6 +29974,9 @@ class HealthCheckServiceReference(proto.Message):
     projects/project-id/regions/us-west1/healthCheckServices/health-check-service
     - regions/us-west1/healthCheckServices/health-check-service
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         health_check_service (str):
 
@@ -29101,6 +29992,8 @@ class HealthCheckServiceReference(proto.Message):
 
 class HealthCheckServicesList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -29174,6 +30067,8 @@ class HealthCheckServicesList(proto.Message):
 
 class HealthChecksAggregatedList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -29253,6 +30148,8 @@ class HealthChecksAggregatedList(proto.Message):
 class HealthChecksScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         health_checks (MutableSequence[google.cloud.compute_v1.types.HealthCheck]):
             A list of HealthChecks contained in this
@@ -29279,6 +30176,8 @@ class HealthChecksScopedList(proto.Message):
 
 class HealthStatus(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         annotations (MutableMapping[str, str]):
@@ -29391,6 +30290,8 @@ class HealthStatus(proto.Message):
 class HealthStatusForNetworkEndpoint(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         backend_service (google.cloud.compute_v1.types.BackendServiceReference):
             URL of the backend service associated with
@@ -29485,6 +30386,8 @@ class Help(proto.Message):
 class HelpLink(proto.Message):
     r"""Describes a URL link.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         description (str):
             Describes what the link offers.
@@ -29511,6 +30414,9 @@ class HelpLink(proto.Message):
 class HostRule(proto.Message):
     r"""UrlMaps A host-matching rule for a URL. If matched, will use
     the named PathMatcher to select the BackendService.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         description (str):
@@ -29556,6 +30462,9 @@ class HttpFaultAbort(proto.Message):
     r"""Specification for how requests are aborted as part of fault
     injection.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         http_status (int):
             The HTTP status code used to abort the
@@ -29593,6 +30502,9 @@ class HttpFaultDelay(proto.Message):
     forwarding the request to the backend service as part of fault
     injection.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         fixed_delay (google.cloud.compute_v1.types.Duration):
             Specifies the value of the fixed delay
@@ -29629,6 +30541,9 @@ class HttpFaultInjection(proto.Message):
     percentage of requests before sending those request to the
     backend service. Similarly requests from clients can be aborted
     by the load balancer for a percentage of requests.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         abort (google.cloud.compute_v1.types.HttpFaultAbort):
@@ -29702,6 +30617,8 @@ class HttpHeaderAction(proto.Message):
 
 class HttpHeaderMatch(proto.Message):
     r"""matchRule criteria for request header matches.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         exact_match (str):
@@ -29833,6 +30750,9 @@ class HttpHeaderOption(proto.Message):
     r"""Specification determining how headers are added to requests
     or responses.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         header_name (str):
             The name of the header.
@@ -29871,6 +30791,8 @@ class HttpHeaderOption(proto.Message):
 
 class HttpQueryParameterMatch(proto.Message):
     r"""HttpRouteRuleMatch criteria for a request's query parameter.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         exact_match (str):
@@ -29930,6 +30852,8 @@ class HttpQueryParameterMatch(proto.Message):
 
 class HttpRedirectAction(proto.Message):
     r"""Specifies settings for an HTTP redirect.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         host_redirect (str):
@@ -30045,6 +30969,8 @@ class HttpRedirectAction(proto.Message):
 class HttpRetryPolicy(proto.Message):
     r"""The retry policy associates with HttpRouteRule
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         num_retries (int):
             Specifies the allowed number retries. This
@@ -30115,6 +31041,8 @@ class HttpRetryPolicy(proto.Message):
 
 class HttpRouteAction(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         cors_policy (google.cloud.compute_v1.types.CorsPolicy):
@@ -30269,6 +31197,9 @@ class HttpRouteRule(proto.Message):
     request and the corresponding routing action that load balancing
     proxies perform.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         description (str):
             The short description conveying the intent of
@@ -30403,6 +31334,9 @@ class HttpRouteRuleMatch(proto.Message):
     requests to an HttpRouteRule. All specified criteria must be
     satisfied for a match to occur.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         full_path_match (str):
             For satisfying the matchRule condition, the
@@ -30518,6 +31452,9 @@ class Image(proto.Message):
     r"""Represents an Image resource. You can use images to create
     boot disks for your VM instances. For more information, read
     Images.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         architecture (str):
@@ -30931,6 +31868,8 @@ class Image(proto.Message):
 class ImageFamilyView(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         image (google.cloud.compute_v1.types.Image):
             The latest image that is part of the
@@ -30950,6 +31889,8 @@ class ImageFamilyView(proto.Message):
 
 class ImageList(proto.Message):
     r"""Contains a list of images.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -31023,6 +31964,9 @@ class InitialStateConfig(proto.Message):
     r"""Initial State for shielded instance, these are public keys
     which are safe to store in public
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         dbs (MutableSequence[google.cloud.compute_v1.types.FileContentBuffer]):
             The Key Database (db).
@@ -31062,6 +32006,9 @@ class InitialStateConfig(proto.Message):
 class InsertAddressRequest(proto.Message):
     r"""A request message for Addresses.Insert. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         address_resource (google.cloud.compute_v1.types.Address):
@@ -31114,6 +32061,9 @@ class InsertAutoscalerRequest(proto.Message):
     r"""A request message for Autoscalers.Insert. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         autoscaler_resource (google.cloud.compute_v1.types.Autoscaler):
             The body resource for this request
@@ -31165,6 +32115,9 @@ class InsertBackendBucketRequest(proto.Message):
     r"""A request message for BackendBuckets.Insert. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         backend_bucket_resource (google.cloud.compute_v1.types.BackendBucket):
             The body resource for this request
@@ -31210,6 +32163,9 @@ class InsertBackendServiceRequest(proto.Message):
     r"""A request message for BackendServices.Insert. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         backend_service_resource (google.cloud.compute_v1.types.BackendService):
             The body resource for this request
@@ -31254,6 +32210,9 @@ class InsertBackendServiceRequest(proto.Message):
 class InsertDiskRequest(proto.Message):
     r"""A request message for Disks.Insert. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         disk_resource (google.cloud.compute_v1.types.Disk):
@@ -31316,6 +32275,9 @@ class InsertExternalVpnGatewayRequest(proto.Message):
     r"""A request message for ExternalVpnGateways.Insert. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         external_vpn_gateway_resource (google.cloud.compute_v1.types.ExternalVpnGateway):
             The body resource for this request
@@ -31360,6 +32322,9 @@ class InsertExternalVpnGatewayRequest(proto.Message):
 class InsertFirewallPolicyRequest(proto.Message):
     r"""A request message for FirewallPolicies.Insert. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         firewall_policy_resource (google.cloud.compute_v1.types.FirewallPolicy):
@@ -31409,6 +32374,9 @@ class InsertFirewallRequest(proto.Message):
     r"""A request message for Firewalls.Insert. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         firewall_resource (google.cloud.compute_v1.types.Firewall):
             The body resource for this request
@@ -31453,6 +32421,9 @@ class InsertFirewallRequest(proto.Message):
 class InsertForwardingRuleRequest(proto.Message):
     r"""A request message for ForwardingRules.Insert. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         forwarding_rule_resource (google.cloud.compute_v1.types.ForwardingRule):
@@ -31505,6 +32476,9 @@ class InsertGlobalAddressRequest(proto.Message):
     r"""A request message for GlobalAddresses.Insert. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         address_resource (google.cloud.compute_v1.types.Address):
             The body resource for this request
@@ -31549,6 +32523,9 @@ class InsertGlobalAddressRequest(proto.Message):
 class InsertGlobalForwardingRuleRequest(proto.Message):
     r"""A request message for GlobalForwardingRules.Insert. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         forwarding_rule_resource (google.cloud.compute_v1.types.ForwardingRule):
@@ -31595,6 +32572,9 @@ class InsertGlobalNetworkEndpointGroupRequest(proto.Message):
     r"""A request message for GlobalNetworkEndpointGroups.Insert. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         network_endpoint_group_resource (google.cloud.compute_v1.types.NetworkEndpointGroup):
             The body resource for this request
@@ -31639,6 +32619,9 @@ class InsertGlobalNetworkEndpointGroupRequest(proto.Message):
 class InsertGlobalPublicDelegatedPrefixeRequest(proto.Message):
     r"""A request message for GlobalPublicDelegatedPrefixes.Insert.
     See the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -31685,6 +32668,9 @@ class InsertHealthCheckRequest(proto.Message):
     r"""A request message for HealthChecks.Insert. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         health_check_resource (google.cloud.compute_v1.types.HealthCheck):
             The body resource for this request
@@ -31729,6 +32715,9 @@ class InsertHealthCheckRequest(proto.Message):
 class InsertImageRequest(proto.Message):
     r"""A request message for Images.Insert. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         force_create (bool):
@@ -31784,6 +32773,9 @@ class InsertInstanceGroupManagerRequest(proto.Message):
     r"""A request message for InstanceGroupManagers.Insert. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_group_manager_resource (google.cloud.compute_v1.types.InstanceGroupManager):
             The body resource for this request
@@ -31836,6 +32828,9 @@ class InsertInstanceGroupRequest(proto.Message):
     r"""A request message for InstanceGroups.Insert. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_group_resource (google.cloud.compute_v1.types.InstanceGroup):
             The body resource for this request
@@ -31887,6 +32882,9 @@ class InsertInstanceGroupRequest(proto.Message):
 class InsertInstanceRequest(proto.Message):
     r"""A request message for Instances.Insert. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance_resource (google.cloud.compute_v1.types.Instance):
@@ -31972,6 +32970,9 @@ class InsertInstanceTemplateRequest(proto.Message):
     r"""A request message for InstanceTemplates.Insert. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_template_resource (google.cloud.compute_v1.types.InstanceTemplate):
             The body resource for this request
@@ -32016,6 +33017,9 @@ class InsertInstanceTemplateRequest(proto.Message):
 class InsertInterconnectAttachmentRequest(proto.Message):
     r"""A request message for InterconnectAttachments.Insert. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         interconnect_attachment_resource (google.cloud.compute_v1.types.InterconnectAttachment):
@@ -32077,6 +33081,9 @@ class InsertInterconnectRequest(proto.Message):
     r"""A request message for Interconnects.Insert. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         interconnect_resource (google.cloud.compute_v1.types.Interconnect):
             The body resource for this request
@@ -32122,6 +33129,9 @@ class InsertLicenseRequest(proto.Message):
     r"""A request message for Licenses.Insert. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         license_resource (google.cloud.compute_v1.types.License):
             The body resource for this request
@@ -32166,6 +33176,9 @@ class InsertLicenseRequest(proto.Message):
 class InsertMachineImageRequest(proto.Message):
     r"""A request message for MachineImages.Insert. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         machine_image_resource (google.cloud.compute_v1.types.MachineImage):
@@ -32222,6 +33235,9 @@ class InsertNetworkAttachmentRequest(proto.Message):
     r"""A request message for NetworkAttachments.Insert. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         network_attachment_resource (google.cloud.compute_v1.types.NetworkAttachment):
             The body resource for this request
@@ -32270,6 +33286,9 @@ class InsertNetworkAttachmentRequest(proto.Message):
 class InsertNetworkEdgeSecurityServiceRequest(proto.Message):
     r"""A request message for NetworkEdgeSecurityServices.Insert. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         network_edge_security_service_resource (google.cloud.compute_v1.types.NetworkEdgeSecurityService):
@@ -32331,6 +33350,9 @@ class InsertNetworkEndpointGroupRequest(proto.Message):
     r"""A request message for NetworkEndpointGroups.Insert. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         network_endpoint_group_resource (google.cloud.compute_v1.types.NetworkEndpointGroup):
             The body resource for this request
@@ -32384,6 +33406,9 @@ class InsertNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for NetworkFirewallPolicies.Insert. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         firewall_policy_resource (google.cloud.compute_v1.types.FirewallPolicy):
             The body resource for this request
@@ -32429,6 +33454,9 @@ class InsertNetworkRequest(proto.Message):
     r"""A request message for Networks.Insert. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         network_resource (google.cloud.compute_v1.types.Network):
             The body resource for this request
@@ -32473,6 +33501,9 @@ class InsertNetworkRequest(proto.Message):
 class InsertNodeGroupRequest(proto.Message):
     r"""A request message for NodeGroups.Insert. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         initial_node_count (int):
@@ -32531,6 +33562,9 @@ class InsertNodeTemplateRequest(proto.Message):
     r"""A request message for NodeTemplates.Insert. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         node_template_resource (google.cloud.compute_v1.types.NodeTemplate):
             The body resource for this request
@@ -32581,6 +33615,9 @@ class InsertNodeTemplateRequest(proto.Message):
 class InsertPacketMirroringRequest(proto.Message):
     r"""A request message for PacketMirrorings.Insert. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         packet_mirroring_resource (google.cloud.compute_v1.types.PacketMirroring):
@@ -32633,6 +33670,9 @@ class InsertPublicAdvertisedPrefixeRequest(proto.Message):
     r"""A request message for PublicAdvertisedPrefixes.Insert. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -32677,6 +33717,9 @@ class InsertPublicAdvertisedPrefixeRequest(proto.Message):
 class InsertPublicDelegatedPrefixeRequest(proto.Message):
     r"""A request message for PublicDelegatedPrefixes.Insert. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -32729,6 +33772,9 @@ class InsertRegionAutoscalerRequest(proto.Message):
     r"""A request message for RegionAutoscalers.Insert. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         autoscaler_resource (google.cloud.compute_v1.types.Autoscaler):
             The body resource for this request
@@ -32779,6 +33825,9 @@ class InsertRegionAutoscalerRequest(proto.Message):
 class InsertRegionBackendServiceRequest(proto.Message):
     r"""A request message for RegionBackendServices.Insert. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         backend_service_resource (google.cloud.compute_v1.types.BackendService):
@@ -32831,6 +33880,9 @@ class InsertRegionCommitmentRequest(proto.Message):
     r"""A request message for RegionCommitments.Insert. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         commitment_resource (google.cloud.compute_v1.types.Commitment):
             The body resource for this request
@@ -32881,6 +33933,9 @@ class InsertRegionCommitmentRequest(proto.Message):
 class InsertRegionDiskRequest(proto.Message):
     r"""A request message for RegionDisks.Insert. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         disk_resource (google.cloud.compute_v1.types.Disk):
@@ -32943,6 +33998,9 @@ class InsertRegionHealthCheckRequest(proto.Message):
     r"""A request message for RegionHealthChecks.Insert. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         health_check_resource (google.cloud.compute_v1.types.HealthCheck):
             The body resource for this request
@@ -32993,6 +34051,9 @@ class InsertRegionHealthCheckRequest(proto.Message):
 class InsertRegionHealthCheckServiceRequest(proto.Message):
     r"""A request message for RegionHealthCheckServices.Insert. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         health_check_service_resource (google.cloud.compute_v1.types.HealthCheckService):
@@ -33045,6 +34106,9 @@ class InsertRegionInstanceGroupManagerRequest(proto.Message):
     r"""A request message for RegionInstanceGroupManagers.Insert. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_group_manager_resource (google.cloud.compute_v1.types.InstanceGroupManager):
             The body resource for this request
@@ -33095,6 +34159,9 @@ class InsertRegionInstanceGroupManagerRequest(proto.Message):
 class InsertRegionNetworkEndpointGroupRequest(proto.Message):
     r"""A request message for RegionNetworkEndpointGroups.Insert. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         network_endpoint_group_resource (google.cloud.compute_v1.types.NetworkEndpointGroup):
@@ -33149,6 +34216,9 @@ class InsertRegionNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for RegionNetworkFirewallPolicies.Insert.
     See the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         firewall_policy_resource (google.cloud.compute_v1.types.FirewallPolicy):
             The body resource for this request
@@ -33200,6 +34270,9 @@ class InsertRegionNotificationEndpointRequest(proto.Message):
     r"""A request message for RegionNotificationEndpoints.Insert. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         notification_endpoint_resource (google.cloud.compute_v1.types.NotificationEndpoint):
             The body resource for this request
@@ -33250,6 +34323,9 @@ class InsertRegionNotificationEndpointRequest(proto.Message):
 class InsertRegionSecurityPolicyRequest(proto.Message):
     r"""A request message for RegionSecurityPolicies.Insert. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -33311,6 +34387,9 @@ class InsertRegionSslCertificateRequest(proto.Message):
     r"""A request message for RegionSslCertificates.Insert. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -33361,6 +34440,9 @@ class InsertRegionSslCertificateRequest(proto.Message):
 class InsertRegionSslPolicyRequest(proto.Message):
     r"""A request message for RegionSslPolicies.Insert. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -33413,6 +34495,9 @@ class InsertRegionTargetHttpProxyRequest(proto.Message):
     r"""A request message for RegionTargetHttpProxies.Insert. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -33463,6 +34548,9 @@ class InsertRegionTargetHttpProxyRequest(proto.Message):
 class InsertRegionTargetHttpsProxyRequest(proto.Message):
     r"""A request message for RegionTargetHttpsProxies.Insert. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -33515,6 +34603,9 @@ class InsertRegionTargetTcpProxyRequest(proto.Message):
     r"""A request message for RegionTargetTcpProxies.Insert. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -33566,6 +34657,9 @@ class InsertRegionUrlMapRequest(proto.Message):
     r"""A request message for RegionUrlMaps.Insert. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -33603,6 +34697,9 @@ class InsertRegionUrlMapRequest(proto.Message):
 class InsertReservationRequest(proto.Message):
     r"""A request message for Reservations.Insert. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -33655,6 +34752,9 @@ class InsertResourcePolicyRequest(proto.Message):
     r"""A request message for ResourcePolicies.Insert. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -33706,6 +34806,9 @@ class InsertRouteRequest(proto.Message):
     r"""A request message for Routes.Insert. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -33750,6 +34853,9 @@ class InsertRouteRequest(proto.Message):
 class InsertRouterRequest(proto.Message):
     r"""A request message for Routers.Insert. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -33801,6 +34907,9 @@ class InsertRouterRequest(proto.Message):
 class InsertSecurityPolicyRequest(proto.Message):
     r"""A request message for SecurityPolicies.Insert. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -33856,6 +34965,9 @@ class InsertServiceAttachmentRequest(proto.Message):
     r"""A request message for ServiceAttachments.Insert. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -33907,6 +35019,9 @@ class InsertSnapshotRequest(proto.Message):
     r"""A request message for Snapshots.Insert. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -33951,6 +35066,9 @@ class InsertSnapshotRequest(proto.Message):
 class InsertSslCertificateRequest(proto.Message):
     r"""A request message for SslCertificates.Insert. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -33997,6 +35115,9 @@ class InsertSslPolicyRequest(proto.Message):
     r"""A request message for SslPolicies.Insert. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -34041,6 +35162,9 @@ class InsertSslPolicyRequest(proto.Message):
 class InsertSubnetworkRequest(proto.Message):
     r"""A request message for Subnetworks.Insert. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -34093,6 +35217,9 @@ class InsertTargetGrpcProxyRequest(proto.Message):
     r"""A request message for TargetGrpcProxies.Insert. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -34137,6 +35264,9 @@ class InsertTargetGrpcProxyRequest(proto.Message):
 class InsertTargetHttpProxyRequest(proto.Message):
     r"""A request message for TargetHttpProxies.Insert. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -34183,6 +35313,9 @@ class InsertTargetHttpsProxyRequest(proto.Message):
     r"""A request message for TargetHttpsProxies.Insert. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -34227,6 +35360,9 @@ class InsertTargetHttpsProxyRequest(proto.Message):
 class InsertTargetInstanceRequest(proto.Message):
     r"""A request message for TargetInstances.Insert. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -34279,6 +35415,9 @@ class InsertTargetPoolRequest(proto.Message):
     r"""A request message for TargetPools.Insert. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -34330,6 +35469,9 @@ class InsertTargetSslProxyRequest(proto.Message):
     r"""A request message for TargetSslProxies.Insert. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -34375,6 +35517,9 @@ class InsertTargetTcpProxyRequest(proto.Message):
     r"""A request message for TargetTcpProxies.Insert. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -34419,6 +35564,9 @@ class InsertTargetTcpProxyRequest(proto.Message):
 class InsertTargetVpnGatewayRequest(proto.Message):
     r"""A request message for TargetVpnGateways.Insert. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -34471,6 +35619,9 @@ class InsertUrlMapRequest(proto.Message):
     r"""A request message for UrlMaps.Insert. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -34515,6 +35666,9 @@ class InsertUrlMapRequest(proto.Message):
 class InsertVpnGatewayRequest(proto.Message):
     r"""A request message for VpnGateways.Insert. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -34567,6 +35721,9 @@ class InsertVpnTunnelRequest(proto.Message):
     r"""A request message for VpnTunnels.Insert. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -34618,6 +35775,9 @@ class Instance(proto.Message):
     r"""Represents an Instance resource. An instance is a virtual
     machine that is hosted on Google Cloud Platform. For more
     information, read Virtual Machine Instances.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         advanced_machine_features (google.cloud.compute_v1.types.AdvancedMachineFeatures):
@@ -35163,6 +36323,8 @@ class Instance(proto.Message):
 class InstanceAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -35244,6 +36406,8 @@ class InstanceAggregatedList(proto.Message):
 class InstanceConsumptionData(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         consumption_info (google.cloud.compute_v1.types.InstanceConsumptionInfo):
             Resources consumed by the instance.
@@ -35270,6 +36434,8 @@ class InstanceConsumptionData(proto.Message):
 
 class InstanceConsumptionInfo(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         guest_cpus (int):
@@ -35326,6 +36492,9 @@ class InstanceGroup(proto.Message):
     heterogeneous instances or if you need to manage the instances
     yourself. You cannot create regional unmanaged instance groups.
     For more information, read Instance groups.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -35477,6 +36646,8 @@ class InstanceGroup(proto.Message):
 class InstanceGroupAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -35557,6 +36728,8 @@ class InstanceGroupAggregatedList(proto.Message):
 class InstanceGroupList(proto.Message):
     r"""A list of InstanceGroup resources.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -35633,6 +36806,9 @@ class InstanceGroupManager(proto.Message):
     zonal Managed Instance Group, use the instanceGroupManagers
     resource. For regional Managed Instance Group, use the
     regionInstanceGroupManagers resource.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         auto_healing_policies (MutableSequence[google.cloud.compute_v1.types.InstanceGroupManagerAutoHealingPolicy]):
@@ -35914,6 +37090,8 @@ class InstanceGroupManager(proto.Message):
 class InstanceGroupManagerActionsSummary(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         abandoning (int):
             [Output Only] The total number of instances in the managed
@@ -36077,6 +37255,8 @@ class InstanceGroupManagerActionsSummary(proto.Message):
 class InstanceGroupManagerAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -36158,6 +37338,8 @@ class InstanceGroupManagerAggregatedList(proto.Message):
 class InstanceGroupManagerAutoHealingPolicy(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         health_check (str):
             The URL for the health check that signals
@@ -36191,6 +37373,8 @@ class InstanceGroupManagerAutoHealingPolicy(proto.Message):
 
 class InstanceGroupManagerList(proto.Message):
     r"""[Output Only] A list of managed instance groups.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -36265,6 +37449,8 @@ class InstanceGroupManagerList(proto.Message):
 class InstanceGroupManagerStatus(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         autoscaler (str):
             [Output Only] The URL of the Autoscaler that targets this
@@ -36321,6 +37507,8 @@ class InstanceGroupManagerStatus(proto.Message):
 class InstanceGroupManagerStatusStateful(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         has_stateful_config (bool):
             [Output Only] A bit indicating whether the managed instance
@@ -36357,6 +37545,8 @@ class InstanceGroupManagerStatusStateful(proto.Message):
 class InstanceGroupManagerStatusStatefulPerInstanceConfigs(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         all_effective (bool):
             A bit indicating if all of the group's
@@ -36378,6 +37568,8 @@ class InstanceGroupManagerStatusStatefulPerInstanceConfigs(proto.Message):
 class InstanceGroupManagerStatusVersionTarget(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         is_reached (bool):
             [Output Only] A bit indicating whether version target has
@@ -36398,6 +37590,8 @@ class InstanceGroupManagerStatusVersionTarget(proto.Message):
 
 class InstanceGroupManagerUpdatePolicy(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance_redistribution_type (str):
@@ -36617,6 +37811,8 @@ class InstanceGroupManagerUpdatePolicy(proto.Message):
 class InstanceGroupManagerVersion(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_template (str):
             The URL of the instance template that is specified for this
@@ -36687,6 +37883,8 @@ class InstanceGroupManagersAbandonInstancesRequest(proto.Message):
 
 class InstanceGroupManagersApplyUpdatesRequest(proto.Message):
     r"""InstanceGroupManagers.applyUpdatesToInstances
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         all_instances (bool):
@@ -36803,6 +38001,8 @@ class InstanceGroupManagersCreateInstancesRequest(proto.Message):
 class InstanceGroupManagersDeleteInstancesRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instances (MutableSequence[str]):
             The URLs of one or more instances to delete. This can be a
@@ -36852,6 +38052,8 @@ class InstanceGroupManagersDeletePerInstanceConfigsReq(proto.Message):
 class InstanceGroupManagersListErrorsResponse(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         items (MutableSequence[google.cloud.compute_v1.types.InstanceManagedByIgmError]):
             [Output Only] The list of errors of the managed instance
@@ -36886,6 +38088,8 @@ class InstanceGroupManagersListErrorsResponse(proto.Message):
 class InstanceGroupManagersListManagedInstancesResponse(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         managed_instances (MutableSequence[google.cloud.compute_v1.types.ManagedInstance]):
             [Output Only] The list of instances in the managed instance
@@ -36919,6 +38123,8 @@ class InstanceGroupManagersListManagedInstancesResponse(proto.Message):
 
 class InstanceGroupManagersListPerInstanceConfigsResp(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         items (MutableSequence[google.cloud.compute_v1.types.PerInstanceConfig]):
@@ -36995,6 +38201,8 @@ class InstanceGroupManagersRecreateInstancesRequest(proto.Message):
 class InstanceGroupManagersScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_group_managers (MutableSequence[google.cloud.compute_v1.types.InstanceGroupManager]):
             [Output Only] The list of managed instance groups that are
@@ -37024,6 +38232,8 @@ class InstanceGroupManagersScopedList(proto.Message):
 class InstanceGroupManagersSetInstanceTemplateRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_template (str):
             The URL of the instance template that is
@@ -37047,6 +38257,8 @@ class InstanceGroupManagersSetInstanceTemplateRequest(proto.Message):
 
 class InstanceGroupManagersSetTargetPoolsRequest(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         fingerprint (str):
@@ -37115,6 +38327,8 @@ class InstanceGroupsAddInstancesRequest(proto.Message):
 
 class InstanceGroupsListInstances(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -37189,6 +38403,8 @@ class InstanceGroupsListInstances(proto.Message):
 class InstanceGroupsListInstancesRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_state (str):
             A filter for the state of the instances in
@@ -37237,6 +38453,8 @@ class InstanceGroupsRemoveInstancesRequest(proto.Message):
 class InstanceGroupsScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_groups (MutableSequence[google.cloud.compute_v1.types.InstanceGroup]):
             [Output Only] The list of instance groups that are contained
@@ -37263,6 +38481,8 @@ class InstanceGroupsScopedList(proto.Message):
 
 class InstanceGroupsSetNamedPortsRequest(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         fingerprint (str):
@@ -37298,6 +38518,8 @@ class InstanceGroupsSetNamedPortsRequest(proto.Message):
 
 class InstanceList(proto.Message):
     r"""Contains a list of instances.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -37370,6 +38592,8 @@ class InstanceList(proto.Message):
 
 class InstanceListReferrers(proto.Message):
     r"""Contains a list of instance referrers.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -37444,6 +38668,8 @@ class InstanceListReferrers(proto.Message):
 class InstanceManagedByIgmError(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         error (google.cloud.compute_v1.types.InstanceManagedByIgmErrorManagedInstanceError):
             [Output Only] Contents of the error.
@@ -37485,6 +38711,8 @@ class InstanceManagedByIgmError(proto.Message):
 
 class InstanceManagedByIgmErrorInstanceActionDetails(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         action (str):
@@ -37549,6 +38777,8 @@ class InstanceManagedByIgmErrorInstanceActionDetails(proto.Message):
 class InstanceManagedByIgmErrorManagedInstanceError(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         code (str):
             [Output Only] Error code.
@@ -37574,6 +38804,8 @@ class InstanceManagedByIgmErrorManagedInstanceError(proto.Message):
 
 class InstanceMoveRequest(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         destination_zone (str):
@@ -37630,6 +38862,8 @@ class InstanceParams(proto.Message):
 
 class InstanceProperties(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         advanced_machine_features (google.cloud.compute_v1.types.AdvancedMachineFeatures):
@@ -37903,6 +39137,8 @@ class InstanceProperties(proto.Message):
 class InstanceReference(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance (str):
             The URL for a specific instance. @required
@@ -37922,6 +39158,9 @@ class InstanceTemplate(proto.Message):
     r"""Represents an Instance Template resource. You can use
     instance templates to create VM instances and managed instance
     groups. For more information, read Instance Templates.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -38035,6 +39274,8 @@ class InstanceTemplate(proto.Message):
 class InstanceTemplateList(proto.Message):
     r"""A list of instance templates.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -38107,6 +39348,8 @@ class InstanceTemplateList(proto.Message):
 
 class InstanceWithNamedPorts(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance (str):
@@ -38196,6 +39439,8 @@ class InstancesGetEffectiveFirewallsResponse(proto.Message):
 class InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         display_name (str):
             [Output Only] Deprecated, please use short name instead. The
@@ -38275,6 +39520,8 @@ class InstancesRemoveResourcePoliciesRequest(proto.Message):
 class InstancesScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instances (MutableSequence[google.cloud.compute_v1.types.Instance]):
             [Output Only] A list of instances contained in this scope.
@@ -38300,6 +39547,8 @@ class InstancesScopedList(proto.Message):
 
 class InstancesSetLabelsRequest(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         label_fingerprint (str):
@@ -38344,6 +39593,8 @@ class InstancesSetMachineResourcesRequest(proto.Message):
 class InstancesSetMachineTypeRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         machine_type (str):
             Full or partial URL of the machine type
@@ -38364,6 +39615,8 @@ class InstancesSetMachineTypeRequest(proto.Message):
 class InstancesSetMinCpuPlatformRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         min_cpu_platform (str):
             Minimum cpu/platform this instance should be
@@ -38381,6 +39634,8 @@ class InstancesSetMinCpuPlatformRequest(proto.Message):
 
 class InstancesSetServiceAccountRequest(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         email (str):
@@ -38428,6 +39683,9 @@ class Int64RangeMatch(proto.Message):
     r"""HttpRouteRuleMatch criteria for field values that must stay
     within the specified integer range.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         range_end (int):
             The end of the range (exclusive) in signed
@@ -38458,6 +39716,9 @@ class Interconnect(proto.Message):
     is a dedicated connection between the GCP network and your
     on-premises network. For more information, read the Dedicated
     Interconnect Overview.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         admin_enabled (bool):
@@ -38791,6 +40052,9 @@ class InterconnectAttachment(proto.Message):
     Private Cloud networks to your on-premises networks through an
     Interconnect. For more information, read Creating VLAN
     Attachments.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         admin_enabled (bool):
@@ -39381,6 +40645,8 @@ class InterconnectAttachment(proto.Message):
 class InterconnectAttachmentAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -39463,6 +40729,9 @@ class InterconnectAttachmentList(proto.Message):
     r"""Response to the list request, and contains a list of
     interconnect attachments.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -39539,6 +40808,9 @@ class InterconnectAttachmentPartnerMetadata(proto.Message):
     PARTNER_PROVIDER attachments to their corresponding PARTNER
     attachments.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         interconnect_name (str):
             Plain text name of the Interconnect this
@@ -39585,6 +40857,9 @@ class InterconnectAttachmentPrivateInfo(proto.Message):
     r"""Information for an interconnect attachment when this belongs
     to an interconnect of type DEDICATED.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         tag8021q (int):
             [Output Only] 802.1q encapsulation tag to be used for
@@ -39603,6 +40878,8 @@ class InterconnectAttachmentPrivateInfo(proto.Message):
 
 class InterconnectAttachmentsScopedList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         interconnect_attachments (MutableSequence[google.cloud.compute_v1.types.InterconnectAttachment]):
@@ -39634,6 +40911,9 @@ class InterconnectCircuitInfo(proto.Message):
     r"""Describes a single physical circuit between the Customer and
     Google. CircuitInfo objects are created by Google, so all fields
     are output only.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         customer_demarc_id (str):
@@ -39674,6 +40954,9 @@ class InterconnectDiagnostics(proto.Message):
     r"""Diagnostics information about interconnect, contains detailed
     and current technical information about Google's side of the
     connection.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         arp_caches (MutableSequence[google.cloud.compute_v1.types.InterconnectDiagnosticsARPEntry]):
@@ -39749,6 +41032,8 @@ class InterconnectDiagnostics(proto.Message):
 class InterconnectDiagnosticsARPEntry(proto.Message):
     r"""Describing the ARP neighbor entries seen on this link
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         ip_address (str):
             The IP address of this ARP neighbor.
@@ -39774,6 +41059,8 @@ class InterconnectDiagnosticsARPEntry(proto.Message):
 
 class InterconnectDiagnosticsLinkLACPStatus(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         google_system_id (str):
@@ -39827,6 +41114,8 @@ class InterconnectDiagnosticsLinkLACPStatus(proto.Message):
 
 class InterconnectDiagnosticsLinkOpticalPower(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         state (str):
@@ -39884,6 +41173,8 @@ class InterconnectDiagnosticsLinkOpticalPower(proto.Message):
 
 class InterconnectDiagnosticsLinkStatus(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         arp_caches (MutableSequence[google.cloud.compute_v1.types.InterconnectDiagnosticsARPEntry]):
@@ -39976,6 +41267,9 @@ class InterconnectList(proto.Message):
     r"""Response to the list request, and contains a list of
     interconnects.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -40050,6 +41344,9 @@ class InterconnectLocation(proto.Message):
     resource. You can use this resource to find location details
     about an Interconnect attachment (VLAN). For more information
     about interconnect attachments, read Creating VLAN Attachments.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         address (str):
@@ -40258,6 +41555,9 @@ class InterconnectLocationList(proto.Message):
     r"""Response to the list request, and contains a list of
     interconnect locations.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -40333,6 +41633,9 @@ class InterconnectLocationRegionInfo(proto.Message):
     between an Interconnect at a specific InterconnectLocation, and
     a specific Cloud Region.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         expected_rtt_ms (int):
             Expected round-trip time in milliseconds,
@@ -40379,6 +41682,8 @@ class InterconnectLocationRegionInfo(proto.Message):
 
 class InterconnectOutageNotification(proto.Message):
     r"""Description of a planned outage on this Interconnect.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         affected_circuits (MutableSequence[str]):
@@ -40525,6 +41830,8 @@ class InterconnectOutageNotification(proto.Message):
 class InterconnectsGetDiagnosticsResponse(proto.Message):
     r"""Response for the InterconnectsGetDiagnosticsRequest.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         result (google.cloud.compute_v1.types.InterconnectDiagnostics):
 
@@ -40542,6 +41849,9 @@ class InterconnectsGetDiagnosticsResponse(proto.Message):
 class InvalidateCacheUrlMapRequest(proto.Message):
     r"""A request message for UrlMaps.InvalidateCache. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         cache_invalidation_rule_resource (google.cloud.compute_v1.types.CacheInvalidationRule):
@@ -40593,6 +41903,8 @@ class InvalidateCacheUrlMapRequest(proto.Message):
 class Items(proto.Message):
     r"""Metadata
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         key (str):
             Key for the metadata entry. Keys must conform to the
@@ -40630,6 +41942,9 @@ class License(proto.Message):
     aggregate usage data for public and marketplace images. *Caution*
     This resource is intended for use only by third-party partners who
     are creating Cloud Marketplace images.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         charges_use_fee (bool):
@@ -40742,6 +42057,9 @@ class LicenseCode(proto.Message):
     resource is intended for use only by third-party partners who are
     creating Cloud Marketplace images.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         creation_timestamp (str):
             [Output Only] Creation timestamp in RFC3339 text format.
@@ -40845,6 +42163,8 @@ class LicenseCode(proto.Message):
 class LicenseCodeLicenseAlias(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         description (str):
             [Output Only] Description of this License Code.
@@ -40871,6 +42191,8 @@ class LicenseCodeLicenseAlias(proto.Message):
 
 class LicenseResourceCommitment(proto.Message):
     r"""Commitment for a particular license resource.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         amount (int):
@@ -40908,6 +42230,8 @@ class LicenseResourceCommitment(proto.Message):
 class LicenseResourceRequirements(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         min_guest_cpu_count (int):
             Minimum number of guest cpus required to use
@@ -40937,6 +42261,8 @@ class LicenseResourceRequirements(proto.Message):
 
 class LicensesListResponse(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -41000,6 +42326,9 @@ class LicensesListResponse(proto.Message):
 class ListAcceleratorTypesRequest(proto.Message):
     r"""A request message for AcceleratorTypes.List. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -41125,6 +42454,9 @@ class ListAddressesRequest(proto.Message):
     r"""A request message for Addresses.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -41249,6 +42581,9 @@ class ListAssociationsFirewallPolicyRequest(proto.Message):
     r"""A request message for FirewallPolicies.ListAssociations. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         target_resource (str):
             The target resource to list associations. It
@@ -41267,6 +42602,9 @@ class ListAssociationsFirewallPolicyRequest(proto.Message):
 class ListAutoscalersRequest(proto.Message):
     r"""A request message for Autoscalers.List. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -41393,6 +42731,9 @@ class ListAvailableFeaturesRegionSslPoliciesRequest(proto.Message):
     RegionSslPolicies.ListAvailableFeatures. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -41517,6 +42858,9 @@ class ListAvailableFeaturesSslPoliciesRequest(proto.Message):
     r"""A request message for SslPolicies.ListAvailableFeatures. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -41634,6 +42978,9 @@ class ListAvailableFeaturesSslPoliciesRequest(proto.Message):
 class ListBackendBucketsRequest(proto.Message):
     r"""A request message for BackendBuckets.List. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -41753,6 +43100,9 @@ class ListBackendServicesRequest(proto.Message):
     r"""A request message for BackendServices.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -41870,6 +43220,9 @@ class ListBackendServicesRequest(proto.Message):
 class ListDiskTypesRequest(proto.Message):
     r"""A request message for DiskTypes.List. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -41995,6 +43348,9 @@ class ListDisksRequest(proto.Message):
     r"""A request message for Disks.List. See the method description
     for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -42118,6 +43474,9 @@ class ListDisksRequest(proto.Message):
 class ListErrorsInstanceGroupManagersRequest(proto.Message):
     r"""A request message for InstanceGroupManagers.ListErrors. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -42254,6 +43613,9 @@ class ListErrorsRegionInstanceGroupManagersRequest(proto.Message):
     r"""A request message for RegionInstanceGroupManagers.ListErrors.
     See the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -42388,6 +43750,9 @@ class ListExternalVpnGatewaysRequest(proto.Message):
     r"""A request message for ExternalVpnGateways.List. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -42505,6 +43870,9 @@ class ListExternalVpnGatewaysRequest(proto.Message):
 class ListFirewallPoliciesRequest(proto.Message):
     r"""A request message for FirewallPolicies.List. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -42627,6 +43995,9 @@ class ListFirewallsRequest(proto.Message):
     r"""A request message for Firewalls.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -42744,6 +44115,9 @@ class ListFirewallsRequest(proto.Message):
 class ListForwardingRulesRequest(proto.Message):
     r"""A request message for ForwardingRules.List. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -42869,6 +44243,9 @@ class ListGlobalAddressesRequest(proto.Message):
     r"""A request message for GlobalAddresses.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -42986,6 +44363,9 @@ class ListGlobalAddressesRequest(proto.Message):
 class ListGlobalForwardingRulesRequest(proto.Message):
     r"""A request message for GlobalForwardingRules.List. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -43105,6 +44485,9 @@ class ListGlobalNetworkEndpointGroupsRequest(proto.Message):
     r"""A request message for GlobalNetworkEndpointGroups.List. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -43223,6 +44606,9 @@ class ListGlobalOperationsRequest(proto.Message):
     r"""A request message for GlobalOperations.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -43340,6 +44726,9 @@ class ListGlobalOperationsRequest(proto.Message):
 class ListGlobalOrganizationOperationsRequest(proto.Message):
     r"""A request message for GlobalOrganizationOperations.List. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -43462,6 +44851,9 @@ class ListGlobalPublicDelegatedPrefixesRequest(proto.Message):
     r"""A request message for GlobalPublicDelegatedPrefixes.List. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -43579,6 +44971,9 @@ class ListGlobalPublicDelegatedPrefixesRequest(proto.Message):
 class ListHealthChecksRequest(proto.Message):
     r"""A request message for HealthChecks.List. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -43698,6 +45093,9 @@ class ListImagesRequest(proto.Message):
     r"""A request message for Images.List. See the method description
     for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -43815,6 +45213,9 @@ class ListImagesRequest(proto.Message):
 class ListInstanceGroupManagersRequest(proto.Message):
     r"""A request message for InstanceGroupManagers.List. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -43941,6 +45342,9 @@ class ListInstanceGroupsRequest(proto.Message):
     r"""A request message for InstanceGroups.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -44066,6 +45470,9 @@ class ListInstanceTemplatesRequest(proto.Message):
     r"""A request message for InstanceTemplates.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -44183,6 +45590,9 @@ class ListInstanceTemplatesRequest(proto.Message):
 class ListInstancesInstanceGroupsRequest(proto.Message):
     r"""A request message for InstanceGroups.ListInstances. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -44323,6 +45733,9 @@ class ListInstancesRegionInstanceGroupsRequest(proto.Message):
     r"""A request message for RegionInstanceGroups.ListInstances. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -44461,6 +45874,9 @@ class ListInstancesRequest(proto.Message):
     r"""A request message for Instances.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -44584,6 +46000,9 @@ class ListInstancesRequest(proto.Message):
 class ListInterconnectAttachmentsRequest(proto.Message):
     r"""A request message for InterconnectAttachments.List. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -44709,6 +46128,9 @@ class ListInterconnectLocationsRequest(proto.Message):
     r"""A request message for InterconnectLocations.List. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -44826,6 +46248,9 @@ class ListInterconnectLocationsRequest(proto.Message):
 class ListInterconnectsRequest(proto.Message):
     r"""A request message for Interconnects.List. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -44945,6 +46370,9 @@ class ListLicensesRequest(proto.Message):
     r"""A request message for Licenses.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -45063,6 +46491,9 @@ class ListMachineImagesRequest(proto.Message):
     r"""A request message for MachineImages.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -45180,6 +46611,9 @@ class ListMachineImagesRequest(proto.Message):
 class ListMachineTypesRequest(proto.Message):
     r"""A request message for MachineTypes.List. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -45305,6 +46739,9 @@ class ListManagedInstancesInstanceGroupManagersRequest(proto.Message):
     r"""A request message for
     InstanceGroupManagers.ListManagedInstances. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -45438,6 +46875,9 @@ class ListManagedInstancesRegionInstanceGroupManagersRequest(proto.Message):
     RegionInstanceGroupManagers.ListManagedInstances. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -45568,6 +47008,9 @@ class ListNetworkAttachmentsRequest(proto.Message):
     r"""A request message for NetworkAttachments.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -45691,6 +47134,9 @@ class ListNetworkAttachmentsRequest(proto.Message):
 class ListNetworkEndpointGroupsRequest(proto.Message):
     r"""A request message for NetworkEndpointGroups.List. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -45819,6 +47265,9 @@ class ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest(proto.Message):
     GlobalNetworkEndpointGroups.ListNetworkEndpoints. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -45946,6 +47395,9 @@ class ListNetworkEndpointsNetworkEndpointGroupsRequest(proto.Message):
     r"""A request message for
     NetworkEndpointGroups.ListNetworkEndpoints. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -46089,6 +47541,9 @@ class ListNetworkFirewallPoliciesRequest(proto.Message):
     r"""A request message for NetworkFirewallPolicies.List. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -46207,6 +47662,9 @@ class ListNetworksRequest(proto.Message):
     r"""A request message for Networks.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -46324,6 +47782,9 @@ class ListNetworksRequest(proto.Message):
 class ListNodeGroupsRequest(proto.Message):
     r"""A request message for NodeGroups.List. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -46449,6 +47910,9 @@ class ListNodeTemplatesRequest(proto.Message):
     r"""A request message for NodeTemplates.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -46573,6 +48037,9 @@ class ListNodeTypesRequest(proto.Message):
     r"""A request message for NodeTypes.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -46696,6 +48163,9 @@ class ListNodeTypesRequest(proto.Message):
 class ListNodesNodeGroupsRequest(proto.Message):
     r"""A request message for NodeGroups.ListNodes. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -46828,6 +48298,9 @@ class ListPacketMirroringsRequest(proto.Message):
     r"""A request message for PacketMirrorings.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -46951,6 +48424,9 @@ class ListPacketMirroringsRequest(proto.Message):
 class ListPeeringRoutesNetworksRequest(proto.Message):
     r"""A request message for Networks.ListPeeringRoutes. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         direction (str):
@@ -47115,6 +48591,9 @@ class ListPerInstanceConfigsInstanceGroupManagersRequest(proto.Message):
     InstanceGroupManagers.ListPerInstanceConfigs. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -47249,6 +48728,9 @@ class ListPerInstanceConfigsRegionInstanceGroupManagersRequest(proto.Message):
     RegionInstanceGroupManagers.ListPerInstanceConfigs. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -47382,6 +48864,9 @@ class ListPreconfiguredExpressionSetsSecurityPoliciesRequest(proto.Message):
     SecurityPolicies.ListPreconfiguredExpressionSets. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -47500,6 +48985,9 @@ class ListPublicAdvertisedPrefixesRequest(proto.Message):
     r"""A request message for PublicAdvertisedPrefixes.List. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -47617,6 +49105,9 @@ class ListPublicAdvertisedPrefixesRequest(proto.Message):
 class ListPublicDelegatedPrefixesRequest(proto.Message):
     r"""A request message for PublicDelegatedPrefixes.List. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -47741,6 +49232,9 @@ class ListPublicDelegatedPrefixesRequest(proto.Message):
 class ListReferrersInstancesRequest(proto.Message):
     r"""A request message for Instances.ListReferrers. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -47874,6 +49368,9 @@ class ListRegionAutoscalersRequest(proto.Message):
     r"""A request message for RegionAutoscalers.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -47997,6 +49494,9 @@ class ListRegionAutoscalersRequest(proto.Message):
 class ListRegionBackendServicesRequest(proto.Message):
     r"""A request message for RegionBackendServices.List. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -48122,6 +49622,9 @@ class ListRegionCommitmentsRequest(proto.Message):
     r"""A request message for RegionCommitments.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -48245,6 +49748,9 @@ class ListRegionCommitmentsRequest(proto.Message):
 class ListRegionDiskTypesRequest(proto.Message):
     r"""A request message for RegionDiskTypes.List. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -48370,6 +49876,9 @@ class ListRegionDisksRequest(proto.Message):
     r"""A request message for RegionDisks.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -48493,6 +50002,9 @@ class ListRegionDisksRequest(proto.Message):
 class ListRegionHealthCheckServicesRequest(proto.Message):
     r"""A request message for RegionHealthCheckServices.List. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -48618,6 +50130,9 @@ class ListRegionHealthChecksRequest(proto.Message):
     r"""A request message for RegionHealthChecks.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -48741,6 +50256,9 @@ class ListRegionHealthChecksRequest(proto.Message):
 class ListRegionInstanceGroupManagersRequest(proto.Message):
     r"""A request message for RegionInstanceGroupManagers.List. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -48866,6 +50384,9 @@ class ListRegionInstanceGroupsRequest(proto.Message):
     r"""A request message for RegionInstanceGroups.List. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -48989,6 +50510,9 @@ class ListRegionInstanceGroupsRequest(proto.Message):
 class ListRegionNetworkEndpointGroupsRequest(proto.Message):
     r"""A request message for RegionNetworkEndpointGroups.List. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -49116,6 +50640,9 @@ class ListRegionNetworkFirewallPoliciesRequest(proto.Message):
     r"""A request message for RegionNetworkFirewallPolicies.List. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -49239,6 +50766,9 @@ class ListRegionNetworkFirewallPoliciesRequest(proto.Message):
 class ListRegionNotificationEndpointsRequest(proto.Message):
     r"""A request message for RegionNotificationEndpoints.List. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -49364,6 +50894,9 @@ class ListRegionOperationsRequest(proto.Message):
     r"""A request message for RegionOperations.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -49487,6 +51020,9 @@ class ListRegionOperationsRequest(proto.Message):
 class ListRegionSecurityPoliciesRequest(proto.Message):
     r"""A request message for RegionSecurityPolicies.List. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -49612,6 +51148,9 @@ class ListRegionSslCertificatesRequest(proto.Message):
     r"""A request message for RegionSslCertificates.List. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -49735,6 +51274,9 @@ class ListRegionSslCertificatesRequest(proto.Message):
 class ListRegionSslPoliciesRequest(proto.Message):
     r"""A request message for RegionSslPolicies.List. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -49860,6 +51402,9 @@ class ListRegionTargetHttpProxiesRequest(proto.Message):
     r"""A request message for RegionTargetHttpProxies.List. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -49983,6 +51528,9 @@ class ListRegionTargetHttpProxiesRequest(proto.Message):
 class ListRegionTargetHttpsProxiesRequest(proto.Message):
     r"""A request message for RegionTargetHttpsProxies.List. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -50108,6 +51656,9 @@ class ListRegionTargetTcpProxiesRequest(proto.Message):
     r"""A request message for RegionTargetTcpProxies.List. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -50231,6 +51782,9 @@ class ListRegionTargetTcpProxiesRequest(proto.Message):
 class ListRegionUrlMapsRequest(proto.Message):
     r"""A request message for RegionUrlMaps.List. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -50356,6 +51910,9 @@ class ListRegionsRequest(proto.Message):
     r"""A request message for Regions.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -50473,6 +52030,9 @@ class ListRegionsRequest(proto.Message):
 class ListReservationsRequest(proto.Message):
     r"""A request message for Reservations.List. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -50598,6 +52158,9 @@ class ListResourcePoliciesRequest(proto.Message):
     r"""A request message for ResourcePolicies.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -50721,6 +52284,9 @@ class ListResourcePoliciesRequest(proto.Message):
 class ListRoutersRequest(proto.Message):
     r"""A request message for Routers.List. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -50846,6 +52412,9 @@ class ListRoutesRequest(proto.Message):
     r"""A request message for Routes.List. See the method description
     for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -50964,6 +52533,9 @@ class ListSecurityPoliciesRequest(proto.Message):
     r"""A request message for SecurityPolicies.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -51081,6 +52653,9 @@ class ListSecurityPoliciesRequest(proto.Message):
 class ListServiceAttachmentsRequest(proto.Message):
     r"""A request message for ServiceAttachments.List. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -51206,6 +52781,9 @@ class ListSnapshotsRequest(proto.Message):
     r"""A request message for Snapshots.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -51323,6 +52901,9 @@ class ListSnapshotsRequest(proto.Message):
 class ListSslCertificatesRequest(proto.Message):
     r"""A request message for SslCertificates.List. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -51442,6 +53023,9 @@ class ListSslPoliciesRequest(proto.Message):
     r"""A request message for SslPolicies.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -51559,6 +53143,9 @@ class ListSslPoliciesRequest(proto.Message):
 class ListSubnetworksRequest(proto.Message):
     r"""A request message for Subnetworks.List. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -51684,6 +53271,9 @@ class ListTargetGrpcProxiesRequest(proto.Message):
     r"""A request message for TargetGrpcProxies.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -51801,6 +53391,9 @@ class ListTargetGrpcProxiesRequest(proto.Message):
 class ListTargetHttpProxiesRequest(proto.Message):
     r"""A request message for TargetHttpProxies.List. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -51920,6 +53513,9 @@ class ListTargetHttpsProxiesRequest(proto.Message):
     r"""A request message for TargetHttpsProxies.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -52037,6 +53633,9 @@ class ListTargetHttpsProxiesRequest(proto.Message):
 class ListTargetInstancesRequest(proto.Message):
     r"""A request message for TargetInstances.List. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -52162,6 +53761,9 @@ class ListTargetPoolsRequest(proto.Message):
     r"""A request message for TargetPools.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -52286,6 +53888,9 @@ class ListTargetSslProxiesRequest(proto.Message):
     r"""A request message for TargetSslProxies.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -52404,6 +54009,9 @@ class ListTargetTcpProxiesRequest(proto.Message):
     r"""A request message for TargetTcpProxies.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -52521,6 +54129,9 @@ class ListTargetTcpProxiesRequest(proto.Message):
 class ListTargetVpnGatewaysRequest(proto.Message):
     r"""A request message for TargetVpnGateways.List. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -52646,6 +54257,9 @@ class ListUrlMapsRequest(proto.Message):
     r"""A request message for UrlMaps.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -52764,6 +54378,9 @@ class ListUsableSubnetworksRequest(proto.Message):
     r"""A request message for Subnetworks.ListUsable. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -52881,6 +54498,9 @@ class ListUsableSubnetworksRequest(proto.Message):
 class ListVpnGatewaysRequest(proto.Message):
     r"""A request message for VpnGateways.List. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -53006,6 +54626,9 @@ class ListVpnTunnelsRequest(proto.Message):
     r"""A request message for VpnTunnels.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -53129,6 +54752,9 @@ class ListVpnTunnelsRequest(proto.Message):
 class ListXpnHostsProjectsRequest(proto.Message):
     r"""A request message for Projects.ListXpnHosts. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (str):
@@ -53257,6 +54883,9 @@ class ListZoneOperationsRequest(proto.Message):
     r"""A request message for ZoneOperations.List. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -53381,6 +55010,9 @@ class ListZonesRequest(proto.Message):
     r"""A request message for Zones.List. See the method description
     for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
@@ -53498,6 +55130,8 @@ class ListZonesRequest(proto.Message):
 class LocalDisk(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         disk_count (int):
             Specifies the number of such disks.
@@ -53538,6 +55172,9 @@ class LocalizedMessage(proto.Message):
     r"""Provides a localized error message that is safe to return to
     the user which can be attached to an RPC error.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         locale (str):
             The locale used following the specification
@@ -53569,6 +55206,9 @@ class LocationPolicy(proto.Message):
     r"""Configuration for location policy among multiple possible
     locations (e.g. preferences for zone selection among zones in a
     single region).
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         locations (MutableMapping[str, google.cloud.compute_v1.types.LocationPolicyLocation]):
@@ -53607,6 +55247,8 @@ class LocationPolicy(proto.Message):
 class LocationPolicyLocation(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         constraints (google.cloud.compute_v1.types.LocationPolicyLocationConstraints):
             Constraints that the caller requires on the
@@ -53644,6 +55286,8 @@ class LocationPolicyLocation(proto.Message):
 class LocationPolicyLocationConstraints(proto.Message):
     r"""Per-zone constraints on location policy for this zone.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         max_count (int):
             Maximum number of items that are allowed to
@@ -53662,6 +55306,8 @@ class LocationPolicyLocationConstraints(proto.Message):
 
 class LogConfig(proto.Message):
     r"""This is deprecated and has no effect. Do not use.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         cloud_audit (google.cloud.compute_v1.types.LogConfigCloudAuditOptions):
@@ -53704,6 +55350,8 @@ class LogConfig(proto.Message):
 class LogConfigCloudAuditOptions(proto.Message):
     r"""This is deprecated and has no effect. Do not use.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         authorization_logging_options (google.cloud.compute_v1.types.AuthorizationLoggingOptions):
             This is deprecated and has no effect. Do not
@@ -53740,6 +55388,8 @@ class LogConfigCloudAuditOptions(proto.Message):
 
 class LogConfigCounterOptions(proto.Message):
     r"""This is deprecated and has no effect. Do not use.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         custom_fields (MutableSequence[google.cloud.compute_v1.types.LogConfigCounterOptionsCustomField]):
@@ -53779,6 +55429,8 @@ class LogConfigCounterOptions(proto.Message):
 class LogConfigCounterOptionsCustomField(proto.Message):
     r"""This is deprecated and has no effect. Do not use.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             This is deprecated and has no effect. Do not
@@ -53806,6 +55458,8 @@ class LogConfigCounterOptionsCustomField(proto.Message):
 
 class LogConfigDataAccessOptions(proto.Message):
     r"""This is deprecated and has no effect. Do not use.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         log_mode (str):
@@ -53835,6 +55489,9 @@ class MachineImage(proto.Message):
     metadata, permissions, and data from one or more disks required
     to create a Virtual machine (VM) instance. For more information,
     see Machine images.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -54053,6 +55710,8 @@ class MachineImage(proto.Message):
 class MachineImageList(proto.Message):
     r"""A list of machine images.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -54126,6 +55785,9 @@ class MachineType(proto.Message):
     r"""Represents a Machine Type resource. You can use specific
     machine types for your VM instances based on performance and
     pricing requirements. For more information, read Machine Types.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         accelerators (MutableSequence[google.cloud.compute_v1.types.Accelerators]):
@@ -54289,6 +55951,8 @@ class MachineType(proto.Message):
 class MachineTypeAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -54369,6 +56033,8 @@ class MachineTypeAggregatedList(proto.Message):
 class MachineTypeList(proto.Message):
     r"""Contains a list of machine types.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -54441,6 +56107,8 @@ class MachineTypeList(proto.Message):
 class MachineTypesScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         machine_types (MutableSequence[google.cloud.compute_v1.types.MachineType]):
             [Output Only] A list of machine types contained in this
@@ -54467,6 +56135,8 @@ class MachineTypesScopedList(proto.Message):
 
 class ManagedInstance(proto.Message):
     r"""A Managed Instance resource.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         current_action (str):
@@ -54647,6 +56317,8 @@ class ManagedInstance(proto.Message):
 class ManagedInstanceInstanceHealth(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         detailed_health_state (str):
             [Output Only] The current detailed instance health state.
@@ -54685,6 +56357,8 @@ class ManagedInstanceInstanceHealth(proto.Message):
 class ManagedInstanceLastAttempt(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         errors (google.cloud.compute_v1.types.Errors):
             [Output Only] Encountered errors during the last attempt to
@@ -54703,6 +56377,8 @@ class ManagedInstanceLastAttempt(proto.Message):
 
 class ManagedInstanceVersion(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance_template (str):
@@ -54731,6 +56407,8 @@ class ManagedInstanceVersion(proto.Message):
 
 class Metadata(proto.Message):
     r"""A metadata key/value entry.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         fingerprint (str):
@@ -54790,6 +56468,9 @@ class MetadataFilter(proto.Message):
     values in metadataFilters match values supplied in of their XDS
     requests to loadbalancers.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter_labels (MutableSequence[google.cloud.compute_v1.types.MetadataFilterLabelMatch]):
             The list of label value pairs that must match
@@ -54838,6 +56519,9 @@ class MetadataFilterLabelMatch(proto.Message):
     match corresponding labels presented as metadata to the load
     balancer.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Name of metadata label. The name can have a
@@ -54868,6 +56552,9 @@ class MetadataFilterLabelMatch(proto.Message):
 class MoveDiskProjectRequest(proto.Message):
     r"""A request message for Projects.MoveDisk. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         disk_move_request_resource (google.cloud.compute_v1.types.DiskMoveRequest):
@@ -54914,6 +56601,9 @@ class MoveFirewallPolicyRequest(proto.Message):
     r"""A request message for FirewallPolicies.Move. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         firewall_policy (str):
             Name of the firewall policy to update.
@@ -54957,6 +56647,9 @@ class MoveFirewallPolicyRequest(proto.Message):
 class MoveInstanceProjectRequest(proto.Message):
     r"""A request message for Projects.MoveInstance. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance_move_request_resource (google.cloud.compute_v1.types.InstanceMoveRequest):
@@ -55002,6 +56695,8 @@ class MoveInstanceProjectRequest(proto.Message):
 class NamedPort(proto.Message):
     r"""The named port. For example: <"http", 80>.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             The name for this named port. The name must
@@ -55032,6 +56727,9 @@ class Network(proto.Message):
     r"""Represents a VPC Network resource. Networks connect resources
     to each other and to the internet. For more information, read
     Virtual Private Cloud (VPC) Network.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         I_pv4_range (str):
@@ -55260,6 +56958,8 @@ class Network(proto.Message):
 class NetworkAttachment(proto.Message):
     r"""NetworkAttachments A network attachment resource ...
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         connection_endpoints (MutableSequence[google.cloud.compute_v1.types.NetworkAttachmentConnectedEndpoint]):
             [Output Only] An array of connections for all the producers
@@ -55428,6 +57128,8 @@ class NetworkAttachment(proto.Message):
 class NetworkAttachmentAggregatedList(proto.Message):
     r"""Contains a list of NetworkAttachmentsScopedList.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -55500,6 +57202,8 @@ class NetworkAttachmentAggregatedList(proto.Message):
 class NetworkAttachmentConnectedEndpoint(proto.Message):
     r"""[Output Only] A connection connected to this network attachment.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         ip_address (str):
             The IP address assigned to the producer
@@ -55567,6 +57271,8 @@ class NetworkAttachmentConnectedEndpoint(proto.Message):
 
 class NetworkAttachmentList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -55638,6 +57344,8 @@ class NetworkAttachmentList(proto.Message):
 class NetworkAttachmentsScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         network_attachments (MutableSequence[google.cloud.compute_v1.types.NetworkAttachment]):
             A list of NetworkAttachments contained in
@@ -55665,6 +57373,9 @@ class NetworkAttachmentsScopedList(proto.Message):
 class NetworkEdgeSecurityService(proto.Message):
     r"""Represents a Google Cloud Armor network edge security service
     resource.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -55791,6 +57502,8 @@ class NetworkEdgeSecurityService(proto.Message):
 class NetworkEdgeSecurityServiceAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         etag (str):
 
@@ -55882,6 +57595,8 @@ class NetworkEdgeSecurityServiceAggregatedList(proto.Message):
 class NetworkEdgeSecurityServicesScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         network_edge_security_services (MutableSequence[google.cloud.compute_v1.types.NetworkEdgeSecurityService]):
             A list of NetworkEdgeSecurityServices
@@ -55910,6 +57625,8 @@ class NetworkEdgeSecurityServicesScopedList(proto.Message):
 
 class NetworkEndpoint(proto.Message):
     r"""The network endpoint.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         annotations (MutableMapping[str, str]):
@@ -55983,6 +57700,9 @@ class NetworkEndpointGroup(proto.Message):
     HTTP(S) Load Balancing with internet NEGs, Setting up zonal
     NEGs, or Setting up external HTTP(S) Load Balancing with
     serverless NEGs.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         annotations (MutableMapping[str, str]):
@@ -56212,6 +57932,8 @@ class NetworkEndpointGroup(proto.Message):
 class NetworkEndpointGroupAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -56298,6 +58020,9 @@ class NetworkEndpointGroupAppEngine(proto.Message):
     Engine service must be in the same project and located in the
     same region as the Serverless NEG.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         service (str):
             Optional serving service. The service name is
@@ -56351,6 +58076,9 @@ class NetworkEndpointGroupCloudFunction(proto.Message):
     mask. Note: Cloud Function must be in the same project and
     located in the same region as the Serverless NEG.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         function (str):
             A user-defined name of the Cloud Function.
@@ -56392,6 +58120,9 @@ class NetworkEndpointGroupCloudRun(proto.Message):
     tag is optional, may be provided explicitly or in the URL mask.
     Note: Cloud Run service must be in the same project and located
     in the same region as the Serverless NEG.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         service (str):
@@ -56445,6 +58176,8 @@ class NetworkEndpointGroupCloudRun(proto.Message):
 
 class NetworkEndpointGroupList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -56519,6 +58252,9 @@ class NetworkEndpointGroupList(proto.Message):
 class NetworkEndpointGroupPscData(proto.Message):
     r"""All data that is specifically relevant to only network endpoint
     groups of type PRIVATE_SERVICE_CONNECT.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         consumer_psc_address (str):
@@ -56600,6 +58336,8 @@ class NetworkEndpointGroupsDetachEndpointsRequest(proto.Message):
 class NetworkEndpointGroupsListEndpointsRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         health_status (str):
             Optional query parameter for showing the
@@ -56632,6 +58370,8 @@ class NetworkEndpointGroupsListEndpointsRequest(proto.Message):
 
 class NetworkEndpointGroupsListNetworkEndpoints(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -56699,6 +58439,8 @@ class NetworkEndpointGroupsListNetworkEndpoints(proto.Message):
 class NetworkEndpointGroupsScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         network_endpoint_groups (MutableSequence[google.cloud.compute_v1.types.NetworkEndpointGroup]):
             [Output Only] The list of network endpoint groups that are
@@ -56728,6 +58470,8 @@ class NetworkEndpointGroupsScopedList(proto.Message):
 class NetworkEndpointWithHealthStatus(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         healths (MutableSequence[google.cloud.compute_v1.types.HealthStatusForNetworkEndpoint]):
             [Output only] The health status of network endpoint;
@@ -56752,6 +58496,8 @@ class NetworkEndpointWithHealthStatus(proto.Message):
 
 class NetworkInterface(proto.Message):
     r"""A network interface resource attached to an instance.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         access_configs (MutableSequence[google.cloud.compute_v1.types.AccessConfig]):
@@ -56985,6 +58731,8 @@ class NetworkInterface(proto.Message):
 class NetworkList(proto.Message):
     r"""Contains a list of networks.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -57059,6 +58807,9 @@ class NetworkPeering(proto.Message):
     includes the peering name, peer network, peering state, and a
     flag indicating whether Google Compute Engine should
     automatically create routes for the peering.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         auto_create_routes (bool):
@@ -57232,6 +58983,8 @@ class NetworkPeering(proto.Message):
 class NetworkPerformanceConfig(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         total_egress_bandwidth_tier (str):
             Check the TotalEgressBandwidthTier enum for
@@ -57258,6 +59011,9 @@ class NetworkRoutingConfig(proto.Message):
     message includes the list of routers associated with the
     network, and a flag indicating the type of routing behavior to
     enforce network-wide.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         routing_mode (str):
@@ -57293,6 +59049,8 @@ class NetworkRoutingConfig(proto.Message):
 
 class NetworksAddPeeringRequest(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         auto_create_routes (bool):
@@ -57380,6 +59138,8 @@ class NetworksGetEffectiveFirewallsResponse(proto.Message):
 class NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         display_name (str):
             [Output Only] Deprecated, please use short name instead. The
@@ -57440,6 +59200,8 @@ class NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy(proto.Message
 class NetworksRemovePeeringRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Name of the peering, which should conform to
@@ -57457,6 +59219,8 @@ class NetworksRemovePeeringRequest(proto.Message):
 
 class NetworksUpdatePeeringRequest(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         network_peering (google.cloud.compute_v1.types.NetworkPeering):
@@ -57479,6 +59243,9 @@ class NodeGroup(proto.Message):
     to keep your instances physically separated from instances in
     other projects, or to group your instances together on the same
     host hardware. For more information, read Sole-tenant nodes.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         autoscaling_policy (google.cloud.compute_v1.types.NodeGroupAutoscalingPolicy):
@@ -57676,6 +59443,8 @@ class NodeGroup(proto.Message):
 class NodeGroupAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -57756,6 +59525,8 @@ class NodeGroupAggregatedList(proto.Message):
 class NodeGroupAutoscalingPolicy(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         max_nodes (int):
             The maximum number of nodes that the group
@@ -57805,6 +59576,8 @@ class NodeGroupAutoscalingPolicy(proto.Message):
 
 class NodeGroupList(proto.Message):
     r"""Contains a list of nodeGroups.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -57879,6 +59652,9 @@ class NodeGroupMaintenanceWindow(proto.Message):
     r"""Time window specified for daily maintenance operations. GCE's
     internal maintenance will be performed within this window.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         maintenance_duration (google.cloud.compute_v1.types.Duration):
             [Output only] A predetermined duration for the window,
@@ -57910,6 +59686,8 @@ class NodeGroupMaintenanceWindow(proto.Message):
 
 class NodeGroupNode(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         accelerators (MutableSequence[google.cloud.compute_v1.types.AcceleratorConfig]):
@@ -58054,6 +59832,8 @@ class NodeGroupNode(proto.Message):
 class NodeGroupsAddNodesRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         additional_node_count (int):
             Count of additional nodes to be added to the
@@ -58085,6 +59865,8 @@ class NodeGroupsDeleteNodesRequest(proto.Message):
 
 class NodeGroupsListNodes(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -58159,6 +59941,8 @@ class NodeGroupsListNodes(proto.Message):
 class NodeGroupsScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         node_groups (MutableSequence[google.cloud.compute_v1.types.NodeGroup]):
             [Output Only] A list of node groups contained in this scope.
@@ -58185,6 +59969,8 @@ class NodeGroupsScopedList(proto.Message):
 class NodeGroupsSetNodeTemplateRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         node_template (str):
             Full or partial URL of the node template
@@ -58204,6 +59990,9 @@ class NodeTemplate(proto.Message):
     r"""Represent a sole-tenant Node Template resource. You can use a
     template to define properties for nodes in a node group. For
     more information, read Creating node groups and instances.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         accelerators (MutableSequence[google.cloud.compute_v1.types.AcceleratorConfig]):
@@ -58398,6 +60187,8 @@ class NodeTemplate(proto.Message):
 class NodeTemplateAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -58478,6 +60269,8 @@ class NodeTemplateAggregatedList(proto.Message):
 class NodeTemplateList(proto.Message):
     r"""Contains a list of node templates.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -58550,6 +60343,8 @@ class NodeTemplateList(proto.Message):
 class NodeTemplateNodeTypeFlexibility(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         cpus (str):
 
@@ -58582,6 +60377,8 @@ class NodeTemplateNodeTypeFlexibility(proto.Message):
 class NodeTemplatesScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         node_templates (MutableSequence[google.cloud.compute_v1.types.NodeTemplate]):
             [Output Only] A list of node templates contained in this
@@ -58613,6 +60410,9 @@ class NodeType(proto.Message):
     only available node type is n1-node-96-624 node type that has 96
     vCPUs and 624 GB of memory, available in multiple zones. For
     more information read Node types.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         cpu_platform (str):
@@ -58739,6 +60539,8 @@ class NodeType(proto.Message):
 class NodeTypeAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -58819,6 +60621,8 @@ class NodeTypeAggregatedList(proto.Message):
 class NodeTypeList(proto.Message):
     r"""Contains a list of node types.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -58891,6 +60695,8 @@ class NodeTypeList(proto.Message):
 class NodeTypesScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         node_types (MutableSequence[google.cloud.compute_v1.types.NodeType]):
             [Output Only] A list of node types contained in this scope.
@@ -58919,6 +60725,9 @@ class NotificationEndpoint(proto.Message):
     resource defines an endpoint to receive notifications when there
     are status changes detected by the associated health check
     service. For more information, see Health checks overview.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -59020,6 +60829,9 @@ class NotificationEndpointGrpcSettings(proto.Message):
     notification endpoint and the retry duration attempting to send
     notification to this endpoint.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         authority (str):
             Optional. If specified, this field is used to
@@ -59087,6 +60899,8 @@ class NotificationEndpointGrpcSettings(proto.Message):
 
 class NotificationEndpointList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -59170,6 +60984,9 @@ class Operation(proto.Message):
     ``regionOperations`` resource. - For zonal operations, use the
     ``zonalOperations`` resource. For more information, read Global,
     Regional, and Zonal Resources.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         client_operation_id (str):
@@ -59441,6 +61258,8 @@ class Operation(proto.Message):
 class OperationAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] The unique identifier for the resource. This
@@ -59521,6 +61340,8 @@ class OperationAggregatedList(proto.Message):
 class OperationList(proto.Message):
     r"""Contains a list of Operation resources.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] The unique identifier for the resource. This
@@ -59593,6 +61414,8 @@ class OperationList(proto.Message):
 class OperationsScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         operations (MutableSequence[google.cloud.compute_v1.types.Operation]):
             [Output Only] A list of operations contained in this scope.
@@ -59619,6 +61442,9 @@ class OperationsScopedList(proto.Message):
 class OutlierDetection(proto.Message):
     r"""Settings controlling the eviction of unhealthy hosts from the
     load balancing pool for the backend service.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         base_ejection_time (google.cloud.compute_v1.types.Duration):
@@ -59786,6 +61612,8 @@ class OutlierDetection(proto.Message):
 class PacketIntervals(proto.Message):
     r"""Next free: 7
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         avg_ms (int):
             Average observed inter-packet interval in
@@ -59878,6 +61706,9 @@ class PacketMirroring(proto.Message):
     destination, such as an instance group of an internal TCP/UDP
     load balancer, for analysis or examination. For more information
     about setting up Packet Mirroring, see Using Packet Mirroring.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         collector_ilb (google.cloud.compute_v1.types.PacketMirroringForwardingRuleInfo):
@@ -60052,6 +61883,8 @@ class PacketMirroring(proto.Message):
 class PacketMirroringAggregatedList(proto.Message):
     r"""Contains a list of packetMirrorings.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -60130,6 +61963,8 @@ class PacketMirroringAggregatedList(proto.Message):
 class PacketMirroringFilter(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         I_p_protocols (MutableSequence[str]):
             Protocols that apply as filter on mirrored
@@ -60182,6 +62017,8 @@ class PacketMirroringFilter(proto.Message):
 class PacketMirroringForwardingRuleInfo(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         canonical_url (str):
             [Output Only] Unique identifier for the forwarding rule;
@@ -60210,6 +62047,8 @@ class PacketMirroringForwardingRuleInfo(proto.Message):
 
 class PacketMirroringList(proto.Message):
     r"""Contains a list of PacketMirroring resources.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -60328,6 +62167,8 @@ class PacketMirroringMirroredResourceInfo(proto.Message):
 class PacketMirroringMirroredResourceInfoInstanceInfo(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         canonical_url (str):
             [Output Only] Unique identifier for the instance; defined by
@@ -60355,6 +62196,8 @@ class PacketMirroringMirroredResourceInfoInstanceInfo(proto.Message):
 
 class PacketMirroringMirroredResourceInfoSubnetInfo(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         canonical_url (str):
@@ -60385,6 +62228,8 @@ class PacketMirroringMirroredResourceInfoSubnetInfo(proto.Message):
 class PacketMirroringNetworkInfo(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         canonical_url (str):
             [Output Only] Unique identifier for the network; defined by
@@ -60411,6 +62256,8 @@ class PacketMirroringNetworkInfo(proto.Message):
 
 class PacketMirroringsScopedList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         packet_mirrorings (MutableSequence[google.cloud.compute_v1.types.PacketMirroring]):
@@ -60439,6 +62286,9 @@ class PacketMirroringsScopedList(proto.Message):
 class PatchAutoscalerRequest(proto.Message):
     r"""A request message for Autoscalers.Patch. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         autoscaler (str):
@@ -60500,6 +62350,9 @@ class PatchBackendBucketRequest(proto.Message):
     r"""A request message for BackendBuckets.Patch. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         backend_bucket (str):
             Name of the BackendBucket resource to patch.
@@ -60550,6 +62403,9 @@ class PatchBackendBucketRequest(proto.Message):
 class PatchBackendServiceRequest(proto.Message):
     r"""A request message for BackendServices.Patch. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         backend_service (str):
@@ -60602,6 +62458,9 @@ class PatchFirewallPolicyRequest(proto.Message):
     r"""A request message for FirewallPolicies.Patch. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         firewall_policy (str):
             Name of the firewall policy to update.
@@ -60646,6 +62505,9 @@ class PatchFirewallPolicyRequest(proto.Message):
 class PatchFirewallRequest(proto.Message):
     r"""A request message for Firewalls.Patch. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         firewall (str):
@@ -60697,6 +62559,9 @@ class PatchFirewallRequest(proto.Message):
 class PatchForwardingRuleRequest(proto.Message):
     r"""A request message for ForwardingRules.Patch. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         forwarding_rule (str):
@@ -60755,6 +62620,9 @@ class PatchGlobalForwardingRuleRequest(proto.Message):
     r"""A request message for GlobalForwardingRules.Patch. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         forwarding_rule (str):
             Name of the ForwardingRule resource to patch.
@@ -60805,6 +62673,9 @@ class PatchGlobalForwardingRuleRequest(proto.Message):
 class PatchGlobalPublicDelegatedPrefixeRequest(proto.Message):
     r"""A request message for GlobalPublicDelegatedPrefixes.Patch.
     See the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -60858,6 +62729,9 @@ class PatchHealthCheckRequest(proto.Message):
     r"""A request message for HealthChecks.Patch. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         health_check (str):
             Name of the HealthCheck resource to patch.
@@ -60909,6 +62783,9 @@ class PatchImageRequest(proto.Message):
     r"""A request message for Images.Patch. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         image (str):
             Name of the image resource to patch.
@@ -60959,6 +62836,9 @@ class PatchImageRequest(proto.Message):
 class PatchInstanceGroupManagerRequest(proto.Message):
     r"""A request message for InstanceGroupManagers.Patch. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance_group_manager (str):
@@ -61018,6 +62898,9 @@ class PatchInterconnectAttachmentRequest(proto.Message):
     r"""A request message for InterconnectAttachments.Patch. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         interconnect_attachment (str):
             Name of the interconnect attachment to patch.
@@ -61075,6 +62958,9 @@ class PatchInterconnectRequest(proto.Message):
     r"""A request message for Interconnects.Patch. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         interconnect (str):
             Name of the interconnect to update.
@@ -61125,6 +63011,9 @@ class PatchInterconnectRequest(proto.Message):
 class PatchNetworkEdgeSecurityServiceRequest(proto.Message):
     r"""A request message for NetworkEdgeSecurityServices.Patch. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         network_edge_security_service (str):
@@ -61202,6 +63091,9 @@ class PatchNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for NetworkFirewallPolicies.Patch. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         firewall_policy (str):
             Name of the firewall policy to update.
@@ -61253,6 +63145,9 @@ class PatchNetworkRequest(proto.Message):
     r"""A request message for Networks.Patch. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         network (str):
             Name of the network to update.
@@ -61303,6 +63198,9 @@ class PatchNetworkRequest(proto.Message):
 class PatchNodeGroupRequest(proto.Message):
     r"""A request message for NodeGroups.Patch. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         node_group (str):
@@ -61360,6 +63258,9 @@ class PatchNodeGroupRequest(proto.Message):
 class PatchPacketMirroringRequest(proto.Message):
     r"""A request message for PacketMirrorings.Patch. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         packet_mirroring (str):
@@ -61419,6 +63320,9 @@ class PatchPerInstanceConfigsInstanceGroupManagerRequest(proto.Message):
     r"""A request message for
     InstanceGroupManagers.PatchPerInstanceConfigs. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance_group_manager (str):
@@ -61481,6 +63385,9 @@ class PatchPerInstanceConfigsRegionInstanceGroupManagerRequest(proto.Message):
     RegionInstanceGroupManagers.PatchPerInstanceConfigs. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_group_manager (str):
             The name of the managed instance group. It
@@ -61540,6 +63447,9 @@ class PatchPublicAdvertisedPrefixeRequest(proto.Message):
     r"""A request message for PublicAdvertisedPrefixes.Patch. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -61591,6 +63501,9 @@ class PatchPublicAdvertisedPrefixeRequest(proto.Message):
 class PatchPublicDelegatedPrefixeRequest(proto.Message):
     r"""A request message for PublicDelegatedPrefixes.Patch. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -61649,6 +63562,9 @@ class PatchPublicDelegatedPrefixeRequest(proto.Message):
 class PatchRegionAutoscalerRequest(proto.Message):
     r"""A request message for RegionAutoscalers.Patch. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         autoscaler (str):
@@ -61710,6 +63626,9 @@ class PatchRegionBackendServiceRequest(proto.Message):
     r"""A request message for RegionBackendServices.Patch. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         backend_service (str):
             Name of the BackendService resource to patch.
@@ -61767,6 +63686,9 @@ class PatchRegionHealthCheckRequest(proto.Message):
     r"""A request message for RegionHealthChecks.Patch. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         health_check (str):
             Name of the HealthCheck resource to patch.
@@ -61823,6 +63745,9 @@ class PatchRegionHealthCheckRequest(proto.Message):
 class PatchRegionHealthCheckServiceRequest(proto.Message):
     r"""A request message for RegionHealthCheckServices.Patch. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         health_check_service (str):
@@ -61883,6 +63808,9 @@ class PatchRegionInstanceGroupManagerRequest(proto.Message):
     r"""A request message for RegionInstanceGroupManagers.Patch. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_group_manager (str):
             The name of the instance group manager.
@@ -61939,6 +63867,9 @@ class PatchRegionInstanceGroupManagerRequest(proto.Message):
 class PatchRegionNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for RegionNetworkFirewallPolicies.Patch.
     See the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         firewall_policy (str):
@@ -61997,6 +63928,9 @@ class PatchRegionSecurityPolicyRequest(proto.Message):
     r"""A request message for RegionSecurityPolicies.Patch. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -62053,6 +63987,9 @@ class PatchRegionSecurityPolicyRequest(proto.Message):
 class PatchRegionSslPolicyRequest(proto.Message):
     r"""A request message for RegionSslPolicies.Patch. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -62113,6 +64050,9 @@ class PatchRegionTargetHttpsProxyRequest(proto.Message):
     r"""A request message for RegionTargetHttpsProxies.Patch. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -62171,6 +64111,9 @@ class PatchRegionUrlMapRequest(proto.Message):
     r"""A request message for RegionUrlMaps.Patch. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -62214,6 +64157,9 @@ class PatchRegionUrlMapRequest(proto.Message):
 class PatchRouterRequest(proto.Message):
     r"""A request message for Routers.Patch. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -62272,6 +64218,9 @@ class PatchRuleFirewallPolicyRequest(proto.Message):
     r"""A request message for FirewallPolicies.PatchRule. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         firewall_policy (str):
             Name of the firewall policy to update.
@@ -62325,6 +64274,9 @@ class PatchRuleFirewallPolicyRequest(proto.Message):
 class PatchRuleNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for NetworkFirewallPolicies.PatchRule. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         firewall_policy (str):
@@ -62386,6 +64338,9 @@ class PatchRuleRegionNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for
     RegionNetworkFirewallPolicies.PatchRule. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         firewall_policy (str):
@@ -62453,6 +64408,9 @@ class PatchRuleSecurityPolicyRequest(proto.Message):
     r"""A request message for SecurityPolicies.PatchRule. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         priority (int):
             The priority of the rule to patch.
@@ -62498,6 +64456,9 @@ class PatchRuleSecurityPolicyRequest(proto.Message):
 class PatchSecurityPolicyRequest(proto.Message):
     r"""A request message for SecurityPolicies.Patch. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -62549,6 +64510,9 @@ class PatchSecurityPolicyRequest(proto.Message):
 class PatchServiceAttachmentRequest(proto.Message):
     r"""A request message for ServiceAttachments.Patch. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -62611,6 +64575,9 @@ class PatchSslPolicyRequest(proto.Message):
     r"""A request message for SslPolicies.Patch. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -62663,6 +64630,9 @@ class PatchSslPolicyRequest(proto.Message):
 class PatchSubnetworkRequest(proto.Message):
     r"""A request message for Subnetworks.Patch. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         drain_timeout_seconds (int):
@@ -62739,6 +64709,9 @@ class PatchTargetGrpcProxyRequest(proto.Message):
     r"""A request message for TargetGrpcProxies.Patch. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -62790,6 +64763,9 @@ class PatchTargetGrpcProxyRequest(proto.Message):
 class PatchTargetHttpProxyRequest(proto.Message):
     r"""A request message for TargetHttpProxies.Patch. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -62843,6 +64819,9 @@ class PatchTargetHttpsProxyRequest(proto.Message):
     r"""A request message for TargetHttpsProxies.Patch. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -62895,6 +64874,9 @@ class PatchUrlMapRequest(proto.Message):
     r"""A request message for UrlMaps.Patch. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -62946,6 +64928,9 @@ class PathMatcher(proto.Message):
     r"""A matcher for the path portion of the URL. The BackendService
     from the longest-matched rule will serve the URL. If no rule was
     matched, the default service is used.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         default_route_action (google.cloud.compute_v1.types.HttpRouteAction):
@@ -63093,6 +65078,9 @@ class PathRule(proto.Message):
     specified BackendService to handle the traffic arriving at this
     URL.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         paths (MutableSequence[str]):
             The list of path patterns to match. Each must start with /
@@ -63165,6 +65153,8 @@ class PathRule(proto.Message):
 
 class PerInstanceConfig(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         fingerprint (str):
@@ -63275,6 +65265,9 @@ class Policy(proto.Message):
     timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3
     For a description of IAM and its features, see the `IAM
     documentation <https://cloud.google.com/iam/docs/>`__.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         audit_configs (MutableSequence[google.cloud.compute_v1.types.AuditConfig]):
@@ -63416,6 +65409,8 @@ class PreservedState(proto.Message):
 class PreservedStatePreservedDisk(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         auto_delete (str):
             These stateful disks will never be deleted during
@@ -63516,6 +65511,9 @@ class Project(proto.Message):
     r"""Represents a Project resource. A project is used to organize
     resources in a Google Cloud Platform environment. For more
     information, read about the Resource Hierarchy.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         common_instance_metadata (google.cloud.compute_v1.types.Metadata):
@@ -63703,6 +65701,8 @@ class Project(proto.Message):
 class ProjectsDisableXpnResourceRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         xpn_resource (google.cloud.compute_v1.types.XpnResourceId):
             Service resource (a.k.a service project) ID.
@@ -63721,6 +65721,8 @@ class ProjectsDisableXpnResourceRequest(proto.Message):
 class ProjectsEnableXpnResourceRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         xpn_resource (google.cloud.compute_v1.types.XpnResourceId):
             Service resource (a.k.a service project) ID.
@@ -63738,6 +65740,8 @@ class ProjectsEnableXpnResourceRequest(proto.Message):
 
 class ProjectsGetXpnResources(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         kind (str):
@@ -63785,6 +65789,8 @@ class ProjectsGetXpnResources(proto.Message):
 class ProjectsListXpnHostsRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         organization (str):
             Optional organization ID managed by Cloud
@@ -63804,6 +65810,8 @@ class ProjectsListXpnHostsRequest(proto.Message):
 
 class ProjectsSetDefaultNetworkTierRequest(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         network_tier (str):
@@ -63834,6 +65842,9 @@ class PublicAdvertisedPrefix(proto.Message):
     or netblock which customers bring to cloud. The IP prefix is a
     single unit of route advertisement and is announced globally to
     the internet.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -64005,6 +66016,8 @@ class PublicAdvertisedPrefix(proto.Message):
 class PublicAdvertisedPrefixList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -64079,6 +66092,9 @@ class PublicAdvertisedPrefixPublicDelegatedPrefix(proto.Message):
     r"""Represents a CIDR range which can be used to assign
     addresses.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         ip_range (str):
             The IP address range of the public delegated
@@ -64143,6 +66159,9 @@ class PublicDelegatedPrefix(proto.Message):
     allocated to resources within that scope. Public delegated
     prefixes may be further broken up into smaller IP blocks in the
     same scope as the parent block.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -64319,6 +66338,8 @@ class PublicDelegatedPrefix(proto.Message):
 class PublicDelegatedPrefixAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -64400,6 +66421,8 @@ class PublicDelegatedPrefixAggregatedList(proto.Message):
 class PublicDelegatedPrefixList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -64472,6 +66495,8 @@ class PublicDelegatedPrefixList(proto.Message):
 
 class PublicDelegatedPrefixPublicDelegatedSubPrefix(proto.Message):
     r"""Represents a sub PublicDelegatedPrefix.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         delegatee_project (str):
@@ -64557,6 +66582,8 @@ class PublicDelegatedPrefixPublicDelegatedSubPrefix(proto.Message):
 class PublicDelegatedPrefixesScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         public_delegated_prefixes (MutableSequence[google.cloud.compute_v1.types.PublicDelegatedPrefix]):
             [Output Only] A list of PublicDelegatedPrefixes contained in
@@ -64585,6 +66612,8 @@ class PublicDelegatedPrefixesScopedList(proto.Message):
 
 class Quota(proto.Message):
     r"""A quotas entry.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         limit (float):
@@ -64778,6 +66807,9 @@ class QuotaExceededInfo(proto.Message):
     r"""Additional details for quota exceeded error for resource
     quota.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         dimensions (MutableMapping[str, str]):
             The map holding related quota dimensions.
@@ -64820,6 +66852,8 @@ class QuotaExceededInfo(proto.Message):
 
 class RawDisk(proto.Message):
     r"""The parameters of the raw disk image.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         container_type (str):
@@ -64882,6 +66916,9 @@ class RecreateInstancesInstanceGroupManagerRequest(proto.Message):
     InstanceGroupManagers.RecreateInstances. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_group_manager (str):
             The name of the managed instance group.
@@ -64941,6 +66978,9 @@ class RecreateInstancesRegionInstanceGroupManagerRequest(proto.Message):
     RegionInstanceGroupManagers.RecreateInstances. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_group_manager (str):
             Name of the managed instance group.
@@ -64997,6 +67037,8 @@ class RecreateInstancesRegionInstanceGroupManagerRequest(proto.Message):
 class Reference(proto.Message):
     r"""Represents a reference to a resource.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         kind (str):
             [Output Only] Type of the resource. Always compute#reference
@@ -65046,6 +67088,9 @@ class Region(proto.Message):
     r"""Represents a Region resource. A region is a geographical area
     where a resource is located. For more information, read Regions
     and Zones.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -65161,6 +67206,8 @@ class Region(proto.Message):
 class RegionAutoscalerList(proto.Message):
     r"""Contains a list of autoscalers.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -65231,6 +67278,8 @@ class RegionAutoscalerList(proto.Message):
 
 class RegionDiskTypeList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -65333,6 +67382,8 @@ class RegionDisksRemoveResourcePoliciesRequest(proto.Message):
 class RegionDisksResizeRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         size_gb (int):
             The new size of the regional persistent disk,
@@ -65350,6 +67401,8 @@ class RegionDisksResizeRequest(proto.Message):
 
 class RegionInstanceGroupList(proto.Message):
     r"""Contains a list of InstanceGroup resources.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -65437,6 +67490,8 @@ class RegionInstanceGroupManagerDeleteInstanceConfigReq(proto.Message):
 
 class RegionInstanceGroupManagerList(proto.Message):
     r"""Contains a list of managed instance groups.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -65559,6 +67614,8 @@ class RegionInstanceGroupManagersAbandonInstancesRequest(proto.Message):
 class RegionInstanceGroupManagersApplyUpdatesRequest(proto.Message):
     r"""RegionInstanceGroupManagers.applyUpdatesToInstances
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         all_instances (bool):
             Flag to update all instances instead of
@@ -65674,6 +67731,8 @@ class RegionInstanceGroupManagersCreateInstancesRequest(proto.Message):
 class RegionInstanceGroupManagersDeleteInstancesRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instances (MutableSequence[str]):
             The URLs of one or more instances to delete. This can be a
@@ -65706,6 +67765,8 @@ class RegionInstanceGroupManagersDeleteInstancesRequest(proto.Message):
 
 class RegionInstanceGroupManagersListErrorsResponse(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         items (MutableSequence[google.cloud.compute_v1.types.InstanceManagedByIgmError]):
@@ -65740,6 +67801,8 @@ class RegionInstanceGroupManagersListErrorsResponse(proto.Message):
 
 class RegionInstanceGroupManagersListInstanceConfigsResp(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         items (MutableSequence[google.cloud.compute_v1.types.PerInstanceConfig]):
@@ -65783,6 +67846,8 @@ class RegionInstanceGroupManagersListInstanceConfigsResp(proto.Message):
 
 class RegionInstanceGroupManagersListInstancesResponse(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         managed_instances (MutableSequence[google.cloud.compute_v1.types.ManagedInstance]):
@@ -65833,6 +67898,8 @@ class RegionInstanceGroupManagersRecreateRequest(proto.Message):
 class RegionInstanceGroupManagersSetTargetPoolsRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         fingerprint (str):
             Fingerprint of the target pools information,
@@ -65862,6 +67929,8 @@ class RegionInstanceGroupManagersSetTargetPoolsRequest(proto.Message):
 class RegionInstanceGroupManagersSetTemplateRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_template (str):
             URL of the InstanceTemplate resource from
@@ -65879,6 +67948,8 @@ class RegionInstanceGroupManagersSetTemplateRequest(proto.Message):
 
 class RegionInstanceGroupsListInstances(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -65951,6 +68022,8 @@ class RegionInstanceGroupsListInstances(proto.Message):
 class RegionInstanceGroupsListInstancesRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_state (str):
             Instances in which state should be returned.
@@ -65992,6 +68065,8 @@ class RegionInstanceGroupsListInstancesRequest(proto.Message):
 class RegionInstanceGroupsSetNamedPortsRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         fingerprint (str):
             The fingerprint of the named ports
@@ -66024,6 +68099,8 @@ class RegionInstanceGroupsSetNamedPortsRequest(proto.Message):
 
 class RegionList(proto.Message):
     r"""Contains a list of region resources.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -66123,6 +68200,8 @@ class RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponseEffectiveFirewal
 ):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         display_name (str):
             [Output Only] The display name of the firewall policy.
@@ -66177,6 +68256,8 @@ class RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponseEffectiveFirewal
 class RegionSetLabelsRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         label_fingerprint (str):
             The fingerprint of the previous set of labels
@@ -66207,6 +68288,8 @@ class RegionSetLabelsRequest(proto.Message):
 
 class RegionSetPolicyRequest(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         bindings (MutableSequence[google.cloud.compute_v1.types.Binding]):
@@ -66265,6 +68348,8 @@ class RegionTargetHttpsProxiesSetSslCertificatesRequest(proto.Message):
 class RegionUrlMapsValidateRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         resource (google.cloud.compute_v1.types.UrlMap):
             Content of the UrlMap to be validated.
@@ -66283,6 +68368,9 @@ class RegionUrlMapsValidateRequest(proto.Message):
 class RemoveAssociationFirewallPolicyRequest(proto.Message):
     r"""A request message for FirewallPolicies.RemoveAssociation. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         firewall_policy (str):
@@ -66331,6 +68419,9 @@ class RemoveAssociationNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for
     NetworkFirewallPolicies.RemoveAssociation. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         firewall_policy (str):
@@ -66385,6 +68476,9 @@ class RemoveAssociationRegionNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for
     RegionNetworkFirewallPolicies.RemoveAssociation. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         firewall_policy (str):
@@ -66446,6 +68540,9 @@ class RemoveHealthCheckTargetPoolRequest(proto.Message):
     r"""A request message for TargetPools.RemoveHealthCheck. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -66504,6 +68601,9 @@ class RemoveInstanceTargetPoolRequest(proto.Message):
     r"""A request message for TargetPools.RemoveInstance. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -66561,6 +68661,9 @@ class RemoveInstanceTargetPoolRequest(proto.Message):
 class RemoveInstancesInstanceGroupRequest(proto.Message):
     r"""A request message for InstanceGroups.RemoveInstances. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance_group (str):
@@ -66621,6 +68724,9 @@ class RemovePeeringNetworkRequest(proto.Message):
     r"""A request message for Networks.RemovePeering. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         network (str):
             Name of the network resource to remove
@@ -66674,6 +68780,9 @@ class RemovePeeringNetworkRequest(proto.Message):
 class RemoveResourcePoliciesDiskRequest(proto.Message):
     r"""A request message for Disks.RemoveResourcePolicies. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         disk (str):
@@ -66732,6 +68841,9 @@ class RemoveResourcePoliciesInstanceRequest(proto.Message):
     r"""A request message for Instances.RemoveResourcePolicies. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance (str):
             The instance name for this request.
@@ -66788,6 +68900,9 @@ class RemoveResourcePoliciesInstanceRequest(proto.Message):
 class RemoveResourcePoliciesRegionDiskRequest(proto.Message):
     r"""A request message for RegionDisks.RemoveResourcePolicies. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         disk (str):
@@ -66846,6 +68961,9 @@ class RemoveRuleFirewallPolicyRequest(proto.Message):
     r"""A request message for FirewallPolicies.RemoveRule. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         firewall_policy (str):
             Name of the firewall policy to update.
@@ -66893,6 +69011,9 @@ class RemoveRuleFirewallPolicyRequest(proto.Message):
 class RemoveRuleNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for NetworkFirewallPolicies.RemoveRule. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         firewall_policy (str):
@@ -66948,6 +69069,9 @@ class RemoveRuleRegionNetworkFirewallPolicyRequest(proto.Message):
     r"""A request message for
     RegionNetworkFirewallPolicies.RemoveRule. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         firewall_policy (str):
@@ -67009,6 +69133,9 @@ class RemoveRuleSecurityPolicyRequest(proto.Message):
     r"""A request message for SecurityPolicies.RemoveRule. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         priority (int):
             The priority of the rule to remove from the
@@ -67043,6 +69170,9 @@ class RequestMirrorPolicy(proto.Message):
     service. Before sending traffic to the shadow service, the host
     or authority header is suffixed with -shadow.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         backend_service (str):
             The full or partial URL to the BackendService
@@ -67068,6 +69198,9 @@ class Reservation(proto.Message):
     capacity is held in a specific zone even if the reserved VMs are
     not running. For more information, read Reserving zonal
     resources.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         commitment (str):
@@ -67242,6 +69375,9 @@ class ReservationAffinity(proto.Message):
     r"""Specifies the reservations that this instance can consume
     from.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         consume_reservation_type (str):
             Specifies the type of reservation from which this instance
@@ -67296,6 +69432,8 @@ class ReservationAffinity(proto.Message):
 
 class ReservationAggregatedList(proto.Message):
     r"""Contains a list of reservations.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -67375,6 +69513,8 @@ class ReservationAggregatedList(proto.Message):
 class ReservationList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] The unique identifier for the resource. This
@@ -67447,6 +69587,8 @@ class ReservationList(proto.Message):
 class ReservationsResizeRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         specific_sku_count (int):
             Number of allocated resources can be resized
@@ -67464,6 +69606,8 @@ class ReservationsResizeRequest(proto.Message):
 
 class ReservationsScopedList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         reservations (MutableSequence[google.cloud.compute_v1.types.Reservation]):
@@ -67492,6 +69636,9 @@ class ReservationsScopedList(proto.Message):
 class ResetInstanceRequest(proto.Message):
     r"""A request message for Instances.Reset. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance (str):
@@ -67542,6 +69689,9 @@ class ResetInstanceRequest(proto.Message):
 class ResizeDiskRequest(proto.Message):
     r"""A request message for Disks.Resize. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         disk (str):
@@ -67599,6 +69749,9 @@ class ResizeDiskRequest(proto.Message):
 class ResizeInstanceGroupManagerRequest(proto.Message):
     r"""A request message for InstanceGroupManagers.Resize. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance_group_manager (str):
@@ -67661,6 +69814,9 @@ class ResizeRegionDiskRequest(proto.Message):
     r"""A request message for RegionDisks.Resize. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         disk (str):
             Name of the regional persistent disk.
@@ -67717,6 +69873,9 @@ class ResizeRegionDiskRequest(proto.Message):
 class ResizeRegionInstanceGroupManagerRequest(proto.Message):
     r"""A request message for RegionInstanceGroupManagers.Resize. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance_group_manager (str):
@@ -67775,6 +69934,9 @@ class ResizeReservationRequest(proto.Message):
     r"""A request message for Reservations.Resize. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -67832,6 +69994,9 @@ class ResourceCommitment(proto.Message):
     r"""Commitment for a particular resource (a Commitment is
     composed of one or more of these).
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         accelerator_type (str):
             Name of the accelerator type resource.
@@ -67886,6 +70051,8 @@ class ResourceCommitment(proto.Message):
 class ResourceGroupReference(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         group (str):
             A URI referencing one of the instance groups
@@ -67904,6 +70071,8 @@ class ResourceGroupReference(proto.Message):
 
 class ResourcePoliciesScopedList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         resource_policies (MutableSequence[google.cloud.compute_v1.types.ResourcePolicy]):
@@ -67934,6 +70103,9 @@ class ResourcePolicy(proto.Message):
     policies to schedule actions for some Compute Engine resources.
     For example, you can use them to schedule persistent disk
     snapshots.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -68076,6 +70248,8 @@ class ResourcePolicy(proto.Message):
 class ResourcePolicyAggregatedList(proto.Message):
     r"""Contains a list of resourcePolicies.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         etag (str):
 
@@ -68162,6 +70336,8 @@ class ResourcePolicyAggregatedList(proto.Message):
 class ResourcePolicyDailyCycle(proto.Message):
     r"""Time window specified for daily operations.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         days_in_cycle (int):
             Defines a schedule with units measured in
@@ -68205,6 +70381,9 @@ class ResourcePolicyGroupPlacementPolicy(proto.Message):
     r"""A GroupPlacementPolicy specifies resource placement
     configuration. It specifies the failure bucket separation as
     well as network locality
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         availability_domain_count (int):
@@ -68256,6 +70435,8 @@ class ResourcePolicyGroupPlacementPolicy(proto.Message):
 class ResourcePolicyHourlyCycle(proto.Message):
     r"""Time window specified for hourly operations.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         duration (str):
             [Output only] Duration of the time window, automatically
@@ -68295,6 +70476,9 @@ class ResourcePolicyHourlyCycle(proto.Message):
 class ResourcePolicyInstanceSchedulePolicy(proto.Message):
     r"""An InstanceSchedulePolicy specifies when and how frequent
     certain operations are performed on the instance.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         expiration_time (str):
@@ -68358,6 +70542,8 @@ class ResourcePolicyInstanceSchedulePolicy(proto.Message):
 class ResourcePolicyInstanceSchedulePolicySchedule(proto.Message):
     r"""Schedule for an instance operation.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         schedule (str):
             Specifies the frequency for the operation,
@@ -68375,6 +70561,8 @@ class ResourcePolicyInstanceSchedulePolicySchedule(proto.Message):
 
 class ResourcePolicyList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         etag (str):
@@ -68459,6 +70647,9 @@ class ResourcePolicyResourceStatus(proto.Message):
     this "status" field should mimic the structure of ResourcePolicy
     proto specification.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_schedule_policy (google.cloud.compute_v1.types.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus):
             [Output Only] Specifies a set of output values reffering to
@@ -68478,6 +70669,8 @@ class ResourcePolicyResourceStatus(proto.Message):
 
 class ResourcePolicyResourceStatusInstanceSchedulePolicyStatus(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         last_run_start_time (str):
@@ -68510,6 +70703,9 @@ class ResourcePolicySnapshotSchedulePolicy(proto.Message):
     snapshots are to be created for the target disk. Also specifies
     how many and how long these scheduled snapshots should be
     retained.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         retention_policy (google.cloud.compute_v1.types.ResourcePolicySnapshotSchedulePolicyRetentionPolicy):
@@ -68558,6 +70754,8 @@ class ResourcePolicySnapshotSchedulePolicy(proto.Message):
 class ResourcePolicySnapshotSchedulePolicyRetentionPolicy(proto.Message):
     r"""Policy for retention of scheduled snapshots.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         max_retention_days (int):
             Maximum age of the snapshot that is allowed
@@ -68598,6 +70796,9 @@ class ResourcePolicySnapshotSchedulePolicySchedule(proto.Message):
     r"""A schedule for disks where the schedueled operations are
     performed.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         daily_schedule (google.cloud.compute_v1.types.ResourcePolicyDailyCycle):
 
@@ -68633,6 +70834,9 @@ class ResourcePolicySnapshotSchedulePolicySchedule(proto.Message):
 class ResourcePolicySnapshotSchedulePolicySnapshotProperties(proto.Message):
     r"""Specified snapshot properties for scheduled snapshots created
     by this policy.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         chain_name (str):
@@ -68695,6 +70899,8 @@ class ResourcePolicyWeeklyCycle(proto.Message):
 class ResourcePolicyWeeklyCycleDayOfWeek(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         day (str):
             Defines a schedule that runs on specific days
@@ -68754,6 +70960,9 @@ class ResourceStatus(proto.Message):
     values set on Instance attributes as compared to the value
     requested by the user (intent) in their instance CRUD calls.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         physical_host (str):
             [Output Only] An opaque ID of the host on which the VM is
@@ -68772,6 +70981,9 @@ class ResourceStatus(proto.Message):
 class ResumeInstanceRequest(proto.Message):
     r"""A request message for Instances.Resume. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance (str):
@@ -68824,6 +71036,9 @@ class Route(proto.Message):
     instances in the VPC network to a specific destination. This
     destination can be inside or outside the VPC network. For more
     information, read the Routes overview.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         as_paths (MutableSequence[google.cloud.compute_v1.types.RouteAsPath]):
@@ -69086,6 +71301,8 @@ class Route(proto.Message):
 class RouteAsPath(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         as_lists (MutableSequence[int]):
             [Output Only] The AS numbers of the AS Path.
@@ -69133,6 +71350,8 @@ class RouteAsPath(proto.Message):
 
 class RouteList(proto.Message):
     r"""Contains a list of Route resources.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -69205,6 +71424,9 @@ class RouteList(proto.Message):
 class Router(proto.Message):
     r"""Represents a Cloud Router resource. For more information
     about Cloud Router, read the Cloud Router overview.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         bgp (google.cloud.compute_v1.types.RouterBgp):
@@ -69359,6 +71581,8 @@ class Router(proto.Message):
 class RouterAdvertisedIpRange(proto.Message):
     r"""Description-tagged IP ranges for the router to advertise.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         description (str):
             User-specified description for the IP range.
@@ -69385,6 +71609,8 @@ class RouterAdvertisedIpRange(proto.Message):
 
 class RouterAggregatedList(proto.Message):
     r"""Contains a list of routers.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -69463,6 +71689,8 @@ class RouterAggregatedList(proto.Message):
 
 class RouterBgp(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         advertise_mode (str):
@@ -69555,6 +71783,8 @@ class RouterBgp(proto.Message):
 
 class RouterBgpPeer(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         advertise_mode (str):
@@ -69808,6 +72038,8 @@ class RouterBgpPeer(proto.Message):
 class RouterBgpPeerBfd(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         min_receive_interval (int):
             The minimum interval, in milliseconds,
@@ -69888,6 +72120,8 @@ class RouterBgpPeerBfd(proto.Message):
 
 class RouterInterface(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         ip_range (str):
@@ -70033,6 +72267,8 @@ class RouterInterface(proto.Message):
 class RouterList(proto.Message):
     r"""Contains a list of Router resources.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -70105,6 +72341,8 @@ class RouterList(proto.Message):
 class RouterMd5AuthenticationKey(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         key (str):
             [Input only] Value of the key. For patch and update calls,
@@ -70141,6 +72379,9 @@ class RouterNat(proto.Message):
     within) that want to use NAT. Customers can also provide the
     external IPs that would be used for NAT. GCP would auto-allocate
     ephemeral IPs if no external IPs are provided.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         drain_nat_ips (MutableSequence[str]):
@@ -70400,6 +72641,8 @@ class RouterNat(proto.Message):
 class RouterNatLogConfig(proto.Message):
     r"""Configuration of logging on a NAT.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         enable (bool):
             Indicates whether or not to export logs. This
@@ -70446,6 +72689,8 @@ class RouterNatLogConfig(proto.Message):
 
 class RouterNatRule(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         action (google.cloud.compute_v1.types.RouterNatRuleAction):
@@ -70532,6 +72777,8 @@ class RouterNatRuleAction(proto.Message):
 class RouterNatSubnetworkToNat(proto.Message):
     r"""Defines the IP ranges that want to use NAT for a subnetwork.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             URL for the subnetwork resource that will use
@@ -70578,6 +72825,8 @@ class RouterNatSubnetworkToNat(proto.Message):
 class RouterStatus(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         best_routes (MutableSequence[google.cloud.compute_v1.types.Route]):
             Best routes for this router's network.
@@ -70623,6 +72872,8 @@ class RouterStatus(proto.Message):
 
 class RouterStatusBgpPeerStatus(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         advertised_routes (MutableSequence[google.cloud.compute_v1.types.Route]):
@@ -70814,6 +73065,8 @@ class RouterStatusBgpPeerStatus(proto.Message):
 class RouterStatusNatStatus(proto.Message):
     r"""Status of a NAT contained in this router.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         auto_allocated_nat_ips (MutableSequence[str]):
             A list of IPs auto-allocated for NAT. Example: ["1.1.1.1",
@@ -70897,6 +73150,8 @@ class RouterStatusNatStatus(proto.Message):
 class RouterStatusNatStatusNatRuleStatus(proto.Message):
     r"""Status of a NAT Rule contained in this NAT.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         active_nat_ips (MutableSequence[str]):
             A list of active IPs for NAT. Example: ["1.1.1.1",
@@ -70950,6 +73205,8 @@ class RouterStatusNatStatusNatRuleStatus(proto.Message):
 class RouterStatusResponse(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         kind (str):
             Type of resource.
@@ -70976,6 +73233,8 @@ class RouterStatusResponse(proto.Message):
 class RoutersPreviewResponse(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         resource (google.cloud.compute_v1.types.Router):
             Preview of given router.
@@ -70993,6 +73252,8 @@ class RoutersPreviewResponse(proto.Message):
 
 class RoutersScopedList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         routers (MutableSequence[google.cloud.compute_v1.types.Router]):
@@ -71019,6 +73280,8 @@ class RoutersScopedList(proto.Message):
 
 class Rule(proto.Message):
     r"""This is deprecated and has no effect. Do not use.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         action (str):
@@ -71095,6 +73358,8 @@ class Rule(proto.Message):
 
 class SSLHealthCheck(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         port (int):
@@ -71231,6 +73496,9 @@ class SSLHealthCheck(proto.Message):
 class SavedAttachedDisk(proto.Message):
     r"""DEPRECATED: Please use compute#savedDisk instead. An
     instance-attached disk resource.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         auto_delete (bool):
@@ -71442,6 +73710,8 @@ class SavedAttachedDisk(proto.Message):
 class SavedDisk(proto.Message):
     r"""An instance-attached disk resource.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         architecture (str):
             [Output Only] The architecture of the attached disk. Check
@@ -71523,6 +73793,8 @@ class SavedDisk(proto.Message):
 class ScalingScheduleStatus(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         last_start_time (str):
             [Output Only] The last time the scaling schedule became
@@ -71572,6 +73844,8 @@ class ScalingScheduleStatus(proto.Message):
 
 class Scheduling(proto.Message):
     r"""Sets the scheduling options for an Instance.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         automatic_restart (bool):
@@ -71705,6 +73979,9 @@ class SchedulingNodeAffinity(proto.Message):
     r"""Node Affinity: the configuration of desired nodes onto which
     this Instance could be scheduled.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         key (str):
             Corresponds to the label key of Node
@@ -71750,6 +74027,8 @@ class SchedulingNodeAffinity(proto.Message):
 class ScratchDisks(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         disk_gb (int):
             Size of the scratch disk, defined in GB.
@@ -71766,6 +74045,8 @@ class ScratchDisks(proto.Message):
 
 class Screenshot(proto.Message):
     r"""An instance's screenshot.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         contents (str):
@@ -71793,6 +74074,8 @@ class Screenshot(proto.Message):
 
 class SecurityPoliciesAggregatedList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         etag (str):
@@ -71883,6 +74166,8 @@ class SecurityPoliciesAggregatedList(proto.Message):
 class SecurityPoliciesListPreconfiguredExpressionSetsResponse(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         preconfigured_expression_sets (google.cloud.compute_v1.types.SecurityPoliciesWafConfig):
 
@@ -71899,6 +74184,8 @@ class SecurityPoliciesListPreconfiguredExpressionSetsResponse(proto.Message):
 
 class SecurityPoliciesScopedList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         security_policies (MutableSequence[google.cloud.compute_v1.types.SecurityPolicy]):
@@ -71927,6 +74214,8 @@ class SecurityPoliciesScopedList(proto.Message):
 class SecurityPoliciesWafConfig(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         waf_rules (google.cloud.compute_v1.types.PreconfiguredWafSet):
 
@@ -71946,6 +74235,9 @@ class SecurityPolicy(proto.Message):
     Only external backend services that use load balancers can
     reference a security policy. For more information, see Google
     Cloud Armor security policy overview.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         adaptive_protection_config (google.cloud.compute_v1.types.SecurityPolicyAdaptiveProtectionConfig):
@@ -72145,6 +74437,9 @@ class SecurityPolicyAdaptiveProtectionConfig(proto.Message):
     r"""Configuration options for Cloud Armor Adaptive Protection
     (CAAP).
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         layer7_ddos_defense_config (google.cloud.compute_v1.types.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig):
             If set to true, enables Cloud Armor Machine
@@ -72163,6 +74458,8 @@ class SecurityPolicyAdaptiveProtectionConfig(proto.Message):
 
 class SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(proto.Message):
     r"""Configuration options for L7 DDoS detection.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         enable (bool):
@@ -72201,6 +74498,8 @@ class SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(proto.Messag
 
 class SecurityPolicyAdvancedOptionsConfig(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         json_custom_config (google.cloud.compute_v1.types.SecurityPolicyAdvancedOptionsConfigJsonCustomConfig):
@@ -72274,6 +74573,8 @@ class SecurityPolicyAdvancedOptionsConfigJsonCustomConfig(proto.Message):
 class SecurityPolicyDdosProtectionConfig(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         ddos_protection (str):
             Check the DdosProtection enum for the list of
@@ -72297,6 +74598,8 @@ class SecurityPolicyDdosProtectionConfig(proto.Message):
 
 class SecurityPolicyList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -72361,6 +74664,8 @@ class SecurityPolicyList(proto.Message):
 class SecurityPolicyRecaptchaOptionsConfig(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         redirect_site_key (str):
             An optional field to supply a reCAPTCHA site key to be used
@@ -72383,6 +74688,8 @@ class SecurityPolicyRecaptchaOptionsConfig(proto.Message):
 class SecurityPolicyReference(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         security_policy (str):
 
@@ -72400,6 +74707,9 @@ class SecurityPolicyRule(proto.Message):
     r"""Represents a rule that describes one or more match conditions
     along with the action to be taken when traffic matches this
     condition (allow or deny).
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         action (str):
@@ -72540,6 +74850,8 @@ class SecurityPolicyRuleHttpHeaderAction(proto.Message):
 class SecurityPolicyRuleHttpHeaderActionHttpHeaderOption(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         header_name (str):
             The name of the header to set.
@@ -72566,6 +74878,9 @@ class SecurityPolicyRuleHttpHeaderActionHttpHeaderOption(proto.Message):
 class SecurityPolicyRuleMatcher(proto.Message):
     r"""Represents a match condition that incoming traffic is
     evaluated against. Exactly one field must be specified.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         config (google.cloud.compute_v1.types.SecurityPolicyRuleMatcherConfig):
@@ -72637,6 +74952,8 @@ class SecurityPolicyRuleMatcherConfig(proto.Message):
 
 class SecurityPolicyRuleRateLimitOptions(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         ban_duration_sec (int):
@@ -72801,6 +75118,8 @@ class SecurityPolicyRuleRateLimitOptions(proto.Message):
 class SecurityPolicyRuleRateLimitOptionsThreshold(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         count (int):
             Number of HTTP(S) requests for calculating
@@ -72828,6 +75147,8 @@ class SecurityPolicyRuleRateLimitOptionsThreshold(proto.Message):
 
 class SecurityPolicyRuleRedirectOptions(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         target (str):
@@ -72865,6 +75186,9 @@ class SecurityPolicyRuleRedirectOptions(proto.Message):
 class SecuritySettings(proto.Message):
     r"""The authentication and authorization settings for a
     BackendService.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         client_tls_policy (str):
@@ -72944,6 +75268,8 @@ class SendDiagnosticInterruptInstanceResponse(proto.Message):
 class SerialPortOutput(proto.Message):
     r"""An instance serial console output.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         contents (str):
             [Output Only] The contents of the console output.
@@ -73007,6 +75333,8 @@ class SerialPortOutput(proto.Message):
 class ServerBinding(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         type_ (str):
             Check the Type enum for the list of possible
@@ -73031,6 +75359,8 @@ class ServerBinding(proto.Message):
 
 class ServiceAccount(proto.Message):
     r"""A service account.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         email (str):
@@ -73059,6 +75389,9 @@ class ServiceAttachment(proto.Message):
     encapsulates the load balancer which fronts the service runs and
     a list of NAT IP ranges that the producers uses to represent the
     consumers connecting to the service. next tag = 20
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         connected_endpoints (MutableSequence[google.cloud.compute_v1.types.ServiceAttachmentConnectedEndpoint]):
@@ -73278,6 +75611,8 @@ class ServiceAttachment(proto.Message):
 class ServiceAttachmentAggregatedList(proto.Message):
     r"""Contains a list of ServiceAttachmentsScopedList.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -73357,6 +75692,8 @@ class ServiceAttachmentAggregatedList(proto.Message):
 class ServiceAttachmentConnectedEndpoint(proto.Message):
     r"""[Output Only] A connection connected to this service attachment.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         endpoint (str):
             The url of a connected endpoint.
@@ -73407,6 +75744,8 @@ class ServiceAttachmentConnectedEndpoint(proto.Message):
 class ServiceAttachmentConsumerProjectLimit(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         connection_limit (int):
             The value of the limit to set.
@@ -73443,6 +75782,8 @@ class ServiceAttachmentConsumerProjectLimit(proto.Message):
 
 class ServiceAttachmentList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -73516,6 +75857,8 @@ class ServiceAttachmentList(proto.Message):
 class ServiceAttachmentsScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         service_attachments (MutableSequence[google.cloud.compute_v1.types.ServiceAttachment]):
             A list of ServiceAttachments contained in
@@ -73543,6 +75886,9 @@ class ServiceAttachmentsScopedList(proto.Message):
 class SetBackendServiceTargetSslProxyRequest(proto.Message):
     r"""A request message for TargetSslProxies.SetBackendService. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -73596,6 +75942,9 @@ class SetBackendServiceTargetTcpProxyRequest(proto.Message):
     r"""A request message for TargetTcpProxies.SetBackendService. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -73647,6 +75996,9 @@ class SetBackendServiceTargetTcpProxyRequest(proto.Message):
 class SetBackupTargetPoolRequest(proto.Message):
     r"""A request message for TargetPools.SetBackup. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         failover_ratio (float):
@@ -73715,6 +76067,9 @@ class SetCertificateMapTargetHttpsProxyRequest(proto.Message):
     r"""A request message for TargetHttpsProxies.SetCertificateMap.
     See the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -73767,6 +76122,9 @@ class SetCertificateMapTargetHttpsProxyRequest(proto.Message):
 class SetCertificateMapTargetSslProxyRequest(proto.Message):
     r"""A request message for TargetSslProxies.SetCertificateMap. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -73821,6 +76179,9 @@ class SetCommonInstanceMetadataProjectRequest(proto.Message):
     r"""A request message for Projects.SetCommonInstanceMetadata. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         metadata_resource (google.cloud.compute_v1.types.Metadata):
             The body resource for this request
@@ -73866,6 +76227,9 @@ class SetDefaultNetworkTierProjectRequest(proto.Message):
     r"""A request message for Projects.SetDefaultNetworkTier. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -73910,6 +76274,9 @@ class SetDefaultNetworkTierProjectRequest(proto.Message):
 class SetDeletionProtectionInstanceRequest(proto.Message):
     r"""A request message for Instances.SetDeletionProtection. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         deletion_protection (bool):
@@ -73970,6 +76337,9 @@ class SetDeletionProtectionInstanceRequest(proto.Message):
 class SetDiskAutoDeleteInstanceRequest(proto.Message):
     r"""A request message for Instances.SetDiskAutoDelete. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         auto_delete (bool):
@@ -74036,6 +76406,9 @@ class SetEdgeSecurityPolicyBackendBucketRequest(proto.Message):
     r"""A request message for BackendBuckets.SetEdgeSecurityPolicy.
     See the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         backend_bucket (str):
             Name of the BackendService resource to which
@@ -74088,6 +76461,9 @@ class SetEdgeSecurityPolicyBackendBucketRequest(proto.Message):
 class SetEdgeSecurityPolicyBackendServiceRequest(proto.Message):
     r"""A request message for BackendServices.SetEdgeSecurityPolicy.
     See the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         backend_service (str):
@@ -74770,6 +77146,9 @@ class SetInstanceTemplateInstanceGroupManagerRequest(proto.Message):
     InstanceGroupManagers.SetInstanceTemplate. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_group_manager (str):
             The name of the managed instance group.
@@ -74829,6 +77208,9 @@ class SetInstanceTemplateRegionInstanceGroupManagerRequest(proto.Message):
     RegionInstanceGroupManagers.SetInstanceTemplate. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_group_manager (str):
             The name of the managed instance group.
@@ -74886,6 +77268,9 @@ class SetLabelsAddressRequest(proto.Message):
     r"""A request message for Addresses.SetLabels. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -74942,6 +77327,9 @@ class SetLabelsAddressRequest(proto.Message):
 class SetLabelsDiskRequest(proto.Message):
     r"""A request message for Disks.SetLabels. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -75027,6 +77415,9 @@ class SetLabelsExternalVpnGatewayRequest(proto.Message):
 class SetLabelsForwardingRuleRequest(proto.Message):
     r"""A request message for ForwardingRules.SetLabels. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -75169,6 +77560,9 @@ class SetLabelsInstanceRequest(proto.Message):
     r"""A request message for Instances.SetLabels. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance (str):
             Name of the instance scoping this request.
@@ -75225,6 +77619,9 @@ class SetLabelsInstanceRequest(proto.Message):
 class SetLabelsInterconnectAttachmentRequest(proto.Message):
     r"""A request message for InterconnectAttachments.SetLabels. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -75310,6 +77707,9 @@ class SetLabelsInterconnectRequest(proto.Message):
 class SetLabelsRegionDiskRequest(proto.Message):
     r"""A request message for RegionDisks.SetLabels. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -75424,6 +77824,9 @@ class SetLabelsTargetVpnGatewayRequest(proto.Message):
     r"""A request message for TargetVpnGateways.SetLabels. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -75480,6 +77883,9 @@ class SetLabelsTargetVpnGatewayRequest(proto.Message):
 class SetLabelsVpnGatewayRequest(proto.Message):
     r"""A request message for VpnGateways.SetLabels. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -75538,6 +77944,9 @@ class SetLabelsVpnTunnelRequest(proto.Message):
     r"""A request message for VpnTunnels.SetLabels. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -75595,6 +78004,9 @@ class SetMachineResourcesInstanceRequest(proto.Message):
     r"""A request message for Instances.SetMachineResources. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance (str):
             Name of the instance scoping this request.
@@ -75651,6 +78063,9 @@ class SetMachineResourcesInstanceRequest(proto.Message):
 class SetMachineTypeInstanceRequest(proto.Message):
     r"""A request message for Instances.SetMachineType. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance (str):
@@ -75711,6 +78126,9 @@ class SetMetadataInstanceRequest(proto.Message):
     r"""A request message for Instances.SetMetadata. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance (str):
             Name of the instance scoping this request.
@@ -75768,6 +78186,9 @@ class SetMinCpuPlatformInstanceRequest(proto.Message):
     r"""A request message for Instances.SetMinCpuPlatform. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance (str):
             Name of the instance scoping this request.
@@ -75824,6 +78245,9 @@ class SetMinCpuPlatformInstanceRequest(proto.Message):
 class SetNamedPortsInstanceGroupRequest(proto.Message):
     r"""A request message for InstanceGroups.SetNamedPorts. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance_group (str):
@@ -75884,6 +78308,9 @@ class SetNamedPortsRegionInstanceGroupRequest(proto.Message):
     r"""A request message for RegionInstanceGroups.SetNamedPorts. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_group (str):
             The name of the regional instance group where
@@ -75942,6 +78369,9 @@ class SetNodeTemplateNodeGroupRequest(proto.Message):
     r"""A request message for NodeGroups.SetNodeTemplate. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         node_group (str):
             Name of the NodeGroup resource to update.
@@ -75998,6 +78428,9 @@ class SetNodeTemplateNodeGroupRequest(proto.Message):
 class SetPrivateIpGoogleAccessSubnetworkRequest(proto.Message):
     r"""A request message for Subnetworks.SetPrivateIpGoogleAccess.
     See the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -76056,6 +78489,9 @@ class SetProxyHeaderTargetSslProxyRequest(proto.Message):
     r"""A request message for TargetSslProxies.SetProxyHeader. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -76107,6 +78543,9 @@ class SetProxyHeaderTargetSslProxyRequest(proto.Message):
 class SetProxyHeaderTargetTcpProxyRequest(proto.Message):
     r"""A request message for TargetTcpProxies.SetProxyHeader. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -76160,6 +78599,9 @@ class SetQuicOverrideTargetHttpsProxyRequest(proto.Message):
     r"""A request message for TargetHttpsProxies.SetQuicOverride. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -76212,6 +78654,9 @@ class SetQuicOverrideTargetHttpsProxyRequest(proto.Message):
 class SetSchedulingInstanceRequest(proto.Message):
     r"""A request message for Instances.SetScheduling. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance (str):
@@ -76270,6 +78715,9 @@ class SetSecurityPolicyBackendServiceRequest(proto.Message):
     r"""A request message for BackendServices.SetSecurityPolicy. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         backend_service (str):
             Name of the BackendService resource to which
@@ -76322,6 +78770,9 @@ class SetSecurityPolicyBackendServiceRequest(proto.Message):
 class SetServiceAccountInstanceRequest(proto.Message):
     r"""A request message for Instances.SetServiceAccount. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance (str):
@@ -76380,6 +78831,9 @@ class SetShieldedInstanceIntegrityPolicyInstanceRequest(proto.Message):
     r"""A request message for
     Instances.SetShieldedInstanceIntegrityPolicy. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance (str):
@@ -76442,6 +78896,9 @@ class SetSslCertificatesRegionTargetHttpsProxyRequest(proto.Message):
     RegionTargetHttpsProxies.SetSslCertificates. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -76500,6 +78957,9 @@ class SetSslCertificatesTargetHttpsProxyRequest(proto.Message):
     r"""A request message for TargetHttpsProxies.SetSslCertificates.
     See the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -76552,6 +79012,9 @@ class SetSslCertificatesTargetSslProxyRequest(proto.Message):
     r"""A request message for TargetSslProxies.SetSslCertificates.
     See the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -76603,6 +79066,9 @@ class SetSslCertificatesTargetSslProxyRequest(proto.Message):
 class SetSslPolicyTargetHttpsProxyRequest(proto.Message):
     r"""A request message for TargetHttpsProxies.SetSslPolicy. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -76657,6 +79123,9 @@ class SetSslPolicyTargetSslProxyRequest(proto.Message):
     r"""A request message for TargetSslProxies.SetSslPolicy. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -76709,6 +79178,9 @@ class SetSslPolicyTargetSslProxyRequest(proto.Message):
 class SetTagsInstanceRequest(proto.Message):
     r"""A request message for Instances.SetTags. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance (str):
@@ -76766,6 +79238,9 @@ class SetTagsInstanceRequest(proto.Message):
 class SetTargetForwardingRuleRequest(proto.Message):
     r"""A request message for ForwardingRules.SetTarget. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         forwarding_rule (str):
@@ -76825,6 +79300,9 @@ class SetTargetGlobalForwardingRuleRequest(proto.Message):
     r"""A request message for GlobalForwardingRules.SetTarget. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         forwarding_rule (str):
             Name of the ForwardingRule resource in which
@@ -76876,6 +79354,9 @@ class SetTargetGlobalForwardingRuleRequest(proto.Message):
 class SetTargetPoolsInstanceGroupManagerRequest(proto.Message):
     r"""A request message for InstanceGroupManagers.SetTargetPools.
     See the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance_group_manager (str):
@@ -76936,6 +79417,9 @@ class SetTargetPoolsRegionInstanceGroupManagerRequest(proto.Message):
     RegionInstanceGroupManagers.SetTargetPools. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_group_manager (str):
             Name of the managed instance group.
@@ -76992,6 +79476,9 @@ class SetTargetPoolsRegionInstanceGroupManagerRequest(proto.Message):
 class SetUrlMapRegionTargetHttpProxyRequest(proto.Message):
     r"""A request message for RegionTargetHttpProxies.SetUrlMap. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -77051,6 +79538,9 @@ class SetUrlMapRegionTargetHttpsProxyRequest(proto.Message):
     r"""A request message for RegionTargetHttpsProxies.SetUrlMap. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -77109,6 +79599,9 @@ class SetUrlMapTargetHttpProxyRequest(proto.Message):
     r"""A request message for TargetHttpProxies.SetUrlMap. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -77160,6 +79653,9 @@ class SetUrlMapTargetHttpProxyRequest(proto.Message):
 class SetUrlMapTargetHttpsProxyRequest(proto.Message):
     r"""A request message for TargetHttpsProxies.SetUrlMap. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -77213,6 +79709,9 @@ class SetUsageExportBucketProjectRequest(proto.Message):
     r"""A request message for Projects.SetUsageExportBucket. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -77258,6 +79757,9 @@ class ShareSettings(proto.Message):
     r"""The share setting for reservations and sole tenancy node
     groups.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project_map (MutableMapping[str, google.cloud.compute_v1.types.ShareSettingsProjectConfig]):
             A map of project id and project config. This is only valid
@@ -77294,6 +79796,8 @@ class ShareSettings(proto.Message):
 class ShareSettingsProjectConfig(proto.Message):
     r"""Config for each project in the share settings.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project_id (str):
             The project ID, should be same as the key of
@@ -77311,6 +79815,8 @@ class ShareSettingsProjectConfig(proto.Message):
 
 class ShieldedInstanceConfig(proto.Message):
     r"""A set of Shielded Instance options.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         enable_integrity_monitoring (bool):
@@ -77349,6 +79855,8 @@ class ShieldedInstanceConfig(proto.Message):
 
 class ShieldedInstanceIdentity(proto.Message):
     r"""A Shielded Instance Identity.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         encryption_key (google.cloud.compute_v1.types.ShieldedInstanceIdentityEntry):
@@ -77393,6 +79901,8 @@ class ShieldedInstanceIdentity(proto.Message):
 class ShieldedInstanceIdentityEntry(proto.Message):
     r"""A Shielded Instance Identity Entry.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         ek_cert (str):
             A PEM-encoded X.509 certificate. This field
@@ -77421,6 +79931,9 @@ class ShieldedInstanceIntegrityPolicy(proto.Message):
     r"""The policy describes the baseline against which Instance boot
     integrity is measured.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         update_auto_learn_policy (bool):
             Updates the integrity policy baseline using
@@ -77440,6 +79953,9 @@ class ShieldedInstanceIntegrityPolicy(proto.Message):
 class SignedUrlKey(proto.Message):
     r"""Represents a customer-supplied Signing Key used by Cloud CDN
     Signed URLs
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         key_name (str):
@@ -77503,6 +80019,9 @@ class Snapshot(proto.Message):
     r"""Represents a Persistent Disk Snapshot resource. You can use
     snapshots to back up data on a regular interval. For more
     information, read Creating persistent disk snapshots.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         architecture (str):
@@ -77876,6 +80395,8 @@ class Snapshot(proto.Message):
 class SnapshotList(proto.Message):
     r"""Contains a list of Snapshot resources.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -77947,6 +80468,8 @@ class SnapshotList(proto.Message):
 class SourceDiskEncryptionKey(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         disk_encryption_key (google.cloud.compute_v1.types.CustomerEncryptionKey):
             The customer-supplied encryption key of the
@@ -78004,6 +80527,9 @@ class SourceInstanceParams(proto.Message):
 class SourceInstanceProperties(proto.Message):
     r"""DEPRECATED: Please use compute#instanceProperties instead.
     New properties will not be added to this field.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         can_ip_forward (bool):
@@ -78199,6 +80725,9 @@ class SslCertificate(proto.Message):
     and using SSL certificates, SSL certificates quotas and limits, and
     Troubleshooting SSL certificates.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         certificate (str):
             A value read into memory from a certificate
@@ -78369,6 +80898,8 @@ class SslCertificate(proto.Message):
 class SslCertificateAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -78450,6 +80981,8 @@ class SslCertificateAggregatedList(proto.Message):
 class SslCertificateList(proto.Message):
     r"""Contains a list of SslCertificate resources.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -78521,6 +81054,8 @@ class SslCertificateList(proto.Message):
 class SslCertificateManagedSslCertificate(proto.Message):
     r"""Configuration and status of a managed SSL certificate.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         domain_status (MutableMapping[str, str]):
             [Output only] Detailed statuses of the domains specified for
@@ -78566,6 +81101,8 @@ class SslCertificateManagedSslCertificate(proto.Message):
 class SslCertificateSelfManagedSslCertificate(proto.Message):
     r"""Configuration and status of a self-managed SSL certificate.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         certificate (str):
             A local certificate file. The certificate
@@ -78596,6 +81133,8 @@ class SslCertificateSelfManagedSslCertificate(proto.Message):
 class SslCertificatesScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         ssl_certificates (MutableSequence[google.cloud.compute_v1.types.SslCertificate]):
             List of SslCertificates contained in this
@@ -78622,6 +81161,8 @@ class SslCertificatesScopedList(proto.Message):
 
 class SslPoliciesAggregatedList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         etag (str):
@@ -78710,6 +81251,8 @@ class SslPoliciesAggregatedList(proto.Message):
 class SslPoliciesList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -78796,6 +81339,8 @@ class SslPoliciesListAvailableFeaturesResponse(proto.Message):
 class SslPoliciesScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         ssl_policies (MutableSequence[google.cloud.compute_v1.types.SslPolicy]):
             A list of SslPolicies contained in this
@@ -78825,6 +81370,9 @@ class SslPolicy(proto.Message):
     control the SSL features, such as versions and cipher suites,
     offered by an HTTPS or SSL Proxy load balancer. For more
     information, read SSL Policy Concepts.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -79003,6 +81551,8 @@ class SslPolicy(proto.Message):
 class SslPolicyReference(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         ssl_policy (str):
             URL of the SSL policy resource. Set this to
@@ -79022,6 +81572,9 @@ class SslPolicyReference(proto.Message):
 class StartInstanceRequest(proto.Message):
     r"""A request message for Instances.Start. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance (str):
@@ -79072,6 +81625,9 @@ class StartInstanceRequest(proto.Message):
 class StartWithEncryptionKeyInstanceRequest(proto.Message):
     r"""A request message for Instances.StartWithEncryptionKey. See
     the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance (str):
@@ -79129,6 +81685,8 @@ class StartWithEncryptionKeyInstanceRequest(proto.Message):
 class StatefulPolicy(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         preserved_state (google.cloud.compute_v1.types.StatefulPolicyPreservedState):
 
@@ -79166,6 +81724,8 @@ class StatefulPolicyPreservedState(proto.Message):
 class StatefulPolicyPreservedStateDiskDevice(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         auto_delete (str):
             These stateful disks will never be deleted during
@@ -79201,6 +81761,9 @@ class StatefulPolicyPreservedStateDiskDevice(proto.Message):
 class StopInstanceRequest(proto.Message):
     r"""A request message for Instances.Stop. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         discard_local_ssd (bool):
@@ -79264,6 +81827,9 @@ class Subnetwork(proto.Message):
     network with one primary IP range and zero or more secondary IP
     ranges. For more information, read Virtual Private Cloud (VPC)
     Network.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -79651,6 +82217,8 @@ class Subnetwork(proto.Message):
 class SubnetworkAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -79731,6 +82299,8 @@ class SubnetworkAggregatedList(proto.Message):
 class SubnetworkList(proto.Message):
     r"""Contains a list of Subnetwork resources.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -79802,6 +82372,8 @@ class SubnetworkList(proto.Message):
 
 class SubnetworkLogConfig(proto.Message):
     r"""The available logging options for this subnetwork.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         aggregation_interval (str):
@@ -79914,6 +82486,8 @@ class SubnetworkLogConfig(proto.Message):
 class SubnetworkSecondaryRange(proto.Message):
     r"""Represents a secondary IP range of a subnetwork.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         ip_cidr_range (str):
             The range of IP addresses belonging to this
@@ -79950,6 +82524,8 @@ class SubnetworkSecondaryRange(proto.Message):
 class SubnetworksExpandIpCidrRangeRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         ip_cidr_range (str):
             The IP (in CIDR format or netmask) of
@@ -79972,6 +82548,8 @@ class SubnetworksExpandIpCidrRangeRequest(proto.Message):
 
 class SubnetworksScopedList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         subnetworks (MutableSequence[google.cloud.compute_v1.types.Subnetwork]):
@@ -80000,6 +82578,8 @@ class SubnetworksScopedList(proto.Message):
 class SubnetworksSetPrivateIpGoogleAccessRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         private_ip_google_access (bool):
 
@@ -80017,6 +82597,9 @@ class Subsetting(proto.Message):
     r"""Subsetting configuration for this BackendService. Currently
     this is applicable only for Internal TCP/UDP load balancing,
     Internal HTTP(S) load balancing and Traffic Director.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         policy (str):
@@ -80042,6 +82625,9 @@ class Subsetting(proto.Message):
 class SuspendInstanceRequest(proto.Message):
     r"""A request message for Instances.Suspend. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         discard_local_ssd (bool):
@@ -80103,6 +82689,9 @@ class SwitchToCustomModeNetworkRequest(proto.Message):
     r"""A request message for Networks.SwitchToCustomMode. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         network (str):
             Name of the network to be updated.
@@ -80145,6 +82734,8 @@ class SwitchToCustomModeNetworkRequest(proto.Message):
 
 class TCPHealthCheck(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         port (int):
@@ -80280,6 +82871,8 @@ class TCPHealthCheck(proto.Message):
 class Tags(proto.Message):
     r"""A set of instance tags.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         fingerprint (str):
             Specifies a fingerprint for this request,
@@ -80316,6 +82909,9 @@ class TargetGrpcProxy(proto.Message):
     INTERNAL_SELF_MANAGED can reference a target gRPC proxy. The target
     gRPC Proxy references a URL map that specifies how traffic is routed
     to gRPC backend services.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -80450,6 +83046,8 @@ class TargetGrpcProxy(proto.Message):
 class TargetGrpcProxyList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -80522,6 +83120,8 @@ class TargetGrpcProxyList(proto.Message):
 class TargetHttpProxiesScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         target_http_proxies (MutableSequence[google.cloud.compute_v1.types.TargetHttpProxy]):
             A list of TargetHttpProxies contained in this
@@ -80557,6 +83157,9 @@ class TargetHttpProxy(proto.Message):
     HTTP load balancers. Forwarding rules reference a target HTTP proxy,
     and the target proxy then references a URL map. For more
     information, read Using Target Proxies and Forwarding rule concepts.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -80688,6 +83291,8 @@ class TargetHttpProxy(proto.Message):
 class TargetHttpProxyAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -80758,6 +83363,8 @@ class TargetHttpProxyAggregatedList(proto.Message):
 
 class TargetHttpProxyList(proto.Message):
     r"""A list of TargetHttpProxy resources.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -80832,6 +83439,8 @@ class TargetHttpProxyList(proto.Message):
 class TargetHttpsProxiesScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         target_https_proxies (MutableSequence[google.cloud.compute_v1.types.TargetHttpsProxy]):
             A list of TargetHttpsProxies contained in
@@ -80859,6 +83468,8 @@ class TargetHttpsProxiesScopedList(proto.Message):
 class TargetHttpsProxiesSetCertificateMapRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         certificate_map (str):
             URL of the Certificate Map to associate with
@@ -80876,6 +83487,8 @@ class TargetHttpsProxiesSetCertificateMapRequest(proto.Message):
 
 class TargetHttpsProxiesSetQuicOverrideRequest(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         quic_override (str):
@@ -80929,6 +83542,9 @@ class TargetHttpsProxy(proto.Message):
     Forwarding rules reference a target HTTPS proxy, and the target
     proxy then references a URL map. For more information, read Using
     Target Proxies and Forwarding rule concepts.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         authorization_policy (str):
@@ -81173,6 +83789,8 @@ class TargetHttpsProxy(proto.Message):
 class TargetHttpsProxyAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -81254,6 +83872,8 @@ class TargetHttpsProxyAggregatedList(proto.Message):
 class TargetHttpsProxyList(proto.Message):
     r"""Contains a list of TargetHttpsProxy resources.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -81330,6 +83950,9 @@ class TargetInstance(proto.Message):
     which is ideal for forwarding protocol traffic that is managed
     by a single source. For example, ESP, AH, TCP, or UDP. For more
     information, read Target instances.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -81466,6 +84089,8 @@ class TargetInstance(proto.Message):
 class TargetInstanceAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -81544,6 +84169,8 @@ class TargetInstanceAggregatedList(proto.Message):
 class TargetInstanceList(proto.Message):
     r"""Contains a list of TargetInstance resources.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -81615,6 +84242,8 @@ class TargetInstanceList(proto.Message):
 class TargetInstancesScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         target_instances (MutableSequence[google.cloud.compute_v1.types.TargetInstance]):
             A list of target instances contained in this
@@ -81645,6 +84274,9 @@ class TargetPool(proto.Message):
     instances, an associated legacy HttpHealthCheck resource, and,
     optionally, a backup target pool. For more information, read
     Using target pools.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         backup_pool (str):
@@ -81828,6 +84460,8 @@ class TargetPool(proto.Message):
 class TargetPoolAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -81908,6 +84542,8 @@ class TargetPoolAggregatedList(proto.Message):
 class TargetPoolInstanceHealth(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         health_status (MutableSequence[google.cloud.compute_v1.types.HealthStatus]):
 
@@ -81933,6 +84569,8 @@ class TargetPoolInstanceHealth(proto.Message):
 
 class TargetPoolList(proto.Message):
     r"""Contains a list of TargetPool resources.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -82081,6 +84719,8 @@ class TargetPoolsRemoveInstanceRequest(proto.Message):
 class TargetPoolsScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         target_pools (MutableSequence[google.cloud.compute_v1.types.TargetPool]):
             A list of target pools contained in this
@@ -82108,6 +84748,8 @@ class TargetPoolsScopedList(proto.Message):
 class TargetReference(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         target (str):
 
@@ -82123,6 +84765,8 @@ class TargetReference(proto.Message):
 
 class TargetSslProxiesSetBackendServiceRequest(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         service (str):
@@ -82142,6 +84786,8 @@ class TargetSslProxiesSetBackendServiceRequest(proto.Message):
 class TargetSslProxiesSetCertificateMapRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         certificate_map (str):
             URL of the Certificate Map to associate with
@@ -82159,6 +84805,8 @@ class TargetSslProxiesSetCertificateMapRequest(proto.Message):
 
 class TargetSslProxiesSetProxyHeaderRequest(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         proxy_header (str):
@@ -82208,6 +84856,9 @@ class TargetSslProxy(proto.Message):
     rules reference a target SSL proxy, and the target proxy then
     references an external backend service. For more information,
     read Using Target Proxies.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         certificate_map (str):
@@ -82346,6 +84997,8 @@ class TargetSslProxy(proto.Message):
 class TargetSslProxyList(proto.Message):
     r"""Contains a list of TargetSslProxy resources.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -82417,6 +85070,8 @@ class TargetSslProxyList(proto.Message):
 class TargetTcpProxiesScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         target_tcp_proxies (MutableSequence[google.cloud.compute_v1.types.TargetTcpProxy]):
             A list of TargetTcpProxies contained in this
@@ -82444,6 +85099,8 @@ class TargetTcpProxiesScopedList(proto.Message):
 class TargetTcpProxiesSetBackendServiceRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         service (str):
             The URL of the new BackendService resource
@@ -82461,6 +85118,8 @@ class TargetTcpProxiesSetBackendServiceRequest(proto.Message):
 
 class TargetTcpProxiesSetProxyHeaderRequest(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         proxy_header (str):
@@ -82492,6 +85151,9 @@ class TargetTcpProxy(proto.Message):
     rules reference target TCP proxy, and the target proxy then
     references an external backend service. For more information,
     read TCP Proxy Load Balancing overview.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -82623,6 +85285,8 @@ class TargetTcpProxy(proto.Message):
 class TargetTcpProxyAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -82704,6 +85368,8 @@ class TargetTcpProxyAggregatedList(proto.Message):
 class TargetTcpProxyList(proto.Message):
     r"""Contains a list of TargetTcpProxy resources.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -82776,6 +85442,9 @@ class TargetVpnGateway(proto.Message):
     r"""Represents a Target VPN Gateway resource. The target VPN
     gateway resource represents a Classic Cloud VPN gateway. For
     more information, read the the Cloud VPN Overview.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -82911,6 +85580,8 @@ class TargetVpnGateway(proto.Message):
 class TargetVpnGatewayAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -82990,6 +85661,8 @@ class TargetVpnGatewayAggregatedList(proto.Message):
 class TargetVpnGatewayList(proto.Message):
     r"""Contains a list of TargetVpnGateway resources.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -83062,6 +85735,8 @@ class TargetVpnGatewayList(proto.Message):
 class TargetVpnGatewaysScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         target_vpn_gateways (MutableSequence[google.cloud.compute_v1.types.TargetVpnGateway]):
             [Output Only] A list of target VPN gateways contained in
@@ -83088,6 +85763,8 @@ class TargetVpnGatewaysScopedList(proto.Message):
 
 class TestFailure(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         actual_output_url (str):
@@ -83941,6 +86618,8 @@ class TestPermissionsResponse(proto.Message):
 class Uint128(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         high (int):
 
@@ -83965,6 +86644,9 @@ class Uint128(proto.Message):
 class UpdateAccessConfigInstanceRequest(proto.Message):
     r"""A request message for Instances.UpdateAccessConfig. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         access_config_resource (google.cloud.compute_v1.types.AccessConfig):
@@ -84030,6 +86712,9 @@ class UpdateAutoscalerRequest(proto.Message):
     r"""A request message for Autoscalers.Update. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         autoscaler (str):
             Name of the autoscaler to update.
@@ -84090,6 +86775,9 @@ class UpdateBackendBucketRequest(proto.Message):
     r"""A request message for BackendBuckets.Update. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         backend_bucket (str):
             Name of the BackendBucket resource to update.
@@ -84140,6 +86828,9 @@ class UpdateBackendBucketRequest(proto.Message):
 class UpdateBackendServiceRequest(proto.Message):
     r"""A request message for BackendServices.Update. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         backend_service (str):
@@ -84192,6 +86883,9 @@ class UpdateBackendServiceRequest(proto.Message):
 class UpdateDisplayDeviceInstanceRequest(proto.Message):
     r"""A request message for Instances.UpdateDisplayDevice. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         display_device_resource (google.cloud.compute_v1.types.DisplayDevice):
@@ -84250,6 +86944,9 @@ class UpdateFirewallRequest(proto.Message):
     r"""A request message for Firewalls.Update. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         firewall (str):
             Name of the firewall rule to update.
@@ -84301,6 +86998,9 @@ class UpdateHealthCheckRequest(proto.Message):
     r"""A request message for HealthChecks.Update. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         health_check (str):
             Name of the HealthCheck resource to update.
@@ -84351,6 +87051,9 @@ class UpdateHealthCheckRequest(proto.Message):
 class UpdateInstanceRequest(proto.Message):
     r"""A request message for Instances.Update. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance (str):
@@ -84460,6 +87163,9 @@ class UpdateNetworkInterfaceInstanceRequest(proto.Message):
     r"""A request message for Instances.UpdateNetworkInterface. See
     the method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance (str):
             The instance name for this request.
@@ -84523,6 +87229,9 @@ class UpdatePeeringNetworkRequest(proto.Message):
     r"""A request message for Networks.UpdatePeering. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         network (str):
             Name of the network resource which the
@@ -84577,6 +87286,9 @@ class UpdatePerInstanceConfigsInstanceGroupManagerRequest(proto.Message):
     r"""A request message for
     InstanceGroupManagers.UpdatePerInstanceConfigs. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance_group_manager (str):
@@ -84639,6 +87351,9 @@ class UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest(proto.Message):
     RegionInstanceGroupManagers.UpdatePerInstanceConfigs. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_group_manager (str):
             The name of the managed instance group. It
@@ -84697,6 +87412,9 @@ class UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest(proto.Message):
 class UpdateRegionAutoscalerRequest(proto.Message):
     r"""A request message for RegionAutoscalers.Update. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         autoscaler (str):
@@ -84758,6 +87476,9 @@ class UpdateRegionBackendServiceRequest(proto.Message):
     r"""A request message for RegionBackendServices.Update. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         backend_service (str):
             Name of the BackendService resource to
@@ -84815,6 +87536,9 @@ class UpdateRegionBackendServiceRequest(proto.Message):
 class UpdateRegionCommitmentRequest(proto.Message):
     r"""A request message for RegionCommitments.Update. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         commitment (str):
@@ -84892,6 +87616,9 @@ class UpdateRegionHealthCheckRequest(proto.Message):
     r"""A request message for RegionHealthChecks.Update. See the
     method description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         health_check (str):
             Name of the HealthCheck resource to update.
@@ -84949,6 +87676,9 @@ class UpdateRegionUrlMapRequest(proto.Message):
     r"""A request message for RegionUrlMaps.Update. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -84992,6 +87722,9 @@ class UpdateRegionUrlMapRequest(proto.Message):
 class UpdateReservationRequest(proto.Message):
     r"""A request message for Reservations.Update. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         paths (str):
@@ -85068,6 +87801,9 @@ class UpdateRouterRequest(proto.Message):
     r"""A request message for Routers.Update. See the method
     description for details.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Project ID for this request.
@@ -85124,6 +87860,9 @@ class UpdateRouterRequest(proto.Message):
 class UpdateShieldedInstanceConfigInstanceRequest(proto.Message):
     r"""A request message for Instances.UpdateShieldedInstanceConfig.
     See the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         instance (str):
@@ -85182,6 +87921,9 @@ class UpdateShieldedInstanceConfigInstanceRequest(proto.Message):
 class UpdateUrlMapRequest(proto.Message):
     r"""A request message for UrlMaps.Update. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         project (str):
@@ -85248,6 +87990,9 @@ class UrlMap(proto.Message):
     either EXTERNAL or INTERNAL_SELF_MANAGED. To use the regionUrlMaps
     resource, the backend service must have a loadBalancingScheme of
     INTERNAL_MANAGED. For more information, read URL Map Concepts.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -85463,6 +88208,8 @@ class UrlMap(proto.Message):
 class UrlMapList(proto.Message):
     r"""Contains a list of UrlMap resources.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -85534,6 +88281,8 @@ class UrlMapList(proto.Message):
 class UrlMapReference(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         url_map (str):
 
@@ -85549,6 +88298,8 @@ class UrlMapReference(proto.Message):
 
 class UrlMapTest(proto.Message):
     r"""Message for the expected URL mappings.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         description (str):
@@ -85645,6 +88396,8 @@ class UrlMapTest(proto.Message):
 class UrlMapTestHeader(proto.Message):
     r"""HTTP headers used in UrlMapTests.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Header name.
@@ -85670,6 +88423,8 @@ class UrlMapTestHeader(proto.Message):
 
 class UrlMapValidationResult(proto.Message):
     r"""Message representing the validation result for a UrlMap.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         load_errors (MutableSequence[str]):
@@ -85713,6 +88468,8 @@ class UrlMapValidationResult(proto.Message):
 
 class UrlMapsAggregatedList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -85792,6 +88549,8 @@ class UrlMapsAggregatedList(proto.Message):
 class UrlMapsScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         url_maps (MutableSequence[google.cloud.compute_v1.types.UrlMap]):
             A list of UrlMaps contained in this scope.
@@ -85817,6 +88576,8 @@ class UrlMapsScopedList(proto.Message):
 
 class UrlMapsValidateRequest(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         load_balancing_schemes (MutableSequence[str]):
@@ -85863,6 +88624,8 @@ class UrlMapsValidateRequest(proto.Message):
 class UrlMapsValidateResponse(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         result (google.cloud.compute_v1.types.UrlMapValidationResult):
 
@@ -85880,6 +88643,9 @@ class UrlMapsValidateResponse(proto.Message):
 class UrlRewrite(proto.Message):
     r"""The spec for modifying the path before sending the request to
     the matched backend service.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         host_rewrite (str):
@@ -85913,6 +88679,9 @@ class UrlRewrite(proto.Message):
 class UsableSubnetwork(proto.Message):
     r"""Subnetwork which the current user has compute.subnetworks.use
     permission on.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         external_ipv6_prefix (str):
@@ -86088,6 +88857,8 @@ class UsableSubnetwork(proto.Message):
 class UsableSubnetworkSecondaryRange(proto.Message):
     r"""Secondary IP range of a usable subnetwork.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         ip_cidr_range (str):
             The range of IP addresses belonging to this
@@ -86118,6 +88889,8 @@ class UsableSubnetworkSecondaryRange(proto.Message):
 
 class UsableSubnetworksAggregatedList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -86194,6 +88967,9 @@ class UsableSubnetworksAggregatedList(proto.Message):
 class UsageExportLocation(proto.Message):
     r"""The location in Cloud Storage and naming method of the daily usage
     report. Contains bucket_name and report_name prefix.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         bucket_name (str):
@@ -86301,6 +89077,9 @@ class VmEndpointNatMappings(proto.Message):
     r"""Contain information of Nat mapping for a VM endpoint (i.e.,
     NIC).
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         instance_name (str):
             Name of the VM instance which the endpoint
@@ -86328,6 +89107,9 @@ class VmEndpointNatMappings(proto.Message):
 class VmEndpointNatMappingsInterfaceNatMappings(proto.Message):
     r"""Contain information of Nat mapping for an interface of this
     endpoint.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         drain_nat_ip_port_ranges (MutableSequence[str]):
@@ -86407,6 +89189,8 @@ class VmEndpointNatMappingsInterfaceNatMappings(proto.Message):
 class VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings(proto.Message):
     r"""Contains information of NAT Mappings provided by a NAT Rule.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         drain_nat_ip_port_ranges (MutableSequence[str]):
             List of all drain IP:port-range mappings assigned to this
@@ -86463,6 +89247,8 @@ class VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings(proto.Message):
 
 class VmEndpointNatMappingsList(proto.Message):
     r"""Contains a list of VmEndpointNatMappings.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -86542,6 +89328,9 @@ class VpnGateway(proto.Message):
     network through an IPsec VPN connection in a single region. For
     more information about Cloud HA VPN solutions, see Cloud VPN
     topologies .
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -86697,6 +89486,8 @@ class VpnGateway(proto.Message):
 class VpnGatewayAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -86775,6 +89566,8 @@ class VpnGatewayAggregatedList(proto.Message):
 
 class VpnGatewayList(proto.Message):
     r"""Contains a list of VpnGateway resources.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -86866,6 +89659,9 @@ class VpnGatewayStatusHighAvailabilityRequirementState(proto.Message):
     r"""Describes the high availability requirement state for the VPN
     connection between this Cloud VPN gateway and a peer gateway.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         state (str):
             Indicates the high availability requirement state for the
@@ -86915,6 +89711,8 @@ class VpnGatewayStatusHighAvailabilityRequirementState(proto.Message):
 class VpnGatewayStatusTunnel(proto.Message):
     r"""Contains some information about a VPN tunnel.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         local_gateway_interface (int):
             The VPN gateway interface this VPN tunnel is
@@ -86954,6 +89752,9 @@ class VpnGatewayStatusVpnConnection(proto.Message):
     r"""A VPN connection contains all VPN tunnels connected from this
     VpnGateway to the same peer gateway. The peer gateway could
     either be a external VPN gateway or GCP VPN gateway.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         peer_external_gateway (str):
@@ -87003,6 +89804,8 @@ class VpnGatewayStatusVpnConnection(proto.Message):
 
 class VpnGatewayVpnGatewayInterface(proto.Message):
     r"""A VPN gateway interface.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (int):
@@ -87057,6 +89860,8 @@ class VpnGatewayVpnGatewayInterface(proto.Message):
 class VpnGatewaysGetStatusResponse(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         result (google.cloud.compute_v1.types.VpnGatewayStatus):
 
@@ -87073,6 +89878,8 @@ class VpnGatewaysGetStatusResponse(proto.Message):
 
 class VpnGatewaysScopedList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         vpn_gateways (MutableSequence[google.cloud.compute_v1.types.VpnGateway]):
@@ -87101,6 +89908,9 @@ class VpnGatewaysScopedList(proto.Message):
 class VpnTunnel(proto.Message):
     r"""Represents a Cloud VPN Tunnel resource. For more information
     about VPN, read the the Cloud VPN Overview.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         creation_timestamp (str):
@@ -87415,6 +90225,8 @@ class VpnTunnel(proto.Message):
 class VpnTunnelAggregatedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -87494,6 +90306,8 @@ class VpnTunnelAggregatedList(proto.Message):
 class VpnTunnelList(proto.Message):
     r"""Contains a list of VpnTunnel resources.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -87566,6 +90380,8 @@ class VpnTunnelList(proto.Message):
 class VpnTunnelsScopedList(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         vpn_tunnels (MutableSequence[google.cloud.compute_v1.types.VpnTunnel]):
             A list of VPN tunnels contained in this
@@ -87592,6 +90408,8 @@ class VpnTunnelsScopedList(proto.Message):
 
 class WafExpressionSet(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         aliases (MutableSequence[str]):
@@ -87628,6 +90446,8 @@ class WafExpressionSet(proto.Message):
 
 class WafExpressionSetExpression(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -87728,6 +90548,8 @@ class WaitZoneOperationRequest(proto.Message):
 class Warning(proto.Message):
     r"""[Output Only] Informational warning message.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         code (str):
             [Output Only] A warning code, if applicable. For example,
@@ -87800,6 +90622,8 @@ class Warning(proto.Message):
 
 class Warnings(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         code (str):
@@ -87879,6 +90703,9 @@ class WeightedBackendService(proto.Message):
     backend service is proportional to the weight specified in each
     WeightedBackendService
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         backend_service (str):
             The full or partial URL to the default
@@ -87936,6 +90763,8 @@ class WeightedBackendService(proto.Message):
 
 class XpnHostList(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
@@ -88009,6 +90838,8 @@ class XpnHostList(proto.Message):
 class XpnResourceId(proto.Message):
     r"""Service resource (a.k.a service project) ID.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             The ID of the service resource. In the case
@@ -88048,6 +90879,9 @@ class Zone(proto.Message):
     These deployment areas are subsets of a region. For example the
     zone us-east1-a is located in the us-east1 region. For more
     information, read Regions and Zones.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         available_cpu_platforms (MutableSequence[str]):
@@ -88166,6 +91000,8 @@ class Zone(proto.Message):
 class ZoneList(proto.Message):
     r"""Contains a list of zone resources.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -88237,6 +91073,8 @@ class ZoneList(proto.Message):
 class ZoneSetLabelsRequest(proto.Message):
     r"""
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         label_fingerprint (str):
             The fingerprint of the previous set of labels
@@ -88267,6 +91105,8 @@ class ZoneSetLabelsRequest(proto.Message):
 
 class ZoneSetPolicyRequest(proto.Message):
     r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         bindings (MutableSequence[google.cloud.compute_v1.types.Binding]):
