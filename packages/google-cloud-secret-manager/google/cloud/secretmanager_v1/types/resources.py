@@ -633,6 +633,9 @@ class SecretPayload(proto.Message):
     the sensitive secret payload that is associated with a
     [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         data (bytes):
             The secret data. Must be no larger than
