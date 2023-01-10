@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-dataplex/compare/v1.3.0...v1.4.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#117](https://github.com/googleapis/python-dataplex/issues/117)) ([18c78d6](https://github.com/googleapis/python-dataplex/commit/18c78d63864fe2f7080f80d5faf3b0672e0d99d7))
+
 ## [1.3.0](https://github.com/googleapis/python-dataplex/compare/v1.2.0...v1.3.0) (2023-01-05)
 
 
