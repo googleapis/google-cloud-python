@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-essential-contacts/compare/v1.3.0...v1.4.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#159](https://github.com/googleapis/python-essential-contacts/issues/159)) ([8dabf04](https://github.com/googleapis/python-essential-contacts/commit/8dabf04c65d5791d032c8ddffcc9513c1826cabe))
+
 ## [1.3.0](https://github.com/googleapis/python-essential-contacts/compare/v1.2.3...v1.3.0) (2022-12-15)
 
 
