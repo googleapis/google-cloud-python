@@ -166,7 +166,7 @@ class PrivateCloud(proto.Message):
             conventions in
             https://cloud.google.com/apis/design/resource_names. For
             example:
-            ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud``
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Creation time of this resource.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -324,7 +324,7 @@ class ListPrivateCloudsRequest(proto.Message):
             queried for clusters. Resource names are schemeless URIs
             that follow the conventions in
             https://cloud.google.com/apis/design/resource_names. For
-            example: ``projects/my-project/locations/us-west1-a``
+            example: ``projects/my-project/locations/us-central1-a``
         page_size (int):
             The maximum number of private clouds to
             return in one page. The service may return fewer
@@ -448,7 +448,7 @@ class GetPrivateCloudRequest(proto.Message):
             conventions in
             https://cloud.google.com/apis/design/resource_names. For
             example:
-            ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud``
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
     """
 
     name: str = proto.Field(
@@ -467,7 +467,7 @@ class CreatePrivateCloudRequest(proto.Message):
             new private cloud in. Resource names are schemeless URIs
             that follow the conventions in
             https://cloud.google.com/apis/design/resource_names. For
-            example: ``projects/my-project/locations/us-west1-a``
+            example: ``projects/my-project/locations/us-central1-a``
         private_cloud_id (str):
             Required. The user-provided identifier of the private cloud
             to be created. This identifier must be unique among each
@@ -569,7 +569,7 @@ class DeletePrivateCloudRequest(proto.Message):
             conventions in
             https://cloud.google.com/apis/design/resource_names. For
             example:
-            ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud``
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
         request_id (str):
             Optional. The request ID must be a valid UUID
             with the exception that zero UUID is not
@@ -629,7 +629,7 @@ class UndeletePrivateCloudRequest(proto.Message):
             the conventions in
             https://cloud.google.com/apis/design/resource_names. For
             example:
-            ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud``
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
         request_id (str):
             Optional. The request ID must be a valid UUID
             with the exception that zero UUID is not
@@ -656,7 +656,7 @@ class Cluster(proto.Message):
             names are schemeless URIs that follow the conventions in
             https://cloud.google.com/apis/design/resource_names. For
             example:
-            ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud/clusters/my-cluster``
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud/clusters/my-cluster``
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Creation time of this resource.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -733,7 +733,7 @@ class ListClustersRequest(proto.Message):
             the conventions in
             https://cloud.google.com/apis/design/resource_names. For
             example:
-            ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud``
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
         page_size (int):
             The maximum number of clusters to return in
             one page. The service may return fewer than this
@@ -839,7 +839,7 @@ class GetClusterRequest(proto.Message):
             names are schemeless URIs that follow the conventions in
             https://cloud.google.com/apis/design/resource_names. For
             example:
-            ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud/clusters/my-cluster``
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud/clusters/my-cluster``
     """
 
     name: str = proto.Field(
@@ -859,7 +859,7 @@ class CreateClusterRequest(proto.Message):
             follow the conventions in
             https://cloud.google.com/apis/design/resource_names. For
             example:
-            ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud``
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
         cluster_id (str):
             Required. The user-provided identifier of the new
             ``Cluster``. This identifier must be unique among clusters
@@ -964,7 +964,7 @@ class DeleteClusterRequest(proto.Message):
             conventions in
             https://cloud.google.com/apis/design/resource_names. For
             example:
-            ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud/clusters/my-cluster``
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud/clusters/my-cluster``
         request_id (str):
             Optional. The request ID must be a valid UUID
             with the exception that zero UUID is not
@@ -993,7 +993,7 @@ class Subnet(proto.Message):
             names are schemeless URIs that follow the conventions in
             https://cloud.google.com/apis/design/resource_names. For
             example:
-            ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud/subnets/my-subnet``
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud/subnets/my-subnet``
         ip_cidr_range (str):
             The IP address range of the subnet in CIDR
             format '10.0.0.0/24'.
@@ -1049,7 +1049,7 @@ class ListSubnetsRequest(proto.Message):
             follow the conventions in
             https://cloud.google.com/apis/design/resource_names. For
             example:
-            ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud``
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
         page_size (int):
             The maximum number of subnets to return in
             one page. The service may return fewer than this
@@ -1178,7 +1178,7 @@ class NodeType(proto.Message):
             names are schemeless URIs that follow the conventions in
             https://cloud.google.com/apis/design/resource_names. For
             example:
-            ``projects/my-proj/locations/us-west1-a/nodeTypes/standard-72``
+            ``projects/my-proj/locations/us-central1-a/nodeTypes/standard-72``
         node_type_id (str):
             Output only. The canonical identifier of the node type
             (corresponds to the ``NodeType``). For example: standard-72.
@@ -1246,7 +1246,7 @@ class ListNodeTypesRequest(proto.Message):
             for node types. Resource names are schemeless URIs that
             follow the conventions in
             https://cloud.google.com/apis/design/resource_names. For
-            example: ``projects/my-project/locations/us-west1-a``
+            example: ``projects/my-project/locations/us-central1-a``
         page_size (int):
             The maximum number of node types to return in
             one page. The service may return fewer than this
@@ -1354,7 +1354,7 @@ class GetNodeTypeRequest(proto.Message):
             conventions in
             https://cloud.google.com/apis/design/resource_names. For
             example:
-            ``projects/my-proj/locations/us-west1-a/nodeTypes/standard-72``
+            ``projects/my-proj/locations/us-central1-a/nodeTypes/standard-72``
     """
 
     name: str = proto.Field(
@@ -1394,7 +1394,7 @@ class ShowNsxCredentialsRequest(proto.Message):
             that follow the conventions in
             https://cloud.google.com/apis/design/resource_names. For
             example:
-            ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud``
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
     """
 
     private_cloud: str = proto.Field(
@@ -1414,7 +1414,7 @@ class ShowVcenterCredentialsRequest(proto.Message):
             that follow the conventions in
             https://cloud.google.com/apis/design/resource_names. For
             example:
-            ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud``
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
     """
 
     private_cloud: str = proto.Field(
@@ -1434,7 +1434,7 @@ class ResetNsxCredentialsRequest(proto.Message):
             follow the conventions in
             https://cloud.google.com/apis/design/resource_names. For
             example:
-            ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud``
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
         request_id (str):
             Optional. A request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -1478,7 +1478,7 @@ class ResetVcenterCredentialsRequest(proto.Message):
             follow the conventions in
             https://cloud.google.com/apis/design/resource_names. For
             example:
-            ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud``
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
         request_id (str):
             Optional. A request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -1562,7 +1562,7 @@ class HcxActivationKey(proto.Message):
             conventions in
             https://cloud.google.com/apis/design/resource_names. For
             example:
-            ``projects/my-project/locations/us-west1/privateClouds/my-cloud/hcxActivationKeys/my-key``
+            ``projects/my-project/locations/us-central1/privateClouds/my-cloud/hcxActivationKeys/my-key``
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Creation time of HCX activation
             key.
@@ -1658,7 +1658,7 @@ class GetHcxActivationKeyRequest(proto.Message):
             conventions in
             https://cloud.google.com/apis/design/resource_names. For
             example:
-            ``projects/my-project/locations/us-west1/privateClouds/my-cloud/hcxActivationKeys/my-key``
+            ``projects/my-project/locations/us-central1/privateClouds/my-cloud/hcxActivationKeys/my-key``
     """
 
     name: str = proto.Field(
@@ -2448,7 +2448,7 @@ class CreateVmwareEngineNetworkRequest(proto.Message):
             -  For networks of type LEGACY, adheres to the format:
                ``{region-id}-default``. Replace ``{region-id}`` with the
                region where you want to create the VMware Engine
-               network. For example, "us-west1-default".
+               network. For example, "us-central1-default".
             -  Only contains 1-63 alphanumeric characters and hyphens
             -  Begins with an alphabetical character
             -  Ends with a non-hyphen character
