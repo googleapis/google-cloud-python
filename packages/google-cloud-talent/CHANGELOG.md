@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [2.9.0](https://github.com/googleapis/python-talent/compare/v2.8.0...v2.9.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#313](https://github.com/googleapis/python-talent/issues/313)) ([564b22f](https://github.com/googleapis/python-talent/commit/564b22f7708c8d91bde4cf6281e600630e0f1ad9))
+
 ## [2.8.0](https://github.com/googleapis/python-talent/compare/v2.7.3...v2.8.0) (2022-12-15)
 
 
