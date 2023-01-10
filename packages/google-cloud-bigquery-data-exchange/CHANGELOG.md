@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/python-bigquery-data-exchange/compare/v0.4.0...v0.5.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#56](https://github.com/googleapis/python-bigquery-data-exchange/issues/56)) ([d261150](https://github.com/googleapis/python-bigquery-data-exchange/commit/d26115028f92a21a2d0dfc201e4d919da1116784))
+
 ## [0.4.0](https://github.com/googleapis/python-bigquery-data-exchange/compare/v0.3.2...v0.4.0) (2022-12-15)
 
 
