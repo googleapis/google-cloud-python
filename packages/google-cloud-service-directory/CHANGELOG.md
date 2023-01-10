@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-service-directory/compare/v1.6.0...v1.7.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#251](https://github.com/googleapis/python-service-directory/issues/251)) ([1fadceb](https://github.com/googleapis/python-service-directory/commit/1fadceb23be6a328f090dc336d15b0ec7c3019c1))
+
 ## [1.6.0](https://github.com/googleapis/python-service-directory/compare/v1.5.3...v1.6.0) (2022-12-14)
 
 
