@@ -354,6 +354,9 @@ s.replace(
     "noxfile.py", r'"blacken",', '\g<0>\n    "mypy",',
 )
 s.replace(
+    "noxfile.py", r'"mock"', '"mock==5.0.0"',
+)
+s.replace(
     "noxfile.py",
     r"nox\.options\.error_on_missing_interpreters = True",
     textwrap.dedent(
