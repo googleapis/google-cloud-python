@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.15.0](https://github.com/googleapis/python-bigtable/compare/v2.14.1...v2.15.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#718](https://github.com/googleapis/python-bigtable/issues/718)) ([803a15e](https://github.com/googleapis/python-bigtable/commit/803a15ef0cd3713411eeb5d21258c12bbe1dcab6))
+
 ## [2.14.1](https://github.com/googleapis/python-bigtable/compare/v2.14.0...v2.14.1) (2022-12-06)
 
 
