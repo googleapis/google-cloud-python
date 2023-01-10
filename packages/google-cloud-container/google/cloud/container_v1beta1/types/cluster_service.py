@@ -366,6 +366,9 @@ class NodeConfig(proto.Message):
     [AutoprovisioningNodePoolDefaults][google.container.v1beta1.AutoprovisioningNodePoolDefaults]
     instead.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         machine_type (str):
             The name of a Google Compute Engine `machine
@@ -733,6 +736,8 @@ class NodeConfig(proto.Message):
 class AdvancedMachineFeatures(proto.Message):
     r"""Specifies options for controlling advanced machine features.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         threads_per_core (int):
             The number of threads per physical core. To
@@ -753,6 +758,8 @@ class AdvancedMachineFeatures(proto.Message):
 
 class NodeNetworkConfig(proto.Message):
     r"""Parameters for node pool-level network config.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         create_pod_range (bool):
@@ -815,6 +822,8 @@ class NodeNetworkConfig(proto.Message):
 
     class NetworkPerformanceConfig(proto.Message):
         r"""Configuration of all network bandwidth tiers
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
             total_egress_bandwidth_tier (google.cloud.container_v1beta1.types.NodeNetworkConfig.NetworkPerformanceConfig.Tier):
@@ -1678,6 +1687,9 @@ class MasterAuthorizedNetworksConfig(proto.Message):
     except traffic from the given CIDR blocks, Google Compute Engine
     Public IPs and Google Prod IPs.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         enabled (bool):
             Whether or not master authorized networks is
@@ -2111,6 +2123,8 @@ class ClusterTelemetry(proto.Message):
 class Cluster(proto.Message):
     r"""A Google Kubernetes Engine cluster.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             The name of this cluster. The name must be unique within
@@ -2439,6 +2453,11 @@ class Cluster(proto.Message):
             cluster.
 
             This field is a member of `oneof`_ ``_protect_config``.
+        etag (str):
+            This checksum is computed by the server based
+            on the value of cluster fields, and may be sent
+            on update requests to ensure the client has an
+            up-to-date value before proceeding.
     """
 
     class Status(proto.Enum):
@@ -2778,11 +2797,18 @@ class Cluster(proto.Message):
         optional=True,
         message="ProtectConfig",
     )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=139,
+    )
 
 
 class WorkloadConfig(proto.Message):
     r"""WorkloadConfig defines the flags to enable or disable the
     workload configurations for the cluster.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         audit_mode (google.cloud.container_v1beta1.types.WorkloadConfig.Mode):
@@ -2811,6 +2837,9 @@ class WorkloadConfig(proto.Message):
 class ProtectConfig(proto.Message):
     r"""ProtectConfig defines the flags needed to enable/disable
     features for the Protect API.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         workload_config (google.cloud.container_v1beta1.types.WorkloadConfig):
@@ -2912,6 +2941,9 @@ class ClusterUpdate(proto.Message):
     r"""ClusterUpdate describes an update to the cluster. Exactly one
     update can be applied to a cluster with each request, so at most
     one field can be provided.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         desired_node_version (str):
@@ -3096,6 +3128,11 @@ class ClusterUpdate(proto.Message):
         desired_gateway_api_config (google.cloud.container_v1beta1.types.GatewayAPIConfig):
             The desired config of Gateway API on this
             cluster.
+        etag (str):
+            The current etag of the cluster.
+            If an etag is provided and does not match the
+            current etag of the cluster, update will be
+            blocked and an ABORTED error will be returned.
         desired_node_pool_logging_config (google.cloud.container_v1beta1.types.NodePoolLoggingConfig):
             The desired node pool logging configuration
             defaults for the cluster.
@@ -3322,6 +3359,10 @@ class ClusterUpdate(proto.Message):
         proto.MESSAGE,
         number=114,
         message="GatewayAPIConfig",
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=115,
     )
     desired_node_pool_logging_config: "NodePoolLoggingConfig" = proto.Field(
         proto.MESSAGE,
@@ -3799,6 +3840,11 @@ class UpdateNodePoolRequest(proto.Message):
             Confidential VM once enabled.
         gvnic (google.cloud.container_v1beta1.types.VirtualNIC):
             Enable or disable gvnic on the node pool.
+        etag (str):
+            The current etag of the node pool.
+            If an etag is provided and does not match the
+            current etag of the node pool, update will be
+            blocked and an ABORTED error will be returned.
         fast_socket (google.cloud.container_v1beta1.types.FastSocket):
             Enable or disable NCCL fast socket for the
             node pool.
@@ -3899,6 +3945,10 @@ class UpdateNodePoolRequest(proto.Message):
         proto.MESSAGE,
         number=29,
         message="VirtualNIC",
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=30,
     )
     fast_socket: "FastSocket" = proto.Field(
         proto.MESSAGE,
@@ -5147,6 +5197,11 @@ class NodePool(proto.Message):
         update_info (google.cloud.container_v1beta1.types.NodePool.UpdateInfo):
             Output only. [Output only] Update info contains relevant
             information during a node pool update.
+        etag (str):
+            This checksum is computed by the server based
+            on the value of node pool fields, and may be
+            sent on update requests to ensure the client has
+            an up-to-date value before proceeding.
     """
 
     class Status(proto.Enum):
@@ -5187,6 +5242,9 @@ class NodePool(proto.Message):
            drained.
         2. node_pool_soak_duration is the soak time after all blue nodes are
            drained. After this period, the blue pool nodes will be deleted.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
             max_surge (int):
@@ -5404,6 +5462,10 @@ class NodePool(proto.Message):
         proto.MESSAGE,
         number=109,
         message=UpdateInfo,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=110,
     )
 
 
@@ -6381,6 +6443,8 @@ class CompleteIPRotationRequest(proto.Message):
 class AcceleratorConfig(proto.Message):
     r"""AcceleratorConfig represents a Hardware Accelerator request.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         accelerator_count (int):
             The number of the accelerator cards exposed
@@ -6429,6 +6493,9 @@ class AcceleratorConfig(proto.Message):
 class GPUSharingConfig(proto.Message):
     r"""GPUSharingConfig represents the GPU sharing configuration for
     Hardware Accelerators.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         max_shared_clients_per_gpu (int):
