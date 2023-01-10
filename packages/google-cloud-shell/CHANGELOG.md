@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-shell/compare/v1.5.0...v1.6.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#149](https://github.com/googleapis/python-shell/issues/149)) ([9df9c9c](https://github.com/googleapis/python-shell/commit/9df9c9ca2b44edb4ec0acf879432be338ac8e6fe))
+
 ## [1.5.0](https://github.com/googleapis/python-shell/compare/v1.4.3...v1.5.0) (2022-12-14)
 
 
