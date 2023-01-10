@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-service-usage/compare/v1.5.0...v1.6.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#158](https://github.com/googleapis/python-service-usage/issues/158)) ([c61468e](https://github.com/googleapis/python-service-usage/commit/c61468e5b873682af7be4bf5fd91c59da01ea74b))
+
 ## [1.5.0](https://github.com/googleapis/python-service-usage/compare/v1.4.3...v1.5.0) (2022-12-14)
 
 
