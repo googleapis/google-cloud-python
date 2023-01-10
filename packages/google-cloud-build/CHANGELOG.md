@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.11.0](https://github.com/googleapis/python-cloudbuild/compare/v3.10.0...v3.11.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#367](https://github.com/googleapis/python-cloudbuild/issues/367)) ([40e3315](https://github.com/googleapis/python-cloudbuild/commit/40e33155b3814517fc08c30a0f0f3f5c2c4c6bba))
+
 ## [3.10.0](https://github.com/googleapis/python-cloudbuild/compare/v3.9.3...v3.10.0) (2022-12-15)
 
 
