@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [2.11.0](https://github.com/googleapis/python-iam/compare/v2.10.0...v2.11.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#256](https://github.com/googleapis/python-iam/issues/256)) ([90f50ca](https://github.com/googleapis/python-iam/commit/90f50ca76f68247b77661e158d0b9c7634c5a856))
+
 ## [2.10.0](https://github.com/googleapis/python-iam/compare/v2.9.0...v2.10.0) (2022-12-14)
 
 
