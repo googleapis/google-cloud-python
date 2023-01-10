@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-domains/compare/v1.3.0...v1.4.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#187](https://github.com/googleapis/python-domains/issues/187)) ([2369d69](https://github.com/googleapis/python-domains/commit/2369d6912f008382fdeaccf2688ca988334b3b9c))
+
 ## [1.3.0](https://github.com/googleapis/python-domains/compare/v1.2.3...v1.3.0) (2022-12-15)
 
 
