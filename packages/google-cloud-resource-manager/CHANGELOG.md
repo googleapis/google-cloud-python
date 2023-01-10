@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## [1.8.0](https://github.com/googleapis/python-resource-manager/compare/v1.7.0...v1.8.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#250](https://github.com/googleapis/python-resource-manager/issues/250)) ([d71a8b2](https://github.com/googleapis/python-resource-manager/commit/d71a8b214c1524ea829e341a1eb02eb795280983))
+
 ## [1.7.0](https://github.com/googleapis/python-resource-manager/compare/v1.6.3...v1.7.0) (2022-12-15)
 
 
