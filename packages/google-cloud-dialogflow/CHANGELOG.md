@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.18.0](https://github.com/googleapis/python-dialogflow/compare/v2.17.0...v2.18.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#604](https://github.com/googleapis/python-dialogflow/issues/604)) ([08a6580](https://github.com/googleapis/python-dialogflow/commit/08a6580b7bb5ba7e9efab0ad5d2bc141bde45572))
+
 ## [2.17.0](https://github.com/googleapis/python-dialogflow/compare/v2.16.1...v2.17.0) (2022-12-15)
 
 
