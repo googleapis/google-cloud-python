@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-service-control/compare/v1.6.0...v1.7.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#186](https://github.com/googleapis/python-service-control/issues/186)) ([94b4856](https://github.com/googleapis/python-service-control/commit/94b485613a87cf319a80a7e1e896138a4b8769b5))
+
 ## [1.6.0](https://github.com/googleapis/python-service-control/compare/v1.5.3...v1.6.0) (2022-12-14)
 
 
