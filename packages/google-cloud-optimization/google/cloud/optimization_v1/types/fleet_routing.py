@@ -57,6 +57,9 @@ class OptimizeToursRequest(proto.Message):
     defines the shipment model to solve as well as optimization
     parameters.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         parent (str):
             Required. Target project and location to make a call.
@@ -616,6 +619,9 @@ class ShipmentModel(proto.Message):
     -  the unperformed shipment penalties.
     -  the cost of the global duration of the shipments
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         shipments (MutableSequence[google.cloud.optimization_v1.types.Shipment]):
             Set of shipments which must be performed in
@@ -873,6 +879,9 @@ class ShipmentModel(proto.Message):
 
         Furthermore, precedences only apply when both shipments are
         performed and are otherwise ignored.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
             first_index (int):
@@ -1138,6 +1147,9 @@ class Shipment(proto.Message):
     locations (and decrease its spare capacities accordingly), then
     visit one of its delivery locations later on (and therefore
     re-increase its spare capacities accordingly).
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         pickups (MutableSequence[google.cloud.optimization_v1.types.Shipment.VisitRequest]):
@@ -1595,6 +1607,9 @@ class Vehicle(proto.Message):
     ``end_location`` for this vehicle. A route is a sequence of visits
     (see ``ShipmentRoute``).
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         travel_mode (google.cloud.optimization_v1.types.Vehicle.TravelMode):
             The travel mode which affects the roads usable by the
@@ -1826,6 +1841,9 @@ class Vehicle(proto.Message):
         only carry up to 3500 kg". See
         [load_limits][google.cloud.optimization.v1.Vehicle.load_limits].
 
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             max_load (int):
                 The maximum acceptable amount of load.
@@ -1854,6 +1872,8 @@ class Vehicle(proto.Message):
 
         class Interval(proto.Message):
             r"""Interval of acceptable load amounts.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
             Attributes:
                 min_ (int):
@@ -1913,6 +1933,9 @@ class Vehicle(proto.Message):
 
         When a soft limit field is defined, both the soft max threshold
         and its associated cost must be defined together.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
             max_duration (google.protobuf.duration_pb2.Duration):
@@ -2163,6 +2186,9 @@ class TimeWindow(proto.Message):
          0 <= `start_time` <= `soft_start_time` <= `end_time` and
          0 <= `start_time` <= `soft_end_time` <= `end_time`.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             The hard time window start time. If unspecified it will be
@@ -2260,6 +2286,8 @@ class CapacityQuantity(proto.Message):
 class CapacityQuantityInterval(proto.Message):
     r"""Deprecated: Use [Vehicle.LoadLimit.Interval][] instead.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         type_ (str):
 
@@ -2294,6 +2322,9 @@ class DistanceLimit(proto.Message):
     If a soft limit is defined, both ``soft_max_meters`` and
     ``cost_per_kilometer_above_soft_max`` must be defined and be
     nonnegative.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         max_meters (int):
@@ -2488,6 +2519,9 @@ class Waypoint(proto.Message):
 class Location(proto.Message):
     r"""Encapsulates a location (a geographic point, and an optional
     heading).
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         lat_lng (google.type.latlng_pb2.LatLng):
@@ -3353,6 +3387,9 @@ class SkippedShipment(proto.Message):
         one vehicle's "Pears" capacity would be exceeded (including vehicle
         3) and at least one vehicle's distance limit would be exceeded
         (including vehicle 1).
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
             code (google.cloud.optimization_v1.types.SkippedShipment.Reason.Code):
