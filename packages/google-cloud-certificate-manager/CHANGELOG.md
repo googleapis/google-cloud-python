@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-certificate-manager/compare/v1.2.0...v1.3.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#101](https://github.com/googleapis/python-certificate-manager/issues/101)) ([4e38d00](https://github.com/googleapis/python-certificate-manager/commit/4e38d002b4ecb6f786255a80d27ecc2663e10471))
+
 ## [1.2.0](https://github.com/googleapis/python-certificate-manager/compare/v1.1.1...v1.2.0) (2022-12-15)
 
 
