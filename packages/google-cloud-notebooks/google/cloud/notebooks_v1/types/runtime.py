@@ -479,6 +479,9 @@ class RuntimeSoftwareConfig(proto.Message):
     -  ``idle_shutdown_timeout: 180``
     -  ``enable_health_monitoring: true``
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         notebook_upgrade_schedule (str):
             Cron expression in UTC timezone, used to schedule instance
