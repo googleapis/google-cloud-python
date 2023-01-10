@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-org-policy/compare/v1.5.0...v1.6.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#195](https://github.com/googleapis/python-org-policy/issues/195)) ([197a5a9](https://github.com/googleapis/python-org-policy/commit/197a5a9c95dd84bc3a24a7ccdf729bff79b894b9))
+
 ## [1.5.0](https://github.com/googleapis/python-org-policy/compare/v1.4.1...v1.5.0) (2022-12-14)
 
 
