@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.0](https://github.com/googleapis/python-recommendations-ai/compare/v0.9.0...v0.10.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#206](https://github.com/googleapis/python-recommendations-ai/issues/206)) ([a2c8179](https://github.com/googleapis/python-recommendations-ai/commit/a2c8179eb019cf16eeb468763d53f44474a756e5))
+
 ## [0.9.0](https://github.com/googleapis/python-recommendations-ai/compare/v0.8.2...v0.9.0) (2022-12-15)
 
 
