@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-memcache/compare/v1.5.0...v1.6.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#236](https://github.com/googleapis/python-memcache/issues/236)) ([36b98c5](https://github.com/googleapis/python-memcache/commit/36b98c5e33ea1f707d45d1e0d4cf91032d789a6e))
+
 ## [1.5.0](https://github.com/googleapis/python-memcache/compare/v1.4.4...v1.5.0) (2022-12-14)
 
 
