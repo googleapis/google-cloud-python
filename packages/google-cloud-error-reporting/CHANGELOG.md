@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## [1.8.0](https://github.com/googleapis/python-error-reporting/compare/v1.7.0...v1.8.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#405](https://github.com/googleapis/python-error-reporting/issues/405)) ([d5e0c4c](https://github.com/googleapis/python-error-reporting/commit/d5e0c4cf0cb40aab80146cad16141217b1998b30))
+
 ## [1.7.0](https://github.com/googleapis/python-error-reporting/compare/v1.6.3...v1.7.0) (2022-12-15)
 
 
