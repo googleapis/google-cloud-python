@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/python-bigquery-analyticshub/compare/v0.2.0...v0.3.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#13](https://github.com/googleapis/python-bigquery-analyticshub/issues/13)) ([794a4b0](https://github.com/googleapis/python-bigquery-analyticshub/commit/794a4b0567287ff3472e0ea5a84d6e16a998d63e))
+
 ## [0.2.0](https://github.com/googleapis/python-bigquery-analyticshub/compare/v0.1.1...v0.2.0) (2022-12-15)
 
 
