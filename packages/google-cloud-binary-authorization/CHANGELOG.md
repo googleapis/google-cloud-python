@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-binary-authorization/compare/v1.4.0...v1.5.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#196](https://github.com/googleapis/python-binary-authorization/issues/196)) ([f5f7c77](https://github.com/googleapis/python-binary-authorization/commit/f5f7c7749fe45827281fa0ee3d7cbbfb4e32057f))
+
 ## [1.4.0](https://github.com/googleapis/python-binary-authorization/compare/v1.3.3...v1.4.0) (2022-12-15)
 
 
