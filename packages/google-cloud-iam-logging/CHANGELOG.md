@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-iam-logging/compare/v1.1.0...v1.2.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#135](https://github.com/googleapis/python-iam-logging/issues/135)) ([0e540ea](https://github.com/googleapis/python-iam-logging/commit/0e540ea741403ab3fda26d0aca9fe58c554d0ef7))
+
 ## [1.1.0](https://github.com/googleapis/python-iam-logging/compare/v1.0.6...v1.1.0) (2022-12-14)
 
 
