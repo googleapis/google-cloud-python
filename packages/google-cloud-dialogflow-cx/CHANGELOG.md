@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.14.1...v1.15.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#482](https://github.com/googleapis/python-dialogflow-cx/issues/482)) ([1b846d2](https://github.com/googleapis/python-dialogflow-cx/commit/1b846d292e7ec8deb555d489c8adde0d6817f47f))
+
 ## [1.14.1](https://github.com/googleapis/python-dialogflow-cx/compare/v1.14.0...v1.14.1) (2023-01-06)
 
 
