@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-source-context/compare/v1.3.0...v1.4.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#129](https://github.com/googleapis/python-source-context/issues/129)) ([fb1ef8a](https://github.com/googleapis/python-source-context/commit/fb1ef8a5fb266d0d2338ca3930dd06f673b08e8c))
+
 ## [1.3.0](https://github.com/googleapis/python-source-context/compare/v1.2.8...v1.3.0) (2022-12-15)
 
 
