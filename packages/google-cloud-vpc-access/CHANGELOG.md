@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-vpc-access/compare/v1.6.0...v1.7.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#157](https://github.com/googleapis/python-vpc-access/issues/157)) ([c7fe74b](https://github.com/googleapis/python-vpc-access/commit/c7fe74b4805f49d22e3c6acbcca338deb700f2f9))
+
 ## [1.6.0](https://github.com/googleapis/python-vpc-access/compare/v1.5.2...v1.6.0) (2022-12-08)
 
 
