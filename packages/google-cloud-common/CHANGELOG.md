@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-cloud-common/compare/v1.1.0...v1.2.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#100](https://github.com/googleapis/python-cloud-common/issues/100)) ([6ddb9f8](https://github.com/googleapis/python-cloud-common/commit/6ddb9f89dbebda57e491a0dcefdff22c0497cca3))
+
 ## [1.1.0](https://github.com/googleapis/python-cloud-common/compare/v1.0.6...v1.1.0) (2022-12-15)
 
 
