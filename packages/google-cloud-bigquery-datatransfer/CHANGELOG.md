@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.10.0](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.9.0...v3.10.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#421](https://github.com/googleapis/python-bigquery-datatransfer/issues/421)) ([d81fe69](https://github.com/googleapis/python-bigquery-datatransfer/commit/d81fe694862b9663e8ffd407c9bad7af6bc4fc01))
+
 ## [3.9.0](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.8.0...v3.9.0) (2023-01-04)
 
 
