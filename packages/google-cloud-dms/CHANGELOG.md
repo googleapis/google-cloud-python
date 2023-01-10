@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-dms/compare/v1.5.0...v1.6.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#163](https://github.com/googleapis/python-dms/issues/163)) ([22e13a3](https://github.com/googleapis/python-dms/commit/22e13a313170ad55f5022f60dcfc431145ee1127))
+
 ## [1.5.0](https://github.com/googleapis/python-dms/compare/v1.4.3...v1.5.0) (2022-12-15)
 
 
