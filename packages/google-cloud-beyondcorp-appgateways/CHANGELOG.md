@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-beyondcorp-appgateways/compare/v0.3.0...v0.4.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#43](https://github.com/googleapis/python-beyondcorp-appgateways/issues/43)) ([f228cd5](https://github.com/googleapis/python-beyondcorp-appgateways/commit/f228cd5df92a94c3df412dc427f0f9847c96c07a))
+
 ## [0.3.0](https://github.com/googleapis/python-beyondcorp-appgateways/compare/v0.2.2...v0.3.0) (2022-12-13)
 
 
