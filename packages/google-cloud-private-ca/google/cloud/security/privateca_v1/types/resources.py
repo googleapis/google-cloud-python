@@ -1168,6 +1168,8 @@ class X509Parameters(proto.Message):
     class CaOptions(proto.Message):
         r"""Describes values that are relevant in a CA certificate.
 
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             is_ca (bool):
                 Optional. Refers to the "CA" X.509 extension,
@@ -1867,6 +1869,9 @@ class CertificateIdentityConstraints(proto.Message):
     [Certificate][google.cloud.security.privateca.v1.Certificate]'s
     [Subject][google.cloud.security.privateca.v1.Subject] and
     [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames].
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         cel_expression (google.type.expr_pb2.Expr):
