@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-iap/compare/v1.7.0...v1.8.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#149](https://github.com/googleapis/python-iap/issues/149)) ([e136d2f](https://github.com/googleapis/python-iap/commit/e136d2fcd7e12c811972a2ff0fe819154e9cfca2))
+
 ## [1.7.0](https://github.com/googleapis/python-iap/compare/v1.6.0...v1.7.0) (2023-01-04)
 
 
