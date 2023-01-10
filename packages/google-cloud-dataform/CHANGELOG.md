@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-dataform/compare/v0.3.0...v0.4.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#40](https://github.com/googleapis/python-dataform/issues/40)) ([b8f6d78](https://github.com/googleapis/python-dataform/commit/b8f6d78e001cbc6a7110927cd6f711c712fc077e))
+
 ## [0.3.0](https://github.com/googleapis/python-dataform/compare/v0.2.3...v0.3.0) (2022-12-15)
 
 
