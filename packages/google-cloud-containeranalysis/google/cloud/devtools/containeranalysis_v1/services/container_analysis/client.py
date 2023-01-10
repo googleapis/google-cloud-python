@@ -287,7 +287,7 @@ class ContainerAnalysisClient(metaclass=ContainerAnalysisClientMeta):
         The API endpoint is determined in the following order:
         (1) if `client_options.api_endpoint` if provided, use the provided one.
         (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
-        default mTLS endpoint; if the environment variabel is "never", use the default API
+        default mTLS endpoint; if the environment variable is "never", use the default API
         endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
         use the default API endpoint.
 
