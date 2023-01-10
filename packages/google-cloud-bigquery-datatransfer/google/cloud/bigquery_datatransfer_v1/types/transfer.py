@@ -116,6 +116,8 @@ class ScheduleOptions(proto.Message):
 class UserInfo(proto.Message):
     r"""Information about a user.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         email (str):
             E-mail address of the user.
