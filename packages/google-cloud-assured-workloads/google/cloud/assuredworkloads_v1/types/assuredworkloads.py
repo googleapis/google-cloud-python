@@ -763,6 +763,8 @@ class GetViolationRequest(proto.Message):
 class Violation(proto.Message):
     r"""Workload monitoring Violation.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Output only. Immutable. Name of the Violation. Format:
