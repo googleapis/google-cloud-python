@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.15.0](https://github.com/googleapis/python-secret-manager/compare/v2.14.0...v2.15.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#386](https://github.com/googleapis/python-secret-manager/issues/386)) ([0c68091](https://github.com/googleapis/python-secret-manager/commit/0c68091480407804e05164fbfda0b74f79c0bf05))
+
 ## [2.14.0](https://github.com/googleapis/python-secret-manager/compare/v2.13.0...v2.14.0) (2023-01-04)
 
 
