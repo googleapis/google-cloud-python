@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.8.0](https://github.com/googleapis/python-firestore/compare/v2.7.3...v2.8.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#675](https://github.com/googleapis/python-firestore/issues/675)) ([2030a9f](https://github.com/googleapis/python-firestore/commit/2030a9f98458ce1e3d41884d12d645bd845d6910))
+
 ## [2.7.3](https://github.com/googleapis/python-firestore/compare/v2.7.2...v2.7.3) (2022-12-08)
 
 
