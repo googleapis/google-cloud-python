@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-compute/compare/v1.8.0...v1.9.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#379](https://github.com/googleapis/python-compute/issues/379)) ([768c13a](https://github.com/googleapis/python-compute/commit/768c13a8cd6b1471d93503ce8c4fec338298d6b9))
+
 ## [1.8.0](https://github.com/googleapis/python-compute/compare/v1.7.0...v1.8.0) (2022-12-14)
 
 
