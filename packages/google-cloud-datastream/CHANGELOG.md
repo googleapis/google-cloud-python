@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-datastream/compare/v1.3.0...v1.4.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#150](https://github.com/googleapis/python-datastream/issues/150)) ([9a67ea8](https://github.com/googleapis/python-datastream/commit/9a67ea8a2474fb5061e2e87ba288435aea28c8bc))
+
 ## [1.3.0](https://github.com/googleapis/python-datastream/compare/v1.2.2...v1.3.0) (2022-12-15)
 
 
