@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/googleapis/python-eventarc-publishing/compare/v0.5.0...v0.6.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#87](https://github.com/googleapis/python-eventarc-publishing/issues/87)) ([7cd97bc](https://github.com/googleapis/python-eventarc-publishing/commit/7cd97bca2cce9cdfc43baf54e7d8b041516a9ab9))
+
 ## [0.5.0](https://github.com/googleapis/python-eventarc-publishing/compare/v0.4.2...v0.5.0) (2022-12-14)
 
 
