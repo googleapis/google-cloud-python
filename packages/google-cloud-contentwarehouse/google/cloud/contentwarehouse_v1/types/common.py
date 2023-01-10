@@ -151,6 +151,8 @@ class UpdateOptions(proto.Message):
 class MergeFieldsOptions(proto.Message):
     r"""Options for merging updated fields.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         replace_message_fields (bool):
             When merging message fields, the default

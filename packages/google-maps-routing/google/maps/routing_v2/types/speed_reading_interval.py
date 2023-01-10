@@ -31,6 +31,9 @@ class SpeedReadingInterval(proto.Message):
     index), the SpeedReadingInterval defines an interval and describes
     its traffic using the following categories.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         start_polyline_point_index (int):
             The starting index of this interval in the
