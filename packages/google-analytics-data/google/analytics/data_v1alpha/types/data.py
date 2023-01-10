@@ -843,6 +843,9 @@ class FunnelBreakdown(proto.Message):
     r"""Breakdowns add a dimension to the funnel table sub report
     response.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         breakdown_dimension (google.analytics.data_v1alpha.types.Dimension):
             The dimension column added to the funnel table sub report
@@ -878,6 +881,9 @@ class FunnelNextAction(proto.Message):
     first event after the event that qualified the user into the
     ``i``\ th funnel step but before the user achieved the ``i+1``\ th
     funnel step.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         next_action_dimension (google.analytics.data_v1alpha.types.Dimension):
@@ -946,6 +952,9 @@ class FunnelStep(proto.Message):
     r"""Steps define the user journey you want to measure. Steps
     contain one or more conditions that your users must meet to be
     included in that step of the funnel journey.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         name (str):
@@ -1710,6 +1719,9 @@ class SegmentFilterScoping(proto.Message):
     r"""Scopings specify how the dimensions & metrics of multiple
     events should be considered when evaluating a segment filter.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         at_any_point_in_time (bool):
             If ``atAnyPointInTime`` is true, this filter evaluates to
@@ -1743,6 +1755,9 @@ class SegmentEventFilter(proto.Message):
     If a parameter filter expression is specified, only the subset
     of events that match both the single event name and the
     parameter filter expressions match this event filter.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         event_name (str):
@@ -1957,6 +1972,9 @@ class SegmentParameterFilterScoping(proto.Message):
     r"""Scopings specify how multiple events should be considered
     when evaluating a segment parameter filter.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         in_any_n_day_period (int):
             Accumulates the parameter over the specified period of days
@@ -2153,6 +2171,9 @@ class FunnelEventFilter(proto.Message):
     If a parameter filter expression is specified, only the subset
     of events that match both the single event name and the
     parameter filter expressions match this event filter.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         event_name (str):

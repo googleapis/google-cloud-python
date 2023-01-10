@@ -143,6 +143,9 @@ class MinuteRange(proto.Message):
     + 1, ..., endMinutesAgo. Requests are allowed up to 2 minute
     ranges.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         start_minutes_ago (int):
             The inclusive start minute for the query as a number of
@@ -1043,6 +1046,9 @@ class ResponseMetaData(proto.Message):
     r"""Response's metadata carrying additional information about the
     report content.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         data_loss_from_other_row (bool):
             If true, indicates some buckets of dimension
@@ -1113,6 +1119,8 @@ class ResponseMetaData(proto.Message):
 
         class ActiveMetricRestriction(proto.Message):
             r"""A metric actively restricted in creating the report.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
             Attributes:
                 metric_name (str):
@@ -1639,6 +1647,8 @@ class MetricMetadata(proto.Message):
 class DimensionCompatibility(proto.Message):
     r"""The compatibility for a single dimension.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         dimension_metadata (google.analytics.data_v1beta.types.DimensionMetadata):
             The dimension metadata contains the API name
@@ -1671,6 +1681,8 @@ class DimensionCompatibility(proto.Message):
 
 class MetricCompatibility(proto.Message):
     r"""The compatibility for a single metric.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         metric_metadata (google.analytics.data_v1beta.types.MetricMetadata):
