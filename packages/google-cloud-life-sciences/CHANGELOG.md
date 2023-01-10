@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/googleapis/python-life-sciences/compare/v0.8.0...v0.9.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#158](https://github.com/googleapis/python-life-sciences/issues/158)) ([40176be](https://github.com/googleapis/python-life-sciences/commit/40176be490e6e5cff466277eaed2a16fc3c3fc48))
+
 ## [0.8.0](https://github.com/googleapis/python-life-sciences/compare/v0.7.2...v0.8.0) (2022-12-14)
 
 
