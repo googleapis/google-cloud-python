@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+## [2.11.0](https://github.com/googleapis/python-redis/compare/v2.10.0...v2.11.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#242](https://github.com/googleapis/python-redis/issues/242)) ([052d0f3](https://github.com/googleapis/python-redis/commit/052d0f3039634ec597e9ef9bc52fdba1a54ff0d2))
+
 ## [2.10.0](https://github.com/googleapis/python-redis/compare/v2.9.3...v2.10.0) (2022-12-08)
 
 
