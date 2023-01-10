@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/googleapis/python-gke-connect-gateway/compare/v0.7.0...v0.8.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#144](https://github.com/googleapis/python-gke-connect-gateway/issues/144)) ([e482679](https://github.com/googleapis/python-gke-connect-gateway/commit/e482679b294916710317208084ebde65adab5753))
+
 ## [0.7.0](https://github.com/googleapis/python-gke-connect-gateway/compare/v0.6.3...v0.7.0) (2022-12-14)
 
 
