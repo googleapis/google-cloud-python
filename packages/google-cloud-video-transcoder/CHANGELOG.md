@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-video-transcoder/compare/v1.5.0...v1.6.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#265](https://github.com/googleapis/python-video-transcoder/issues/265)) ([a1f708a](https://github.com/googleapis/python-video-transcoder/commit/a1f708a1398a633e086793e3d6bf0354f837e138))
+
 ## [1.5.0](https://github.com/googleapis/python-video-transcoder/compare/v1.4.3...v1.5.0) (2022-12-15)
 
 
