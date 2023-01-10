@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-service-management/compare/v1.4.0...v1.5.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#184](https://github.com/googleapis/python-service-management/issues/184)) ([0aeacd5](https://github.com/googleapis/python-service-management/commit/0aeacd51f9388e62a1ae009aa11415d500a5021e))
+
 ## [1.4.0](https://github.com/googleapis/python-service-management/compare/v1.3.3...v1.4.0) (2022-12-14)
 
 
