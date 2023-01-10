@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-bigquery-connection/compare/v1.8.0...v1.9.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#280](https://github.com/googleapis/python-bigquery-connection/issues/280)) ([ac90427](https://github.com/googleapis/python-bigquery-connection/commit/ac904279a668049eb8f01e69d52d7dd12918c545))
+
 ## [1.8.0](https://github.com/googleapis/python-bigquery-connection/compare/v1.7.3...v1.8.0) (2022-12-15)
 
 
