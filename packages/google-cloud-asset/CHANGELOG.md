@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.16.0](https://github.com/googleapis/python-asset/compare/v3.15.0...v3.16.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#528](https://github.com/googleapis/python-asset/issues/528)) ([8d59164](https://github.com/googleapis/python-asset/commit/8d591642fdda7af069326de10e91c11829907872))
+
 ## [3.15.0](https://github.com/googleapis/python-asset/compare/v3.14.1...v3.15.0) (2023-01-07)
 
 
