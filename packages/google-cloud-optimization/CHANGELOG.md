@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-optimization/compare/v1.2.0...v1.3.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#99](https://github.com/googleapis/python-optimization/issues/99)) ([95d8ee6](https://github.com/googleapis/python-optimization/commit/95d8ee6f85b066787b9543adc612de1699504e67))
+
 ## [1.2.0](https://github.com/googleapis/python-optimization/compare/v1.1.3...v1.2.0) (2022-12-15)
 
 
