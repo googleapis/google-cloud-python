@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-assured-workloads/compare/v1.8.1...v1.9.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#225](https://github.com/googleapis/python-assured-workloads/issues/225)) ([36aab41](https://github.com/googleapis/python-assured-workloads/commit/36aab41aae69539953cc38c574927bdefaeedbfa))
+
 ## [1.8.1](https://github.com/googleapis/python-assured-workloads/compare/v1.8.0...v1.8.1) (2022-12-08)
 
 
