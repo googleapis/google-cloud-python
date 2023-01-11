@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-network-management/compare/v1.6.0...v1.7.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#165](https://github.com/googleapis/python-network-management/issues/165)) ([7b5047a](https://github.com/googleapis/python-network-management/commit/7b5047afe91b7ae610982c1256f987a3a0bc2d0e))
+
 ## [1.6.0](https://github.com/googleapis/python-network-management/compare/v1.5.4...v1.6.0) (2022-12-14)
 
 
