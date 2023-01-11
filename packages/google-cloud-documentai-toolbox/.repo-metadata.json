@@ -1,16 +1,13 @@
 {
     "name": "documentai-toolbox",
     "name_pretty": "Document AI Toolbox",
-    "product_documentation": "LINK",
-    "client_documentation": "LINK",
     "issue_tracker": "",
-    "release_level": "experimental",
+    "release_level": "preview",
     "language": "python",
-    "library_type": "GAPIC_MANUAL",
+    "library_type": "OTHER",
     "repo": "googleapis/python-documentai-toolbox",
     "distribution_name": "google-cloud-documentai-toolbox",
     "requires_billing": true,
     "default_version": "v1",
-    "codeowner_team": "@googleapis/cdpe-cloudai",
-    "api_shortname": "documentai-toolbox"
+    "codeowner_team": "@googleapis/cdpe-cloudai"
 }
