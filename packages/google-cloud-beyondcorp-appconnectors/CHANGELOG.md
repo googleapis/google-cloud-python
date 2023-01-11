@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-beyondcorp-appconnectors/compare/v0.3.0...v0.4.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#48](https://github.com/googleapis/python-beyondcorp-appconnectors/issues/48)) ([6864e97](https://github.com/googleapis/python-beyondcorp-appconnectors/commit/6864e978a9d46abe4b4c36ec6c28f48ee2b3d4f1))
+
 ## [0.3.0](https://github.com/googleapis/python-beyondcorp-appconnectors/compare/v0.2.2...v0.3.0) (2022-12-14)
 
 
