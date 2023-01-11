@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-billing/compare/v1.8.0...v1.9.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#228](https://github.com/googleapis/python-billing/issues/228)) ([5e14095](https://github.com/googleapis/python-billing/commit/5e140954e89a9d12655f107eb17d80274e7f00cc))
+
 ## [1.8.0](https://github.com/googleapis/python-billing/compare/v1.7.3...v1.8.0) (2022-12-15)
 
 
