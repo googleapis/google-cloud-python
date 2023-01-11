@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-notebooks/compare/v1.5.1...v1.6.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#217](https://github.com/googleapis/python-notebooks/issues/217)) ([f12087c](https://github.com/googleapis/python-notebooks/commit/f12087cde17e95a42172f78c1310be78cd8e7963))
+
 ## [1.5.1](https://github.com/googleapis/python-notebooks/compare/v1.5.0...v1.5.1) (2023-01-04)
 
 
