@@ -90,7 +90,12 @@
             "component": "google-cloud-datacatalog-lineage",
             "release-type": "python",
             "extra-files": [
-                "google/cloud/datacatalog/lineage/gapic_version.py"
+                "google/cloud/datacatalog/lineage/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.datacatalog.lineage.v1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
             ]
         }
     }
