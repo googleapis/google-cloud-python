@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/googleapis/python-apigee-registry/compare/v0.5.1...v0.6.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#61](https://github.com/googleapis/python-apigee-registry/issues/61)) ([25fd09a](https://github.com/googleapis/python-apigee-registry/commit/25fd09ad4040abbee1f5c49b19806fab33a1b849))
+
 ## [0.5.1](https://github.com/googleapis/python-apigee-registry/compare/v0.5.0...v0.5.1) (2022-12-14)
 
 
