@@ -27,7 +27,7 @@ dependencies = [
     "numpy >=1.16.6",
     "pandas >=1.1.4",
     "pyarrow >=3.0.0",
-    "pydata-google-auth >=1.4.0",
+    "pydata-google-auth >=1.5.0",
     # Note: google-api-core and google-auth are also included via transitive
     # dependency on google-cloud-bigquery, but this library also uses them
     # directly.

@@ -280,6 +280,9 @@ class GbqConnector(object):
         location=None,
         credentials=None,
         use_bqstorage_api=False,
+        auth_redirect_uri=None,
+        client_id=None,
+        client_secret=None,
     ):
         global context
         from google.api_core.exceptions import GoogleAPIError
@@ -294,6 +297,10 @@ class GbqConnector(object):
         self.auth_local_webserver = auth_local_webserver
         self.dialect = dialect
         self.credentials = credentials
+        self.auth_redirect_uri = auth_redirect_uri
+        self.client_id = client_id
+        self.client_secret = client_secret
+
         default_project = None
 
         # Service account credentials have a project associated with them.
@@ -313,6 +320,9 @@ class GbqConnector(object):
                 project_id=project_id,
                 reauth=reauth,
                 auth_local_webserver=auth_local_webserver,
+                auth_redirect_uri=auth_redirect_uri,
+                client_id=client_id,
+                client_secret=client_secret,
             )
 
         if self.project_id is None:
@@ -735,6 +745,9 @@ def read_gbq(
     private_key=None,
     progress_bar_type="tqdm",
     dtypes=None,
+    auth_redirect_uri=None,
+    client_id=None,
+    client_secret=None,
 ):
     r"""Load data from Google BigQuery using google-cloud-python
 
@@ -864,6 +877,15 @@ def read_gbq(
         or
         :func:`google.oauth2.service_account.Credentials.from_service_account_file`
         instead.
+    auth_redirect_uri : str
+        Path to the authentication page for organization-specific authentication
+        workflows. Used when ``auth_local_webserver=False``.
+    client_id : str
+        The Client ID for the Google Cloud Project the user is attempting to
+        connect to.
+    client_secret : str
+        The Client Secret associated with the Client ID for the Google Cloud Project
+        the user is attempting to connect to.
 
     Returns
     -------
@@ -912,6 +934,9 @@ def read_gbq(
         credentials=credentials,
         private_key=private_key,
         use_bqstorage_api=use_bqstorage_api,
+        auth_redirect_uri=auth_redirect_uri,
+        client_id=client_id,
+        client_secret=client_secret,
     )
 
     if _is_query(query_or_table):
@@ -969,6 +994,9 @@ def to_gbq(
     api_method: str = "default",
     verbose=None,
     private_key=None,
+    auth_redirect_uri=None,
+    client_id=None,
+    client_secret=None,
 ):
     """Write a DataFrame to a Google BigQuery table.
 
@@ -1071,6 +1099,15 @@ def to_gbq(
         or
         :func:`google.oauth2.service_account.Credentials.from_service_account_file`
         instead.
+    auth_redirect_uri : str
+        Path to the authentication page for organization-specific authentication
+        workflows. Used when ``auth_local_webserver=False``.
+    client_id : str
+        The Client ID for the Google Cloud Project the user is attempting to
+        connect to.
+    client_secret : str
+        The Client Secret associated with the Client ID for the Google Cloud Project
+        the user is attempting to connect to.
     """
 
     _test_google_api_imports()
@@ -1131,6 +1168,9 @@ def to_gbq(
         location=location,
         credentials=credentials,
         private_key=private_key,
+        auth_redirect_uri=auth_redirect_uri,
+        client_id=client_id,
+        client_secret=client_secret,
     )
     bqclient = connector.client
 

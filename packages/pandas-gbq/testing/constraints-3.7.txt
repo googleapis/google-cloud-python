@@ -14,6 +14,6 @@ google-cloud-bigquery-storage==2.16.2
 numpy==1.16.6
 pandas==1.1.4
 pyarrow==3.0.0
-pydata-google-auth==1.4.0
+pydata-google-auth==1.5.0
 tqdm==4.23.0
 protobuf==3.19.5

@@ -41,6 +41,7 @@ Contents:
    contributing.rst
    changelog.md
    privacy.rst
+   oauth.rst
 
 
 Indices and tables
