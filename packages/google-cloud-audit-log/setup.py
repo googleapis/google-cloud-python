@@ -20,7 +20,7 @@ from setuptools import setup, find_packages
 
 name = "google-cloud-audit-log"
 description = "Google Cloud Audit Protos"
-version = "0.2.4"
+version = "0.2.5"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
     "protobuf>=3.19.5,<5.0.0dev,!=3.20.0,!=3.20.1,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
