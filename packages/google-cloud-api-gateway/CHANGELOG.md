@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-api-gateway/compare/v1.5.1...v1.6.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#194](https://github.com/googleapis/python-api-gateway/issues/194)) ([f38c7c9](https://github.com/googleapis/python-api-gateway/commit/f38c7c96650d60842f14e3828039f42a133219b8))
+
 ## [1.5.1](https://github.com/googleapis/python-api-gateway/compare/v1.5.0...v1.5.1) (2022-12-08)
 
 
