@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.16.0](https://github.com/googleapis/python-container/compare/v2.15.0...v2.16.0) (2023-01-10)
+
+
+### Features
+
+* Add etags for cluster and node pool update operations ([8eeee3b](https://github.com/googleapis/python-container/commit/8eeee3bda1e0eaae6fb375b47cc68b959f9b9feb))
+* Add support for python 3.11 ([8eeee3b](https://github.com/googleapis/python-container/commit/8eeee3bda1e0eaae6fb375b47cc68b959f9b9feb))
+
 ## [2.15.0](https://github.com/googleapis/python-container/compare/v2.14.0...v2.15.0) (2023-01-09)
 
 
