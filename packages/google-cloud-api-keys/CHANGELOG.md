@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/python-api-keys/compare/v0.4.1...v0.5.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#41](https://github.com/googleapis/python-api-keys/issues/41)) ([0e03896](https://github.com/googleapis/python-api-keys/commit/0e0389620299ba3907b2e7d46ccc670e96f632f4))
+
 ## [0.4.1](https://github.com/googleapis/python-api-keys/compare/v0.4.0...v0.4.1) (2022-12-14)
 
 
