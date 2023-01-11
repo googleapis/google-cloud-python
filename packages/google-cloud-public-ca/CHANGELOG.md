@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/python-security-public-ca/compare/v0.2.0...v0.3.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#17](https://github.com/googleapis/python-security-public-ca/issues/17)) ([a331666](https://github.com/googleapis/python-security-public-ca/commit/a3316662929deff66a5bab385f513e27199b8c37))
+
 ## [0.2.0](https://github.com/googleapis/python-security-public-ca/compare/v0.1.1...v0.2.0) (2022-12-15)
 
 
