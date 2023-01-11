@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/googleapis/python-private-catalog/compare/v0.8.0...v0.9.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#175](https://github.com/googleapis/python-private-catalog/issues/175)) ([d0c0e18](https://github.com/googleapis/python-private-catalog/commit/d0c0e1880fc311077796dbb505b441d7ac1958ca))
+
 ## [0.8.0](https://github.com/googleapis/python-private-catalog/compare/v0.7.2...v0.8.0) (2022-12-13)
 
 
