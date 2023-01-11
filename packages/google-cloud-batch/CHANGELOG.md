@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/googleapis/python-batch/compare/v0.7.0...v0.8.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#86](https://github.com/googleapis/python-batch/issues/86)) ([4f0cb51](https://github.com/googleapis/python-batch/commit/4f0cb51cb5e6754c5b5b0cd02cb5b06a6c0ef79d))
+
 ## [0.7.0](https://github.com/googleapis/python-batch/compare/v0.6.0...v0.7.0) (2023-01-04)
 
 
