@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-appengine-admin/compare/v1.7.1...v1.8.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#216](https://github.com/googleapis/python-appengine-admin/issues/216)) ([ed1c020](https://github.com/googleapis/python-appengine-admin/commit/ed1c020e28cc152dc273c409abfdc36c6c376b20))
+
 ## [1.7.1](https://github.com/googleapis/python-appengine-admin/compare/v1.7.0...v1.7.1) (2022-12-08)
 
 
