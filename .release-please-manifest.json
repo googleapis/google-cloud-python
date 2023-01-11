@@ -6,5 +6,5 @@
     "packages/google-maps-addressvalidation": "0.2.0",
     "packages/google-maps-routing": "0.2.0",
     "packages/google-apps-script-type": "0.3.0",
-    "packages/google-cloud-vmwareengine": "0.2.0"
+    "packages/google-cloud-vmwareengine": "0.2.1"
 }
