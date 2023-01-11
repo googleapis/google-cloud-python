@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v0.2.0...google-cloud-vmwareengine-v0.2.1) (2023-01-11)
+
+
+### Documentation
+
+* update location in docstrings to use `us-central1` ([#10815](https://github.com/googleapis/google-cloud-python/issues/10815)) ([93993d3](https://github.com/googleapis/google-cloud-python/commit/93993d3ff50ea61206dd9f5db348285f9f9e49be))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v0.1.1...google-cloud-vmwareengine-v0.2.0) (2023-01-10)
 
 
