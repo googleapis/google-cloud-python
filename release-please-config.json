@@ -85,6 +85,13 @@
                     "jsonpath": "$.clientLibrary.version"
                 }
             ]
+        },
+        "packages/google-cloud-datacatalog-lineage": {
+            "component": "google-cloud-datacatalog-lineage",
+            "release-type": "python",
+            "extra-files": [
+                "google/cloud/datacatalog/lineage/gapic_version.py"
+            ]
         }
     }
 }
