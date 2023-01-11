@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-artifact-registry/compare/v1.5.0...v1.6.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#214](https://github.com/googleapis/python-artifact-registry/issues/214)) ([1b68d31](https://github.com/googleapis/python-artifact-registry/commit/1b68d3161973acef42fb458efa52d6cb81597ae1))
+
 ## [1.5.0](https://github.com/googleapis/python-artifact-registry/compare/v1.4.1...v1.5.0) (2023-01-03)
 
 
