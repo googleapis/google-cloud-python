@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/compare/v0.3.0...v0.4.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#46](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/issues/46)) ([41bed78](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/commit/41bed7878e81cacd1a8b73ad909c641f9cbdaeb1))
+
 ## [0.3.0](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/compare/v0.2.2...v0.3.0) (2022-12-14)
 
 
