@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.0](https://github.com/googleapis/python-analytics-data/compare/v0.15.0...v0.16.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#327](https://github.com/googleapis/python-analytics-data/issues/327)) ([d4078da](https://github.com/googleapis/python-analytics-data/commit/d4078dabccc01a8bd2cd44943b1f4cdc729a58a6))
+
 ## [0.15.0](https://github.com/googleapis/python-analytics-data/compare/v0.14.2...v0.15.0) (2022-12-14)
 
 
