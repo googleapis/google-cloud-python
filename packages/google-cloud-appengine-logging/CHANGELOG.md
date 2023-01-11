@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-appengine-logging/compare/v1.2.0...v1.3.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#136](https://github.com/googleapis/python-appengine-logging/issues/136)) ([28cb434](https://github.com/googleapis/python-appengine-logging/commit/28cb434f0372aa1b606f88a55aa5574b0c6ae114))
+
 ## [1.2.0](https://github.com/googleapis/python-appengine-logging/compare/v1.1.6...v1.2.0) (2022-12-15)
 
 
