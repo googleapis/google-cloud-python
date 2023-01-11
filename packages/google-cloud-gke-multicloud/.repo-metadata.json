@@ -2,7 +2,7 @@
     "name": "gkemulticloud",
     "name_pretty": "Anthos Multicloud",
     "api_description": "An API for provisioning and managing GKE clusters running on AWS and Azure infrastructure through a centralized Google Cloud backed control plane.",
-    "product_documentation": "https://cloud.google.com/gkemulticloud",
+    "product_documentation": "https://cloud.google.com/anthos/clusters/docs/multi-cloud",
     "client_documentation": "https://cloud.google.com/python/docs/reference/gkemulticloud/latest",
     "issue_tracker": "",
     "release_level": "preview",
