@@ -656,7 +656,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 queried for clusters. Resource names are schemeless URIs
                 that follow the conventions in
                 https://cloud.google.com/apis/design/resource_names. For
-                example: ``projects/my-project/locations/us-west1-a``
+                example: ``projects/my-project/locations/us-central1-a``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -670,7 +670,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         Returns:
             google.cloud.vmwareengine_v1.services.vmware_engine.pagers.ListPrivateCloudsPager:
                 Response message for
-                [VmwareEngine.ListPrivateClouds][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateClouds]
+                   [VmwareEngine.ListPrivateClouds][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateClouds]
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -774,7 +774,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 the conventions in
                 https://cloud.google.com/apis/design/resource_names. For
                 example:
-                ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud``
+                ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -896,7 +896,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 the new private cloud in. Resource names are schemeless
                 URIs that follow the conventions in
                 https://cloud.google.com/apis/design/resource_names. For
-                example: ``projects/my-project/locations/us-west1-a``
+                example: ``projects/my-project/locations/us-central1-a``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1208,7 +1208,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 the conventions in
                 https://cloud.google.com/apis/design/resource_names. For
                 example:
-                ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud``
+                ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1334,7 +1334,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 URIs that follow the conventions in
                 https://cloud.google.com/apis/design/resource_names. For
                 example:
-                ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud``
+                ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1453,7 +1453,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 that follow the conventions in
                 https://cloud.google.com/apis/design/resource_names. For
                 example:
-                ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud``
+                ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1467,7 +1467,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         Returns:
             google.cloud.vmwareengine_v1.services.vmware_engine.pagers.ListClustersPager:
                 Response message for
-                [VmwareEngine.ListClusters][google.cloud.vmwareengine.v1.VmwareEngine.ListClusters]
+                   [VmwareEngine.ListClusters][google.cloud.vmwareengine.v1.VmwareEngine.ListClusters]
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1571,7 +1571,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 conventions in
                 https://cloud.google.com/apis/design/resource_names. For
                 example:
-                ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud/clusters/my-cluster``
+                ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud/clusters/my-cluster``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1685,7 +1685,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 URIs that follow the conventions in
                 https://cloud.google.com/apis/design/resource_names. For
                 example:
-                ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud``
+                ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1978,7 +1978,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 conventions in
                 https://cloud.google.com/apis/design/resource_names. For
                 example:
-                ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud/clusters/my-cluster``
+                ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud/clusters/my-cluster``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2103,7 +2103,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 that follow the conventions in
                 https://cloud.google.com/apis/design/resource_names. For
                 example:
-                ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud``
+                ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2117,7 +2117,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         Returns:
             google.cloud.vmwareengine_v1.services.vmware_engine.pagers.ListSubnetsPager:
                 Response message for
-                [VmwareEngine.ListSubnets][google.cloud.vmwareengine.v1.VmwareEngine.ListSubnets]
+                   [VmwareEngine.ListSubnets][google.cloud.vmwareengine.v1.VmwareEngine.ListSubnets]
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -2221,7 +2221,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 queried for node types. Resource names are schemeless
                 URIs that follow the conventions in
                 https://cloud.google.com/apis/design/resource_names. For
-                example: ``projects/my-project/locations/us-west1-a``
+                example: ``projects/my-project/locations/us-central1-a``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2235,7 +2235,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         Returns:
             google.cloud.vmwareengine_v1.services.vmware_engine.pagers.ListNodeTypesPager:
                 Response message for
-                [VmwareEngine.ListNodeTypes][google.cloud.vmwareengine.v1.VmwareEngine.ListNodeTypes]
+                   [VmwareEngine.ListNodeTypes][google.cloud.vmwareengine.v1.VmwareEngine.ListNodeTypes]
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -2339,7 +2339,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 the conventions in
                 https://cloud.google.com/apis/design/resource_names. For
                 example:
-                ``projects/my-proj/locations/us-west1-a/nodeTypes/standard-72``
+                ``projects/my-proj/locations/us-central1-a/nodeTypes/standard-72``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2443,7 +2443,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 URIs that follow the conventions in
                 https://cloud.google.com/apis/design/resource_names. For
                 example:
-                ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud``
+                ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
 
                 This corresponds to the ``private_cloud`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2551,7 +2551,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 URIs that follow the conventions in
                 https://cloud.google.com/apis/design/resource_names. For
                 example:
-                ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud``
+                ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
 
                 This corresponds to the ``private_cloud`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2661,7 +2661,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 URIs that follow the conventions in
                 https://cloud.google.com/apis/design/resource_names. For
                 example:
-                ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud``
+                ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
 
                 This corresponds to the ``private_cloud`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2787,7 +2787,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 URIs that follow the conventions in
                 https://cloud.google.com/apis/design/resource_names. For
                 example:
-                ``projects/my-project/locations/us-west1-a/privateClouds/my-cloud``
+                ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
 
                 This corresponds to the ``private_cloud`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3092,7 +3092,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         Returns:
             google.cloud.vmwareengine_v1.services.vmware_engine.pagers.ListHcxActivationKeysPager:
                 Response message for
-                [VmwareEngine.ListHcxActivationKeys][google.cloud.vmwareengine.v1.VmwareEngine.ListHcxActivationKeys]
+                   [VmwareEngine.ListHcxActivationKeys][google.cloud.vmwareengine.v1.VmwareEngine.ListHcxActivationKeys]
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -3196,7 +3196,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 the conventions in
                 https://cloud.google.com/apis/design/resource_names. For
                 example:
-                ``projects/my-project/locations/us-west1/privateClouds/my-cloud/hcxActivationKeys/my-key``
+                ``projects/my-project/locations/us-central1/privateClouds/my-cloud/hcxActivationKeys/my-key``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3438,7 +3438,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         Returns:
             google.cloud.vmwareengine_v1.services.vmware_engine.pagers.ListNetworkPoliciesPager:
                 Response message for
-                [VmwareEngine.ListNetworkPolicies][google.cloud.vmwareengine.v1.VmwareEngine.ListNetworkPolicies]
+                   [VmwareEngine.ListNetworkPolicies][google.cloud.vmwareengine.v1.VmwareEngine.ListNetworkPolicies]
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -4028,7 +4028,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 -  For networks of type LEGACY, adheres to the format:
                    ``{region-id}-default``. Replace ``{region-id}`` with
                    the region where you want to create the VMware Engine
-                   network. For example, "us-west1-default".
+                   network. For example, "us-central1-default".
                 -  Only contains 1-63 alphanumeric characters and
                    hyphens
                 -  Begins with an alphabetical character
@@ -4570,7 +4570,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         Returns:
             google.cloud.vmwareengine_v1.services.vmware_engine.pagers.ListVmwareEngineNetworksPager:
                 Response message for
-                [VmwareEngine.ListVmwareEngineNetworks][google.cloud.vmwareengine.v1.VmwareEngine.ListVmwareEngineNetworks]
+                   [VmwareEngine.ListVmwareEngineNetworks][google.cloud.vmwareengine.v1.VmwareEngine.ListVmwareEngineNetworks]
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
