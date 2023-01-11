@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.18.1...v0.19.0) (2023-01-11)
+
+
+### Features
+
+* Adds ability to provide redirect uri ([#595](https://github.com/googleapis/python-bigquery-pandas/issues/595)) ([a06085e](https://github.com/googleapis/python-bigquery-pandas/commit/a06085eddddd18394f623d0b6f3a65d91f51e979))
+
 ## [0.18.1](https://github.com/googleapis/python-bigquery-pandas/compare/v0.18.0...v0.18.1) (2022-11-28)
 
 
