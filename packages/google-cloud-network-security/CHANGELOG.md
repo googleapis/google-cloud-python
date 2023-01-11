@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/googleapis/python-network-security/compare/v0.8.0...v0.9.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#156](https://github.com/googleapis/python-network-security/issues/156)) ([5233d61](https://github.com/googleapis/python-network-security/commit/5233d61f1c31da18125844e8059e7bb8e157150c))
+
 ## [0.8.0](https://github.com/googleapis/python-network-security/compare/v0.7.2...v0.8.0) (2022-12-14)
 
 
