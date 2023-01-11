@@ -1,8 +1,8 @@
 {
     "name": "lineage",
-    "name_pretty": "",
-    "api_description": "",
-    "product_documentation": "",
+    "name_pretty": "Data Lineage",
+    "api_description": "Data lineage is a Dataplex feature that lets you track how data moves through your systems: where it comes from, where it is passed to, and what transformations are applied to it.",
+    "product_documentation": "https://cloud.google.com/data-catalog/docs/concepts/about-data-lineage",
     "client_documentation": "https://cloud.google.com/python/docs/reference/lineage/latest",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "release_level": "preview",
