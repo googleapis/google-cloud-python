@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.18.0](https://github.com/googleapis/python-securitycenter/compare/v1.17.0...v1.18.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#421](https://github.com/googleapis/python-securitycenter/issues/421)) ([e414723](https://github.com/googleapis/python-securitycenter/commit/e4147237d925641f2c420f2d78b2f137dd23101a))
+
 ## [1.17.0](https://github.com/googleapis/python-securitycenter/compare/v1.16.2...v1.17.0) (2022-12-15)
 
 
