@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-security-private-ca/compare/v1.5.0...v1.6.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#327](https://github.com/googleapis/python-security-private-ca/issues/327)) ([e23092a](https://github.com/googleapis/python-security-private-ca/commit/e23092af3f6a695fd633cd71585728dae3012bf3))
+
 ## [1.5.0](https://github.com/googleapis/python-security-private-ca/compare/v1.4.3...v1.5.0) (2022-12-15)
 
 
