@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-bare-metal-solution/compare/v1.2.1...v1.3.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#76](https://github.com/googleapis/python-bare-metal-solution/issues/76)) ([fe74476](https://github.com/googleapis/python-bare-metal-solution/commit/fe744765a0349647e703d7fdc31e6c85e32139a3))
+
 ## [1.2.1](https://github.com/googleapis/python-bare-metal-solution/compare/v1.2.0...v1.2.1) (2022-12-08)
 
 
