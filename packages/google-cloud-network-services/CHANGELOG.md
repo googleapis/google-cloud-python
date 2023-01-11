@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-network-services/compare/v0.3.0...v0.4.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#61](https://github.com/googleapis/python-network-services/issues/61)) ([9fece25](https://github.com/googleapis/python-network-services/commit/9fece25c41d10677764ef70286786bb90f535842))
+
 ## [0.3.0](https://github.com/googleapis/python-network-services/compare/v0.2.2...v0.3.0) (2022-12-15)
 
 
