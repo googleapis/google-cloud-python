@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/googleapis/python-bigquery-migration/compare/v0.8.0...v0.9.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#157](https://github.com/googleapis/python-bigquery-migration/issues/157)) ([d9b27e4](https://github.com/googleapis/python-bigquery-migration/commit/d9b27e4519d47b5cc95a04336100f7fcaf7235c7))
+
 ## [0.8.0](https://github.com/googleapis/python-bigquery-migration/compare/v0.7.2...v0.8.0) (2022-12-15)
 
 
