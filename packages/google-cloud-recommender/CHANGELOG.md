@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [2.10.0](https://github.com/googleapis/python-recommender/compare/v2.9.0...v2.10.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#255](https://github.com/googleapis/python-recommender/issues/255)) ([bbf6353](https://github.com/googleapis/python-recommender/commit/bbf6353926a598e1650221de683a9fc8536d4ea0))
+
 ## [2.9.0](https://github.com/googleapis/python-recommender/compare/v2.8.3...v2.9.0) (2022-12-14)
 
 
