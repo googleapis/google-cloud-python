@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/python-access-approval/compare/v1.9.1...v1.10.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#263](https://github.com/googleapis/python-access-approval/issues/263)) ([c7e602d](https://github.com/googleapis/python-access-approval/commit/c7e602d43e342d022986778e97a7dfe00734b964))
+
 ## [1.9.1](https://github.com/googleapis/python-access-approval/compare/v1.9.0...v1.9.1) (2022-12-06)
 
 
