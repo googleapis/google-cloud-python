@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-apigee-connect/compare/v1.6.1...v1.7.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#168](https://github.com/googleapis/python-apigee-connect/issues/168)) ([a340710](https://github.com/googleapis/python-apigee-connect/commit/a34071088707b876d42bf687fb12b133724c0cc6))
+
 ## [1.6.1](https://github.com/googleapis/python-apigee-connect/compare/v1.6.0...v1.6.1) (2022-12-08)
 
 
