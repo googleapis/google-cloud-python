@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-bigquery-reservation/compare/v1.8.0...v1.9.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#327](https://github.com/googleapis/python-bigquery-reservation/issues/327)) ([c86b3b8](https://github.com/googleapis/python-bigquery-reservation/commit/c86b3b8da191595dcbb30b4a55136c30376bad72))
+
 ## [1.8.0](https://github.com/googleapis/python-bigquery-reservation/compare/v1.7.3...v1.8.0) (2022-12-15)
 
 
