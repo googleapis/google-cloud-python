@@ -397,7 +397,7 @@ class DatastoreAsyncClient:
         Returns:
             google.cloud.datastore_v1.types.RunQueryResponse:
                 The response for
-                [Datastore.RunQuery][google.datastore.v1.Datastore.RunQuery].
+                   [Datastore.RunQuery][google.datastore.v1.Datastore.RunQuery].
 
         """
         # Create or coerce a protobuf request object.
@@ -489,7 +489,7 @@ class DatastoreAsyncClient:
         Returns:
             google.cloud.datastore_v1.types.RunAggregationQueryResponse:
                 The response for
-                [Datastore.RunAggregationQuery][google.datastore.v1.Datastore.RunAggregationQuery].
+                   [Datastore.RunAggregationQuery][google.datastore.v1.Datastore.RunAggregationQuery].
 
         """
         # Create or coerce a protobuf request object.
@@ -589,7 +589,7 @@ class DatastoreAsyncClient:
         Returns:
             google.cloud.datastore_v1.types.BeginTransactionResponse:
                 The response for
-                [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
+                   [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
 
         """
         # Create or coerce a protobuf request object.
@@ -852,7 +852,8 @@ class DatastoreAsyncClient:
 
         Returns:
             google.cloud.datastore_v1.types.RollbackResponse:
-                The response for [Datastore.Rollback][google.datastore.v1.Datastore.Rollback].
+                The response for
+                   [Datastore.Rollback][google.datastore.v1.Datastore.Rollback].
                    (an empty message).
 
         """
@@ -970,7 +971,7 @@ class DatastoreAsyncClient:
         Returns:
             google.cloud.datastore_v1.types.AllocateIdsResponse:
                 The response for
-                [Datastore.AllocateIds][google.datastore.v1.Datastore.AllocateIds].
+                   [Datastore.AllocateIds][google.datastore.v1.Datastore.AllocateIds].
 
         """
         # Create or coerce a protobuf request object.
@@ -1086,7 +1087,7 @@ class DatastoreAsyncClient:
         Returns:
             google.cloud.datastore_v1.types.ReserveIdsResponse:
                 The response for
-                [Datastore.ReserveIds][google.datastore.v1.Datastore.ReserveIds].
+                   [Datastore.ReserveIds][google.datastore.v1.Datastore.ReserveIds].
 
         """
         # Create or coerce a protobuf request object.

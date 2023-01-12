@@ -530,13 +530,18 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.lookup]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("project_id", request.project_id),)
-            ),
-        )
+        header_params = {}
+
+        if request.project_id:
+            header_params["project_id"] = request.project_id
+
+        if request.database_id:
+            header_params["database_id"] = request.database_id
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Send the request.
         response = rpc(
@@ -598,7 +603,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         Returns:
             google.cloud.datastore_v1.types.RunQueryResponse:
                 The response for
-                [Datastore.RunQuery][google.datastore.v1.Datastore.RunQuery].
+                   [Datastore.RunQuery][google.datastore.v1.Datastore.RunQuery].
 
         """
         # Create or coerce a protobuf request object.
@@ -613,13 +618,18 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.run_query]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("project_id", request.project_id),)
-            ),
-        )
+        header_params = {}
+
+        if request.project_id:
+            header_params["project_id"] = request.project_id
+
+        if request.database_id:
+            header_params["database_id"] = request.database_id
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Send the request.
         response = rpc(
@@ -681,7 +691,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         Returns:
             google.cloud.datastore_v1.types.RunAggregationQueryResponse:
                 The response for
-                [Datastore.RunAggregationQuery][google.datastore.v1.Datastore.RunAggregationQuery].
+                   [Datastore.RunAggregationQuery][google.datastore.v1.Datastore.RunAggregationQuery].
 
         """
         # Create or coerce a protobuf request object.
@@ -696,13 +706,18 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.run_aggregation_query]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("project_id", request.project_id),)
-            ),
-        )
+        header_params = {}
+
+        if request.project_id:
+            header_params["project_id"] = request.project_id
+
+        if request.database_id:
+            header_params["database_id"] = request.database_id
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Send the request.
         response = rpc(
@@ -772,7 +787,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         Returns:
             google.cloud.datastore_v1.types.BeginTransactionResponse:
                 The response for
-                [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
+                   [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
 
         """
         # Create or coerce a protobuf request object.
@@ -800,13 +815,18 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.begin_transaction]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("project_id", request.project_id),)
-            ),
-        )
+        header_params = {}
+
+        if request.project_id:
+            header_params["project_id"] = request.project_id
+
+        if request.database_id:
+            header_params["database_id"] = request.database_id
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Send the request.
         response = rpc(
@@ -950,13 +970,18 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.commit]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("project_id", request.project_id),)
-            ),
-        )
+        header_params = {}
+
+        if request.project_id:
+            header_params["project_id"] = request.project_id
+
+        if request.database_id:
+            header_params["database_id"] = request.database_id
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Send the request.
         response = rpc(
@@ -1035,7 +1060,8 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
 
         Returns:
             google.cloud.datastore_v1.types.RollbackResponse:
-                The response for [Datastore.Rollback][google.datastore.v1.Datastore.Rollback].
+                The response for
+                   [Datastore.Rollback][google.datastore.v1.Datastore.Rollback].
                    (an empty message).
 
         """
@@ -1066,13 +1092,18 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.rollback]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("project_id", request.project_id),)
-            ),
-        )
+        header_params = {}
+
+        if request.project_id:
+            header_params["project_id"] = request.project_id
+
+        if request.database_id:
+            header_params["database_id"] = request.database_id
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Send the request.
         response = rpc(
@@ -1153,7 +1184,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         Returns:
             google.cloud.datastore_v1.types.AllocateIdsResponse:
                 The response for
-                [Datastore.AllocateIds][google.datastore.v1.Datastore.AllocateIds].
+                   [Datastore.AllocateIds][google.datastore.v1.Datastore.AllocateIds].
 
         """
         # Create or coerce a protobuf request object.
@@ -1183,13 +1214,18 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.allocate_ids]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("project_id", request.project_id),)
-            ),
-        )
+        header_params = {}
+
+        if request.project_id:
+            header_params["project_id"] = request.project_id
+
+        if request.database_id:
+            header_params["database_id"] = request.database_id
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Send the request.
         response = rpc(
@@ -1269,7 +1305,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         Returns:
             google.cloud.datastore_v1.types.ReserveIdsResponse:
                 The response for
-                [Datastore.ReserveIds][google.datastore.v1.Datastore.ReserveIds].
+                   [Datastore.ReserveIds][google.datastore.v1.Datastore.ReserveIds].
 
         """
         # Create or coerce a protobuf request object.
@@ -1299,13 +1335,18 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.reserve_ids]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("project_id", request.project_id),)
-            ),
-        )
+        header_params = {}
+
+        if request.project_id:
+            header_params["project_id"] = request.project_id
+
+        if request.database_id:
+            header_params["database_id"] = request.database_id
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Send the request.
         response = rpc(
