@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/python-gke-multicloud/compare/v0.4.0...v0.5.0) (2023-01-12)
+
+
+### Features
+
+* Add support for python 3.11 ([#48](https://github.com/googleapis/python-gke-multicloud/issues/48)) ([e9ac58a](https://github.com/googleapis/python-gke-multicloud/commit/e9ac58ad64daa6ffdd0b346cbdff8a72a775908e))
+
 ## [0.4.0](https://github.com/googleapis/python-gke-multicloud/compare/v0.3.0...v0.4.0) (2023-01-04)
 
 
