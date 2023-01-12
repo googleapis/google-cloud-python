@@ -515,7 +515,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3beta1.services.versions.pagers.ListVersionsPager:
                 The response message for
-                [Versions.ListVersions][google.cloud.dialogflow.cx.v3beta1.Versions.ListVersions].
+                   [Versions.ListVersions][google.cloud.dialogflow.cx.v3beta1.Versions.ListVersions].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1227,7 +1227,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3beta1.types.CompareVersionsResponse:
                 The response message for
-                [Versions.CompareVersions][google.cloud.dialogflow.cx.v3beta1.Versions.CompareVersions].
+                   [Versions.CompareVersions][google.cloud.dialogflow.cx.v3beta1.Versions.CompareVersions].
 
         """
         # Create or coerce a protobuf request object.

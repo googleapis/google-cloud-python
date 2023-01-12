@@ -517,7 +517,7 @@ class FlowsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3beta1.services.flows.pagers.ListFlowsAsyncPager:
                 The response message for
-                [Flows.ListFlows][google.cloud.dialogflow.cx.v3beta1.Flows.ListFlows].
+                   [Flows.ListFlows][google.cloud.dialogflow.cx.v3beta1.Flows.ListFlows].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1029,7 +1029,7 @@ class FlowsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3beta1.types.FlowValidationResult:
                 The response message for
-                [Flows.GetFlowValidationResult][google.cloud.dialogflow.cx.v3beta1.Flows.GetFlowValidationResult].
+                   [Flows.GetFlowValidationResult][google.cloud.dialogflow.cx.v3beta1.Flows.GetFlowValidationResult].
 
         """
         # Create or coerce a protobuf request object.
@@ -1118,7 +1118,7 @@ class FlowsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3beta1.types.FlowValidationResult:
                 The response message for
-                [Flows.GetFlowValidationResult][google.cloud.dialogflow.cx.v3beta1.Flows.GetFlowValidationResult].
+                   [Flows.GetFlowValidationResult][google.cloud.dialogflow.cx.v3beta1.Flows.GetFlowValidationResult].
 
         """
         # Create or coerce a protobuf request object.
@@ -1233,10 +1233,8 @@ class FlowsAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflowcx_v3beta1.types.ImportFlowResponse`
-                The response message for
-                [Flows.ImportFlow][google.cloud.dialogflow.cx.v3beta1.Flows.ImportFlow].
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3beta1.types.ImportFlowResponse` The response message for
+                   [Flows.ImportFlow][google.cloud.dialogflow.cx.v3beta1.Flows.ImportFlow].
 
         """
         # Create or coerce a protobuf request object.
@@ -1342,10 +1340,8 @@ class FlowsAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflowcx_v3beta1.types.ExportFlowResponse`
-                The response message for
-                [Flows.ExportFlow][google.cloud.dialogflow.cx.v3beta1.Flows.ExportFlow].
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3beta1.types.ExportFlowResponse` The response message for
+                   [Flows.ExportFlow][google.cloud.dialogflow.cx.v3beta1.Flows.ExportFlow].
 
         """
         # Create or coerce a protobuf request object.

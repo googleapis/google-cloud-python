@@ -280,7 +280,7 @@ class ExperimentsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3beta1.services.experiments.pagers.ListExperimentsAsyncPager:
                 The response message for
-                [Experiments.ListExperiments][google.cloud.dialogflow.cx.v3beta1.Experiments.ListExperiments].
+                   [Experiments.ListExperiments][google.cloud.dialogflow.cx.v3beta1.Experiments.ListExperiments].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

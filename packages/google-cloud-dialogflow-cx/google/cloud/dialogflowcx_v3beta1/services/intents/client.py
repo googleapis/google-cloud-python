@@ -529,7 +529,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3beta1.services.intents.pagers.ListIntentsPager:
                 The response message for
-                [Intents.ListIntents][google.cloud.dialogflow.cx.v3beta1.Intents.ListIntents].
+                   [Intents.ListIntents][google.cloud.dialogflow.cx.v3beta1.Intents.ListIntents].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

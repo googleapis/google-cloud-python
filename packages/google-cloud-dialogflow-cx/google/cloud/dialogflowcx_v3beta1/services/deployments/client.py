@@ -586,7 +586,7 @@ class DeploymentsClient(metaclass=DeploymentsClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3beta1.services.deployments.pagers.ListDeploymentsPager:
                 The response message for
-                [Deployments.ListDeployments][google.cloud.dialogflow.cx.v3beta1.Deployments.ListDeployments].
+                   [Deployments.ListDeployments][google.cloud.dialogflow.cx.v3beta1.Deployments.ListDeployments].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

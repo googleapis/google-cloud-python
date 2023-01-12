@@ -280,7 +280,7 @@ class PagesAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3beta1.services.pages.pagers.ListPagesAsyncPager:
                 The response message for
-                [Pages.ListPages][google.cloud.dialogflow.cx.v3beta1.Pages.ListPages].
+                   [Pages.ListPages][google.cloud.dialogflow.cx.v3beta1.Pages.ListPages].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

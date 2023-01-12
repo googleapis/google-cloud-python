@@ -503,7 +503,7 @@ class ChangelogsClient(metaclass=ChangelogsClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3beta1.services.changelogs.pagers.ListChangelogsPager:
                 The response message for
-                [Changelogs.ListChangelogs][google.cloud.dialogflow.cx.v3beta1.Changelogs.ListChangelogs].
+                   [Changelogs.ListChangelogs][google.cloud.dialogflow.cx.v3beta1.Changelogs.ListChangelogs].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

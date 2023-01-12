@@ -293,7 +293,7 @@ class SessionEntityTypesAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3beta1.services.session_entity_types.pagers.ListSessionEntityTypesAsyncPager:
                 The response message for
-                [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.ListSessionEntityTypes].
+                   [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.ListSessionEntityTypes].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

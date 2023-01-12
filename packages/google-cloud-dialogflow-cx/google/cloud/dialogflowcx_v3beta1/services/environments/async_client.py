@@ -298,7 +298,7 @@ class EnvironmentsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3beta1.services.environments.pagers.ListEnvironmentsAsyncPager:
                 The response message for
-                [Environments.ListEnvironments][google.cloud.dialogflow.cx.v3beta1.Environments.ListEnvironments].
+                   [Environments.ListEnvironments][google.cloud.dialogflow.cx.v3beta1.Environments.ListEnvironments].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -936,7 +936,7 @@ class EnvironmentsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3beta1.services.environments.pagers.LookupEnvironmentHistoryAsyncPager:
                 The response message for
-                [Environments.LookupEnvironmentHistory][google.cloud.dialogflow.cx.v3beta1.Environments.LookupEnvironmentHistory].
+                   [Environments.LookupEnvironmentHistory][google.cloud.dialogflow.cx.v3beta1.Environments.LookupEnvironmentHistory].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1058,10 +1058,8 @@ class EnvironmentsAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflowcx_v3beta1.types.RunContinuousTestResponse`
-                The response message for
-                [Environments.RunContinuousTest][google.cloud.dialogflow.cx.v3beta1.Environments.RunContinuousTest].
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3beta1.types.RunContinuousTestResponse` The response message for
+                   [Environments.RunContinuousTest][google.cloud.dialogflow.cx.v3beta1.Environments.RunContinuousTest].
 
         """
         # Create or coerce a protobuf request object.
@@ -1286,10 +1284,8 @@ class EnvironmentsAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflowcx_v3beta1.types.DeployFlowResponse`
-                The response message for
-                [Environments.DeployFlow][google.cloud.dialogflow.cx.v3beta1.Environments.DeployFlow].
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3beta1.types.DeployFlowResponse` The response message for
+                   [Environments.DeployFlow][google.cloud.dialogflow.cx.v3beta1.Environments.DeployFlow].
 
         """
         # Create or coerce a protobuf request object.

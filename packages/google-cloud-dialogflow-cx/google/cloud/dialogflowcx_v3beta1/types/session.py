@@ -568,6 +568,20 @@ class QueryParameters(proto.Message):
             of flow X will go through version 1 regardless of the
             version configuration in the environment. Each flow can have
             at most one version specified in this list.
+        channel (str):
+            The channel which this query is for.
+
+            If specified, only the
+            [ResponseMessage][google.cloud.dialogflow.cx.v3beta1.ResponseMessage]
+            associated with the channel will be returned. If no
+            [ResponseMessage][google.cloud.dialogflow.cx.v3beta1.ResponseMessage]
+            is associated with the channel, it falls back to the
+            [ResponseMessage][google.cloud.dialogflow.cx.v3beta1.ResponseMessage]
+            with unspecified channel.
+
+            If unspecified, the
+            [ResponseMessage][google.cloud.dialogflow.cx.v3beta1.ResponseMessage]
+            with unspecified channel will be returned.
     """
 
     time_zone: str = proto.Field(
@@ -616,6 +630,10 @@ class QueryParameters(proto.Message):
     flow_versions: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=14,
+    )
+    channel: str = proto.Field(
+        proto.STRING,
+        number=15,
     )
 
 

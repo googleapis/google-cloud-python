@@ -299,7 +299,7 @@ class TestCasesAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3beta1.services.test_cases.pagers.ListTestCasesAsyncPager:
                 The response message for
-                [TestCases.ListTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.ListTestCases].
+                   [TestCases.ListTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.ListTestCases].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -840,10 +840,8 @@ class TestCasesAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflowcx_v3beta1.types.RunTestCaseResponse`
-                The response message for
-                [TestCases.RunTestCase][google.cloud.dialogflow.cx.v3beta1.TestCases.RunTestCase].
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3beta1.types.RunTestCaseResponse` The response message for
+                   [TestCases.RunTestCase][google.cloud.dialogflow.cx.v3beta1.TestCases.RunTestCase].
 
         """
         # Create or coerce a protobuf request object.
@@ -947,10 +945,8 @@ class TestCasesAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflowcx_v3beta1.types.BatchRunTestCasesResponse`
-                The response message for
-                [TestCases.BatchRunTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.BatchRunTestCases].
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3beta1.types.BatchRunTestCasesResponse` The response message for
+                   [TestCases.BatchRunTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.BatchRunTestCases].
 
         """
         # Create or coerce a protobuf request object.
@@ -1039,7 +1035,7 @@ class TestCasesAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3beta1.types.CalculateCoverageResponse:
                 The response message for
-                [TestCases.CalculateCoverage][google.cloud.dialogflow.cx.v3beta1.TestCases.CalculateCoverage].
+                   [TestCases.CalculateCoverage][google.cloud.dialogflow.cx.v3beta1.TestCases.CalculateCoverage].
 
         """
         # Create or coerce a protobuf request object.
@@ -1138,10 +1134,8 @@ class TestCasesAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflowcx_v3beta1.types.ImportTestCasesResponse`
-                The response message for
-                [TestCases.ImportTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.ImportTestCases].
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3beta1.types.ImportTestCasesResponse` The response message for
+                   [TestCases.ImportTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.ImportTestCases].
 
         """
         # Create or coerce a protobuf request object.
@@ -1247,10 +1241,8 @@ class TestCasesAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflowcx_v3beta1.types.ExportTestCasesResponse`
-                The response message for
-                [TestCases.ExportTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.ExportTestCases].
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3beta1.types.ExportTestCasesResponse` The response message for
+                   [TestCases.ExportTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.ExportTestCases].
 
         """
         # Create or coerce a protobuf request object.
@@ -1349,7 +1341,7 @@ class TestCasesAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3beta1.services.test_cases.pagers.ListTestCaseResultsAsyncPager:
                 The response message for
-                [TestCases.ListTestCaseResults][google.cloud.dialogflow.cx.v3beta1.TestCases.ListTestCaseResults].
+                   [TestCases.ListTestCaseResults][google.cloud.dialogflow.cx.v3beta1.TestCases.ListTestCaseResults].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

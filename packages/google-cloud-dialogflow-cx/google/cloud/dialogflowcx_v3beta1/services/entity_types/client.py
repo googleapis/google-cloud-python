@@ -506,7 +506,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3beta1.services.entity_types.pagers.ListEntityTypesPager:
                 The response message for
-                [EntityTypes.ListEntityTypes][google.cloud.dialogflow.cx.v3beta1.EntityTypes.ListEntityTypes].
+                   [EntityTypes.ListEntityTypes][google.cloud.dialogflow.cx.v3beta1.EntityTypes.ListEntityTypes].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

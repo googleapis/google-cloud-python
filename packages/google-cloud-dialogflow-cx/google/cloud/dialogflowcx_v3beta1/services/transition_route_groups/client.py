@@ -613,7 +613,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3beta1.services.transition_route_groups.pagers.ListTransitionRouteGroupsPager:
                 The response message for
-                [TransitionRouteGroups.ListTransitionRouteGroups][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.ListTransitionRouteGroups].
+                   [TransitionRouteGroups.ListTransitionRouteGroups][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.ListTransitionRouteGroups].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
