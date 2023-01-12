@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.9.0](https://github.com/googleapis/python-firestore/compare/v2.8.0...v2.9.0) (2023-01-12)
+
+
+### Features
+
+* Support the Count aggregation query ([#673](https://github.com/googleapis/python-firestore/issues/673)) ([dfd4c5d](https://github.com/googleapis/python-firestore/commit/dfd4c5dbe1b4b77b28a30c32b962217285b9aa23))
+
 ## [2.8.0](https://github.com/googleapis/python-firestore/compare/v2.7.3...v2.8.0) (2023-01-10)
 
 
