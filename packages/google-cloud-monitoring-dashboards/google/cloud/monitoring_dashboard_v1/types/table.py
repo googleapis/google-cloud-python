@@ -38,7 +38,18 @@ class TimeSeriesTable(proto.Message):
     Attributes:
         data_sets (MutableSequence[google.cloud.monitoring_dashboard_v1.types.TimeSeriesTable.TableDataSet]):
             Required. The data displayed in this table.
+        metric_visualization (google.cloud.monitoring_dashboard_v1.types.TimeSeriesTable.MetricVisualization):
+            Optional. Store rendering strategy
+        column_settings (MutableSequence[google.cloud.monitoring_dashboard_v1.types.TimeSeriesTable.ColumnSettings]):
+            Optional. The list of the persistent column
+            settings for the table.
     """
+
+    class MetricVisualization(proto.Enum):
+        r"""Enum for metric metric_visualization"""
+        METRIC_VISUALIZATION_UNSPECIFIED = 0
+        NUMBER = 1
+        BAR = 2
 
     class TableDataSet(proto.Message):
         r"""Groups a time series query definition with table options.
@@ -88,10 +99,40 @@ class TimeSeriesTable(proto.Message):
             )
         )
 
+    class ColumnSettings(proto.Message):
+        r"""The persistent settings for a table's columns.
+
+        Attributes:
+            column (str):
+                Required. The id of the column.
+            visible (bool):
+                Required. Whether the column should be
+                visible on page load.
+        """
+
+        column: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        visible: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+
     data_sets: MutableSequence[TableDataSet] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=TableDataSet,
+    )
+    metric_visualization: MetricVisualization = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=MetricVisualization,
+    )
+    column_settings: MutableSequence[ColumnSettings] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=ColumnSettings,
     )
 
 
