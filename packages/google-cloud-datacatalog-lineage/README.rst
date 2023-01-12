@@ -1,9 +1,9 @@
-Python Client for 
-==================
+Python Client for Data Lineage API
+==================================
 
 |preview| |pypi| |versions|
 
-``_: 
+`Data Lineage API`_: Data lineage is a Dataplex feature that lets you track how data moves through your systems: where it comes from, where it is passed to, and what transformations are applied to it.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for
    :target: https://pypi.org/project/google-cloud-datacatalog-lineage/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-datacatalog-lineage.svg
    :target: https://pypi.org/project/google-cloud-datacatalog-lineage/
-.. _: 
+.. _Data Lineage API: https://cloud.google.com/data-catalog/docs/concepts/about-data-lineage
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/lineage/latest
-.. _Product Documentation:  
+.. _Product Documentation:  https://cloud.google.com/data-catalog/docs/concepts/about-data-lineage
 
 Quick Start
 -----------
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the .`_
+3. `Enable the Data Lineage API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the .:  
+.. _Enable the Data Lineage API.:  https://cloud.google.com/data-catalog/docs/concepts/about-data-lineage
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for 
+-  Read the `Client Library Documentation`_ for Data Lineage API
    to see other available methods on the client.
--  Read the ` Product documentation`_ to learn
+-  Read the `Data Lineage API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _ Product documentation:  
+.. _Data Lineage API Product documentation:  https://cloud.google.com/data-catalog/docs/concepts/about-data-lineage
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
