@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/googleapis/python-video-stitcher/compare/v0.5.1...v0.6.0) (2023-01-12)
+
+
+### Features
+
+* Add support for python 3.11 ([#117](https://github.com/googleapis/python-video-stitcher/issues/117)) ([5885372](https://github.com/googleapis/python-video-stitcher/commit/58853726906c8a4987f4c6bfe045480021766628))
+
 ## [0.5.1](https://github.com/googleapis/python-video-stitcher/compare/v0.5.0...v0.5.1) (2023-01-05)
 
 
