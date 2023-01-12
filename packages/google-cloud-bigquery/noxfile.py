@@ -36,7 +36,7 @@ BLACK_PATHS = (
 )
 
 DEFAULT_PYTHON_VERSION = "3.8"
-SYSTEM_TEST_PYTHON_VERSIONS = ["3.8", "3.10"]
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.8", "3.11"]
 UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10", "3.11"]
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
@@ -80,7 +80,7 @@ def default(session, install_extras=True):
         constraints_path,
     )
 
-    if install_extras and session.python == "3.10":
+    if install_extras and session.python == "3.11":
         install_target = ".[bqstorage,ipywidgets,pandas,tqdm,opentelemetry]"
     elif install_extras:
         install_target = ".[all]"
@@ -185,7 +185,7 @@ def system(session):
     # Data Catalog needed for the column ACL test with a real Policy Tag.
     session.install("google-cloud-datacatalog", "-c", constraints_path)
 
-    if session.python == "3.10":
+    if session.python == "3.11":
         extras = "[bqstorage,ipywidgets,pandas,tqdm,opentelemetry]"
     else:
         extras = "[all]"
@@ -244,7 +244,7 @@ def snippets(session):
     session.install("google-cloud-storage", "-c", constraints_path)
     session.install("grpcio", "-c", constraints_path)
 
-    if session.python == "3.10":
+    if session.python == "3.11":
         extras = "[bqstorage,ipywidgets,pandas,tqdm,opentelemetry]"
     else:
         extras = "[all]"
