@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.15.0...v1.16.0) (2023-01-12)
+
+
+### Features
+
+* **v3beta1:** ResponseMessage proto contains channel information ([#485](https://github.com/googleapis/python-dialogflow-cx/issues/485)) ([242abc6](https://github.com/googleapis/python-dialogflow-cx/commit/242abc60b7402dc1937105b34c88cf1b75d704da))
+
 ## [1.15.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.14.1...v1.15.0) (2023-01-10)
 
 
