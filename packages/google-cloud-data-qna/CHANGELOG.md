@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.0](https://github.com/googleapis/python-data-qna/compare/v0.9.0...v0.10.0) (2023-01-12)
+
+
+### Features
+
+* Add support for python 3.11 ([#203](https://github.com/googleapis/python-data-qna/issues/203)) ([5a7f2f0](https://github.com/googleapis/python-data-qna/commit/5a7f2f0ccf289dc8027a4561f7b508138a1e5490))
+
 ## [0.9.0](https://github.com/googleapis/python-data-qna/compare/v0.8.2...v0.9.0) (2022-12-14)
 
 
