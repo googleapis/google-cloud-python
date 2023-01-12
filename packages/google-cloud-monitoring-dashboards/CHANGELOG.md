@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.11.0](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.10.0...v2.11.0) (2023-01-12)
+
+
+### Features
+
+* Added support for horizontal bar rendering and column settings on time series tables ([#248](https://github.com/googleapis/python-monitoring-dashboards/issues/248)) ([f73c848](https://github.com/googleapis/python-monitoring-dashboards/commit/f73c84868d559fe38386a30f7024d3f9be856f02))
+
 ## [2.10.0](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.9.0...v2.10.0) (2023-01-10)
 
 
