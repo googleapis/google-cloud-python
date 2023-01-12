@@ -18,6 +18,8 @@ A :class:`~google.cloud.firestore_v1.query.Query` can be created directly from
 a :class:`~google.cloud.firestore_v1.collection.Collection` and that can be
 a more common way to create a query than direct usage of the constructor.
 """
+from __future__ import annotations
+
 from google.cloud import firestore_v1
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
 from google.api_core import exceptions
@@ -32,6 +34,7 @@ from google.cloud.firestore_v1.base_query import (
     _collection_group_query_response_to_snapshot,
     _enum_from_direction,
 )
+from google.cloud.firestore_v1 import aggregation
 
 from google.cloud.firestore_v1 import document
 from google.cloud.firestore_v1.watch import Watch
@@ -233,6 +236,17 @@ class Query(BaseQuery):
             return retry._predicate(exc)
 
         return False
+
+    def count(
+        self, alias: str | None = None
+    ) -> Type["firestore_v1.aggregation.AggregationQuery"]:
+        """
+        Adds a count over the query.
+
+        :type alias: str
+        :param alias: (Optional) The alias for the count
+        """
+        return aggregation.AggregationQuery(self).count(alias=alias)
 
     def stream(
         self,

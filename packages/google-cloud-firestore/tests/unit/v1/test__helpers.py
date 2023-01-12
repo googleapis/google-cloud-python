@@ -19,6 +19,9 @@ import mock
 import pytest
 
 
+from tests.unit.v1._test_helpers import make_test_credentials
+
+
 def _make_geo_point(lat, lng):
     from google.cloud.firestore_v1._helpers import GeoPoint
 
@@ -2564,16 +2567,10 @@ def _make_ref_string(project, database, *path):
     )
 
 
-def _make_credentials():
-    import google.auth.credentials
-
-    return mock.Mock(spec=google.auth.credentials.Credentials)
-
-
 def _make_client(project="quark"):
     from google.cloud.firestore_v1.client import Client
 
-    credentials = _make_credentials()
+    credentials = make_test_credentials()
     return Client(project=project, credentials=credentials)
 
 

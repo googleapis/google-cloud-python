@@ -19,6 +19,9 @@ from google.api_core import retry as retries
 
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1.document import DocumentReference
+from google.cloud.firestore_v1.base_aggregation import BaseAggregationQuery
+
+
 from typing import (
     Any,
     AsyncGenerator,
@@ -105,6 +108,9 @@ class BaseCollectionReference(object):
         return self._client.document(*parent_path)
 
     def _query(self) -> BaseQuery:
+        raise NotImplementedError
+
+    def _aggregation_query(self) -> BaseAggregationQuery:
         raise NotImplementedError
 
     def document(self, document_id: str = None) -> DocumentReference:
@@ -473,6 +479,15 @@ class BaseCollectionReference(object):
 
     def on_snapshot(self, callback) -> NoReturn:
         raise NotImplementedError
+
+    def count(self, alias=None):
+        """
+        Adds a count over the nested query.
+
+        :type alias: str
+        :param alias: (Optional) The alias for the count
+        """
+        return self._aggregation_query().count(alias=alias)
 
 
 def _auto_id() -> str:

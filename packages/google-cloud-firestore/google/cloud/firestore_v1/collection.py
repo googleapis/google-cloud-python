@@ -22,6 +22,7 @@ from google.cloud.firestore_v1.base_collection import (
     _item_to_document_ref,
 )
 from google.cloud.firestore_v1 import query as query_mod
+from google.cloud.firestore_v1 import aggregation
 from google.cloud.firestore_v1.watch import Watch
 from google.cloud.firestore_v1 import document
 from typing import Any, Callable, Generator, Tuple
@@ -66,6 +67,14 @@ class CollectionReference(BaseCollectionReference):
             :class:`~google.cloud.firestore_v1.query.Query`
         """
         return query_mod.Query(self)
+
+    def _aggregation_query(self) -> aggregation.AggregationQuery:
+        """AggregationQuery factory.
+
+        Returns:
+            :class:`~google.cloud.firestore_v1.aggregation_query.AggregationQuery`
+        """
+        return aggregation.AggregationQuery(self._query())
 
     def add(
         self,

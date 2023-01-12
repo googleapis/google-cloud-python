@@ -19,19 +19,17 @@ import pytest
 
 from tests.unit.v1.test__helpers import AsyncIter
 from tests.unit.v1.test__helpers import AsyncMock
-from tests.unit.v1.test_base_query import _make_credentials
 from tests.unit.v1.test_base_query import _make_query_response
 from tests.unit.v1.test_base_query import _make_cursor_pb
-
-
-def _make_async_query(*args, **kwargs):
-    from google.cloud.firestore_v1.async_query import AsyncQuery
-
-    return AsyncQuery(*args, **kwargs)
+from tests.unit.v1._test_helpers import (
+    DEFAULT_TEST_PROJECT,
+    make_async_client,
+    make_async_query,
+)
 
 
 def test_asyncquery_constructor():
-    query = _make_async_query(mock.sentinel.parent)
+    query = make_async_query(mock.sentinel.parent)
     assert query._parent is mock.sentinel.parent
     assert query._projection is None
     assert query._field_filters == ()
@@ -50,7 +48,7 @@ async def _get_helper(retry=None, timeout=None):
     firestore_api = AsyncMock(spec=["run_query"])
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client()
+    client = make_async_client()
     client._firestore_api_internal = firestore_api
 
     # Make a **real** collection reference as parent.
@@ -66,7 +64,7 @@ async def _get_helper(retry=None, timeout=None):
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
     # Execute the query and check the response.
-    query = _make_async_query(parent)
+    query = make_async_query(parent)
     returned = await query.get(**kwargs)
 
     assert isinstance(returned, list)
@@ -112,7 +110,7 @@ async def test_asyncquery_get_limit_to_last():
     firestore_api = AsyncMock(spec=["run_query"])
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client()
+    client = make_async_client()
     client._firestore_api_internal = firestore_api
 
     # Make a **real** collection reference as parent.
@@ -130,7 +128,7 @@ async def test_asyncquery_get_limit_to_last():
     firestore_api.run_query.return_value = AsyncIter([response_pb2, response_pb])
 
     # Execute the query and check the response.
-    query = _make_async_query(parent)
+    query = make_async_query(parent)
     query = query.order_by(
         "snooze", direction=firestore.AsyncQuery.DESCENDING
     ).limit_to_last(2)
@@ -164,7 +162,7 @@ async def test_asyncquery_get_limit_to_last():
 
 @pytest.mark.asyncio
 async def test_asyncquery_chunkify_w_empty():
-    client = _make_client()
+    client = make_async_client()
     firestore_api = AsyncMock(spec=["run_query"])
     firestore_api.run_query.return_value = AsyncIter([])
     client._firestore_api_internal = firestore_api
@@ -182,10 +180,10 @@ async def test_asyncquery_chunkify_w_chunksize_lt_limit():
     from google.cloud.firestore_v1.types import document
     from google.cloud.firestore_v1.types import firestore
 
-    client = _make_client()
+    client = make_async_client()
     firestore_api = AsyncMock(spec=["run_query"])
     doc_ids = [
-        f"projects/project-project/databases/(default)/documents/asdf/{index}"
+        f"projects/{DEFAULT_TEST_PROJECT}/databases/(default)/documents/asdf/{index}"
         for index in range(5)
     ]
     responses1 = [
@@ -230,14 +228,14 @@ async def test_asyncquery_chunkify_w_chunksize_gt_limit():
     from google.cloud.firestore_v1.types import document
     from google.cloud.firestore_v1.types import firestore
 
-    client = _make_client()
+    client = make_async_client()
 
     firestore_api = AsyncMock(spec=["run_query"])
     responses = [
         firestore.RunQueryResponse(
             document=document.Document(
                 name=(
-                    f"projects/project-project/databases/(default)/"
+                    f"projects/{DEFAULT_TEST_PROJECT}/databases/(default)/"
                     f"documents/asdf/{index}"
                 ),
             ),
@@ -265,7 +263,7 @@ async def _stream_helper(retry=None, timeout=None):
     firestore_api = AsyncMock(spec=["run_query"])
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client()
+    client = make_async_client()
     client._firestore_api_internal = firestore_api
 
     # Make a **real** collection reference as parent.
@@ -280,7 +278,7 @@ async def _stream_helper(retry=None, timeout=None):
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
     # Execute the query and check the response.
-    query = _make_async_query(parent)
+    query = make_async_query(parent)
 
     get_response = query.stream(**kwargs)
 
@@ -321,11 +319,11 @@ async def test_asyncquery_stream_w_retry_timeout():
 @pytest.mark.asyncio
 async def test_asyncquery_stream_with_limit_to_last():
     # Attach the fake GAPIC to a real client.
-    client = _make_client()
+    client = make_async_client()
     # Make a **real** collection reference as parent.
     parent = client.collection("dee")
     # Execute the query and check the response.
-    query = _make_async_query(parent)
+    query = make_async_query(parent)
     query = query.limit_to_last(2)
 
     stream_response = query.stream()
@@ -340,7 +338,7 @@ async def test_asyncquery_stream_with_transaction():
     firestore_api = AsyncMock(spec=["run_query"])
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client()
+    client = make_async_client()
     client._firestore_api_internal = firestore_api
 
     # Create a real-ish transaction for this client.
@@ -359,7 +357,7 @@ async def test_asyncquery_stream_with_transaction():
     firestore_api.run_query.return_value = AsyncIter([response_pb])
 
     # Execute the query and check the response.
-    query = _make_async_query(parent)
+    query = make_async_query(parent)
     get_response = query.stream(transaction=transaction)
     assert isinstance(get_response, types.AsyncGeneratorType)
     returned = [x async for x in get_response]
@@ -388,12 +386,12 @@ async def test_asyncquery_stream_no_results():
     firestore_api.run_query.return_value = run_query_response
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client()
+    client = make_async_client()
     client._firestore_api_internal = firestore_api
 
     # Make a **real** collection reference as parent.
     parent = client.collection("dah", "dah", "dum")
-    query = _make_async_query(parent)
+    query = make_async_query(parent)
 
     get_response = query.stream()
     assert isinstance(get_response, types.AsyncGeneratorType)
@@ -421,12 +419,12 @@ async def test_asyncquery_stream_second_response_in_empty_stream():
     firestore_api.run_query.return_value = run_query_response
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client()
+    client = make_async_client()
     client._firestore_api_internal = firestore_api
 
     # Make a **real** collection reference as parent.
     parent = client.collection("dah", "dah", "dum")
-    query = _make_async_query(parent)
+    query = make_async_query(parent)
 
     get_response = query.stream()
     assert isinstance(get_response, types.AsyncGeneratorType)
@@ -450,7 +448,7 @@ async def test_asyncquery_stream_with_skipped_results():
     firestore_api = AsyncMock(spec=["run_query"])
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client()
+    client = make_async_client()
     client._firestore_api_internal = firestore_api
 
     # Make a **real** collection reference as parent.
@@ -465,7 +463,7 @@ async def test_asyncquery_stream_with_skipped_results():
     firestore_api.run_query.return_value = AsyncIter([response_pb1, response_pb2])
 
     # Execute the query and check the response.
-    query = _make_async_query(parent)
+    query = make_async_query(parent)
     get_response = query.stream()
     assert isinstance(get_response, types.AsyncGeneratorType)
     returned = [x async for x in get_response]
@@ -492,7 +490,7 @@ async def test_asyncquery_stream_empty_after_first_response():
     firestore_api = AsyncMock(spec=["run_query"])
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client()
+    client = make_async_client()
     client._firestore_api_internal = firestore_api
 
     # Make a **real** collection reference as parent.
@@ -507,7 +505,7 @@ async def test_asyncquery_stream_empty_after_first_response():
     firestore_api.run_query.return_value = AsyncIter([response_pb1, response_pb2])
 
     # Execute the query and check the response.
-    query = _make_async_query(parent)
+    query = make_async_query(parent)
     get_response = query.stream()
     assert isinstance(get_response, types.AsyncGeneratorType)
     returned = [x async for x in get_response]
@@ -534,7 +532,7 @@ async def test_asyncquery_stream_w_collection_group():
     firestore_api = AsyncMock(spec=["run_query"])
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client()
+    client = make_async_client()
     client._firestore_api_internal = firestore_api
 
     # Make a **real** collection reference as parent.
@@ -550,7 +548,7 @@ async def test_asyncquery_stream_w_collection_group():
     firestore_api.run_query.return_value = AsyncIter([response_pb1, response_pb2])
 
     # Execute the query and check the response.
-    query = _make_async_query(parent)
+    query = make_async_query(parent)
     query._all_descendants = True
     get_response = query.stream()
     assert isinstance(get_response, types.AsyncGeneratorType)
@@ -605,7 +603,7 @@ async def _get_partitions_helper(retry=None, timeout=None):
     firestore_api = AsyncMock(spec=["partition_query"])
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client()
+    client = make_async_client()
     client._firestore_api_internal = firestore_api
 
     # Make a **real** collection reference as parent.
@@ -663,7 +661,7 @@ async def test_asynccollectiongroup_get_partitions_w_retry_timeout():
 @pytest.mark.asyncio
 async def test_asynccollectiongroup_get_partitions_w_filter():
     # Make a **real** collection reference as parent.
-    client = _make_client()
+    client = make_async_client()
     parent = client.collection("charles")
 
     # Make a query that fails to partition
@@ -675,7 +673,7 @@ async def test_asynccollectiongroup_get_partitions_w_filter():
 @pytest.mark.asyncio
 async def test_asynccollectiongroup_get_partitions_w_projection():
     # Make a **real** collection reference as parent.
-    client = _make_client()
+    client = make_async_client()
     parent = client.collection("charles")
 
     # Make a query that fails to partition
@@ -687,7 +685,7 @@ async def test_asynccollectiongroup_get_partitions_w_projection():
 @pytest.mark.asyncio
 async def test_asynccollectiongroup_get_partitions_w_limit():
     # Make a **real** collection reference as parent.
-    client = _make_client()
+    client = make_async_client()
     parent = client.collection("charles")
 
     # Make a query that fails to partition
@@ -699,17 +697,10 @@ async def test_asynccollectiongroup_get_partitions_w_limit():
 @pytest.mark.asyncio
 async def test_asynccollectiongroup_get_partitions_w_offset():
     # Make a **real** collection reference as parent.
-    client = _make_client()
+    client = make_async_client()
     parent = client.collection("charles")
 
     # Make a query that fails to partition
     query = _make_async_collection_group(parent).offset(10)
     with pytest.raises(ValueError):
         [i async for i in query.get_partitions(2)]
-
-
-def _make_client(project="project-project"):
-    from google.cloud.firestore_v1.async_client import AsyncClient
-
-    credentials = _make_credentials()
-    return AsyncClient(project=project, credentials=credentials)

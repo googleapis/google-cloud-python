@@ -16,6 +16,8 @@ import types
 
 import mock
 
+from tests.unit.v1._test_helpers import DEFAULT_TEST_PROJECT
+
 
 def _make_collection_reference(*args, **kwargs):
     from google.cloud.firestore_v1.collection import CollectionReference
@@ -45,6 +47,39 @@ def test_query_method_matching():
     # Make sure every query method is present on
     # ``CollectionReference``.
     assert query_methods <= collection_methods
+
+
+def test_collection_aggregation_query():
+    from google.cloud.firestore_v1.aggregation import AggregationQuery
+
+    collection_id1 = "rooms"
+    document_id = "roomA"
+    collection_id2 = "messages"
+    client = mock.sentinel.client
+
+    collection = _make_collection_reference(
+        collection_id1, document_id, collection_id2, client=client
+    )
+
+    assert isinstance(collection._aggregation_query(), AggregationQuery)
+
+
+def test_collection_count():
+
+    collection_id1 = "rooms"
+    document_id = "roomA"
+    collection_id2 = "messages"
+    client = mock.sentinel.client
+
+    collection = _make_collection_reference(
+        collection_id1, document_id, collection_id2, client=client
+    )
+
+    alias = "total"
+    aggregation_query = collection.count(alias)
+
+    assert len(aggregation_query._aggregations) == 1
+    assert aggregation_query._aggregations[0].alias == alias
 
 
 def test_constructor():
@@ -387,7 +422,7 @@ def test_chunkify():
         results.append(
             RunQueryResponse(
                 document=Document(
-                    name=f"projects/project-project/databases/(default)/documents/my-collection/{index}",
+                    name=f"projects/{DEFAULT_TEST_PROJECT}/databases/(default)/documents/my-collection/{index}",
                 ),
             ),
         )

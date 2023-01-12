@@ -16,6 +16,8 @@
 import mock
 import pytest
 
+from tests.unit.v1._test_helpers import DEFAULT_TEST_PROJECT
+
 
 def _make_base_document_reference(*args, **kwargs):
     from google.cloud.firestore_v1.base_document import BaseDocumentReference
@@ -434,7 +436,7 @@ def _make_credentials():
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
-def _make_client(project="project-project"):
+def _make_client(project=DEFAULT_TEST_PROJECT):
     from google.cloud.firestore_v1.client import Client
 
     credentials = _make_credentials()

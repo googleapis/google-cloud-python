@@ -18,13 +18,17 @@ import mock
 import typing
 
 import google
+
+from google.cloud.firestore_v1.async_client import AsyncClient
 from google.cloud.firestore_v1.base_client import BaseClient
 from google.cloud.firestore_v1.document import DocumentReference, DocumentSnapshot
 from google.cloud._helpers import _datetime_to_pb_timestamp, UTC  # type: ignore
 from google.cloud.firestore_v1._helpers import build_timestamp
-from google.cloud.firestore_v1.async_client import AsyncClient
 from google.cloud.firestore_v1.client import Client
 from google.protobuf.timestamp_pb2 import Timestamp  # type: ignore
+
+
+DEFAULT_TEST_PROJECT = "project-project"
 
 
 def make_test_credentials() -> google.auth.credentials.Credentials:  # type: ignore
@@ -35,13 +39,63 @@ def make_test_credentials() -> google.auth.credentials.Credentials:  # type: ign
 
 def make_client(project_name: typing.Optional[str] = None) -> Client:
     return Client(
-        project=project_name or "project-project",
+        project=project_name or DEFAULT_TEST_PROJECT,
         credentials=make_test_credentials(),
     )
 
 
-def make_async_client() -> AsyncClient:
-    return AsyncClient(project="project-project", credentials=make_test_credentials())
+def make_async_client(project=DEFAULT_TEST_PROJECT) -> AsyncClient:
+    return AsyncClient(project=project, credentials=make_test_credentials())
+
+
+def make_query(*args, **kwargs):
+    from google.cloud.firestore_v1.query import Query
+
+    return Query(*args, **kwargs)
+
+
+def make_async_query(*args, **kwargs):
+    from google.cloud.firestore_v1.async_query import AsyncQuery
+
+    return AsyncQuery(*args, **kwargs)
+
+
+def make_aggregation_query(*args, **kw):
+    from google.cloud.firestore_v1.aggregation import AggregationQuery
+
+    return AggregationQuery(*args, **kw)
+
+
+def make_async_aggregation_query(*args, **kw):
+    from google.cloud.firestore_v1.async_aggregation import AsyncAggregationQuery
+
+    return AsyncAggregationQuery(*args, **kw)
+
+
+def make_aggregation_query_response(aggregations, read_time=None, transaction=None):
+    from google.cloud.firestore_v1.types import firestore
+    from google.cloud._helpers import _datetime_to_pb_timestamp
+    from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1.types import aggregation_result
+
+    if read_time is None:
+        now = datetime.datetime.now(tz=datetime.timezone.utc)
+        read_time = _datetime_to_pb_timestamp(now)
+
+    res = {}
+    for aggr in aggregations:
+        res[aggr.alias] = aggr.value
+    result = aggregation_result.AggregationResult(
+        aggregate_fields=_helpers.encode_dict(res)
+    )
+
+    kwargs = {}
+    kwargs["read_time"] = read_time
+    kwargs["result"] = result
+    if transaction is not None:
+        kwargs["transaction"] = transaction
+
+    return firestore.RunAggregationQueryResponse(**kwargs)
 
 
 def build_test_timestamp(

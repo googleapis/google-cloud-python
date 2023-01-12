@@ -17,6 +17,7 @@ import itertools
 import math
 import operator
 
+import google.auth
 from google.oauth2 import service_account
 import pytest
 
@@ -46,11 +47,13 @@ def _get_credentials_and_project():
     if FIRESTORE_EMULATOR:
         credentials = EMULATOR_CREDS
         project = FIRESTORE_PROJECT
-    else:
+    elif FIRESTORE_CREDS:
         credentials = service_account.Credentials.from_service_account_file(
             FIRESTORE_CREDS
         )
         project = FIRESTORE_PROJECT or credentials.project_id
+    else:
+        credentials, project = google.auth.default()
     return credentials, project
 
 
@@ -534,6 +537,13 @@ def query_docs(client):
 
     for operation in cleanup:
         operation()
+
+
+@pytest.fixture
+def query(query_docs):
+    collection, stored, allowed_vals = query_docs
+    query = collection.where("a", "==", 1)
+    return query
 
 
 def test_query_stream_w_simple_field_eq_op(query_docs):
@@ -1617,3 +1627,199 @@ def test_repro_391(client, cleanup):
         _, document = collection.add(data, document_id)
 
     assert len(set(collection.stream())) == len(document_ids)
+
+
+def test_count_query_get_default_alias(query):
+    count_query = query.count()
+    result = count_query.get()
+    assert len(result) == 1
+    for r in result[0]:
+        assert r.alias == "field_1"
+
+
+def test_count_query_get_with_alias(query):
+    count_query = query.count(alias="total")
+    result = count_query.get()
+    assert len(result) == 1
+    for r in result[0]:
+        assert r.alias == "total"
+
+
+def test_count_query_get_with_limit(query):
+    # count without limit
+    count_query = query.count(alias="total")
+    result = count_query.get()
+    assert len(result) == 1
+    for r in result[0]:
+        assert r.alias == "total"
+        assert r.value == 5
+
+    # count with limit
+    count_query = query.limit(2).count(alias="total")
+
+    result = count_query.get()
+    assert len(result) == 1
+    for r in result[0]:
+        assert r.alias == "total"
+        assert r.value == 2
+
+
+def test_count_query_get_multiple_aggregations(query):
+    count_query = query.count(alias="total").count(alias="all")
+
+    result = count_query.get()
+    assert len(result[0]) == 2
+
+    expected_aliases = ["total", "all"]
+    found_alias = set(
+        [r.alias for r in result[0]]
+    )  # ensure unique elements in the result
+    assert len(found_alias) == 2
+    assert found_alias == set(expected_aliases)
+
+
+def test_count_query_get_multiple_aggregations_duplicated_alias(query):
+    count_query = query.count(alias="total").count(alias="total")
+
+    with pytest.raises(InvalidArgument) as exc_info:
+        count_query.get()
+
+    assert "Aggregation aliases contain duplicate alias" in exc_info.value.message
+
+
+def test_count_query_get_empty_aggregation(query):
+    from google.cloud.firestore_v1.aggregation import AggregationQuery
+
+    aggregation_query = AggregationQuery(query)
+
+    with pytest.raises(InvalidArgument) as exc_info:
+        aggregation_query.get()
+
+    assert "Aggregations can not be empty" in exc_info.value.message
+
+
+def test_count_query_stream_default_alias(query):
+    count_query = query.count()
+    for result in count_query.stream():
+        for aggregation_result in result:
+            assert aggregation_result.alias == "field_1"
+
+
+def test_count_query_stream_with_alias(query):
+
+    count_query = query.count(alias="total")
+    for result in count_query.stream():
+        for aggregation_result in result:
+            assert aggregation_result.alias == "total"
+
+
+def test_count_query_stream_with_limit(query):
+    # count without limit
+    count_query = query.count(alias="total")
+    for result in count_query.stream():
+        for aggregation_result in result:
+            assert aggregation_result.alias == "total"
+            assert aggregation_result.value == 5
+
+    # count with limit
+    count_query = query.limit(2).count(alias="total")
+
+    for result in count_query.stream():
+        for aggregation_result in result:
+            assert aggregation_result.alias == "total"
+            assert aggregation_result.value == 2
+
+
+def test_count_query_stream_multiple_aggregations(query):
+    count_query = query.count(alias="total").count(alias="all")
+
+    for result in count_query.stream():
+        for aggregation_result in result:
+            assert aggregation_result.alias in ["total", "all"]
+
+
+def test_count_query_stream_multiple_aggregations_duplicated_alias(query):
+    count_query = query.count(alias="total").count(alias="total")
+
+    with pytest.raises(InvalidArgument) as exc_info:
+        for _ in count_query.stream():
+            pass
+
+    assert "Aggregation aliases contain duplicate alias" in exc_info.value.message
+
+
+def test_count_query_stream_empty_aggregation(query):
+    from google.cloud.firestore_v1.aggregation import AggregationQuery
+
+    aggregation_query = AggregationQuery(query)
+
+    with pytest.raises(InvalidArgument) as exc_info:
+        for _ in aggregation_query.stream():
+            pass
+
+    assert "Aggregations can not be empty" in exc_info.value.message
+
+
+@firestore.transactional
+def create_in_transaction(collection_id, transaction, cleanup):
+    collection = client.collection(collection_id)
+
+    query = collection.where("a", "==", 1)
+    count_query = query.count()
+
+    result = count_query.get(transaction=transaction)
+    for r in result[0]:
+        assert r.value <= 2
+        if r.value < 2:
+            document_id_3 = "doc3" + UNIQUE_RESOURCE_ID
+            document_3 = client.document(collection_id, document_id_3)
+            cleanup(document_3.delete)
+            document_3.create({"a": 1})
+        else:
+            raise ValueError("Collection can't have more than 2 documents")
+
+
+@firestore.transactional
+def create_in_transaction_helper(transaction, client, collection_id, cleanup):
+    collection = client.collection(collection_id)
+    query = collection.where("a", "==", 1)
+    count_query = query.count()
+    result = count_query.get(transaction=transaction)
+
+    for r in result[0]:
+        if r.value < 2:
+            document_id_3 = "doc3" + UNIQUE_RESOURCE_ID
+            document_3 = client.document(collection_id, document_id_3)
+            cleanup(document_3.delete)
+            document_3.create({"a": 1})
+        else:  # transaction is rolled back
+            raise ValueError("Collection can't have more than 2 docs")
+
+
+def test_count_query_in_transaction(client, cleanup):
+    collection_id = "doc-create" + UNIQUE_RESOURCE_ID
+    document_id_1 = "doc1" + UNIQUE_RESOURCE_ID
+    document_id_2 = "doc2" + UNIQUE_RESOURCE_ID
+
+    document_1 = client.document(collection_id, document_id_1)
+    document_2 = client.document(collection_id, document_id_2)
+
+    cleanup(document_1.delete)
+    cleanup(document_2.delete)
+
+    document_1.create({"a": 1})
+    document_2.create({"a": 1})
+
+    transaction = client.transaction()
+
+    with pytest.raises(ValueError) as exc:
+        create_in_transaction_helper(transaction, client, collection_id, cleanup)
+        assert exc.exc_info == "Collection can't have more than 2 documents"
+
+    collection = client.collection(collection_id)
+
+    query = collection.where("a", "==", 1)
+    count_query = query.count()
+    result = count_query.get()
+    for r in result[0]:
+        assert r.value == 2  # there are still only 2 docs

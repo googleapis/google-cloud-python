@@ -15,6 +15,8 @@
 import mock
 import pytest
 
+from tests.unit.v1._test_helpers import DEFAULT_TEST_PROJECT
+
 
 def _make_base_collection_reference(*args, **kwargs):
     from google.cloud.firestore_v1.base_collection import BaseCollectionReference
@@ -402,4 +404,4 @@ def _make_client():
     from google.cloud.firestore_v1.client import Client
 
     credentials = _make_credentials()
-    return Client(project="project-project", credentials=credentials)
+    return Client(project=DEFAULT_TEST_PROJECT, credentials=credentials)

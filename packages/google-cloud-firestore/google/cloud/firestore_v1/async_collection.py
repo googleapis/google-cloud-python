@@ -21,10 +21,7 @@ from google.cloud.firestore_v1.base_collection import (
     BaseCollectionReference,
     _item_to_document_ref,
 )
-from google.cloud.firestore_v1 import (
-    async_query,
-    async_document,
-)
+from google.cloud.firestore_v1 import async_query, async_document, async_aggregation
 
 from google.cloud.firestore_v1.document import DocumentReference
 
@@ -71,6 +68,14 @@ class AsyncCollectionReference(BaseCollectionReference):
             :class:`~google.cloud.firestore_v1.query.Query`
         """
         return async_query.AsyncQuery(self)
+
+    def _aggregation_query(self) -> async_aggregation.AsyncAggregationQuery:
+        """AsyncAggregationQuery factory.
+
+        Returns:
+            :class:`~google.cloud.firestore_v1.async_aggregation.AsyncAggregationQuery
+        """
+        return async_aggregation.AsyncAggregationQuery(self._query())
 
     async def _chunkify(self, chunk_size: int):
         async for page in self._query()._chunkify(chunk_size):

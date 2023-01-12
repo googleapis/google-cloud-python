@@ -18,12 +18,15 @@ A :class:`~google.cloud.firestore_v1.query.Query` can be created directly from
 a :class:`~google.cloud.firestore_v1.collection.Collection` and that can be
 a more common way to create a query than direct usage of the constructor.
 """
+from __future__ import annotations
+
 import copy
 import math
 
 from google.api_core import retry as retries
 from google.protobuf import wrappers_pb2
 
+from google.cloud import firestore_v1
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1 import document
 from google.cloud.firestore_v1 import field_path as field_path_module
@@ -805,6 +808,11 @@ class BaseQuery(object):
         if self._limit is not None:
             query_kwargs["limit"] = wrappers_pb2.Int32Value(value=self._limit)
         return query.StructuredQuery(**query_kwargs)
+
+    def count(
+        self, alias: str | None = None
+    ) -> Type["firestore_v1.base_aggregation.BaseAggregationQuery"]:
+        raise NotImplementedError
 
     def get(
         self,

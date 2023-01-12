@@ -19,6 +19,7 @@ import pytest
 
 from tests.unit.v1.test__helpers import AsyncIter
 from tests.unit.v1.test__helpers import AsyncMock
+from tests.unit.v1._test_helpers import DEFAULT_TEST_PROJECT, make_async_client
 
 
 def _make_async_collection_reference(*args, **kwargs):
@@ -66,10 +67,34 @@ def test_asynccollectionreference_query_method_matching():
 
 
 def test_asynccollectionreference_document_name_default():
-    client = _make_client()
+    client = make_async_client()
     document = client.collection("test").document()
     # name is random, but assert it is not None
     assert document.id is not None
+
+
+def test_async_collection_aggregation_query():
+    from google.cloud.firestore_v1.async_aggregation import AsyncAggregationQuery
+
+    firestore_api = AsyncMock(spec=["create_document", "commit"])
+    client = make_async_client()
+    client._firestore_api_internal = firestore_api
+    collection = _make_async_collection_reference("grand-parent", client=client)
+
+    assert isinstance(collection._aggregation_query(), AsyncAggregationQuery)
+
+
+def test_async_collection_count():
+    firestore_api = AsyncMock(spec=["create_document", "commit"])
+    client = make_async_client()
+    client._firestore_api_internal = firestore_api
+    collection = _make_async_collection_reference("grand-parent", client=client)
+
+    alias = "total"
+    aggregation_query = collection.count(alias)
+
+    assert len(aggregation_query._aggregations) == 1
+    assert aggregation_query._aggregations[0].alias == alias
 
 
 @pytest.mark.asyncio
@@ -92,7 +117,7 @@ async def test_asynccollectionreference_add_auto_assigned():
     firestore_api.commit.return_value = commit_response
     create_doc_response = document.Document()
     firestore_api.create_document.return_value = create_doc_response
-    client = _make_client()
+    client = make_async_client()
     client._firestore_api_internal = firestore_api
 
     # Actually make a collection.
@@ -161,7 +186,7 @@ async def _add_helper(retry=None, timeout=None):
     firestore_api.commit.return_value = commit_response
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client()
+    client = make_async_client()
     client._firestore_api_internal = firestore_api
 
     # Actually make a collection and call add().
@@ -213,7 +238,7 @@ async def test_asynccollectionreference_chunkify():
     from google.cloud.firestore_v1.types import document
     from google.cloud.firestore_v1.types import firestore
 
-    client = _make_client()
+    client = make_async_client()
     col = client.collection("my-collection")
 
     client._firestore_api_internal = mock.Mock(spec=["run_query"])
@@ -221,7 +246,7 @@ async def test_asynccollectionreference_chunkify():
     results = []
     for index in range(10):
         name = (
-            f"projects/project-project/databases/(default)/"
+            f"projects/{DEFAULT_TEST_PROJECT}/databases/(default)/"
             f"documents/my-collection/{index}"
         )
         results.append(
@@ -268,7 +293,7 @@ async def _list_documents_helper(page_size=None, retry=None, timeout=None):
                 page, self._pages = self._pages[0], self._pages[1:]
                 return Page(self, page, self.item_to_value)
 
-    client = _make_client()
+    client = make_async_client()
     template = client._database_string + "/documents/{}"
     document_ids = ["doc-1", "doc-2"]
     documents = [
@@ -443,16 +468,3 @@ def test_asynccollectionreference_recursive():
 
     col = _make_async_collection_reference("collection")
     assert isinstance(col.recursive(), AsyncQuery)
-
-
-def _make_credentials():
-    import google.auth.credentials
-
-    return mock.Mock(spec=google.auth.credentials.Credentials)
-
-
-def _make_client():
-    from google.cloud.firestore_v1.async_client import AsyncClient
-
-    credentials = _make_credentials()
-    return AsyncClient(project="project-project", credentials=credentials)

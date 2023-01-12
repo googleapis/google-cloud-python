@@ -10,6 +10,7 @@ API Reference
 
   client
   collection
+  aggregation
   document
   field_path
   query

@@ -17,6 +17,8 @@ import datetime
 import mock
 import pytest
 
+from tests.unit.v1._test_helpers import make_client
+
 
 def _make_base_query(*args, **kwargs):
     from google.cloud.firestore_v1.base_query import BaseQuery
@@ -395,13 +397,13 @@ def test_basequery_limit_to_last():
 
 def test_basequery__resolve_chunk_size():
     # With a global limit
-    query = _make_client().collection("asdf").limit(5)
+    query = make_client().collection("asdf").limit(5)
     assert query._resolve_chunk_size(3, 10) == 2
     assert query._resolve_chunk_size(3, 1) == 1
     assert query._resolve_chunk_size(3, 2) == 2
 
     # With no limit
-    query = _make_client().collection("asdf")._query()
+    query = make_client().collection("asdf")._query()
     assert query._resolve_chunk_size(3, 10) == 10
     assert query._resolve_chunk_size(3, 1) == 1
     assert query._resolve_chunk_size(3, 2) == 2
@@ -1267,7 +1269,7 @@ def test_basequery_recursive_multiple():
         def _get_collection_reference_class():
             return CollectionReference
 
-    query = DerivedQuery(_make_client().collection("asdf"))
+    query = DerivedQuery(make_client().collection("asdf"))
     assert isinstance(query.recursive().recursive(), DerivedQuery)
 
 
@@ -1471,7 +1473,7 @@ def test__query_response_to_snapshot_response():
     from google.cloud.firestore_v1.base_query import _query_response_to_snapshot
     from google.cloud.firestore_v1.document import DocumentSnapshot
 
-    client = _make_client()
+    client = make_client()
     collection = client.collection("a", "b", "c")
     _, expected_prefix = collection._parent_info()
 
@@ -1519,7 +1521,7 @@ def test__collection_group_query_response_to_snapshot_response():
         _collection_group_query_response_to_snapshot,
     )
 
-    client = _make_client()
+    client = make_client()
     collection = client.collection("a", "b", "c")
     other_collection = client.collection("a", "b", "d")
     to_match = other_collection.document("gigantic")
@@ -1534,19 +1536,6 @@ def test__collection_group_query_response_to_snapshot_response():
     assert snapshot.read_time == response_pb._pb.read_time
     assert snapshot.create_time == response_pb._pb.document.create_time
     assert snapshot.update_time == response_pb._pb.document.update_time
-
-
-def _make_credentials():
-    import google.auth.credentials
-
-    return mock.Mock(spec=google.auth.credentials.Credentials)
-
-
-def _make_client(project="project-project"):
-    from google.cloud.firestore_v1.client import Client
-
-    credentials = _make_credentials()
-    return Client(project=project, credentials=credentials)
 
 
 def _make_order_pb(field_path, direction):

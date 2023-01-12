@@ -18,6 +18,7 @@ import mock
 import pytest
 
 from tests.unit.v1.test__helpers import AsyncIter, AsyncMock
+from tests.unit.v1._test_helpers import make_async_client
 
 
 def _make_async_document_reference(*args, **kwargs):
@@ -76,7 +77,7 @@ async def _create_helper(retry=None, timeout=None):
     firestore_api.commit.return_value = _make_commit_repsonse()
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client("dignity")
+    client = make_async_client("dignity")
     client._firestore_api_internal = firestore_api
 
     # Actually make a document and call create().
@@ -130,7 +131,7 @@ async def test_asyncdocumentreference_create_empty():
     )
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client("dignity")
+    client = make_async_client("dignity")
     client._firestore_api_internal = firestore_api
     client.get_all = mock.MagicMock()
     client.get_all.exists.return_value = True
@@ -175,7 +176,7 @@ async def _set_helper(merge=False, retry=None, timeout=None, **option_kwargs):
     firestore_api.commit.return_value = _make_commit_repsonse()
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client("db-dee-bee")
+    client = make_async_client("db-dee-bee")
     client._firestore_api_internal = firestore_api
 
     # Actually make a document and call create().
@@ -244,7 +245,7 @@ async def _update_helper(retry=None, timeout=None, **option_kwargs):
     firestore_api.commit.return_value = _make_commit_repsonse()
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client("potato-chip")
+    client = make_async_client("potato-chip")
     client._firestore_api_internal = firestore_api
 
     # Actually make a document and call create().
@@ -320,7 +321,7 @@ async def test_asyncdocumentreference_empty_update():
     firestore_api.commit.return_value = _make_commit_repsonse()
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client("potato-chip")
+    client = make_async_client("potato-chip")
     client._firestore_api_internal = firestore_api
 
     # Actually make a document and call create().
@@ -341,7 +342,7 @@ async def _delete_helper(retry=None, timeout=None, **option_kwargs):
     firestore_api.commit.return_value = _make_commit_repsonse()
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client("donut-base")
+    client = make_async_client("donut-base")
     client._firestore_api_internal = firestore_api
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
@@ -421,7 +422,7 @@ async def _get_helper(
     response.found.create_time = create_time
     response.found.update_time = update_time
 
-    client = _make_client("donut-base")
+    client = make_async_client("donut-base")
     client._firestore_api_internal = firestore_api
     document_reference = _make_async_document_reference(
         "where", "we-are", client=client
@@ -550,7 +551,7 @@ async def _collections_helper(page_size=None, retry=None, timeout=None):
     firestore_api.mock_add_spec(spec=["list_collection_ids"])
     firestore_api.list_collection_ids.return_value = Pager()
 
-    client = _make_client()
+    client = make_async_client()
     client._firestore_api_internal = firestore_api
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
@@ -594,16 +595,3 @@ async def test_asyncdocumentreference_collections_w_retry_timeout():
 @pytest.mark.asyncio
 async def test_asyncdocumentreference_collections_w_page_size():
     await _collections_helper(page_size=10)
-
-
-def _make_credentials():
-    import google.auth.credentials
-
-    return mock.Mock(spec=google.auth.credentials.Credentials)
-
-
-def _make_client(project="project-project"):
-    from google.cloud.firestore_v1.async_client import AsyncClient
-
-    credentials = _make_credentials()
-    return AsyncClient(project=project, credentials=credentials)

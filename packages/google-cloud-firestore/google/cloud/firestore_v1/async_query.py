@@ -18,6 +18,7 @@ A :class:`~google.cloud.firestore_v1.query.Query` can be created directly from
 a :class:`~google.cloud.firestore_v1.collection.Collection` and that can be
 a more common way to create a query than direct usage of the constructor.
 """
+from __future__ import annotations
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -38,6 +39,8 @@ from typing import AsyncGenerator, List, Optional, Type
 
 # Types needed only for Type Hints
 from google.cloud.firestore_v1.transaction import Transaction
+
+from google.cloud.firestore_v1.async_aggregation import AsyncAggregationQuery
 
 
 class AsyncQuery(BaseQuery):
@@ -212,6 +215,21 @@ class AsyncQuery(BaseQuery):
             result = list(reversed(result))
 
         return result
+
+    def count(
+        self, alias: str | None = None
+    ) -> Type["firestore_v1.async_aggregation.AsyncAggregationQuery"]:
+        """Adds a count over the nested query.
+
+        Args:
+            alias
+                (Optional[str]): The alias for the count
+
+        Returns:
+            :class:`~google.cloud.firestore_v1.async_aggregation.AsyncAggregationQuery`:
+            An instance of an AsyncAggregationQuery object
+        """
+        return AsyncAggregationQuery(self).count(alias=alias)
 
     async def stream(
         self,

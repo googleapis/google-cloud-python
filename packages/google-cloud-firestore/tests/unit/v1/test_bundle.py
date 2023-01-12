@@ -24,12 +24,16 @@ from google.cloud.firestore_v1 import collection
 from google.cloud.firestore_v1 import query as query_mod
 from tests.unit.v1 import _test_helpers
 
+from tests.unit.v1._test_helpers import DEFAULT_TEST_PROJECT
+
 
 class _CollectionQueryMixin:
 
     # Path to each document where we don't specify custom collection names or
     # document Ids
-    doc_key: str = "projects/project-project/databases/(default)/documents/col/doc"
+    doc_key: str = (
+        f"projects/{DEFAULT_TEST_PROJECT}/databases/(default)/documents/col/doc"
+    )
 
     @staticmethod
     def build_results_iterable(items):
@@ -206,13 +210,13 @@ class TestBundle(_CollectionQueryMixin):
         assert bundle.named_queries.get("asdf") is not None
         assert (
             bundle.documents[
-                "projects/project-project/databases/(default)/documents/col/doc-1"
+                f"projects/{DEFAULT_TEST_PROJECT}/databases/(default)/documents/col/doc-1"
             ]
             is not None
         )
         assert (
             bundle.documents[
-                "projects/project-project/databases/(default)/documents/col/doc-2"
+                f"projects/{DEFAULT_TEST_PROJECT}/databases/(default)/documents/col/doc-2"
             ]
             is not None
         )
@@ -301,7 +305,7 @@ class TestBundle(_CollectionQueryMixin):
         assert (
             _helpers._get_document_from_bundle(
                 bundle,
-                document_id="projects/project-project/databases/(default)/documents/col/doc-1",
+                document_id=f"projects/{DEFAULT_TEST_PROJECT}/databases/(default)/documents/col/doc-1",
             )
             is not None
         )
@@ -309,7 +313,7 @@ class TestBundle(_CollectionQueryMixin):
         assert (
             _helpers._get_document_from_bundle(
                 bundle,
-                document_id="projects/project-project/databases/(default)/documents/col/doc-0",
+                document_id=f"projects/{DEFAULT_TEST_PROJECT}/databases/(default)/documents/col/doc-0",
             )
             is None
         )
@@ -350,13 +354,13 @@ class TestAsyncBundle(_CollectionQueryMixin):
         assert bundle.named_queries.get("asdf") is not None
         assert (
             bundle.documents[
-                "projects/project-project/databases/(default)/documents/col/doc-1"
+                f"projects/{DEFAULT_TEST_PROJECT}/databases/(default)/documents/col/doc-1"
             ]
             is not None
         )
         assert (
             bundle.documents[
-                "projects/project-project/databases/(default)/documents/col/doc-2"
+                f"projects/{DEFAULT_TEST_PROJECT}/databases/(default)/documents/col/doc-2"
             ]
             is not None
         )
@@ -409,13 +413,13 @@ class TestBundleBuilder(_CollectionQueryMixin):
 
         assert (
             bundle.documents[
-                "projects/project-project/databases/(default)/documents/col/doc-1"
+                f"projects/{DEFAULT_TEST_PROJECT}/databases/(default)/documents/col/doc-1"
             ].snapshot._data["smile"]
             == smile
         )
         assert (
             bundle.documents[
-                "projects/project-project/databases/(default)/documents/col/doc-2"
+                f"projects/{DEFAULT_TEST_PROJECT}/databases/(default)/documents/col/doc-2"
             ].snapshot._data["compound"]
             == mermaid
         )
@@ -437,13 +441,13 @@ class TestBundleBuilder(_CollectionQueryMixin):
 
         assert (
             bundle.documents[
-                "projects/project-project/databases/(default)/documents/col/doc-1"
+                f"projects/{DEFAULT_TEST_PROJECT}/databases/(default)/documents/col/doc-1"
             ].snapshot._data["bano"]
             == bano
         )
         assert (
             bundle.documents[
-                "projects/project-project/databases/(default)/documents/col/doc-2"
+                f"projects/{DEFAULT_TEST_PROJECT}/databases/(default)/documents/col/doc-2"
             ].snapshot._data["international"]
             == chinese_characters
         )
