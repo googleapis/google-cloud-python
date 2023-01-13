@@ -222,6 +222,7 @@ class AssetServiceAsyncClient:
         self,
         request: Optional[Union[asset_service.ListAssetsRequest, dict]] = None,
         *,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -259,6 +260,16 @@ class AssetServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.asset_v1p5beta1.types.ListAssetsRequest, dict]]):
                 The request object. ListAssets request.
+            parent (:class:`str`):
+                Required. Name of the organization or project the assets
+                belong to. Format: "organizations/[organization-number]"
+                (such as "organizations/123"), "projects/[project-id]"
+                (such as "projects/my-project-id"), or
+                "projects/[project-number]" (such as "projects/12345").
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -274,7 +285,21 @@ class AssetServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         request = asset_service.ListAssetsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

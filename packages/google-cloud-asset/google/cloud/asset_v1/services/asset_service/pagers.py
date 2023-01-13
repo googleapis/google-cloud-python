@@ -538,3 +538,415 @@ class ListSavedQueriesAsyncPager:
 
     def __repr__(self) -> str:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class AnalyzeOrgPoliciesPager:
+    """A pager for iterating through ``analyze_org_policies`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.asset_v1.types.AnalyzeOrgPoliciesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``org_policy_results`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``AnalyzeOrgPolicies`` requests and continue to iterate
+    through the ``org_policy_results`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.asset_v1.types.AnalyzeOrgPoliciesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., asset_service.AnalyzeOrgPoliciesResponse],
+        request: asset_service.AnalyzeOrgPoliciesRequest,
+        response: asset_service.AnalyzeOrgPoliciesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.asset_v1.types.AnalyzeOrgPoliciesRequest):
+                The initial request object.
+            response (google.cloud.asset_v1.types.AnalyzeOrgPoliciesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = asset_service.AnalyzeOrgPoliciesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[asset_service.AnalyzeOrgPoliciesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(
+        self,
+    ) -> Iterator[asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult]:
+        for page in self.pages:
+            yield from page.org_policy_results
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class AnalyzeOrgPoliciesAsyncPager:
+    """A pager for iterating through ``analyze_org_policies`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.asset_v1.types.AnalyzeOrgPoliciesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``org_policy_results`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``AnalyzeOrgPolicies`` requests and continue to iterate
+    through the ``org_policy_results`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.asset_v1.types.AnalyzeOrgPoliciesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[asset_service.AnalyzeOrgPoliciesResponse]],
+        request: asset_service.AnalyzeOrgPoliciesRequest,
+        response: asset_service.AnalyzeOrgPoliciesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.asset_v1.types.AnalyzeOrgPoliciesRequest):
+                The initial request object.
+            response (google.cloud.asset_v1.types.AnalyzeOrgPoliciesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = asset_service.AnalyzeOrgPoliciesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[asset_service.AnalyzeOrgPoliciesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(
+        self,
+    ) -> AsyncIterator[asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.org_policy_results:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class AnalyzeOrgPolicyGovernedContainersPager:
+    """A pager for iterating through ``analyze_org_policy_governed_containers`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedContainersResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``governed_containers`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``AnalyzeOrgPolicyGovernedContainers`` requests and continue to iterate
+    through the ``governed_containers`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedContainersResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., asset_service.AnalyzeOrgPolicyGovernedContainersResponse],
+        request: asset_service.AnalyzeOrgPolicyGovernedContainersRequest,
+        response: asset_service.AnalyzeOrgPolicyGovernedContainersResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedContainersRequest):
+                The initial request object.
+            response (google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedContainersResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterator[asset_service.AnalyzeOrgPolicyGovernedContainersResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(
+        self,
+    ) -> Iterator[
+        asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer
+    ]:
+        for page in self.pages:
+            yield from page.governed_containers
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class AnalyzeOrgPolicyGovernedContainersAsyncPager:
+    """A pager for iterating through ``analyze_org_policy_governed_containers`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedContainersResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``governed_containers`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``AnalyzeOrgPolicyGovernedContainers`` requests and continue to iterate
+    through the ``governed_containers`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedContainersResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[asset_service.AnalyzeOrgPolicyGovernedContainersResponse]
+        ],
+        request: asset_service.AnalyzeOrgPolicyGovernedContainersRequest,
+        response: asset_service.AnalyzeOrgPolicyGovernedContainersResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedContainersRequest):
+                The initial request object.
+            response (google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedContainersResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[asset_service.AnalyzeOrgPolicyGovernedContainersResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(
+        self,
+    ) -> AsyncIterator[
+        asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer
+    ]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.governed_containers:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class AnalyzeOrgPolicyGovernedAssetsPager:
+    """A pager for iterating through ``analyze_org_policy_governed_assets`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedAssetsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``governed_assets`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``AnalyzeOrgPolicyGovernedAssets`` requests and continue to iterate
+    through the ``governed_assets`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedAssetsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., asset_service.AnalyzeOrgPolicyGovernedAssetsResponse],
+        request: asset_service.AnalyzeOrgPolicyGovernedAssetsRequest,
+        response: asset_service.AnalyzeOrgPolicyGovernedAssetsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedAssetsRequest):
+                The initial request object.
+            response (google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedAssetsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(
+        self,
+    ) -> Iterator[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset]:
+        for page in self.pages:
+            yield from page.governed_assets
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class AnalyzeOrgPolicyGovernedAssetsAsyncPager:
+    """A pager for iterating through ``analyze_org_policy_governed_assets`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedAssetsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``governed_assets`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``AnalyzeOrgPolicyGovernedAssets`` requests and continue to iterate
+    through the ``governed_assets`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedAssetsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse]
+        ],
+        request: asset_service.AnalyzeOrgPolicyGovernedAssetsRequest,
+        response: asset_service.AnalyzeOrgPolicyGovernedAssetsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedAssetsRequest):
+                The initial request object.
+            response (google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedAssetsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(
+        self,
+    ) -> AsyncIterator[
+        asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset
+    ]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.governed_assets:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)

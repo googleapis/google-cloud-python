@@ -28,6 +28,14 @@ from .types.asset_service import AnalyzeIamPolicyRequest
 from .types.asset_service import AnalyzeIamPolicyResponse
 from .types.asset_service import AnalyzeMoveRequest
 from .types.asset_service import AnalyzeMoveResponse
+from .types.asset_service import AnalyzeOrgPoliciesRequest
+from .types.asset_service import AnalyzeOrgPoliciesResponse
+from .types.asset_service import AnalyzeOrgPolicyGovernedAssetsRequest
+from .types.asset_service import AnalyzeOrgPolicyGovernedAssetsResponse
+from .types.asset_service import AnalyzeOrgPolicyGovernedContainersRequest
+from .types.asset_service import AnalyzeOrgPolicyGovernedContainersResponse
+from .types.asset_service import AnalyzerOrgPolicy
+from .types.asset_service import AnalyzerOrgPolicyConstraint
 from .types.asset_service import BatchGetAssetsHistoryRequest
 from .types.asset_service import BatchGetAssetsHistoryResponse
 from .types.asset_service import BatchGetEffectiveIamPoliciesRequest
@@ -100,6 +108,14 @@ __all__ = (
     "AnalyzeIamPolicyResponse",
     "AnalyzeMoveRequest",
     "AnalyzeMoveResponse",
+    "AnalyzeOrgPoliciesRequest",
+    "AnalyzeOrgPoliciesResponse",
+    "AnalyzeOrgPolicyGovernedAssetsRequest",
+    "AnalyzeOrgPolicyGovernedAssetsResponse",
+    "AnalyzeOrgPolicyGovernedContainersRequest",
+    "AnalyzeOrgPolicyGovernedContainersResponse",
+    "AnalyzerOrgPolicy",
+    "AnalyzerOrgPolicyConstraint",
     "Asset",
     "AssetServiceClient",
     "AttachedResource",

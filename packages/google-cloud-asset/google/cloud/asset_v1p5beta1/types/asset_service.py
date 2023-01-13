@@ -47,23 +47,40 @@ class ListAssetsRequest(proto.Message):
         parent (str):
             Required. Name of the organization or project the assets
             belong to. Format: "organizations/[organization-number]"
-            (such as "organizations/123"), "projects/[project-number]"
-            (such as "projects/my-project-id"), or
-            "projects/[project-id]" (such as "projects/12345").
+            (such as "organizations/123"), "projects/[project-id]" (such
+            as "projects/my-project-id"), or "projects/[project-number]"
+            (such as "projects/12345").
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp to take an asset snapshot. This can
-            only be set to a timestamp between 2018-10-02
-            UTC (inclusive) and the current time. If not
-            specified, the current time will be used. Due to
-            delays in resource data collection and indexing,
-            there is a volatile window during which running
-            the same query may get different results.
+            only be set to a timestamp between the current
+            time and the current time minus 35 days
+            (inclusive). If not specified, the current time
+            will be used. Due to delays in resource data
+            collection and indexing, there is a volatile
+            window during which running the same query may
+            get different results.
         asset_types (MutableSequence[str]):
-            A list of asset types of which to take a snapshot for. For
-            example: "compute.googleapis.com/Disk". If specified, only
-            matching assets will be returned. See `Introduction to Cloud
-            Asset
-            Inventory <https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview>`__
+            A list of asset types to take a snapshot for. For example:
+            "compute.googleapis.com/Disk".
+
+            Regular expression is also supported. For example:
+
+            -  "compute.googleapis.com.*" snapshots resources whose
+               asset type starts with "compute.googleapis.com".
+            -  ".*Instance" snapshots resources whose asset type ends
+               with "Instance".
+            -  ".*Instance.*" snapshots resources whose asset type
+               contains "Instance".
+
+            See `RE2 <https://github.com/google/re2/wiki/Syntax>`__ for
+            all supported regular expression syntax. If the regular
+            expression does not match any supported asset type, an
+            INVALID_ARGUMENT error will be returned.
+
+            If specified, only matching assets will be returned,
+            otherwise, it will snapshot all asset types. See
+            `Introduction to Cloud Asset
+            Inventory <https://cloud.google.com/asset-inventory/docs/overview>`__
             for all supported asset types.
         content_type (google.cloud.asset_v1p5beta1.types.ContentType):
             Asset content type. If not specified, no
@@ -118,7 +135,9 @@ class ListAssetsResponse(proto.Message):
             Assets.
         next_page_token (str):
             Token to retrieve the next page of results.
-            Set to empty if there are no remaining results.
+            It expires 72 hours after the page token for the
+            first page is generated. Set to empty if there
+            are no remaining results.
     """
 
     @property

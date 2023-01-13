@@ -351,6 +351,21 @@ class AssetServiceTransport(abc.ABC):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
+            self.analyze_org_policies: gapic_v1.method.wrap_method(
+                self.analyze_org_policies,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.analyze_org_policy_governed_containers: gapic_v1.method.wrap_method(
+                self.analyze_org_policy_governed_containers,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.analyze_org_policy_governed_assets: gapic_v1.method.wrap_method(
+                self.analyze_org_policy_governed_assets,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -572,6 +587,42 @@ class AssetServiceTransport(abc.ABC):
         Union[
             asset_service.BatchGetEffectiveIamPoliciesResponse,
             Awaitable[asset_service.BatchGetEffectiveIamPoliciesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def analyze_org_policies(
+        self,
+    ) -> Callable[
+        [asset_service.AnalyzeOrgPoliciesRequest],
+        Union[
+            asset_service.AnalyzeOrgPoliciesResponse,
+            Awaitable[asset_service.AnalyzeOrgPoliciesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def analyze_org_policy_governed_containers(
+        self,
+    ) -> Callable[
+        [asset_service.AnalyzeOrgPolicyGovernedContainersRequest],
+        Union[
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse,
+            Awaitable[asset_service.AnalyzeOrgPolicyGovernedContainersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def analyze_org_policy_governed_assets(
+        self,
+    ) -> Callable[
+        [asset_service.AnalyzeOrgPolicyGovernedAssetsRequest],
+        Union[
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse,
+            Awaitable[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse],
         ],
     ]:
         raise NotImplementedError()

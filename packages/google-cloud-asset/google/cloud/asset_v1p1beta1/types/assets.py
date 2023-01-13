@@ -62,13 +62,13 @@ class StandardResourceMetadata(proto.Message):
             "us-east1", or zonal like "us-west1-b".
         labels (MutableMapping[str, str]):
             Labels associated with this resource. See `Labelling and
-            grouping GCP
+            grouping Google Cloud
             resources <https://cloud.google.com/blog/products/gcp/labelling-and-grouping-your-google-cloud-platform-resources>`__
             for more information.
         network_tags (MutableSequence[str]):
             Network tags associated with this resource. Like labels,
-            network tags are a type of annotations used to group GCP
-            resources. See `Labelling GCP
+            network tags are a type of annotations used to group Google
+            Cloud resources. See `Labelling Google Cloud
             resources <lhttps://cloud.google.com/blog/products/gcp/labelling-and-grouping-your-google-cloud-platform-resources>`__
             for more information.
     """
@@ -113,7 +113,7 @@ class StandardResourceMetadata(proto.Message):
 
 
 class IamPolicySearchResult(proto.Message):
-    r"""The result for a IAM Policy search.
+    r"""The result for an IAM policy search.
 
     Attributes:
         resource (str):
@@ -121,24 +121,26 @@ class IamPolicySearchResult(proto.Message):
             name <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__
             of the resource associated with this IAM policy.
         project (str):
-            The project that the associated GCP resource belongs to, in
-            the form of ``projects/{project_number}``. If an IAM policy
-            is set on a resource (like VM instance, Cloud Storage
-            bucket), the project field will indicate the project that
-            contains the resource. If an IAM policy is set on a folder
-            or orgnization, the project field will be empty.
+            The project that the associated Google Cloud resource
+            belongs to, in the form of ``projects/{project_number}``. If
+            an IAM policy is set on a resource -- such as a Compute
+            Engine instance or a Cloud Storage bucket -- the project
+            field will indicate the project that contains the resource.
+            If an IAM policy is set on a folder or orgnization, the
+            project field will be empty.
         policy (google.iam.v1.policy_pb2.Policy):
-            The IAM policy directly set on the given
+            The IAM policy attached to the specified
             resource. Note that the original IAM policy can
             contain multiple bindings. This only contains
             the bindings that match the given query. For
-            queries that don't contain a constrain on
+            queries that don't contain a constraint on
             policies (e.g. an empty query), this contains
             all the bindings.
         explanation (google.cloud.asset_v1p1beta1.types.IamPolicySearchResult.Explanation):
             Explanation about the IAM policy search
-            result. It contains additional information to
-            explain why the search result matches the query.
+            result. It contains additional information that
+            explains why the search result matches the
+            query.
     """
 
     class Explanation(proto.Message):
@@ -148,7 +150,7 @@ class IamPolicySearchResult(proto.Message):
             matched_permissions (MutableMapping[str, google.cloud.asset_v1p1beta1.types.Permissions]):
                 The map from roles to their included permission matching the
                 permission query (e.g. containing
-                ``policy.role.permissions:``). A sample role string:
+                ``policy.role.permissions:``). Example role string:
                 "roles/compute.instanceAdmin". The roles can also be found
                 in the returned ``policy`` bindings. Note that the map is
                 populated only if requesting with a permission query.
@@ -182,11 +184,11 @@ class IamPolicySearchResult(proto.Message):
 
 
 class Permissions(proto.Message):
-    r"""IAM permissions
+    r"""IAM permissions.
 
     Attributes:
         permissions (MutableSequence[str]):
-            A list of permissions. A sample permission
+            A list of permissions. Example permission
             string: "compute.disk.get".
     """
 

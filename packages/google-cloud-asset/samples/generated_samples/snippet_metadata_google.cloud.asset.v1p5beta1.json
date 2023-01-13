@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-asset",
-    "version": "3.16.0"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -32,6 +32,10 @@
           {
             "name": "request",
             "type": "google.cloud.asset_v1p5beta1.types.ListAssetsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
           },
           {
             "name": "retry",
@@ -108,6 +112,10 @@
           {
             "name": "request",
             "type": "google.cloud.asset_v1p5beta1.types.ListAssetsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
           },
           {
             "name": "retry",

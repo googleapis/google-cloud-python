@@ -5726,6 +5726,1423 @@ async def test_batch_get_effective_iam_policies_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.AnalyzeOrgPoliciesRequest,
+        dict,
+    ],
+)
+def test_analyze_org_policies(request_type, transport: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.AnalyzeOrgPoliciesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.analyze_org_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPoliciesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AnalyzeOrgPoliciesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_analyze_org_policies_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policies), "__call__"
+    ) as call:
+        client.analyze_org_policies()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPoliciesRequest()
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policies_async(
+    transport: str = "grpc_asyncio",
+    request_type=asset_service.AnalyzeOrgPoliciesRequest,
+):
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            asset_service.AnalyzeOrgPoliciesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.analyze_org_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPoliciesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AnalyzeOrgPoliciesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policies_async_from_dict():
+    await test_analyze_org_policies_async(request_type=dict)
+
+
+def test_analyze_org_policies_field_headers():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.AnalyzeOrgPoliciesRequest()
+
+    request.scope = "scope_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policies), "__call__"
+    ) as call:
+        call.return_value = asset_service.AnalyzeOrgPoliciesResponse()
+        client.analyze_org_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "scope=scope_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policies_field_headers_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.AnalyzeOrgPoliciesRequest()
+
+    request.scope = "scope_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policies), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            asset_service.AnalyzeOrgPoliciesResponse()
+        )
+        await client.analyze_org_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "scope=scope_value",
+    ) in kw["metadata"]
+
+
+def test_analyze_org_policies_flattened():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.AnalyzeOrgPoliciesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.analyze_org_policies(
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].scope
+        mock_val = "scope_value"
+        assert arg == mock_val
+        arg = args[0].constraint
+        mock_val = "constraint_value"
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = "filter_value"
+        assert arg == mock_val
+
+
+def test_analyze_org_policies_flattened_error():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.analyze_org_policies(
+            asset_service.AnalyzeOrgPoliciesRequest(),
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policies_flattened_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.AnalyzeOrgPoliciesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            asset_service.AnalyzeOrgPoliciesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.analyze_org_policies(
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].scope
+        mock_val = "scope_value"
+        assert arg == mock_val
+        arg = args[0].constraint
+        mock_val = "constraint_value"
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = "filter_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policies_flattened_error_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.analyze_org_policies(
+            asset_service.AnalyzeOrgPoliciesRequest(),
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
+        )
+
+
+def test_analyze_org_policies_pager(transport_name: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policies), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+                next_page_token="abc",
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[],
+                next_page_token="def",
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+                next_page_token="ghi",
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("scope", ""),)),
+        )
+        pager = client.analyze_org_policies(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult)
+            for i in results
+        )
+
+
+def test_analyze_org_policies_pages(transport_name: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policies), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+                next_page_token="abc",
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[],
+                next_page_token="def",
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+                next_page_token="ghi",
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.analyze_org_policies(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policies_async_pager():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policies),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+                next_page_token="abc",
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[],
+                next_page_token="def",
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+                next_page_token="ghi",
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.analyze_org_policies(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult)
+            for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policies_async_pages():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policies),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+                next_page_token="abc",
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[],
+                next_page_token="def",
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+                next_page_token="ghi",
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.analyze_org_policies(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.AnalyzeOrgPolicyGovernedContainersRequest,
+        dict,
+    ],
+)
+def test_analyze_org_policy_governed_containers(request_type, transport: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_containers), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.analyze_org_policy_governed_containers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedContainersPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_analyze_org_policy_governed_containers_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_containers), "__call__"
+    ) as call:
+        client.analyze_org_policy_governed_containers()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_containers_async(
+    transport: str = "grpc_asyncio",
+    request_type=asset_service.AnalyzeOrgPolicyGovernedContainersRequest,
+):
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_containers), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.analyze_org_policy_governed_containers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedContainersAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_containers_async_from_dict():
+    await test_analyze_org_policy_governed_containers_async(request_type=dict)
+
+
+def test_analyze_org_policy_governed_containers_field_headers():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
+
+    request.scope = "scope_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_containers), "__call__"
+    ) as call:
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
+        client.analyze_org_policy_governed_containers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "scope=scope_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_containers_field_headers_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
+
+    request.scope = "scope_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_containers), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
+        )
+        await client.analyze_org_policy_governed_containers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "scope=scope_value",
+    ) in kw["metadata"]
+
+
+def test_analyze_org_policy_governed_containers_flattened():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_containers), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.analyze_org_policy_governed_containers(
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].scope
+        mock_val = "scope_value"
+        assert arg == mock_val
+        arg = args[0].constraint
+        mock_val = "constraint_value"
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = "filter_value"
+        assert arg == mock_val
+
+
+def test_analyze_org_policy_governed_containers_flattened_error():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.analyze_org_policy_governed_containers(
+            asset_service.AnalyzeOrgPolicyGovernedContainersRequest(),
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_containers_flattened_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_containers), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.analyze_org_policy_governed_containers(
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].scope
+        mock_val = "scope_value"
+        assert arg == mock_val
+        arg = args[0].constraint
+        mock_val = "constraint_value"
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = "filter_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_containers_flattened_error_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.analyze_org_policy_governed_containers(
+            asset_service.AnalyzeOrgPolicyGovernedContainersRequest(),
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
+        )
+
+
+def test_analyze_org_policy_governed_containers_pager(transport_name: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_containers), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+                next_page_token="abc",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[],
+                next_page_token="def",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+                next_page_token="ghi",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("scope", ""),)),
+        )
+        pager = client.analyze_org_policy_governed_containers(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(
+                i,
+                asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer,
+            )
+            for i in results
+        )
+
+
+def test_analyze_org_policy_governed_containers_pages(transport_name: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_containers), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+                next_page_token="abc",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[],
+                next_page_token="def",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+                next_page_token="ghi",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.analyze_org_policy_governed_containers(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_containers_async_pager():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_containers),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+                next_page_token="abc",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[],
+                next_page_token="def",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+                next_page_token="ghi",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.analyze_org_policy_governed_containers(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(
+                i,
+                asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer,
+            )
+            for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_containers_async_pages():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_containers),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+                next_page_token="abc",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[],
+                next_page_token="def",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+                next_page_token="ghi",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.analyze_org_policy_governed_containers(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.AnalyzeOrgPolicyGovernedAssetsRequest,
+        dict,
+    ],
+)
+def test_analyze_org_policy_governed_assets(request_type, transport: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_assets), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.analyze_org_policy_governed_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedAssetsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_analyze_org_policy_governed_assets_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_assets), "__call__"
+    ) as call:
+        client.analyze_org_policy_governed_assets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_assets_async(
+    transport: str = "grpc_asyncio",
+    request_type=asset_service.AnalyzeOrgPolicyGovernedAssetsRequest,
+):
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_assets), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.analyze_org_policy_governed_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedAssetsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_assets_async_from_dict():
+    await test_analyze_org_policy_governed_assets_async(request_type=dict)
+
+
+def test_analyze_org_policy_governed_assets_field_headers():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
+
+    request.scope = "scope_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_assets), "__call__"
+    ) as call:
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
+        client.analyze_org_policy_governed_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "scope=scope_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_assets_field_headers_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
+
+    request.scope = "scope_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_assets), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
+        )
+        await client.analyze_org_policy_governed_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "scope=scope_value",
+    ) in kw["metadata"]
+
+
+def test_analyze_org_policy_governed_assets_flattened():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_assets), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.analyze_org_policy_governed_assets(
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].scope
+        mock_val = "scope_value"
+        assert arg == mock_val
+        arg = args[0].constraint
+        mock_val = "constraint_value"
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = "filter_value"
+        assert arg == mock_val
+
+
+def test_analyze_org_policy_governed_assets_flattened_error():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.analyze_org_policy_governed_assets(
+            asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(),
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_assets_flattened_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_assets), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.analyze_org_policy_governed_assets(
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].scope
+        mock_val = "scope_value"
+        assert arg == mock_val
+        arg = args[0].constraint
+        mock_val = "constraint_value"
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = "filter_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_assets_flattened_error_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.analyze_org_policy_governed_assets(
+            asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(),
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
+        )
+
+
+def test_analyze_org_policy_governed_assets_pager(transport_name: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_assets), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+                next_page_token="abc",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[],
+                next_page_token="def",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+                next_page_token="ghi",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("scope", ""),)),
+        )
+        pager = client.analyze_org_policy_governed_assets(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(
+                i, asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset
+            )
+            for i in results
+        )
+
+
+def test_analyze_org_policy_governed_assets_pages(transport_name: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_assets), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+                next_page_token="abc",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[],
+                next_page_token="def",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+                next_page_token="ghi",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.analyze_org_policy_governed_assets(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_assets_async_pager():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_assets),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+                next_page_token="abc",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[],
+                next_page_token="def",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+                next_page_token="ghi",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.analyze_org_policy_governed_assets(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(
+                i, asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset
+            )
+            for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_assets_async_pages():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_assets),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+                next_page_token="abc",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[],
+                next_page_token="def",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+                next_page_token="ghi",
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.analyze_org_policy_governed_assets(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AssetServiceGrpcTransport(
@@ -5883,6 +7300,9 @@ def test_asset_service_base_transport():
         "update_saved_query",
         "delete_saved_query",
         "batch_get_effective_iam_policies",
+        "analyze_org_policies",
+        "analyze_org_policy_governed_containers",
+        "analyze_org_policy_governed_assets",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):

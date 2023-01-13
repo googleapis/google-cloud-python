@@ -219,13 +219,13 @@ class AssetServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAllResourcesAsyncPager:
-        r"""Searches all the resources under a given accessible
-        CRM scope (project/folder/organization). This RPC gives
-        callers especially admins the ability to search all the
-        resources under a scope, even if they don't have .get
+        r"""Searches all the resources within a given accessible Resource
+        Manager scope (project/folder/organization). This RPC gives
+        callers especially administrators the ability to search all the
+        resources within a scope, even if they don't have ``.get``
         permission of all the resources. Callers should have
-        cloud.assets.SearchAllResources permission on the
-        requested scope, otherwise it will be rejected.
+        ``cloud.assets.SearchAllResources`` permission on the requested
+        scope, otherwise the request will be rejected.
 
         .. code-block:: python
 
@@ -263,9 +263,9 @@ class AssetServiceAsyncClient:
                 allowed value must be:
 
                 -  Organization number (such as "organizations/123")
-                -  Folder number(such as "folders/1234")
+                -  Folder number (such as "folders/1234")
                 -  Project number (such as "projects/12345")
-                -  Project id (such as "projects/abc")
+                -  Project ID (such as "projects/abc")
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -375,14 +375,13 @@ class AssetServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAllIamPoliciesAsyncPager:
-        r"""Searches all the IAM policies under a given
-        accessible CRM scope (project/folder/organization). This
-        RPC gives callers especially admins the ability to
-        search all the IAM policies under a scope, even if they
-        don't have .getIamPolicy permission of all the IAM
-        policies. Callers should have
-        cloud.assets.SearchAllIamPolicies permission on the
-        requested scope, otherwise it will be rejected.
+        r"""Searches all the IAM policies within a given accessible Resource
+        Manager scope (project/folder/organization). This RPC gives
+        callers especially administrators the ability to search all the
+        IAM policies within a scope, even if they don't have
+        ``.getIamPolicy`` permission of all the IAM policies. Callers
+        should have ``cloud.assets.SearchAllIamPolicies`` permission on
+        the requested scope, otherwise the request will be rejected.
 
         .. code-block:: python
 
@@ -420,9 +419,9 @@ class AssetServiceAsyncClient:
                 allowed value must be:
 
                 -  Organization number (such as "organizations/123")
-                -  Folder number(such as "folders/1234")
+                -  Folder number (such as "folders/1234")
                 -  Project number (such as "projects/12345")
-                -  Project id (such as "projects/abc")
+                -  Project ID (such as "projects/abc")
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this

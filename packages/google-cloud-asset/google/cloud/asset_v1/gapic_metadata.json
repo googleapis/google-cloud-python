@@ -25,6 +25,21 @@
                 "analyze_move"
               ]
             },
+            "AnalyzeOrgPolicies": {
+              "methods": [
+                "analyze_org_policies"
+              ]
+            },
+            "AnalyzeOrgPolicyGovernedAssets": {
+              "methods": [
+                "analyze_org_policy_governed_assets"
+              ]
+            },
+            "AnalyzeOrgPolicyGovernedContainers": {
+              "methods": [
+                "analyze_org_policy_governed_containers"
+              ]
+            },
             "BatchGetAssetsHistory": {
               "methods": [
                 "batch_get_assets_history"
@@ -128,6 +143,21 @@
             "AnalyzeMove": {
               "methods": [
                 "analyze_move"
+              ]
+            },
+            "AnalyzeOrgPolicies": {
+              "methods": [
+                "analyze_org_policies"
+              ]
+            },
+            "AnalyzeOrgPolicyGovernedAssets": {
+              "methods": [
+                "analyze_org_policy_governed_assets"
+              ]
+            },
+            "AnalyzeOrgPolicyGovernedContainers": {
+              "methods": [
+                "analyze_org_policy_governed_containers"
               ]
             },
             "BatchGetAssetsHistory": {

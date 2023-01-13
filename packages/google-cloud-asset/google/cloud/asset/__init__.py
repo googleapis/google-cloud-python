@@ -34,6 +34,22 @@ from google.cloud.asset_v1.types.asset_service import AnalyzeIamPolicyRequest
 from google.cloud.asset_v1.types.asset_service import AnalyzeIamPolicyResponse
 from google.cloud.asset_v1.types.asset_service import AnalyzeMoveRequest
 from google.cloud.asset_v1.types.asset_service import AnalyzeMoveResponse
+from google.cloud.asset_v1.types.asset_service import AnalyzeOrgPoliciesRequest
+from google.cloud.asset_v1.types.asset_service import AnalyzeOrgPoliciesResponse
+from google.cloud.asset_v1.types.asset_service import (
+    AnalyzeOrgPolicyGovernedAssetsRequest,
+)
+from google.cloud.asset_v1.types.asset_service import (
+    AnalyzeOrgPolicyGovernedAssetsResponse,
+)
+from google.cloud.asset_v1.types.asset_service import (
+    AnalyzeOrgPolicyGovernedContainersRequest,
+)
+from google.cloud.asset_v1.types.asset_service import (
+    AnalyzeOrgPolicyGovernedContainersResponse,
+)
+from google.cloud.asset_v1.types.asset_service import AnalyzerOrgPolicy
+from google.cloud.asset_v1.types.asset_service import AnalyzerOrgPolicyConstraint
 from google.cloud.asset_v1.types.asset_service import BatchGetAssetsHistoryRequest
 from google.cloud.asset_v1.types.asset_service import BatchGetAssetsHistoryResponse
 from google.cloud.asset_v1.types.asset_service import (
@@ -111,6 +127,14 @@ __all__ = (
     "AnalyzeIamPolicyResponse",
     "AnalyzeMoveRequest",
     "AnalyzeMoveResponse",
+    "AnalyzeOrgPoliciesRequest",
+    "AnalyzeOrgPoliciesResponse",
+    "AnalyzeOrgPolicyGovernedAssetsRequest",
+    "AnalyzeOrgPolicyGovernedAssetsResponse",
+    "AnalyzeOrgPolicyGovernedContainersRequest",
+    "AnalyzeOrgPolicyGovernedContainersResponse",
+    "AnalyzerOrgPolicy",
+    "AnalyzerOrgPolicyConstraint",
     "BatchGetAssetsHistoryRequest",
     "BatchGetAssetsHistoryResponse",
     "BatchGetEffectiveIamPoliciesRequest",

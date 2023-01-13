@@ -83,6 +83,14 @@ __protobuf__ = proto.module(
         "TableFieldSchema",
         "BatchGetEffectiveIamPoliciesRequest",
         "BatchGetEffectiveIamPoliciesResponse",
+        "AnalyzerOrgPolicy",
+        "AnalyzerOrgPolicyConstraint",
+        "AnalyzeOrgPoliciesRequest",
+        "AnalyzeOrgPoliciesResponse",
+        "AnalyzeOrgPolicyGovernedContainersRequest",
+        "AnalyzeOrgPolicyGovernedContainersResponse",
+        "AnalyzeOrgPolicyGovernedAssetsRequest",
+        "AnalyzeOrgPolicyGovernedAssetsResponse",
     },
 )
 
@@ -100,7 +108,7 @@ class ContentType(proto.Enum):
 
 class AnalyzeIamPolicyLongrunningMetadata(proto.Message):
     r"""Represents the metadata of the longrunning operation for the
-    AnalyzeIamPolicyLongrunning rpc.
+    AnalyzeIamPolicyLongrunning RPC.
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -227,11 +235,11 @@ class ExportAssetsResponse(proto.Message):
             results were output to.
         output_result (google.cloud.asset_v1.types.OutputResult):
             Output result indicating where the assets were exported to.
-            For example, a set of actual Google Cloud Storage object
-            uris where the assets are exported to. The uris can be
-            different from what [output_config] has specified, as the
-            service will split the output object into multiple ones once
-            it exceeds a single Google Cloud Storage object limit.
+            For example, a set of actual Cloud Storage object URIs where
+            the assets are exported to. The URIs can be different from
+            what [output_config] has specified, as the service will
+            split the output object into multiple ones once it exceeds a
+            single Cloud Storage object limit.
     """
 
     read_time: timestamp_pb2.Timestamp = proto.Field(
@@ -680,7 +688,7 @@ class GcsOutputResult(proto.Message):
 
     Attributes:
         uris (MutableSequence[str]):
-            List of uris of the Cloud Storage objects. Example:
+            List of URIs of the Cloud Storage objects. Example:
             "gs://bucket_name/object_name".
     """
 
@@ -702,7 +710,7 @@ class GcsDestination(proto.Message):
 
     Attributes:
         uri (str):
-            The uri of the Cloud Storage object. It's the same uri that
+            The URI of the Cloud Storage object. It's the same URI that
             is used by gsutil. Example: "gs://bucket_name/object_name".
             See `Viewing and Editing Object
             Metadata <https://cloud.google.com/storage/docs/viewing-editing-metadata>`__
@@ -715,9 +723,9 @@ class GcsDestination(proto.Message):
 
             This field is a member of `oneof`_ ``object_uri``.
         uri_prefix (str):
-            The uri prefix of all generated Cloud Storage objects.
+            The URI prefix of all generated Cloud Storage objects.
             Example: "gs://bucket_name/object_name_prefix". Each object
-            uri is in format: "gs://bucket_name/object_name_prefix// and
+            URI is in format: "gs://bucket_name/object_name_prefix// and
             only contains assets for that type. starts from 0. Example:
             "gs://bucket_name/object_name_prefix/compute.googleapis.com/Disk/0"
             is the first shard of output objects containing all
@@ -1049,58 +1057,61 @@ class SearchAllResourcesRequest(proto.Message):
 
             Examples:
 
-            -  ``name:Important`` to find Cloud resources whose name
-               contains "Important" as a word.
-            -  ``name=Important`` to find the Cloud resource whose name
-               is exactly "Important".
-            -  ``displayName:Impor*`` to find Cloud resources whose
-               display name contains "Impor" as a prefix of any word in
-               the field.
-            -  ``location:us-west*`` to find Cloud resources whose
-               location contains both "us" and "west" as prefixes.
-            -  ``labels:prod`` to find Cloud resources whose labels
-               contain "prod" as a key or value.
-            -  ``labels.env:prod`` to find Cloud resources that have a
-               label "env" and its value is "prod".
-            -  ``labels.env:*`` to find Cloud resources that have a
-               label "env".
-            -  ``kmsKey:key`` to find Cloud resources encrypted with a
-               customer-managed encryption key whose name contains "key"
-               as a word. This field is deprecated. Please use the
-               ``kmsKeys`` field to retrieve KMS key information.
-            -  ``kmsKeys:key`` to find Cloud resources encrypted with
-               customer-managed encryption keys whose name contains the
-               word "key".
-            -  ``relationships:instance-group-1`` to find Cloud
+            -  ``name:Important`` to find Google Cloud resources whose
+               name contains "Important" as a word.
+            -  ``name=Important`` to find the Google Cloud resource
+               whose name is exactly "Important".
+            -  ``displayName:Impor*`` to find Google Cloud resources
+               whose display name contains "Impor" as a prefix of any
+               word in the field.
+            -  ``location:us-west*`` to find Google Cloud resources
+               whose location contains both "us" and "west" as prefixes.
+            -  ``labels:prod`` to find Google Cloud resources whose
+               labels contain "prod" as a key or value.
+            -  ``labels.env:prod`` to find Google Cloud resources that
+               have a label "env" and its value is "prod".
+            -  ``labels.env:*`` to find Google Cloud resources that have
+               a label "env".
+            -  ``kmsKey:key`` to find Google Cloud resources encrypted
+               with a customer-managed encryption key whose name
+               contains "key" as a word. This field is deprecated.
+               Please use the ``kmsKeys`` field to retrieve Cloud KMS
+               key information.
+            -  ``kmsKeys:key`` to find Google Cloud resources encrypted
+               with customer-managed encryption keys whose name contains
+               the word "key".
+            -  ``relationships:instance-group-1`` to find Google Cloud
                resources that have relationships with "instance-group-1"
                in the related resource name.
             -  ``relationships:INSTANCE_TO_INSTANCEGROUP`` to find
-               compute instances that have relationships of type
+               Compute Engine instances that have relationships of type
                "INSTANCE_TO_INSTANCEGROUP".
             -  ``relationships.INSTANCE_TO_INSTANCEGROUP:instance-group-1``
-               to find compute instances that have relationships with
-               "instance-group-1" in the compute instance group resource
-               name, for relationship type "INSTANCE_TO_INSTANCEGROUP".
-            -  ``state:ACTIVE`` to find Cloud resources whose state
-               contains "ACTIVE" as a word.
-            -  ``NOT state:ACTIVE`` to find Cloud resources whose state
-               doesn't contain "ACTIVE" as a word.
-            -  ``createTime<1609459200`` to find Cloud resources that
-               were created before "2021-01-01 00:00:00 UTC". 1609459200
-               is the epoch timestamp of "2021-01-01 00:00:00 UTC" in
-               seconds.
-            -  ``updateTime>1609459200`` to find Cloud resources that
-               were updated after "2021-01-01 00:00:00 UTC". 1609459200
-               is the epoch timestamp of "2021-01-01 00:00:00 UTC" in
-               seconds.
-            -  ``Important`` to find Cloud resources that contain
+               to find Compute Engine instances that have relationships
+               with "instance-group-1" in the Compute Engine instance
+               group resource name, for relationship type
+               "INSTANCE_TO_INSTANCEGROUP".
+            -  ``state:ACTIVE`` to find Google Cloud resources whose
+               state contains "ACTIVE" as a word.
+            -  ``NOT state:ACTIVE`` to find Google Cloud resources whose
+               state doesn't contain "ACTIVE" as a word.
+            -  ``createTime<1609459200`` to find Google Cloud resources
+               that were created before "2021-01-01 00:00:00 UTC".
+               1609459200 is the epoch timestamp of "2021-01-01 00:00:00
+               UTC" in seconds.
+            -  ``updateTime>1609459200`` to find Google Cloud resources
+               that were updated after "2021-01-01 00:00:00 UTC".
+               1609459200 is the epoch timestamp of "2021-01-01 00:00:00
+               UTC" in seconds.
+            -  ``Important`` to find Google Cloud resources that contain
                "Important" as a word in any of the searchable fields.
-            -  ``Impor*`` to find Cloud resources that contain "Impor"
-               as a prefix of any word in any of the searchable fields.
-            -  ``Important location:(us-west1 OR global)`` to find Cloud
-               resources that contain "Important" as a word in any of
-               the searchable fields and are also located in the
-               "us-west1" region or the "global" location.
+            -  ``Impor*`` to find Google Cloud resources that contain
+               "Impor" as a prefix of any word in any of the searchable
+               fields.
+            -  ``Important location:(us-west1 OR global)`` to find
+               Google Cloud resources that contain "Important" as a word
+               in any of the searchable fields and are also located in
+               the "us-west1" region or the "global" location.
         asset_types (MutableSequence[str]):
             Optional. A list of asset types that this request searches
             for. If empty, it will search all the `searchable asset
@@ -1179,7 +1190,7 @@ class SearchAllResourcesRequest(proto.Message):
             -  labels
             -  networkTags
             -  kmsKey (This field is deprecated. Please use the
-               ``kmsKeys`` field to retrieve KMS key information.)
+               ``kmsKeys`` field to retrieve Cloud KMS key information.)
             -  kmsKeys
             -  createTime
             -  updateTime
@@ -1278,11 +1289,11 @@ class SearchAllIamPoliciesRequest(proto.Message):
             query <https://cloud.google.com/asset-inventory/docs/searching-iam-policies#how_to_construct_a_query>`__
             for more information. If not specified or empty, it will
             search all the IAM policies within the specified ``scope``.
-            Note that the query string is compared against each Cloud
-            IAM policy binding, including its principals, roles, and
-            Cloud IAM conditions. The returned Cloud IAM policies will
-            only contain the bindings that match your query. To learn
-            more about the IAM policy structure, see the `IAM policy
+            Note that the query string is compared against each IAM
+            policy binding, including its principals, roles, and IAM
+            conditions. The returned IAM policies will only contain the
+            bindings that match your query. To learn more about the IAM
+            policy structure, see the `IAM policy
             documentation <https://cloud.google.com/iam/help/allow-policies/structure>`__.
 
             Examples:
@@ -1399,7 +1410,7 @@ class SearchAllIamPoliciesResponse(proto.Message):
 
     Attributes:
         results (MutableSequence[google.cloud.asset_v1.types.IamPolicySearchResult]):
-            A list of IamPolicy that match the search
+            A list of IAM policies that match the search
             query. Related information such as the
             associated resource is returned along with the
             policy.
@@ -1563,21 +1574,21 @@ class IamPolicyAnalysisQuery(proto.Message):
 
                 For example, if the request analyzes for which resources
                 user A has permission P, and the results include an IAM
-                policy with P on a GCP folder, the results will also include
-                resources in that folder with permission P.
+                policy with P on a Google Cloud folder, the results will
+                also include resources in that folder with permission P.
 
                 If true and
                 [IamPolicyAnalysisQuery.resource_selector][google.cloud.asset.v1.IamPolicyAnalysisQuery.resource_selector]
                 is specified, the resource section of the result will expand
                 the specified resource to include resources lower in the
                 resource hierarchy. Only project or lower resources are
-                supported. Folder and organization resource cannot be used
+                supported. Folder and organization resources cannot be used
                 together with this option.
 
                 For example, if the request analyzes for which users have
-                permission P on a GCP project with this option enabled, the
-                results will include all users who have permission P on that
-                project or any lower resource.
+                permission P on a Google Cloud project with this option
+                enabled, the results will include all users who have
+                permission P on that project or any lower resource.
 
                 If true, the default max expansion per resource is 1000 for
                 AssetService.AnalyzeIamPolicy][] and 100000 for
@@ -1600,24 +1611,26 @@ class IamPolicyAnalysisQuery(proto.Message):
                 many derived queries will be executed. We highly recommend
                 you use
                 [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning]
-                rpc instead.
+                RPC instead.
 
                 For example, if the request analyzes for which resources
                 user A has permission P, and there's an IAM policy states
                 user A has iam.serviceAccounts.getAccessToken permission to
                 a service account SA, and there's another IAM policy states
-                service account SA has permission P to a GCP folder F, then
-                user A potentially has access to the GCP folder F. And those
-                advanced analysis results will be included in
+                service account SA has permission P to a Google Cloud folder
+                F, then user A potentially has access to the Google Cloud
+                folder F. And those advanced analysis results will be
+                included in
                 [AnalyzeIamPolicyResponse.service_account_impersonation_analysis][google.cloud.asset.v1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis].
 
                 Another example, if the request analyzes for who has
-                permission P to a GCP folder F, and there's an IAM policy
-                states user A has iam.serviceAccounts.actAs permission to a
-                service account SA, and there's another IAM policy states
-                service account SA has permission P to the GCP folder F,
-                then user A potentially has access to the GCP folder F. And
-                those advanced analysis results will be included in
+                permission P to a Google Cloud folder F, and there's an IAM
+                policy states user A has iam.serviceAccounts.actAs
+                permission to a service account SA, and there's another IAM
+                policy states service account SA has permission P to the
+                Google Cloud folder F, then user A potentially has access to
+                the Google Cloud folder F. And those advanced analysis
+                results will be included in
                 [AnalyzeIamPolicyResponse.service_account_impersonation_analysis][google.cloud.asset.v1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis].
 
                 Only the following permissions are considered in this
@@ -1877,8 +1890,8 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
 
         Attributes:
             uri (str):
-                Required. The uri of the Cloud Storage object. It's the same
-                uri that is used by gsutil. Example:
+                Required. The URI of the Cloud Storage object. It's the same
+                URI that is used by gsutil. Example:
                 "gs://bucket_name/object_name". See `Viewing and Editing
                 Object
                 Metadata <https://cloud.google.com/storage/docs/viewing-editing-metadata>`__
@@ -2078,9 +2091,9 @@ class SavedQuery(proto.Message):
             iam_policy_analysis_query (google.cloud.asset_v1.types.IamPolicyAnalysisQuery):
                 An IAM Policy Analysis query, which could be used in the
                 [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy]
-                rpc or the
+                RPC or the
                 [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning]
-                rpc.
+                RPC.
 
                 This field is a member of `oneof`_ ``query_content``.
         """
@@ -2151,7 +2164,7 @@ class CreateSavedQueryRequest(proto.Message):
             component of the saved query's resource name.
 
             This value should be 4-63 characters, and valid characters
-            are /[a-z][0-9]-/.
+            are ``[a-z][0-9]-``.
 
             Notice that this field is required in the saved query
             creation, and the ``name`` field of the ``saved_query`` will
@@ -2217,8 +2230,9 @@ class ListSavedQueriesRequest(proto.Message):
             Optional. The maximum number of saved queries
             to return per page. The service may return fewer
             than this value. If unspecified, at most 50 will
-            be returned.  The maximum value is 1000; values
-            above 1000 will be coerced to 1000.
+            be returned.
+            The maximum value is 1000; values above 1000
+            will be coerced to 1000.
         page_token (str):
             Optional. A page token, received from a previous
             ``ListSavedQueries`` call. Provide this to retrieve the
@@ -2328,18 +2342,18 @@ class AnalyzeMoveRequest(proto.Message):
     Attributes:
         resource (str):
             Required. Name of the resource to perform the
-            analysis against. Only GCP Project are supported
-            as of today. Hence, this can only be Project ID
-            (such as "projects/my-project-id") or a Project
-            Number (such as "projects/12345").
+            analysis against. Only Google Cloud projects are
+            supported as of today. Hence, this can only be a
+            project ID (such as "projects/my-project-id") or
+            a project number (such as "projects/12345").
         destination_parent (str):
-            Required. Name of the GCP Folder or
-            Organization to reparent the target resource.
+            Required. Name of the Google Cloud folder or
+            organization to reparent the target resource.
             The analysis will be performed against
             hypothetically moving the resource to this
             specified desitination parent. This can only be
-            a Folder number (such as "folders/123") or an
-            Organization number (such as
+            a folder number (such as "folders/123") or an
+            organization number (such as
             "organizations/123").
         view (google.cloud.asset_v1.types.AnalyzeMoveRequest.AnalysisView):
             Analysis view indicating what information
@@ -2375,7 +2389,8 @@ class AnalyzeMoveResponse(proto.Message):
         move_analysis (MutableSequence[google.cloud.asset_v1.types.MoveAnalysis]):
             The list of analyses returned from performing
             the intended resource move analysis. The
-            analysis is grouped by different Cloud services.
+            analysis is grouped by different Google Cloud
+            services.
     """
 
     move_analysis: MutableSequence["MoveAnalysis"] = proto.RepeatedField(
@@ -2398,7 +2413,7 @@ class MoveAnalysis(proto.Message):
     Attributes:
         display_name (str):
             The user friendly display name of the
-            analysis. E.g. IAM, Organization Policy etc.
+            analysis. E.g. IAM, organization policy etc.
         analysis (google.cloud.asset_v1.types.MoveAnalysisResult):
             Analysis result of moving the target
             resource.
@@ -2965,6 +2980,954 @@ class BatchGetEffectiveIamPoliciesResponse(proto.Message):
         proto.MESSAGE,
         number=2,
         message=EffectiveIamPolicy,
+    )
+
+
+class AnalyzerOrgPolicy(proto.Message):
+    r"""This organization policy message is a modified version of the
+    one defined in the Organization Policy system. This message
+    contains several fields defined in the original organization
+    policy with some new fields for analysis purpose.
+
+    Attributes:
+        attached_resource (str):
+            The [full resource name]
+            (https://cloud.google.com/asset-inventory/docs/resource-name-format)
+            of an organization/folder/project resource where this
+            organization policy is set.
+
+            Notice that some type of constraints are defined with
+            default policy. This field will be empty for them.
+        applied_resource (str):
+            The [full resource name]
+            (https://cloud.google.com/asset-inventory/docs/resource-name-format)
+            of an organization/folder/project resource where this
+            organization policy applies to.
+
+            For any user defined org policies, this field has the same
+            value as the [attached_resource] field. Only for default
+            policy, this field has the different value.
+        rules (MutableSequence[google.cloud.asset_v1.types.AnalyzerOrgPolicy.Rule]):
+            List of rules for this organization policy.
+        inherit_from_parent (bool):
+            If ``inherit_from_parent`` is true, Rules set higher up in
+            the hierarchy (up to the closest root) are inherited and
+            present in the effective policy. If it is false, then no
+            rules are inherited, and this policy becomes the effective
+            root for evaluation.
+        reset (bool):
+            Ignores policies set above this resource and restores the
+            default behavior of the constraint at this resource. This
+            field can be set in policies for either list or boolean
+            constraints. If set, ``rules`` must be empty and
+            ``inherit_from_parent`` must be set to false.
+    """
+
+    class Rule(proto.Message):
+        r"""Represents a rule defined in an organization policy
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            values (google.cloud.asset_v1.types.AnalyzerOrgPolicy.Rule.StringValues):
+                List of values to be used for this
+                PolicyRule. This field can be set only in
+                Policies for list constraints.
+
+                This field is a member of `oneof`_ ``kind``.
+            allow_all (bool):
+                Setting this to true means that all values
+                are allowed. This field can be set only in
+                Policies for list constraints.
+
+                This field is a member of `oneof`_ ``kind``.
+            deny_all (bool):
+                Setting this to true means that all values
+                are denied. This field can be set only in
+                Policies for list constraints.
+
+                This field is a member of `oneof`_ ``kind``.
+            enforce (bool):
+                If ``true``, then the ``Policy`` is enforced. If ``false``,
+                then any configuration is acceptable. This field can be set
+                only in Policies for boolean constraints.
+
+                This field is a member of `oneof`_ ``kind``.
+            condition (google.type.expr_pb2.Expr):
+                The evaluating condition for this rule.
+        """
+
+        class StringValues(proto.Message):
+            r"""The string values for the list constraints.
+
+            Attributes:
+                allowed_values (MutableSequence[str]):
+                    List of values allowed at this resource.
+                denied_values (MutableSequence[str]):
+                    List of values denied at this resource.
+            """
+
+            allowed_values: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=1,
+            )
+            denied_values: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=2,
+            )
+
+        values: "AnalyzerOrgPolicy.Rule.StringValues" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="kind",
+            message="AnalyzerOrgPolicy.Rule.StringValues",
+        )
+        allow_all: bool = proto.Field(
+            proto.BOOL,
+            number=4,
+            oneof="kind",
+        )
+        deny_all: bool = proto.Field(
+            proto.BOOL,
+            number=5,
+            oneof="kind",
+        )
+        enforce: bool = proto.Field(
+            proto.BOOL,
+            number=6,
+            oneof="kind",
+        )
+        condition: expr_pb2.Expr = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            message=expr_pb2.Expr,
+        )
+
+    attached_resource: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    applied_resource: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    rules: MutableSequence[Rule] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=Rule,
+    )
+    inherit_from_parent: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    reset: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+
+
+class AnalyzerOrgPolicyConstraint(proto.Message):
+    r"""The organization policy constraint definition.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        google_defined_constraint (google.cloud.asset_v1.types.AnalyzerOrgPolicyConstraint.Constraint):
+            The definition of the canned constraint
+            defined by Google.
+
+            This field is a member of `oneof`_ ``constraint_definition``.
+        custom_constraint (google.cloud.asset_v1.types.AnalyzerOrgPolicyConstraint.CustomConstraint):
+            The definition of the custom constraint.
+
+            This field is a member of `oneof`_ ``constraint_definition``.
+    """
+
+    class Constraint(proto.Message):
+        r"""The definition of a constraint.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            name (str):
+                The unique name of the constraint. Format of the name should
+                be
+
+                -  ``constraints/{constraint_name}``
+
+                For example,
+                ``constraints/compute.disableSerialPortAccess``.
+            display_name (str):
+                The human readable name of the constraint.
+            description (str):
+                Detailed description of what this ``Constraint`` controls as
+                well as how and where it is enforced.
+            constraint_default (google.cloud.asset_v1.types.AnalyzerOrgPolicyConstraint.Constraint.ConstraintDefault):
+                The evaluation behavior of this constraint in
+                the absence of 'Policy'.
+            list_constraint (google.cloud.asset_v1.types.AnalyzerOrgPolicyConstraint.Constraint.ListConstraint):
+                Defines this constraint as being a
+                ListConstraint.
+
+                This field is a member of `oneof`_ ``constraint_type``.
+            boolean_constraint (google.cloud.asset_v1.types.AnalyzerOrgPolicyConstraint.Constraint.BooleanConstraint):
+                Defines this constraint as being a
+                BooleanConstraint.
+
+                This field is a member of `oneof`_ ``constraint_type``.
+        """
+
+        class ConstraintDefault(proto.Enum):
+            r"""Specifies the default behavior in the absence of any ``Policy`` for
+            the ``Constraint``. This must not be
+            ``CONSTRAINT_DEFAULT_UNSPECIFIED``.
+            """
+            CONSTRAINT_DEFAULT_UNSPECIFIED = 0
+            ALLOW = 1
+            DENY = 2
+
+        class ListConstraint(proto.Message):
+            r"""A ``Constraint`` that allows or disallows a list of string values,
+            which are configured by an organization's policy administrator with
+            a ``Policy``.
+
+            Attributes:
+                supports_in (bool):
+                    Indicates whether values grouped into categories can be used
+                    in ``Policy.allowed_values`` and ``Policy.denied_values``.
+                    For example, ``"in:Python"`` would match any value in the
+                    'Python' group.
+                supports_under (bool):
+                    Indicates whether subtrees of Cloud Resource Manager
+                    resource hierarchy can be used in ``Policy.allowed_values``
+                    and ``Policy.denied_values``. For example,
+                    ``"under:folders/123"`` would match any resource under the
+                    'folders/123' folder.
+            """
+
+            supports_in: bool = proto.Field(
+                proto.BOOL,
+                number=1,
+            )
+            supports_under: bool = proto.Field(
+                proto.BOOL,
+                number=2,
+            )
+
+        class BooleanConstraint(proto.Message):
+            r"""A ``Constraint`` that is either enforced or not.
+
+            For example a constraint
+            ``constraints/compute.disableSerialPortAccess``. If it is enforced
+            on a VM instance, serial port connections will not be opened to that
+            instance.
+
+            """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        display_name: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        description: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        constraint_default: "AnalyzerOrgPolicyConstraint.Constraint.ConstraintDefault" = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum="AnalyzerOrgPolicyConstraint.Constraint.ConstraintDefault",
+        )
+        list_constraint: "AnalyzerOrgPolicyConstraint.Constraint.ListConstraint" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=5,
+                oneof="constraint_type",
+                message="AnalyzerOrgPolicyConstraint.Constraint.ListConstraint",
+            )
+        )
+        boolean_constraint: "AnalyzerOrgPolicyConstraint.Constraint.BooleanConstraint" = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            oneof="constraint_type",
+            message="AnalyzerOrgPolicyConstraint.Constraint.BooleanConstraint",
+        )
+
+    class CustomConstraint(proto.Message):
+        r"""The definition of a custom constraint.
+
+        Attributes:
+            name (str):
+                Name of the constraint. This is unique within the
+                organization. Format of the name should be
+
+                -  ``organizations/{organization_id}/customConstraints/{custom_constraint_id}``
+
+                Example :
+                "organizations/123/customConstraints/custom.createOnlyE2TypeVms".
+            resource_types (MutableSequence[str]):
+                The Resource Instance type on which this policy applies to.
+                Format will be of the form : "/" Example:
+
+                -  ``compute.googleapis.com/Instance``.
+            method_types (MutableSequence[google.cloud.asset_v1.types.AnalyzerOrgPolicyConstraint.CustomConstraint.MethodType]):
+                All the operations being applied for this
+                constraint.
+            condition (str):
+                Organization Policy condition/expression. For example:
+                ``resource.instanceName.matches("[production|test]_.*_(\d)+")'``
+                or, ``resource.management.auto_upgrade == true``
+            action_type (google.cloud.asset_v1.types.AnalyzerOrgPolicyConstraint.CustomConstraint.ActionType):
+                Allow or deny type.
+            display_name (str):
+                One line display name for the UI.
+            description (str):
+                Detailed information about this custom policy
+                constraint.
+        """
+
+        class MethodType(proto.Enum):
+            r"""The operation in which this constraint will be applied. For example:
+            If the constraint applies only when create VMs, the method_types
+            will be "CREATE" only. If the constraint applied when create or
+            delete VMs, the method_types will be "CREATE" and "DELETE".
+            """
+            METHOD_TYPE_UNSPECIFIED = 0
+            CREATE = 1
+            UPDATE = 2
+            DELETE = 3
+
+        class ActionType(proto.Enum):
+            r"""Allow or deny type."""
+            ACTION_TYPE_UNSPECIFIED = 0
+            ALLOW = 1
+            DENY = 2
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        resource_types: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+        method_types: MutableSequence[
+            "AnalyzerOrgPolicyConstraint.CustomConstraint.MethodType"
+        ] = proto.RepeatedField(
+            proto.ENUM,
+            number=3,
+            enum="AnalyzerOrgPolicyConstraint.CustomConstraint.MethodType",
+        )
+        condition: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        action_type: "AnalyzerOrgPolicyConstraint.CustomConstraint.ActionType" = (
+            proto.Field(
+                proto.ENUM,
+                number=5,
+                enum="AnalyzerOrgPolicyConstraint.CustomConstraint.ActionType",
+            )
+        )
+        display_name: str = proto.Field(
+            proto.STRING,
+            number=6,
+        )
+        description: str = proto.Field(
+            proto.STRING,
+            number=7,
+        )
+
+    google_defined_constraint: Constraint = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="constraint_definition",
+        message=Constraint,
+    )
+    custom_constraint: CustomConstraint = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="constraint_definition",
+        message=CustomConstraint,
+    )
+
+
+class AnalyzeOrgPoliciesRequest(proto.Message):
+    r"""A request message for
+    [AssetService.AnalyzeOrgPolicies][google.cloud.asset.v1.AssetService.AnalyzeOrgPolicies].
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        scope (str):
+            Required. The organization to scope the request. Only
+            organization policies within the scope will be analyzed.
+
+            -  organizations/{ORGANIZATION_NUMBER} (e.g.,
+               "organizations/123456")
+        constraint (str):
+            Required. The name of the constraint to
+            analyze organization policies for. The response
+            only contains analyzed organization policies for
+            the provided constraint.
+        filter (str):
+            The expression to filter
+            [AnalyzeOrgPoliciesResponse.org_policy_results][google.cloud.asset.v1.AnalyzeOrgPoliciesResponse.org_policy_results].
+            The only supported field is
+            ``consolidated_policy.attached_resource``, and the only
+            supported operator is ``=``.
+
+            Example:
+            consolidated_policy.attached_resource="//cloudresourcemanager.googleapis.com/folders/001"
+            will return the org policy results of"folders/001".
+        page_size (int):
+            The maximum number of items to return per page. If
+            unspecified,
+            [AnalyzeOrgPoliciesResponse.org_policy_results][google.cloud.asset.v1.AnalyzeOrgPoliciesResponse.org_policy_results]
+            will contain 20 items with a maximum of 200.
+
+            This field is a member of `oneof`_ ``_page_size``.
+        page_token (str):
+            The pagination token to retrieve the next
+            page.
+    """
+
+    scope: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    constraint: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=4,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class AnalyzeOrgPoliciesResponse(proto.Message):
+    r"""The response message for
+    [AssetService.AnalyzeOrgPolicies][google.cloud.asset.v1.AssetService.AnalyzeOrgPolicies].
+
+    Attributes:
+        org_policy_results (MutableSequence[google.cloud.asset_v1.types.AnalyzeOrgPoliciesResponse.OrgPolicyResult]):
+            The organization policies under the
+            [AnalyzeOrgPoliciesRequest.scope][google.cloud.asset.v1.AnalyzeOrgPoliciesRequest.scope]
+            with the
+            [AnalyzeOrgPoliciesRequest.constraint][google.cloud.asset.v1.AnalyzeOrgPoliciesRequest.constraint].
+        constraint (google.cloud.asset_v1.types.AnalyzerOrgPolicyConstraint):
+            The definition of the constraint in the
+            request.
+        next_page_token (str):
+            The page token to fetch the next page for
+            [AnalyzeOrgPoliciesResponse.org_policy_results][google.cloud.asset.v1.AnalyzeOrgPoliciesResponse.org_policy_results].
+    """
+
+    class OrgPolicyResult(proto.Message):
+        r"""The organization policy result to the query.
+
+        Attributes:
+            consolidated_policy (google.cloud.asset_v1.types.AnalyzerOrgPolicy):
+                The consolidated organization policy for the analyzed
+                resource. The consolidated organization policy is computed
+                by merging and evaluating
+                [AnalyzeOrgPoliciesResponse.policy_bundle][]. The evaluation
+                will respect the organization policy `hierarchy
+                rules <https://cloud.google.com/resource-manager/docs/organization-policy/understanding-hierarchy>`__.
+            policy_bundle (MutableSequence[google.cloud.asset_v1.types.AnalyzerOrgPolicy]):
+                The ordered list of all organization policies from the
+                [AnalyzeOrgPoliciesResponse.OrgPolicyResult.consolidated_policy.attached_resource][].
+                to the scope specified in the request.
+
+                If the constraint is defined with default policy, it will
+                also appear in the list.
+        """
+
+        consolidated_policy: "AnalyzerOrgPolicy" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="AnalyzerOrgPolicy",
+        )
+        policy_bundle: MutableSequence["AnalyzerOrgPolicy"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="AnalyzerOrgPolicy",
+        )
+
+    @property
+    def raw_page(self):
+        return self
+
+    org_policy_results: MutableSequence[OrgPolicyResult] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=OrgPolicyResult,
+    )
+    constraint: "AnalyzerOrgPolicyConstraint" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="AnalyzerOrgPolicyConstraint",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class AnalyzeOrgPolicyGovernedContainersRequest(proto.Message):
+    r"""A request message for
+    [AssetService.AnalyzeOrgPolicyGovernedContainers][google.cloud.asset.v1.AssetService.AnalyzeOrgPolicyGovernedContainers].
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        scope (str):
+            Required. The organization to scope the request. Only
+            organization policies within the scope will be analyzed. The
+            output containers will also be limited to the ones governed
+            by those in-scope organization policies.
+
+            -  organizations/{ORGANIZATION_NUMBER} (e.g.,
+               "organizations/123456")
+        constraint (str):
+            Required. The name of the constraint to
+            analyze governed containers for. The analysis
+            only contains organization policies for the
+            provided constraint.
+        filter (str):
+            The expression to filter the governed containers in result.
+            The only supported field is ``parent``, and the only
+            supported operator is ``=``.
+
+            Example:
+            parent="//cloudresourcemanager.googleapis.com/folders/001"
+            will return all containers under "folders/001".
+        page_size (int):
+            The maximum number of items to return per page. If
+            unspecified,
+            [AnalyzeOrgPolicyGovernedContainersResponse.governed_containers][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedContainersResponse.governed_containers]
+            will contain 100 items with a maximum of 200.
+
+            This field is a member of `oneof`_ ``_page_size``.
+        page_token (str):
+            The pagination token to retrieve the next
+            page.
+    """
+
+    scope: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    constraint: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=4,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class AnalyzeOrgPolicyGovernedContainersResponse(proto.Message):
+    r"""The response message for
+    [AssetService.AnalyzeOrgPolicyGovernedContainers][google.cloud.asset.v1.AssetService.AnalyzeOrgPolicyGovernedContainers].
+
+    Attributes:
+        governed_containers (MutableSequence[google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer]):
+            The list of the analyzed governed containers.
+        constraint (google.cloud.asset_v1.types.AnalyzerOrgPolicyConstraint):
+            The definition of the constraint in the
+            request.
+        next_page_token (str):
+            The page token to fetch the next page for
+            [AnalyzeOrgPolicyGovernedContainersResponse.governed_containers][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedContainersResponse.governed_containers].
+    """
+
+    class GovernedContainer(proto.Message):
+        r"""The organization/folder/project resource governed by organization
+        policies of
+        [AnalyzeOrgPolicyGovernedContainersRequest.constraint][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedContainersRequest.constraint].
+
+        Attributes:
+            full_resource_name (str):
+                The [full resource name]
+                (https://cloud.google.com/asset-inventory/docs/resource-name-format)
+                of an organization/folder/project resource.
+            parent (str):
+                The [full resource name]
+                (https://cloud.google.com/asset-inventory/docs/resource-name-format)
+                of the parent of
+                [AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer.full_resource_name][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer.full_resource_name].
+            consolidated_policy (google.cloud.asset_v1.types.AnalyzerOrgPolicy):
+                The consolidated organization policy for the analyzed
+                resource. The consolidated organization policy is computed
+                by merging and evaluating
+                [AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer.policy_bundle][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer.policy_bundle].
+                The evaluation will respect the organization policy
+                `hierarchy
+                rules <https://cloud.google.com/resource-manager/docs/organization-policy/understanding-hierarchy>`__.
+            policy_bundle (MutableSequence[google.cloud.asset_v1.types.AnalyzerOrgPolicy]):
+                The ordered list of all organization policies from the
+                [AnalyzeOrgPoliciesResponse.OrgPolicyResult.consolidated_policy.attached_resource][].
+                to the scope specified in the request.
+
+                If the constraint is defined with default policy, it will
+                also appear in the list.
+        """
+
+        full_resource_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        parent: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        consolidated_policy: "AnalyzerOrgPolicy" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="AnalyzerOrgPolicy",
+        )
+        policy_bundle: MutableSequence["AnalyzerOrgPolicy"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="AnalyzerOrgPolicy",
+        )
+
+    @property
+    def raw_page(self):
+        return self
+
+    governed_containers: MutableSequence[GovernedContainer] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=GovernedContainer,
+    )
+    constraint: "AnalyzerOrgPolicyConstraint" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="AnalyzerOrgPolicyConstraint",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class AnalyzeOrgPolicyGovernedAssetsRequest(proto.Message):
+    r"""A request message for
+    [AssetService.AnalyzeOrgPolicyGovernedAssets][google.cloud.asset.v1.AssetService.AnalyzeOrgPolicyGovernedAssets].
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        scope (str):
+            Required. The organization to scope the request. Only
+            organization policies within the scope will be analyzed. The
+            output assets will also be limited to the ones governed by
+            those in-scope organization policies.
+
+            -  organizations/{ORGANIZATION_NUMBER} (e.g.,
+               "organizations/123456")
+        constraint (str):
+            Required. The name of the constraint to
+            analyze governed assets for. The analysis only
+            contains analyzed organization policies for the
+            provided constraint.
+        filter (str):
+            The expression to filter the governed assets in result. The
+            only supported fields for governed resources are
+            ``governed_resource.project`` and
+            ``governed_resource.folders``. The only supported fields for
+            governed iam policies are ``governed_iam_policy.project``
+            and ``governed_iam_policy.folders``. The only supported
+            operator is ``=``.
+
+            Example 1: governed_resource.project="projects/12345678"
+            filter will return all governed resources under
+            projects/12345678 including the project ifself, if
+            applicable.
+
+            Example 2: governed_iam_policy.folders="folders/12345678"
+            filter will return all governed iam policies under
+            folders/12345678, if applicable.
+        page_size (int):
+            The maximum number of items to return per page. If
+            unspecified,
+            [AnalyzeOrgPolicyGovernedAssetsResponse.governed_assets][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.governed_assets]
+            will contain 100 items with a maximum of 200.
+
+            This field is a member of `oneof`_ ``_page_size``.
+        page_token (str):
+            The pagination token to retrieve the next
+            page.
+    """
+
+    scope: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    constraint: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=4,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
+    r"""The response message for
+    [AssetService.AnalyzeOrgPolicyGovernedAssets][google.cloud.asset.v1.AssetService.AnalyzeOrgPolicyGovernedAssets].
+
+    Attributes:
+        governed_assets (MutableSequence[google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset]):
+            The list of the analyzed governed assets.
+        constraint (google.cloud.asset_v1.types.AnalyzerOrgPolicyConstraint):
+            The definition of the constraint in the
+            request.
+        next_page_token (str):
+            The page token to fetch the next page for
+            [AnalyzeOrgPolicyGovernedAssetsResponse.governed_assets][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.governed_assets].
+    """
+
+    class GovernedResource(proto.Message):
+        r"""The Google Cloud resources governed by the organization policies of
+        the
+        [AnalyzeOrgPolicyGovernedAssetsRequest.constraint][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsRequest.constraint].
+
+        Attributes:
+            full_resource_name (str):
+                The [full resource name]
+                (https://cloud.google.com/asset-inventory/docs/resource-name-format)
+                of the Google Cloud resource.
+            parent (str):
+                The [full resource name]
+                (https://cloud.google.com/asset-inventory/docs/resource-name-format)
+                of the parent of
+                [AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource.full_resource_name][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource.full_resource_name].
+            project (str):
+                The project that this resource belongs to, in the form of
+                projects/{PROJECT_NUMBER}. This field is available when the
+                resource belongs to a project.
+            folders (MutableSequence[str]):
+                The folder(s) that this resource belongs to, in the form of
+                folders/{FOLDER_NUMBER}. This field is available when the
+                resource belongs(directly or cascadingly) to one or more
+                folders.
+            organization (str):
+                The organization that this resource belongs to, in the form
+                of organizations/{ORGANIZATION_NUMBER}. This field is
+                available when the resource belongs(directly or cascadingly)
+                to an organization.
+        """
+
+        full_resource_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        parent: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        project: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+        folders: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=6,
+        )
+        organization: str = proto.Field(
+            proto.STRING,
+            number=7,
+        )
+
+    class GovernedIamPolicy(proto.Message):
+        r"""The IAM policies governed by the organization policies of the
+        [AnalyzeOrgPolicyGovernedAssetsRequest.constraint][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsRequest.constraint].
+
+        Attributes:
+            attached_resource (str):
+                The full resource name of the resource associated with this
+                IAM policy. Example:
+                ``//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1``.
+                See `Cloud Asset Inventory Resource Name
+                Format <https://cloud.google.com/asset-inventory/docs/resource-name-format>`__
+                for more information.
+            policy (google.iam.v1.policy_pb2.Policy):
+                The IAM policy directly set on the given
+                resource.
+            project (str):
+                The project that this IAM policy belongs to, in the form of
+                projects/{PROJECT_NUMBER}. This field is available when the
+                IAM policy belongs to a project.
+            folders (MutableSequence[str]):
+                The folder(s) that this IAM policy belongs to, in the form
+                of folders/{FOLDER_NUMBER}. This field is available when the
+                IAM policy belongs(directly or cascadingly) to one or more
+                folders.
+            organization (str):
+                The organization that this IAM policy belongs to, in the
+                form of organizations/{ORGANIZATION_NUMBER}. This field is
+                available when the IAM policy belongs(directly or
+                cascadingly) to an organization.
+        """
+
+        attached_resource: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        policy: policy_pb2.Policy = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=policy_pb2.Policy,
+        )
+        project: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+        folders: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=6,
+        )
+        organization: str = proto.Field(
+            proto.STRING,
+            number=7,
+        )
+
+    class GovernedAsset(proto.Message):
+        r"""Represents a Google Cloud asset(resource or IAM policy) governed by
+        the organization policies of the
+        [AnalyzeOrgPolicyGovernedAssetsRequest.constraint][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsRequest.constraint].
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            governed_resource (google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource):
+                A Google Cloud resource governed by the organization
+                policies of the
+                [AnalyzeOrgPolicyGovernedAssetsRequest.constraint][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsRequest.constraint].
+
+                This field is a member of `oneof`_ ``governed_asset``.
+            governed_iam_policy (google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedIamPolicy):
+                An IAM policy governed by the organization policies of the
+                [AnalyzeOrgPolicyGovernedAssetsRequest.constraint][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsRequest.constraint].
+
+                This field is a member of `oneof`_ ``governed_asset``.
+            consolidated_policy (google.cloud.asset_v1.types.AnalyzerOrgPolicy):
+                The consolidated policy for the analyzed asset. The
+                consolidated policy is computed by merging and evaluating
+                [AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset.policy_bundle][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset.policy_bundle].
+                The evaluation will respect the organization policy
+                `hierarchy
+                rules <https://cloud.google.com/resource-manager/docs/organization-policy/understanding-hierarchy>`__.
+            policy_bundle (MutableSequence[google.cloud.asset_v1.types.AnalyzerOrgPolicy]):
+                The ordered list of all organization policies from the
+                [AnalyzeOrgPoliciesResponse.OrgPolicyResult.consolidated_policy.attached_resource][]
+                to the scope specified in the request.
+
+                If the constraint is defined with default policy, it will
+                also appear in the list.
+        """
+
+        governed_resource: "AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=1,
+                oneof="governed_asset",
+                message="AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource",
+            )
+        )
+        governed_iam_policy: "AnalyzeOrgPolicyGovernedAssetsResponse.GovernedIamPolicy" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="governed_asset",
+            message="AnalyzeOrgPolicyGovernedAssetsResponse.GovernedIamPolicy",
+        )
+        consolidated_policy: "AnalyzerOrgPolicy" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="AnalyzerOrgPolicy",
+        )
+        policy_bundle: MutableSequence["AnalyzerOrgPolicy"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="AnalyzerOrgPolicy",
+        )
+
+    @property
+    def raw_page(self):
+        return self
+
+    governed_assets: MutableSequence[GovernedAsset] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=GovernedAsset,
+    )
+    constraint: "AnalyzerOrgPolicyConstraint" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="AnalyzerOrgPolicyConstraint",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

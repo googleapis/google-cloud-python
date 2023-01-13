@@ -35,8 +35,14 @@ __protobuf__ = proto.module(
 
 
 class Asset(proto.Message):
-    r"""Cloud asset. This includes all Google Cloud Platform
-    resources, Cloud IAM policies, and other non-GCP assets.
+    r"""An asset in Google Cloud. An asset can be any resource in the Google
+    Cloud `resource
+    hierarchy <https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>`__,
+    a resource outside the Google Cloud resource hierarchy (such as
+    Google Kubernetes Engine clusters and objects), or a policy (e.g.
+    IAM policy). See `Supported asset
+    types <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
+    for more information.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -47,44 +53,63 @@ class Asset(proto.Message):
 
     Attributes:
         name (str):
-            The full name of the asset. For example:
-            ``//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1``.
+            The full name of the asset. Example:
+            ``//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1``
+
             See `Resource
-            Names <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__
+            names <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__
             for more information.
         asset_type (str):
-            Type of the asset. Example:
-            "compute.googleapis.com/Disk".
+            The type of the asset. Example:
+            ``compute.googleapis.com/Disk``
+
+            See `Supported asset
+            types <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
+            for more information.
         resource (google.cloud.asset_v1p5beta1.types.Resource):
-            Representation of the resource.
+            A representation of the resource.
         iam_policy (google.iam.v1.policy_pb2.Policy):
-            Representation of the actual Cloud IAM policy
-            set on a cloud resource. For each resource,
-            there must be at most one Cloud IAM policy set
-            on it.
+            A representation of the IAM policy set on a Google Cloud
+            resource. There can be a maximum of one IAM policy set on
+            any given resource. In addition, IAM policies inherit their
+            granted access scope from any policies set on parent
+            resources in the resource hierarchy. Therefore, the
+            effectively policy is the union of both the policy set on
+            this resource and each policy set on all of the resource's
+            ancestry resource levels in the hierarchy. See `this
+            topic <https://cloud.google.com/iam/help/allow-policies/inheritance>`__
+            for more information.
         org_policy (MutableSequence[google.cloud.orgpolicy.v1.orgpolicy_pb2.Policy]):
-            Representation of the Cloud Organization
-            Policy set on an asset. For each asset, there
-            could be multiple Organization policies with
-            different constraints.
+            A representation of an `organization
+            policy <https://cloud.google.com/resource-manager/docs/organization-policy/overview#organization_policy>`__.
+            There can be more than one organization policy with
+            different constraints set on a given resource.
         access_policy (google.identity.accesscontextmanager.v1.access_policy_pb2.AccessPolicy):
+            Please also refer to the `access policy user
+            guide <https://cloud.google.com/access-context-manager/docs/overview#access-policies>`__.
 
             This field is a member of `oneof`_ ``access_context_policy``.
         access_level (google.identity.accesscontextmanager.v1.access_level_pb2.AccessLevel):
+            Please also refer to the `access level user
+            guide <https://cloud.google.com/access-context-manager/docs/overview#access-levels>`__.
 
             This field is a member of `oneof`_ ``access_context_policy``.
         service_perimeter (google.identity.accesscontextmanager.v1.service_perimeter_pb2.ServicePerimeter):
+            Please also refer to the `service perimeter user
+            guide <https://cloud.google.com/vpc-service-controls/docs/overview>`__.
 
             This field is a member of `oneof`_ ``access_context_policy``.
         ancestors (MutableSequence[str]):
-            Asset's ancestry path in Cloud Resource Manager (CRM)
-            hierarchy, represented as a list of relative resource names.
-            Ancestry path starts with the closest CRM ancestor and ends
-            at root. If the asset is a CRM project/folder/organization,
-            this starts from the asset itself.
+            The ancestry path of an asset in Google Cloud `resource
+            hierarchy <https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>`__,
+            represented as a list of relative resource names. An
+            ancestry path starts with the closest ancestor in the
+            hierarchy and ends at root. If the asset is a project,
+            folder, or organization, the ancestry path starts from the
+            asset itself.
 
-            Example: ["projects/123456789", "folders/5432",
-            "organizations/1234"]
+            Example:
+            ``["projects/123456789", "folders/5432", "organizations/1234"]``
     """
 
     name: str = proto.Field(
@@ -135,46 +160,47 @@ class Asset(proto.Message):
 
 
 class Resource(proto.Message):
-    r"""Representation of a cloud resource.
+    r"""A representation of a Google Cloud resource.
 
     Attributes:
         version (str):
             The API version. Example: "v1".
         discovery_document_uri (str):
             The URL of the discovery document containing the resource's
-            JSON schema. For example:
-            ``"https://www.googleapis.com/discovery/v1/apis/compute/v1/rest"``.
-            It will be left unspecified for resources without a
-            discovery-based API, such as Cloud Bigtable.
+            JSON schema. Example:
+            ``https://www.googleapis.com/discovery/v1/apis/compute/v1/rest``
+
+            This value is unspecified for resources that do not have an
+            API based on a discovery document, such as Cloud Bigtable.
         discovery_name (str):
-            The JSON schema name listed in the discovery
-            document. Example: "Project". It will be left
-            unspecified for resources (such as Cloud
-            Bigtable) without a discovery-based API.
+            The JSON schema name listed in the discovery document.
+            Example: ``Project``
+
+            This value is unspecified for resources that do not have an
+            API based on a discovery document, such as Cloud Bigtable.
         resource_url (str):
-            The REST URL for accessing the resource. An HTTP GET
-            operation using this URL returns the resource itself.
-            Example:
-            ``https://cloudresourcemanager.googleapis.com/v1/projects/my-project-123``.
-            It will be left unspecified for resources without a REST
-            API.
+            The REST URL for accessing the resource. An HTTP ``GET``
+            request using this URL returns the resource itself. Example:
+            ``https://cloudresourcemanager.googleapis.com/v1/projects/my-project-123``
+
+            This value is unspecified for resources without a REST API.
         parent (str):
             The full name of the immediate parent of this resource. See
             `Resource
             Names <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__
             for more information.
 
-            For GCP assets, it is the parent resource defined in the
-            `Cloud IAM policy
+            For Google Cloud assets, this value is the parent resource
+            defined in the `IAM policy
             hierarchy <https://cloud.google.com/iam/docs/overview#policy_hierarchy>`__.
-            For example:
-            ``"//cloudresourcemanager.googleapis.com/projects/my_project_123"``.
+            Example:
+            ``//cloudresourcemanager.googleapis.com/projects/my_project_123``
 
-            For third-party assets, it is up to the users to define.
+            For third-party assets, this field may be set differently.
         data (google.protobuf.struct_pb2.Struct):
             The content of the resource, in which some
-            sensitive fields are scrubbed away and may not
-            be present.
+            sensitive fields are removed and may not be
+            present.
     """
 
     version: str = proto.Field(

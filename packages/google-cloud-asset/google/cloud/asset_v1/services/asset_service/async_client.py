@@ -1144,10 +1144,10 @@ class AssetServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAllResourcesAsyncPager:
-        r"""Searches all Cloud resources within the specified scope, such as
-        a project, folder, or organization. The caller must be granted
-        the ``cloudasset.assets.searchAllResources`` permission on the
-        desired scope, otherwise the request will be rejected.
+        r"""Searches all Google Cloud resources within the specified scope,
+        such as a project, folder, or organization. The caller must be
+        granted the ``cloudasset.assets.searchAllResources`` permission
+        on the desired scope, otherwise the request will be rejected.
 
         .. code-block:: python
 
@@ -1205,62 +1205,64 @@ class AssetServiceAsyncClient:
 
                 Examples:
 
-                -  ``name:Important`` to find Cloud resources whose name
-                   contains "Important" as a word.
-                -  ``name=Important`` to find the Cloud resource whose
-                   name is exactly "Important".
-                -  ``displayName:Impor*`` to find Cloud resources whose
-                   display name contains "Impor" as a prefix of any word
-                   in the field.
-                -  ``location:us-west*`` to find Cloud resources whose
-                   location contains both "us" and "west" as prefixes.
-                -  ``labels:prod`` to find Cloud resources whose labels
-                   contain "prod" as a key or value.
-                -  ``labels.env:prod`` to find Cloud resources that have
-                   a label "env" and its value is "prod".
-                -  ``labels.env:*`` to find Cloud resources that have a
-                   label "env".
-                -  ``kmsKey:key`` to find Cloud resources encrypted with
-                   a customer-managed encryption key whose name contains
-                   "key" as a word. This field is deprecated. Please use
-                   the ``kmsKeys`` field to retrieve KMS key
-                   information.
-                -  ``kmsKeys:key`` to find Cloud resources encrypted
-                   with customer-managed encryption keys whose name
-                   contains the word "key".
-                -  ``relationships:instance-group-1`` to find Cloud
-                   resources that have relationships with
+                -  ``name:Important`` to find Google Cloud resources
+                   whose name contains "Important" as a word.
+                -  ``name=Important`` to find the Google Cloud resource
+                   whose name is exactly "Important".
+                -  ``displayName:Impor*`` to find Google Cloud resources
+                   whose display name contains "Impor" as a prefix of
+                   any word in the field.
+                -  ``location:us-west*`` to find Google Cloud resources
+                   whose location contains both "us" and "west" as
+                   prefixes.
+                -  ``labels:prod`` to find Google Cloud resources whose
+                   labels contain "prod" as a key or value.
+                -  ``labels.env:prod`` to find Google Cloud resources
+                   that have a label "env" and its value is "prod".
+                -  ``labels.env:*`` to find Google Cloud resources that
+                   have a label "env".
+                -  ``kmsKey:key`` to find Google Cloud resources
+                   encrypted with a customer-managed encryption key
+                   whose name contains "key" as a word. This field is
+                   deprecated. Please use the ``kmsKeys`` field to
+                   retrieve Cloud KMS key information.
+                -  ``kmsKeys:key`` to find Google Cloud resources
+                   encrypted with customer-managed encryption keys whose
+                   name contains the word "key".
+                -  ``relationships:instance-group-1`` to find Google
+                   Cloud resources that have relationships with
                    "instance-group-1" in the related resource name.
                 -  ``relationships:INSTANCE_TO_INSTANCEGROUP`` to find
-                   compute instances that have relationships of type
-                   "INSTANCE_TO_INSTANCEGROUP".
+                   Compute Engine instances that have relationships of
+                   type "INSTANCE_TO_INSTANCEGROUP".
                 -  ``relationships.INSTANCE_TO_INSTANCEGROUP:instance-group-1``
-                   to find compute instances that have relationships
-                   with "instance-group-1" in the compute instance group
-                   resource name, for relationship type
-                   "INSTANCE_TO_INSTANCEGROUP".
-                -  ``state:ACTIVE`` to find Cloud resources whose state
-                   contains "ACTIVE" as a word.
-                -  ``NOT state:ACTIVE`` to find Cloud resources whose
-                   state doesn't contain "ACTIVE" as a word.
-                -  ``createTime<1609459200`` to find Cloud resources
-                   that were created before "2021-01-01 00:00:00 UTC".
-                   1609459200 is the epoch timestamp of "2021-01-01
-                   00:00:00 UTC" in seconds.
-                -  ``updateTime>1609459200`` to find Cloud resources
-                   that were updated after "2021-01-01 00:00:00 UTC".
-                   1609459200 is the epoch timestamp of "2021-01-01
-                   00:00:00 UTC" in seconds.
-                -  ``Important`` to find Cloud resources that contain
-                   "Important" as a word in any of the searchable
-                   fields.
-                -  ``Impor*`` to find Cloud resources that contain
-                   "Impor" as a prefix of any word in any of the
+                   to find Compute Engine instances that have
+                   relationships with "instance-group-1" in the Compute
+                   Engine instance group resource name, for relationship
+                   type "INSTANCE_TO_INSTANCEGROUP".
+                -  ``state:ACTIVE`` to find Google Cloud resources whose
+                   state contains "ACTIVE" as a word.
+                -  ``NOT state:ACTIVE`` to find Google Cloud resources
+                   whose state doesn't contain "ACTIVE" as a word.
+                -  ``createTime<1609459200`` to find Google Cloud
+                   resources that were created before "2021-01-01
+                   00:00:00 UTC". 1609459200 is the epoch timestamp of
+                   "2021-01-01 00:00:00 UTC" in seconds.
+                -  ``updateTime>1609459200`` to find Google Cloud
+                   resources that were updated after "2021-01-01
+                   00:00:00 UTC". 1609459200 is the epoch timestamp of
+                   "2021-01-01 00:00:00 UTC" in seconds.
+                -  ``Important`` to find Google Cloud resources that
+                   contain "Important" as a word in any of the
+                   searchable fields.
+                -  ``Impor*`` to find Google Cloud resources that
+                   contain "Impor" as a prefix of any word in any of the
                    searchable fields.
                 -  ``Important location:(us-west1 OR global)`` to find
-                   Cloud resources that contain "Important" as a word in
-                   any of the searchable fields and are also located in
-                   the "us-west1" region or the "global" location.
+                   Google Cloud resources that contain "Important" as a
+                   word in any of the searchable fields and are also
+                   located in the "us-west1" region or the "global"
+                   location.
 
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1437,11 +1439,11 @@ class AssetServiceAsyncClient:
                 for more information. If not specified or empty, it will
                 search all the IAM policies within the specified
                 ``scope``. Note that the query string is compared
-                against each Cloud IAM policy binding, including its
-                principals, roles, and Cloud IAM conditions. The
-                returned Cloud IAM policies will only contain the
-                bindings that match your query. To learn more about the
-                IAM policy structure, see the `IAM policy
+                against each IAM policy binding, including its
+                principals, roles, and IAM conditions. The returned IAM
+                policies will only contain the bindings that match your
+                query. To learn more about the IAM policy structure, see
+                the `IAM policy
                 documentation <https://cloud.google.com/iam/help/allow-policies/structure>`__.
 
                 Examples:
@@ -1617,7 +1619,7 @@ class AssetServiceAsyncClient:
         Returns:
             google.cloud.asset_v1.types.AnalyzeIamPolicyResponse:
                 A response message for
-                [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy].
+                   [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy].
 
         """
         # Create or coerce a protobuf request object.
@@ -1733,10 +1735,8 @@ class AssetServiceAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.asset_v1.types.AnalyzeIamPolicyLongrunningResponse`
-                A response message for
-                [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning].
+                The result type for the operation will be :class:`google.cloud.asset_v1.types.AnalyzeIamPolicyLongrunningResponse` A response message for
+                   [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning].
 
         """
         # Create or coerce a protobuf request object.
@@ -2035,7 +2035,7 @@ class AssetServiceAsyncClient:
                 final component of the saved query's resource name.
 
                 This value should be 4-63 characters, and valid
-                characters are /[a-z][0-9]-/.
+                characters are ``[a-z][0-9]-``.
 
                 Notice that this field is required in the saved query
                 creation, and the ``name`` field of the ``saved_query``
@@ -2619,7 +2619,7 @@ class AssetServiceAsyncClient:
         Returns:
             google.cloud.asset_v1.types.BatchGetEffectiveIamPoliciesResponse:
                 A response message for
-                [AssetService.BatchGetEffectiveIamPolicies][google.cloud.asset.v1.AssetService.BatchGetEffectiveIamPolicies].
+                   [AssetService.BatchGetEffectiveIamPolicies][google.cloud.asset.v1.AssetService.BatchGetEffectiveIamPolicies].
 
         """
         # Create or coerce a protobuf request object.
@@ -2653,6 +2653,486 @@ class AssetServiceAsyncClient:
             request,
             retry=retry,
             timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def analyze_org_policies(
+        self,
+        request: Optional[Union[asset_service.AnalyzeOrgPoliciesRequest, dict]] = None,
+        *,
+        scope: Optional[str] = None,
+        constraint: Optional[str] = None,
+        filter: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.AnalyzeOrgPoliciesAsyncPager:
+        r"""Analyzes organization policies under a scope.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import asset_v1
+
+            async def sample_analyze_org_policies():
+                # Create a client
+                client = asset_v1.AssetServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.AnalyzeOrgPoliciesRequest(
+                    scope="scope_value",
+                    constraint="constraint_value",
+                )
+
+                # Make the request
+                page_result = client.analyze_org_policies(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.asset_v1.types.AnalyzeOrgPoliciesRequest, dict]]):
+                The request object. A request message for
+                [AssetService.AnalyzeOrgPolicies][google.cloud.asset.v1.AssetService.AnalyzeOrgPolicies].
+            scope (:class:`str`):
+                Required. The organization to scope the request. Only
+                organization policies within the scope will be analyzed.
+
+                -  organizations/{ORGANIZATION_NUMBER} (e.g.,
+                   "organizations/123456")
+
+                This corresponds to the ``scope`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            constraint (:class:`str`):
+                Required. The name of the constraint
+                to analyze organization policies for.
+                The response only contains analyzed
+                organization policies for the provided
+                constraint.
+
+                This corresponds to the ``constraint`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            filter (:class:`str`):
+                The expression to filter
+                [AnalyzeOrgPoliciesResponse.org_policy_results][google.cloud.asset.v1.AnalyzeOrgPoliciesResponse.org_policy_results].
+                The only supported field is
+                ``consolidated_policy.attached_resource``, and the only
+                supported operator is ``=``.
+
+                Example:
+                consolidated_policy.attached_resource="//cloudresourcemanager.googleapis.com/folders/001"
+                will return the org policy results of"folders/001".
+
+                This corresponds to the ``filter`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.asset_v1.services.asset_service.pagers.AnalyzeOrgPoliciesAsyncPager:
+                The response message for
+                   [AssetService.AnalyzeOrgPolicies][google.cloud.asset.v1.AssetService.AnalyzeOrgPolicies].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([scope, constraint, filter])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = asset_service.AnalyzeOrgPoliciesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if scope is not None:
+            request.scope = scope
+        if constraint is not None:
+            request.constraint = constraint
+        if filter is not None:
+            request.filter = filter
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.analyze_org_policies,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("scope", request.scope),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.AnalyzeOrgPoliciesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def analyze_org_policy_governed_containers(
+        self,
+        request: Optional[
+            Union[asset_service.AnalyzeOrgPolicyGovernedContainersRequest, dict]
+        ] = None,
+        *,
+        scope: Optional[str] = None,
+        constraint: Optional[str] = None,
+        filter: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.AnalyzeOrgPolicyGovernedContainersAsyncPager:
+        r"""Analyzes organization policies governed containers
+        (projects, folders or organization) under a scope.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import asset_v1
+
+            async def sample_analyze_org_policy_governed_containers():
+                # Create a client
+                client = asset_v1.AssetServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.AnalyzeOrgPolicyGovernedContainersRequest(
+                    scope="scope_value",
+                    constraint="constraint_value",
+                )
+
+                # Make the request
+                page_result = client.analyze_org_policy_governed_containers(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedContainersRequest, dict]]):
+                The request object. A request message for
+                [AssetService.AnalyzeOrgPolicyGovernedContainers][google.cloud.asset.v1.AssetService.AnalyzeOrgPolicyGovernedContainers].
+            scope (:class:`str`):
+                Required. The organization to scope the request. Only
+                organization policies within the scope will be analyzed.
+                The output containers will also be limited to the ones
+                governed by those in-scope organization policies.
+
+                -  organizations/{ORGANIZATION_NUMBER} (e.g.,
+                   "organizations/123456")
+
+                This corresponds to the ``scope`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            constraint (:class:`str`):
+                Required. The name of the constraint
+                to analyze governed containers for. The
+                analysis only contains organization
+                policies for the provided constraint.
+
+                This corresponds to the ``constraint`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            filter (:class:`str`):
+                The expression to filter the governed containers in
+                result. The only supported field is ``parent``, and the
+                only supported operator is ``=``.
+
+                Example:
+                parent="//cloudresourcemanager.googleapis.com/folders/001"
+                will return all containers under "folders/001".
+
+                This corresponds to the ``filter`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.asset_v1.services.asset_service.pagers.AnalyzeOrgPolicyGovernedContainersAsyncPager:
+                The response message for
+                   [AssetService.AnalyzeOrgPolicyGovernedContainers][google.cloud.asset.v1.AssetService.AnalyzeOrgPolicyGovernedContainers].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([scope, constraint, filter])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if scope is not None:
+            request.scope = scope
+        if constraint is not None:
+            request.constraint = constraint
+        if filter is not None:
+            request.filter = filter
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.analyze_org_policy_governed_containers,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("scope", request.scope),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.AnalyzeOrgPolicyGovernedContainersAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def analyze_org_policy_governed_assets(
+        self,
+        request: Optional[
+            Union[asset_service.AnalyzeOrgPolicyGovernedAssetsRequest, dict]
+        ] = None,
+        *,
+        scope: Optional[str] = None,
+        constraint: Optional[str] = None,
+        filter: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.AnalyzeOrgPolicyGovernedAssetsAsyncPager:
+        r"""Analyzes organization policies governed assets (Google Cloud
+        resources or policies) under a scope. This RPC supports custom
+        constraints and the following 10 canned constraints:
+
+        -  storage.uniformBucketLevelAccess
+        -  iam.disableServiceAccountKeyCreation
+        -  iam.allowedPolicyMemberDomains
+        -  compute.vmExternalIpAccess
+        -  appengine.enforceServiceAccountActAsCheck
+        -  gcp.resourceLocations
+        -  compute.trustedImageProjects
+        -  compute.skipDefaultNetworkCreation
+        -  compute.requireOsLogin
+        -  compute.disableNestedVirtualization
+
+        This RPC only returns either resources of types supported by
+        `searchable asset
+        types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types>`__,
+        or IAM policies.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import asset_v1
+
+            async def sample_analyze_org_policy_governed_assets():
+                # Create a client
+                client = asset_v1.AssetServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.AnalyzeOrgPolicyGovernedAssetsRequest(
+                    scope="scope_value",
+                    constraint="constraint_value",
+                )
+
+                # Make the request
+                page_result = client.analyze_org_policy_governed_assets(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedAssetsRequest, dict]]):
+                The request object. A request message for
+                [AssetService.AnalyzeOrgPolicyGovernedAssets][google.cloud.asset.v1.AssetService.AnalyzeOrgPolicyGovernedAssets].
+            scope (:class:`str`):
+                Required. The organization to scope the request. Only
+                organization policies within the scope will be analyzed.
+                The output assets will also be limited to the ones
+                governed by those in-scope organization policies.
+
+                -  organizations/{ORGANIZATION_NUMBER} (e.g.,
+                   "organizations/123456")
+
+                This corresponds to the ``scope`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            constraint (:class:`str`):
+                Required. The name of the constraint
+                to analyze governed assets for. The
+                analysis only contains analyzed
+                organization policies for the provided
+                constraint.
+
+                This corresponds to the ``constraint`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            filter (:class:`str`):
+                The expression to filter the governed assets in result.
+                The only supported fields for governed resources are
+                ``governed_resource.project`` and
+                ``governed_resource.folders``. The only supported fields
+                for governed iam policies are
+                ``governed_iam_policy.project`` and
+                ``governed_iam_policy.folders``. The only supported
+                operator is ``=``.
+
+                Example 1: governed_resource.project="projects/12345678"
+                filter will return all governed resources under
+                projects/12345678 including the project ifself, if
+                applicable.
+
+                Example 2:
+                governed_iam_policy.folders="folders/12345678" filter
+                will return all governed iam policies under
+                folders/12345678, if applicable.
+
+                This corresponds to the ``filter`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.asset_v1.services.asset_service.pagers.AnalyzeOrgPolicyGovernedAssetsAsyncPager:
+                The response message for
+                   [AssetService.AnalyzeOrgPolicyGovernedAssets][google.cloud.asset.v1.AssetService.AnalyzeOrgPolicyGovernedAssets].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([scope, constraint, filter])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if scope is not None:
+            request.scope = scope
+        if constraint is not None:
+            request.constraint = constraint
+        if filter is not None:
+            request.filter = filter
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.analyze_org_policy_governed_assets,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("scope", request.scope),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.AnalyzeOrgPolicyGovernedAssetsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
             metadata=metadata,
         )
 

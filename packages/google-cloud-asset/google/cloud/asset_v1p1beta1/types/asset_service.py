@@ -41,9 +41,9 @@ class SearchAllResourcesRequest(proto.Message):
             value must be:
 
             -  Organization number (such as "organizations/123")
-            -  Folder number(such as "folders/1234")
+            -  Folder number (such as "folders/1234")
             -  Project number (such as "projects/12345")
-            -  Project id (such as "projects/abc")
+            -  Project ID (such as "projects/abc")
         query (str):
             Optional. The query statement.
         asset_types (MutableSequence[str]):
@@ -64,12 +64,11 @@ class SearchAllResourcesRequest(proto.Message):
             the previous response. The values of all other method
             parameters, must be identical to those in the previous call.
         order_by (str):
-            Optional. A comma separated list of fields
-            specifying the sorting order of the results. The
-            default order is ascending. Add " desc" after
-            the field name to indicate descending order.
-            Redundant space characters are ignored. For
-            example, "  foo ,  bar  desc  ".
+            Optional. A comma separated list of fields specifying the
+            sorting order of the results. The default order is
+            ascending. Add ``DESC`` after the field name to indicate
+            descending order. Redundant space characters are ignored.
+            For example, ``location DESC , name``.
     """
 
     scope: str = proto.Field(
@@ -137,9 +136,9 @@ class SearchAllIamPoliciesRequest(proto.Message):
             value must be:
 
             -  Organization number (such as "organizations/123")
-            -  Folder number(such as "folders/1234")
+            -  Folder number (such as "folders/1234")
             -  Project number (such as "projects/12345")
-            -  Project id (such as "projects/abc")
+            -  Project ID (such as "projects/abc")
         query (str):
             Optional. The query statement. Examples:
 
@@ -183,7 +182,7 @@ class SearchAllIamPoliciesResponse(proto.Message):
 
     Attributes:
         results (MutableSequence[google.cloud.asset_v1p1beta1.types.IamPolicySearchResult]):
-            A list of IamPolicy that match the search
+            A list of IAM policies that match the search
             query. Related information such as the
             associated resource is returned along with the
             policy.
