@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.27.0](https://github.com/googleapis/python-spanner/compare/v3.26.0...v3.27.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#879](https://github.com/googleapis/python-spanner/issues/879)) ([4b8c2cf](https://github.com/googleapis/python-spanner/commit/4b8c2cf6c30892ad977e3db6c3a147a93af649e6))
+* Add typing to proto.Message based class attributes ([4683d10](https://github.com/googleapis/python-spanner/commit/4683d10c75e24aa222591d6001e07aacb6b4ee46))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([4683d10](https://github.com/googleapis/python-spanner/commit/4683d10c75e24aa222591d6001e07aacb6b4ee46))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([4683d10](https://github.com/googleapis/python-spanner/commit/4683d10c75e24aa222591d6001e07aacb6b4ee46))
+* Drop packaging dependency ([4683d10](https://github.com/googleapis/python-spanner/commit/4683d10c75e24aa222591d6001e07aacb6b4ee46))
+* Drop usage of pkg_resources ([4683d10](https://github.com/googleapis/python-spanner/commit/4683d10c75e24aa222591d6001e07aacb6b4ee46))
+* Fix timeout default values ([4683d10](https://github.com/googleapis/python-spanner/commit/4683d10c75e24aa222591d6001e07aacb6b4ee46))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([4683d10](https://github.com/googleapis/python-spanner/commit/4683d10c75e24aa222591d6001e07aacb6b4ee46))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([4683d10](https://github.com/googleapis/python-spanner/commit/4683d10c75e24aa222591d6001e07aacb6b4ee46))
+
 ## [3.26.0](https://github.com/googleapis/python-spanner/compare/v3.25.0...v3.26.0) (2022-12-15)
 
 
