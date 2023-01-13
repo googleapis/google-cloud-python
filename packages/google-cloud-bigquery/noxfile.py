@@ -300,6 +300,11 @@ def prerelease_deps(session):
         "--upgrade",
         "pandas",
     )
+    session.install(
+        "--pre",
+        "--upgrade",
+        "git+https://github.com/pypa/packaging.git",
+    )
 
     session.install(
         "--pre",

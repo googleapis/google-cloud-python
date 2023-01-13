@@ -17,6 +17,7 @@ ipython==7.0.1
 opentelemetry-api==1.1.0
 opentelemetry-instrumentation==0.20b0
 opentelemetry-sdk==1.1.0
+packaging==20.0.0
 pandas==1.1.0
 proto-plus==1.22.0
 protobuf==3.19.5
