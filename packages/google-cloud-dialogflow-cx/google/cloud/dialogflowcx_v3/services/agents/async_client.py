@@ -290,7 +290,7 @@ class AgentsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3.services.agents.pagers.ListAgentsAsyncPager:
                 The response message for
-                [Agents.ListAgents][google.cloud.dialogflow.cx.v3.Agents.ListAgents].
+                   [Agents.ListAgents][google.cloud.dialogflow.cx.v3.Agents.ListAgents].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -881,10 +881,8 @@ class AgentsAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflowcx_v3.types.ExportAgentResponse`
-                The response message for
-                [Agents.ExportAgent][google.cloud.dialogflow.cx.v3.Agents.ExportAgent].
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.ExportAgentResponse` The response message for
+                   [Agents.ExportAgent][google.cloud.dialogflow.cx.v3.Agents.ExportAgent].
 
         """
         # Create or coerce a protobuf request object.
@@ -1096,7 +1094,7 @@ class AgentsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3.types.AgentValidationResult:
                 The response message for
-                [Agents.GetAgentValidationResult][google.cloud.dialogflow.cx.v3.Agents.GetAgentValidationResult].
+                   [Agents.GetAgentValidationResult][google.cloud.dialogflow.cx.v3.Agents.GetAgentValidationResult].
 
         """
         # Create or coerce a protobuf request object.
@@ -1185,7 +1183,7 @@ class AgentsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3.types.AgentValidationResult:
                 The response message for
-                [Agents.GetAgentValidationResult][google.cloud.dialogflow.cx.v3.Agents.GetAgentValidationResult].
+                   [Agents.GetAgentValidationResult][google.cloud.dialogflow.cx.v3.Agents.GetAgentValidationResult].
 
         """
         # Create or coerce a protobuf request object.

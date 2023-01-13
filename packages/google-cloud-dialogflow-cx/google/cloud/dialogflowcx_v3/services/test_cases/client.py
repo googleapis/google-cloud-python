@@ -728,7 +728,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3.services.test_cases.pagers.ListTestCasesPager:
                 The response message for
-                [TestCases.ListTestCases][google.cloud.dialogflow.cx.v3.TestCases.ListTestCases].
+                   [TestCases.ListTestCases][google.cloud.dialogflow.cx.v3.TestCases.ListTestCases].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1269,10 +1269,8 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflowcx_v3.types.RunTestCaseResponse`
-                The response message for
-                [TestCases.RunTestCase][google.cloud.dialogflow.cx.v3.TestCases.RunTestCase].
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.RunTestCaseResponse` The response message for
+                   [TestCases.RunTestCase][google.cloud.dialogflow.cx.v3.TestCases.RunTestCase].
 
         """
         # Create or coerce a protobuf request object.
@@ -1377,10 +1375,8 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflowcx_v3.types.BatchRunTestCasesResponse`
-                The response message for
-                [TestCases.BatchRunTestCases][google.cloud.dialogflow.cx.v3.TestCases.BatchRunTestCases].
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.BatchRunTestCasesResponse` The response message for
+                   [TestCases.BatchRunTestCases][google.cloud.dialogflow.cx.v3.TestCases.BatchRunTestCases].
 
         """
         # Create or coerce a protobuf request object.
@@ -1470,7 +1466,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3.types.CalculateCoverageResponse:
                 The response message for
-                [TestCases.CalculateCoverage][google.cloud.dialogflow.cx.v3.TestCases.CalculateCoverage].
+                   [TestCases.CalculateCoverage][google.cloud.dialogflow.cx.v3.TestCases.CalculateCoverage].
 
         """
         # Create or coerce a protobuf request object.
@@ -1570,10 +1566,8 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflowcx_v3.types.ImportTestCasesResponse`
-                The response message for
-                [TestCases.ImportTestCases][google.cloud.dialogflow.cx.v3.TestCases.ImportTestCases].
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.ImportTestCasesResponse` The response message for
+                   [TestCases.ImportTestCases][google.cloud.dialogflow.cx.v3.TestCases.ImportTestCases].
 
         """
         # Create or coerce a protobuf request object.
@@ -1680,10 +1674,8 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflowcx_v3.types.ExportTestCasesResponse`
-                The response message for
-                [TestCases.ExportTestCases][google.cloud.dialogflow.cx.v3.TestCases.ExportTestCases].
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.ExportTestCasesResponse` The response message for
+                   [TestCases.ExportTestCases][google.cloud.dialogflow.cx.v3.TestCases.ExportTestCases].
 
         """
         # Create or coerce a protobuf request object.
@@ -1783,7 +1775,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3.services.test_cases.pagers.ListTestCaseResultsPager:
                 The response message for
-                [TestCases.ListTestCaseResults][google.cloud.dialogflow.cx.v3.TestCases.ListTestCaseResults].
+                   [TestCases.ListTestCaseResults][google.cloud.dialogflow.cx.v3.TestCases.ListTestCaseResults].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

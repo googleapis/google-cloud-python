@@ -277,7 +277,7 @@ class VersionsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3.services.versions.pagers.ListVersionsAsyncPager:
                 The response message for
-                [Versions.ListVersions][google.cloud.dialogflow.cx.v3.Versions.ListVersions].
+                   [Versions.ListVersions][google.cloud.dialogflow.cx.v3.Versions.ListVersions].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -987,7 +987,7 @@ class VersionsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3.types.CompareVersionsResponse:
                 The response message for
-                [Versions.CompareVersions][google.cloud.dialogflow.cx.v3.Versions.CompareVersions].
+                   [Versions.CompareVersions][google.cloud.dialogflow.cx.v3.Versions.CompareVersions].
 
         """
         # Create or coerce a protobuf request object.

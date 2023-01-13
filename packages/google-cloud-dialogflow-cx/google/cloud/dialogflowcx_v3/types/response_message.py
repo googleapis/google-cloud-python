@@ -116,6 +116,11 @@ class ResponseMessage(proto.Message):
             third-party endpoint.
 
             This field is a member of `oneof`_ ``message``.
+        channel (str):
+            The channel which the response is associated with. Clients
+            can specify the channel via
+            [QueryParameters.channel][google.cloud.dialogflow.cx.v3.QueryParameters.channel],
+            and only associated channel response will be returned.
     """
 
     class Text(proto.Message):
@@ -419,6 +424,10 @@ class ResponseMessage(proto.Message):
         number=18,
         oneof="message",
         message=TelephonyTransferCall,
+    )
+    channel: str = proto.Field(
+        proto.STRING,
+        number=19,
     )
 
 

@@ -270,7 +270,7 @@ class ChangelogsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3.services.changelogs.pagers.ListChangelogsAsyncPager:
                 The response message for
-                [Changelogs.ListChangelogs][google.cloud.dialogflow.cx.v3.Changelogs.ListChangelogs].
+                   [Changelogs.ListChangelogs][google.cloud.dialogflow.cx.v3.Changelogs.ListChangelogs].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

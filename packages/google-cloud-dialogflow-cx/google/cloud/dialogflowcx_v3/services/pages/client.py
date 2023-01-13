@@ -627,7 +627,7 @@ class PagesClient(metaclass=PagesClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3.services.pages.pagers.ListPagesPager:
                 The response message for
-                [Pages.ListPages][google.cloud.dialogflow.cx.v3.Pages.ListPages].
+                   [Pages.ListPages][google.cloud.dialogflow.cx.v3.Pages.ListPages].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

@@ -862,7 +862,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3.services.flows.pagers.ListFlowsPager:
                 The response message for
-                [Flows.ListFlows][google.cloud.dialogflow.cx.v3.Flows.ListFlows].
+                   [Flows.ListFlows][google.cloud.dialogflow.cx.v3.Flows.ListFlows].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1374,7 +1374,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3.types.FlowValidationResult:
                 The response message for
-                [Flows.GetFlowValidationResult][google.cloud.dialogflow.cx.v3.Flows.GetFlowValidationResult].
+                   [Flows.GetFlowValidationResult][google.cloud.dialogflow.cx.v3.Flows.GetFlowValidationResult].
 
         """
         # Create or coerce a protobuf request object.
@@ -1464,7 +1464,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3.types.FlowValidationResult:
                 The response message for
-                [Flows.GetFlowValidationResult][google.cloud.dialogflow.cx.v3.Flows.GetFlowValidationResult].
+                   [Flows.GetFlowValidationResult][google.cloud.dialogflow.cx.v3.Flows.GetFlowValidationResult].
 
         """
         # Create or coerce a protobuf request object.
@@ -1581,10 +1581,8 @@ class FlowsClient(metaclass=FlowsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflowcx_v3.types.ImportFlowResponse`
-                The response message for
-                [Flows.ImportFlow][google.cloud.dialogflow.cx.v3.Flows.ImportFlow].
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.ImportFlowResponse` The response message for
+                   [Flows.ImportFlow][google.cloud.dialogflow.cx.v3.Flows.ImportFlow].
 
         """
         # Create or coerce a protobuf request object.
@@ -1691,10 +1689,8 @@ class FlowsClient(metaclass=FlowsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflowcx_v3.types.ExportFlowResponse`
-                The response message for
-                [Flows.ExportFlow][google.cloud.dialogflow.cx.v3.Flows.ExportFlow].
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.ExportFlowResponse` The response message for
+                   [Flows.ExportFlow][google.cloud.dialogflow.cx.v3.Flows.ExportFlow].
 
         """
         # Create or coerce a protobuf request object.

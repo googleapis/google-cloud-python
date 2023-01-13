@@ -299,7 +299,7 @@ class TransitionRouteGroupsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3.services.transition_route_groups.pagers.ListTransitionRouteGroupsAsyncPager:
                 The response message for
-                [TransitionRouteGroups.ListTransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.ListTransitionRouteGroups].
+                   [TransitionRouteGroups.ListTransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.ListTransitionRouteGroups].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

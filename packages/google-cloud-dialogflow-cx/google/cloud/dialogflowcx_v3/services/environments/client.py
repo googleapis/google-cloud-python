@@ -661,7 +661,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3.services.environments.pagers.ListEnvironmentsPager:
                 The response message for
-                [Environments.ListEnvironments][google.cloud.dialogflow.cx.v3.Environments.ListEnvironments].
+                   [Environments.ListEnvironments][google.cloud.dialogflow.cx.v3.Environments.ListEnvironments].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1299,7 +1299,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3.services.environments.pagers.LookupEnvironmentHistoryPager:
                 The response message for
-                [Environments.LookupEnvironmentHistory][google.cloud.dialogflow.cx.v3.Environments.LookupEnvironmentHistory].
+                   [Environments.LookupEnvironmentHistory][google.cloud.dialogflow.cx.v3.Environments.LookupEnvironmentHistory].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1423,10 +1423,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflowcx_v3.types.RunContinuousTestResponse`
-                The response message for
-                [Environments.RunContinuousTest][google.cloud.dialogflow.cx.v3.Environments.RunContinuousTest].
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.RunContinuousTestResponse` The response message for
+                   [Environments.RunContinuousTest][google.cloud.dialogflow.cx.v3.Environments.RunContinuousTest].
 
         """
         # Create or coerce a protobuf request object.
@@ -1654,10 +1652,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflowcx_v3.types.DeployFlowResponse`
-                The response message for
-                [Environments.DeployFlow][google.cloud.dialogflow.cx.v3.Environments.DeployFlow].
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.DeployFlowResponse` The response message for
+                   [Environments.DeployFlow][google.cloud.dialogflow.cx.v3.Environments.DeployFlow].
 
         """
         # Create or coerce a protobuf request object.
