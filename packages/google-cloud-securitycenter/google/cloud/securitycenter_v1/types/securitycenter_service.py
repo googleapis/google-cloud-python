@@ -401,8 +401,8 @@ class GroupAssetsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The name of the parent to group the assets by. Its
-            format is "organizations/[organization_id],
-            folders/[folder_id], or projects/[project_id]".
+            format is "organizations/[organization_id]",
+            "folders/[folder_id]", or "projects/[project_id]".
         filter (str):
             Expression that defines the filter to apply across assets.
             The expression is a list of zero or more restrictions
@@ -1027,8 +1027,8 @@ class ListSourcesRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Resource name of the parent of sources to list.
-            Its format should be "organizations/[organization_id],
-            folders/[folder_id], or projects/[project_id]".
+            Its format should be "organizations/[organization_id]",
+            "folders/[folder_id]", or "projects/[project_id]".
         page_token (str):
             The value returned by the last ``ListSourcesResponse``;
             indicates that this is a continuation of a prior
@@ -1085,9 +1085,11 @@ class ListAssetsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the parent that the listed assets
-            belong to. Its format is "organizations/[organization_id],
-            folders/[folder_id], or projects/[project_id]".
+            Required. The name of the parent resource that contains the
+            assets. The value that you can specify on parent depends on
+            the method in which you specify parent. You can specify one
+            of the following values: "organizations/[organization_id]",
+            "folders/[folder_id]", or "projects/[project_id]".
         filter (str):
             Expression that defines the filter to apply across assets.
             The expression is a list of zero or more restrictions

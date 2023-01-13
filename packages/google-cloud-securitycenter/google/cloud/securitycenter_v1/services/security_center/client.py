@@ -2963,8 +2963,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             parent (str):
                 Required. Resource name of the parent of sources to
                 list. Its format should be
-                "organizations/[organization_id], folders/[folder_id],
-                or projects/[project_id]".
+                "organizations/[organization_id]",
+                "folders/[folder_id]", or "projects/[project_id]".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
