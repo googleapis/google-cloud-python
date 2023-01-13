@@ -179,6 +179,8 @@ def test_manage_table_labels(client, to_delete):
     table.labels = labels
     table = client.create_table(table)
 
+    # TODO(Mattix23): After code sample is updated from cloud.google.com delete this
+
     # [START bigquery_get_table_labels]
     # from google.cloud import bigquery
     # client = bigquery.Client()
