@@ -826,7 +826,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         Returns:
             google.cloud.dialogflow_v2.services.participants.pagers.ListParticipantsPager:
                 The response message for
-                [Participants.ListParticipants][google.cloud.dialogflow.v2.Participants.ListParticipants].
+                   [Participants.ListParticipants][google.cloud.dialogflow.v2.Participants.ListParticipants].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1076,7 +1076,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         Returns:
             google.cloud.dialogflow_v2.types.AnalyzeContentResponse:
                 The response message for
-                [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent].
+                   [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent].
 
         """
         # Create or coerce a protobuf request object.
@@ -1196,6 +1196,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
                 client to the
                 [Participants.StreamingAnalyzeContent][google.cloud.dialogflow.v2.Participants.StreamingAnalyzeContent]
                 method.
+
                 Multiple request messages should be sent in order:
 
                 1.  The first message must contain
@@ -1203,29 +1204,29 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
                 [config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.config]
                 and optionally
                 [query_params][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.query_params].
-                If you want     to receive an audio response, it should
-                also contain
+                If you want to receive an audio response, it should also
+                contain
                 [reply_audio_config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.reply_audio_config].
                 The message must not contain
                 [input][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.input].
                 2.  If
                 [config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.config]
-                in the first message     was set to
+                in the first message
+                    was set to
                 [audio_config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.audio_config],
                 all subsequent messages must contain
                 [input_audio][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.input_audio]
-                to continue     with Speech recognition.
-                    However, note that:
-
+                to continue with Speech recognition. However, note that:
                     * Dialogflow will bill you for the audio so far.
                     * Dialogflow discards all Speech recognition results
                 in favor of the       text input.
 
                  3. If
                 [StreamingAnalyzeContentRequest.config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.config]
-                in the first message was set    to
+                in the first message was set
+                   to
                 [StreamingAnalyzeContentRequest.text_config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.text_config],
-                then the second message    must contain only
+                then the second message must contain only
                 [input_text][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.input_text].
                 Moreover, you must not send more than two messages.
                  After you sent all input, you must half-close or abort
@@ -1343,7 +1344,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         Returns:
             google.cloud.dialogflow_v2.types.SuggestArticlesResponse:
                 The response message for
-                [Participants.SuggestArticles][google.cloud.dialogflow.v2.Participants.SuggestArticles].
+                   [Participants.SuggestArticles][google.cloud.dialogflow.v2.Participants.SuggestArticles].
 
         """
         # Create or coerce a protobuf request object.
@@ -1447,7 +1448,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         Returns:
             google.cloud.dialogflow_v2.types.SuggestFaqAnswersResponse:
                 The request message for
-                [Participants.SuggestFaqAnswers][google.cloud.dialogflow.v2.Participants.SuggestFaqAnswers].
+                   [Participants.SuggestFaqAnswers][google.cloud.dialogflow.v2.Participants.SuggestFaqAnswers].
 
         """
         # Create or coerce a protobuf request object.
@@ -1551,7 +1552,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         Returns:
             google.cloud.dialogflow_v2.types.SuggestSmartRepliesResponse:
                 The response message for
-                [Participants.SuggestSmartReplies][google.cloud.dialogflow.v2.Participants.SuggestSmartReplies].
+                   [Participants.SuggestSmartReplies][google.cloud.dialogflow.v2.Participants.SuggestSmartReplies].
 
         """
         # Create or coerce a protobuf request object.

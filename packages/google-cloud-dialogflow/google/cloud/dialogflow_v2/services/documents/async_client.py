@@ -278,7 +278,7 @@ class DocumentsAsyncClient:
         Returns:
             google.cloud.dialogflow_v2.services.documents.pagers.ListDocumentsAsyncPager:
                 Response message for
-                [Documents.ListDocuments][google.cloud.dialogflow.v2.Documents.ListDocuments].
+                   [Documents.ListDocuments][google.cloud.dialogflow.v2.Documents.ListDocuments].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -392,7 +392,7 @@ class DocumentsAsyncClient:
         Returns:
             google.cloud.dialogflow_v2.types.Document:
                 A knowledge document to be used by a
-                [KnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBase].
+                   [KnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBase].
 
                    For more information, see the [knowledge base
                    guide](\ https://cloud.google.com/dialogflow/docs/how/knowledge-bases).
@@ -529,10 +529,8 @@ class DocumentsAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflow_v2.types.Document` A
-                knowledge document to be used by a
-                [KnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBase].
+                The result type for the operation will be :class:`google.cloud.dialogflow_v2.types.Document` A knowledge document to be used by a
+                   [KnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBase].
 
                    For more information, see the [knowledge base
                    guide](\ https://cloud.google.com/dialogflow/docs/how/knowledge-bases).
@@ -669,10 +667,8 @@ class DocumentsAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflow_v2.types.ImportDocumentsResponse`
-                Response message for
-                [Documents.ImportDocuments][google.cloud.dialogflow.v2.Documents.ImportDocuments].
+                The result type for the operation will be :class:`google.cloud.dialogflow_v2.types.ImportDocumentsResponse` Response message for
+                   [Documents.ImportDocuments][google.cloud.dialogflow.v2.Documents.ImportDocuments].
 
         """
         # Create or coerce a protobuf request object.
@@ -929,10 +925,8 @@ class DocumentsAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflow_v2.types.Document` A
-                knowledge document to be used by a
-                [KnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBase].
+                The result type for the operation will be :class:`google.cloud.dialogflow_v2.types.Document` A knowledge document to be used by a
+                   [KnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBase].
 
                    For more information, see the [knowledge base
                    guide](\ https://cloud.google.com/dialogflow/docs/how/knowledge-bases).
@@ -1086,10 +1080,8 @@ class DocumentsAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflow_v2.types.Document` A
-                knowledge document to be used by a
-                [KnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBase].
+                The result type for the operation will be :class:`google.cloud.dialogflow_v2.types.Document` A knowledge document to be used by a
+                   [KnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBase].
 
                    For more information, see the [knowledge base
                    guide](\ https://cloud.google.com/dialogflow/docs/how/knowledge-bases).
@@ -1215,10 +1207,8 @@ class DocumentsAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflow_v2.types.Document` A
-                knowledge document to be used by a
-                [KnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBase].
+                The result type for the operation will be :class:`google.cloud.dialogflow_v2.types.Document` A knowledge document to be used by a
+                   [KnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBase].
 
                    For more information, see the [knowledge base
                    guide](\ https://cloud.google.com/dialogflow/docs/how/knowledge-bases).

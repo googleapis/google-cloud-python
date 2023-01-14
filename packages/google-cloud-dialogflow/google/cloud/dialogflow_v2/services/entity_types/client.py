@@ -516,7 +516,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         Returns:
             google.cloud.dialogflow_v2.services.entity_types.pagers.ListEntityTypesPager:
                 The response message for
-                [EntityTypes.ListEntityTypes][google.cloud.dialogflow.v2.EntityTypes.ListEntityTypes].
+                   [EntityTypes.ListEntityTypes][google.cloud.dialogflow.v2.EntityTypes.ListEntityTypes].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1149,10 +1149,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflow_v2.types.BatchUpdateEntityTypesResponse`
-                The response message for
-                [EntityTypes.BatchUpdateEntityTypes][google.cloud.dialogflow.v2.EntityTypes.BatchUpdateEntityTypes].
+                The result type for the operation will be :class:`google.cloud.dialogflow_v2.types.BatchUpdateEntityTypesResponse` The response message for
+                   [EntityTypes.BatchUpdateEntityTypes][google.cloud.dialogflow.v2.EntityTypes.BatchUpdateEntityTypes].
 
         """
         # Create or coerce a protobuf request object.

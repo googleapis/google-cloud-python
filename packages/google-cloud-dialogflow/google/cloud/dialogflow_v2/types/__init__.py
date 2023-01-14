@@ -71,6 +71,8 @@ from .conversation import (
     ListConversationsResponse,
     ListMessagesRequest,
     ListMessagesResponse,
+    SuggestConversationSummaryRequest,
+    SuggestConversationSummaryResponse,
 )
 from .conversation_dataset import (
     ConversationDataset,
@@ -318,6 +320,8 @@ __all__ = (
     "ListConversationsResponse",
     "ListMessagesRequest",
     "ListMessagesResponse",
+    "SuggestConversationSummaryRequest",
+    "SuggestConversationSummaryResponse",
     "ConversationDataset",
     "ConversationInfo",
     "CreateConversationDatasetOperationMetadata",

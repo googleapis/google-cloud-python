@@ -55,6 +55,7 @@ class Fulfillment(proto.Message):
         display_name (str):
             Optional. The human-readable name of the
             fulfillment, unique within the agent.
+
             This field is not used for Fulfillment in an
             Environment.
         generic_web_service (google.cloud.dialogflow_v2.types.Fulfillment.GenericWebService):

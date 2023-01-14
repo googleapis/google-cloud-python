@@ -816,8 +816,9 @@ class ConversationDatasetsAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.dialogflow_v2.types.ImportConversationDataOperationResponse` Response used for [ConversationDatasets.ImportConversationData][google.cloud.dialogflow.v2.ConversationDatasets.ImportConversationData] long
-                   running operation.
+                The result type for the operation will be :class:`google.cloud.dialogflow_v2.types.ImportConversationDataOperationResponse` Response used for
+                   [ConversationDatasets.ImportConversationData][google.cloud.dialogflow.v2.ConversationDatasets.ImportConversationData]
+                   long running operation.
 
         """
         # Create or coerce a protobuf request object.

@@ -153,6 +153,11 @@ class ConversationsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.suggest_conversation_summary: gapic_v1.method.wrap_method(
+                self.suggest_conversation_summary,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -211,6 +216,18 @@ class ConversationsTransport(abc.ABC):
         Union[
             conversation.ListMessagesResponse,
             Awaitable[conversation.ListMessagesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def suggest_conversation_summary(
+        self,
+    ) -> Callable[
+        [gcd_conversation.SuggestConversationSummaryRequest],
+        Union[
+            gcd_conversation.SuggestConversationSummaryResponse,
+            Awaitable[gcd_conversation.SuggestConversationSummaryResponse],
         ],
     ]:
         raise NotImplementedError()

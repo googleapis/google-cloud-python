@@ -827,7 +827,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         Returns:
             google.cloud.dialogflow_v2.services.agents.pagers.SearchAgentsPager:
                 The response message for
-                [Agents.SearchAgents][google.cloud.dialogflow.v2.Agents.SearchAgents].
+                   [Agents.SearchAgents][google.cloud.dialogflow.v2.Agents.SearchAgents].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1095,10 +1095,8 @@ class AgentsClient(metaclass=AgentsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflow_v2.types.ExportAgentResponse`
-                The response message for
-                [Agents.ExportAgent][google.cloud.dialogflow.v2.Agents.ExportAgent].
+                The result type for the operation will be :class:`google.cloud.dialogflow_v2.types.ExportAgentResponse` The response message for
+                   [Agents.ExportAgent][google.cloud.dialogflow.v2.Agents.ExportAgent].
 
         """
         # Create or coerce a protobuf request object.

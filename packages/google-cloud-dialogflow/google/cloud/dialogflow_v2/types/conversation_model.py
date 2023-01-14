@@ -170,6 +170,22 @@ class ConversationModelEvaluation(proto.Message):
             smart reply.
 
             This field is a member of `oneof`_ ``metrics``.
+        raw_human_eval_template_csv (str):
+            Output only. Human eval template in csv format. It tooks
+            real-world conversations provided through input dataset,
+            generates example suggestions for customer to verify quality
+            of the model. For Smart Reply, the generated csv file
+            contains columns of Context, (Suggestions,Q1,Q2)*3, Actual
+            reply. Context contains at most 10 latest messages in the
+            conversation prior to the current suggestion. Q1: "Would you
+            send it as the next message of agent?" Evaluated based on
+            whether the suggest is appropriate to be sent by agent in
+            current context. Q2: "Does the suggestion move the
+            conversation closer to resolution?" Evaluated based on
+            whether the suggestion provide solutions, or answers
+            customer's question or collect information from customer to
+            resolve the customer's issue. Actual reply column contains
+            the actual agent reply sent in the context.
     """
 
     name: str = proto.Field(
@@ -195,6 +211,10 @@ class ConversationModelEvaluation(proto.Message):
         number=5,
         oneof="metrics",
         message="SmartReplyMetrics",
+    )
+    raw_human_eval_template_csv: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
 
 

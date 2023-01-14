@@ -32,6 +32,8 @@ __protobuf__ = proto.module(
         "ListMessagesRequest",
         "ListMessagesResponse",
         "ConversationPhoneNumber",
+        "SuggestConversationSummaryRequest",
+        "SuggestConversationSummaryResponse",
     },
 )
 
@@ -384,6 +386,109 @@ class ConversationPhoneNumber(proto.Message):
 
     phone_number: str = proto.Field(
         proto.STRING,
+        number=3,
+    )
+
+
+class SuggestConversationSummaryRequest(proto.Message):
+    r"""The request message for
+    [Conversations.SuggestConversationSummary][google.cloud.dialogflow.v2.Conversations.SuggestConversationSummary].
+
+    Attributes:
+        conversation (str):
+            Required. The conversation to fetch suggestion for. Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>``.
+        latest_message (str):
+            The name of the latest conversation message used as context
+            for compiling suggestion. If empty, the latest message of
+            the conversation will be used.
+
+            Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
+        context_size (int):
+            Max number of messages prior to and including
+            [latest_message] to use as context when compiling the
+            suggestion. By default 500 and at most 1000.
+    """
+
+    conversation: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    latest_message: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    context_size: int = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+
+
+class SuggestConversationSummaryResponse(proto.Message):
+    r"""The response message for
+    [Conversations.SuggestConversationSummary][google.cloud.dialogflow.v2.Conversations.SuggestConversationSummary].
+
+    Attributes:
+        summary (google.cloud.dialogflow_v2.types.SuggestConversationSummaryResponse.Summary):
+            Generated summary.
+        latest_message (str):
+            The name of the latest conversation message used as context
+            for compiling suggestion.
+
+            Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
+        context_size (int):
+            Number of messages prior to and including
+            [last_conversation_message][] used to compile the
+            suggestion. It may be smaller than the
+            [SuggestSummaryRequest.context_size][] field in the request
+            if there weren't that many messages in the conversation.
+    """
+
+    class Summary(proto.Message):
+        r"""Generated summary for a conversation.
+
+        Attributes:
+            text (str):
+                The summary content that is concatenated into
+                one string.
+            text_sections (MutableMapping[str, str]):
+                The summary content that is divided into
+                sections. The key is the section's name and the
+                value is the section's content. There is no
+                specific format for the key or value.
+            answer_record (str):
+                The name of the answer record. Format:
+                "projects/<Project ID>/answerRecords/<Answer
+                Record ID>".
+        """
+
+        text: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        text_sections: MutableMapping[str, str] = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=4,
+        )
+        answer_record: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
+    summary: Summary = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=Summary,
+    )
+    latest_message: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    context_size: int = proto.Field(
+        proto.INT32,
         number=3,
     )
 

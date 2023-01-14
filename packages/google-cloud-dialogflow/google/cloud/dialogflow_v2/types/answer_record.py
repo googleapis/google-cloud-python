@@ -302,6 +302,9 @@ class AgentAssistantFeedback(proto.Message):
             [document_efficiency][google.cloud.dialogflow.v2.AgentAssistantFeedback.document_efficiency]
             is
             [DocumentEfficiency.INEFFICIENT][google.cloud.dialogflow.v2.AgentAssistantFeedback.DocumentEfficiency.INEFFICIENT].
+        summarization_feedback (google.cloud.dialogflow_v2.types.AgentAssistantFeedback.SummarizationFeedback):
+            Optional. Feedback for conversation
+            summarization.
     """
 
     class AnswerRelevance(proto.Enum):
@@ -322,6 +325,34 @@ class AgentAssistantFeedback(proto.Message):
         INEFFICIENT = 1
         EFFICIENT = 2
 
+    class SummarizationFeedback(proto.Message):
+        r"""Feedback for conversation summarization.
+
+        Attributes:
+            start_time (google.protobuf.timestamp_pb2.Timestamp):
+                Timestamp when composing of the summary
+                starts.
+            submit_time (google.protobuf.timestamp_pb2.Timestamp):
+                Timestamp when the summary was submitted.
+            summary_text (str):
+                Text of actual submitted summary.
+        """
+
+        start_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=timestamp_pb2.Timestamp,
+        )
+        submit_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=timestamp_pb2.Timestamp,
+        )
+        summary_text: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
     answer_relevance: AnswerRelevance = proto.Field(
         proto.ENUM,
         number=1,
@@ -336,6 +367,11 @@ class AgentAssistantFeedback(proto.Message):
         proto.ENUM,
         number=3,
         enum=DocumentEfficiency,
+    )
+    summarization_feedback: SummarizationFeedback = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=SummarizationFeedback,
     )
 
 

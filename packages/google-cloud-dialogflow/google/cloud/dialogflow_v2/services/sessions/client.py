@@ -728,6 +728,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 client to the
                 [Sessions.StreamingDetectIntent][google.cloud.dialogflow.v2.Sessions.StreamingDetectIntent]
                 method.
+
                 Multiple request messages should be sent in order:
 
                 1.  The first message must contain
@@ -735,7 +736,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 [query_input][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.query_input]
                 plus optionally
                 [query_params][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.query_params].
-                If the client     wants to receive an audio response, it
+                If the client wants to receive an audio response, it
                 should also contain
                 [output_audio_config][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.output_audio_config].
                 The message must not contain
@@ -744,12 +745,12 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 [query_input][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.query_input]
                 was set to
                 [query_input.audio_config][google.cloud.dialogflow.v2.InputAudioConfig],
-                all subsequent     messages must contain
+                all subsequent messages must contain
                 [input_audio][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.input_audio]
-                to continue with     Speech recognition.
-                    If you decide to rather detect an intent from text
-                input after you     already started Speech recognition,
-                please send a message with
+                to continue with Speech recognition. If you decide to
+                rather detect an     intent from text input after you
+                already started Speech recognition,     please send a
+                message with
                 [query_input.text][google.cloud.dialogflow.v2.QueryInput.text].
                     However, note that:
 

@@ -614,7 +614,7 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         Returns:
             google.cloud.dialogflow_v2.services.conversation_profiles.pagers.ListConversationProfilesPager:
                 The response message for
-                [ConversationProfiles.ListConversationProfiles][google.cloud.dialogflow.v2.ConversationProfiles.ListConversationProfiles].
+                   [ConversationProfiles.ListConversationProfiles][google.cloud.dialogflow.v2.ConversationProfiles.ListConversationProfiles].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

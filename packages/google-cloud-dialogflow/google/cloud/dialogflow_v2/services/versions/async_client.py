@@ -274,7 +274,7 @@ class VersionsAsyncClient:
         Returns:
             google.cloud.dialogflow_v2.services.versions.pagers.ListVersionsAsyncPager:
                 The response message for
-                [Versions.ListVersions][google.cloud.dialogflow.v2.Versions.ListVersions].
+                   [Versions.ListVersions][google.cloud.dialogflow.v2.Versions.ListVersions].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

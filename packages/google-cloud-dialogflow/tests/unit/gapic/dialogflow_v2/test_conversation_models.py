@@ -2256,6 +2256,7 @@ def test_get_conversation_model_evaluation(request_type, transport: str = "grpc"
         call.return_value = conversation_model.ConversationModelEvaluation(
             name="name_value",
             display_name="display_name_value",
+            raw_human_eval_template_csv="raw_human_eval_template_csv_value",
             smart_reply_metrics=conversation_model.SmartReplyMetrics(
                 allowlist_coverage=0.19260000000000002
             ),
@@ -2271,6 +2272,7 @@ def test_get_conversation_model_evaluation(request_type, transport: str = "grpc"
     assert isinstance(response, conversation_model.ConversationModelEvaluation)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.raw_human_eval_template_csv == "raw_human_eval_template_csv_value"
 
 
 def test_get_conversation_model_evaluation_empty_call():
@@ -2314,6 +2316,7 @@ async def test_get_conversation_model_evaluation_async(
             conversation_model.ConversationModelEvaluation(
                 name="name_value",
                 display_name="display_name_value",
+                raw_human_eval_template_csv="raw_human_eval_template_csv_value",
             )
         )
         response = await client.get_conversation_model_evaluation(request)
@@ -2327,6 +2330,7 @@ async def test_get_conversation_model_evaluation_async(
     assert isinstance(response, conversation_model.ConversationModelEvaluation)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.raw_human_eval_template_csv == "raw_human_eval_template_csv_value"
 
 
 @pytest.mark.asyncio

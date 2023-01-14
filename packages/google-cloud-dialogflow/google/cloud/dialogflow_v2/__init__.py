@@ -105,6 +105,8 @@ from .types.conversation import (
     ListConversationsResponse,
     ListMessagesRequest,
     ListMessagesResponse,
+    SuggestConversationSummaryRequest,
+    SuggestConversationSummaryResponse,
 )
 from .types.conversation_dataset import (
     ConversationDataset,
@@ -534,6 +536,8 @@ __all__ = (
     "StreamingRecognitionResult",
     "SuggestArticlesRequest",
     "SuggestArticlesResponse",
+    "SuggestConversationSummaryRequest",
+    "SuggestConversationSummaryResponse",
     "SuggestFaqAnswersRequest",
     "SuggestFaqAnswersResponse",
     "SuggestSmartRepliesRequest",

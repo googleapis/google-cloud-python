@@ -152,6 +152,8 @@ from google.cloud.dialogflow_v2.types.conversation import (
     ListConversationsResponse,
     ListMessagesRequest,
     ListMessagesResponse,
+    SuggestConversationSummaryRequest,
+    SuggestConversationSummaryResponse,
 )
 from google.cloud.dialogflow_v2.types.conversation_dataset import (
     ConversationDataset,
@@ -446,6 +448,8 @@ __all__ = (
     "ListConversationsResponse",
     "ListMessagesRequest",
     "ListMessagesResponse",
+    "SuggestConversationSummaryRequest",
+    "SuggestConversationSummaryResponse",
     "ConversationDataset",
     "ConversationInfo",
     "CreateConversationDatasetOperationMetadata",

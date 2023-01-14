@@ -282,7 +282,7 @@ class EnvironmentsAsyncClient:
         Returns:
             google.cloud.dialogflow_v2.services.environments.pagers.ListEnvironmentsAsyncPager:
                 The response message for
-                [Environments.ListEnvironments][google.cloud.dialogflow.v2.Environments.ListEnvironments].
+                   [Environments.ListEnvironments][google.cloud.dialogflow.v2.Environments.ListEnvironments].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -769,7 +769,7 @@ class EnvironmentsAsyncClient:
         Returns:
             google.cloud.dialogflow_v2.services.environments.pagers.GetEnvironmentHistoryAsyncPager:
                 The response message for
-                [Environments.GetEnvironmentHistory][google.cloud.dialogflow.v2.Environments.GetEnvironmentHistory].
+                   [Environments.GetEnvironmentHistory][google.cloud.dialogflow.v2.Environments.GetEnvironmentHistory].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
