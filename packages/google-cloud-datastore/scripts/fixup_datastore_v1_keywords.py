@@ -41,7 +41,7 @@ class datastoreCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'allocate_ids': ('project_id', 'keys', 'database_id', ),
         'begin_transaction': ('project_id', 'database_id', 'transaction_options', ),
-        'commit': ('project_id', 'database_id', 'mode', 'transaction', 'mutations', ),
+        'commit': ('project_id', 'database_id', 'mode', 'transaction', 'single_use_transaction', 'mutations', ),
         'lookup': ('project_id', 'keys', 'database_id', 'read_options', ),
         'reserve_ids': ('project_id', 'keys', 'database_id', ),
         'rollback': ('project_id', 'transaction', 'database_id', ),

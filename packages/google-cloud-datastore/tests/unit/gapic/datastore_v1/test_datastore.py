@@ -683,7 +683,9 @@ def test_lookup(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = datastore.LookupResponse()
+        call.return_value = datastore.LookupResponse(
+            transaction=b"transaction_blob",
+        )
         response = client.lookup(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -693,6 +695,7 @@ def test_lookup(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastore.LookupResponse)
+    assert response.transaction == b"transaction_blob"
 
 
 def test_lookup_empty_call():
@@ -728,7 +731,9 @@ async def test_lookup_async(
     with mock.patch.object(type(client.transport.lookup), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            datastore.LookupResponse()
+            datastore.LookupResponse(
+                transaction=b"transaction_blob",
+            )
         )
         response = await client.lookup(request)
 
@@ -739,6 +744,7 @@ async def test_lookup_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastore.LookupResponse)
+    assert response.transaction == b"transaction_blob"
 
 
 @pytest.mark.asyncio
@@ -941,7 +947,9 @@ def test_run_query(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_query), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = datastore.RunQueryResponse()
+        call.return_value = datastore.RunQueryResponse(
+            transaction=b"transaction_blob",
+        )
         response = client.run_query(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -951,6 +959,7 @@ def test_run_query(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastore.RunQueryResponse)
+    assert response.transaction == b"transaction_blob"
 
 
 def test_run_query_empty_call():
@@ -986,7 +995,9 @@ async def test_run_query_async(
     with mock.patch.object(type(client.transport.run_query), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            datastore.RunQueryResponse()
+            datastore.RunQueryResponse(
+                transaction=b"transaction_blob",
+            )
         )
         response = await client.run_query(request)
 
@@ -997,6 +1008,7 @@ async def test_run_query_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastore.RunQueryResponse)
+    assert response.transaction == b"transaction_blob"
 
 
 @pytest.mark.asyncio
@@ -1067,7 +1079,9 @@ def test_run_aggregation_query(request_type, transport: str = "grpc"):
         type(client.transport.run_aggregation_query), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = datastore.RunAggregationQueryResponse()
+        call.return_value = datastore.RunAggregationQueryResponse(
+            transaction=b"transaction_blob",
+        )
         response = client.run_aggregation_query(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1077,6 +1091,7 @@ def test_run_aggregation_query(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastore.RunAggregationQueryResponse)
+    assert response.transaction == b"transaction_blob"
 
 
 def test_run_aggregation_query_empty_call():
@@ -1116,7 +1131,9 @@ async def test_run_aggregation_query_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            datastore.RunAggregationQueryResponse()
+            datastore.RunAggregationQueryResponse(
+                transaction=b"transaction_blob",
+            )
         )
         response = await client.run_aggregation_query(request)
 
@@ -1127,6 +1144,7 @@ async def test_run_aggregation_query_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastore.RunAggregationQueryResponse)
+    assert response.transaction == b"transaction_blob"
 
 
 @pytest.mark.asyncio

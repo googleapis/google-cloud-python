@@ -107,6 +107,12 @@ class LookupResponse(proto.Message):
             resource constraints. The order of results in
             this field is undefined and has no relation to
             the order of the keys in the input.
+        transaction (bytes):
+            The identifier of the transaction that was started as part
+            of this Lookup request.
+
+            Set only when [ReadOptions.begin_transaction][] was set in
+            [LookupRequest.read_options][google.datastore.v1.LookupRequest.read_options].
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which these entities were read or
             found missing.
@@ -126,6 +132,10 @@ class LookupResponse(proto.Message):
         proto.MESSAGE,
         number=3,
         message=entity.Key,
+    )
+    transaction: bytes = proto.Field(
+        proto.BYTES,
+        number=5,
     )
     read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -215,6 +225,12 @@ class RunQueryResponse(proto.Message):
         query (google.cloud.datastore_v1.types.Query):
             The parsed form of the ``GqlQuery`` from the request, if it
             was set.
+        transaction (bytes):
+            The identifier of the transaction that was started as part
+            of this RunQuery request.
+
+            Set only when [ReadOptions.begin_transaction][] was set in
+            [RunQueryRequest.read_options][google.datastore.v1.RunQueryRequest.read_options].
     """
 
     batch: gd_query.QueryResultBatch = proto.Field(
@@ -226,6 +242,10 @@ class RunQueryResponse(proto.Message):
         proto.MESSAGE,
         number=2,
         message=gd_query.Query,
+    )
+    transaction: bytes = proto.Field(
+        proto.BYTES,
+        number=5,
     )
 
 
@@ -311,6 +331,12 @@ class RunAggregationQueryResponse(proto.Message):
         query (google.cloud.datastore_v1.types.AggregationQuery):
             The parsed form of the ``GqlQuery`` from the request, if it
             was set.
+        transaction (bytes):
+            The identifier of the transaction that was started as part
+            of this RunAggregationQuery request.
+
+            Set only when [ReadOptions.begin_transaction][] was set in
+            [RunAggregationQueryRequest.read_options][google.datastore.v1.RunAggregationQueryRequest.read_options].
     """
 
     batch: aggregation_result.AggregationResultBatch = proto.Field(
@@ -322,6 +348,10 @@ class RunAggregationQueryResponse(proto.Message):
         proto.MESSAGE,
         number=2,
         message=gd_query.AggregationQuery,
+    )
+    transaction: bytes = proto.Field(
+        proto.BYTES,
+        number=5,
     )
 
 
@@ -416,6 +446,10 @@ class CommitRequest(proto.Message):
     r"""The request for
     [Datastore.Commit][google.datastore.v1.Datastore.Commit].
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -435,6 +469,15 @@ class CommitRequest(proto.Message):
             The identifier of the transaction associated with the
             commit. A transaction identifier is returned by a call to
             [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
+
+            This field is a member of `oneof`_ ``transaction_selector``.
+        single_use_transaction (google.cloud.datastore_v1.types.TransactionOptions):
+            Options for beginning a new transaction for this request.
+            The transaction is committed when the request completes. If
+            specified,
+            [TransactionOptions.mode][google.datastore.v1.TransactionOptions.mode]
+            must be
+            [TransactionOptions.ReadWrite][google.datastore.v1.TransactionOptions.ReadWrite].
 
             This field is a member of `oneof`_ ``transaction_selector``.
         mutations (MutableSequence[google.cloud.datastore_v1.types.Mutation]):
@@ -477,6 +520,12 @@ class CommitRequest(proto.Message):
         proto.BYTES,
         number=1,
         oneof="transaction_selector",
+    )
+    single_use_transaction: "TransactionOptions" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        oneof="transaction_selector",
+        message="TransactionOptions",
     )
     mutations: MutableSequence["Mutation"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -770,6 +819,16 @@ class ReadOptions(proto.Message):
             [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
 
             This field is a member of `oneof`_ ``consistency_type``.
+        new_transaction (google.cloud.datastore_v1.types.TransactionOptions):
+            Options for beginning a new transaction for this request.
+
+            The new transaction identifier will be returned in the
+            corresponding response as either
+            [LookupResponse.transaction][google.datastore.v1.LookupResponse.transaction]
+            or
+            [RunQueryResponse.transaction][google.datastore.v1.RunQueryResponse.transaction].
+
+            This field is a member of `oneof`_ ``consistency_type``.
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Reads entities as they were at the given
             time. This may not be older than 270 seconds.
@@ -795,6 +854,12 @@ class ReadOptions(proto.Message):
         proto.BYTES,
         number=2,
         oneof="consistency_type",
+    )
+    new_transaction: "TransactionOptions" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="consistency_type",
+        message="TransactionOptions",
     )
     read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
