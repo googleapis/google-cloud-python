@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.19.0](https://github.com/googleapis/python-dialogflow/compare/v2.18.0...v2.19.0) (2023-01-14)
+
+
+### Features
+
+* **v2:** Added SuggestConversationSummary RPC ([#607](https://github.com/googleapis/python-dialogflow/issues/607)) ([e5aabc8](https://github.com/googleapis/python-dialogflow/commit/e5aabc8c2022b943b793c20d9f2280c9db24001c))
+
 ## [2.18.0](https://github.com/googleapis/python-dialogflow/compare/v2.17.0...v2.18.0) (2023-01-10)
 
 
