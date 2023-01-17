@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.17.0](https://github.com/googleapis/python-asset/compare/v3.16.0...v3.17.0) (2023-01-14)
+
+
+### Features
+
+* Policy Analyzer for Organization Policy is publicly available ([ff8f92a](https://github.com/googleapis/python-asset/commit/ff8f92a3a8dd2c103545d44ca8305eaea68ddbc3))
+
+
+### Documentation
+
+* Brand and typo fixes ([ff8f92a](https://github.com/googleapis/python-asset/commit/ff8f92a3a8dd2c103545d44ca8305eaea68ddbc3))
+
 ## [3.16.0](https://github.com/googleapis/python-asset/compare/v3.15.0...v3.16.0) (2023-01-10)
 
 
