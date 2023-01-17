@@ -63,3 +63,19 @@ class TestInstrumentation(unittest.TestCase):
 
         self.assertEqual(expected_name, self._get_diagonstic_value(entry, "name"))
         self.assertEqual(expected_version, self._get_diagonstic_value(entry, "version"))
+
+    def test_drop_labels(self):
+        """Labels should not be copied in instrumentation log"""
+        test_logname = "test-name"
+        test_labels = {"hello": "world"}
+        entry = i._create_diagnostic_entry(
+            name=self.LONG_NAME,
+            version=self.LONG_VERSION,
+            log_name=test_logname,
+            labels=test_labels,
+        )
+        self.assertEqual(entry.log_name, test_logname)
+        self.assertIsNone(entry.labels)
+        # ensure only expected fields exist in entry
+        expected_keys = set(["logName", "resource", "jsonPayload"])
+        self.assertEqual(set(entry.to_api_repr().keys()), expected_keys)
