@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.17.0](https://github.com/googleapis/python-speech/compare/v2.16.2...v2.17.0) (2023-01-16)
+
+
+### Features
+
+* Add support for python 3.11 ([#478](https://github.com/googleapis/python-speech/issues/478)) ([487242f](https://github.com/googleapis/python-speech/commit/487242f3beff810c2892b1b52b3e097bf3c7339e))
+* Add typing to proto.Message based class attributes ([c2a079c](https://github.com/googleapis/python-speech/commit/c2a079c29c9c53e9da6736303b63f7985b59949a))
+* Added new fields to facilitate debugging ([c2a079c](https://github.com/googleapis/python-speech/commit/c2a079c29c9c53e9da6736303b63f7985b59949a))
+* **v1:** Added ABNF Grammars field in Speech Adaptation ([ca28974](https://github.com/googleapis/python-speech/commit/ca28974906ca3ad10a85978b03594aaa4b181f8d))
+* **v1p1beta1:** Added ABNF Grammars field in Speech Adaptation ([ca28974](https://github.com/googleapis/python-speech/commit/ca28974906ca3ad10a85978b03594aaa4b181f8d))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([c2a079c](https://github.com/googleapis/python-speech/commit/c2a079c29c9c53e9da6736303b63f7985b59949a))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([c2a079c](https://github.com/googleapis/python-speech/commit/c2a079c29c9c53e9da6736303b63f7985b59949a))
+* Drop usage of pkg_resources ([c2a079c](https://github.com/googleapis/python-speech/commit/c2a079c29c9c53e9da6736303b63f7985b59949a))
+* Fix timeout default values ([c2a079c](https://github.com/googleapis/python-speech/commit/c2a079c29c9c53e9da6736303b63f7985b59949a))
+
+
+### Documentation
+
+* **samples:** Code samples for Speech-to-Text V2 ([5c99f00](https://github.com/googleapis/python-speech/commit/5c99f00a1b15b92ba888e36ca334ad12be854989))
+* **samples:** Snippetgen handling of repeated enum field ([c2a079c](https://github.com/googleapis/python-speech/commit/c2a079c29c9c53e9da6736303b63f7985b59949a))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([c2a079c](https://github.com/googleapis/python-speech/commit/c2a079c29c9c53e9da6736303b63f7985b59949a))
+* **samples:** Update code samples for adaptation and VAD ([#462](https://github.com/googleapis/python-speech/issues/462)) ([f785ac7](https://github.com/googleapis/python-speech/commit/f785ac7ed11340db893f6d43368a4bde1655c5c8))
+
 ## [2.16.2](https://github.com/googleapis/python-speech/compare/v2.16.1...v2.16.2) (2022-10-07)
 
 
