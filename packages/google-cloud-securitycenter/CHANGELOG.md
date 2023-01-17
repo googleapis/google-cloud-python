@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.18.1](https://github.com/googleapis/python-securitycenter/compare/v1.18.0...v1.18.1) (2023-01-14)
+
+
+### Documentation
+
+* Update documentation for Security Command Center *.assets.list "parent" parameter ([#425](https://github.com/googleapis/python-securitycenter/issues/425)) ([9f791eb](https://github.com/googleapis/python-securitycenter/commit/9f791eb2c5732ec35f4aa51f8313b5e5abaa2ec5))
+
 ## [1.18.0](https://github.com/googleapis/python-securitycenter/compare/v1.17.0...v1.18.0) (2023-01-10)
 
 
