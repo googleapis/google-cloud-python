@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.0](https://github.com/googleapis/python-documentai/compare/v2.8.0...v2.9.0) (2023-01-17)
+
+
+### Features
+
+* **v1:** Exposed GetProcessorType ([#446](https://github.com/googleapis/python-documentai/issues/446)) ([6c38227](https://github.com/googleapis/python-documentai/commit/6c38227279d889f760375dfe56f805da78e7bc68))
+
 ## [2.8.0](https://github.com/googleapis/python-documentai/compare/v2.7.0...v2.8.0) (2023-01-17)
 
 
