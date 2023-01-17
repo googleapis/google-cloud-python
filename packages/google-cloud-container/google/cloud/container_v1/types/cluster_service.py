@@ -1808,6 +1808,12 @@ class IPAllocationPolicy(proto.Message):
         ipv6_access_type (google.cloud.container_v1.types.IPv6AccessType):
             The ipv6 access type (internal or external) when
             create_subnetwork is true
+        subnet_ipv6_cidr_block (str):
+            Output only. [Output only] The subnet's IPv6 CIDR block used
+            by nodes and pods.
+        services_ipv6_cidr_block (str):
+            Output only. [Output only] The services IPv6 CIDR block for
+            the cluster.
     """
 
     use_ip_aliases: bool = proto.Field(
@@ -1871,6 +1877,14 @@ class IPAllocationPolicy(proto.Message):
         proto.ENUM,
         number=17,
         enum="IPv6AccessType",
+    )
+    subnet_ipv6_cidr_block: str = proto.Field(
+        proto.STRING,
+        number=22,
+    )
+    services_ipv6_cidr_block: str = proto.Field(
+        proto.STRING,
+        number=23,
     )
 
 
