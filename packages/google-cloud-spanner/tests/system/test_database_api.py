@@ -97,7 +97,7 @@ def test_database_binding_of_fixed_size_pool(
         default_timeout=500,
         database_role="parent",
     )
-    database = shared_instance.database(temp_db.name, pool=pool)
+    database = shared_instance.database(temp_db_id, pool=pool)
     assert database._pool.database_role == "parent"
 
 
@@ -125,7 +125,7 @@ def test_database_binding_of_pinging_pool(
         ping_interval=100,
         database_role="parent",
     )
-    database = shared_instance.database(temp_db.name, pool=pool)
+    database = shared_instance.database(temp_db_id, pool=pool)
     assert database._pool.database_role == "parent"
 
 

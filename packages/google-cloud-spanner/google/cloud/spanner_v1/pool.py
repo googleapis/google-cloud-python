@@ -193,7 +193,7 @@ class FixedSizePool(AbstractSessionPool):
         metadata = _metadata_with_prefix(database.name)
         self._database_role = self._database_role or self._database.database_role
         request = BatchCreateSessionsRequest(
-            database=database.database_id,
+            database=database.name,
             session_count=self.size - self._sessions.qsize(),
             session_template=Session(creator_role=self.database_role),
         )
@@ -406,7 +406,7 @@ class PingingPool(AbstractSessionPool):
         self._database_role = self._database_role or self._database.database_role
 
         request = BatchCreateSessionsRequest(
-            database=database.database_id,
+            database=database.name,
             session_count=self.size - created_session_count,
             session_template=Session(creator_role=self.database_role),
         )
