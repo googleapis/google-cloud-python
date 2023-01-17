@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.8.0](https://github.com/googleapis/python-documentai/compare/v2.7.0...v2.8.0) (2023-01-17)
+
+
+### Features
+
+* Exposed GetProcessorType to v1beta3 ([#444](https://github.com/googleapis/python-documentai/issues/444)) ([e5835f4](https://github.com/googleapis/python-documentai/commit/e5835f4b514b2b463478df33505ac08272a99fb7))
+
+
+### Documentation
+
+* **samples:** Removed Samples after Migration to Mono Repo ([#438](https://github.com/googleapis/python-documentai/issues/438)) ([8c7f52b](https://github.com/googleapis/python-documentai/commit/8c7f52bce317b6b54bcfc71cb193dc7e372b2812))
+
 ## [2.7.0](https://github.com/googleapis/python-documentai/compare/v2.6.0...v2.7.0) (2023-01-10)
 
 
