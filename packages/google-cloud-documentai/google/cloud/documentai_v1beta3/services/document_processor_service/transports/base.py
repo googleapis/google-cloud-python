@@ -30,6 +30,7 @@ from google.cloud.documentai_v1beta3 import gapic_version as package_version
 from google.cloud.documentai_v1beta3.types import document_processor_service, evaluation
 from google.cloud.documentai_v1beta3.types import processor
 from google.cloud.documentai_v1beta3.types import processor as gcd_processor
+from google.cloud.documentai_v1beta3.types import processor_type
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -163,6 +164,11 @@ class DocumentProcessorServiceTransport(abc.ABC):
             ),
             self.list_processor_types: gapic_v1.method.wrap_method(
                 self.list_processor_types,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_processor_type: gapic_v1.method.wrap_method(
+                self.get_processor_type,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -319,6 +325,15 @@ class DocumentProcessorServiceTransport(abc.ABC):
             document_processor_service.ListProcessorTypesResponse,
             Awaitable[document_processor_service.ListProcessorTypesResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_processor_type(
+        self,
+    ) -> Callable[
+        [document_processor_service.GetProcessorTypeRequest],
+        Union[processor_type.ProcessorType, Awaitable[processor_type.ProcessorType]],
     ]:
         raise NotImplementedError()
 

@@ -50,6 +50,7 @@ class documentaiCallTransformer(cst.CSTTransformer):
         'fetch_processor_types': ('parent', ),
         'get_evaluation': ('name', ),
         'get_processor': ('name', ),
+        'get_processor_type': ('name', ),
         'get_processor_version': ('name', ),
         'list_evaluations': ('parent', 'page_size', 'page_token', ),
         'list_processors': ('parent', 'page_size', 'page_token', ),

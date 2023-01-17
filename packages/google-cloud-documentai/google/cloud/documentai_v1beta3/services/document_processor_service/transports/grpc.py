@@ -27,6 +27,7 @@ import grpc  # type: ignore
 from google.cloud.documentai_v1beta3.types import document_processor_service, evaluation
 from google.cloud.documentai_v1beta3.types import processor
 from google.cloud.documentai_v1beta3.types import processor as gcd_processor
+from google.cloud.documentai_v1beta3.types import processor_type
 
 from .base import DEFAULT_CLIENT_INFO, DocumentProcessorServiceTransport
 
@@ -367,6 +368,35 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
                 response_deserializer=document_processor_service.ListProcessorTypesResponse.deserialize,
             )
         return self._stubs["list_processor_types"]
+
+    @property
+    def get_processor_type(
+        self,
+    ) -> Callable[
+        [document_processor_service.GetProcessorTypeRequest],
+        processor_type.ProcessorType,
+    ]:
+        r"""Return a callable for the get processor type method over gRPC.
+
+        Gets a processor type detail.
+
+        Returns:
+            Callable[[~.GetProcessorTypeRequest],
+                    ~.ProcessorType]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_processor_type" not in self._stubs:
+            self._stubs["get_processor_type"] = self.grpc_channel.unary_unary(
+                "/google.cloud.documentai.v1beta3.DocumentProcessorService/GetProcessorType",
+                request_serializer=document_processor_service.GetProcessorTypeRequest.serialize,
+                response_deserializer=processor_type.ProcessorType.deserialize,
+            )
+        return self._stubs["get_processor_type"]
 
     @property
     def list_processors(

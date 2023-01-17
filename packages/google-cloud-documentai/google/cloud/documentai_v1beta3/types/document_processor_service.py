@@ -44,6 +44,7 @@ __protobuf__ = proto.module(
         "ListProcessorTypesResponse",
         "ListProcessorsRequest",
         "ListProcessorsResponse",
+        "GetProcessorTypeRequest",
         "GetProcessorRequest",
         "GetProcessorVersionRequest",
         "ListProcessorVersionsRequest",
@@ -622,6 +623,20 @@ class ListProcessorsResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class GetProcessorTypeRequest(proto.Message):
+    r"""Request message for get processor.
+
+    Attributes:
+        name (str):
+            Required. The processor type resource name.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
