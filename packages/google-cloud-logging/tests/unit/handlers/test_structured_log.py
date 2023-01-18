@@ -624,7 +624,8 @@ class TestStructuredLogHandler(unittest.TestCase):
         import mock
         import json
 
-        with mock.patch.object(logging, "info") as mock_log:
+        logger = logging.getLogger("google.cloud.logging_v2.handlers.structured_log")
+        with mock.patch.object(logger, "info") as mock_log:
             handler = self._make_one()
             handler.emit_instrumentation_info()
             mock_log.assert_called_once()
