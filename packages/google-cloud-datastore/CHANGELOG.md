@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.13.0](https://github.com/googleapis/python-datastore/compare/v2.12.0...v2.13.0) (2023-01-14)
+
+
+### Features
+
+* Add dynamic routing header annotation to DatastoreV1 ([#400](https://github.com/googleapis/python-datastore/issues/400)) ([1043ba3](https://github.com/googleapis/python-datastore/commit/1043ba3638434657226c176f8e714f5dc476d1f5))
+* New transaction options for datastoreV1 ([#402](https://github.com/googleapis/python-datastore/issues/402)) ([906d026](https://github.com/googleapis/python-datastore/commit/906d026920abb0e7e44b9309a7c37254159b95ee))
+
 ## [2.12.0](https://github.com/googleapis/python-datastore/compare/v2.11.1...v2.12.0) (2023-01-10)
 
 
