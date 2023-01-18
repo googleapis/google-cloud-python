@@ -58,6 +58,15 @@ Create an empty table with the
    :start-after: [START bigquery_create_table]
    :end-before: [END bigquery_create_table]
 
+Create a table using an external data source with the
+:func:`~google.cloud.bigquery.client.Client.create_table` method:
+
+.. literalinclude:: ../samples/create_table_external_data_configuration.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_create_table_external_data_configuration]
+   :end-before: [END bigquery_create_table_external_data_configuration]
+
 Create a clustered table with the
 :func:`~google.cloud.bigquery.client.Client.create_table` method:
 
