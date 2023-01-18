@@ -131,4 +131,8 @@ class StructuredLogHandler(logging.StreamHandler):
     def emit_instrumentation_info(self):
         google.cloud.logging_v2._instrumentation_emitted = True
         diagnostic_object = _create_diagnostic_entry()
-        logging.info(diagnostic_object.payload)
+        struct_logger = logging.getLogger(__name__)
+        struct_logger.addHandler(self)
+        struct_logger.setLevel(logging.INFO)
+        struct_logger.info(diagnostic_object.payload)
+        struct_logger.handlers.clear()
