@@ -203,6 +203,8 @@ def test_manage_table_labels(client, to_delete):
     # [END bigquery_get_table_labels]
     assert table.labels == labels
 
+    # TODO(Mattix23): After code sample is updated from cloud.google.com delete this
+
     # [START bigquery_delete_label_table]
     # from google.cloud import bigquery
     # client = bigquery.Client()
