@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.17.0](https://github.com/googleapis/python-container/compare/v2.16.0...v2.17.0) (2023-01-17)
+
+
+### Features
+
+* Add support for viewing the subnet IPv6 CIDR and services IPv6 CIDR assigned to dual stack clusters ([#333](https://github.com/googleapis/python-container/issues/333)) ([4d0a583](https://github.com/googleapis/python-container/commit/4d0a583f4ff23dca157b7835d9e59ec7ca9d16da))
+
 ## [2.16.0](https://github.com/googleapis/python-container/compare/v2.15.0...v2.16.0) (2023-01-10)
 
 
