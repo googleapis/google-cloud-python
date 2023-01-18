@@ -40,7 +40,7 @@ async def sample_create_custom_class_Basic(
       a CustomClass
     """
     client = speech_v1.AdaptationAsyncClient(
-        client_options={"api_endpoint": "https://us-speech.googleapis.com"}
+        client_options={"api_endpoint": "us-speech.googleapis.com"}
     )
 
     request = speech_v1.CreateCustomClassRequest(

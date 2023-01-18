@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Sequence, Tuple
+
 import libcst
 
 from gapic.configurable_snippetgen import snippet_config_language_pb2
@@ -57,3 +59,18 @@ def convert_parameter(
         default=convert_expression(config_parameter.value),
     )
     return param
+
+
+def convert_py_dict(key_value_pairs: Sequence[Tuple[str, str]]) -> libcst.Dict:
+    elements = []
+    for key, value in key_value_pairs:
+        if not (isinstance(key, str) and isinstance(value, str)):
+            raise ValueError(
+                f"convert_py_dict supports only string keys and values.")
+        elements.append(
+            libcst.DictElement(
+                libcst.SimpleString(
+                    f'"{key}"'), libcst.SimpleString(f'"{value}"')
+            )
+        )
+    return libcst.Dict(elements=elements)

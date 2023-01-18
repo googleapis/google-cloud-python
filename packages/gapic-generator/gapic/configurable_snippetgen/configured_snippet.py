@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import dataclasses
+from typing import Optional
 
 import inflection
 import libcst
@@ -119,6 +120,31 @@ class ConfiguredSnippet:
         sync_or_async = "sync" if self.is_sync else "async"
         return f"{self.gapic_module_name}_generated_{service_name}_{snake_case_rpc_name}_{config_id}_{sync_or_async}.py"
 
+    @property
+    def api_endpoint(self) -> Optional[str]:
+        """The api_endpoint in client_options."""
+        service_endpoint = (
+            self.config.snippet.service_client_initialization.custom_service_endpoint
+        )
+
+        if not service_endpoint.host:
+            return None
+
+        # GAPIC Python libraries do not require the schema to be specified.
+        host = service_endpoint.host
+        region = service_endpoint.region
+        port = service_endpoint.port
+
+        if port:
+            host_maybe_with_port = f"{host}:{port}"
+        else:
+            host_maybe_with_port = host
+
+        if region:
+            return f"{region}-{host_maybe_with_port}"
+        else:
+            return host_maybe_with_port
+
     def _append_to_sample_function_def_body(
         self, statement: libcst.BaseStatement
     ) -> None:
@@ -141,23 +167,33 @@ class ConfiguredSnippet:
             params=parameters
         )
 
-    def _append_service_client_initialization(self) -> None:
-        initialization_call = libcst.parse_statement(
-            f"client = {self.gapic_module_name}.{self.client_class_name}()"
-        )
-        self._append_to_sample_function_def_body(initialization_call)
+    def _get_service_client_initialization(self) -> libcst.BaseStatement:
+        if self.api_endpoint is not None:
+            client_options_arg = libcst.Arg(
+                keyword=libcst.Name("client_options"),
+                value=libcst_utils.convert_py_dict(
+                    [("api_endpoint", self.api_endpoint)]
+                ),
+            )
+            service_client_initialization = libcst.helpers.parse_template_statement(
+                f"client = {self.gapic_module_name}.{self.client_class_name}({{arg}})",
+                arg=client_options_arg,
+            )
+        else:
+            service_client_initialization = libcst.parse_statement(
+                f"client = {self.gapic_module_name}.{self.client_class_name}()"
+            )
 
-    def _add_sample_function_body(self) -> None:
-        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1539, add sample function body.
-        # Each call below appends one or more statements to the sample
-        # function's body.
-        self._append_service_client_initialization()
+        return service_client_initialization
 
     def _build_sample_function(self) -> None:
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1536, add return type.
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1538, add docstring.
+        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1539, add sample function body.
         self._add_sample_function_parameters()
-        self._add_sample_function_body()
+        self._append_to_sample_function_def_body(
+            self._get_service_client_initialization()
+        )
 
     def _add_sample_function(self) -> None:
         self._module = self._module.with_changes(

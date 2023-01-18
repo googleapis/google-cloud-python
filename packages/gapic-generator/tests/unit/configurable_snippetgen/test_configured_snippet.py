@@ -65,11 +65,13 @@ def _load_snippet_config(
 
 
 def _make_configured_snippet(
-    request_path: Path, config_path: Path, api_version: str, is_sync: bool
+    request_path: Path = SPEECH_V1_REQUEST_PATH,
+    config_path: Path = CONFIG_JSON_PATH,
+    api_version: str = "v1",
+    is_sync: bool = True,
 ) -> configured_snippet.ConfiguredSnippet:
     api_schema = _load_api_schema(request_path)
     snippet_config = _load_snippet_config(config_path)
-
     return configured_snippet.ConfiguredSnippet(
         api_schema, snippet_config, api_version, is_sync
     )
@@ -77,9 +79,16 @@ def _make_configured_snippet(
 
 @pytest.fixture
 def snippet():
-    return _make_configured_snippet(
-        SPEECH_V1_REQUEST_PATH, CONFIG_JSON_PATH, api_version="v1", is_sync=True
+    return _make_configured_snippet()
+
+
+@pytest.fixture
+def snippet_without_endpoint():
+    snippet = _make_configured_snippet()
+    snippet.config.snippet.service_client_initialization.ClearField(
+        "custom_service_endpoint"
     )
+    return snippet
 
 
 def test_gapic_module_name(snippet):
@@ -94,9 +103,7 @@ def test_gapic_module_name(snippet):
     ],
 )
 def test_region_tag(is_sync, expected):
-    snippet = _make_configured_snippet(
-        SPEECH_V1_REQUEST_PATH, CONFIG_JSON_PATH, api_version="v1", is_sync=is_sync
-    )
+    snippet = _make_configured_snippet(is_sync=is_sync)
     assert snippet.region_tag == expected
 
 
@@ -112,9 +119,7 @@ def test_sample_function_name(snippet):
     ],
 )
 def test_client_class_name(is_sync, expected):
-    snippet = _make_configured_snippet(
-        SPEECH_V1_REQUEST_PATH, CONFIG_JSON_PATH, api_version="v1", is_sync=is_sync
-    )
+    snippet = _make_configured_snippet(is_sync=is_sync)
     assert snippet.client_class_name == expected
 
 
@@ -126,10 +131,70 @@ def test_client_class_name(is_sync, expected):
     ],
 )
 def test_filename(is_sync, expected):
-    snippet = _make_configured_snippet(
-        SPEECH_V1_REQUEST_PATH, CONFIG_JSON_PATH, api_version="v1", is_sync=is_sync
-    )
+    snippet = _make_configured_snippet(is_sync=is_sync)
     assert snippet.filename == expected
+
+
+@pytest.mark.parametrize(
+    "snippet_config_dict,expected",
+    [
+        ({}, None),
+        (
+            {
+                "snippet": {
+                    "serviceClientInitialization": {
+                        "customServiceEndpoint": {
+                            "host": "speech.googleapis.com",
+                        }
+                    },
+                }
+            },
+            "speech.googleapis.com",
+        ),
+        (
+            {
+                "snippet": {
+                    "serviceClientInitialization": {
+                        "customServiceEndpoint": {
+                            "host": "speech.googleapis.com",
+                            "region": "us",
+                        }
+                    },
+                }
+            },
+            "us-speech.googleapis.com",
+        ),
+        (
+            {
+                "snippet": {
+                    "serviceClientInitialization": {
+                        "customServiceEndpoint": {
+                            "host": "speech.googleapis.com",
+                            "region": "us",
+                            "port": 123,
+                        }
+                    },
+                }
+            },
+            "us-speech.googleapis.com:123",
+        ),
+    ],
+)
+def test_api_endpoint(snippet_config_dict, expected):
+    # api_schema, api_version, and is_sync do not matter here.
+    api_schema = _load_api_schema(SPEECH_V1_REQUEST_PATH)
+    api_version = "v1"
+    is_sync = True
+
+    snippet_config = json_format.ParseDict(
+        snippet_config_dict, snippet_config_language_pb2.SnippetConfig()
+    )
+
+    snippet = configured_snippet.ConfiguredSnippet(
+        api_schema, snippet_config, api_version, is_sync
+    )
+
+    assert snippet.api_endpoint == expected
 
 
 def test_AppendToSampleFunctionBody():
@@ -152,6 +217,17 @@ def test_code(snippet):
     # until the generated code is the same as that of the golden file.
     expected_code = """def sample_create_custom_class_Basic(parent = "projects/[PROJECT]/locations/us", custom_class_id = "passengerships"):
     \"\"
-    client = speech_v1.AdaptationClient()
+    client = speech_v1.AdaptationClient(client_options = {"api_endpoint": "us-speech.googleapis.com"})
 """
     assert snippet.code == expected_code
+
+
+def test_code_without_endpoint(snippet_without_endpoint):
+    snippet_without_endpoint.generate()
+
+    # https://github.com/googleapis/gapic-generator-python/issues/1522
+    expected_code = """def sample_create_custom_class_Basic(parent = "projects/[PROJECT]/locations/us", custom_class_id = "passengerships"):
+    \"\"
+    client = speech_v1.AdaptationClient()
+"""
+    assert snippet_without_endpoint.code == expected_code

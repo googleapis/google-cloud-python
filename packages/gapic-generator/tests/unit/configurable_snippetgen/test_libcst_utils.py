@@ -75,3 +75,26 @@ def test_convert_parameter():
     )
 
     assert node.deep_equals(expected_node), (node, expected_node)
+
+
+def test_convert_py_dict():
+    key_value_pairs = [("key1", "value1"), ("key2", "value2")]
+    node = libcst_utils.convert_py_dict(key_value_pairs)
+    expected_node = libcst.Dict(
+        [
+            libcst.DictElement(
+                libcst.SimpleString('"key1"'), libcst.SimpleString('"value1"')
+            ),
+            libcst.DictElement(
+                libcst.SimpleString('"key2"'), libcst.SimpleString('"value2"')
+            ),
+        ]
+    )
+
+    assert node.deep_equals(expected_node), (node, expected_node)
+
+
+def test_convert_py_dict_should_raise_error_if_unsupported():
+    key_value_pairs = [("key1", 5)]
+    with pytest.raises(ValueError):
+        libcst_utils.convert_py_dict(key_value_pairs)
