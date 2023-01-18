@@ -335,57 +335,6 @@ class TestBigQuery(unittest.TestCase):
         self.assertTrue(_table_exists(table))
         self.assertEqual(table.table_id, table_id)
 
-    def test_create_table_with_policy(self):
-        from google.cloud.bigquery.schema import PolicyTagList
-
-        dataset = self.temp_dataset(_make_dataset_id("create_table_with_policy"))
-        table_id = "test_table"
-        policy_1 = PolicyTagList(
-            names=[
-                "projects/{}/locations/us/taxonomies/1/policyTags/2".format(
-                    Config.CLIENT.project
-                ),
-            ]
-        )
-        policy_2 = PolicyTagList(
-            names=[
-                "projects/{}/locations/us/taxonomies/3/policyTags/4".format(
-                    Config.CLIENT.project
-                ),
-            ]
-        )
-
-        schema = [
-            bigquery.SchemaField("full_name", "STRING", mode="REQUIRED"),
-            bigquery.SchemaField(
-                "secret_int", "INTEGER", mode="REQUIRED", policy_tags=policy_1
-            ),
-        ]
-        table_arg = Table(dataset.table(table_id), schema=schema)
-        self.assertFalse(_table_exists(table_arg))
-
-        table = helpers.retry_403(Config.CLIENT.create_table)(table_arg)
-        self.to_delete.insert(0, table)
-
-        self.assertTrue(_table_exists(table))
-        self.assertEqual(policy_1, table.schema[1].policy_tags)
-
-        # Amend the schema to replace the policy tags
-        new_schema = table.schema[:]
-        old_field = table.schema[1]
-        new_schema[1] = bigquery.SchemaField(
-            name=old_field.name,
-            field_type=old_field.field_type,
-            mode=old_field.mode,
-            description=old_field.description,
-            fields=old_field.fields,
-            policy_tags=policy_2,
-        )
-
-        table.schema = new_schema
-        table2 = Config.CLIENT.update_table(table, ["schema"])
-        self.assertEqual(policy_2, table2.schema[1].policy_tags)
-
     def test_create_table_with_real_custom_policy(self):
         from google.cloud.bigquery.schema import PolicyTagList
 
