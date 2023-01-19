@@ -114,12 +114,26 @@ class ComputeRoutesRequest(proto.Message):
             FUEL_EFFICIENT reference route calculation takes into
             account various parameters that would generate an optimal
             fuel efficient route.
+        extra_computations (MutableSequence[google.maps.routing_v2.types.ComputeRoutesRequest.ExtraComputation]):
+            Optional. A list of extra computations which
+            may be used to complete the request. Note: These
+            extra computations may return extra fields on
+            the response. These extra fields must also be
+            specified in the field mask to be returned in
+            the response.
     """
 
     class ReferenceRoute(proto.Enum):
         r"""A supported reference route on the ComputeRoutesRequest."""
         REFERENCE_ROUTE_UNSPECIFIED = 0
         FUEL_EFFICIENT = 1
+
+    class ExtraComputation(proto.Enum):
+        r"""Extra computations to perform while completing the request."""
+        EXTRA_COMPUTATION_UNSPECIFIED = 0
+        TOLLS = 1
+        FUEL_CONSUMPTION = 2
+        TRAFFIC_ON_POLYLINE = 3
 
     origin: gmr_waypoint.Waypoint = proto.Field(
         proto.MESSAGE,
@@ -183,6 +197,11 @@ class ComputeRoutesRequest(proto.Message):
         proto.ENUM,
         number=14,
         enum=ReferenceRoute,
+    )
+    extra_computations: MutableSequence[ExtraComputation] = proto.RepeatedField(
+        proto.ENUM,
+        number=15,
+        enum=ExtraComputation,
     )
 
 
@@ -253,7 +272,19 @@ class ComputeRouteMatrixRequest(proto.Message):
             you made the request. If you set this value to a
             time that has already occurred, the request
             fails.
+        extra_computations (MutableSequence[google.maps.routing_v2.types.ComputeRouteMatrixRequest.ExtraComputation]):
+            Optional. A list of extra computations which
+            may be used to complete the request. Note: These
+            extra computations may return extra fields on
+            the response. These extra fields must also be
+            specified in the field mask to be returned in
+            the response.
     """
+
+    class ExtraComputation(proto.Enum):
+        r"""Extra computations to perform while completing the request."""
+        EXTRA_COMPUTATION_UNSPECIFIED = 0
+        TOLLS = 1
 
     origins: MutableSequence["RouteMatrixOrigin"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -279,6 +310,11 @@ class ComputeRouteMatrixRequest(proto.Message):
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
+    )
+    extra_computations: MutableSequence[ExtraComputation] = proto.RepeatedField(
+        proto.ENUM,
+        number=8,
+        enum=ExtraComputation,
     )
 
 
