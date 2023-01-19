@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-org-policy/compare/v1.6.0...v1.7.0) (2023-01-19)
+
+
+### Features
+
+* Support for OrgPolicy dry runs ([#197](https://github.com/googleapis/python-org-policy/issues/197)) ([a881629](https://github.com/googleapis/python-org-policy/commit/a881629f3a04c13838457a56d75ef82079eef97c))
+
 ## [1.6.0](https://github.com/googleapis/python-org-policy/compare/v1.5.0...v1.6.0) (2023-01-10)
 
 
