@@ -5,6 +5,14 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.14.0](https://github.com/googleapis/python-pubsub/compare/v2.13.12...v2.14.0) (2023-01-18)
+
+
+### Features
+
+* Add schema evolution methods and fields ([9479356](https://github.com/googleapis/python-pubsub/commit/9479356029f28c565a06ab759330c6e430a47c51))
+* Add support for python 3.11 ([9479356](https://github.com/googleapis/python-pubsub/commit/9479356029f28c565a06ab759330c6e430a47c51))
+
 ## [2.13.12](https://github.com/googleapis/python-pubsub/compare/v2.13.11...v2.13.12) (2023-01-06)
 
 
