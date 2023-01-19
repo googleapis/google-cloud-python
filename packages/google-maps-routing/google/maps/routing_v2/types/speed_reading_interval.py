@@ -50,7 +50,18 @@ class SpeedReadingInterval(proto.Message):
     """
 
     class Speed(proto.Enum):
-        r"""The classification of polyline speed based on traffic data."""
+        r"""The classification of polyline speed based on traffic data.
+
+        Values:
+            SPEED_UNSPECIFIED (0):
+                Default value. This value is unused.
+            NORMAL (1):
+                Normal speed, no slowdown is detected.
+            SLOW (2):
+                Slowdown detected, but no traffic jam formed.
+            TRAFFIC_JAM (3):
+                Traffic jam detected.
+        """
         SPEED_UNSPECIFIED = 0
         NORMAL = 1
         SLOW = 2

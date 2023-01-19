@@ -15,7 +15,7 @@
 #
 from typing import MutableMapping, MutableSequence
 
-import google.cloud.documentai_v1.types
+from google.cloud.documentai.v1 import document_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import datetime_pb2  # type: ignore
 import proto  # type: ignore
@@ -45,6 +45,21 @@ __protobuf__ = proto.module(
 class RawDocumentFileType(proto.Enum):
     r"""When a raw document is supplied, this indicates the file
     format
+
+    Values:
+        RAW_DOCUMENT_FILE_TYPE_UNSPECIFIED (0):
+            No raw document specified or it is
+            non-parsable
+        RAW_DOCUMENT_FILE_TYPE_PDF (1):
+            Adobe PDF format
+        RAW_DOCUMENT_FILE_TYPE_DOCX (2):
+            Microsoft Word format
+        RAW_DOCUMENT_FILE_TYPE_XLSX (3):
+            Microsoft Excel format
+        RAW_DOCUMENT_FILE_TYPE_PPTX (4):
+            Microsoft Powerpoint format
+        RAW_DOCUMENT_FILE_TYPE_TEXT (5):
+            UTF-8 encoded text format
     """
     RAW_DOCUMENT_FILE_TYPE_UNSPECIFIED = 0
     RAW_DOCUMENT_FILE_TYPE_PDF = 1
@@ -95,7 +110,7 @@ class Document(proto.Message):
             Other document format, such as PPTX, XLXS
 
             This field is a member of `oneof`_ ``structured_content``.
-        cloud_ai_document (google.cloud.documentai_v1.types.Document):
+        cloud_ai_document (google.cloud.documentai.v1.document_pb2.Document):
             Document AI format to save the structured
             content, including OCR.
 
@@ -166,11 +181,11 @@ class Document(proto.Message):
         number=15,
         oneof="structured_content",
     )
-    cloud_ai_document: google.cloud.documentai_v1.types.Document = proto.Field(
+    cloud_ai_document: document_pb2.Document = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="structured_content",
-        message=google.cloud.documentai_v1.types.Document,
+        message=document_pb2.Document,
     )
     structured_content_uri: str = proto.Field(
         proto.STRING,

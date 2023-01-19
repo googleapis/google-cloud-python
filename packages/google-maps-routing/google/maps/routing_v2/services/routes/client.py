@@ -640,7 +640,7 @@ class RoutesClient(metaclass=RoutesClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "RoutesClient":
         return self
 
     def __exit__(self, type, value, traceback):

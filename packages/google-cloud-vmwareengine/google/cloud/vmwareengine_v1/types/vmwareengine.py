@@ -208,7 +208,28 @@ class PrivateCloud(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Enum State defines possible states of private clouds."""
+        r"""Enum State defines possible states of private clouds.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The default value. This value should never be
+                used.
+            ACTIVE (1):
+                The private cloud is ready.
+            CREATING (2):
+                The private cloud is being created.
+            UPDATING (3):
+                The private cloud is being updated.
+            FAILED (5):
+                The private cloud is in failed state.
+            DELETED (6):
+                The private cloud is scheduled for deletion.
+                The deletion process can be cancelled by using
+                the corresponding undelete method.
+            PURGING (7):
+                The private cloud is irreversibly deleted and
+                is being removed from the system.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CREATING = 2
@@ -679,7 +700,26 @@ class Cluster(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Enum State defines possible states of private cloud clusters."""
+        r"""Enum State defines possible states of private cloud clusters.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The default value. This value should never be
+                used.
+            ACTIVE (1):
+                The Cluster is operational and can be used by
+                the user.
+            CREATING (2):
+                The Cluster is being deployed.
+            UPDATING (3):
+                Adding or removing of a node to the cluster,
+                any other cluster specific updates.
+            DELETING (4):
+                The Cluster is being deleted.
+            REPAIRING (5):
+                The Cluster is undergoing maintenance, for
+                example: a failed node is getting replaced.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CREATING = 2
@@ -1008,7 +1048,21 @@ class Subnet(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Defines possible states of subnets."""
+        r"""Defines possible states of subnets.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The default value. This value should never be
+                used.
+            ACTIVE (1):
+                The subnet is ready.
+            CREATING (2):
+                The subnet is being created.
+            UPDATING (3):
+                The subnet is being updated.
+            DELETING (4):
+                The subnet is being deleted.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CREATING = 2
@@ -1576,7 +1630,19 @@ class HcxActivationKey(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of HCX activation key"""
+        r"""State of HCX activation key
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified state.
+            AVAILABLE (1):
+                State of a newly generated activation key.
+            CONSUMED (2):
+                State of key when it has been used to
+                activate HCX appliance.
+            CREATING (3):
+                State of key when it is being created.
+        """
         STATE_UNSPECIFIED = 0
         AVAILABLE = 1
         CONSUMED = 2
@@ -1753,7 +1819,17 @@ class Hcx(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of the appliance"""
+        r"""State of the appliance
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified appliance state. This is the
+                default value.
+            ACTIVE (1):
+                The appliance is operational and can be used.
+            CREATING (2):
+                The appliance is being deployed.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CREATING = 2
@@ -1792,7 +1868,17 @@ class Nsx(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of the appliance"""
+        r"""State of the appliance
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified appliance state. This is the
+                default value.
+            ACTIVE (1):
+                The appliance is operational and can be used.
+            CREATING (2):
+                The appliance is being deployed.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CREATING = 2
@@ -1831,7 +1917,17 @@ class Vcenter(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of the appliance"""
+        r"""State of the appliance
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified appliance state. This is the
+                default value.
+            ACTIVE (1):
+                The appliance is operational and can be used.
+            CREATING (2):
+                The appliance is being deployed.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CREATING = 2
@@ -1929,6 +2025,18 @@ class NetworkPolicy(proto.Message):
         class State(proto.Enum):
             r"""Enum State defines possible states of a network policy
             controlled service.
+
+            Values:
+                STATE_UNSPECIFIED (0):
+                    Unspecified service state. This is the
+                    default value.
+                UNPROVISIONED (1):
+                    Service is not provisioned.
+                RECONCILING (2):
+                    Service is in the process of being
+                    provisioned/deprovisioned.
+                ACTIVE (3):
+                    Service is active.
             """
             STATE_UNSPECIFIED = 0
             UNPROVISIONED = 1
@@ -2337,7 +2445,21 @@ class VmwareEngineNetwork(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Enum State defines possible states of VMware Engine network."""
+        r"""Enum State defines possible states of VMware Engine network.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The default value. This value is used if the
+                state is omitted.
+            CREATING (1):
+                The VMware Engine network is being created.
+            ACTIVE (2):
+                The VMware Engine network is ready.
+            UPDATING (3):
+                The VMware Engine network is being updated.
+            DELETING (4):
+                The VMware Engine network is being deleted.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -2345,7 +2467,18 @@ class VmwareEngineNetwork(proto.Message):
         DELETING = 4
 
     class Type(proto.Enum):
-        r"""Enum Type defines possible types of VMware Engine network."""
+        r"""Enum Type defines possible types of VMware Engine network.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                The default value. This value should never be
+                used.
+            LEGACY (1):
+                Network type used by private clouds created in projects
+                without a network of type ``STANDARD``. This network type is
+                no longer used for new VMware Engine private cloud
+                deployments.
+        """
         TYPE_UNSPECIFIED = 0
         LEGACY = 1
 
@@ -2366,6 +2499,24 @@ class VmwareEngineNetwork(proto.Message):
         class Type(proto.Enum):
             r"""Enum Type defines possible types of a VMware Engine network
             controlled service.
+
+            Values:
+                TYPE_UNSPECIFIED (0):
+                    The default value. This value should never be
+                    used.
+                INTRANET (1):
+                    VPC network that will be peered with a
+                    consumer VPC network or the intranet VPC of
+                    another VMware Engine network. Access a private
+                    cloud through Compute Engine VMs on a peered VPC
+                    network or an on-premises resource connected to
+                    a peered consumer VPC network.
+                INTERNET (2):
+                    VPC network used for internet access to and
+                    from a private cloud.
+                GOOGLE_CLOUD (3):
+                    VPC network used for access to Google Cloud
+                    services like Cloud Storage.
             """
             TYPE_UNSPECIFIED = 0
             INTRANET = 1

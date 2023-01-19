@@ -182,7 +182,16 @@ class TimeFilter(proto.Message):
     """
 
     class TimeField(proto.Enum):
-        r"""Time field used in TimeFilter."""
+        r"""Time field used in TimeFilter.
+
+        Values:
+            TIME_FIELD_UNSPECIFIED (0):
+                Default value.
+            CREATE_TIME (1):
+                Earliest document create time.
+            UPDATE_TIME (2):
+                Latest document update time.
+        """
         TIME_FIELD_UNSPECIFIED = 0
         CREATE_TIME = 1
         UPDATE_TIME = 2
@@ -275,7 +284,20 @@ class FileTypeFilter(proto.Message):
     """
 
     class FileType(proto.Enum):
-        r"""Representation of the types of files."""
+        r"""Representation of the types of files.
+
+        Values:
+            FILE_TYPE_UNSPECIFIED (0):
+                Default document type. If set, disables the
+                filter.
+            ALL (1):
+                Returns all document types, including
+                folders.
+            FOLDER (2):
+                Returns only folders.
+            DOCUMENT (3):
+                Returns only non-folder documents.
+        """
         FILE_TYPE_UNSPECIFIED = 0
         ALL = 1
         FOLDER = 2

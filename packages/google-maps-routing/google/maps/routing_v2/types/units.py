@@ -28,6 +28,15 @@ __protobuf__ = proto.module(
 class Units(proto.Enum):
     r"""A set of values that specify the unit of measure used in the
     display.
+
+    Values:
+        UNITS_UNSPECIFIED (0):
+            Units of measure not specified. Defaults to
+            the unit of measure inferred from the request.
+        METRIC (1):
+            Metric units of measure.
+        IMPERIAL (2):
+            Imperial (English) units of measure.
     """
     UNITS_UNSPECIFIED = 0
     METRIC = 1

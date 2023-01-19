@@ -410,6 +410,18 @@ class ImportDocumentsRequest(proto.Message):
     class ReconciliationMode(proto.Enum):
         r"""Indicates how imported documents are reconciled with the
         existing documents created or imported before.
+
+        Values:
+            RECONCILIATION_MODE_UNSPECIFIED (0):
+                Defaults to INCREMENTAL.
+            INCREMENTAL (1):
+                Inserts new documents or updates existing
+                documents.
+            FULL (2):
+                Calculates diff and replaces the entire
+                document dataset. Existing documents may be
+                deleted if they are not present in the source
+                location.
         """
         RECONCILIATION_MODE_UNSPECIFIED = 0
         INCREMENTAL = 1

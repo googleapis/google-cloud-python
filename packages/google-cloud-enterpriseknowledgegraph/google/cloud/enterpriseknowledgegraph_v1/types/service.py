@@ -70,6 +70,24 @@ class InputConfig(proto.Message):
         r"""The type of entities we will support. Currently, we only
         support people, establishment, property, and product types. If
         the type is unspecified, it will be generic type.
+
+        Values:
+            ENTITY_TYPE_UNSPECIFIED (0):
+                The default value.
+            PEOPLE (1):
+                People entity.
+            ESTABLISHMENT (2):
+                Establishment entity.
+            PROPERTY (3):
+                Property entity. e.g. real estate property.
+            PRODUCT (4):
+                Product entity.
+            ORGANIZATION (5):
+                Organization entity.
+            LOCAL_BUSINESS (6):
+                Local Business entity.
+            PERSON (7):
+                Person entity.
         """
         ENTITY_TYPE_UNSPECIFIED = 0
         PEOPLE = 1

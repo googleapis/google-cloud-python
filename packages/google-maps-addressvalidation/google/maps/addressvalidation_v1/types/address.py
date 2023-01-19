@@ -152,7 +152,26 @@ class AddressComponent(proto.Message):
     """
 
     class ConfirmationLevel(proto.Enum):
-        r"""The different possible values for confirmation levels."""
+        r"""The different possible values for confirmation levels.
+
+        Values:
+            CONFIRMATION_LEVEL_UNSPECIFIED (0):
+                Default value. This value is unused.
+            CONFIRMED (1):
+                We were able to verify that this component
+                exists and makes sense in the context of the
+                rest of the address.
+            UNCONFIRMED_BUT_PLAUSIBLE (2):
+                This component could not be confirmed, but it
+                is plausible that it exists. For example, a
+                street number within a known valid range of
+                numbers on a street where specific house numbers
+                are not known.
+            UNCONFIRMED_AND_SUSPICIOUS (3):
+                This component was not confirmed and is
+                likely to be wrong. For example, a neighborhood
+                that does not fit the rest of the address.
+        """
         CONFIRMATION_LEVEL_UNSPECIFIED = 0
         CONFIRMED = 1
         UNCONFIRMED_BUT_PLAUSIBLE = 2

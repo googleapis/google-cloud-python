@@ -190,7 +190,18 @@ class DocumentLink(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The state of a document-link."""
+        r"""The state of a document-link.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unknown state of documentlink.
+            ACTIVE (1):
+                The documentlink has both source and target
+                documents detected.
+            SOFT_DELETED (2):
+                Target document is deleted, and mark the
+                documentlink as soft-deleted.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         SOFT_DELETED = 2

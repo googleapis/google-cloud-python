@@ -99,6 +99,12 @@ class HistogramQueryPropertyNameFilter(proto.Message):
         r"""The result of the histogram query count('FilterableProperties')
         using HISTOGRAM_YAXIS_DOCUMENT will be: invoice_id: 2 address: 1
         payment_method: 2 line_item_description: 1
+
+        Values:
+            HISTOGRAM_YAXIS_DOCUMENT (0):
+                Count the documents per property name.
+            HISTOGRAM_YAXIS_PROPERTY (1):
+                Count the properties per property name.
         """
         HISTOGRAM_YAXIS_DOCUMENT = 0
         HISTOGRAM_YAXIS_PROPERTY = 1

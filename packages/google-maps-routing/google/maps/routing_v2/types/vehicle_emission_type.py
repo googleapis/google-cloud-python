@@ -28,6 +28,20 @@ __protobuf__ = proto.module(
 class VehicleEmissionType(proto.Enum):
     r"""A set of values describing the vehicle's emission type.
     Applies only to the DRIVE travel mode.
+
+    Values:
+        VEHICLE_EMISSION_TYPE_UNSPECIFIED (0):
+            No emission type specified. Default to
+            GASOLINE.
+        GASOLINE (1):
+            Gasoline/petrol fueled vehicle.
+        ELECTRIC (2):
+            Electricity powered vehicle.
+        HYBRID (3):
+            Hybrid fuel (such as gasoline + electric)
+            vehicle.
+        DIESEL (4):
+            Diesel fueled vehicle.
     """
     VEHICLE_EMISSION_TYPE_UNSPECIFIED = 0
     GASOLINE = 1

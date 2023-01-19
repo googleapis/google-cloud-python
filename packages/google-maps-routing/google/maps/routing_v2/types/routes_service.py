@@ -43,7 +43,19 @@ __protobuf__ = proto.module(
 
 
 class RouteMatrixElementCondition(proto.Enum):
-    r"""The condition of the route being returned."""
+    r"""The condition of the route being returned.
+
+    Values:
+        ROUTE_MATRIX_ELEMENT_CONDITION_UNSPECIFIED (0):
+            Only used when the ``status`` of the element is not OK.
+        ROUTE_EXISTS (1):
+            A route was found, and the corresponding
+            information was filled out for the element.
+        ROUTE_NOT_FOUND (2):
+            No route could be found. Fields containing route
+            information, such as ``distance_meters`` or ``duration``,
+            will not be filled out in the element.
+    """
     ROUTE_MATRIX_ELEMENT_CONDITION_UNSPECIFIED = 0
     ROUTE_EXISTS = 1
     ROUTE_NOT_FOUND = 2
@@ -124,12 +136,34 @@ class ComputeRoutesRequest(proto.Message):
     """
 
     class ReferenceRoute(proto.Enum):
-        r"""A supported reference route on the ComputeRoutesRequest."""
+        r"""A supported reference route on the ComputeRoutesRequest.
+
+        Values:
+            REFERENCE_ROUTE_UNSPECIFIED (0):
+                Not used. Requests containing this value
+                fail.
+            FUEL_EFFICIENT (1):
+                Fuel efficient route. Routes labeled with
+                this value are determined to be optimized for
+                parameters such as fuel consumption.
+        """
         REFERENCE_ROUTE_UNSPECIFIED = 0
         FUEL_EFFICIENT = 1
 
     class ExtraComputation(proto.Enum):
-        r"""Extra computations to perform while completing the request."""
+        r"""Extra computations to perform while completing the request.
+
+        Values:
+            EXTRA_COMPUTATION_UNSPECIFIED (0):
+                Not used. Requests containing this value will
+                fail.
+            TOLLS (1):
+                Toll information for the route(s).
+            FUEL_CONSUMPTION (2):
+                Estimated fuel consumption for the route(s).
+            TRAFFIC_ON_POLYLINE (3):
+                Traffic aware polylines for the route(s).
+        """
         EXTRA_COMPUTATION_UNSPECIFIED = 0
         TOLLS = 1
         FUEL_CONSUMPTION = 2
@@ -282,7 +316,15 @@ class ComputeRouteMatrixRequest(proto.Message):
     """
 
     class ExtraComputation(proto.Enum):
-        r"""Extra computations to perform while completing the request."""
+        r"""Extra computations to perform while completing the request.
+
+        Values:
+            EXTRA_COMPUTATION_UNSPECIFIED (0):
+                Not used. Requests containing this value will
+                fail.
+            TOLLS (1):
+                Toll information for the matrix element(s).
+        """
         EXTRA_COMPUTATION_UNSPECIFIED = 0
         TOLLS = 1
 
