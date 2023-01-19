@@ -1,6 +1,18 @@
 # Changelog
 
 
+## [1.8.1](https://github.com/googleapis/gapic-generator-python/compare/v1.8.0...v1.8.1) (2023-01-19)
+
+
+### Bug Fixes
+
+* Add context manager return types ([#1468](https://github.com/googleapis/gapic-generator-python/issues/1468)) ([e0b38d3](https://github.com/googleapis/gapic-generator-python/commit/e0b38d35b168dabacfa6d841b29149523e9e34ca))
+
+
+### Documentation
+
+* Add documentation for enums ([#1568](https://github.com/googleapis/gapic-generator-python/issues/1568)) ([69097ac](https://github.com/googleapis/gapic-generator-python/commit/69097acb5d102eb14579d16235a9b6b901ba14a1))
+
 ## [1.8.0](https://github.com/googleapis/gapic-generator-python/compare/v1.7.1...v1.8.0) (2023-01-09)
 
 
