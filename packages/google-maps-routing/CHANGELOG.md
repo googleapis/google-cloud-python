@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.2.0...google-maps-routing-v0.3.0) (2023-01-19)
+
+
+### Features
+
+* Add ExtraComputations feature to ComputeRoutes and ComputeRouteMatrix ([#10820](https://github.com/googleapis/google-cloud-python/issues/10820)) ([1812a88](https://github.com/googleapis/google-cloud-python/commit/1812a8860f4aa21fc1afaf8d37c8486010fa3984))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.1.2...google-maps-routing-v0.2.0) (2023-01-10)
 
 
