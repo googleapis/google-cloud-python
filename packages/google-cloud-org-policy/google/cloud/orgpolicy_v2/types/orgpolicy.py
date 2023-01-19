@@ -18,6 +18,7 @@ from typing import MutableMapping, MutableSequence
 import proto  # type: ignore
 
 from google.cloud.orgpolicy_v2.types import constraint
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 
@@ -66,6 +67,11 @@ class Policy(proto.Message):
             Policy.
         alternate (google.cloud.orgpolicy_v2.types.AlternatePolicySpec):
             Deprecated.
+        dry_run_spec (google.cloud.orgpolicy_v2.types.PolicySpec):
+            dry-run policy.
+            Audit-only policy, can be used to monitor how
+            the policy would have impacted the existing and
+            future resources if it's enforced.
     """
 
     name: str = proto.Field(
@@ -81,6 +87,11 @@ class Policy(proto.Message):
         proto.MESSAGE,
         number=3,
         message="AlternatePolicySpec",
+    )
+    dry_run_spec: "PolicySpec" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="PolicySpec",
     )
 
 
@@ -500,12 +511,22 @@ class UpdatePolicyRequest(proto.Message):
     Attributes:
         policy (google.cloud.orgpolicy_v2.types.Policy):
             Required. ``Policy`` to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Field mask used to specify the fields to be overwritten in
+            the policy by the set. The fields specified in the
+            update_mask are relative to the policy, not the full
+            request.
     """
 
     policy: "Policy" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Policy",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=field_mask_pb2.FieldMask,
     )
 
 

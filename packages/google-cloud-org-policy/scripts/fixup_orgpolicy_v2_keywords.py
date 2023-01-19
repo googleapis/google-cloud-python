@@ -45,7 +45,7 @@ class orgpolicyCallTransformer(cst.CSTTransformer):
         'get_policy': ('name', ),
         'list_constraints': ('parent', 'page_size', 'page_token', ),
         'list_policies': ('parent', 'page_size', 'page_token', ),
-        'update_policy': ('policy', ),
+        'update_policy': ('policy', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

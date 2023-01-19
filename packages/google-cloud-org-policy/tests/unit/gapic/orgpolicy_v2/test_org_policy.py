@@ -44,6 +44,7 @@ from google.cloud.orgpolicy_v2.services.org_policy import transports
 from google.cloud.orgpolicy_v2.types import constraint
 from google.cloud.orgpolicy_v2.types import orgpolicy
 from google.oauth2 import service_account
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 import google.auth
