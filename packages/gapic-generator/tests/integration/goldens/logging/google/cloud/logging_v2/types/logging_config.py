@@ -63,7 +63,18 @@ __protobuf__ = proto.module(
 
 
 class LifecycleState(proto.Enum):
-    r"""LogBucket lifecycle states."""
+    r"""LogBucket lifecycle states.
+
+    Values:
+        LIFECYCLE_STATE_UNSPECIFIED (0):
+            Unspecified state.  This is only used/useful
+            for distinguishing unset values.
+        ACTIVE (1):
+            The normal and active state.
+        DELETE_REQUESTED (2):
+            The bucket has been marked for deletion by
+            the user.
+    """
     LIFECYCLE_STATE_UNSPECIFIED = 0
     ACTIVE = 1
     DELETE_REQUESTED = 2
@@ -295,7 +306,17 @@ class LogSink(proto.Message):
             This field may not be present for older sinks.
     """
     class VersionFormat(proto.Enum):
-        r"""Deprecated. This is unused."""
+        r"""Deprecated. This is unused.
+
+        Values:
+            VERSION_FORMAT_UNSPECIFIED (0):
+                An unspecified format version that will
+                default to V2.
+            V2 (1):
+                ``LogEntry`` version 2 format.
+            V1 (2):
+                ``LogEntry`` version 1 format.
+        """
         VERSION_FORMAT_UNSPECIFIED = 0
         V2 = 1
         V1 = 2

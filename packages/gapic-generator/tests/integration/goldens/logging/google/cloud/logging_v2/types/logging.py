@@ -558,7 +558,20 @@ class TailLogEntriesResponse(proto.Message):
                 ``reason``.
         """
         class Reason(proto.Enum):
-            r"""An indicator of why entries were omitted."""
+            r"""An indicator of why entries were omitted.
+
+            Values:
+                REASON_UNSPECIFIED (0):
+                    Unexpected default.
+                RATE_LIMIT (1):
+                    Indicates suppression occurred due to relevant entries being
+                    received in excess of rate limits. For quotas and limits,
+                    see `Logging API quotas and
+                    limits <https://cloud.google.com/logging/quotas#api-limits>`__.
+                NOT_CONSUMED (2):
+                    Indicates suppression occurred due to the
+                    client not consuming responses quickly enough.
+            """
             REASON_UNSPECIFIED = 0
             RATE_LIMIT = 1
             NOT_CONSUMED = 2
