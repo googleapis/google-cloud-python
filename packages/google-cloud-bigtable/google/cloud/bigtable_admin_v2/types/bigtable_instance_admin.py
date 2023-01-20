@@ -444,7 +444,26 @@ class CreateClusterMetadata(proto.Message):
         """
 
         class State(proto.Enum):
-            r""""""
+            r"""
+
+            Values:
+                STATE_UNSPECIFIED (0):
+
+                PENDING (1):
+                    The table has not yet begun copying to the
+                    new cluster.
+                COPYING (2):
+                    The table is actively being copied to the new
+                    cluster.
+                COMPLETED (3):
+                    The table has been fully copied to the new
+                    cluster.
+                CANCELLED (4):
+                    The table was deleted before it finished
+                    copying to the new cluster. Note that tables
+                    deleted after completion will stay marked as
+                    COMPLETED, not CANCELLED.
+            """
             STATE_UNSPECIFIED = 0
             PENDING = 1
             COPYING = 2

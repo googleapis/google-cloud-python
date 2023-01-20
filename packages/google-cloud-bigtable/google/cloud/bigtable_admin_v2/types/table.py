@@ -39,7 +39,15 @@ __protobuf__ = proto.module(
 
 
 class RestoreSourceType(proto.Enum):
-    r"""Indicates the type of the restore source."""
+    r"""Indicates the type of the restore source.
+
+    Values:
+        RESTORE_SOURCE_TYPE_UNSPECIFIED (0):
+            No restore associated.
+        BACKUP (1):
+            A backup was used as the source of the
+            restore.
+    """
     RESTORE_SOURCE_TYPE_UNSPECIFIED = 0
     BACKUP = 1
 
@@ -118,12 +126,40 @@ class Table(proto.Message):
     class TimestampGranularity(proto.Enum):
         r"""Possible timestamp granularities to use when keeping multiple
         versions of data in a table.
+
+        Values:
+            TIMESTAMP_GRANULARITY_UNSPECIFIED (0):
+                The user did not specify a granularity.
+                Should not be returned. When specified during
+                table creation, MILLIS will be used.
+            MILLIS (1):
+                The table keeps data versioned at a
+                granularity of 1ms.
         """
         TIMESTAMP_GRANULARITY_UNSPECIFIED = 0
         MILLIS = 1
 
     class View(proto.Enum):
-        r"""Defines a view over a table's fields."""
+        r"""Defines a view over a table's fields.
+
+        Values:
+            VIEW_UNSPECIFIED (0):
+                Uses the default view for each method as
+                documented in its request.
+            NAME_ONLY (1):
+                Only populates ``name``.
+            SCHEMA_VIEW (2):
+                Only populates ``name`` and fields related to the table's
+                schema.
+            REPLICATION_VIEW (3):
+                Only populates ``name`` and fields related to the table's
+                replication state.
+            ENCRYPTION_VIEW (5):
+                Only populates ``name`` and fields related to the table's
+                encryption state.
+            FULL (4):
+                Populates all fields.
+        """
         VIEW_UNSPECIFIED = 0
         NAME_ONLY = 1
         SCHEMA_VIEW = 2
@@ -150,7 +186,37 @@ class Table(proto.Message):
         """
 
         class ReplicationState(proto.Enum):
-            r"""Table replication states."""
+            r"""Table replication states.
+
+            Values:
+                STATE_NOT_KNOWN (0):
+                    The replication state of the table is unknown
+                    in this cluster.
+                INITIALIZING (1):
+                    The cluster was recently created, and the
+                    table must finish copying over pre-existing data
+                    from other clusters before it can begin
+                    receiving live replication updates and serving
+                    Data API requests.
+                PLANNED_MAINTENANCE (2):
+                    The table is temporarily unable to serve Data
+                    API requests from this cluster due to planned
+                    internal maintenance.
+                UNPLANNED_MAINTENANCE (3):
+                    The table is temporarily unable to serve Data
+                    API requests from this cluster due to unplanned
+                    or emergency maintenance.
+                READY (4):
+                    The table can serve Data API requests from
+                    this cluster. Depending on replication delay,
+                    reads may not immediately reflect the state of
+                    the table in other clusters.
+                READY_OPTIMIZING (5):
+                    The table is fully created and ready for use after a
+                    restore, and is being optimized for performance. When
+                    optimizations are complete, the table will transition to
+                    ``READY`` state.
+            """
             STATE_NOT_KNOWN = 0
             INITIALIZING = 1
             PLANNED_MAINTENANCE = 2
@@ -335,7 +401,26 @@ class EncryptionInfo(proto.Message):
     """
 
     class EncryptionType(proto.Enum):
-        r"""Possible encryption types for a resource."""
+        r"""Possible encryption types for a resource.
+
+        Values:
+            ENCRYPTION_TYPE_UNSPECIFIED (0):
+                Encryption type was not specified, though
+                data at rest remains encrypted.
+            GOOGLE_DEFAULT_ENCRYPTION (1):
+                The data backing this resource is encrypted
+                at rest with a key that is fully managed by
+                Google. No key version or status will be
+                populated. This is the default state.
+            CUSTOMER_MANAGED_ENCRYPTION (2):
+                The data backing this resource is encrypted at rest with a
+                key that is managed by the customer. The in-use version of
+                the key and its status are populated for CMEK-protected
+                tables. CMEK-protected backups are pinned to the key version
+                that was in use at the time the backup was taken. This key
+                version is populated but its status is not tracked and is
+                reported as ``UNKNOWN``.
+        """
         ENCRYPTION_TYPE_UNSPECIFIED = 0
         GOOGLE_DEFAULT_ENCRYPTION = 1
         CUSTOMER_MANAGED_ENCRYPTION = 2
@@ -397,7 +482,21 @@ class Snapshot(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Possible states of a snapshot."""
+        r"""Possible states of a snapshot.
+
+        Values:
+            STATE_NOT_KNOWN (0):
+                The state of the snapshot could not be
+                determined.
+            READY (1):
+                The snapshot has been successfully created
+                and can serve all requests.
+            CREATING (2):
+                The snapshot is currently being created, and
+                may be destroyed if the creation process
+                encounters an error. A snapshot may not be
+                restored to a table while it is being created.
+        """
         STATE_NOT_KNOWN = 0
         READY = 1
         CREATING = 2
@@ -481,7 +580,17 @@ class Backup(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Indicates the current state of the backup."""
+        r"""Indicates the current state of the backup.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not specified.
+            CREATING (1):
+                The pending backup is still being created. Operations on the
+                backup may fail with ``FAILED_PRECONDITION`` in this state.
+            READY (2):
+                The backup is complete and ready for use.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2

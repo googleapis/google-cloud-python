@@ -30,7 +30,16 @@ __protobuf__ = proto.module(
 
 
 class StorageType(proto.Enum):
-    r"""Storage media types for persisting Bigtable data."""
+    r"""Storage media types for persisting Bigtable data.
+
+    Values:
+        STORAGE_TYPE_UNSPECIFIED (0):
+            The user did not specify a storage type.
+        SSD (1):
+            Flash (SSD) storage should be used.
+        HDD (2):
+            Magnetic drive (HDD) storage should be used.
+    """
     STORAGE_TYPE_UNSPECIFIED = 0
     SSD = 1
     HDD = 2

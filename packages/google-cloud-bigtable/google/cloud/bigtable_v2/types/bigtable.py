@@ -76,6 +76,19 @@ class ReadRowsRequest(proto.Message):
         r"""The desired view into RequestStats that should be returned in
         the response.
         See also: RequestStats message.
+
+        Values:
+            REQUEST_STATS_VIEW_UNSPECIFIED (0):
+                The default / unset value. The API will
+                default to the NONE option below.
+            REQUEST_STATS_NONE (1):
+                Do not include any RequestStats in the
+                response. This will leave the RequestStats
+                embedded message unset in the response.
+            REQUEST_STATS_FULL (2):
+                Include the full set of available
+                RequestStats in the response, applicable to this
+                read.
         """
         REQUEST_STATS_VIEW_UNSPECIFIED = 0
         REQUEST_STATS_NONE = 1

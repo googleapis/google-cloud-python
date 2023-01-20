@@ -83,13 +83,41 @@ class Instance(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Possible states of an instance."""
+        r"""Possible states of an instance.
+
+        Values:
+            STATE_NOT_KNOWN (0):
+                The state of the instance could not be
+                determined.
+            READY (1):
+                The instance has been successfully created
+                and can serve requests to its tables.
+            CREATING (2):
+                The instance is currently being created, and
+                may be destroyed if the creation process
+                encounters an error.
+        """
         STATE_NOT_KNOWN = 0
         READY = 1
         CREATING = 2
 
     class Type(proto.Enum):
-        r"""The type of the instance."""
+        r"""The type of the instance.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                The type of the instance is unspecified. If set when
+                creating an instance, a ``PRODUCTION`` instance will be
+                created. If set when updating an instance, the type will be
+                left unchanged.
+            PRODUCTION (1):
+                An instance meant for production use. ``serve_nodes`` must
+                be set on the cluster.
+            DEVELOPMENT (2):
+                DEPRECATED: Prefer PRODUCTION for all use
+                cases, as it no longer enforces a higher minimum
+                node count than DEVELOPMENT.
+        """
         TYPE_UNSPECIFIED = 0
         PRODUCTION = 1
         DEVELOPMENT = 2
@@ -221,7 +249,33 @@ class Cluster(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Possible states of a cluster."""
+        r"""Possible states of a cluster.
+
+        Values:
+            STATE_NOT_KNOWN (0):
+                The state of the cluster could not be
+                determined.
+            READY (1):
+                The cluster has been successfully created and
+                is ready to serve requests.
+            CREATING (2):
+                The cluster is currently being created, and
+                may be destroyed if the creation process
+                encounters an error. A cluster may not be able
+                to serve requests while being created.
+            RESIZING (3):
+                The cluster is currently being resized, and
+                may revert to its previous node count if the
+                process encounters an error. A cluster is still
+                capable of serving requests while being resized,
+                but may exhibit performance as if its number of
+                allocated nodes is between the starting and
+                requested states.
+            DISABLED (4):
+                The cluster has no backing nodes. The data
+                (tables) still exist, but no operations can be
+                performed on the cluster.
+        """
         STATE_NOT_KNOWN = 0
         READY = 1
         CREATING = 2
