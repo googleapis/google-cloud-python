@@ -151,7 +151,20 @@ class AttachedDisk(proto.Message):
     """
 
     class DiskMode(proto.Enum):
-        r"""The different mode of the attached disk."""
+        r"""The different mode of the attached disk.
+
+        Values:
+            DISK_MODE_UNSPECIFIED (0):
+                The disk mode is not known/set.
+            READ_WRITE (1):
+                Attaches the disk in read-write mode. Only
+                one TPU node can attach a disk in read-write
+                mode at a time.
+            READ_ONLY (2):
+                Attaches the disk in read-only mode. Multiple
+                TPU nodes can attach a disk in read-only mode at
+                a time.
+        """
         DISK_MODE_UNSPECIFIED = 0
         READ_WRITE = 1
         READ_ONLY = 2
@@ -383,6 +396,42 @@ class Node(proto.Message):
     class State(proto.Enum):
         r"""Represents the different states of a TPU node during its
         lifecycle.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                TPU node state is not known/set.
+            CREATING (1):
+                TPU node is being created.
+            READY (2):
+                TPU node has been created.
+            RESTARTING (3):
+                TPU node is restarting.
+            REIMAGING (4):
+                TPU node is undergoing reimaging.
+            DELETING (5):
+                TPU node is being deleted.
+            REPAIRING (6):
+                TPU node is being repaired and may be unusable. Details can
+                be found in the 'help_description' field.
+            STOPPED (8):
+                TPU node is stopped.
+            STOPPING (9):
+                TPU node is currently stopping.
+            STARTING (10):
+                TPU node is currently starting.
+            PREEMPTED (11):
+                TPU node has been preempted. Only applies to
+                Preemptible TPU Nodes.
+            TERMINATED (12):
+                TPU node has been terminated due to
+                maintenance or has reached the end of its life
+                cycle (for preemptible nodes).
+            HIDING (13):
+                TPU node is currently hiding.
+            HIDDEN (14):
+                TPU node has been hidden.
+            UNHIDING (15):
+                TPU node is currently unhiding.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
@@ -403,6 +452,21 @@ class Node(proto.Message):
     class Health(proto.Enum):
         r"""Health defines the status of a TPU node as reported by
         Health Monitor.
+
+        Values:
+            HEALTH_UNSPECIFIED (0):
+                Health status is unknown: not initialized or
+                failed to retrieve.
+            HEALTHY (1):
+                The resource is healthy.
+            TIMEOUT (3):
+                The resource is unresponsive.
+            UNHEALTHY_TENSORFLOW (4):
+                The in-guest ML stack is unhealthy.
+            UNHEALTHY_MAINTENANCE (5):
+                The node is under maintenance/priority boost
+                caused rescheduling and will resume running once
+                rescheduled.
         """
         HEALTH_UNSPECIFIED = 0
         HEALTHY = 1
@@ -411,7 +475,18 @@ class Node(proto.Message):
         UNHEALTHY_MAINTENANCE = 5
 
     class ApiVersion(proto.Enum):
-        r"""TPU API Version."""
+        r"""TPU API Version.
+
+        Values:
+            API_VERSION_UNSPECIFIED (0):
+                API version is unknown.
+            V1_ALPHA1 (1):
+                TPU API V1Alpha1 version.
+            V1 (2):
+                TPU API V1 version.
+            V2_ALPHA1 (3):
+                TPU API V2Alpha1 version.
+        """
         API_VERSION_UNSPECIFIED = 0
         V1_ALPHA1 = 1
         V1 = 2
@@ -785,7 +860,47 @@ class QueuedResourceState(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Output only state of the request"""
+        r"""Output only state of the request
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                State of the QueuedResource request is not
+                known/set.
+            CREATING (1):
+                The QueuedResource request has been received.
+                We're still working on determining if we will be
+                able to honor this request.
+            ACCEPTED (2):
+                The QueuedResource request has passed initial
+                validation/admission control and has been
+                persisted in the queue.
+            PROVISIONING (3):
+                The QueuedResource request has been selected.
+                The associated resources are currently being
+                provisioned (or very soon will begin
+                provisioning).
+            FAILED (4):
+                The request could not be completed. This may
+                be due to some late-discovered problem with the
+                request itself, or due to unavailability of
+                resources within the constraints of the request
+                (e.g., the 'valid until' start timing constraint
+                expired).
+            DELETING (5):
+                The QueuedResource is being deleted.
+            ACTIVE (6):
+                The resources specified in the QueuedResource
+                request have been provisioned and are ready for
+                use by the end-user/consumer.
+            SUSPENDING (7):
+                The resources specified in the QueuedResource
+                request are being deleted. This may have been
+                initiated by the user, or the Cloud TPU service.
+                Inspect the state data for more details.
+            SUSPENDED (8):
+                The resources specified in the QueuedResource
+                request have been deleted.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACCEPTED = 2
@@ -1530,6 +1645,24 @@ class Symptom(proto.Message):
     class SymptomType(proto.Enum):
         r"""SymptomType represents the different types of Symptoms that a
         TPU can be at.
+
+        Values:
+            SYMPTOM_TYPE_UNSPECIFIED (0):
+                Unspecified symptom.
+            LOW_MEMORY (1):
+                TPU VM memory is low.
+            OUT_OF_MEMORY (2):
+                TPU runtime is out of memory.
+            EXECUTE_TIMED_OUT (3):
+                TPU runtime execution has timed out.
+            MESH_BUILD_FAIL (4):
+                TPU runtime fails to construct a mesh that
+                recognizes each TPU device's neighbors.
+            HBM_OUT_OF_MEMORY (5):
+                TPU HBM is out of memory.
+            PROJECT_ABUSE (6):
+                Abusive behaviors have been identified on the
+                current project.
         """
         SYMPTOM_TYPE_UNSPECIFIED = 0
         LOW_MEMORY = 1
