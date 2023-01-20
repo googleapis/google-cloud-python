@@ -1029,7 +1029,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             metadata=metadata,
         )
 
-    def __enter__(self):
+    def __enter__(self) -> "MetricsServiceV2Client":
         return self
 
     def __exit__(self, type, value, traceback):

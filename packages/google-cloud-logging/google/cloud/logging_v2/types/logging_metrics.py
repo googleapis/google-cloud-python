@@ -168,7 +168,14 @@ class LogMetric(proto.Message):
     """
 
     class ApiVersion(proto.Enum):
-        r"""Logging API version."""
+        r"""Logging API version.
+
+        Values:
+            V2 (0):
+                Logging API v2.
+            V1 (1):
+                Logging API v1.
+        """
         V2 = 0
         V1 = 1
 

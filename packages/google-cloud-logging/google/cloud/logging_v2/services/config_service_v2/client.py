@@ -3334,7 +3334,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "ConfigServiceV2Client":
         return self
 
     def __exit__(self, type, value, traceback):

@@ -70,7 +70,19 @@ __protobuf__ = proto.module(
 
 
 class LifecycleState(proto.Enum):
-    r"""LogBucket lifecycle states."""
+    r"""LogBucket lifecycle states.
+
+    Values:
+        LIFECYCLE_STATE_UNSPECIFIED (0):
+            Unspecified state. This is only used/useful
+            for distinguishing unset values.
+        ACTIVE (1):
+            The normal and active state.
+        DELETE_REQUESTED (2):
+            The resource has been marked for deletion by
+            the user. For some resources (e.g. buckets),
+            this can be reversed by an un-delete operation.
+    """
     LIFECYCLE_STATE_UNSPECIFIED = 0
     ACTIVE = 1
     DELETE_REQUESTED = 2
@@ -83,6 +95,22 @@ class OperationState(proto.Enum):
     is created, the current state of the operation can be queried
     even before the operation is finished and the final result is
     available.
+
+    Values:
+        OPERATION_STATE_UNSPECIFIED (0):
+            Should not be used.
+        OPERATION_STATE_SCHEDULED (1):
+            The operation is scheduled.
+        OPERATION_STATE_WAITING_FOR_PERMISSIONS (2):
+            Waiting for necessary permissions.
+        OPERATION_STATE_RUNNING (3):
+            The operation is running.
+        OPERATION_STATE_SUCCEEDED (4):
+            The operation was completed successfully.
+        OPERATION_STATE_FAILED (5):
+            The operation failed.
+        OPERATION_STATE_CANCELLED (6):
+            The operation was cancelled by the user.
     """
     OPERATION_STATE_UNSPECIFIED = 0
     OPERATION_STATE_SCHEDULED = 1
@@ -371,7 +399,17 @@ class LogSink(proto.Message):
     """
 
     class VersionFormat(proto.Enum):
-        r"""Deprecated. This is unused."""
+        r"""Deprecated. This is unused.
+
+        Values:
+            VERSION_FORMAT_UNSPECIFIED (0):
+                An unspecified format version that will
+                default to V2.
+            V2 (1):
+                ``LogEntry`` version 2 format.
+            V1 (2):
+                ``LogEntry`` version 1 format.
+        """
         VERSION_FORMAT_UNSPECIFIED = 0
         V2 = 1
         V1 = 2

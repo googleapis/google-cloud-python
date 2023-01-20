@@ -1180,7 +1180,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "LoggingServiceV2Client":
         return self
 
     def __exit__(self, type, value, traceback):
