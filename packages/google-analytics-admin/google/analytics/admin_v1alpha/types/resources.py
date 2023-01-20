@@ -62,6 +62,62 @@ __protobuf__ = proto.module(
 class IndustryCategory(proto.Enum):
     r"""The category selected for this property, used for industry
     benchmarking.
+
+    Values:
+        INDUSTRY_CATEGORY_UNSPECIFIED (0):
+            Industry category unspecified
+        AUTOMOTIVE (1):
+            Automotive
+        BUSINESS_AND_INDUSTRIAL_MARKETS (2):
+            Business and industrial markets
+        FINANCE (3):
+            Finance
+        HEALTHCARE (4):
+            Healthcare
+        TECHNOLOGY (5):
+            Technology
+        TRAVEL (6):
+            Travel
+        OTHER (7):
+            Other
+        ARTS_AND_ENTERTAINMENT (8):
+            Arts and entertainment
+        BEAUTY_AND_FITNESS (9):
+            Beauty and fitness
+        BOOKS_AND_LITERATURE (10):
+            Books and literature
+        FOOD_AND_DRINK (11):
+            Food and drink
+        GAMES (12):
+            Games
+        HOBBIES_AND_LEISURE (13):
+            Hobbies and leisure
+        HOME_AND_GARDEN (14):
+            Home and garden
+        INTERNET_AND_TELECOM (15):
+            Internet and telecom
+        LAW_AND_GOVERNMENT (16):
+            Law and government
+        NEWS (17):
+            News
+        ONLINE_COMMUNITIES (18):
+            Online communities
+        PEOPLE_AND_SOCIETY (19):
+            People and society
+        PETS_AND_ANIMALS (20):
+            Pets and animals
+        REAL_ESTATE (21):
+            Real estate
+        REFERENCE (22):
+            Reference
+        SCIENCE (23):
+            Science
+        SPORTS (24):
+            Sports
+        JOBS_AND_EDUCATION (25):
+            Jobs and education
+        SHOPPING (26):
+            Shopping
     """
     INDUSTRY_CATEGORY_UNSPECIFIED = 0
     AUTOMOTIVE = 1
@@ -93,7 +149,17 @@ class IndustryCategory(proto.Enum):
 
 
 class ServiceLevel(proto.Enum):
-    r"""Various levels of service for Google Analytics."""
+    r"""Various levels of service for Google Analytics.
+
+    Values:
+        SERVICE_LEVEL_UNSPECIFIED (0):
+            Service level not specified or invalid.
+        GOOGLE_ANALYTICS_STANDARD (1):
+            The standard version of Google Analytics.
+        GOOGLE_ANALYTICS_360 (2):
+            The paid, premium version of Google
+            Analytics.
+    """
     SERVICE_LEVEL_UNSPECIFIED = 0
     GOOGLE_ANALYTICS_STANDARD = 1
     GOOGLE_ANALYTICS_360 = 2
@@ -102,6 +168,17 @@ class ServiceLevel(proto.Enum):
 class ActorType(proto.Enum):
     r"""Different kinds of actors that can make changes to Google
     Analytics resources.
+
+    Values:
+        ACTOR_TYPE_UNSPECIFIED (0):
+            Unknown or unspecified actor type.
+        USER (1):
+            Changes made by the user specified in actor_email.
+        SYSTEM (2):
+            Changes made by the Google Analytics system.
+        SUPPORT (3):
+            Changes made by Google Analytics support team
+            staff.
     """
     ACTOR_TYPE_UNSPECIFIED = 0
     USER = 1
@@ -110,7 +187,18 @@ class ActorType(proto.Enum):
 
 
 class ActionType(proto.Enum):
-    r"""Types of actions that may change a resource."""
+    r"""Types of actions that may change a resource.
+
+    Values:
+        ACTION_TYPE_UNSPECIFIED (0):
+            Action type unknown or not specified.
+        CREATED (1):
+            Resource was created in this change.
+        UPDATED (2):
+            Resource was updated in this change.
+        DELETED (3):
+            Resource was deleted in this change.
+    """
     ACTION_TYPE_UNSPECIFIED = 0
     CREATED = 1
     UPDATED = 2
@@ -120,6 +208,41 @@ class ActionType(proto.Enum):
 class ChangeHistoryResourceType(proto.Enum):
     r"""Types of resources whose changes may be returned from change
     history.
+
+    Values:
+        CHANGE_HISTORY_RESOURCE_TYPE_UNSPECIFIED (0):
+            Resource type unknown or not specified.
+        ACCOUNT (1):
+            Account resource
+        PROPERTY (2):
+            Property resource
+        FIREBASE_LINK (6):
+            FirebaseLink resource
+        GOOGLE_ADS_LINK (7):
+            GoogleAdsLink resource
+        GOOGLE_SIGNALS_SETTINGS (8):
+            GoogleSignalsSettings resource
+        CONVERSION_EVENT (9):
+            ConversionEvent resource
+        MEASUREMENT_PROTOCOL_SECRET (10):
+            MeasurementProtocolSecret resource
+        CUSTOM_DIMENSION (11):
+            CustomDimension resource
+        CUSTOM_METRIC (12):
+            CustomMetric resource
+        DATA_RETENTION_SETTINGS (13):
+            DataRetentionSettings resource
+        DISPLAY_VIDEO_360_ADVERTISER_LINK (14):
+            DisplayVideo360AdvertiserLink resource
+        DISPLAY_VIDEO_360_ADVERTISER_LINK_PROPOSAL (15):
+            DisplayVideo360AdvertiserLinkProposal
+            resource
+        SEARCH_ADS_360_LINK (16):
+            SearchAds360Link resource
+        DATA_STREAM (18):
+            DataStream resource
+        ATTRIBUTION_SETTINGS (20):
+            AttributionSettings resource
     """
     CHANGE_HISTORY_RESOURCE_TYPE_UNSPECIFIED = 0
     ACCOUNT = 1
@@ -142,6 +265,16 @@ class ChangeHistoryResourceType(proto.Enum):
 class GoogleSignalsState(proto.Enum):
     r"""Status of the Google Signals settings (i.e., whether this
     feature has been enabled for the property).
+
+    Values:
+        GOOGLE_SIGNALS_STATE_UNSPECIFIED (0):
+            Google Signals status defaults to
+            GOOGLE_SIGNALS_STATE_UNSPECIFIED to represent that the user
+            has not made an explicit choice.
+        GOOGLE_SIGNALS_ENABLED (1):
+            Google Signals is enabled.
+        GOOGLE_SIGNALS_DISABLED (2):
+            Google Signals is disabled.
     """
     GOOGLE_SIGNALS_STATE_UNSPECIFIED = 0
     GOOGLE_SIGNALS_ENABLED = 1
@@ -151,6 +284,16 @@ class GoogleSignalsState(proto.Enum):
 class GoogleSignalsConsent(proto.Enum):
     r"""Consent field of the Google Signals settings (i.e., whether
     the user has consented to the Google Signals terms of service.)
+
+    Values:
+        GOOGLE_SIGNALS_CONSENT_UNSPECIFIED (0):
+            Google Signals consent value defaults to
+            GOOGLE_SIGNALS_CONSENT_UNSPECIFIED. This will be treated as
+            GOOGLE_SIGNALS_CONSENT_NOT_CONSENTED.
+        GOOGLE_SIGNALS_CONSENT_CONSENTED (2):
+            Terms of service have been accepted
+        GOOGLE_SIGNALS_CONSENT_NOT_CONSENTED (1):
+            Terms of service have not been accepted
     """
     GOOGLE_SIGNALS_CONSENT_UNSPECIFIED = 0
     GOOGLE_SIGNALS_CONSENT_CONSENTED = 2
@@ -160,6 +303,16 @@ class GoogleSignalsConsent(proto.Enum):
 class LinkProposalInitiatingProduct(proto.Enum):
     r"""An indication of which product the user initiated a link
     proposal from.
+
+    Values:
+        LINK_PROPOSAL_INITIATING_PRODUCT_UNSPECIFIED (0):
+            Unspecified product.
+        GOOGLE_ANALYTICS (1):
+            This proposal was created by a user from
+            Google Analytics.
+        LINKED_PRODUCT (2):
+            This proposal was created by a user from a
+            linked product (not Google Analytics).
     """
     LINK_PROPOSAL_INITIATING_PRODUCT_UNSPECIFIED = 0
     GOOGLE_ANALYTICS = 1
@@ -167,7 +320,39 @@ class LinkProposalInitiatingProduct(proto.Enum):
 
 
 class LinkProposalState(proto.Enum):
-    r"""The state of a link proposal resource."""
+    r"""The state of a link proposal resource.
+
+    Values:
+        LINK_PROPOSAL_STATE_UNSPECIFIED (0):
+            Unspecified state
+        AWAITING_REVIEW_FROM_GOOGLE_ANALYTICS (1):
+            This proposal is awaiting review from a
+            Google Analytics user. This proposal will
+            automatically expire after some time.
+        AWAITING_REVIEW_FROM_LINKED_PRODUCT (2):
+            This proposal is awaiting review from a user
+            of a linked product. This proposal will
+            automatically expire after some time.
+        WITHDRAWN (3):
+            This proposal has been withdrawn by an admin
+            on the initiating product. This proposal will be
+            automatically deleted after some time.
+        DECLINED (4):
+            This proposal has been declined by an admin
+            on the receiving product. This proposal will be
+            automatically deleted after some time.
+        EXPIRED (5):
+            This proposal expired due to lack of response
+            from an admin on the receiving product. This
+            proposal will be automatically deleted after
+            some time.
+        OBSOLETE (6):
+            This proposal has become obsolete because a
+            link was directly created to the same external
+            product resource that this proposal specifies.
+            This proposal will be automatically deleted
+            after some time.
+    """
     LINK_PROPOSAL_STATE_UNSPECIFIED = 0
     AWAITING_REVIEW_FROM_GOOGLE_ANALYTICS = 1
     AWAITING_REVIEW_FROM_LINKED_PRODUCT = 2
@@ -178,7 +363,18 @@ class LinkProposalState(proto.Enum):
 
 
 class PropertyType(proto.Enum):
-    r"""Types of Property resources."""
+    r"""Types of Property resources.
+
+    Values:
+        PROPERTY_TYPE_UNSPECIFIED (0):
+            Unknown or unspecified property type
+        PROPERTY_TYPE_ORDINARY (1):
+            Ordinary GA4 property
+        PROPERTY_TYPE_SUBPROPERTY (2):
+            GA4 subproperty
+        PROPERTY_TYPE_ROLLUP (3):
+            GA4 rollup property
+    """
     PROPERTY_TYPE_UNSPECIFIED = 0
     PROPERTY_TYPE_ORDINARY = 1
     PROPERTY_TYPE_SUBPROPERTY = 2
@@ -418,7 +614,18 @@ class DataStream(proto.Message):
     """
 
     class DataStreamType(proto.Enum):
-        r"""The type of the data stream."""
+        r"""The type of the data stream.
+
+        Values:
+            DATA_STREAM_TYPE_UNSPECIFIED (0):
+                Type unknown or not specified.
+            WEB_DATA_STREAM (1):
+                Web data stream.
+            ANDROID_APP_DATA_STREAM (2):
+                Android app data stream.
+            IOS_APP_DATA_STREAM (3):
+                iOS app data stream.
+        """
         DATA_STREAM_TYPE_UNSPECIFIED = 0
         WEB_DATA_STREAM = 1
         ANDROID_APP_DATA_STREAM = 2
@@ -1508,7 +1715,16 @@ class CustomDimension(proto.Message):
     """
 
     class DimensionScope(proto.Enum):
-        r"""Valid values for the scope of this dimension."""
+        r"""Valid values for the scope of this dimension.
+
+        Values:
+            DIMENSION_SCOPE_UNSPECIFIED (0):
+                Scope unknown or not specified.
+            EVENT (1):
+                Dimension scoped to an event.
+            USER (2):
+                Dimension scoped to a user.
+        """
         DIMENSION_SCOPE_UNSPECIFIED = 0
         EVENT = 1
         USER = 2
@@ -1585,6 +1801,30 @@ class CustomMetric(proto.Message):
         r"""Possible types of representing the custom metric's value.
         Currency representation may change in the future, requiring a
         breaking API change.
+
+        Values:
+            MEASUREMENT_UNIT_UNSPECIFIED (0):
+                MeasurementUnit unspecified or missing.
+            STANDARD (1):
+                This metric uses default units.
+            CURRENCY (2):
+                This metric measures a currency.
+            FEET (3):
+                This metric measures feet.
+            METERS (4):
+                This metric measures meters.
+            KILOMETERS (5):
+                This metric measures kilometers.
+            MILES (6):
+                This metric measures miles.
+            MILLISECONDS (7):
+                This metric measures milliseconds.
+            SECONDS (8):
+                This metric measures seconds.
+            MINUTES (9):
+                This metric measures minutes.
+            HOURS (10):
+                This metric measures hours.
         """
         MEASUREMENT_UNIT_UNSPECIFIED = 0
         STANDARD = 1
@@ -1599,13 +1839,28 @@ class CustomMetric(proto.Message):
         HOURS = 10
 
     class MetricScope(proto.Enum):
-        r"""The scope of this metric."""
+        r"""The scope of this metric.
+
+        Values:
+            METRIC_SCOPE_UNSPECIFIED (0):
+                Scope unknown or not specified.
+            EVENT (1):
+                Metric scoped to an event.
+        """
         METRIC_SCOPE_UNSPECIFIED = 0
         EVENT = 1
 
     class RestrictedMetricType(proto.Enum):
         r"""Labels that mark the data in this custom metric as data that
         should be restricted to specific users.
+
+        Values:
+            RESTRICTED_METRIC_TYPE_UNSPECIFIED (0):
+                Type unknown or unspecified.
+            COST_DATA (1):
+                Metric reports cost data.
+            REVENUE_DATA (2):
+                Metric reports revenue data.
         """
         RESTRICTED_METRIC_TYPE_UNSPECIFIED = 0
         COST_DATA = 1
@@ -1662,7 +1917,27 @@ class DataRetentionSettings(proto.Message):
     """
 
     class RetentionDuration(proto.Enum):
-        r"""Valid values for the data retention duration."""
+        r"""Valid values for the data retention duration.
+
+        Values:
+            RETENTION_DURATION_UNSPECIFIED (0):
+                Data retention time duration is not
+                specified.
+            TWO_MONTHS (1):
+                The data retention time duration is 2 months.
+            FOURTEEN_MONTHS (3):
+                The data retention time duration is 14
+                months.
+            TWENTY_SIX_MONTHS (4):
+                The data retention time duration is 26
+                months. Available to 360 properties only.
+            THIRTY_EIGHT_MONTHS (5):
+                The data retention time duration is 38
+                months. Available to 360 properties only.
+            FIFTY_MONTHS (6):
+                The data retention time duration is 50
+                months. Available to 360 properties only.
+        """
         RETENTION_DURATION_UNSPECIFIED = 0
         TWO_MONTHS = 1
         FOURTEEN_MONTHS = 3
@@ -1718,6 +1993,14 @@ class AttributionSettings(proto.Message):
         r"""How far back in time events should be considered for
         inclusion in a converting path which leads to the first install
         of an app or the first visit to a site.
+
+        Values:
+            ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_UNSPECIFIED (0):
+                Lookback window size unspecified.
+            ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_7_DAYS (1):
+                7-day lookback window.
+            ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS (2):
+                30-day lookback window.
         """
         ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_UNSPECIFIED = 0
         ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_7_DAYS = 1
@@ -1727,6 +2010,16 @@ class AttributionSettings(proto.Message):
         r"""How far back in time events should be considered for
         inclusion in a converting path for all conversions other than
         first app install/first site visit.
+
+        Values:
+            OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_UNSPECIFIED (0):
+                Lookback window size unspecified.
+            OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS (1):
+                30-day lookback window.
+            OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_60_DAYS (2):
+                60-day lookback window.
+            OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_90_DAYS (3):
+                90-day lookback window.
         """
         OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_UNSPECIFIED = 0
         OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS = 1
@@ -1736,6 +2029,42 @@ class AttributionSettings(proto.Message):
     class ReportingAttributionModel(proto.Enum):
         r"""The reporting attribution model used to calculate conversion
         credit in this property's reports.
+
+        Values:
+            REPORTING_ATTRIBUTION_MODEL_UNSPECIFIED (0):
+                Reporting attribution model unspecified.
+            CROSS_CHANNEL_DATA_DRIVEN (1):
+                Data-driven attribution distributes credit
+                for the conversion based on data for each
+                conversion event. Each Data-driven model is
+                specific to each advertiser and each conversion
+                event.
+            CROSS_CHANNEL_LAST_CLICK (2):
+                Ignores direct traffic and attributes 100% of
+                the conversion value to the last channel that
+                the customer clicked through (or engaged view
+                through for YouTube) before converting.
+            CROSS_CHANNEL_FIRST_CLICK (3):
+                Gives all credit for the conversion to the
+                first channel that a customer clicked (or
+                engaged view through for YouTube) before
+                converting.
+            CROSS_CHANNEL_LINEAR (4):
+                Distributes the credit for the conversion
+                equally across all the channels a customer
+                clicked (or engaged view through for YouTube)
+                before converting.
+            CROSS_CHANNEL_POSITION_BASED (5):
+                Attributes 40% credit to the first and last
+                interaction, and the remaining 20% credit is
+                distributed evenly to the middle interactions.
+            CROSS_CHANNEL_TIME_DECAY (6):
+                Gives more credit to the touchpoints that
+                happened closer in time to the conversion.
+            ADS_PREFERRED_LAST_CLICK (7):
+                Attributes 100% of the conversion value to
+                the last Google Ads channel that the customer
+                clicked through before converting.
         """
         REPORTING_ATTRIBUTION_MODEL_UNSPECIFIED = 0
         CROSS_CHANNEL_DATA_DRIVEN = 1

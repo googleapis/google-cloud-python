@@ -263,7 +263,26 @@ class AccessStringFilter(proto.Message):
     """
 
     class MatchType(proto.Enum):
-        r"""The match type of a string filter."""
+        r"""The match type of a string filter.
+
+        Values:
+            MATCH_TYPE_UNSPECIFIED (0):
+                Unspecified
+            EXACT (1):
+                Exact match of the string value.
+            BEGINS_WITH (2):
+                Begins with the string value.
+            ENDS_WITH (3):
+                Ends with the string value.
+            CONTAINS (4):
+                Contains the string value.
+            FULL_REGEXP (5):
+                Full match for the regular expression with
+                the string value.
+            PARTIAL_REGEXP (6):
+                Partial match for the regular expression with
+                the string value.
+        """
         MATCH_TYPE_UNSPECIFIED = 0
         EXACT = 1
         BEGINS_WITH = 2
@@ -318,7 +337,22 @@ class AccessNumericFilter(proto.Message):
     """
 
     class Operation(proto.Enum):
-        r"""The operation applied to a numeric filter."""
+        r"""The operation applied to a numeric filter.
+
+        Values:
+            OPERATION_UNSPECIFIED (0):
+                Unspecified.
+            EQUAL (1):
+                Equal
+            LESS_THAN (2):
+                Less than
+            LESS_THAN_OR_EQUAL (3):
+                Less than or equal
+            GREATER_THAN (4):
+                Greater than
+            GREATER_THAN_OR_EQUAL (5):
+                Greater than or equal
+        """
         OPERATION_UNSPECIFIED = 0
         EQUAL = 1
         LESS_THAN = 2
@@ -446,7 +480,25 @@ class AccessOrderBy(proto.Message):
         """
 
         class OrderType(proto.Enum):
-            r"""Rule to order the string dimension values by."""
+            r"""Rule to order the string dimension values by.
+
+            Values:
+                ORDER_TYPE_UNSPECIFIED (0):
+                    Unspecified.
+                ALPHANUMERIC (1):
+                    Alphanumeric sort by Unicode code point. For
+                    example, "2" < "A" < "X" < "b" < "z".
+                CASE_INSENSITIVE_ALPHANUMERIC (2):
+                    Case insensitive alphanumeric sort by lower
+                    case Unicode code point. For example, "2" < "A"
+                    < "b" < "X" < "z".
+                NUMERIC (3):
+                    Dimension values are converted to numbers before sorting.
+                    For example in NUMERIC sort, "25" < "100", and in
+                    ``ALPHANUMERIC`` sort, "100" < "25". Non-numeric dimension
+                    values all have equal ordering value below all numeric
+                    values.
+            """
             ORDER_TYPE_UNSPECIFIED = 0
             ALPHANUMERIC = 1
             CASE_INSENSITIVE_ALPHANUMERIC = 2

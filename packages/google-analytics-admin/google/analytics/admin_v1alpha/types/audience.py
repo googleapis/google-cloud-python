@@ -36,7 +36,22 @@ __protobuf__ = proto.module(
 
 
 class AudienceFilterScope(proto.Enum):
-    r"""Specifies how to evaluate users for joining an Audience."""
+    r"""Specifies how to evaluate users for joining an Audience.
+
+    Values:
+        AUDIENCE_FILTER_SCOPE_UNSPECIFIED (0):
+            Scope is not specified.
+        AUDIENCE_FILTER_SCOPE_WITHIN_SAME_EVENT (1):
+            User joins the Audience if the filter
+            condition is met within one event.
+        AUDIENCE_FILTER_SCOPE_WITHIN_SAME_SESSION (2):
+            User joins the Audience if the filter
+            condition is met within one session.
+        AUDIENCE_FILTER_SCOPE_ACROSS_ALL_SESSIONS (3):
+            User joins the Audience if the filter
+            condition is met by any event across any
+            session.
+    """
     AUDIENCE_FILTER_SCOPE_UNSPECIFIED = 0
     AUDIENCE_FILTER_SCOPE_WITHIN_SAME_EVENT = 1
     AUDIENCE_FILTER_SCOPE_WITHIN_SAME_SESSION = 2
@@ -119,7 +134,26 @@ class AudienceDimensionOrMetricFilter(proto.Message):
         """
 
         class MatchType(proto.Enum):
-            r"""The match type for the string filter."""
+            r"""The match type for the string filter.
+
+            Values:
+                MATCH_TYPE_UNSPECIFIED (0):
+                    Unspecified
+                EXACT (1):
+                    Exact match of the string value.
+                BEGINS_WITH (2):
+                    Begins with the string value.
+                ENDS_WITH (3):
+                    Ends with the string value.
+                CONTAINS (4):
+                    Contains the string value.
+                FULL_REGEXP (5):
+                    Full regular expression matches with the
+                    string value.
+                PARTIAL_REGEXP (6):
+                    Partial regular expression matches with the
+                    string value.
+            """
             MATCH_TYPE_UNSPECIFIED = 0
             EXACT = 1
             BEGINS_WITH = 2
@@ -212,7 +246,22 @@ class AudienceDimensionOrMetricFilter(proto.Message):
         """
 
         class Operation(proto.Enum):
-            r"""The operation applied to a numeric filter."""
+            r"""The operation applied to a numeric filter.
+
+            Values:
+                OPERATION_UNSPECIFIED (0):
+                    Unspecified.
+                EQUAL (1):
+                    Equal.
+                LESS_THAN (2):
+                    Less than.
+                LESS_THAN_OR_EQUAL (3):
+                    Less than or equal.
+                GREATER_THAN (4):
+                    Greater than.
+                GREATER_THAN_OR_EQUAL (5):
+                    Greater than or equal.
+            """
             OPERATION_UNSPECIFIED = 0
             EQUAL = 1
             LESS_THAN = 2
@@ -558,6 +607,16 @@ class AudienceFilterClause(proto.Message):
     class AudienceClauseType(proto.Enum):
         r"""Specifies whether this is an include or exclude filter
         clause.
+
+        Values:
+            AUDIENCE_CLAUSE_TYPE_UNSPECIFIED (0):
+                Unspecified clause type.
+            INCLUDE (1):
+                Users will be included in the Audience if the
+                filter clause is met.
+            EXCLUDE (2):
+                Users will be excluded from the Audience if
+                the filter clause is met.
         """
         AUDIENCE_CLAUSE_TYPE_UNSPECIFIED = 0
         INCLUDE = 1
@@ -593,7 +652,19 @@ class AudienceEventTrigger(proto.Message):
     """
 
     class LogCondition(proto.Enum):
-        r"""Determines when to log the event."""
+        r"""Determines when to log the event.
+
+        Values:
+            LOG_CONDITION_UNSPECIFIED (0):
+                Log condition is not specified.
+            AUDIENCE_JOINED (1):
+                The event should be logged only when a user
+                is joined.
+            AUDIENCE_MEMBERSHIP_RENEWED (2):
+                The event should be logged whenever the
+                Audience condition is met, even if the user is
+                already a member of the Audience.
+        """
         LOG_CONDITION_UNSPECIFIED = 0
         AUDIENCE_JOINED = 1
         AUDIENCE_MEMBERSHIP_RENEWED = 2
@@ -648,6 +719,16 @@ class Audience(proto.Message):
     class AudienceExclusionDurationMode(proto.Enum):
         r"""Specifies how long an exclusion lasts for users that meet the
         exclusion filter.
+
+        Values:
+            AUDIENCE_EXCLUSION_DURATION_MODE_UNSPECIFIED (0):
+                Not specified.
+            EXCLUDE_TEMPORARILY (1):
+                Exclude users from the Audience during
+                periods when they meet the filter clause.
+            EXCLUDE_PERMANENTLY (2):
+                Exclude users from the Audience if they've
+                ever met the filter clause.
         """
         AUDIENCE_EXCLUSION_DURATION_MODE_UNSPECIFIED = 0
         EXCLUDE_TEMPORARILY = 1
