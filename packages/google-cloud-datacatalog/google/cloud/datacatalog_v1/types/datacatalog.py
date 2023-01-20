@@ -82,6 +82,42 @@ __protobuf__ = proto.module(
 class EntryType(proto.Enum):
     r"""The enum field that lists all the types of entry resources in Data
     Catalog. For example, a BigQuery table entry has the ``TABLE`` type.
+
+    Values:
+        ENTRY_TYPE_UNSPECIFIED (0):
+            Default unknown type.
+        TABLE (2):
+            The entry type that has a GoogleSQL schema,
+            including logical views.
+        MODEL (5):
+            Output only. The type of models.
+
+            For more information, see [Supported models in BigQuery ML]
+            (https://cloud.google.com/bigquery-ml/docs/introduction#supported_models_in).
+        DATA_STREAM (3):
+            An entry type for streaming entries. For
+            example, a Pub/Sub topic.
+        FILESET (4):
+            An entry type for a set of files or objects.
+            For example, a Cloud Storage fileset.
+        CLUSTER (6):
+            A group of servers that work together. For
+            example, a Kafka cluster.
+        DATABASE (7):
+            A database.
+        DATA_SOURCE_CONNECTION (8):
+            Output only. Connection to a data source. For
+            example, a BigQuery connection.
+        ROUTINE (9):
+            Output only. Routine, for example, a BigQuery
+            routine.
+        LAKE (10):
+            A Dataplex lake.
+        ZONE (11):
+            A Dataplex zone.
+        SERVICE (14):
+            A service, for example, a Dataproc Metastore
+            service.
     """
     ENTRY_TYPE_UNSPECIFIED = 0
     TABLE = 2
@@ -990,7 +1026,16 @@ class DatabaseTableSpec(proto.Message):
     """
 
     class TableType(proto.Enum):
-        r"""Type of the table."""
+        r"""Type of the table.
+
+        Values:
+            TABLE_TYPE_UNSPECIFIED (0):
+                Default unknown table type.
+            NATIVE (1):
+                Native table.
+            EXTERNAL (2):
+                External table.
+        """
         TABLE_TYPE_UNSPECIFIED = 0
         NATIVE = 1
         EXTERNAL = 2
@@ -1073,7 +1118,16 @@ class RoutineSpec(proto.Message):
     """
 
     class RoutineType(proto.Enum):
-        r"""The fine-grained type of the routine."""
+        r"""The fine-grained type of the routine.
+
+        Values:
+            ROUTINE_TYPE_UNSPECIFIED (0):
+                Unspecified type.
+            SCALAR_FUNCTION (1):
+                Non-builtin permanent scalar function.
+            PROCEDURE (2):
+                Stored procedure.
+        """
         ROUTINE_TYPE_UNSPECIFIED = 0
         SCALAR_FUNCTION = 1
         PROCEDURE = 2
@@ -1094,7 +1148,18 @@ class RoutineSpec(proto.Message):
         """
 
         class Mode(proto.Enum):
-            r"""The input or output mode of the argument."""
+            r"""The input or output mode of the argument.
+
+            Values:
+                MODE_UNSPECIFIED (0):
+                    Unspecified mode.
+                IN (1):
+                    The argument is input-only.
+                OUT (2):
+                    The argument is output-only.
+                INOUT (3):
+                    The argument is both an input and an output.
+            """
             MODE_UNSPECIFIED = 0
             IN = 1
             OUT = 2

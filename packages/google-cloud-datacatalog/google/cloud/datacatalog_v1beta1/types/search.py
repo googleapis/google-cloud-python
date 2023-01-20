@@ -29,6 +29,18 @@ __protobuf__ = proto.module(
 class SearchResultType(proto.Enum):
     r"""The different types of resources that can be returned in
     search.
+
+    Values:
+        SEARCH_RESULT_TYPE_UNSPECIFIED (0):
+            Default unknown type.
+        ENTRY (1):
+            An [Entry][google.cloud.datacatalog.v1beta1.Entry].
+        TAG_TEMPLATE (2):
+            A
+            [TagTemplate][google.cloud.datacatalog.v1beta1.TagTemplate].
+        ENTRY_GROUP (3):
+            An
+            [EntryGroup][google.cloud.datacatalog.v1beta1.EntryGroup].
     """
     SEARCH_RESULT_TYPE_UNSPECIFIED = 0
     ENTRY = 1

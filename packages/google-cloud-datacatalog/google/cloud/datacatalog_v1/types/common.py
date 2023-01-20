@@ -30,6 +30,18 @@ __protobuf__ = proto.module(
 class IntegratedSystem(proto.Enum):
     r"""This enum lists all the systems that Data Catalog integrates
     with.
+
+    Values:
+        INTEGRATED_SYSTEM_UNSPECIFIED (0):
+            Default unknown system.
+        BIGQUERY (1):
+            BigQuery.
+        CLOUD_PUBSUB (2):
+            Cloud Pub/Sub.
+        DATAPROC_METASTORE (3):
+            Dataproc Metastore.
+        DATAPLEX (4):
+            Dataplex.
     """
     INTEGRATED_SYSTEM_UNSPECIFIED = 0
     BIGQUERY = 1

@@ -332,7 +332,20 @@ class FieldType(proto.Message):
     """
 
     class PrimitiveType(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            PRIMITIVE_TYPE_UNSPECIFIED (0):
+                This is the default invalid value for a type.
+            DOUBLE (1):
+                A double precision number.
+            STRING (2):
+                An UTF-8 string.
+            BOOL (3):
+                A boolean value.
+            TIMESTAMP (4):
+                A timestamp.
+        """
         PRIMITIVE_TYPE_UNSPECIFIED = 0
         DOUBLE = 1
         STRING = 2

@@ -102,7 +102,15 @@ class Taxonomy(proto.Message):
     """
 
     class PolicyType(proto.Enum):
-        r"""Defines policy types where the policy tags can be used for."""
+        r"""Defines policy types where the policy tags can be used for.
+
+        Values:
+            POLICY_TYPE_UNSPECIFIED (0):
+                Unspecified policy type.
+            FINE_GRAINED_ACCESS_CONTROL (1):
+                Fine-grained access control policy that
+                enables access control on tagged sub-resources.
+        """
         POLICY_TYPE_UNSPECIFIED = 0
         FINE_GRAINED_ACCESS_CONTROL = 1
 

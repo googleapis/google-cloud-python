@@ -30,7 +30,18 @@ __protobuf__ = proto.module(
 
 
 class TableSourceType(proto.Enum):
-    r"""Table source type."""
+    r"""Table source type.
+
+    Values:
+        TABLE_SOURCE_TYPE_UNSPECIFIED (0):
+            Default unknown type.
+        BIGQUERY_VIEW (2):
+            Table view.
+        BIGQUERY_TABLE (5):
+            BigQuery native table.
+        BIGQUERY_MATERIALIZED_VIEW (7):
+            BigQuery materialized view.
+    """
     TABLE_SOURCE_TYPE_UNSPECIFIED = 0
     BIGQUERY_VIEW = 2
     BIGQUERY_TABLE = 5

@@ -69,6 +69,22 @@ class EntryType(proto.Enum):
     r"""Entry resources in Data Catalog can be of different types e.g. a
     BigQuery Table entry is of type ``TABLE``. This enum describes all
     the possible types Data Catalog contains.
+
+    Values:
+        ENTRY_TYPE_UNSPECIFIED (0):
+            Default unknown type.
+        TABLE (2):
+            Output only. The type of entry that has a
+            GoogleSQL schema, including logical views.
+        MODEL (5):
+            Output only. The type of models.
+            https://cloud.google.com/bigquery-ml/docs/bigqueryml-intro
+        DATA_STREAM (3):
+            Output only. An entry type which is used for
+            streaming entries. Example: Pub/Sub topic.
+        FILESET (4):
+            An entry type which is a set of files or
+            objects. Example: Cloud Storage fileset.
     """
     ENTRY_TYPE_UNSPECIFIED = 0
     TABLE = 2

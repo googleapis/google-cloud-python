@@ -50,7 +50,16 @@ class DataSource(proto.Message):
     """
 
     class Service(proto.Enum):
-        r"""Name of a service that stores the data."""
+        r"""Name of a service that stores the data.
+
+        Values:
+            SERVICE_UNSPECIFIED (0):
+                Default unknown service.
+            CLOUD_STORAGE (1):
+                Google Cloud Storage service.
+            BIGQUERY (2):
+                BigQuery service.
+        """
         SERVICE_UNSPECIFIED = 0
         CLOUD_STORAGE = 1
         BIGQUERY = 2
