@@ -115,7 +115,28 @@ class AnnotateAssessmentRequest(proto.Message):
     """
 
     class Annotation(proto.Enum):
-        r"""Enum that represents the types of annotations."""
+        r"""Enum that represents the types of annotations.
+
+        Values:
+            ANNOTATION_UNSPECIFIED (0):
+                Default unspecified type.
+            LEGITIMATE (1):
+                Provides information that the event turned
+                out to be legitimate.
+            FRAUDULENT (2):
+                Provides information that the event turned
+                out to be fraudulent.
+            PASSWORD_CORRECT (3):
+                Provides information that the event was related to a login
+                event in which the user typed the correct password.
+                Deprecated, prefer indicating CORRECT_PASSWORD through the
+                reasons field instead.
+            PASSWORD_INCORRECT (4):
+                Provides information that the event was related to a login
+                event in which the user typed the incorrect password.
+                Deprecated, prefer indicating INCORRECT_PASSWORD through the
+                reasons field instead.
+        """
         ANNOTATION_UNSPECIFIED = 0
         LEGITIMATE = 1
         FRAUDULENT = 2
@@ -125,6 +146,71 @@ class AnnotateAssessmentRequest(proto.Message):
     class Reason(proto.Enum):
         r"""Enum that represents potential reasons for annotating an
         assessment.
+
+        Values:
+            REASON_UNSPECIFIED (0):
+                Default unspecified reason.
+            CHARGEBACK (1):
+                Indicates that the transaction had a chargeback issued with
+                no other details. When possible, specify the type by using
+                CHARGEBACK_FRAUD or CHARGEBACK_DISPUTE instead.
+            CHARGEBACK_FRAUD (8):
+                Indicates that the transaction had a
+                chargeback issued related to an alleged
+                unauthorized transaction from the cardholder's
+                perspective (for example, the card number was
+                stolen).
+            CHARGEBACK_DISPUTE (9):
+                Indicates that the transaction had a
+                chargeback issued related to the cardholder
+                having provided their card details but allegedly
+                not being satisfied with the purchase (for
+                example, misrepresentation, attempted
+                cancellation).
+            REFUND (10):
+                Indicates that the completed payment
+                transaction was refunded by the seller.
+            REFUND_FRAUD (11):
+                Indicates that the completed payment
+                transaction was determined to be fraudulent by
+                the seller, and was cancelled and refunded as a
+                result.
+            TRANSACTION_ACCEPTED (12):
+                Indicates that the payment transaction was
+                accepted, and the user was charged.
+            TRANSACTION_DECLINED (13):
+                Indicates that the payment transaction was
+                declined, for example due to invalid card
+                details.
+            PAYMENT_HEURISTICS (2):
+                Indicates the transaction associated with the
+                assessment is suspected of being fraudulent
+                based on the payment method, billing details,
+                shipping address or other transaction
+                information.
+            INITIATED_TWO_FACTOR (7):
+                Indicates that the user was served a 2FA challenge. An old
+                assessment with ``ENUM_VALUES.INITIATED_TWO_FACTOR`` reason
+                that has not been overwritten with ``PASSED_TWO_FACTOR`` is
+                treated as an abandoned 2FA flow. This is equivalent to
+                ``FAILED_TWO_FACTOR``.
+            PASSED_TWO_FACTOR (3):
+                Indicates that the user passed a 2FA
+                challenge.
+            FAILED_TWO_FACTOR (4):
+                Indicates that the user failed a 2FA
+                challenge.
+            CORRECT_PASSWORD (5):
+                Indicates the user provided the correct
+                password.
+            INCORRECT_PASSWORD (6):
+                Indicates the user provided an incorrect
+                password.
+            SOCIAL_SPAM (14):
+                Indicates that the user sent unwanted and
+                abusive messages to other users of the platform,
+                such as spam, scams, phishing, or social
+                engineering.
         """
         REASON_UNSPECIFIED = 0
         CHARGEBACK = 1
@@ -242,6 +328,42 @@ class AccountVerificationInfo(proto.Message):
     class Result(proto.Enum):
         r"""Result of the account verification as contained in the
         verdict token issued at the end of the verification flow.
+
+        Values:
+            RESULT_UNSPECIFIED (0):
+                No information about the latest account
+                verification.
+            SUCCESS_USER_VERIFIED (1):
+                The user was successfully verified. This
+                means the account verification challenge was
+                successfully completed.
+            ERROR_USER_NOT_VERIFIED (2):
+                The user failed the verification challenge.
+            ERROR_SITE_ONBOARDING_INCOMPLETE (3):
+                The site is not properly onboarded to use the
+                account verification feature.
+            ERROR_RECIPIENT_NOT_ALLOWED (4):
+                The recipient is not allowed for account
+                verification. This can occur during integration
+                but should not occur in production.
+            ERROR_RECIPIENT_ABUSE_LIMIT_EXHAUSTED (5):
+                The recipient has already been sent too many
+                verification codes in a short amount of time.
+            ERROR_CRITICAL_INTERNAL (6):
+                The verification flow could not be completed
+                due to a critical internal error.
+            ERROR_CUSTOMER_QUOTA_EXHAUSTED (7):
+                The client has exceeded their two factor
+                request quota for this period of time.
+            ERROR_VERIFICATION_BYPASSED (8):
+                The request cannot be processed at the time
+                because of an incident. This bypass can be
+                restricted to a problematic destination email
+                domain, a customer, or could affect the entire
+                service.
+            ERROR_VERDICT_MISMATCH (9):
+                The request parameters do not match with the
+                token provided and cannot be processed.
         """
         RESULT_UNSPECIFIED = 0
         SUCCESS_USER_VERIFIED = 1
@@ -454,7 +576,28 @@ class RiskAnalysis(proto.Message):
     """
 
     class ClassificationReason(proto.Enum):
-        r"""Reasons contributing to the risk analysis verdict."""
+        r"""Reasons contributing to the risk analysis verdict.
+
+        Values:
+            CLASSIFICATION_REASON_UNSPECIFIED (0):
+                Default unspecified type.
+            AUTOMATION (1):
+                Interactions matched the behavior of an
+                automated agent.
+            UNEXPECTED_ENVIRONMENT (2):
+                The event originated from an illegitimate
+                environment.
+            TOO_MUCH_TRAFFIC (3):
+                Traffic volume from the event source is
+                higher than normal.
+            UNEXPECTED_USAGE_PATTERNS (4):
+                Interactions with the site were significantly
+                different than expected patterns.
+            LOW_CONFIDENCE_SCORE (5):
+                Too little traffic has been received from
+                this site thus far to generate quality risk
+                analysis.
+        """
         CLASSIFICATION_REASON_UNSPECIFIED = 0
         AUTOMATION = 1
         UNEXPECTED_ENVIRONMENT = 2
@@ -504,7 +647,27 @@ class TokenProperties(proto.Message):
     """
 
     class InvalidReason(proto.Enum):
-        r"""Enum that represents the types of invalid token reasons."""
+        r"""Enum that represents the types of invalid token reasons.
+
+        Values:
+            INVALID_REASON_UNSPECIFIED (0):
+                Default unspecified type.
+            UNKNOWN_INVALID_REASON (1):
+                If the failure reason was not accounted for.
+            MALFORMED (2):
+                The provided user verification token was
+                malformed.
+            EXPIRED (3):
+                The user verification token had expired.
+            DUPE (4):
+                The user verification had already been seen.
+            MISSING (5):
+                The user verification token was not present.
+            BROWSER_ERROR (6):
+                A retriable error (such as network failure)
+                occurred on the browser. Could easily be
+                simulated by an attacker.
+        """
         INVALID_REASON_UNSPECIFIED = 0
         UNKNOWN_INVALID_REASON = 1
         MALFORMED = 2
@@ -554,7 +717,29 @@ class AccountDefenderAssessment(proto.Message):
     """
 
     class AccountDefenderLabel(proto.Enum):
-        r"""Labels returned by account defender for this request."""
+        r"""Labels returned by account defender for this request.
+
+        Values:
+            ACCOUNT_DEFENDER_LABEL_UNSPECIFIED (0):
+                Default unspecified type.
+            PROFILE_MATCH (1):
+                The request matches a known good profile for
+                the user.
+            SUSPICIOUS_LOGIN_ACTIVITY (2):
+                The request is potentially a suspicious login
+                event and must be further verified either
+                through multi-factor authentication or another
+                system.
+            SUSPICIOUS_ACCOUNT_CREATION (3):
+                The request matched a profile that previously
+                had suspicious account creation behavior. This
+                can mean that this is a fake account.
+            RELATED_ACCOUNTS_NUMBER_HIGH (4):
+                The account in the request has a high number
+                of related accounts. It does not necessarily
+                imply that the account is bad but can require
+                further investigation.
+        """
         ACCOUNT_DEFENDER_LABEL_UNSPECIFIED = 0
         PROFILE_MATCH = 1
         SUSPICIOUS_LOGIN_ACTIVITY = 2
@@ -937,6 +1122,18 @@ class TestingOptions(proto.Message):
     class TestingChallenge(proto.Enum):
         r"""Enum that represents the challenge option for challenge-based
         (CHECKBOX, INVISIBLE) testing keys.
+
+        Values:
+            TESTING_CHALLENGE_UNSPECIFIED (0):
+                Perform the normal risk analysis and return
+                either nocaptcha or a challenge depending on
+                risk and trust factors.
+            NOCAPTCHA (1):
+                Challenge requests for this key always return
+                a nocaptcha, which does not require a solution.
+            UNSOLVABLE_CHALLENGE (2):
+                Challenge requests for this key always return
+                an unsolvable challenge.
         """
         TESTING_CHALLENGE_UNSPECIFIED = 0
         NOCAPTCHA = 1
@@ -982,7 +1179,26 @@ class WebKeySettings(proto.Message):
     """
 
     class IntegrationType(proto.Enum):
-        r"""Enum that represents the integration types for web keys."""
+        r"""Enum that represents the integration types for web keys.
+
+        Values:
+            INTEGRATION_TYPE_UNSPECIFIED (0):
+                Default type that indicates this enum hasn't
+                been specified. This is not a valid
+                IntegrationType, one of the other types must be
+                specified instead.
+            SCORE (1):
+                Only used to produce scores. It doesn't
+                display the "I'm not a robot" checkbox and never
+                shows captcha challenges.
+            CHECKBOX (2):
+                Displays the "I'm not a robot" checkbox and
+                may show captcha challenges after it is checked.
+            INVISIBLE (3):
+                Doesn't display the "I'm not a robot"
+                checkbox, but may show captcha challenges after
+                risk analysis.
+        """
         INTEGRATION_TYPE_UNSPECIFIED = 0
         SCORE = 1
         CHECKBOX = 2
@@ -991,6 +1207,19 @@ class WebKeySettings(proto.Message):
     class ChallengeSecurityPreference(proto.Enum):
         r"""Enum that represents the possible challenge frequency and
         difficulty configurations for a web key.
+
+        Values:
+            CHALLENGE_SECURITY_PREFERENCE_UNSPECIFIED (0):
+                Default type that indicates this enum hasn't
+                been specified.
+            USABILITY (1):
+                Key tends to show fewer and easier
+                challenges.
+            BALANCE (2):
+                Key tends to show balanced (in amount and
+                difficulty) challenges.
+            SECURITY (3):
+                Key tends to show more and harder challenges.
         """
         CHALLENGE_SECURITY_PREFERENCE_UNSPECIFIED = 0
         USABILITY = 1
@@ -1416,6 +1645,18 @@ class WafSettings(proto.Message):
     class WafFeature(proto.Enum):
         r"""Supported WAF features. For more information, see
         https://cloud.google.com/recaptcha-enterprise/docs/usecase#comparison_of_features.
+
+        Values:
+            WAF_FEATURE_UNSPECIFIED (0):
+                Undefined feature.
+            CHALLENGE_PAGE (1):
+                Redirects suspicious traffic to reCAPTCHA.
+            SESSION_TOKEN (2):
+                Use reCAPTCHA session-tokens to protect the
+                whole user session on the site's domain.
+            ACTION_TOKEN (3):
+                Use reCAPTCHA action-tokens to protect user
+                actions.
         """
         WAF_FEATURE_UNSPECIFIED = 0
         CHALLENGE_PAGE = 1
@@ -1423,7 +1664,14 @@ class WafSettings(proto.Message):
         ACTION_TOKEN = 3
 
     class WafService(proto.Enum):
-        r"""Web Application Firewalls supported by reCAPTCHA Enterprise."""
+        r"""Web Application Firewalls supported by reCAPTCHA Enterprise.
+
+        Values:
+            WAF_SERVICE_UNSPECIFIED (0):
+                Undefined WAF
+            CA (1):
+                Cloud Armor
+        """
         WAF_SERVICE_UNSPECIFIED = 0
         CA = 1
 
