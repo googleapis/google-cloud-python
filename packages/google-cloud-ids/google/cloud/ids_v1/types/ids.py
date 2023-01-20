@@ -67,7 +67,22 @@ class Endpoint(proto.Message):
     """
 
     class Severity(proto.Enum):
-        r"""Threat severity levels."""
+        r"""Threat severity levels.
+
+        Values:
+            SEVERITY_UNSPECIFIED (0):
+                Not set.
+            INFORMATIONAL (1):
+                Informational alerts.
+            LOW (2):
+                Low severity alerts.
+            MEDIUM (3):
+                Medium severity alerts.
+            HIGH (4):
+                High severity alerts.
+            CRITICAL (5):
+                Critical severity alerts.
+        """
         SEVERITY_UNSPECIFIED = 0
         INFORMATIONAL = 1
         LOW = 2
@@ -76,7 +91,18 @@ class Endpoint(proto.Message):
         CRITICAL = 5
 
     class State(proto.Enum):
-        r"""Endpoint state"""
+        r"""Endpoint state
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not set.
+            CREATING (1):
+                Being created.
+            READY (2):
+                Active and ready for traffic.
+            DELETING (3):
+                Being deleted.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
