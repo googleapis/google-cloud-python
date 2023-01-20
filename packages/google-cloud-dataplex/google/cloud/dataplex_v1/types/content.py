@@ -197,6 +197,15 @@ class GetContentRequest(proto.Message):
     class ContentView(proto.Enum):
         r"""Specifies whether the request should return the full or the
         partial representation.
+
+        Values:
+            CONTENT_VIEW_UNSPECIFIED (0):
+                Content view not specified. Defaults to
+                BASIC. The API will default to the BASIC view.
+            BASIC (1):
+                Will not return the ``data_text`` field.
+            FULL (2):
+                Returns the complete proto.
         """
         CONTENT_VIEW_UNSPECIFIED = 0
         BASIC = 1

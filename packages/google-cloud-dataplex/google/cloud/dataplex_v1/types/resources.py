@@ -33,7 +33,21 @@ __protobuf__ = proto.module(
 
 
 class State(proto.Enum):
-    r"""State of a resource."""
+    r"""State of a resource.
+
+    Values:
+        STATE_UNSPECIFIED (0):
+            State is not specified.
+        ACTIVE (1):
+            Resource is active, i.e., ready to use.
+        CREATING (2):
+            Resource is under creation.
+        DELETING (3):
+            Resource is under deletion.
+        ACTION_REQUIRED (4):
+            Resource is active but has unresolved
+            actions.
+    """
     STATE_UNSPECIFIED = 0
     ACTIVE = 1
     CREATING = 2
@@ -128,7 +142,23 @@ class Lake(proto.Message):
         """
 
         class State(proto.Enum):
-            r"""Current state of association."""
+            r"""Current state of association.
+
+            Values:
+                STATE_UNSPECIFIED (0):
+                    Unspecified.
+                NONE (1):
+                    A Metastore service instance is not
+                    associated with the lake.
+                READY (2):
+                    A Metastore service instance is attached to
+                    the lake.
+                UPDATING (3):
+                    Attach/detach is in progress.
+                ERROR (4):
+                    Attach/detach could not be done due to
+                    errors.
+            """
             STATE_UNSPECIFIED = 0
             NONE = 1
             READY = 2
@@ -285,7 +315,23 @@ class Zone(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Type of zone."""
+        r"""Type of zone.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Zone type not specified.
+            RAW (1):
+                A zone that contains data that needs further
+                processing before it is considered generally
+                ready for consumption and analytics workloads.
+            CURATED (2):
+                A zone that contains data that is considered
+                to be ready for broader consumption and
+                analytics workloads. Curated structured data
+                stored in Cloud Storage must conform to certain
+                file formats (parquet, avro and orc) and
+                organized in a hive-compatible directory layout.
+        """
         TYPE_UNSPECIFIED = 0
         RAW = 1
         CURATED = 2
@@ -301,7 +347,18 @@ class Zone(proto.Message):
         """
 
         class LocationType(proto.Enum):
-            r"""Location type of the resources attached to a zone."""
+            r"""Location type of the resources attached to a zone.
+
+            Values:
+                LOCATION_TYPE_UNSPECIFIED (0):
+                    Unspecified location type.
+                SINGLE_REGION (1):
+                    Resources that are associated with a single
+                    region.
+                MULTI_REGION (2):
+                    Resources that are associated with a
+                    multi-region location.
+            """
             LOCATION_TYPE_UNSPECIFIED = 0
             SINGLE_REGION = 1
             MULTI_REGION = 2
@@ -591,7 +648,18 @@ class Action(proto.Message):
     """
 
     class Category(proto.Enum):
-        r"""The category of issues."""
+        r"""The category of issues.
+
+        Values:
+            CATEGORY_UNSPECIFIED (0):
+                Unspecified category.
+            RESOURCE_MANAGEMENT (1):
+                Resource management related issues.
+            SECURITY_POLICY (2):
+                Security policy related issues.
+            DATA_DISCOVERY (3):
+                Data and discovery related issues.
+        """
         CATEGORY_UNSPECIFIED = 0
         RESOURCE_MANAGEMENT = 1
         SECURITY_POLICY = 2
@@ -686,6 +754,16 @@ class Action(proto.Message):
         class SchemaChange(proto.Enum):
             r"""Whether the action relates to a schema that is incompatible
             or modified.
+
+            Values:
+                SCHEMA_CHANGE_UNSPECIFIED (0):
+                    Schema change unspecified.
+                INCOMPATIBLE (1):
+                    Newly discovered schema is incompatible with
+                    existing schema.
+                MODIFIED (2):
+                    Newly discovered schema has changed from
+                    existing schema for data in a curated zone.
             """
             SCHEMA_CHANGE_UNSPECIFIED = 0
             INCOMPATIBLE = 1
@@ -723,7 +801,18 @@ class Action(proto.Message):
         """
 
         class PartitionStructure(proto.Enum):
-            r"""The expected partition structure."""
+            r"""The expected partition structure.
+
+            Values:
+                PARTITION_STRUCTURE_UNSPECIFIED (0):
+                    PartitionStructure unspecified.
+                CONSISTENT_KEYS (1):
+                    Consistent hive-style partition definition
+                    (both raw and curated zone).
+                HIVE_STYLE_KEYS (2):
+                    Hive style partition definition (curated zone
+                    only).
+            """
             PARTITION_STRUCTURE_UNSPECIFIED = 0
             CONSISTENT_KEYS = 1
             HIVE_STYLE_KEYS = 2
@@ -890,7 +979,21 @@ class Asset(proto.Message):
         """
 
         class State(proto.Enum):
-            r"""The state of the security policy."""
+            r"""The state of the security policy.
+
+            Values:
+                STATE_UNSPECIFIED (0):
+                    State unspecified.
+                READY (1):
+                    Security policy has been successfully applied
+                    to the attached resource.
+                APPLYING (2):
+                    Security policy is in the process of being
+                    applied to the attached resource.
+                ERROR (3):
+                    Security policy could not be applied to the
+                    attached resource due to errors.
+            """
             STATE_UNSPECIFIED = 0
             READY = 1
             APPLYING = 2
@@ -1060,7 +1163,16 @@ class Asset(proto.Message):
         """
 
         class Type(proto.Enum):
-            r"""Type of resource."""
+            r"""Type of resource.
+
+            Values:
+                TYPE_UNSPECIFIED (0):
+                    Type not specified.
+                STORAGE_BUCKET (1):
+                    Cloud Storage bucket.
+                BIGQUERY_DATASET (2):
+                    BigQuery dataset.
+            """
             TYPE_UNSPECIFIED = 0
             STORAGE_BUCKET = 1
             BIGQUERY_DATASET = 2
@@ -1089,7 +1201,16 @@ class Asset(proto.Message):
         """
 
         class State(proto.Enum):
-            r"""The state of a resource."""
+            r"""The state of a resource.
+
+            Values:
+                STATE_UNSPECIFIED (0):
+                    State unspecified.
+                READY (1):
+                    Resource does not have any errors.
+                ERROR (2):
+                    Resource has errors.
+            """
             STATE_UNSPECIFIED = 0
             READY = 1
             ERROR = 2
@@ -1130,7 +1251,22 @@ class Asset(proto.Message):
         """
 
         class State(proto.Enum):
-            r"""Current state of discovery."""
+            r"""Current state of discovery.
+
+            Values:
+                STATE_UNSPECIFIED (0):
+                    State is unspecified.
+                SCHEDULED (1):
+                    Discovery for the asset is scheduled.
+                IN_PROGRESS (2):
+                    Discovery for the asset is running.
+                PAUSED (3):
+                    Discovery for the asset is currently paused
+                    (e.g. due to a lack of available resources). It
+                    will be automatically resumed.
+                DISABLED (5):
+                    Discovery for the asset is disabled.
+            """
             STATE_UNSPECIFIED = 0
             SCHEDULED = 1
             IN_PROGRESS = 2

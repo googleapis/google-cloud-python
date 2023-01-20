@@ -1416,7 +1416,7 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "ContentServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

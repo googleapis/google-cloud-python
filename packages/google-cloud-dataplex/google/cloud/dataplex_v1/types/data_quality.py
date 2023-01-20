@@ -340,7 +340,18 @@ class DataQualityRule(proto.Message):
         """
 
         class ColumnStatistic(proto.Enum):
-            r""""""
+            r"""
+
+            Values:
+                STATISTIC_UNDEFINED (0):
+                    Unspecified statistic type
+                MEAN (1):
+                    Evaluate the column mean
+                MIN (2):
+                    Evaluate the column min
+                MAX (3):
+                    Evaluate the column max
+            """
             STATISTIC_UNDEFINED = 0
             MEAN = 1
             MIN = 2

@@ -42,7 +42,18 @@ __protobuf__ = proto.module(
 
 
 class StorageSystem(proto.Enum):
-    r"""Identifies the cloud system that manages the data storage."""
+    r"""Identifies the cloud system that manages the data storage.
+
+    Values:
+        STORAGE_SYSTEM_UNSPECIFIED (0):
+            Storage system unspecified.
+        CLOUD_STORAGE (1):
+            The entity data is contained within a Cloud
+            Storage bucket.
+        BIGQUERY (2):
+            The entity data is contained within a
+            BigQuery dataset.
+    """
     STORAGE_SYSTEM_UNSPECIFIED = 0
     CLOUD_STORAGE = 1
     BIGQUERY = 2
@@ -160,7 +171,17 @@ class ListEntitiesRequest(proto.Message):
     """
 
     class EntityView(proto.Enum):
-        r"""Entity views."""
+        r"""Entity views.
+
+        Values:
+            ENTITY_VIEW_UNSPECIFIED (0):
+                The default unset value. Return both table
+                and fileset entities if unspecified.
+            TABLES (1):
+                Only list table entities.
+            FILESETS (2):
+                Only list fileset entities.
+        """
         ENTITY_VIEW_UNSPECIFIED = 0
         TABLES = 1
         FILESETS = 2
@@ -228,7 +249,20 @@ class GetEntityRequest(proto.Message):
     """
 
     class EntityView(proto.Enum):
-        r"""Entity views for get entity partial result."""
+        r"""Entity views for get entity partial result.
+
+        Values:
+            ENTITY_VIEW_UNSPECIFIED (0):
+                The API will default to the ``BASIC`` view.
+            BASIC (1):
+                Minimal view that does not include the
+                schema.
+            SCHEMA (2):
+                Include basic information and schema.
+            FULL (4):
+                Include everything. Currently, this is the
+                same as the SCHEMA view.
+        """
         ENTITY_VIEW_UNSPECIFIED = 0
         BASIC = 1
         SCHEMA = 2
@@ -481,7 +515,16 @@ class Entity(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""The type of entity."""
+        r"""The type of entity.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Type unspecified.
+            TABLE (1):
+                Structured and semi-structured data.
+            FILESET (2):
+                Unstructured data.
+        """
         TYPE_UNSPECIFIED = 0
         TABLE = 1
         FILESET = 2
@@ -685,7 +728,44 @@ class Schema(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Type information for fields in schemas and partition schemas."""
+        r"""Type information for fields in schemas and partition schemas.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                SchemaType unspecified.
+            BOOLEAN (1):
+                Boolean field.
+            BYTE (2):
+                Single byte numeric field.
+            INT16 (3):
+                16-bit numeric field.
+            INT32 (4):
+                32-bit numeric field.
+            INT64 (5):
+                64-bit numeric field.
+            FLOAT (6):
+                Floating point numeric field.
+            DOUBLE (7):
+                Double precision numeric field.
+            DECIMAL (8):
+                Real value numeric field.
+            STRING (9):
+                Sequence of characters field.
+            BINARY (10):
+                Sequence of bytes field.
+            TIMESTAMP (11):
+                Date and time field.
+            DATE (12):
+                Date field.
+            TIME (13):
+                Time field.
+            RECORD (14):
+                Structured field. Nested fields that define
+                the structure of the map. If all nested fields
+                are nullable, this field represents a union.
+            NULL (100):
+                Null field that does not have values.
+        """
         TYPE_UNSPECIFIED = 0
         BOOLEAN = 1
         BYTE = 2
@@ -704,7 +784,20 @@ class Schema(proto.Message):
         NULL = 100
 
     class Mode(proto.Enum):
-        r"""Additional qualifiers to define field semantics."""
+        r"""Additional qualifiers to define field semantics.
+
+        Values:
+            MODE_UNSPECIFIED (0):
+                Mode unspecified.
+            REQUIRED (1):
+                The field has required semantics.
+            NULLABLE (2):
+                The field has optional semantics, and may be
+                null.
+            REPEATED (3):
+                The field has repeated (0 or more) semantics,
+                and is a list of values.
+        """
         MODE_UNSPECIFIED = 0
         REQUIRED = 1
         NULLABLE = 2
@@ -713,6 +806,14 @@ class Schema(proto.Message):
     class PartitionStyle(proto.Enum):
         r"""The structure of paths within the entity, which represent
         partitions.
+
+        Values:
+            PARTITION_STYLE_UNSPECIFIED (0):
+                PartitionStyle unspecified
+            HIVE_COMPATIBLE (1):
+                Partitions are hive-compatible. Examples:
+                ``gs://bucket/path/to/table/dt=2019-10-31/lang=en``,
+                ``gs://bucket/path/to/table/dt=2019-10-31/lang=en/late``.
         """
         PARTITION_STYLE_UNSPECIFIED = 0
         HIVE_COMPATIBLE = 1
@@ -863,7 +964,36 @@ class StorageFormat(proto.Message):
     """
 
     class Format(proto.Enum):
-        r"""The specific file format of the data."""
+        r"""The specific file format of the data.
+
+        Values:
+            FORMAT_UNSPECIFIED (0):
+                Format unspecified.
+            PARQUET (1):
+                Parquet-formatted structured data.
+            AVRO (2):
+                Avro-formatted structured data.
+            ORC (3):
+                Orc-formatted structured data.
+            CSV (100):
+                Csv-formatted semi-structured data.
+            JSON (101):
+                Json-formatted semi-structured data.
+            IMAGE (200):
+                Image data formats (such as jpg and png).
+            AUDIO (201):
+                Audio data formats (such as mp3, and wav).
+            VIDEO (202):
+                Video data formats (such as mp4 and mpg).
+            TEXT (203):
+                Textual data formats (such as txt and xml).
+            TFRECORD (204):
+                TensorFlow record format.
+            OTHER (1000):
+                Data that doesn't match a specific format.
+            UNKNOWN (1001):
+                Data of an unknown format.
+        """
         FORMAT_UNSPECIFIED = 0
         PARQUET = 1
         AVRO = 2
@@ -879,7 +1009,17 @@ class StorageFormat(proto.Message):
         UNKNOWN = 1001
 
     class CompressionFormat(proto.Enum):
-        r"""The specific compressed file format of the data."""
+        r"""The specific compressed file format of the data.
+
+        Values:
+            COMPRESSION_FORMAT_UNSPECIFIED (0):
+                CompressionFormat unspecified. Implies
+                uncompressed data.
+            GZIP (2):
+                GZip compressed set of files.
+            BZIP2 (3):
+                BZip2 compressed set of files.
+        """
         COMPRESSION_FORMAT_UNSPECIFIED = 0
         GZIP = 2
         BZIP2 = 3

@@ -356,7 +356,14 @@ class Content(proto.Message):
         """
 
         class QueryEngine(proto.Enum):
-            r"""Query Engine Type of the SQL Script."""
+            r"""Query Engine Type of the SQL Script.
+
+            Values:
+                QUERY_ENGINE_UNSPECIFIED (0):
+                    Value was unspecified.
+                SPARK (2):
+                    Spark SQL Query.
+            """
             QUERY_ENGINE_UNSPECIFIED = 0
             SPARK = 2
 
@@ -375,7 +382,14 @@ class Content(proto.Message):
         """
 
         class KernelType(proto.Enum):
-            r"""Kernel Type of the Jupyter notebook."""
+            r"""Kernel Type of the Jupyter notebook.
+
+            Values:
+                KERNEL_TYPE_UNSPECIFIED (0):
+                    Kernel Type unspecified.
+                PYTHON3 (1):
+                    Python 3 Kernel.
+            """
             KERNEL_TYPE_UNSPECIFIED = 0
             PYTHON3 = 1
 

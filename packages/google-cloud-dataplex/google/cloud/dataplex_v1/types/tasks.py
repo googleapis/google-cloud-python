@@ -273,7 +273,17 @@ class Task(proto.Message):
         """
 
         class Type(proto.Enum):
-            r"""Determines how often and when the job will run."""
+            r"""Determines how often and when the job will run.
+
+            Values:
+                TYPE_UNSPECIFIED (0):
+                    Unspecified trigger type.
+                ON_DEMAND (1):
+                    The task runs one-time shortly after Task
+                    Creation.
+                RECURRING (2):
+                    The task is scheduled to run periodically.
+            """
             TYPE_UNSPECIFIED = 0
             ON_DEMAND = 1
             RECURRING = 2
@@ -618,12 +628,36 @@ class Job(proto.Message):
     """
 
     class Service(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            SERVICE_UNSPECIFIED (0):
+                Service used to run the job is unspecified.
+            DATAPROC (1):
+                Dataproc service is used to run this job.
+        """
         SERVICE_UNSPECIFIED = 0
         DATAPROC = 1
 
     class State(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The job state is unknown.
+            RUNNING (1):
+                The job is running.
+            CANCELLING (2):
+                The job is cancelling.
+            CANCELLED (3):
+                The job cancellation was successful.
+            SUCCEEDED (4):
+                The job completed successfully.
+            FAILED (5):
+                The job is no longer running due to an error.
+            ABORTED (6):
+                The job was cancelled outside of Dataplex.
+        """
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         CANCELLING = 2

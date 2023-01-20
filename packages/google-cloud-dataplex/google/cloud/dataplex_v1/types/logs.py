@@ -76,7 +76,33 @@ class DiscoveryEvent(proto.Message):
     """
 
     class EventType(proto.Enum):
-        r"""The type of the event."""
+        r"""The type of the event.
+
+        Values:
+            EVENT_TYPE_UNSPECIFIED (0):
+                An unspecified event type.
+            CONFIG (1):
+                An event representing discovery configuration
+                in effect.
+            ENTITY_CREATED (2):
+                An event representing a metadata entity being
+                created.
+            ENTITY_UPDATED (3):
+                An event representing a metadata entity being
+                updated.
+            ENTITY_DELETED (4):
+                An event representing a metadata entity being
+                deleted.
+            PARTITION_CREATED (5):
+                An event representing a partition being
+                created.
+            PARTITION_UPDATED (6):
+                An event representing a partition being
+                updated.
+            PARTITION_DELETED (7):
+                An event representing a partition being
+                deleted.
+        """
         EVENT_TYPE_UNSPECIFIED = 0
         CONFIG = 1
         ENTITY_CREATED = 2
@@ -87,7 +113,16 @@ class DiscoveryEvent(proto.Message):
         PARTITION_DELETED = 7
 
     class EntityType(proto.Enum):
-        r"""The type of the entity."""
+        r"""The type of the entity.
+
+        Values:
+            ENTITY_TYPE_UNSPECIFIED (0):
+                An unspecified event type.
+            TABLE (1):
+                Entities representing structured data.
+            FILESET (2):
+                Entities representing unstructured data.
+        """
         ENTITY_TYPE_UNSPECIFIED = 0
         TABLE = 1
         FILESET = 2
@@ -258,13 +293,36 @@ class JobEvent(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""The type of the job."""
+        r"""The type of the job.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unspecified job type.
+            SPARK (1):
+                Spark jobs.
+            NOTEBOOK (2):
+                Notebook jobs.
+        """
         TYPE_UNSPECIFIED = 0
         SPARK = 1
         NOTEBOOK = 2
 
     class State(proto.Enum):
-        r"""The completion status of the job."""
+        r"""The completion status of the job.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified job state.
+            SUCCEEDED (1):
+                Job successfully completed.
+            FAILED (2):
+                Job was unsuccessful.
+            CANCELLED (3):
+                Job was cancelled by the user.
+            ABORTED (4):
+                Job was cancelled or aborted via the service
+                executing the job.
+        """
         STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2
@@ -272,7 +330,14 @@ class JobEvent(proto.Message):
         ABORTED = 4
 
     class Service(proto.Enum):
-        r"""The service used to execute the job."""
+        r"""The service used to execute the job.
+
+        Values:
+            SERVICE_UNSPECIFIED (0):
+                Unspecified service.
+            DATAPROC (1):
+                Cloud Dataproc.
+        """
         SERVICE_UNSPECIFIED = 0
         DATAPROC = 1
 
@@ -353,7 +418,22 @@ class SessionEvent(proto.Message):
     """
 
     class EventType(proto.Enum):
-        r"""The type of the event."""
+        r"""The type of the event.
+
+        Values:
+            EVENT_TYPE_UNSPECIFIED (0):
+                An unspecified event type.
+            START (1):
+                Event when the session is assigned to a user.
+            STOP (2):
+                Event for stop of a session.
+            QUERY (3):
+                Query events in the session.
+            CREATE (4):
+                Event for creation of a cluster. It is not
+                yet assigned to a user. This comes before START
+                in the sequence
+        """
         EVENT_TYPE_UNSPECIFIED = 0
         START = 1
         STOP = 2
@@ -379,7 +459,16 @@ class SessionEvent(proto.Message):
         """
 
         class Engine(proto.Enum):
-            r"""Query Execution engine."""
+            r"""Query Execution engine.
+
+            Values:
+                ENGINE_UNSPECIFIED (0):
+                    An unspecified Engine type.
+                SPARK_SQL (1):
+                    Spark-sql engine is specified in Query.
+                BIGQUERY (2):
+                    BigQuery engine is specified in Query.
+            """
             ENGINE_UNSPECIFIED = 0
             SPARK_SQL = 1
             BIGQUERY = 2
@@ -499,13 +588,35 @@ class DataScanEvent(proto.Message):
     """
 
     class ScanType(proto.Enum):
-        r"""The type of the data scan."""
+        r"""The type of the data scan.
+
+        Values:
+            SCAN_TYPE_UNSPECIFIED (0):
+                An unspecified data scan type.
+            DATA_PROFILE (1):
+                Data scan for data profile.
+            DATA_QUALITY (2):
+                Data scan for data quality.
+        """
         SCAN_TYPE_UNSPECIFIED = 0
         DATA_PROFILE = 1
         DATA_QUALITY = 2
 
     class State(proto.Enum):
-        r"""The job state of the data scan."""
+        r"""The job state of the data scan.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified job state.
+            STARTED (1):
+                Data scan started.
+            SUCCEEDED (2):
+                Data scan successfully completed.
+            FAILED (3):
+                Data scan was unsuccessful.
+            CANCELLED (4):
+                Data scan was cancelled.
+        """
         STATE_UNSPECIFIED = 0
         STARTED = 1
         SUCCEEDED = 2
@@ -513,13 +624,31 @@ class DataScanEvent(proto.Message):
         CANCELLED = 4
 
     class Trigger(proto.Enum):
-        r"""The trigger type for the data scan."""
+        r"""The trigger type for the data scan.
+
+        Values:
+            TRIGGER_UNSPECIFIED (0):
+                An unspecified trigger type.
+            ON_DEMAND (1):
+                Data scan triggers on demand.
+            SCHEDULE (2):
+                Data scan triggers as per schedule.
+        """
         TRIGGER_UNSPECIFIED = 0
         ON_DEMAND = 1
         SCHEDULE = 2
 
     class Scope(proto.Enum):
-        r"""The scope of job for the data scan."""
+        r"""The scope of job for the data scan.
+
+        Values:
+            SCOPE_UNSPECIFIED (0):
+                An unspecified scope type.
+            FULL (1):
+                Data scan runs on all of the data.
+            INCREMENTAL (2):
+                Data scan runs on incremental data.
+        """
         SCOPE_UNSPECIFIED = 0
         FULL = 1
         INCREMENTAL = 2

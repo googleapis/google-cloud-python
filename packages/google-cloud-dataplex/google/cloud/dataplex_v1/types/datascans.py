@@ -48,7 +48,16 @@ __protobuf__ = proto.module(
 
 
 class DataScanType(proto.Enum):
-    r"""The type of DataScan."""
+    r"""The type of DataScan.
+
+    Values:
+        DATA_SCAN_TYPE_UNSPECIFIED (0):
+            The DataScan Type is unspecified.
+        DATA_QUALITY (1):
+            Data Quality Scan.
+        DATA_PROFILE (2):
+            Data Profile Scan.
+    """
     DATA_SCAN_TYPE_UNSPECIFIED = 0
     DATA_QUALITY = 1
     DATA_PROFILE = 2
@@ -145,7 +154,17 @@ class GetDataScanRequest(proto.Message):
     """
 
     class DataScanView(proto.Enum):
-        r"""DataScan views for getting a partial dataScan."""
+        r"""DataScan views for getting a partial dataScan.
+
+        Values:
+            DATA_SCAN_VIEW_UNSPECIFIED (0):
+                The API will default to the ``BASIC`` view.
+            BASIC (1):
+                Basic view that does not include spec and
+                result.
+            FULL (10):
+                Include everything.
+        """
         DATA_SCAN_VIEW_UNSPECIFIED = 0
         BASIC = 1
         FULL = 10
@@ -292,7 +311,17 @@ class GetDataScanJobRequest(proto.Message):
     """
 
     class DataScanJobView(proto.Enum):
-        r"""DataScanJob views for getting a partial dataScanJob."""
+        r"""DataScanJob views for getting a partial dataScanJob.
+
+        Values:
+            DATA_SCAN_JOB_VIEW_UNSPECIFIED (0):
+                The API will default to the ``BASIC`` view.
+            BASIC (1):
+                Basic view that does not include spec and
+                result.
+            FULL (10):
+                Include everything.
+        """
         DATA_SCAN_JOB_VIEW_UNSPECIFIED = 0
         BASIC = 1
         FULL = 10
@@ -642,7 +671,26 @@ class DataScanJob(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Execution state for the DataScanJob."""
+        r"""Execution state for the DataScanJob.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The DataScanJob state is unspecified.
+            RUNNING (1):
+                The DataScanJob is running.
+            CANCELING (2):
+                The DataScanJob is canceling.
+            CANCELLED (3):
+                The DataScanJob cancellation was successful.
+            SUCCEEDED (4):
+                The DataScanJob completed successfully.
+            FAILED (5):
+                The DataScanJob is no longer running due to
+                an error.
+            PENDING (7):
+                The DataScanJob has been created but not
+                started to run yet.
+        """
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         CANCELING = 2
