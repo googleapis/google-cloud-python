@@ -340,7 +340,25 @@ class Document(proto.Message):
             """
 
             class Orientation(proto.Enum):
-                r"""Detected human reading orientation."""
+                r"""Detected human reading orientation.
+
+                Values:
+                    ORIENTATION_UNSPECIFIED (0):
+                        Unspecified orientation.
+                    PAGE_UP (1):
+                        Orientation is aligned with page up.
+                    PAGE_RIGHT (2):
+                        Orientation is aligned with page right.
+                        Turn the head 90 degrees clockwise from upright
+                        to read.
+                    PAGE_DOWN (3):
+                        Orientation is aligned with page down.
+                        Turn the head 180 degrees from upright to read.
+                    PAGE_LEFT (4):
+                        Orientation is aligned with page left.
+                        Turn the head 90 degrees counterclockwise from
+                        upright to read.
+                """
                 ORIENTATION_UNSPECIFIED = 0
                 PAGE_UP = 1
                 PAGE_RIGHT = 2
@@ -479,7 +497,19 @@ class Document(proto.Message):
                 """
 
                 class Type(proto.Enum):
-                    r"""Enum to denote the type of break found."""
+                    r"""Enum to denote the type of break found.
+
+                    Values:
+                        TYPE_UNSPECIFIED (0):
+                            Unspecified break type.
+                        SPACE (1):
+                            A single whitespace.
+                        WIDE_SPACE (2):
+                            A wider whitespace.
+                        HYPHEN (3):
+                            A hyphen that indicates that a token has been
+                            split across lines.
+                    """
                     TYPE_UNSPECIFIED = 0
                     SPACE = 1
                     WIDE_SPACE = 2
@@ -961,7 +991,40 @@ class Document(proto.Message):
             """
 
             class LayoutType(proto.Enum):
-                r"""The type of layout that is being referenced."""
+                r"""The type of layout that is being referenced.
+
+                Values:
+                    LAYOUT_TYPE_UNSPECIFIED (0):
+                        Layout Unspecified.
+                    BLOCK (1):
+                        References a
+                        [Page.blocks][google.cloud.documentai.v1beta2.Document.Page.blocks]
+                        element.
+                    PARAGRAPH (2):
+                        References a
+                        [Page.paragraphs][google.cloud.documentai.v1beta2.Document.Page.paragraphs]
+                        element.
+                    LINE (3):
+                        References a
+                        [Page.lines][google.cloud.documentai.v1beta2.Document.Page.lines]
+                        element.
+                    TOKEN (4):
+                        References a
+                        [Page.tokens][google.cloud.documentai.v1beta2.Document.Page.tokens]
+                        element.
+                    VISUAL_ELEMENT (5):
+                        References a
+                        [Page.visual_elements][google.cloud.documentai.v1beta2.Document.Page.visual_elements]
+                        element.
+                    TABLE (6):
+                        Refrrences a
+                        [Page.tables][google.cloud.documentai.v1beta2.Document.Page.tables]
+                        element.
+                    FORM_FIELD (7):
+                        References a
+                        [Page.form_fields][google.cloud.documentai.v1beta2.Document.Page.form_fields]
+                        element.
+                """
                 LAYOUT_TYPE_UNSPECIFIED = 0
                 BLOCK = 1
                 PARAGRAPH = 2

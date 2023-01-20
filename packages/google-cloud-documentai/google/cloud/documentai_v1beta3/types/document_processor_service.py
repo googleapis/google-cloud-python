@@ -203,7 +203,27 @@ class HumanReviewStatus(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The final state of human review on a processed document."""
+        r"""The final state of human review on a processed document.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Human review state is unspecified. Most
+                likely due to an internal error.
+            SKIPPED (1):
+                Human review is skipped for the document.
+                This can happen because human review is not
+                enabled on the processor or the processing
+                request has been set to skip this document.
+            VALIDATION_PASSED (2):
+                Human review validation is triggered and
+                passed, so no review is needed.
+            IN_PROGRESS (3):
+                Human review validation is triggered and the
+                document is under review.
+            ERROR (4):
+                Some error happened during triggering human review, see the
+                [state_message] for details.
+        """
         STATE_UNSPECIFIED = 0
         SKIPPED = 1
         VALIDATION_PASSED = 2
@@ -384,7 +404,25 @@ class BatchProcessMetadata(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Possible states of the batch processing operation."""
+        r"""Possible states of the batch processing operation.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The default value. This value is used if the
+                state is omitted.
+            WAITING (1):
+                Request operation is waiting for scheduling.
+            RUNNING (2):
+                Request is being processed.
+            SUCCEEDED (3):
+                The batch processing completed successfully.
+            CANCELLING (4):
+                The batch processing was being cancelled.
+            CANCELLED (5):
+                The batch processing was cancelled.
+            FAILED (6):
+                The batch processing has failed.
+        """
         STATE_UNSPECIFIED = 0
         WAITING = 1
         RUNNING = 2
@@ -1200,7 +1238,17 @@ class ReviewDocumentRequest(proto.Message):
     """
 
     class Priority(proto.Enum):
-        r"""The priority level of the human review task."""
+        r"""The priority level of the human review task.
+
+        Values:
+            DEFAULT (0):
+                The default priority level.
+            URGENT (1):
+                The urgent priority level. The labeling
+                manager should allocate labeler resource to the
+                urgent task queue to respect this priority
+                level.
+        """
         DEFAULT = 0
         URGENT = 1
 
@@ -1250,7 +1298,18 @@ class ReviewDocumentResponse(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Possible states of the review operation."""
+        r"""Possible states of the review operation.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The default value. This value is used if the
+                state is omitted.
+            REJECTED (1):
+                The review operation is rejected by the
+                reviewer.
+            SUCCEEDED (2):
+                The review operation is succeeded.
+        """
         STATE_UNSPECIFIED = 0
         REJECTED = 1
         SUCCEEDED = 2
@@ -1293,7 +1352,22 @@ class ReviewDocumentOperationMetadata(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of the longrunning operation."""
+        r"""State of the longrunning operation.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified state.
+            RUNNING (1):
+                Operation is still running.
+            CANCELLING (2):
+                Operation is being cancelled.
+            SUCCEEDED (3):
+                Operation succeeded.
+            FAILED (4):
+                Operation failed.
+            CANCELLED (5):
+                Operation is cancelled.
+        """
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         CANCELLING = 2

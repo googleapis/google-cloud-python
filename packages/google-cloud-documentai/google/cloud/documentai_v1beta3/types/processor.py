@@ -64,7 +64,30 @@ class ProcessorVersion(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The possible states of the processor version."""
+        r"""The possible states of the processor version.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The processor version is in an unspecified
+                state.
+            DEPLOYED (1):
+                The processor version is deployed and can be
+                used for processing.
+            DEPLOYING (2):
+                The processor version is being deployed.
+            UNDEPLOYED (3):
+                The processor version is not deployed and
+                cannot be used for processing.
+            UNDEPLOYING (4):
+                The processor version is being undeployed.
+            CREATING (5):
+                The processor version is being created.
+            DELETING (6):
+                The processor version is being deleted.
+            FAILED (7):
+                The processor version failed and is in an
+                indeterminate state.
+        """
         STATE_UNSPECIFIED = 0
         DEPLOYED = 1
         DEPLOYING = 2
@@ -171,7 +194,41 @@ class Processor(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The possible states of the processor."""
+        r"""The possible states of the processor.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The processor is in an unspecified state.
+            ENABLED (1):
+                The processor is enabled, i.e., has an
+                enabled version which can currently serve
+                processing requests and all the feature
+                dependencies have been successfully initialized.
+            DISABLED (2):
+                The processor is disabled.
+            ENABLING (3):
+                The processor is being enabled, will become ``ENABLED`` if
+                successful.
+            DISABLING (4):
+                The processor is being disabled, will become ``DISABLED`` if
+                successful.
+            CREATING (5):
+                The processor is being created, will become either
+                ``ENABLED`` (for successful creation) or ``FAILED`` (for
+                failed ones). Once a processor is in this state, it can then
+                be used for document processing, but the feature
+                dependencies of the processor might not be fully created
+                yet.
+            FAILED (6):
+                The processor failed during creation or
+                initialization of feature dependencies. The user
+                should delete the processor and recreate one as
+                all the functionalities of the processor are
+                disabled.
+            DELETING (7):
+                The processor is being deleted, will be
+                removed if successful.
+        """
         STATE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2

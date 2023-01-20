@@ -119,6 +119,22 @@ class DocumentSchema(proto.Message):
                 r"""Types of occurrences of the entity type in the document.
                 Note: this represents the number of instances of an entity
                 types, not number of mentions of a given entity instance.
+
+                Values:
+                    OCCURRENCE_TYPE_UNSPECIFIED (0):
+                        Unspecified occurrence type.
+                    OPTIONAL_ONCE (1):
+                        There will be zero or one instance of this
+                        entity type.
+                    OPTIONAL_MULTIPLE (2):
+                        The entity type will appear zero or multiple
+                        times.
+                    REQUIRED_ONCE (3):
+                        The entity type will only appear exactly
+                        once.
+                    REQUIRED_MULTIPLE (4):
+                        The entity type will appear once or more
+                        times.
                 """
                 OCCURRENCE_TYPE_UNSPECIFIED = 0
                 OPTIONAL_ONCE = 1

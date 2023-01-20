@@ -44,7 +44,22 @@ class CommonOperationMetadata(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of the longrunning operation."""
+        r"""State of the longrunning operation.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified state.
+            RUNNING (1):
+                Operation is still running.
+            CANCELLING (2):
+                Operation is being cancelled.
+            SUCCEEDED (3):
+                Operation succeeded.
+            FAILED (4):
+                Operation failed.
+            CANCELLED (5):
+                Operation is cancelled.
+        """
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         CANCELLING = 2

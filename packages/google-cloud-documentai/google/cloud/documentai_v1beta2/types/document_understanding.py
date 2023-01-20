@@ -540,7 +540,25 @@ class OperationMetadata(proto.Message):
     """
 
     class State(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The default value. This value is used if the
+                state is omitted.
+            ACCEPTED (1):
+                Request is received.
+            WAITING (2):
+                Request operation is waiting for scheduling.
+            RUNNING (3):
+                Request is being processed.
+            SUCCEEDED (4):
+                The batch processing completed successfully.
+            CANCELLED (5):
+                The batch processing was cancelled.
+            FAILED (6):
+                The batch processing has failed.
+        """
         STATE_UNSPECIFIED = 0
         ACCEPTED = 1
         WAITING = 2
