@@ -139,7 +139,16 @@ class StructuredQuery(proto.Message):
     """
 
     class Direction(proto.Enum):
-        r"""A sort direction."""
+        r"""A sort direction.
+
+        Values:
+            DIRECTION_UNSPECIFIED (0):
+                Unspecified.
+            ASCENDING (1):
+                Ascending.
+            DESCENDING (2):
+                Descending.
+        """
         DIRECTION_UNSPECIFIED = 0
         ASCENDING = 1
         DESCENDING = 2
@@ -227,7 +236,15 @@ class StructuredQuery(proto.Message):
         """
 
         class Operator(proto.Enum):
-            r"""A composite filter operator."""
+            r"""A composite filter operator.
+
+            Values:
+                OPERATOR_UNSPECIFIED (0):
+                    Unspecified. This value must not be used.
+                AND (1):
+                    Documents are required to satisfy all of the
+                    combined filters.
+            """
             OPERATOR_UNSPECIFIED = 0
             AND = 1
 
@@ -255,7 +272,79 @@ class StructuredQuery(proto.Message):
         """
 
         class Operator(proto.Enum):
-            r"""A field filter operator."""
+            r"""A field filter operator.
+
+            Values:
+                OPERATOR_UNSPECIFIED (0):
+                    Unspecified. This value must not be used.
+                LESS_THAN (1):
+                    The given ``field`` is less than the given ``value``.
+
+                    Requires:
+
+                    -  That ``field`` come first in ``order_by``.
+                LESS_THAN_OR_EQUAL (2):
+                    The given ``field`` is less than or equal to the given
+                    ``value``.
+
+                    Requires:
+
+                    -  That ``field`` come first in ``order_by``.
+                GREATER_THAN (3):
+                    The given ``field`` is greater than the given ``value``.
+
+                    Requires:
+
+                    -  That ``field`` come first in ``order_by``.
+                GREATER_THAN_OR_EQUAL (4):
+                    The given ``field`` is greater than or equal to the given
+                    ``value``.
+
+                    Requires:
+
+                    -  That ``field`` come first in ``order_by``.
+                EQUAL (5):
+                    The given ``field`` is equal to the given ``value``.
+                NOT_EQUAL (6):
+                    The given ``field`` is not equal to the given ``value``.
+
+                    Requires:
+
+                    -  No other ``NOT_EQUAL``, ``NOT_IN``, ``IS_NOT_NULL``, or
+                       ``IS_NOT_NAN``.
+                    -  That ``field`` comes first in the ``order_by``.
+                ARRAY_CONTAINS (7):
+                    The given ``field`` is an array that contains the given
+                    ``value``.
+                IN (8):
+                    The given ``field`` is equal to at least one value in the
+                    given array.
+
+                    Requires:
+
+                    -  That ``value`` is a non-empty ``ArrayValue`` with at most
+                       10 values.
+                    -  No other ``IN`` or ``ARRAY_CONTAINS_ANY`` or ``NOT_IN``.
+                ARRAY_CONTAINS_ANY (9):
+                    The given ``field`` is an array that contains any of the
+                    values in the given array.
+
+                    Requires:
+
+                    -  That ``value`` is a non-empty ``ArrayValue`` with at most
+                       10 values.
+                    -  No other ``IN`` or ``ARRAY_CONTAINS_ANY`` or ``NOT_IN``.
+                NOT_IN (10):
+                    The value of the ``field`` is not in the given array.
+
+                    Requires:
+
+                    -  That ``value`` is a non-empty ``ArrayValue`` with at most
+                       10 values.
+                    -  No other ``IN``, ``ARRAY_CONTAINS_ANY``, ``NOT_IN``,
+                       ``NOT_EQUAL``, ``IS_NOT_NULL``, or ``IS_NOT_NAN``.
+                    -  That ``field`` comes first in the ``order_by``.
+            """
             OPERATOR_UNSPECIFIED = 0
             LESS_THAN = 1
             LESS_THAN_OR_EQUAL = 2
@@ -299,7 +388,32 @@ class StructuredQuery(proto.Message):
         """
 
         class Operator(proto.Enum):
-            r"""A unary operator."""
+            r"""A unary operator.
+
+            Values:
+                OPERATOR_UNSPECIFIED (0):
+                    Unspecified. This value must not be used.
+                IS_NAN (2):
+                    The given ``field`` is equal to ``NaN``.
+                IS_NULL (3):
+                    The given ``field`` is equal to ``NULL``.
+                IS_NOT_NAN (4):
+                    The given ``field`` is not equal to ``NaN``.
+
+                    Requires:
+
+                    -  No other ``NOT_EQUAL``, ``NOT_IN``, ``IS_NOT_NULL``, or
+                       ``IS_NOT_NAN``.
+                    -  That ``field`` comes first in the ``order_by``.
+                IS_NOT_NULL (5):
+                    The given ``field`` is not equal to ``NULL``.
+
+                    Requires:
+
+                    -  A single ``NOT_EQUAL``, ``NOT_IN``, ``IS_NOT_NULL``, or
+                       ``IS_NOT_NAN``.
+                    -  That ``field`` comes first in the ``order_by``.
+            """
             OPERATOR_UNSPECIFIED = 0
             IS_NAN = 2
             IS_NULL = 3

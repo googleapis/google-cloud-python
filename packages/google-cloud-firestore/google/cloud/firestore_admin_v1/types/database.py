@@ -74,20 +74,65 @@ class Database(proto.Message):
         for information about how to choose.
 
         Mode changes are only allowed if the database is empty.
+
+        Values:
+            DATABASE_TYPE_UNSPECIFIED (0):
+                The default value. This value is used if the
+                database type is omitted.
+            FIRESTORE_NATIVE (1):
+                Firestore Native Mode
+            DATASTORE_MODE (2):
+                Firestore in Datastore Mode.
         """
         DATABASE_TYPE_UNSPECIFIED = 0
         FIRESTORE_NATIVE = 1
         DATASTORE_MODE = 2
 
     class ConcurrencyMode(proto.Enum):
-        r"""The type of concurrency control mode for transactions."""
+        r"""The type of concurrency control mode for transactions.
+
+        Values:
+            CONCURRENCY_MODE_UNSPECIFIED (0):
+                Not used.
+            OPTIMISTIC (1):
+                Use optimistic concurrency control by
+                default. This mode is available for Cloud
+                Firestore databases.
+            PESSIMISTIC (2):
+                Use pessimistic concurrency control by
+                default. This mode is available for Cloud
+                Firestore databases.
+                This is the default setting for Cloud Firestore.
+            OPTIMISTIC_WITH_ENTITY_GROUPS (3):
+                Use optimistic concurrency control with
+                entity groups by default.
+                This is the only available mode for Cloud
+                Datastore.
+                This mode is also available for Cloud Firestore
+                with Datastore Mode but is not recommended.
+        """
         CONCURRENCY_MODE_UNSPECIFIED = 0
         OPTIMISTIC = 1
         PESSIMISTIC = 2
         OPTIMISTIC_WITH_ENTITY_GROUPS = 3
 
     class AppEngineIntegrationMode(proto.Enum):
-        r"""The type of App Engine integration mode."""
+        r"""The type of App Engine integration mode.
+
+        Values:
+            APP_ENGINE_INTEGRATION_MODE_UNSPECIFIED (0):
+                Not used.
+            ENABLED (1):
+                If an App Engine application exists in the
+                same region as this database, App Engine
+                configuration will impact this database. This
+                includes disabling of the application &
+                database, as well as disabling writes to the
+                database.
+            DISABLED (2):
+                Appengine has no affect on the ability of
+                this database to serve requests.
+        """
         APP_ENGINE_INTEGRATION_MODE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2

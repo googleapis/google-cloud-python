@@ -129,7 +129,28 @@ class Field(proto.Message):
         """
 
         class State(proto.Enum):
-            r"""The state of applying the TTL configuration to all documents."""
+            r"""The state of applying the TTL configuration to all documents.
+
+            Values:
+                STATE_UNSPECIFIED (0):
+                    The state is unspecified or unknown.
+                CREATING (1):
+                    The TTL is being applied. There is an active
+                    long-running operation to track the change.
+                    Newly written documents will have TTLs applied
+                    as requested. Requested TTLs on existing
+                    documents are still being processed. When TTLs
+                    on all existing documents have been processed,
+                    the state will move to 'ACTIVE'.
+                ACTIVE (2):
+                    The TTL is active for all documents.
+                NEEDS_REPAIR (3):
+                    The TTL configuration could not be enabled for all existing
+                    documents. Newly written documents will continue to have
+                    their TTL applied. The LRO returned when last attempting to
+                    enable TTL for this ``Field`` has failed, and may have more
+                    details.
+            """
             STATE_UNSPECIFIED = 0
             CREATING = 1
             ACTIVE = 2

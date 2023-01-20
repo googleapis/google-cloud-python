@@ -53,6 +53,12 @@ class BundledQuery(proto.Message):
     class LimitType(proto.Enum):
         r"""If the query is a limit query, should the limit be applied to
         the beginning or the end of results.
+
+        Values:
+            FIRST (0):
+
+            LAST (1):
+
         """
         FIRST = 0
         LAST = 1

@@ -69,6 +69,22 @@ class Index(proto.Message):
     class QueryScope(proto.Enum):
         r"""Query Scope defines the scope at which a query is run. This is
         specified on a StructuredQuery's ``from`` field.
+
+        Values:
+            QUERY_SCOPE_UNSPECIFIED (0):
+                The query scope is unspecified. Not a valid
+                option.
+            COLLECTION (1):
+                Indexes with a collection query scope
+                specified allow queries against a collection
+                that is the child of a specific document,
+                specified at query time, and that has the
+                collection id specified by the index.
+            COLLECTION_GROUP (2):
+                Indexes with a collection group query scope
+                specified allow queries against all collections
+                that has the collection id specified by the
+                index.
         """
         QUERY_SCOPE_UNSPECIFIED = 0
         COLLECTION = 1
@@ -80,6 +96,31 @@ class Index(proto.Message):
         will transition to the ``READY`` state. If the index creation
         encounters a problem, the index will transition to the
         ``NEEDS_REPAIR`` state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state is unspecified.
+            CREATING (1):
+                The index is being created.
+                There is an active long-running operation for
+                the index. The index is updated when writing a
+                document. Some index data may exist.
+            READY (2):
+                The index is ready to be used.
+                The index is updated when writing a document.
+                The index is fully populated from all stored
+                documents it applies to.
+            NEEDS_REPAIR (3):
+                The index was being created, but something
+                went wrong. There is no active long-running
+                operation for the index, and the most recently
+                finished long-running operation failed. The
+                index is not updated when writing a document.
+                Some index data may exist.
+                Use the google.longrunning.Operations API to
+                determine why the operation that last attempted
+                to create this index failed, then re-create the
+                index.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
@@ -115,13 +156,33 @@ class Index(proto.Message):
         """
 
         class Order(proto.Enum):
-            r"""The supported orderings."""
+            r"""The supported orderings.
+
+            Values:
+                ORDER_UNSPECIFIED (0):
+                    The ordering is unspecified. Not a valid
+                    option.
+                ASCENDING (1):
+                    The field is ordered by ascending field
+                    value.
+                DESCENDING (2):
+                    The field is ordered by descending field
+                    value.
+            """
             ORDER_UNSPECIFIED = 0
             ASCENDING = 1
             DESCENDING = 2
 
         class ArrayConfig(proto.Enum):
-            r"""The supported array value configurations."""
+            r"""The supported array value configurations.
+
+            Values:
+                ARRAY_CONFIG_UNSPECIFIED (0):
+                    The index does not support additional array
+                    queries.
+                CONTAINS (1):
+                    The index supports array containment queries.
+            """
             ARRAY_CONFIG_UNSPECIFIED = 0
             CONTAINS = 1
 

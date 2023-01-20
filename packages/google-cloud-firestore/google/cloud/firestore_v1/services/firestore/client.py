@@ -1986,7 +1986,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "FirestoreClient":
         return self
 
     def __exit__(self, type, value, traceback):
