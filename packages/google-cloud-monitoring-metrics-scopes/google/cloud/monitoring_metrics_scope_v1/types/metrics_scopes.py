@@ -144,7 +144,20 @@ class OperationMetadata(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Batch operation states."""
+        r"""Batch operation states.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Invalid.
+            CREATED (1):
+                Request has been received.
+            RUNNING (2):
+                Request is actively being processed.
+            DONE (3):
+                The batch processing is done.
+            CANCELLED (4):
+                The batch processing was cancelled.
+        """
         STATE_UNSPECIFIED = 0
         CREATED = 1
         RUNNING = 2
