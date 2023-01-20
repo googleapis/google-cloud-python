@@ -54,6 +54,20 @@ class Likelihood(proto.Enum):
     r"""Categorization of results based on how likely they are to
     represent a match, based on the number of elements they contain
     which imply a match.
+
+    Values:
+        LIKELIHOOD_UNSPECIFIED (0):
+
+        VERY_UNLIKELY (1):
+
+        UNLIKELY (2):
+
+        POSSIBLE (3):
+
+        LIKELY (4):
+
+        VERY_LIKELY (5):
+
     """
     LIKELIHOOD_UNSPECIFIED = 0
     VERY_UNLIKELY = 1
@@ -66,6 +80,58 @@ class Likelihood(proto.Enum):
 class FileType(proto.Enum):
     r"""Definitions of file type groups to scan. New types will be
     added to this list.
+
+    Values:
+        FILE_TYPE_UNSPECIFIED (0):
+            Includes all files.
+        BINARY_FILE (1):
+            Includes all file extensions not covered by another entry.
+            Binary scanning attempts to convert the content of the file
+            to utf_8 to scan the file. If you wish to avoid this fall
+            back, specify one or more of the other FileType's in your
+            storage scan.
+        TEXT_FILE (2):
+            Included file extensions:
+            asc,asp, aspx, brf, c, cc,cfm, cgi, cpp, csv,
+            cxx, c++, cs, css, dart,   dat, dot, eml,,
+            epbub, ged, go, h, hh, hpp, hxx, h++, hs, html,
+            htm,   mkd, markdown, m, ml, mli, perl, pl,
+            plist, pm, php, phtml, pht,   properties, py,
+            pyw, rb, rbw, rs, rss,  rc, scala, sh, sql,
+            swift, tex,   shtml, shtm, xhtml, lhs, ics, ini,
+            java, js, json, kix, kml, ocaml, md,   txt,
+            text, tsv, vb, vcard, vcs, wml, xcodeproj, xml,
+            xsl, xsd, yml, yaml.
+        IMAGE (3):
+            Included file extensions: bmp, gif, jpg, jpeg, jpe, png.
+            bytes_limit_per_file has no effect on image files. Image
+            inspection is restricted to 'global', 'us', 'asia', and
+            'europe'.
+        WORD (5):
+            Word files >30 MB will be scanned as binary
+            files. Included file extensions:
+            docx, dotx, docm, dotm
+        PDF (6):
+            PDF files >30 MB will be scanned as binary
+            files. Included file extensions:
+            pdf
+        AVRO (7):
+            Included file extensions:
+            avro
+        CSV (8):
+            Included file extensions:
+            csv
+        TSV (9):
+            Included file extensions:
+            tsv
+        POWERPOINT (11):
+            Powerpoint files >30 MB will be scanned as
+            binary files. Included file extensions:
+            pptx, pptm, potx, potm, pot
+        EXCEL (12):
+            Excel files >30 MB will be scanned as binary
+            files. Included file extensions:
+            xlsx, xlsm, xltx, xltm
     """
     FILE_TYPE_UNSPECIFIED = 0
     BINARY_FILE = 1
@@ -115,7 +181,25 @@ class SensitivityScore(proto.Message):
     """
 
     class SensitivityScoreLevel(proto.Enum):
-        r"""Various score levels for resources."""
+        r"""Various score levels for resources.
+
+        Values:
+            SENSITIVITY_SCORE_UNSPECIFIED (0):
+                Unused.
+            SENSITIVITY_LOW (10):
+                No sensitive information detected. Limited
+                access.
+            SENSITIVITY_MODERATE (20):
+                Medium risk - PII, potentially sensitive
+                data, or fields with free-text data that are at
+                higher risk of having intermittent sensitive
+                data. Consider limiting access.
+            SENSITIVITY_HIGH (30):
+                High risk – SPII may be present. Exfiltration
+                of data may lead to user data loss.
+                Re-identification of users may be possible.
+                Consider limiting usage and or removing SPII.
+        """
         SENSITIVITY_SCORE_UNSPECIFIED = 0
         SENSITIVITY_LOW = 10
         SENSITIVITY_MODERATE = 20
@@ -213,7 +297,17 @@ class CustomInfoType(proto.Message):
     """
 
     class ExclusionType(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            EXCLUSION_TYPE_UNSPECIFIED (0):
+                A finding of this custom info type will not
+                be excluded from results.
+            EXCLUSION_TYPE_EXCLUDE (1):
+                A finding of this custom info type will be
+                excluded from final results, but can still
+                affect rule execution.
+        """
         EXCLUSION_TYPE_UNSPECIFIED = 0
         EXCLUSION_TYPE_EXCLUDE = 1
 
@@ -709,6 +803,16 @@ class CloudStorageOptions(proto.Message):
         r"""How to sample bytes if not all bytes are scanned. Meaningful only
         when used in conjunction with bytes_limit_per_file. If not
         specified, scanning would start from the top.
+
+        Values:
+            SAMPLE_METHOD_UNSPECIFIED (0):
+
+            TOP (1):
+                Scan from the top (default).
+            RANDOM_START (2):
+                For each file larger than bytes_limit_per_file, randomly
+                pick the offset to start scanning. The scanned bytes are
+                contiguous.
         """
         SAMPLE_METHOD_UNSPECIFIED = 0
         TOP = 1
@@ -845,6 +949,17 @@ class BigQueryOptions(proto.Message):
         r"""How to sample rows if not all rows are scanned. Meaningful only when
         used in conjunction with either rows_limit or rows_limit_percent. If
         not specified, rows are scanned in the order BigQuery reads them.
+
+        Values:
+            SAMPLE_METHOD_UNSPECIFIED (0):
+
+            TOP (1):
+                Scan groups of rows in the order BigQuery
+                provides (default). Multiple groups of rows may
+                be scanned in parallel, so results may not
+                appear in the same order the rows are read.
+            RANDOM_START (2):
+                Randomly pick groups of rows to scan.
         """
         SAMPLE_METHOD_UNSPECIFIED = 0
         TOP = 1

@@ -197,6 +197,27 @@ class TransformationResultStatusType(proto.Enum):
     r"""Enum of possible outcomes of transformations. SUCCESS if
     transformation and storing of transformation was successful,
     otherwise, reason for not transforming.
+
+    Values:
+        STATE_TYPE_UNSPECIFIED (0):
+
+        INVALID_TRANSFORM (1):
+            This will be set when a finding could not be
+            transformed (i.e. outside user set bucket
+            range).
+        BIGQUERY_MAX_ROW_SIZE_EXCEEDED (2):
+            This will be set when a BigQuery
+            transformation was successful but could not be
+            stored back in BigQuery because the transformed
+            row exceeds BigQuery's max row size.
+        METADATA_UNRETRIEVABLE (3):
+            This will be set when there is a finding in
+            the custom metadata of a file, but at the write
+            time of the transformed file, this key / value
+            pair is unretrievable.
+        SUCCESS (4):
+            This will be set when the transformation and
+            storing of it is successful.
     """
     STATE_TYPE_UNSPECIFIED = 0
     INVALID_TRANSFORM = 1
@@ -208,6 +229,16 @@ class TransformationResultStatusType(proto.Enum):
 class TransformationContainerType(proto.Enum):
     r"""Describes functionality of a given container in its original
     format.
+
+    Values:
+        TRANSFORM_UNKNOWN_CONTAINER (0):
+
+        TRANSFORM_BODY (1):
+
+        TRANSFORM_METADATA (2):
+
+        TRANSFORM_TABLE (3):
+
     """
     TRANSFORM_UNKNOWN_CONTAINER = 0
     TRANSFORM_BODY = 1
@@ -219,6 +250,38 @@ class TransformationType(proto.Enum):
     r"""An enum of rules that can be used to transform a value. Can be a
     record suppression, or one of the transformation rules specified
     under ``PrimitiveTransformation``.
+
+    Values:
+        TRANSFORMATION_TYPE_UNSPECIFIED (0):
+            Unused
+        RECORD_SUPPRESSION (1):
+            Record suppression
+        REPLACE_VALUE (2):
+            Replace value
+        REPLACE_DICTIONARY (15):
+            Replace value using a dictionary.
+        REDACT (3):
+            Redact
+        CHARACTER_MASK (4):
+            Character mask
+        CRYPTO_REPLACE_FFX_FPE (5):
+            FFX-FPE
+        FIXED_SIZE_BUCKETING (6):
+            Fixed size bucketing
+        BUCKETING (7):
+            Bucketing
+        REPLACE_WITH_INFO_TYPE (8):
+            Replace with info type
+        TIME_PART (9):
+            Time part
+        CRYPTO_HASH (10):
+            Crypto hash
+        DATE_SHIFT (12):
+            Date shift
+        CRYPTO_DETERMINISTIC_CONFIG (13):
+            Deterministic crypto
+        REDACT_IMAGE (14):
+            Redact image
     """
     TRANSFORMATION_TYPE_UNSPECIFIED = 0
     RECORD_SUPPRESSION = 1
@@ -238,7 +301,28 @@ class TransformationType(proto.Enum):
 
 
 class RelationalOperator(proto.Enum):
-    r"""Operators available for comparing the value of fields."""
+    r"""Operators available for comparing the value of fields.
+
+    Values:
+        RELATIONAL_OPERATOR_UNSPECIFIED (0):
+            Unused
+        EQUAL_TO (1):
+            Equal. Attempts to match even with
+            incompatible types.
+        NOT_EQUAL_TO (2):
+            Not equal to. Attempts to match even with
+            incompatible types.
+        GREATER_THAN (3):
+            Greater than.
+        LESS_THAN (4):
+            Less than.
+        GREATER_THAN_OR_EQUALS (5):
+            Greater than or equals.
+        LESS_THAN_OR_EQUALS (6):
+            Less than or equals.
+        EXISTS (7):
+            Exists
+    """
     RELATIONAL_OPERATOR_UNSPECIFIED = 0
     EQUAL_TO = 1
     NOT_EQUAL_TO = 2
@@ -253,6 +337,31 @@ class MatchingType(proto.Enum):
     r"""Type of the match which can be applied to different ways of
     matching, like Dictionary, regular expression and intersecting
     with findings of another info type.
+
+    Values:
+        MATCHING_TYPE_UNSPECIFIED (0):
+            Invalid.
+        MATCHING_TYPE_FULL_MATCH (1):
+            Full match.
+            - Dictionary: join of Dictionary results matched
+            complete finding quote - Regex: all regex
+            matches fill a finding quote start to end -
+            Exclude info type: completely inside affecting
+            info types findings
+        MATCHING_TYPE_PARTIAL_MATCH (2):
+            Partial match.
+            - Dictionary: at least one of the tokens in the
+            finding matches - Regex: substring of the
+            finding matches
+            - Exclude info type: intersects with affecting
+            info types findings
+        MATCHING_TYPE_INVERSE_MATCH (3):
+            Inverse match.
+            - Dictionary: no tokens in the finding match the
+            dictionary - Regex: finding doesn't match the
+            regex
+            - Exclude info type: no intersection with
+            affecting info types findings
     """
     MATCHING_TYPE_UNSPECIFIED = 0
     MATCHING_TYPE_FULL_MATCH = 1
@@ -261,34 +370,89 @@ class MatchingType(proto.Enum):
 
 
 class ContentOption(proto.Enum):
-    r"""Deprecated and unused."""
+    r"""Deprecated and unused.
+
+    Values:
+        CONTENT_UNSPECIFIED (0):
+            Includes entire content of a file or a data
+            stream.
+        CONTENT_TEXT (1):
+            Text content within the data, excluding any
+            metadata.
+        CONTENT_IMAGE (2):
+            Images found in the data.
+    """
     CONTENT_UNSPECIFIED = 0
     CONTENT_TEXT = 1
     CONTENT_IMAGE = 2
 
 
 class MetadataType(proto.Enum):
-    r"""Type of metadata containing the finding."""
+    r"""Type of metadata containing the finding.
+
+    Values:
+        METADATATYPE_UNSPECIFIED (0):
+            Unused
+        STORAGE_METADATA (2):
+            General file metadata provided by Cloud
+            Storage.
+    """
     METADATATYPE_UNSPECIFIED = 0
     STORAGE_METADATA = 2
 
 
 class InfoTypeSupportedBy(proto.Enum):
-    r"""Parts of the APIs which use certain infoTypes."""
+    r"""Parts of the APIs which use certain infoTypes.
+
+    Values:
+        ENUM_TYPE_UNSPECIFIED (0):
+            Unused.
+        INSPECT (1):
+            Supported by the inspect operations.
+        RISK_ANALYSIS (2):
+            Supported by the risk analysis operations.
+    """
     ENUM_TYPE_UNSPECIFIED = 0
     INSPECT = 1
     RISK_ANALYSIS = 2
 
 
 class DlpJobType(proto.Enum):
-    r"""An enum to represent the various types of DLP jobs."""
+    r"""An enum to represent the various types of DLP jobs.
+
+    Values:
+        DLP_JOB_TYPE_UNSPECIFIED (0):
+            Defaults to INSPECT_JOB.
+        INSPECT_JOB (1):
+            The job inspected Google Cloud for sensitive
+            data.
+        RISK_ANALYSIS_JOB (2):
+            The job executed a Risk Analysis computation.
+    """
     DLP_JOB_TYPE_UNSPECIFIED = 0
     INSPECT_JOB = 1
     RISK_ANALYSIS_JOB = 2
 
 
 class StoredInfoTypeState(proto.Enum):
-    r"""State of a StoredInfoType version."""
+    r"""State of a StoredInfoType version.
+
+    Values:
+        STORED_INFO_TYPE_STATE_UNSPECIFIED (0):
+            Unused
+        PENDING (1):
+            StoredInfoType version is being created.
+        READY (2):
+            StoredInfoType version is ready for use.
+        FAILED (3):
+            StoredInfoType creation failed. All relevant error messages
+            are returned in the ``StoredInfoTypeVersion`` message.
+        INVALID (4):
+            StoredInfoType is no longer valid because artifacts stored
+            in user-controlled storage were modified. To fix an invalid
+            StoredInfoType, use the ``UpdateStoredInfoType`` method to
+            create a new version.
+    """
     STORED_INFO_TYPE_STATE_UNSPECIFIED = 0
     PENDING = 1
     READY = 2
@@ -299,6 +463,14 @@ class StoredInfoTypeState(proto.Enum):
 class ResourceVisibility(proto.Enum):
     r"""How broadly a resource has been shared. New items may be
     added over time. A higher number means more restricted.
+
+    Values:
+        RESOURCE_VISIBILITY_UNSPECIFIED (0):
+            Unused.
+        RESOURCE_VISIBILITY_PUBLIC (10):
+            Visible to any user.
+        RESOURCE_VISIBILITY_RESTRICTED (20):
+            Visible only to specific users.
     """
     RESOURCE_VISIBILITY_UNSPECIFIED = 0
     RESOURCE_VISIBILITY_PUBLIC = 10
@@ -306,7 +478,17 @@ class ResourceVisibility(proto.Enum):
 
 
 class EncryptionStatus(proto.Enum):
-    r"""How a resource is encrypted."""
+    r"""How a resource is encrypted.
+
+    Values:
+        ENCRYPTION_STATUS_UNSPECIFIED (0):
+            Unused.
+        ENCRYPTION_GOOGLE_MANAGED (1):
+            Google manages server-side encryption keys on
+            your behalf.
+        ENCRYPTION_CUSTOMER_MANAGED (2):
+            Customer provides the key.
+    """
     ENCRYPTION_STATUS_UNSPECIFIED = 0
     ENCRYPTION_GOOGLE_MANAGED = 1
     ENCRYPTION_CUSTOMER_MANAGED = 2
@@ -674,6 +856,36 @@ class ByteContentItem(proto.Message):
         r"""The type of data being sent for inspection. To learn more, see
         `Supported file
         types <https://cloud.google.com/dlp/docs/supported-file-types>`__.
+
+        Values:
+            BYTES_TYPE_UNSPECIFIED (0):
+                Unused
+            IMAGE (6):
+                Any image type.
+            IMAGE_JPEG (1):
+                jpeg
+            IMAGE_BMP (2):
+                bmp
+            IMAGE_PNG (3):
+                png
+            IMAGE_SVG (4):
+                svg
+            TEXT_UTF8 (5):
+                plain text
+            WORD_DOCUMENT (7):
+                docx, docm, dotx, dotm
+            PDF (8):
+                pdf
+            POWERPOINT_DOCUMENT (9):
+                pptx, pptm, potx, potm, pot
+            EXCEL_DOCUMENT (10):
+                xlsx, xlsm, xltx, xltm
+            AVRO (11):
+                avro
+            CSV (12):
+                csv
+            TSV (13):
+                tsv
         """
         BYTES_TYPE_UNSPECIFIED = 0
         IMAGE = 6
@@ -1862,6 +2074,24 @@ class OutputStorageConfig(proto.Message):
     class OutputSchema(proto.Enum):
         r"""Predefined schemas for storing findings.
         Only for use with external storage.
+
+        Values:
+            OUTPUT_SCHEMA_UNSPECIFIED (0):
+                Unused.
+            BASIC_COLUMNS (1):
+                Basic schema including only ``info_type``, ``quote``,
+                ``certainty``, and ``timestamp``.
+            GCS_COLUMNS (2):
+                Schema tailored to findings from scanning
+                Cloud Storage.
+            DATASTORE_COLUMNS (3):
+                Schema tailored to findings from scanning
+                Google Datastore.
+            BIG_QUERY_COLUMNS (4):
+                Schema tailored to findings from scanning
+                Google BigQuery.
+            ALL_COLUMNS (5):
+                Schema containing all columns.
         """
         OUTPUT_SCHEMA_UNSPECIFIED = 0
         BASIC_COLUMNS = 1
@@ -2101,6 +2331,99 @@ class InfoTypeCategory(proto.Message):
     class LocationCategory(proto.Enum):
         r"""Enum of the current locations.
         We might add more locations in the future.
+
+        Values:
+            LOCATION_UNSPECIFIED (0):
+                Unused location
+            GLOBAL (1):
+                The infoType is not issued by or tied to a
+                specific region, but is used almost everywhere.
+            ARGENTINA (2):
+                The infoType is typically used in Argentina.
+            AUSTRALIA (3):
+                The infoType is typically used in Australia.
+            BELGIUM (4):
+                The infoType is typically used in Belgium.
+            BRAZIL (5):
+                The infoType is typically used in Brazil.
+            CANADA (6):
+                The infoType is typically used in Canada.
+            CHILE (7):
+                The infoType is typically used in Chile.
+            CHINA (8):
+                The infoType is typically used in China.
+            COLOMBIA (9):
+                The infoType is typically used in Colombia.
+            DENMARK (10):
+                The infoType is typically used in Denmark.
+            FRANCE (11):
+                The infoType is typically used in France.
+            FINLAND (12):
+                The infoType is typically used in Finland.
+            GERMANY (13):
+                The infoType is typically used in Germany.
+            HONG_KONG (14):
+                The infoType is typically used in Hong Kong.
+            INDIA (15):
+                The infoType is typically used in India.
+            INDONESIA (16):
+                The infoType is typically used in Indonesia.
+            IRELAND (17):
+                The infoType is typically used in Ireland.
+            ISRAEL (18):
+                The infoType is typically used in Israel.
+            ITALY (19):
+                The infoType is typically used in Italy.
+            JAPAN (20):
+                The infoType is typically used in Japan.
+            KOREA (21):
+                The infoType is typically used in Korea.
+            MEXICO (22):
+                The infoType is typically used in Mexico.
+            THE_NETHERLANDS (23):
+                The infoType is typically used in the
+                Netherlands.
+            NORWAY (24):
+                The infoType is typically used in Norway.
+            PARAGUAY (25):
+                The infoType is typically used in Paraguay.
+            PERU (26):
+                The infoType is typically used in Peru.
+            POLAND (27):
+                The infoType is typically used in Poland.
+            PORTUGAL (28):
+                The infoType is typically used in Portugal.
+            SINGAPORE (29):
+                The infoType is typically used in Singapore.
+            SOUTH_AFRICA (30):
+                The infoType is typically used in South
+                Africa.
+            SPAIN (31):
+                The infoType is typically used in Spain.
+            SWEDEN (32):
+                The infoType is typically used in Sweden.
+            TAIWAN (33):
+                The infoType is typically used in Taiwan.
+            THAILAND (34):
+                The infoType is typically used in Thailand.
+            TURKEY (35):
+                The infoType is typically used in Turkey.
+            UNITED_KINGDOM (36):
+                The infoType is typically used in the United
+                Kingdom.
+            UNITED_STATES (37):
+                The infoType is typically used in the United
+                States.
+            URUGUAY (38):
+                The infoType is typically used in Uruguay.
+            VENEZUELA (39):
+                The infoType is typically used in Venezuela.
+            INTERNAL (40):
+                The infoType is typically used in Google
+                internally.
+            NEW_ZEALAND (41):
+                The infoType is typically used in New
+                Zealand.
         """
         LOCATION_UNSPECIFIED = 0
         GLOBAL = 1
@@ -2148,6 +2471,19 @@ class InfoTypeCategory(proto.Message):
     class IndustryCategory(proto.Enum):
         r"""Enum of the current industries in the category.
         We might add more industries in the future.
+
+        Values:
+            INDUSTRY_UNSPECIFIED (0):
+                Unused industry
+            FINANCE (1):
+                The infoType is typically used in the finance
+                industry.
+            HEALTH (2):
+                The infoType is typically used in the health
+                industry.
+            TELECOMMUNICATIONS (3):
+                The infoType is typically used in the
+                telecommunications industry.
         """
         INDUSTRY_UNSPECIFIED = 0
         FINANCE = 1
@@ -2157,6 +2493,34 @@ class InfoTypeCategory(proto.Message):
     class TypeCategory(proto.Enum):
         r"""Enum of the current types in the category.
         We might add more types in the future.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unused type
+            PII (1):
+                Personally identifiable information, for
+                example, a name or phone number
+            SPII (2):
+                Personally identifiable information that is
+                especially sensitive, for example, a passport
+                number.
+            DEMOGRAPHIC (3):
+                Attributes that can partially identify
+                someone, especially in combination with other
+                attributes, like age, height, and gender.
+            CREDENTIAL (4):
+                Confidential or secret information, for
+                example, a password.
+            GOVERNMENT_ID (5):
+                An identification document issued by a
+                government.
+            DOCUMENT (6):
+                A document, for example, a resume or source
+                code.
+            CONTEXTUAL_INFORMATION (7):
+                Information that is not sensitive on its own,
+                but provides details about the circumstances
+                surrounding an entity or an event.
         """
         TYPE_UNSPECIFIED = 0
         PII = 1
@@ -3932,7 +4296,24 @@ class TimePartConfig(proto.Message):
     """
 
     class TimePart(proto.Enum):
-        r"""Components that make up time."""
+        r"""Components that make up time.
+
+        Values:
+            TIME_PART_UNSPECIFIED (0):
+                Unused
+            YEAR (1):
+                [0-9999]
+            MONTH (2):
+                [1-12]
+            DAY_OF_MONTH (3):
+                [1-31]
+            DAY_OF_WEEK (4):
+                [1-7]
+            WEEK_OF_YEAR (5):
+                [1-53]
+            HOUR_OF_DAY (6):
+                [0-23]
+        """
         TIME_PART_UNSPECIFIED = 0
         YEAR = 1
         MONTH = 2
@@ -4139,6 +4520,20 @@ class CharsToIgnore(proto.Message):
     class CommonCharsToIgnore(proto.Enum):
         r"""Convenience enum for indicating common characters to not
         transform.
+
+        Values:
+            COMMON_CHARS_TO_IGNORE_UNSPECIFIED (0):
+                Unused.
+            NUMERIC (1):
+                0-9
+            ALPHA_UPPER_CASE (2):
+                A-Z
+            ALPHA_LOWER_CASE (3):
+                a-z
+            PUNCTUATION (4):
+                US Punctuation, one of !"#$%&'()*+,-./:;<=>?@[]^_`{|}~
+            WHITESPACE (5):
+                Whitespace character, one of [ \\t\n\x0B\f\r]
         """
         COMMON_CHARS_TO_IGNORE_UNSPECIFIED = 0
         NUMERIC = 1
@@ -4451,6 +4846,18 @@ class CryptoReplaceFfxFpeConfig(proto.Message):
         mode natively supports. In the algorithm, the alphabet is
         selected using the "radix". Therefore each corresponds to a
         particular radix.
+
+        Values:
+            FFX_COMMON_NATIVE_ALPHABET_UNSPECIFIED (0):
+                Unused.
+            NUMERIC (1):
+                ``[0-9]`` (radix of 10)
+            HEXADECIMAL (2):
+                ``[0-9A-F]`` (radix of 16)
+            UPPER_CASE_ALPHA_NUMERIC (3):
+                ``[0-9A-Z]`` (radix of 36)
+            ALPHA_NUMERIC (4):
+                ``[0-9A-Za-z]`` (radix of 62)
         """
         FFX_COMMON_NATIVE_ALPHABET_UNSPECIFIED = 0
         NUMERIC = 1
@@ -4907,7 +5314,14 @@ class RecordCondition(proto.Message):
         """
 
         class LogicalOperator(proto.Enum):
-            r"""Logical operators for conditional checks."""
+            r"""Logical operators for conditional checks.
+
+            Values:
+                LOGICAL_OPERATOR_UNSPECIFIED (0):
+                    Unused
+                AND (1):
+                    Conditional AND
+            """
             LOGICAL_OPERATOR_UNSPECIFIED = 0
             AND = 1
 
@@ -4985,7 +5399,16 @@ class TransformationSummary(proto.Message):
     """
 
     class TransformationResultCode(proto.Enum):
-        r"""Possible outcomes of transformations."""
+        r"""Possible outcomes of transformations.
+
+        Values:
+            TRANSFORMATION_RESULT_CODE_UNSPECIFIED (0):
+                Unused
+            SUCCESS (1):
+                Transformation completed without an error.
+            ERROR (2):
+                Transformation had an error.
+        """
         TRANSFORMATION_RESULT_CODE_UNSPECIFIED = 0
         SUCCESS = 1
         ERROR = 2
@@ -5528,6 +5951,16 @@ class JobTrigger(proto.Message):
         service may automatically pause triggers experiencing frequent
         errors. To restart a job, set the status to HEALTHY after
         correcting user errors.
+
+        Values:
+            STATUS_UNSPECIFIED (0):
+                Unused.
+            HEALTHY (1):
+                Trigger is healthy.
+            PAUSED (2):
+                Trigger is temporarily paused.
+            CANCELLED (3):
+                Trigger is cancelled and can not be resumed.
         """
         STATUS_UNSPECIFIED = 0
         HEALTHY = 1
@@ -6586,7 +7019,28 @@ class DataProfileAction(proto.Message):
     """
 
     class EventType(proto.Enum):
-        r"""Types of event that can trigger an action."""
+        r"""Types of event that can trigger an action.
+
+        Values:
+            EVENT_TYPE_UNSPECIFIED (0):
+                Unused.
+            NEW_PROFILE (1):
+                New profile (not a re-profile).
+            CHANGED_PROFILE (2):
+                Changed one of the following profile metrics:
+
+                -  Table data risk score
+                -  Table sensitivity score
+                -  Table resource visibility
+                -  Table encryption type
+                -  Table predicted infoTypes
+                -  Table other infoTypes
+            SCORE_INCREASED (3):
+                Table data risk score or sensitivity score
+                increased.
+            ERROR_CHANGED (4):
+                A user (non-internal) error occurred.
+        """
         EVENT_TYPE_UNSPECIFIED = 0
         NEW_PROFILE = 1
         CHANGED_PROFILE = 2
@@ -6636,6 +7090,14 @@ class DataProfileAction(proto.Message):
         class DetailLevel(proto.Enum):
             r"""The levels of detail that can be included in the Pub/Sub
             message.
+
+            Values:
+                DETAIL_LEVEL_UNSPECIFIED (0):
+                    Unused.
+                TABLE_PROFILE (1):
+                    The full table data profile.
+                RESOURCE_NAME (2):
+                    The resource name of the table.
             """
             DETAIL_LEVEL_UNSPECIFIED = 0
             TABLE_PROFILE = 1
@@ -6811,7 +7273,31 @@ class DlpJob(proto.Message):
     """
 
     class JobState(proto.Enum):
-        r"""Possible states of a job. New items may be added."""
+        r"""Possible states of a job. New items may be added.
+
+        Values:
+            JOB_STATE_UNSPECIFIED (0):
+                Unused.
+            PENDING (1):
+                The job has not yet started.
+            RUNNING (2):
+                The job is currently running. Once a job has
+                finished it will transition to FAILED or DONE.
+            DONE (3):
+                The job is no longer running.
+            CANCELED (4):
+                The job was canceled before it could be
+                completed.
+            FAILED (5):
+                The job had an error and did not complete.
+            ACTIVE (6):
+                The job is currently accepting findings via
+                hybridInspect. A hybrid job in ACTIVE state may
+                continue to have findings added to it through
+                the calling of hybridInspect. After the job has
+                finished no more calls to hybridInspect may be
+                made. ACTIVE jobs can transition to DONE.
+        """
         JOB_STATE_UNSPECIFIED = 0
         PENDING = 1
         RUNNING = 2
@@ -7946,7 +8432,29 @@ class DataRiskLevel(proto.Message):
     """
 
     class DataRiskLevelScore(proto.Enum):
-        r"""Various score levels for resources."""
+        r"""Various score levels for resources.
+
+        Values:
+            RISK_SCORE_UNSPECIFIED (0):
+                Unused.
+            RISK_LOW (10):
+                Low risk - Lower indication of sensitive data
+                that appears to have additional access
+                restrictions in place or no indication of
+                sensitive data found.
+            RISK_MODERATE (20):
+                Medium risk - Sensitive data may be present
+                but additional access or fine grain access
+                restrictions appear to be present.  Consider
+                limiting access even further or transform data
+                to mask.
+            RISK_HIGH (30):
+                High risk – SPII may be present. Access
+                controls may include public ACLs. Exfiltration
+                of data may lead to user data loss.
+                Re-identification of users may be possible.
+                Consider limiting usage and or removing SPII.
+        """
         RISK_SCORE_UNSPECIFIED = 0
         RISK_LOW = 10
         RISK_MODERATE = 20
@@ -8056,7 +8564,19 @@ class TableDataProfile(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Possible states of a profile. New items may be added."""
+        r"""Possible states of a profile. New items may be added.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unused.
+            RUNNING (1):
+                The profile is currently running. Once a
+                profile has finished it will transition to DONE.
+            DONE (2):
+                The profile is no longer generating. If
+                profile_status.status.code is 0, the profile succeeded,
+                otherwise, it failed.
+        """
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         DONE = 2
@@ -8253,7 +8773,16 @@ class DataProfilePubSubCondition(proto.Message):
     """
 
     class ProfileScoreBucket(proto.Enum):
-        r"""Various score levels for resources."""
+        r"""Various score levels for resources.
+
+        Values:
+            PROFILE_SCORE_BUCKET_UNSPECIFIED (0):
+                Unused.
+            HIGH (1):
+                High risk/sensitivity detected.
+            MEDIUM_OR_HIGH (2):
+                Medium or high risk/sensitivity detected.
+        """
         PROFILE_SCORE_BUCKET_UNSPECIFIED = 0
         HIGH = 1
         MEDIUM_OR_HIGH = 2
@@ -8310,7 +8839,16 @@ class DataProfilePubSubCondition(proto.Message):
         """
 
         class PubSubLogicalOperator(proto.Enum):
-            r"""Logical operators for conditional checks."""
+            r"""Logical operators for conditional checks.
+
+            Values:
+                LOGICAL_OPERATOR_UNSPECIFIED (0):
+                    Unused.
+                OR (1):
+                    Conditional OR.
+                AND (2):
+                    Conditional AND.
+            """
             LOGICAL_OPERATOR_UNSPECIFIED = 0
             OR = 1
             AND = 2
