@@ -45,14 +45,33 @@ __protobuf__ = proto.module(
 
 
 class DatabaseEngine(proto.Enum):
-    r"""The database engine types."""
+    r"""The database engine types.
+
+    Values:
+        DATABASE_ENGINE_UNSPECIFIED (0):
+            The source database engine of the migration
+            job is unknown.
+        MYSQL (1):
+            The source engine is MySQL.
+        POSTGRESQL (2):
+            The source engine is PostgreSQL.
+    """
     DATABASE_ENGINE_UNSPECIFIED = 0
     MYSQL = 1
     POSTGRESQL = 2
 
 
 class DatabaseProvider(proto.Enum):
-    r"""The database providers."""
+    r"""The database providers.
+
+    Values:
+        DATABASE_PROVIDER_UNSPECIFIED (0):
+            The database provider is unknown.
+        CLOUDSQL (1):
+            CloudSQL runs the database.
+        RDS (2):
+            RDS runs the database.
+    """
     DATABASE_PROVIDER_UNSPECIFIED = 0
     CLOUDSQL = 1
     RDS = 2
@@ -84,7 +103,17 @@ class SslConfig(proto.Message):
     """
 
     class SslType(proto.Enum):
-        r"""Specifies The kind of ssl configuration used."""
+        r"""Specifies The kind of ssl configuration used.
+
+        Values:
+            SSL_TYPE_UNSPECIFIED (0):
+                Unspecified.
+            SERVER_ONLY (1):
+                Only 'ca_certificate' specified.
+            SERVER_CLIENT (2):
+                Both server ('ca_certificate'), and client ('client_key',
+                'client_certificate') specified.
+        """
         SSL_TYPE_UNSPECIFIED = 0
         SERVER_ONLY = 1
         SERVER_CLIENT = 2
@@ -450,19 +479,58 @@ class CloudSqlSettings(proto.Message):
     """
 
     class SqlActivationPolicy(proto.Enum):
-        r"""Specifies when the instance should be activated."""
+        r"""Specifies when the instance should be activated.
+
+        Values:
+            SQL_ACTIVATION_POLICY_UNSPECIFIED (0):
+                unspecified policy.
+            ALWAYS (1):
+                The instance is always up and running.
+            NEVER (2):
+                The instance should never spin up.
+        """
         SQL_ACTIVATION_POLICY_UNSPECIFIED = 0
         ALWAYS = 1
         NEVER = 2
 
     class SqlDataDiskType(proto.Enum):
-        r"""The storage options for Cloud SQL databases."""
+        r"""The storage options for Cloud SQL databases.
+
+        Values:
+            SQL_DATA_DISK_TYPE_UNSPECIFIED (0):
+                Unspecified.
+            PD_SSD (1):
+                SSD disk.
+            PD_HDD (2):
+                HDD disk.
+        """
         SQL_DATA_DISK_TYPE_UNSPECIFIED = 0
         PD_SSD = 1
         PD_HDD = 2
 
     class SqlDatabaseVersion(proto.Enum):
-        r"""The database engine type and version."""
+        r"""The database engine type and version.
+
+        Values:
+            SQL_DATABASE_VERSION_UNSPECIFIED (0):
+                Unspecified version.
+            MYSQL_5_6 (1):
+                MySQL 5.6.
+            MYSQL_5_7 (2):
+                MySQL 5.7.
+            POSTGRES_9_6 (3):
+                PostgreSQL 9.6.
+            POSTGRES_11 (4):
+                PostgreSQL 11.
+            POSTGRES_10 (5):
+                PostgreSQL 10.
+            MYSQL_8_0 (6):
+                MySQL 8.0.
+            POSTGRES_12 (7):
+                PostgreSQL 12.
+            POSTGRES_13 (8):
+                PostgreSQL 13.
+        """
         SQL_DATABASE_VERSION_UNSPECIFIED = 0
         MYSQL_5_6 = 1
         MYSQL_5_7 = 2
@@ -722,7 +790,43 @@ class MigrationJob(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The current migration job states."""
+        r"""The current migration job states.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state of the migration job is unknown.
+            MAINTENANCE (1):
+                The migration job is down for maintenance.
+            DRAFT (2):
+                The migration job is in draft mode and no
+                resources are created.
+            CREATING (3):
+                The migration job is being created.
+            NOT_STARTED (4):
+                The migration job is created and not started.
+            RUNNING (5):
+                The migration job is running.
+            FAILED (6):
+                The migration job failed.
+            COMPLETED (7):
+                The migration job has been completed.
+            DELETING (8):
+                The migration job is being deleted.
+            STOPPING (9):
+                The migration job is being stopped.
+            STOPPED (10):
+                The migration job is currently stopped.
+            DELETED (11):
+                The migration job has been deleted.
+            UPDATING (12):
+                The migration job is being updated.
+            STARTING (13):
+                The migration job is starting.
+            RESTARTING (14):
+                The migration job is restarting.
+            RESUMING (15):
+                The migration job is resuming.
+        """
         STATE_UNSPECIFIED = 0
         MAINTENANCE = 1
         DRAFT = 2
@@ -741,7 +845,25 @@ class MigrationJob(proto.Message):
         RESUMING = 15
 
     class Phase(proto.Enum):
-        r"""The current migration job phase."""
+        r"""The current migration job phase.
+
+        Values:
+            PHASE_UNSPECIFIED (0):
+                The phase of the migration job is unknown.
+            FULL_DUMP (1):
+                The migration job is in the full dump phase.
+            CDC (2):
+                The migration job is CDC phase.
+            PROMOTE_IN_PROGRESS (3):
+                The migration job is running the promote
+                phase.
+            WAITING_FOR_SOURCE_WRITES_TO_STOP (4):
+                Only RDS flow - waiting for source writes to
+                stop
+            PREPARING_THE_DUMP (5):
+                Only RDS flow - the sources writes stopped,
+                waiting for dump to begin
+        """
         PHASE_UNSPECIFIED = 0
         FULL_DUMP = 1
         CDC = 2
@@ -750,7 +872,16 @@ class MigrationJob(proto.Message):
         PREPARING_THE_DUMP = 5
 
     class Type(proto.Enum):
-        r"""The type of migration job (one-time or continuous)."""
+        r"""The type of migration job (one-time or continuous).
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                The type of the migration job is unknown.
+            ONE_TIME (1):
+                The migration job is a one time migration.
+            CONTINUOUS (2):
+                The migration job is a continuous migration.
+        """
         TYPE_UNSPECIFIED = 0
         ONE_TIME = 1
         CONTINUOUS = 2
@@ -910,6 +1041,27 @@ class ConnectionProfile(proto.Message):
     class State(proto.Enum):
         r"""The current connection profile state (e.g. DRAFT, READY, or
         FAILED).
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state of the connection profile is
+                unknown.
+            DRAFT (1):
+                The connection profile is in draft mode and
+                fully editable.
+            CREATING (2):
+                The connection profile is being created.
+            READY (3):
+                The connection profile is ready.
+            UPDATING (4):
+                The connection profile is being updated.
+            DELETING (5):
+                The connection profile is being deleted.
+            DELETED (6):
+                The connection profile has been deleted.
+            FAILED (7):
+                The last action on the connection profile
+                failed.
         """
         STATE_UNSPECIFIED = 0
         DRAFT = 1
@@ -996,6 +1148,61 @@ class MigrationJobVerificationError(proto.Message):
     class ErrorCode(proto.Enum):
         r"""A general error code describing the type of error that
         occurred.
+
+        Values:
+            ERROR_CODE_UNSPECIFIED (0):
+                An unknown error occurred
+            CONNECTION_FAILURE (1):
+                We failed to connect to one of the connection
+                profile.
+            AUTHENTICATION_FAILURE (2):
+                We failed to authenticate to one of the
+                connection profile.
+            INVALID_CONNECTION_PROFILE_CONFIG (3):
+                One of the involved connection profiles has
+                an invalid configuration.
+            VERSION_INCOMPATIBILITY (4):
+                The versions of the source and the
+                destination are incompatible.
+            CONNECTION_PROFILE_TYPES_INCOMPATIBILITY (5):
+                The types of the source and the destination
+                are incompatible.
+            NO_PGLOGICAL_INSTALLED (7):
+                No pglogical extension installed on
+                databases, applicable for postgres.
+            PGLOGICAL_NODE_ALREADY_EXISTS (8):
+                pglogical node already exists on databases,
+                applicable for postgres.
+            INVALID_WAL_LEVEL (9):
+                The value of parameter wal_level is not set to logical.
+            INVALID_SHARED_PRELOAD_LIBRARY (10):
+                The value of parameter shared_preload_libraries does not
+                include pglogical.
+            INSUFFICIENT_MAX_REPLICATION_SLOTS (11):
+                The value of parameter max_replication_slots is not
+                sufficient.
+            INSUFFICIENT_MAX_WAL_SENDERS (12):
+                The value of parameter max_wal_senders is not sufficient.
+            INSUFFICIENT_MAX_WORKER_PROCESSES (13):
+                The value of parameter max_worker_processes is not
+                sufficient.
+            UNSUPPORTED_EXTENSIONS (14):
+                Extensions installed are either not supported
+                or having unsupported versions.
+            UNSUPPORTED_MIGRATION_TYPE (15):
+                Unsupported migration type.
+            INVALID_RDS_LOGICAL_REPLICATION (16):
+                Invalid RDS logical replication.
+            UNSUPPORTED_GTID_MODE (17):
+                The gtid_mode is not supported, applicable for MySQL.
+            UNSUPPORTED_TABLE_DEFINITION (18):
+                The table definition is not support due to
+                missing primary key or replica identity.
+            UNSUPPORTED_DEFINER (19):
+                The definer is not supported.
+            CANT_RESTART_RUNNING_MIGRATION (21):
+                Migration is already running at the time of
+                restart request.
         """
         ERROR_CODE_UNSPECIFIED = 0
         CONNECTION_FAILURE = 1
