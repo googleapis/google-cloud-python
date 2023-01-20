@@ -61,14 +61,30 @@ __protobuf__ = proto.module(
 
 
 class GcsFileFormat(proto.Enum):
-    r"""File format in Cloud Storage."""
+    r"""File format in Cloud Storage.
+
+    Values:
+        GCS_FILE_FORMAT_UNSPECIFIED (0):
+            Unspecified Cloud Storage file format.
+        AVRO (1):
+            Avro file format
+    """
     _pb_options = {"deprecated": True}
     GCS_FILE_FORMAT_UNSPECIFIED = 0
     AVRO = 1
 
 
 class SchemaFileFormat(proto.Enum):
-    r"""Schema file format."""
+    r"""Schema file format.
+
+    Values:
+        SCHEMA_FILE_FORMAT_UNSPECIFIED (0):
+            Unspecified schema file format.
+        NO_SCHEMA_FILE (1):
+            Do not attach schema file.
+        AVRO_SCHEMA_FILE (2):
+            Avro schema format.
+    """
     SCHEMA_FILE_FORMAT_UNSPECIFIED = 0
     NO_SCHEMA_FILE = 1
     AVRO_SCHEMA_FILE = 2
@@ -291,7 +307,20 @@ class PrivateConnection(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Private Connection state."""
+        r"""Private Connection state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+
+            CREATING (1):
+                The private connection is in creation state -
+                creating resources.
+            CREATED (2):
+                The private connection has been created with
+                all of it's resources.
+            FAILED (3):
+                The private connection creation has failed.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         CREATED = 2
@@ -919,7 +948,16 @@ class JsonFileFormat(proto.Message):
     """
 
     class JsonCompression(proto.Enum):
-        r"""Json file compression."""
+        r"""Json file compression.
+
+        Values:
+            JSON_COMPRESSION_UNSPECIFIED (0):
+                Unspecified json file compression.
+            NO_COMPRESSION (1):
+                Do not compress JSON file.
+            GZIP (2):
+                Gzip compression.
+        """
         JSON_COMPRESSION_UNSPECIFIED = 0
         NO_COMPRESSION = 1
         GZIP = 2
@@ -1073,7 +1111,33 @@ class Stream(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Stream state."""
+        r"""Stream state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified stream state.
+            CREATED (1):
+                The stream has been created.
+            RUNNING (2):
+                The stream is running.
+            PAUSED (3):
+                The stream is paused.
+            MAINTENANCE (4):
+                The stream is in maintenance mode.
+                Updates are rejected on the resource in this
+                state.
+            FAILED (5):
+                The stream is experiencing an error that is
+                preventing data from being streamed.
+            FAILED_PERMANENTLY (6):
+                The stream has experienced a terminal
+                failure.
+            STARTING (7):
+                The stream is starting, but not yet running.
+            DRAINING (8):
+                The Stream is no longer reading new events,
+                but still writing events in the buffer.
+        """
         STATE_UNSPECIFIED = 0
         CREATED = 1
         RUNNING = 2
@@ -1259,7 +1323,18 @@ class Validation(proto.Message):
     """
 
     class Status(proto.Enum):
-        r"""Validation execution status."""
+        r"""Validation execution status.
+
+        Values:
+            STATUS_UNSPECIFIED (0):
+                Unspecified status.
+            NOT_EXECUTED (1):
+                Validation did not execute.
+            FAILED (2):
+                Validation failed.
+            PASSED (3):
+                Validation passed.
+        """
         STATUS_UNSPECIFIED = 0
         NOT_EXECUTED = 1
         FAILED = 2
@@ -1301,7 +1376,16 @@ class ValidationMessage(proto.Message):
     """
 
     class Level(proto.Enum):
-        r"""Validation message level."""
+        r"""Validation message level.
+
+        Values:
+            LEVEL_UNSPECIFIED (0):
+                Unspecified level.
+            WARNING (1):
+                Potentially cause issues with the Stream.
+            ERROR (2):
+                Definitely cause issues with the Stream.
+        """
         LEVEL_UNSPECIFIED = 0
         WARNING = 1
         ERROR = 2

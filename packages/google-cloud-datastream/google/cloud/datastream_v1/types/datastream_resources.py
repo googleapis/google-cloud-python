@@ -328,7 +328,25 @@ class PrivateConnection(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Private Connection state."""
+        r"""Private Connection state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified state.
+            CREATING (1):
+                The private connection is in creation state -
+                creating resources.
+            CREATED (2):
+                The private connection has been created with
+                all of its resources.
+            FAILED (3):
+                The private connection creation has failed.
+            DELETING (4):
+                The private connection is being deleted.
+            FAILED_TO_DELETE (5):
+                Delete request has failed, resource is in
+                invalid state.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         CREATED = 2
@@ -1187,13 +1205,31 @@ class JsonFileFormat(proto.Message):
     """
 
     class SchemaFileFormat(proto.Enum):
-        r"""Schema file format."""
+        r"""Schema file format.
+
+        Values:
+            SCHEMA_FILE_FORMAT_UNSPECIFIED (0):
+                Unspecified schema file format.
+            NO_SCHEMA_FILE (1):
+                Do not attach schema file.
+            AVRO_SCHEMA_FILE (2):
+                Avro schema format.
+        """
         SCHEMA_FILE_FORMAT_UNSPECIFIED = 0
         NO_SCHEMA_FILE = 1
         AVRO_SCHEMA_FILE = 2
 
     class JsonCompression(proto.Enum):
-        r"""Json file compression."""
+        r"""Json file compression.
+
+        Values:
+            JSON_COMPRESSION_UNSPECIFIED (0):
+                Unspecified json file compression.
+            NO_COMPRESSION (1):
+                Do not compress JSON file.
+            GZIP (2):
+                Gzip compression.
+        """
         JSON_COMPRESSION_UNSPECIFIED = 0
         NO_COMPRESSION = 1
         GZIP = 2
@@ -1478,7 +1514,34 @@ class Stream(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Stream state."""
+        r"""Stream state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified stream state.
+            NOT_STARTED (1):
+                The stream has been created but has not yet
+                started streaming data.
+            RUNNING (2):
+                The stream is running.
+            PAUSED (3):
+                The stream is paused.
+            MAINTENANCE (4):
+                The stream is in maintenance mode.
+                Updates are rejected on the resource in this
+                state.
+            FAILED (5):
+                The stream is experiencing an error that is
+                preventing data from being streamed.
+            FAILED_PERMANENTLY (6):
+                The stream has experienced a terminal
+                failure.
+            STARTING (7):
+                The stream is starting, but not yet running.
+            DRAINING (8):
+                The Stream is no longer reading new events,
+                but still writing events in the buffer.
+        """
         STATE_UNSPECIFIED = 0
         NOT_STARTED = 1
         RUNNING = 2
@@ -1782,7 +1845,32 @@ class BackfillJob(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of the stream object's backfill job."""
+        r"""State of the stream object's backfill job.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default value.
+            NOT_STARTED (1):
+                Backfill job was never started for the stream
+                object (stream has backfill strategy defined as
+                manual or object was explicitly excluded from
+                automatic backfill).
+            PENDING (2):
+                Backfill job will start pending available
+                resources.
+            ACTIVE (3):
+                Backfill job is running.
+            STOPPED (4):
+                Backfill job stopped (next job run will start
+                from beginning).
+            FAILED (5):
+                Backfill job failed (due to an error).
+            COMPLETED (6):
+                Backfill completed successfully.
+            UNSUPPORTED (7):
+                Backfill job failed since the table structure
+                is currently unsupported for backfill.
+        """
         STATE_UNSPECIFIED = 0
         NOT_STARTED = 1
         PENDING = 2
@@ -1793,7 +1881,19 @@ class BackfillJob(proto.Message):
         UNSUPPORTED = 7
 
     class Trigger(proto.Enum):
-        r"""Triggering reason for a backfill job."""
+        r"""Triggering reason for a backfill job.
+
+        Values:
+            TRIGGER_UNSPECIFIED (0):
+                Default value.
+            AUTOMATIC (1):
+                Object backfill job was triggered
+                automatically according to the stream's backfill
+                strategy.
+            MANUAL (2):
+                Object backfill job was triggered manually
+                using the dedicated API.
+        """
         TRIGGER_UNSPECIFIED = 0
         AUTOMATIC = 1
         MANUAL = 2
@@ -1900,7 +2000,18 @@ class Validation(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Validation execution state."""
+        r"""Validation execution state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified state.
+            NOT_EXECUTED (1):
+                Validation did not execute.
+            FAILED (2):
+                Validation failed.
+            PASSED (3):
+                Validation passed.
+        """
         STATE_UNSPECIFIED = 0
         NOT_EXECUTED = 1
         FAILED = 2
@@ -1942,7 +2053,16 @@ class ValidationMessage(proto.Message):
     """
 
     class Level(proto.Enum):
-        r"""Validation message level."""
+        r"""Validation message level.
+
+        Values:
+            LEVEL_UNSPECIFIED (0):
+                Unspecified level.
+            WARNING (1):
+                Potentially cause issues with the Stream.
+            ERROR (2):
+                Definitely cause issues with the Stream.
+        """
         LEVEL_UNSPECIFIED = 0
         WARNING = 1
         ERROR = 2
