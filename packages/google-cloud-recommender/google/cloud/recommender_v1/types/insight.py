@@ -70,7 +70,20 @@ class Insight(proto.Message):
     """
 
     class Category(proto.Enum):
-        r"""Insight category."""
+        r"""Insight category.
+
+        Values:
+            CATEGORY_UNSPECIFIED (0):
+                Unspecified category.
+            COST (1):
+                The insight is related to cost.
+            SECURITY (2):
+                The insight is related to security.
+            PERFORMANCE (3):
+                The insight is related to performance.
+            MANAGEABILITY (4):
+                This insight is related to manageability.
+        """
         CATEGORY_UNSPECIFIED = 0
         COST = 1
         SECURITY = 2
@@ -78,7 +91,20 @@ class Insight(proto.Message):
         MANAGEABILITY = 4
 
     class Severity(proto.Enum):
-        r"""Insight severity levels."""
+        r"""Insight severity levels.
+
+        Values:
+            SEVERITY_UNSPECIFIED (0):
+                Insight has unspecified severity.
+            LOW (1):
+                Insight has low severity.
+            MEDIUM (2):
+                Insight has medium severity.
+            HIGH (3):
+                Insight has high severity.
+            CRITICAL (4):
+                Insight has critical severity.
+        """
         SEVERITY_UNSPECIFIED = 0
         LOW = 1
         MEDIUM = 2
@@ -170,7 +196,29 @@ class InsightStateInfo(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Represents insight state."""
+        r"""Represents insight state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified state.
+            ACTIVE (1):
+                Insight is active. Content for ACTIVE
+                insights can be updated by Google. ACTIVE
+                insights can be marked DISMISSED OR ACCEPTED.
+            ACCEPTED (2):
+                Some action has been taken based on this
+                insight. Insights become accepted when a
+                recommendation derived from the insight has been
+                marked CLAIMED, SUCCEEDED, or FAILED. ACTIVE
+                insights can also be marked ACCEPTED explicitly.
+                Content for ACCEPTED insights is immutable.
+                ACCEPTED insights can only be marked ACCEPTED
+                (which may update state metadata).
+            DISMISSED (3):
+                Insight is dismissed. Content for DISMISSED
+                insights can be updated by Google. DISMISSED
+                insights can be marked as ACTIVE.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         ACCEPTED = 2

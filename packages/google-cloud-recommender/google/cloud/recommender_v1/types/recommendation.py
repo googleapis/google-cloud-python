@@ -96,7 +96,24 @@ class Recommendation(proto.Message):
     """
 
     class Priority(proto.Enum):
-        r"""Recommendation priority levels."""
+        r"""Recommendation priority levels.
+
+        Values:
+            PRIORITY_UNSPECIFIED (0):
+                Recommendation has unspecified priority.
+            P4 (1):
+                Recommendation has P4 priority (lowest
+                priority).
+            P3 (2):
+                Recommendation has P3 priority (second lowest
+                priority).
+            P2 (3):
+                Recommendation has P2 priority (second
+                highest priority).
+            P1 (4):
+                Recommendation has P1 priority (highest
+                priority).
+        """
         PRIORITY_UNSPECIFIED = 0
         P4 = 1
         P3 = 2
@@ -472,7 +489,25 @@ class Impact(proto.Message):
     """
 
     class Category(proto.Enum):
-        r"""The category of the impact."""
+        r"""The category of the impact.
+
+        Values:
+            CATEGORY_UNSPECIFIED (0):
+                Default unspecified category. Don't use
+                directly.
+            COST (1):
+                Indicates a potential increase or decrease in
+                cost.
+            SECURITY (2):
+                Indicates a potential increase or decrease in
+                security.
+            PERFORMANCE (3):
+                Indicates a potential increase or decrease in
+                performance.
+            MANAGEABILITY (4):
+                Indicates a potential increase or decrease in
+                manageability.
+        """
         CATEGORY_UNSPECIFIED = 0
         COST = 1
         SECURITY = 2
@@ -511,7 +546,41 @@ class RecommendationStateInfo(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Represents Recommendation State."""
+        r"""Represents Recommendation State.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default state. Don't use directly.
+            ACTIVE (1):
+                Recommendation is active and can be applied.
+                Recommendations content can be updated by
+                Google.
+                ACTIVE recommendations can be marked as CLAIMED,
+                SUCCEEDED, or FAILED.
+            CLAIMED (6):
+                Recommendation is in claimed state.
+                Recommendations content is immutable and cannot
+                be updated by Google.
+                CLAIMED recommendations can be marked as
+                CLAIMED, SUCCEEDED, or FAILED.
+            SUCCEEDED (3):
+                Recommendation is in succeeded state.
+                Recommendations content is immutable and cannot
+                be updated by Google.
+                SUCCEEDED recommendations can be marked as
+                SUCCEEDED, or FAILED.
+            FAILED (4):
+                Recommendation is in failed state.
+                Recommendations content is immutable and cannot
+                be updated by Google.
+                FAILED recommendations can be marked as
+                SUCCEEDED, or FAILED.
+            DISMISSED (5):
+                Recommendation is in dismissed state.
+                Recommendation content can be updated by Google.
+                DISMISSED recommendations can be marked as
+                ACTIVE.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CLAIMED = 6
