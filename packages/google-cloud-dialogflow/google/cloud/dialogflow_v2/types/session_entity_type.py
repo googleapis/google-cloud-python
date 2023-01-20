@@ -69,7 +69,29 @@ class SessionEntityType(proto.Message):
     """
 
     class EntityOverrideMode(proto.Enum):
-        r"""The types of modifications for a session entity type."""
+        r"""The types of modifications for a session entity type.
+
+        Values:
+            ENTITY_OVERRIDE_MODE_UNSPECIFIED (0):
+                Not specified. This value should be never
+                used.
+            ENTITY_OVERRIDE_MODE_OVERRIDE (1):
+                The collection of session entities overrides
+                the collection of entities in the corresponding
+                custom entity type.
+            ENTITY_OVERRIDE_MODE_SUPPLEMENT (2):
+                The collection of session entities extends the collection of
+                entities in the corresponding custom entity type.
+
+                Note: Even in this override mode calls to
+                ``ListSessionEntityTypes``, ``GetSessionEntityType``,
+                ``CreateSessionEntityType`` and ``UpdateSessionEntityType``
+                only return the additional entities added in this session
+                entity type. If you want to get the supplemented list,
+                please call
+                [EntityTypes.GetEntityType][google.cloud.dialogflow.v2.EntityTypes.GetEntityType]
+                on the custom entity type and merge.
+        """
         ENTITY_OVERRIDE_MODE_UNSPECIFIED = 0
         ENTITY_OVERRIDE_MODE_OVERRIDE = 1
         ENTITY_OVERRIDE_MODE_SUPPLEMENT = 2

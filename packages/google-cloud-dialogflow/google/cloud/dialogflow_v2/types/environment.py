@@ -103,6 +103,16 @@ class Environment(proto.Message):
         serving the previous version of the agent. After the new agent
         version is done loading, the environment is set back to the
         ``RUNNING`` state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not specified. This value is not used.
+            STOPPED (1):
+                Stopped.
+            LOADING (2):
+                Loading.
+            RUNNING (3):
+                Running.
         """
         STATE_UNSPECIFIED = 0
         STOPPED = 1

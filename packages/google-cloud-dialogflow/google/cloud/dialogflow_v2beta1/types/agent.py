@@ -113,20 +113,58 @@ class Agent(proto.Message):
     class MatchMode(proto.Enum):
         r"""Match mode determines how intents are detected from user
         queries.
+
+        Values:
+            MATCH_MODE_UNSPECIFIED (0):
+                Not specified.
+            MATCH_MODE_HYBRID (1):
+                Best for agents with a small number of
+                examples in intents and/or wide use of templates
+                syntax and composite entities.
+            MATCH_MODE_ML_ONLY (2):
+                Can be used for agents with a large number of
+                examples in intents, especially the ones using
+                @sys.any or very large custom entities.
         """
         MATCH_MODE_UNSPECIFIED = 0
         MATCH_MODE_HYBRID = 1
         MATCH_MODE_ML_ONLY = 2
 
     class ApiVersion(proto.Enum):
-        r"""API version for the agent."""
+        r"""API version for the agent.
+
+        Values:
+            API_VERSION_UNSPECIFIED (0):
+                Not specified.
+            API_VERSION_V1 (1):
+                Legacy V1 API.
+            API_VERSION_V2 (2):
+                V2 API.
+            API_VERSION_V2_BETA_1 (3):
+                V2beta1 API.
+        """
         API_VERSION_UNSPECIFIED = 0
         API_VERSION_V1 = 1
         API_VERSION_V2 = 2
         API_VERSION_V2_BETA_1 = 3
 
     class Tier(proto.Enum):
-        r"""Represents the agent tier."""
+        r"""Represents the agent tier.
+
+        Values:
+            TIER_UNSPECIFIED (0):
+                Not specified. This value should never be
+                used.
+            TIER_STANDARD (1):
+                Trial Edition, previously known as Standard
+                Edition.
+            TIER_ENTERPRISE (2):
+                Essentials Edition, previously known as
+                Enterprise Essential Edition.
+            TIER_ENTERPRISE_PLUS (3):
+                Essentials Edition (same as TIER_ENTERPRISE), previously
+                known as Enterprise Plus Edition.
+        """
         TIER_UNSPECIFIED = 0
         TIER_STANDARD = 1
         TIER_ENTERPRISE = 2

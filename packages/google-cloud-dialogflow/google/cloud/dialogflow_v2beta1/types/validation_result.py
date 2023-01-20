@@ -57,7 +57,22 @@ class ValidationError(proto.Message):
     """
 
     class Severity(proto.Enum):
-        r"""Represents a level of severity."""
+        r"""Represents a level of severity.
+
+        Values:
+            SEVERITY_UNSPECIFIED (0):
+                Not specified. This value should never be
+                used.
+            INFO (1):
+                The agent doesn't follow Dialogflow best
+                practices.
+            WARNING (2):
+                The agent may not behave as expected.
+            ERROR (3):
+                The agent may experience partial failures.
+            CRITICAL (4):
+                The agent may completely fail.
+        """
         SEVERITY_UNSPECIFIED = 0
         INFO = 1
         WARNING = 2

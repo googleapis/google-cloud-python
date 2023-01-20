@@ -1487,7 +1487,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "DocumentsClient":
         return self
 
     def __exit__(self, type, value, traceback):

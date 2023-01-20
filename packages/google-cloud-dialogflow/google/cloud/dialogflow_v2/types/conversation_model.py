@@ -90,7 +90,33 @@ class ConversationModel(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of the model."""
+        r"""State of the model.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Should not be used, an un-set enum has this
+                value by default.
+            CREATING (1):
+                Model being created.
+            UNDEPLOYED (2):
+                Model is not deployed but ready to deploy.
+            DEPLOYING (3):
+                Model is deploying.
+            DEPLOYED (4):
+                Model is deployed and ready to use.
+            UNDEPLOYING (5):
+                Model is undeploying.
+            DELETING (6):
+                Model is deleting.
+            FAILED (7):
+                Model is in error state. Not ready to deploy
+                and use.
+            PENDING (8):
+                Model is being created but the training has
+                not started, The model may remain in this state
+                until there is enough capacity to start
+                training.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         UNDEPLOYED = 2
@@ -102,7 +128,16 @@ class ConversationModel(proto.Message):
         PENDING = 8
 
     class ModelType(proto.Enum):
-        r"""Model type."""
+        r"""Model type.
+
+        Values:
+            MODEL_TYPE_UNSPECIFIED (0):
+                ModelType unspecified.
+            SMART_REPLY_DUAL_ENCODER_MODEL (2):
+                ModelType smart reply dual encoder model.
+            SMART_REPLY_BERT_MODEL (6):
+                ModelType smart reply bert model.
+        """
         MODEL_TYPE_UNSPECIFIED = 0
         SMART_REPLY_DUAL_ENCODER_MODEL = 2
         SMART_REPLY_BERT_MODEL = 6
@@ -682,7 +717,27 @@ class CreateConversationModelOperationMetadata(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of CreateConversationModel operation."""
+        r"""State of CreateConversationModel operation.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Invalid.
+            PENDING (1):
+                Request is submitted, but training has not
+                started yet. The model may remain in this state
+                until there is enough capacity to start
+                training.
+            SUCCEEDED (2):
+                The training has succeeded.
+            FAILED (3):
+                The training has succeeded.
+            CANCELLED (4):
+                The training has been cancelled.
+            CANCELLING (5):
+                The training is in cancelling state.
+            TRAINING (6):
+                Custom model is training.
+        """
         STATE_UNSPECIFIED = 0
         PENDING = 1
         SUCCEEDED = 2
@@ -806,7 +861,22 @@ class CreateConversationModelEvaluationOperationMetadata(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of CreateConversationModel operation."""
+        r"""State of CreateConversationModel operation.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Operation status not specified.
+            INITIALIZING (1):
+                The operation is being prepared.
+            RUNNING (2):
+                The operation is running.
+            CANCELLED (3):
+                The operation is cancelled.
+            SUCCEEDED (4):
+                The operation has succeeded.
+            FAILED (5):
+                The operation has failed.
+        """
         STATE_UNSPECIFIED = 0
         INITIALIZING = 1
         RUNNING = 2

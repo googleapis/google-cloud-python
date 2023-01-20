@@ -128,7 +128,32 @@ class Document(proto.Message):
     """
 
     class KnowledgeType(proto.Enum):
-        r"""The knowledge type of document content."""
+        r"""The knowledge type of document content.
+
+        Values:
+            KNOWLEDGE_TYPE_UNSPECIFIED (0):
+                The type is unspecified or arbitrary.
+            FAQ (1):
+                The document content contains question and
+                answer pairs as either HTML or CSV. Typical FAQ
+                HTML formats are parsed accurately, but unusual
+                formats may fail to be parsed.
+
+                CSV must have questions in the first column and
+                answers in the second, with no header. Because
+                of this explicit format, they are always parsed
+                accurately.
+            EXTRACTIVE_QA (2):
+                Documents for which unstructured text is
+                extracted and used for question answering.
+            ARTICLE_SUGGESTION (3):
+                The entire document content as a whole can be
+                used for query results. Only for Contact Center
+                Solutions on Dialogflow.
+            AGENT_FACING_SMART_REPLY (4):
+                The document contains agent-facing Smart
+                Reply entries.
+        """
         KNOWLEDGE_TYPE_UNSPECIFIED = 0
         FAQ = 1
         EXTRACTIVE_QA = 2
@@ -136,7 +161,22 @@ class Document(proto.Message):
         AGENT_FACING_SMART_REPLY = 4
 
     class State(proto.Enum):
-        r"""Possible states of the document"""
+        r"""Possible states of the document
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The document state is unspecified.
+            CREATING (1):
+                The document creation is in progress.
+            ACTIVE (2):
+                The document is active and ready to use.
+            UPDATING (3):
+                The document updation is in progress.
+            RELOADING (4):
+                The document is reloading.
+            DELETING (5):
+                The document deletion is in progress.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -616,7 +656,19 @@ class KnowledgeOperationMetadata(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""States of the operation."""
+        r"""States of the operation.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                State unspecified.
+            PENDING (1):
+                The operation has been created.
+            RUNNING (2):
+                The operation is currently running.
+            DONE (3):
+                The operation is done, either cancelled or
+                completed.
+        """
         STATE_UNSPECIFIED = 0
         PENDING = 1
         RUNNING = 2

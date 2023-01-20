@@ -830,7 +830,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "SessionsClient":
         return self
 
     def __exit__(self, type, value, traceback):

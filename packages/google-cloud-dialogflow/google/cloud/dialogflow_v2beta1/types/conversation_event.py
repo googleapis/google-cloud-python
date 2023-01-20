@@ -53,7 +53,41 @@ class ConversationEvent(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Enumeration of the types of events available."""
+        r"""Enumeration of the types of events available.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Type not set.
+            CONVERSATION_STARTED (1):
+                A new conversation has been opened. This is
+                fired when a telephone call is answered, or a
+                conversation is created via the API.
+            CONVERSATION_FINISHED (2):
+                An existing conversation has closed. This is
+                fired when a telephone call is terminated, or a
+                conversation is closed via the API.
+            HUMAN_INTERVENTION_NEEDED (3):
+                An existing conversation has received
+                notification from Dialogflow that human
+                intervention is required.
+            NEW_MESSAGE (5):
+                An existing conversation has received a new message, either
+                from API or telephony. It is configured in
+                [ConversationProfile.new_message_event_notification_config][google.cloud.dialogflow.v2beta1.ConversationProfile.new_message_event_notification_config]
+            UNRECOVERABLE_ERROR (4):
+                Unrecoverable error during a telephone call.
+
+                In general non-recoverable errors only occur if something
+                was misconfigured in the ConversationProfile corresponding
+                to the call. After a non-recoverable error, Dialogflow may
+                stop responding.
+
+                We don't fire this event:
+
+                -  in an API call because we can directly return the error,
+                   or,
+                -  when we can recover from an error.
+        """
         TYPE_UNSPECIFIED = 0
         CONVERSATION_STARTED = 1
         CONVERSATION_FINISHED = 2

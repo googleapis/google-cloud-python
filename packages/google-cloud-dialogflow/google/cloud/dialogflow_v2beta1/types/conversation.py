@@ -90,7 +90,17 @@ class Conversation(proto.Message):
     """
 
     class LifecycleState(proto.Enum):
-        r"""Enumeration of the completion status of the conversation."""
+        r"""Enumeration of the completion status of the conversation.
+
+        Values:
+            LIFECYCLE_STATE_UNSPECIFIED (0):
+                Unknown.
+            IN_PROGRESS (1):
+                Conversation is currently open for media
+                analysis.
+            COMPLETED (2):
+                Conversation has been completed.
+        """
         LIFECYCLE_STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
         COMPLETED = 2
@@ -99,6 +109,17 @@ class Conversation(proto.Message):
         r"""Enumeration of the different conversation stages a
         conversation can be in. Reference:
         https://cloud.google.com/dialogflow/priv/docs/contact-center/basics#stages
+
+        Values:
+            CONVERSATION_STAGE_UNSPECIFIED (0):
+                Unknown. Should never be used after a
+                conversation is successfully created.
+            VIRTUAL_AGENT_STAGE (1):
+                The conversation should return virtual agent
+                responses into the conversation.
+            HUMAN_ASSIST_STAGE (2):
+                The conversation should not provide
+                responses, just listen and provide suggestions.
         """
         CONVERSATION_STAGE_UNSPECIFIED = 0
         VIRTUAL_AGENT_STAGE = 1

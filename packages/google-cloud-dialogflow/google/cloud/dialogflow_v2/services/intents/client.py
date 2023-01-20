@@ -1412,7 +1412,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "IntentsClient":
         return self
 
     def __exit__(self, type, value, traceback):

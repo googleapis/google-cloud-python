@@ -168,7 +168,18 @@ class AnswerFeedback(proto.Message):
     """
 
     class CorrectnessLevel(proto.Enum):
-        r"""The correctness level of an answer."""
+        r"""The correctness level of an answer.
+
+        Values:
+            CORRECTNESS_LEVEL_UNSPECIFIED (0):
+                Correctness level unspecified.
+            NOT_CORRECT (1):
+                Answer is totally wrong.
+            PARTIALLY_CORRECT (2):
+                Answer is partially correct.
+            FULLY_CORRECT (3):
+                Answer is fully correct.
+        """
         CORRECTNESS_LEVEL_UNSPECIFIED = 0
         NOT_CORRECT = 1
         PARTIALLY_CORRECT = 2
@@ -244,19 +255,46 @@ class AgentAssistantFeedback(proto.Message):
     """
 
     class AnswerRelevance(proto.Enum):
-        r"""Relevance of an answer."""
+        r"""Relevance of an answer.
+
+        Values:
+            ANSWER_RELEVANCE_UNSPECIFIED (0):
+                Answer relevance unspecified.
+            IRRELEVANT (1):
+                Answer is irrelevant to query.
+            RELEVANT (2):
+                Answer is relevant to query.
+        """
         ANSWER_RELEVANCE_UNSPECIFIED = 0
         IRRELEVANT = 1
         RELEVANT = 2
 
     class DocumentCorrectness(proto.Enum):
-        r"""Correctness of document."""
+        r"""Correctness of document.
+
+        Values:
+            DOCUMENT_CORRECTNESS_UNSPECIFIED (0):
+                Document correctness unspecified.
+            INCORRECT (1):
+                Information in document is incorrect.
+            CORRECT (2):
+                Information in document is correct.
+        """
         DOCUMENT_CORRECTNESS_UNSPECIFIED = 0
         INCORRECT = 1
         CORRECT = 2
 
     class DocumentEfficiency(proto.Enum):
-        r"""Efficiency of document."""
+        r"""Efficiency of document.
+
+        Values:
+            DOCUMENT_EFFICIENCY_UNSPECIFIED (0):
+                Document efficiency unspecified.
+            INEFFICIENT (1):
+                Document is inefficient.
+            EFFICIENT (2):
+                Document is efficient.
+        """
         DOCUMENT_EFFICIENCY_UNSPECIFIED = 0
         INEFFICIENT = 1
         EFFICIENT = 2

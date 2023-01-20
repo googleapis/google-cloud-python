@@ -78,7 +78,24 @@ class EntityType(proto.Message):
     """
 
     class Kind(proto.Enum):
-        r"""Represents kinds of entities."""
+        r"""Represents kinds of entities.
+
+        Values:
+            KIND_UNSPECIFIED (0):
+                Not specified. This value should be never
+                used.
+            KIND_MAP (1):
+                Map entity types allow mapping of a group of
+                synonyms to a reference value.
+            KIND_LIST (2):
+                List entity types contain a set of entries
+                that do not map to reference values. However,
+                list entity types can contain references to
+                other entity types (with or without aliases).
+            KIND_REGEXP (3):
+                Regexp entity types allow to specify regular
+                expressions in entries values.
+        """
         KIND_UNSPECIFIED = 0
         KIND_MAP = 1
         KIND_LIST = 2
@@ -89,6 +106,13 @@ class EntityType(proto.Message):
         expansion allows an agent to recognize values that have not been
         explicitly listed in the entity (for example, new kinds of
         shopping list items).
+
+        Values:
+            AUTO_EXPANSION_MODE_UNSPECIFIED (0):
+                Auto expansion disabled for the entity.
+            AUTO_EXPANSION_MODE_DEFAULT (1):
+                Allows an agent to recognize values that have
+                not been explicitly listed in the entity.
         """
         AUTO_EXPANSION_MODE_UNSPECIFIED = 0
         AUTO_EXPANSION_MODE_DEFAULT = 1

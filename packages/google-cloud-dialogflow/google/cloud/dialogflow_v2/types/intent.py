@@ -45,6 +45,13 @@ class IntentView(proto.Enum):
     An intent can be a sizable object. Therefore, we provide a
     resource view that does not return training phrases in the
     response by default.
+
+    Values:
+        INTENT_VIEW_UNSPECIFIED (0):
+            Training phrases field is not populated in
+            the response.
+        INTENT_VIEW_FULL (1):
+            All fields are populated.
     """
     INTENT_VIEW_UNSPECIFIED = 0
     INTENT_VIEW_FULL = 1
@@ -169,7 +176,20 @@ class Intent(proto.Message):
     """
 
     class WebhookState(proto.Enum):
-        r"""Represents the different states that webhooks can be in."""
+        r"""Represents the different states that webhooks can be in.
+
+        Values:
+            WEBHOOK_STATE_UNSPECIFIED (0):
+                Webhook is disabled in the agent and in the
+                intent.
+            WEBHOOK_STATE_ENABLED (1):
+                Webhook is enabled in the agent and in the
+                intent.
+            WEBHOOK_STATE_ENABLED_FOR_SLOT_FILLING (2):
+                Webhook is enabled in the agent and in the
+                intent. Also, each slot filling prompt is
+                forwarded to the webhook.
+        """
         WEBHOOK_STATE_UNSPECIFIED = 0
         WEBHOOK_STATE_ENABLED = 1
         WEBHOOK_STATE_ENABLED_FOR_SLOT_FILLING = 2
@@ -216,7 +236,25 @@ class Intent(proto.Message):
         """
 
         class Type(proto.Enum):
-            r"""Represents different types of training phrases."""
+            r"""Represents different types of training phrases.
+
+            Values:
+                TYPE_UNSPECIFIED (0):
+                    Not specified. This value should never be
+                    used.
+                EXAMPLE (1):
+                    Examples do not contain @-prefixed entity
+                    type names, but example parts can be annotated
+                    with entity types.
+                TEMPLATE (2):
+                    Templates are not annotated with entity
+                    types, but they can contain @-prefixed entity
+                    type names as substrings. Template mode has been
+                    deprecated. Example mode is the only supported
+                    way to create new training phrases. If you have
+                    existing training phrases that you've created in
+                    template mode, those will continue to work.
+            """
             TYPE_UNSPECIFIED = 0
             EXAMPLE = 1
             TEMPLATE = 2
@@ -435,6 +473,29 @@ class Intent(proto.Message):
         class Platform(proto.Enum):
             r"""The rich response message integration platform. See
             `Integrations <https://cloud.google.com/dialogflow/docs/integrations>`__.
+
+            Values:
+                PLATFORM_UNSPECIFIED (0):
+                    Default platform.
+                FACEBOOK (1):
+                    Facebook.
+                SLACK (2):
+                    Slack.
+                TELEGRAM (3):
+                    Telegram.
+                KIK (4):
+                    Kik.
+                SKYPE (5):
+                    Skype.
+                LINE (6):
+                    Line.
+                VIBER (7):
+                    Viber.
+                ACTIONS_ON_GOOGLE (8):
+                    Google Assistant See `Dialogflow webhook
+                    format <https://developers.google.com/assistant/actions/build/json/dialogflow-webhook-json>`__
+                GOOGLE_HANGOUTS (11):
+                    Google Hangouts.
             """
             PLATFORM_UNSPECIFIED = 0
             FACEBOOK = 1
@@ -880,7 +941,14 @@ class Intent(proto.Message):
             """
 
             class ResponseMediaType(proto.Enum):
-                r"""Format of response media type."""
+                r"""Format of response media type.
+
+                Values:
+                    RESPONSE_MEDIA_TYPE_UNSPECIFIED (0):
+                        Unspecified.
+                    AUDIO (1):
+                        Response media type is audio.
+                """
                 RESPONSE_MEDIA_TYPE_UNSPECIFIED = 0
                 AUDIO = 1
 
@@ -970,6 +1038,30 @@ class Intent(proto.Message):
                 r"""Image display options for Actions on Google. This should be
                 used for when the image's aspect ratio does not match the image
                 container's aspect ratio.
+
+                Values:
+                    IMAGE_DISPLAY_OPTIONS_UNSPECIFIED (0):
+                        Fill the gaps between the image and the image
+                        container with gray bars.
+                    GRAY (1):
+                        Fill the gaps between the image and the image
+                        container with gray bars.
+                    WHITE (2):
+                        Fill the gaps between the image and the image
+                        container with white bars.
+                    CROPPED (3):
+                        Image is scaled such that the image width and
+                        height match or exceed the container dimensions.
+                        This may crop the top and bottom of the image if
+                        the scaled image height is greater than the
+                        container height, or crop the left and right of
+                        the image if the scaled image width is greater
+                        than the container width. This is similar to
+                        "Zoom Mode" on a widescreen TV when playing a
+                        4:3 video.
+                    BLURRED_BACKGROUND (4):
+                        Pad the gaps between image and image frame
+                        with a blurred copy of the same image.
                 """
                 IMAGE_DISPLAY_OPTIONS_UNSPECIFIED = 0
                 GRAY = 1
@@ -1010,7 +1102,18 @@ class Intent(proto.Message):
                     """
 
                     class UrlTypeHint(proto.Enum):
-                        r"""Type of the URI."""
+                        r"""Type of the URI.
+
+                        Values:
+                            URL_TYPE_HINT_UNSPECIFIED (0):
+                                Unspecified
+                            AMP_ACTION (1):
+                                Url would be an amp action
+                            AMP_CONTENT (2):
+                                URL that points directly to AMP content, or
+                                to a canonical URL which refers to AMP content
+                                via <link rel="amphtml">.
+                        """
                         URL_TYPE_HINT_UNSPECIFIED = 0
                         AMP_ACTION = 1
                         AMP_CONTENT = 2
@@ -1127,7 +1230,21 @@ class Intent(proto.Message):
             """
 
             class HorizontalAlignment(proto.Enum):
-                r"""Text alignments within a cell."""
+                r"""Text alignments within a cell.
+
+                Values:
+                    HORIZONTAL_ALIGNMENT_UNSPECIFIED (0):
+                        Text is aligned to the leading edge of the
+                        column.
+                    LEADING (1):
+                        Text is aligned to the leading edge of the
+                        column.
+                    CENTER (2):
+                        Text is centered in the column.
+                    TRAILING (3):
+                        Text is aligned to the trailing edge of the
+                        column.
+                """
                 HORIZONTAL_ALIGNMENT_UNSPECIFIED = 0
                 LEADING = 1
                 CENTER = 2

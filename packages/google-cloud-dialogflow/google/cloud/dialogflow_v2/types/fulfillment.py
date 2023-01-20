@@ -130,7 +130,14 @@ class Fulfillment(proto.Message):
         """
 
         class Type(proto.Enum):
-            r"""The type of the feature."""
+            r"""The type of the feature.
+
+            Values:
+                TYPE_UNSPECIFIED (0):
+                    Feature type not specified.
+                SMALLTALK (1):
+                    Fulfillment is enabled for SmallTalk.
+            """
             TYPE_UNSPECIFIED = 0
             SMALLTALK = 1
 

@@ -1432,7 +1432,7 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "ConversationProfilesClient":
         return self
 
     def __exit__(self, type, value, traceback):

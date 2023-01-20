@@ -721,7 +721,16 @@ class NotificationConfig(proto.Message):
     """
 
     class MessageFormat(proto.Enum):
-        r"""Format of cloud pub/sub message."""
+        r"""Format of cloud pub/sub message.
+
+        Values:
+            MESSAGE_FORMAT_UNSPECIFIED (0):
+                If it is unspecified, PROTO will be used.
+            PROTO (1):
+                Pubsub message will be serialized proto.
+            JSON (2):
+                Pubsub message will be json.
+        """
         MESSAGE_FORMAT_UNSPECIFIED = 0
         PROTO = 1
         JSON = 2

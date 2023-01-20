@@ -639,6 +639,16 @@ class KnowledgeAnswers(proto.Message):
         class MatchConfidenceLevel(proto.Enum):
             r"""Represents the system's confidence that this knowledge answer
             is a good match for this conversational query.
+
+            Values:
+                MATCH_CONFIDENCE_LEVEL_UNSPECIFIED (0):
+                    Not specified.
+                LOW (1):
+                    Indicates that the confidence is low.
+                MEDIUM (2):
+                    Indicates our confidence is medium.
+                HIGH (3):
+                    Indicates our confidence is high.
             """
             MATCH_CONFIDENCE_LEVEL_UNSPECIFIED = 0
             LOW = 1
@@ -1008,7 +1018,36 @@ class StreamingRecognitionResult(proto.Message):
     """
 
     class MessageType(proto.Enum):
-        r"""Type of the response message."""
+        r"""Type of the response message.
+
+        Values:
+            MESSAGE_TYPE_UNSPECIFIED (0):
+                Not specified. Should never be used.
+            TRANSCRIPT (1):
+                Message contains a (possibly partial)
+                transcript.
+            DTMF_DIGITS (3):
+                Message contains DTMF digits. When the client
+                gets the message, it should stop sending
+                additional data, half-close the gRPC connection,
+                and wait for any additional results until the
+                server closes the gRPC. connection.
+            END_OF_SINGLE_UTTERANCE (2):
+                Event indicates that the server has detected the end of the
+                user's speech utterance and expects no additional speech.
+                Therefore, the server will not process additional audio
+                (although it may subsequently return additional results).
+                The client should stop sending additional audio data,
+                half-close the gRPC connection, and wait for any additional
+                results until the server closes the gRPC connection. This
+                message is only sent if ``single_utterance`` was set to
+                ``true``, and is not used otherwise.
+            PARTIAL_DTMF_DIGITS (4):
+                Message contains DTMF digits. Before a message with
+                DTMF_DIGITS is sent, a message with PARTIAL_DTMF_DIGITS may
+                be sent with DTMF digits collected up to the time of
+                sending, which represents an intermediate result.
+        """
         MESSAGE_TYPE_UNSPECIFIED = 0
         TRANSCRIPT = 1
         DTMF_DIGITS = 3

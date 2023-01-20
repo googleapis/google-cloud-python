@@ -43,6 +43,50 @@ class AudioEncoding(proto.Enum):
     request. Refer to the `Cloud Speech API
     documentation <https://cloud.google.com/speech-to-text/docs/basics>`__
     for more details.
+
+    Values:
+        AUDIO_ENCODING_UNSPECIFIED (0):
+            Not specified.
+        AUDIO_ENCODING_LINEAR_16 (1):
+            Uncompressed 16-bit signed little-endian
+            samples (Linear PCM).
+        AUDIO_ENCODING_FLAC (2):
+            ```FLAC`` <https://xiph.org/flac/documentation.html>`__
+            (Free Lossless Audio Codec) is the recommended encoding
+            because it is lossless (therefore recognition is not
+            compromised) and requires only about half the bandwidth of
+            ``LINEAR16``. ``FLAC`` stream encoding supports 16-bit and
+            24-bit samples, however, not all fields in ``STREAMINFO``
+            are supported.
+        AUDIO_ENCODING_MULAW (3):
+            8-bit samples that compand 14-bit audio
+            samples using G.711 PCMU/mu-law.
+        AUDIO_ENCODING_AMR (4):
+            Adaptive Multi-Rate Narrowband codec. ``sample_rate_hertz``
+            must be 8000.
+        AUDIO_ENCODING_AMR_WB (5):
+            Adaptive Multi-Rate Wideband codec. ``sample_rate_hertz``
+            must be 16000.
+        AUDIO_ENCODING_OGG_OPUS (6):
+            Opus encoded audio frames in Ogg container
+            (`OggOpus <https://wiki.xiph.org/OggOpus>`__).
+            ``sample_rate_hertz`` must be 16000.
+        AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE (7):
+            Although the use of lossy encodings is not recommended, if a
+            very low bitrate encoding is required, ``OGG_OPUS`` is
+            highly preferred over Speex encoding. The
+            `Speex <https://speex.org/>`__ encoding supported by
+            Dialogflow API has a header byte in each block, as in MIME
+            type ``audio/x-speex-with-header-byte``. It is a variant of
+            the RTP Speex encoding defined in `RFC
+            5574 <https://tools.ietf.org/html/rfc5574>`__. The stream is
+            a sequence of blocks, one block per RTP packet. Each block
+            starts with a byte containing the length of the block, in
+            bytes, followed by one or more frames of Speex data, padded
+            to an integral number of bytes (octets) as specified in RFC
+            5574. In other words, each RTP header is replaced with a
+            single byte containing the block length. Only Speex wideband
+            is supported. ``sample_rate_hertz`` must be 16000.
     """
     AUDIO_ENCODING_UNSPECIFIED = 0
     AUDIO_ENCODING_LINEAR_16 = 1
@@ -65,6 +109,40 @@ class SpeechModelVariant(proto.Enum):
     "phone_call" model has both a standard and an enhanced variant. When
     you use an enhanced model, you will generally receive higher quality
     results than for a standard model.
+
+    Values:
+        SPEECH_MODEL_VARIANT_UNSPECIFIED (0):
+            No model variant specified. In this case Dialogflow defaults
+            to USE_BEST_AVAILABLE.
+        USE_BEST_AVAILABLE (1):
+            Use the best available variant of the [Speech
+            model][InputAudioConfig.model] that the caller is eligible
+            for.
+
+            Please see the `Dialogflow
+            docs <https://cloud.google.com/dialogflow/docs/data-logging>`__
+            for how to make your project eligible for enhanced models.
+        USE_STANDARD (2):
+            Use standard model variant even if an enhanced model is
+            available. See the `Cloud Speech
+            documentation <https://cloud.google.com/speech-to-text/docs/enhanced-models>`__
+            for details about enhanced models.
+        USE_ENHANCED (3):
+            Use an enhanced model variant:
+
+            -  If an enhanced variant does not exist for the given
+               [model][google.cloud.dialogflow.v2beta1.InputAudioConfig.model]
+               and request language, Dialogflow falls back to the
+               standard variant.
+
+               The `Cloud Speech
+               documentation <https://cloud.google.com/speech-to-text/docs/enhanced-models>`__
+               describes which models have enhanced variants.
+
+            -  If the API caller isn't eligible for enhanced models,
+               Dialogflow returns an error. Please see the `Dialogflow
+               docs <https://cloud.google.com/dialogflow/docs/data-logging>`__
+               for how to make your project eligible.
     """
     SPEECH_MODEL_VARIANT_UNSPECIFIED = 0
     USE_BEST_AVAILABLE = 1
@@ -75,6 +153,18 @@ class SpeechModelVariant(proto.Enum):
 class SsmlVoiceGender(proto.Enum):
     r"""Gender of the voice as described in `SSML voice
     element <https://www.w3.org/TR/speech-synthesis11/#edef_voice>`__.
+
+    Values:
+        SSML_VOICE_GENDER_UNSPECIFIED (0):
+            An unspecified gender, which means that the
+            client doesn't care which gender the selected
+            voice will have.
+        SSML_VOICE_GENDER_MALE (1):
+            A male voice.
+        SSML_VOICE_GENDER_FEMALE (2):
+            A female voice.
+        SSML_VOICE_GENDER_NEUTRAL (3):
+            A gender-neutral voice.
     """
     SSML_VOICE_GENDER_UNSPECIFIED = 0
     SSML_VOICE_GENDER_MALE = 1
@@ -83,7 +173,30 @@ class SsmlVoiceGender(proto.Enum):
 
 
 class OutputAudioEncoding(proto.Enum):
-    r"""Audio encoding of the output audio format in Text-To-Speech."""
+    r"""Audio encoding of the output audio format in Text-To-Speech.
+
+    Values:
+        OUTPUT_AUDIO_ENCODING_UNSPECIFIED (0):
+            Not specified.
+        OUTPUT_AUDIO_ENCODING_LINEAR_16 (1):
+            Uncompressed 16-bit signed little-endian
+            samples (Linear PCM). Audio content returned as
+            LINEAR16 also contains a WAV header.
+        OUTPUT_AUDIO_ENCODING_MP3 (2):
+            MP3 audio at 32kbps.
+        OUTPUT_AUDIO_ENCODING_MP3_64_KBPS (4):
+            MP3 audio at 64kbps.
+        OUTPUT_AUDIO_ENCODING_OGG_OPUS (3):
+            Opus encoded audio wrapped in an ogg
+            container. The result will be a file which can
+            be played natively on Android, and in browsers
+            (at least Chrome and Firefox). The quality of
+            the encoding is considerably higher than MP3
+            while using approximately the same bitrate.
+        OUTPUT_AUDIO_ENCODING_MULAW (5):
+            8-bit samples that compand 14-bit audio
+            samples using G.711 PCMU/mu-law.
+    """
     OUTPUT_AUDIO_ENCODING_UNSPECIFIED = 0
     OUTPUT_AUDIO_ENCODING_LINEAR_16 = 1
     OUTPUT_AUDIO_ENCODING_MP3 = 2
@@ -95,6 +208,44 @@ class OutputAudioEncoding(proto.Enum):
 class TelephonyDtmf(proto.Enum):
     r"""`DTMF <https://en.wikipedia.org/wiki/Dual-tone_multi-frequency_signaling>`__
     digit in Telephony Gateway.
+
+    Values:
+        TELEPHONY_DTMF_UNSPECIFIED (0):
+            Not specified. This value may be used to
+            indicate an absent digit.
+        DTMF_ONE (1):
+            Number: '1'.
+        DTMF_TWO (2):
+            Number: '2'.
+        DTMF_THREE (3):
+            Number: '3'.
+        DTMF_FOUR (4):
+            Number: '4'.
+        DTMF_FIVE (5):
+            Number: '5'.
+        DTMF_SIX (6):
+            Number: '6'.
+        DTMF_SEVEN (7):
+            Number: '7'.
+        DTMF_EIGHT (8):
+            Number: '8'.
+        DTMF_NINE (9):
+            Number: '9'.
+        DTMF_ZERO (10):
+            Number: '0'.
+        DTMF_A (11):
+            Letter: 'A'.
+        DTMF_B (12):
+            Letter: 'B'.
+        DTMF_C (13):
+            Letter: 'C'.
+        DTMF_D (14):
+            Letter: 'D'.
+        DTMF_STAR (15):
+            Asterisk/star: '*'.
+        DTMF_POUND (16):
+            Pound/diamond/hash/square/gate/octothorpe:
+            '#'.
     """
     TELEPHONY_DTMF_UNSPECIFIED = 0
     DTMF_ONE = 1

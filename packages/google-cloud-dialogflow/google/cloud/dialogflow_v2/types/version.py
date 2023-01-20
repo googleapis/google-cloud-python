@@ -79,7 +79,19 @@ class Version(proto.Message):
     """
 
     class VersionStatus(proto.Enum):
-        r"""The status of a version."""
+        r"""The status of a version.
+
+        Values:
+            VERSION_STATUS_UNSPECIFIED (0):
+                Not specified. This value is not used.
+            IN_PROGRESS (1):
+                Version is not ready to serve (e.g. training
+                is in progress).
+            READY (2):
+                Version is ready to serve.
+            FAILED (3):
+                Version training failed.
+        """
         VERSION_STATUS_UNSPECIFIED = 0
         IN_PROGRESS = 1
         READY = 2

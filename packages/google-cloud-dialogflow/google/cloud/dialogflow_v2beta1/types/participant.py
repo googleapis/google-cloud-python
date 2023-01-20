@@ -141,6 +141,18 @@ class Participant(proto.Message):
     class Role(proto.Enum):
         r"""Enumeration of the roles a participant can play in a
         conversation.
+
+        Values:
+            ROLE_UNSPECIFIED (0):
+                Participant role not set.
+            HUMAN_AGENT (1):
+                Participant is a human agent.
+            AUTOMATED_AGENT (2):
+                Participant is an automated agent, such as a
+                Dialogflow agent.
+            END_USER (3):
+                Participant is an end user that has called or
+                chatted with Dialogflow services.
         """
         ROLE_UNSPECIFIED = 0
         HUMAN_AGENT = 1
@@ -477,7 +489,19 @@ class AutomatedAgentReply(proto.Message):
     """
 
     class AutomatedAgentReplyType(proto.Enum):
-        r"""Represents different automated agent reply types."""
+        r"""Represents different automated agent reply types.
+
+        Values:
+            AUTOMATED_AGENT_REPLY_TYPE_UNSPECIFIED (0):
+                Not specified. This should never happen.
+            PARTIAL (1):
+                Partial reply. e.g. Aggregated responses in a
+                ``Fulfillment`` that enables ``return_partial_response`` can
+                be returned as partial reply. WARNING: partial reply is not
+                eligible for barge-in.
+            FINAL (2):
+                Final reply.
+        """
         AUTOMATED_AGENT_REPLY_TYPE_UNSPECIFIED = 0
         PARTIAL = 1
         FINAL = 2
@@ -544,7 +568,21 @@ class SuggestionFeature(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Defines the type of Human Agent Assistant feature."""
+        r"""Defines the type of Human Agent Assistant feature.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unspecified feature type.
+            ARTICLE_SUGGESTION (1):
+                Run article suggestion model for chat.
+            FAQ (2):
+                Run FAQ model.
+            SMART_REPLY (3):
+                Run smart reply model for chat.
+            CONVERSATION_SUMMARIZATION (8):
+                Run conversation summarization model for
+                chat.
+        """
         TYPE_UNSPECIFIED = 0
         ARTICLE_SUGGESTION = 1
         FAQ = 2

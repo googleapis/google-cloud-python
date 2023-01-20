@@ -1082,7 +1082,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
             metadata=metadata,
         )
 
-    def __enter__(self):
+    def __enter__(self) -> "SessionEntityTypesClient":
         return self
 
     def __exit__(self, type, value, traceback):

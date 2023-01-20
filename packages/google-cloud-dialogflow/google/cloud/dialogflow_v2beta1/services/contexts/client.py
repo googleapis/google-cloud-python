@@ -1168,7 +1168,7 @@ class ContextsClient(metaclass=ContextsClientMeta):
             metadata=metadata,
         )
 
-    def __enter__(self):
+    def __enter__(self) -> "ContextsClient":
         return self
 
     def __exit__(self, type, value, traceback):

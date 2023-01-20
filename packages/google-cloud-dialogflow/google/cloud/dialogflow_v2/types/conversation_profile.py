@@ -866,7 +866,16 @@ class NotificationConfig(proto.Message):
     """
 
     class MessageFormat(proto.Enum):
-        r"""Format of cloud pub/sub message."""
+        r"""Format of cloud pub/sub message.
+
+        Values:
+            MESSAGE_FORMAT_UNSPECIFIED (0):
+                If it is unspecified, PROTO will be used.
+            PROTO (1):
+                Pub/Sub message will be serialized proto.
+            JSON (2):
+                Pub/Sub message will be json.
+        """
         MESSAGE_FORMAT_UNSPECIFIED = 0
         PROTO = 1
         JSON = 2
@@ -912,7 +921,18 @@ class SuggestionFeature(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Defines the type of Human Agent Assistant feature."""
+        r"""Defines the type of Human Agent Assistant feature.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unspecified feature type.
+            ARTICLE_SUGGESTION (1):
+                Run article suggestion model for chat.
+            FAQ (2):
+                Run FAQ model for chat.
+            SMART_REPLY (3):
+                Run smart reply model for chat.
+        """
         TYPE_UNSPECIFIED = 0
         ARTICLE_SUGGESTION = 1
         FAQ = 2

@@ -1049,7 +1049,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
             metadata=metadata,
         )
 
-    def __enter__(self):
+    def __enter__(self) -> "VersionsClient":
         return self
 
     def __exit__(self, type, value, traceback):

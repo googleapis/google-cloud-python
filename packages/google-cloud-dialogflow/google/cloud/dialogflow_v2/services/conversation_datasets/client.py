@@ -1092,7 +1092,7 @@ class ConversationDatasetsClient(metaclass=ConversationDatasetsClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "ConversationDatasetsClient":
         return self
 
     def __exit__(self, type, value, traceback):
