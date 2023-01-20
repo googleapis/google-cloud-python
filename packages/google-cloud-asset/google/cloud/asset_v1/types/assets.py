@@ -73,7 +73,20 @@ class TemporalAsset(proto.Message):
     """
 
     class PriorAssetState(proto.Enum):
-        r"""State of prior asset."""
+        r"""State of prior asset.
+
+        Values:
+            PRIOR_ASSET_STATE_UNSPECIFIED (0):
+                prior_asset is not applicable for the current asset.
+            PRESENT (1):
+                prior_asset is populated correctly.
+            INVALID (2):
+                Failed to set prior_asset.
+            DOES_NOT_EXIST (3):
+                Current asset is the first known state.
+            DELETED (4):
+                prior_asset is a deletion.
+        """
         PRIOR_ASSET_STATE_UNSPECIFIED = 0
         PRESENT = 1
         INVALID = 2
@@ -1210,7 +1223,20 @@ class ConditionEvaluation(proto.Message):
     """
 
     class EvaluationValue(proto.Enum):
-        r"""Value of this expression."""
+        r"""Value of this expression.
+
+        Values:
+            EVALUATION_VALUE_UNSPECIFIED (0):
+                Reserved for future use.
+            TRUE (1):
+                The evaluation result is ``true``.
+            FALSE (2):
+                The evaluation result is ``false``.
+            CONDITIONAL (3):
+                The evaluation result is ``conditional`` when the condition
+                expression contains variables that are either missing input
+                values or have not been supported by Analyzer yet.
+        """
         EVALUATION_VALUE_UNSPECIFIED = 0
         TRUE = 1
         FALSE = 2

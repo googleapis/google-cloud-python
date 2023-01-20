@@ -96,7 +96,25 @@ __protobuf__ = proto.module(
 
 
 class ContentType(proto.Enum):
-    r"""Asset content type."""
+    r"""Asset content type.
+
+    Values:
+        CONTENT_TYPE_UNSPECIFIED (0):
+            Unspecified content type.
+        RESOURCE (1):
+            Resource metadata.
+        IAM_POLICY (2):
+            The actual IAM policy set on a resource.
+        ORG_POLICY (4):
+            The organization policy set on an asset.
+        ACCESS_POLICY (5):
+            The Access Context Manager policy set on an
+            asset.
+        OS_INVENTORY (6):
+            The runtime OS Inventory information.
+        RELATIONSHIP (7):
+            The related resources.
+    """
     CONTENT_TYPE_UNSPECIFIED = 0
     RESOURCE = 1
     IAM_POLICY = 2
@@ -871,6 +889,25 @@ class PartitionSpec(proto.Message):
         partition key is a timestamp column, the actual partition is based
         on its date value (expressed in UTC. see details in
         https://cloud.google.com/bigquery/docs/partitioned-tables#date_timestamp_partitioned_tables).
+
+        Values:
+            PARTITION_KEY_UNSPECIFIED (0):
+                Unspecified partition key. If used, it means
+                using non-partitioned table.
+            READ_TIME (1):
+                The time when the snapshot is taken. If specified as
+                partition key, the result table(s) is partitoned by the
+                additional timestamp column, readTime. If [read_time] in
+                ExportAssetsRequest is specified, the readTime column's
+                value will be the same as it. Otherwise, its value will be
+                the current time that is used to take the snapshot.
+            REQUEST_TIME (2):
+                The time when the request is received and
+                started to be processed. If specified as
+                partition key, the result table(s) is partitoned
+                by the requestTime column, an additional
+                timestamp column representing when the request
+                was received.
         """
         PARTITION_KEY_UNSPECIFIED = 0
         READ_TIME = 1
@@ -1958,6 +1995,17 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
             reduce query cost by filtering partitions. Refer to
             https://cloud.google.com/bigquery/docs/partitioned-tables for
             details.
+
+            Values:
+                PARTITION_KEY_UNSPECIFIED (0):
+                    Unspecified partition key. Tables won't be
+                    partitioned using this option.
+                REQUEST_TIME (1):
+                    The time when the request is received. If
+                    specified as partition key, the result table(s)
+                    is partitoned by the RequestTime column, an
+                    additional timestamp column representing when
+                    the request was received.
             """
             PARTITION_KEY_UNSPECIFIED = 0
             REQUEST_TIME = 1
@@ -2362,7 +2410,20 @@ class AnalyzeMoveRequest(proto.Message):
     """
 
     class AnalysisView(proto.Enum):
-        r"""View enum for supporting partial analysis responses."""
+        r"""View enum for supporting partial analysis responses.
+
+        Values:
+            ANALYSIS_VIEW_UNSPECIFIED (0):
+                The default/unset value.
+                The API will default to the FULL view.
+            FULL (1):
+                Full analysis including all level of impacts
+                of the specified resource move.
+            BASIC (2):
+                Basic analysis only including blockers which
+                will prevent the specified resource move at
+                runtime.
+        """
         ANALYSIS_VIEW_UNSPECIFIED = 0
         FULL = 1
         BASIC = 2
@@ -3196,6 +3257,19 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
             r"""Specifies the default behavior in the absence of any ``Policy`` for
             the ``Constraint``. This must not be
             ``CONSTRAINT_DEFAULT_UNSPECIFIED``.
+
+            Values:
+                CONSTRAINT_DEFAULT_UNSPECIFIED (0):
+                    This is only used for distinguishing unset
+                    values and should never be used.
+                ALLOW (1):
+                    Indicate that all values are allowed for list
+                    constraints. Indicate that enforcement is off
+                    for boolean constraints.
+                DENY (2):
+                    Indicate that all values are denied for list
+                    constraints. Indicate that enforcement is on for
+                    boolean constraints.
             """
             CONSTRAINT_DEFAULT_UNSPECIFIED = 0
             ALLOW = 1
@@ -3309,6 +3383,19 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
             If the constraint applies only when create VMs, the method_types
             will be "CREATE" only. If the constraint applied when create or
             delete VMs, the method_types will be "CREATE" and "DELETE".
+
+            Values:
+                METHOD_TYPE_UNSPECIFIED (0):
+                    Unspecified. Will results in user error.
+                CREATE (1):
+                    Constraint applied when creating the
+                    resource.
+                UPDATE (2):
+                    Constraint applied when updating the
+                    resource.
+                DELETE (3):
+                    Constraint applied when deleting the
+                    resource.
             """
             METHOD_TYPE_UNSPECIFIED = 0
             CREATE = 1
@@ -3316,7 +3403,16 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
             DELETE = 3
 
         class ActionType(proto.Enum):
-            r"""Allow or deny type."""
+            r"""Allow or deny type.
+
+            Values:
+                ACTION_TYPE_UNSPECIFIED (0):
+                    Unspecified. Will results in user error.
+                ALLOW (1):
+                    Allowed action type.
+                DENY (2):
+                    Deny action type.
+            """
             ACTION_TYPE_UNSPECIFIED = 0
             ALLOW = 1
             DENY = 2

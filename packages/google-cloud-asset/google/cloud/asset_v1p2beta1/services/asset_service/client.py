@@ -969,7 +969,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             metadata=metadata,
         )
 
-    def __enter__(self):
+    def __enter__(self) -> "AssetServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

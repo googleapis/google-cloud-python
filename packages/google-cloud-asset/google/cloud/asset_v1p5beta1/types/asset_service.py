@@ -32,7 +32,21 @@ __protobuf__ = proto.module(
 
 
 class ContentType(proto.Enum):
-    r"""Asset content type."""
+    r"""Asset content type.
+
+    Values:
+        CONTENT_TYPE_UNSPECIFIED (0):
+            Unspecified content type.
+        RESOURCE (1):
+            Resource metadata.
+        IAM_POLICY (2):
+            The actual IAM policy set on a resource.
+        ORG_POLICY (4):
+            The organization policy set on an asset.
+        ACCESS_POLICY (5):
+            The Access Context Manager policy set on an
+            asset.
+    """
     CONTENT_TYPE_UNSPECIFIED = 0
     RESOURCE = 1
     IAM_POLICY = 2
