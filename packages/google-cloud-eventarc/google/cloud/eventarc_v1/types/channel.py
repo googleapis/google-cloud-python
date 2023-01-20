@@ -77,7 +77,35 @@ class Channel(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State lists all the possible states of a Channel"""
+        r"""State lists all the possible states of a Channel
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            PENDING (1):
+                The PENDING state indicates that a Channel
+                has been created successfully and there is a new
+                activation token available for the subscriber to
+                use to convey the Channel to the provider in
+                order to create a Connection.
+            ACTIVE (2):
+                The ACTIVE state indicates that a Channel has
+                been successfully connected with the event
+                provider. An ACTIVE Channel is ready to receive
+                and route events from the event provider.
+            INACTIVE (3):
+                The INACTIVE state indicates that the Channel
+                cannot receive events permanently. There are two
+                possible cases this state can happen:
+                1. The SaaS provider disconnected from this
+                Channel. 2. The Channel activation token has
+                expired but the SaaS provider    wasn't
+                connected.
+
+                To re-establish a Connection with a provider,
+                the subscriber should create a new Channel and
+                give it to the provider.
+        """
         STATE_UNSPECIFIED = 0
         PENDING = 1
         ACTIVE = 2
