@@ -1822,7 +1822,7 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "GkeHubClient":
         return self
 
     def __exit__(self, type, value, traceback):

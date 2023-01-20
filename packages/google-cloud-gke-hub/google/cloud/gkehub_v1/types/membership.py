@@ -424,7 +424,23 @@ class MembershipState(proto.Message):
     """
 
     class Code(proto.Enum):
-        r"""Code describes the state of a Membership resource."""
+        r"""Code describes the state of a Membership resource.
+
+        Values:
+            CODE_UNSPECIFIED (0):
+                The code is not set.
+            CREATING (1):
+                The cluster is being registered.
+            READY (2):
+                The cluster is registered.
+            DELETING (3):
+                The cluster is being unregistered.
+            UPDATING (4):
+                The Membership is being updated.
+            SERVICE_UPDATING (5):
+                The Membership is being updated by the Hub
+                Service.
+        """
         CODE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2

@@ -50,6 +50,17 @@ __protobuf__ = proto.module(
 class DeploymentState(proto.Enum):
     r"""Enum representing the state of an ACM's deployment on a
     cluster
+
+    Values:
+        DEPLOYMENT_STATE_UNSPECIFIED (0):
+            Deployment's state cannot be determined
+        NOT_INSTALLED (1):
+            Deployment is not installed
+        INSTALLED (2):
+            Deployment is installed
+        ERROR (3):
+            Deployment was attempted to be installed, but
+            has errors
     """
     DEPLOYMENT_STATE_UNSPECIFIED = 0
     NOT_INSTALLED = 1
@@ -597,6 +608,29 @@ class SyncState(proto.Message):
     class SyncCode(proto.Enum):
         r"""An enum representing an ACM's status syncing configs to a
         cluster
+
+        Values:
+            SYNC_CODE_UNSPECIFIED (0):
+                ACM cannot determine a sync code
+            SYNCED (1):
+                ACM successfully synced the git Repo with the
+                cluster
+            PENDING (2):
+                ACM is in the progress of syncing a new
+                change
+            ERROR (3):
+                Indicates an error configuring ACM, and user
+                action is required
+            NOT_CONFIGURED (4):
+                ACM has been installed (operator manifest
+                deployed), but not configured.
+            NOT_INSTALLED (5):
+                ACM has not been installed (no operator pod
+                found)
+            UNAUTHORIZED (6):
+                Error authorizing with the cluster
+            UNREACHABLE (7):
+                Cluster could not be reached
         """
         SYNC_CODE_UNSPECIFIED = 0
         SYNCED = 1

@@ -163,7 +163,28 @@ class FeatureResourceState(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State describes the lifecycle status of a Feature."""
+        r"""State describes the lifecycle status of a Feature.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                State is unknown or not set.
+            ENABLING (1):
+                The Feature is being enabled, and the Feature
+                resource is being created. Once complete, the
+                corresponding Feature will be enabled in this
+                Hub.
+            ACTIVE (2):
+                The Feature is enabled in this Hub, and the
+                Feature resource is fully available.
+            DISABLING (3):
+                The Feature is being disabled in this Hub,
+                and the Feature resource is being deleted.
+            UPDATING (4):
+                The Feature resource is being updated.
+            SERVICE_UPDATING (5):
+                The Feature resource is being updated by the
+                Hub Service.
+        """
         STATE_UNSPECIFIED = 0
         ENABLING = 1
         ACTIVE = 2
@@ -198,6 +219,24 @@ class FeatureState(proto.Message):
     class Code(proto.Enum):
         r"""Code represents a machine-readable, high-level status of the
         Feature.
+
+        Values:
+            CODE_UNSPECIFIED (0):
+                Unknown or not set.
+            OK (1):
+                The Feature is operating normally.
+            WARNING (2):
+                The Feature has encountered an issue, and is
+                operating in a degraded state. The Feature may
+                need intervention to return to normal operation.
+                See the description and any associated
+                Feature-specific details for more information.
+            ERROR (3):
+                The Feature is not operating or is in a
+                severely degraded state. The Feature may need
+                intervention to return to normal operation. See
+                the description and any associated
+                Feature-specific details for more information.
         """
         CODE_UNSPECIFIED = 0
         OK = 1

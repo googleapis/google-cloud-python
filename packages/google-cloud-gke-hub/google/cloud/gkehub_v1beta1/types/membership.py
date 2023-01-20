@@ -142,6 +142,19 @@ class Membership(proto.Message):
         Each GKE distribution (on-GCP, on-Prem, on-X,...) will set this
         field automatically, but Attached Clusters customers should
         specify a type during registration.
+
+        Values:
+            INFRASTRUCTURE_TYPE_UNSPECIFIED (0):
+                No type was specified. Some Hub functionality
+                may require a type be specified, and will not
+                support Memberships with this value.
+            ON_PREM (1):
+                Private infrastructure that is owned or
+                operated by customer. This includes GKE
+                distributions such as GKE-OnPrem and
+                GKE-OnBareMetal.
+            MULTI_CLOUD (2):
+                Public cloud infrastructure.
         """
         INFRASTRUCTURE_TYPE_UNSPECIFIED = 0
         ON_PREM = 1
@@ -482,7 +495,21 @@ class OnPremCluster(proto.Message):
     """
 
     class ClusterType(proto.Enum):
-        r"""ClusterType describes on prem cluster's type."""
+        r"""ClusterType describes on prem cluster's type.
+
+        Values:
+            CLUSTERTYPE_UNSPECIFIED (0):
+                The ClusterType is not set.
+            BOOTSTRAP (1):
+                The ClusterType is bootstrap cluster.
+            HYBRID (2):
+                The ClusterType is baremetal hybrid cluster.
+            STANDALONE (3):
+                The ClusterType is baremetal standalone
+                cluster.
+            USER (4):
+                The ClusterType is user cluster.
+        """
         CLUSTERTYPE_UNSPECIFIED = 0
         BOOTSTRAP = 1
         HYBRID = 2
@@ -703,7 +730,23 @@ class MembershipState(proto.Message):
     """
 
     class Code(proto.Enum):
-        r"""Code describes the state of a Membership resource."""
+        r"""Code describes the state of a Membership resource.
+
+        Values:
+            CODE_UNSPECIFIED (0):
+                The code is not set.
+            CREATING (1):
+                The cluster is being registered.
+            READY (2):
+                The cluster is registered.
+            DELETING (3):
+                The cluster is being unregistered.
+            UPDATING (4):
+                The Membership is being updated.
+            SERVICE_UPDATING (5):
+                The Membership is being updated by the Hub
+                Service.
+        """
         CODE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
