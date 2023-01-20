@@ -287,12 +287,36 @@ class AppGateway(proto.Message):
     class Type(proto.Enum):
         r"""Enum containing list of all possible network connectivity
         options supported by BeyondCorp AppGateway.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            TCP_PROXY (1):
+                TCP Proxy based BeyondCorp Connection. API
+                will default to this if unset.
         """
         TYPE_UNSPECIFIED = 0
         TCP_PROXY = 1
 
     class State(proto.Enum):
-        r"""Represents the different states of an AppGateway."""
+        r"""Represents the different states of an AppGateway.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            CREATING (1):
+                AppGateway is being created.
+            CREATED (2):
+                AppGateway has been created.
+            UPDATING (3):
+                AppGateway's configuration is being updated.
+            DELETING (4):
+                AppGateway is being deleted.
+            DOWN (5):
+                AppGateway is down and may be restored in the
+                future. This happens when CCFE sends
+                ProjectState = OFF.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         CREATED = 2
@@ -303,6 +327,13 @@ class AppGateway(proto.Message):
     class HostType(proto.Enum):
         r"""Enum containing list of all possible host types supported by
         BeyondCorp Connection.
+
+        Values:
+            HOST_TYPE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            GCP_REGIONAL_MIG (1):
+                AppGateway hosted in a GCP regional managed
+                instance group.
         """
         HOST_TYPE_UNSPECIFIED = 0
         GCP_REGIONAL_MIG = 1

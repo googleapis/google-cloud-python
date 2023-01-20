@@ -975,7 +975,7 @@ class AppGatewaysServiceClient(metaclass=AppGatewaysServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "AppGatewaysServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):
