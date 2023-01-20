@@ -903,7 +903,35 @@ class Build(proto.Message):
     """
 
     class Status(proto.Enum):
-        r"""Possible status of a build or build step."""
+        r"""Possible status of a build or build step.
+
+        Values:
+            STATUS_UNKNOWN (0):
+                Status of the build is unknown.
+            PENDING (10):
+                Build has been created and is pending
+                execution and queuing. It has not been queued.
+            QUEUED (1):
+                Build or step is queued; work has not yet
+                begun.
+            WORKING (2):
+                Build or step is being executed.
+            SUCCESS (3):
+                Build or step finished successfully.
+            FAILURE (4):
+                Build or step failed to complete
+                successfully.
+            INTERNAL_ERROR (5):
+                Build or step failed due to an internal
+                cause.
+            TIMEOUT (6):
+                Build or step took longer than was allowed.
+            CANCELLED (7):
+                Build or step was canceled by a user.
+            EXPIRED (9):
+                Build was enqueued for longer than the value of
+                ``queue_ttl``.
+        """
         STATUS_UNKNOWN = 0
         PENDING = 10
         QUEUED = 1
@@ -927,7 +955,21 @@ class Build(proto.Message):
         """
 
         class Priority(proto.Enum):
-            r"""The relative importance of this warning."""
+            r"""The relative importance of this warning.
+
+            Values:
+                PRIORITY_UNSPECIFIED (0):
+                    Should not be used.
+                INFO (1):
+                    e.g. deprecation warnings and alternative
+                    feature highlights.
+                WARNING (2):
+                    e.g. automated detection of possible issues
+                    with the build.
+                ALERT (3):
+                    e.g. alerts that a feature used in the build
+                    is pending removal
+            """
             PRIORITY_UNSPECIFIED = 0
             INFO = 1
             WARNING = 2
@@ -958,6 +1000,22 @@ class Build(proto.Message):
         class FailureType(proto.Enum):
             r"""The name of a fatal problem encountered during the execution
             of the build.
+
+            Values:
+                FAILURE_TYPE_UNSPECIFIED (0):
+                    Type unspecified
+                PUSH_FAILED (1):
+                    Unable to push the image to the repository.
+                PUSH_IMAGE_NOT_FOUND (2):
+                    Final image not found.
+                PUSH_NOT_AUTHORIZED (3):
+                    Unauthorized push of the final image.
+                LOGGING_FAILURE (4):
+                    Backend logging failures. Should retry.
+                USER_BUILD_STEP (5):
+                    A build step has failed.
+                FETCH_SOURCE_FAILED (6):
+                    The source fetching has failed.
             """
             FAILURE_TYPE_UNSPECIFIED = 0
             PUSH_FAILED = 1
@@ -1418,7 +1476,16 @@ class Hash(proto.Message):
     """
 
     class HashType(proto.Enum):
-        r"""Specifies the hash algorithm, if any."""
+        r"""Specifies the hash algorithm, if any.
+
+        Values:
+            NONE (0):
+                No hash requested.
+            SHA256 (1):
+                Use a sha256 hash.
+            MD5 (2):
+                Use a md5 hash.
+        """
         NONE = 0
         SHA256 = 1
         MD5 = 2
@@ -1742,7 +1809,21 @@ class BuildApproval(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Specifies the current state of a build's approval."""
+        r"""Specifies the current state of a build's approval.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default enum type. This should not be used.
+            PENDING (1):
+                Build approval is pending.
+            APPROVED (2):
+                Build approval has been approved.
+            REJECTED (3):
+                Build approval has been rejected.
+            CANCELLED (5):
+                Build was cancelled while it was still
+                pending approval.
+        """
         STATE_UNSPECIFIED = 0
         PENDING = 1
         APPROVED = 2
@@ -1814,6 +1895,14 @@ class ApprovalResult(proto.Message):
     class Decision(proto.Enum):
         r"""Specifies whether or not this manual approval result is to
         approve or reject a build.
+
+        Values:
+            DECISION_UNSPECIFIED (0):
+                Default enum type. This should not be used.
+            APPROVED (1):
+                Build is approved.
+            REJECTED (2):
+                Build is rejected.
         """
         DECISION_UNSPECIFIED = 0
         APPROVED = 1
@@ -2137,6 +2226,21 @@ class PubsubConfig(proto.Message):
     class State(proto.Enum):
         r"""Enumerates potential issues with the underlying Pub/Sub
         subscription configuration.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The subscription configuration has not been
+                checked.
+            OK (1):
+                The Pub/Sub subscription is properly
+                configured.
+            SUBSCRIPTION_DELETED (2):
+                The subscription has been deleted.
+            TOPIC_DELETED (3):
+                The topic has been deleted.
+            SUBSCRIPTION_MISCONFIGURED (4):
+                Some of the subscription's field are
+                misconfigured.
         """
         STATE_UNSPECIFIED = 0
         OK = 1
@@ -2186,6 +2290,15 @@ class WebhookConfig(proto.Message):
     class State(proto.Enum):
         r"""Enumerates potential issues with the Secret Manager secret
         provided by the user.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The webhook auth configuration not been
+                checked.
+            OK (1):
+                The auth configuration is properly setup.
+            SECRET_DELETED (2):
+                The secret provided in auth_method has been deleted.
         """
         STATE_UNSPECIFIED = 0
         OK = 1
@@ -2227,7 +2340,22 @@ class PullRequestFilter(proto.Message):
     """
 
     class CommentControl(proto.Enum):
-        r"""Controls behavior of Pull Request comments."""
+        r"""Controls behavior of Pull Request comments.
+
+        Values:
+            COMMENTS_DISABLED (0):
+                Do not require comments on Pull Requests
+                before builds are triggered.
+            COMMENTS_ENABLED (1):
+                Enforce that repository owners or
+                collaborators must comment on Pull Requests
+                before builds are triggered.
+            COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY (2):
+                Enforce that repository owners or
+                collaborators must comment on external
+                contributors' Pull Requests before builds are
+                triggered.
+        """
         COMMENTS_DISABLED = 0
         COMMENTS_ENABLED = 1
         COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY = 2
@@ -2549,6 +2677,12 @@ class BuildOptions(proto.Message):
     class VerifyOption(proto.Enum):
         r"""Specifies the manner in which the build should be verified,
         if at all.
+
+        Values:
+            NOT_VERIFIED (0):
+                Not a verifiable build. (default)
+            VERIFIED (1):
+                Verified build.
         """
         NOT_VERIFIED = 0
         VERIFIED = 1
@@ -2557,6 +2691,18 @@ class BuildOptions(proto.Message):
         r"""Supported Compute Engine machine types. For more information, see
         `Machine
         types <https://cloud.google.com/compute/docs/machine-types>`__.
+
+        Values:
+            UNSPECIFIED (0):
+                Standard machine type.
+            N1_HIGHCPU_8 (1):
+                Highcpu machine with 8 CPUs.
+            N1_HIGHCPU_32 (2):
+                Highcpu machine with 32 CPUs.
+            E2_HIGHCPU_8 (5):
+                Highcpu e2 machine with 8 CPUs.
+            E2_HIGHCPU_32 (6):
+                Highcpu e2 machine with 32 CPUs.
         """
         UNSPECIFIED = 0
         N1_HIGHCPU_8 = 1
@@ -2567,6 +2713,15 @@ class BuildOptions(proto.Message):
     class SubstitutionOption(proto.Enum):
         r"""Specifies the behavior when there is an error in the
         substitution checks.
+
+        Values:
+            MUST_MATCH (0):
+                Fails the build if error in substitutions
+                checks, like missing a substitution in the
+                template or in the map.
+            ALLOW_LOOSE (1):
+                Do not fail the build if error in
+                substitutions checks.
         """
         MUST_MATCH = 0
         ALLOW_LOOSE = 1
@@ -2574,13 +2729,47 @@ class BuildOptions(proto.Message):
     class LogStreamingOption(proto.Enum):
         r"""Specifies the behavior when writing build logs to Google
         Cloud Storage.
+
+        Values:
+            STREAM_DEFAULT (0):
+                Service may automatically determine build log
+                streaming behavior.
+            STREAM_ON (1):
+                Build logs should be streamed to Google Cloud
+                Storage.
+            STREAM_OFF (2):
+                Build logs should not be streamed to Google
+                Cloud Storage; they will be written when the
+                build is completed.
         """
         STREAM_DEFAULT = 0
         STREAM_ON = 1
         STREAM_OFF = 2
 
     class LoggingMode(proto.Enum):
-        r"""Specifies the logging mode."""
+        r"""Specifies the logging mode.
+
+        Values:
+            LOGGING_UNSPECIFIED (0):
+                The service determines the logging mode. The default is
+                ``LEGACY``. Do not rely on the default logging behavior as
+                it may change in the future.
+            LEGACY (1):
+                Cloud Logging and Cloud Storage logging are
+                enabled.
+            GCS_ONLY (2):
+                Only Cloud Storage logging is enabled.
+            STACKDRIVER_ONLY (3):
+                This option is the same as CLOUD_LOGGING_ONLY.
+            CLOUD_LOGGING_ONLY (5):
+                Only Cloud Logging is enabled. Note that logs
+                for both the Cloud Console UI and Cloud SDK are
+                based on Cloud Storage logs, so neither will
+                provide logs if this option is chosen.
+            NONE (4):
+                Turn off all logging. No build logs will be
+                captured.
+        """
         LOGGING_UNSPECIFIED = 0
         LEGACY = 1
         GCS_ONLY = 2
@@ -2783,7 +2972,21 @@ class WorkerPool(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of the ``WorkerPool``."""
+        r"""State of the ``WorkerPool``.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                State of the ``WorkerPool`` is unknown.
+            CREATING (1):
+                ``WorkerPool`` is being created.
+            RUNNING (2):
+                ``WorkerPool`` is running.
+            DELETING (3):
+                ``WorkerPool`` is being deleted: cancelling builds and
+                draining workers.
+            DELETED (4):
+                ``WorkerPool`` is deleted.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         RUNNING = 2
@@ -2897,7 +3100,19 @@ class PrivatePoolV1Config(proto.Message):
         """
 
         class EgressOption(proto.Enum):
-            r"""Defines the egress option for the pool."""
+            r"""Defines the egress option for the pool.
+
+            Values:
+                EGRESS_OPTION_UNSPECIFIED (0):
+                    If set, defaults to PUBLIC_EGRESS.
+                NO_PUBLIC_EGRESS (1):
+                    If set, workers are created without any
+                    public address, which prevents network egress to
+                    public IPs unless a network proxy is configured.
+                PUBLIC_EGRESS (2):
+                    If set, workers are created with a public
+                    address which allows for public internet egress.
+            """
             EGRESS_OPTION_UNSPECIFIED = 0
             NO_PUBLIC_EGRESS = 1
             PUBLIC_EGRESS = 2
