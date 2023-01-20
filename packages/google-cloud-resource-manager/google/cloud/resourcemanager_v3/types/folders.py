@@ -87,7 +87,17 @@ class Folder(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Folder lifecycle states."""
+        r"""Folder lifecycle states.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified state.
+            ACTIVE (1):
+                The normal and active state.
+            DELETE_REQUESTED (2):
+                The folder has been marked for deletion by
+                the user.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         DELETE_REQUESTED = 2

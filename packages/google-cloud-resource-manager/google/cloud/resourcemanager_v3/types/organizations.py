@@ -78,7 +78,18 @@ class Organization(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Organization lifecycle states."""
+        r"""Organization lifecycle states.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified state.  This is only useful for
+                distinguishing unset values.
+            ACTIVE (1):
+                The normal and active state.
+            DELETE_REQUESTED (2):
+                The organization has been marked for deletion
+                by the user.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         DELETE_REQUESTED = 2

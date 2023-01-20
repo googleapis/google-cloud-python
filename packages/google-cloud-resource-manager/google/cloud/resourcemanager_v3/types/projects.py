@@ -109,7 +109,22 @@ class Project(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Project lifecycle states."""
+        r"""Project lifecycle states.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified state.  This is only used/useful
+                for distinguishing unset values.
+            ACTIVE (1):
+                The normal and active state.
+            DELETE_REQUESTED (2):
+                The project has been marked for deletion by the user (by
+                invoking
+                [DeleteProject][google.cloud.resourcemanager.v3.Projects.DeleteProject])
+                or by the system (Google Cloud Platform). This can generally
+                be reversed by invoking [UndeleteProject]
+                [google.cloud.resourcemanager.v3.Projects.UndeleteProject].
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         DELETE_REQUESTED = 2

@@ -1480,7 +1480,7 @@ class TagValuesClient(metaclass=TagValuesClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "TagValuesClient":
         return self
 
     def __exit__(self, type, value, traceback):
