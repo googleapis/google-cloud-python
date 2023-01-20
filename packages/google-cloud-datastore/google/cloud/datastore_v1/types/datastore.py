@@ -498,7 +498,19 @@ class CommitRequest(proto.Message):
     """
 
     class Mode(proto.Enum):
-        r"""The modes available for commits."""
+        r"""The modes available for commits.
+
+        Values:
+            MODE_UNSPECIFIED (0):
+                Unspecified. This value must not be used.
+            TRANSACTIONAL (1):
+                Transactional: The mutations are either all applied, or none
+                are applied. Learn about transactions
+                `here <https://cloud.google.com/datastore/docs/concepts/transactions>`__.
+            NON_TRANSACTIONAL (2):
+                Non-transactional: The mutations may not
+                apply as all or none.
+        """
         MODE_UNSPECIFIED = 0
         TRANSACTIONAL = 1
         NON_TRANSACTIONAL = 2
@@ -839,7 +851,16 @@ class ReadOptions(proto.Message):
     """
 
     class ReadConsistency(proto.Enum):
-        r"""The possible values for read consistencies."""
+        r"""The possible values for read consistencies.
+
+        Values:
+            READ_CONSISTENCY_UNSPECIFIED (0):
+                Unspecified. This value must not be used.
+            STRONG (1):
+                Strong consistency.
+            EVENTUAL (2):
+                Eventual consistency.
+        """
         READ_CONSISTENCY_UNSPECIFIED = 0
         STRONG = 1
         EVENTUAL = 2

@@ -46,7 +46,20 @@ __protobuf__ = proto.module(
 
 
 class OperationType(proto.Enum):
-    r"""Operation types."""
+    r"""Operation types.
+
+    Values:
+        OPERATION_TYPE_UNSPECIFIED (0):
+            Unspecified.
+        EXPORT_ENTITIES (1):
+            ExportEntities.
+        IMPORT_ENTITIES (2):
+            ImportEntities.
+        CREATE_INDEX (3):
+            CreateIndex.
+        DELETE_INDEX (4):
+            DeleteIndex.
+    """
     OPERATION_TYPE_UNSPECIFIED = 0
     EXPORT_ENTITIES = 1
     IMPORT_ENTITIES = 2
@@ -75,7 +88,33 @@ class CommonMetadata(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The various possible states for an ongoing Operation."""
+        r"""The various possible states for an ongoing Operation.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified.
+            INITIALIZING (1):
+                Request is being prepared for processing.
+            PROCESSING (2):
+                Request is actively being processed.
+            CANCELLING (3):
+                Request is in the process of being cancelled
+                after user called
+                google.longrunning.Operations.CancelOperation on
+                the operation.
+            FINALIZING (4):
+                Request has been processed and is in its
+                finalization stage.
+            SUCCESSFUL (5):
+                Request has completed successfully.
+            FAILED (6):
+                Request has finished being processed, but
+                encountered an error.
+            CANCELLED (7):
+                Request has finished being cancelled after
+                user called
+                google.longrunning.Operations.CancelOperation.
+        """
         STATE_UNSPECIFIED = 0
         INITIALIZING = 1
         PROCESSING = 2

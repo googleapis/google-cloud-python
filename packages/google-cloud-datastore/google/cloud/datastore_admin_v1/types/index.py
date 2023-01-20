@@ -50,19 +50,72 @@ class Index(proto.Message):
     class AncestorMode(proto.Enum):
         r"""For an ordered index, specifies whether each of the entity's
         ancestors will be included.
+
+        Values:
+            ANCESTOR_MODE_UNSPECIFIED (0):
+                The ancestor mode is unspecified.
+            NONE (1):
+                Do not include the entity's ancestors in the
+                index.
+            ALL_ANCESTORS (2):
+                Include all the entity's ancestors in the
+                index.
         """
         ANCESTOR_MODE_UNSPECIFIED = 0
         NONE = 1
         ALL_ANCESTORS = 2
 
     class Direction(proto.Enum):
-        r"""The direction determines how a property is indexed."""
+        r"""The direction determines how a property is indexed.
+
+        Values:
+            DIRECTION_UNSPECIFIED (0):
+                The direction is unspecified.
+            ASCENDING (1):
+                The property's values are indexed so as to
+                support sequencing in ascending order and also
+                query by <, >, <=, >=, and =.
+            DESCENDING (2):
+                The property's values are indexed so as to
+                support sequencing in descending order and also
+                query by <, >, <=, >=, and =.
+        """
         DIRECTION_UNSPECIFIED = 0
         ASCENDING = 1
         DESCENDING = 2
 
     class State(proto.Enum):
-        r"""The possible set of states of an index."""
+        r"""The possible set of states of an index.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state is unspecified.
+            CREATING (1):
+                The index is being created, and cannot be
+                used by queries. There is an active long-running
+                operation for the index. The index is updated
+                when writing an entity.
+                Some index data may exist.
+            READY (2):
+                The index is ready to be used.
+                The index is updated when writing an entity.
+                The index is fully populated from all stored
+                entities it applies to.
+            DELETING (3):
+                The index is being deleted, and cannot be
+                used by queries. There is an active long-running
+                operation for the index. The index is not
+                updated when writing an entity. Some index data
+                may exist.
+            ERROR (4):
+                The index was being created or deleted, but
+                something went wrong. The index cannot by used
+                by queries. There is no active long-running
+                operation for the index, and the most recently
+                finished long-running operation failed. The
+                index is not updated when writing an entity.
+                Some index data may exist.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2

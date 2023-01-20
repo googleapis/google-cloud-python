@@ -79,6 +79,17 @@ class EntityResult(proto.Message):
         context (for example, in message ``QueryResultBatch``, field
         ``entity_result_type`` specifies a ``ResultType`` for all the values
         in field ``entity_results``).
+
+        Values:
+            RESULT_TYPE_UNSPECIFIED (0):
+                Unspecified. This value is never used.
+            FULL (1):
+                The key and properties.
+            PROJECTION (2):
+                A projected subset of properties. The entity
+                may have no key.
+            KEY_ONLY (3):
+                Only the key.
         """
         RESULT_TYPE_UNSPECIFIED = 0
         FULL = 1
@@ -378,7 +389,16 @@ class PropertyOrder(proto.Message):
     """
 
     class Direction(proto.Enum):
-        r"""The sort direction."""
+        r"""The sort direction.
+
+        Values:
+            DIRECTION_UNSPECIFIED (0):
+                Unspecified. This value must not be used.
+            ASCENDING (1):
+                Ascending.
+            DESCENDING (2):
+                Descending.
+        """
         DIRECTION_UNSPECIFIED = 0
         ASCENDING = 1
         DESCENDING = 2
@@ -446,7 +466,15 @@ class CompositeFilter(proto.Message):
     """
 
     class Operator(proto.Enum):
-        r"""A composite filter operator."""
+        r"""A composite filter operator.
+
+        Values:
+            OPERATOR_UNSPECIFIED (0):
+                Unspecified. This value must not be used.
+            AND (1):
+                The results are required to satisfy each of
+                the combined filters.
+        """
         OPERATOR_UNSPECIFIED = 0
         AND = 1
 
@@ -475,7 +503,74 @@ class PropertyFilter(proto.Message):
     """
 
     class Operator(proto.Enum):
-        r"""A property filter operator."""
+        r"""A property filter operator.
+
+        Values:
+            OPERATOR_UNSPECIFIED (0):
+                Unspecified. This value must not be used.
+            LESS_THAN (1):
+                The given ``property`` is less than the given ``value``.
+
+                Requires:
+
+                -  That ``property`` comes first in ``order_by``.
+            LESS_THAN_OR_EQUAL (2):
+                The given ``property`` is less than or equal to the given
+                ``value``.
+
+                Requires:
+
+                -  That ``property`` comes first in ``order_by``.
+            GREATER_THAN (3):
+                The given ``property`` is greater than the given ``value``.
+
+                Requires:
+
+                -  That ``property`` comes first in ``order_by``.
+            GREATER_THAN_OR_EQUAL (4):
+                The given ``property`` is greater than or equal to the given
+                ``value``.
+
+                Requires:
+
+                -  That ``property`` comes first in ``order_by``.
+            EQUAL (5):
+                The given ``property`` is equal to the given ``value``.
+            IN (6):
+                The given ``property`` is equal to at least one value in the
+                given array.
+
+                Requires:
+
+                -  That ``value`` is a non-empty ``ArrayValue`` with at most
+                   10 values.
+                -  No other ``IN`` or ``NOT_IN`` is in the same query.
+            NOT_EQUAL (9):
+                The given ``property`` is not equal to the given ``value``.
+
+                Requires:
+
+                -  No other ``NOT_EQUAL`` or ``NOT_IN`` is in the same
+                   query.
+                -  That ``property`` comes first in the ``order_by``.
+            HAS_ANCESTOR (11):
+                Limit the result set to the given entity and its
+                descendants.
+
+                Requires:
+
+                -  That ``value`` is an entity key.
+            NOT_IN (13):
+                The value of the ``property`` is not in the given array.
+
+                Requires:
+
+                -  That ``value`` is a non-empty ``ArrayValue`` with at most
+                   10 values.
+                -  No other ``IN``, ``NOT_IN``, ``NOT_EQUAL`` is in the same
+                   query.
+                -  That ``field`` comes first in the ``order_by``.
+        """
         OPERATOR_UNSPECIFIED = 0
         LESS_THAN = 1
         LESS_THAN_OR_EQUAL = 2
@@ -636,7 +731,24 @@ class QueryResultBatch(proto.Message):
     """
 
     class MoreResultsType(proto.Enum):
-        r"""The possible values for the ``more_results`` field."""
+        r"""The possible values for the ``more_results`` field.
+
+        Values:
+            MORE_RESULTS_TYPE_UNSPECIFIED (0):
+                Unspecified. This value is never used.
+            NOT_FINISHED (1):
+                There may be additional batches to fetch from
+                this query.
+            MORE_RESULTS_AFTER_LIMIT (2):
+                The query is finished, but there may be more
+                results after the limit.
+            MORE_RESULTS_AFTER_CURSOR (4):
+                The query is finished, but there may be more
+                results after the end cursor.
+            NO_MORE_RESULTS (3):
+                The query is finished, and there are no more
+                results.
+        """
         MORE_RESULTS_TYPE_UNSPECIFIED = 0
         NOT_FINISHED = 1
         MORE_RESULTS_AFTER_LIMIT = 2

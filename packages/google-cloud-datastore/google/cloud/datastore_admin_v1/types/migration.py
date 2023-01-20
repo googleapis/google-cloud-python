@@ -30,7 +30,18 @@ __protobuf__ = proto.module(
 
 
 class MigrationState(proto.Enum):
-    r"""States for a migration."""
+    r"""States for a migration.
+
+    Values:
+        MIGRATION_STATE_UNSPECIFIED (0):
+            Unspecified.
+        RUNNING (1):
+            The migration is running.
+        PAUSED (2):
+            The migration is paused.
+        COMPLETE (3):
+            The migration is complete.
+    """
     MIGRATION_STATE_UNSPECIFIED = 0
     RUNNING = 1
     PAUSED = 2
@@ -38,7 +49,31 @@ class MigrationState(proto.Enum):
 
 
 class MigrationStep(proto.Enum):
-    r"""Steps in a migration."""
+    r"""Steps in a migration.
+
+    Values:
+        MIGRATION_STEP_UNSPECIFIED (0):
+            Unspecified.
+        PREPARE (6):
+            Pre-migration: the database is prepared for
+            migration.
+        START (1):
+            Start of migration.
+        APPLY_WRITES_SYNCHRONOUSLY (7):
+            Writes are applied synchronously to at least
+            one replica.
+        COPY_AND_VERIFY (2):
+            Data is copied to Cloud Firestore and then
+            verified to match the data in Cloud Datastore.
+        REDIRECT_EVENTUALLY_CONSISTENT_READS (3):
+            Eventually-consistent reads are redirected to
+            Cloud Firestore.
+        REDIRECT_STRONGLY_CONSISTENT_READS (4):
+            Strongly-consistent reads are redirected to
+            Cloud Firestore.
+        REDIRECT_WRITES (5):
+            Writes are redirected to Cloud Firestore.
+    """
     MIGRATION_STEP_UNSPECIFIED = 0
     PREPARE = 6
     START = 1
@@ -96,7 +131,18 @@ class MigrationProgressEvent(proto.Message):
     """
 
     class ConcurrencyMode(proto.Enum):
-        r"""Concurrency modes for transactions in Cloud Firestore."""
+        r"""Concurrency modes for transactions in Cloud Firestore.
+
+        Values:
+            CONCURRENCY_MODE_UNSPECIFIED (0):
+                Unspecified.
+            PESSIMISTIC (1):
+                Pessimistic concurrency.
+            OPTIMISTIC (2):
+                Optimistic concurrency.
+            OPTIMISTIC_WITH_ENTITY_GROUPS (3):
+                Optimistic concurrency with entity groups.
+        """
         CONCURRENCY_MODE_UNSPECIFIED = 0
         PESSIMISTIC = 1
         OPTIMISTIC = 2
