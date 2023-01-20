@@ -73,7 +73,14 @@ class NetworkConfig(proto.Message):
     """
 
     class AddressMode(proto.Enum):
-        r"""Internet protocol versions supported by Cloud Filestore."""
+        r"""Internet protocol versions supported by Cloud Filestore.
+
+        Values:
+            ADDRESS_MODE_UNSPECIFIED (0):
+                Internet protocol not set.
+            MODE_IPV4 (1):
+                Use the IPv4 internet protocol.
+        """
         ADDRESS_MODE_UNSPECIFIED = 0
         MODE_IPV4 = 1
 
@@ -174,13 +181,34 @@ class NfsExportOptions(proto.Message):
     """
 
     class AccessMode(proto.Enum):
-        r"""The access mode."""
+        r"""The access mode.
+
+        Values:
+            ACCESS_MODE_UNSPECIFIED (0):
+                AccessMode not set.
+            READ_ONLY (1):
+                The client can only read the file share.
+            READ_WRITE (2):
+                The client can read and write the file share
+                (default).
+        """
         ACCESS_MODE_UNSPECIFIED = 0
         READ_ONLY = 1
         READ_WRITE = 2
 
     class SquashMode(proto.Enum):
-        r"""The squash mode."""
+        r"""The squash mode.
+
+        Values:
+            SQUASH_MODE_UNSPECIFIED (0):
+                SquashMode not set.
+            NO_ROOT_SQUASH (1):
+                The Root user has root access to the file
+                share (default).
+            ROOT_SQUASH (2):
+                The Root user has squashed access to the
+                anonymous uid/gid.
+        """
         SQUASH_MODE_UNSPECIFIED = 0
         NO_ROOT_SQUASH = 1
         ROOT_SQUASH = 2
@@ -250,7 +278,30 @@ class Instance(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The instance state."""
+        r"""The instance state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                State not set.
+            CREATING (1):
+                The instance is being created.
+            READY (2):
+                The instance is available for use.
+            REPAIRING (3):
+                Work is being done on the instance. You can get further
+                details from the ``statusMessage`` field of the ``Instance``
+                resource.
+            DELETING (4):
+                The instance is shutting down.
+            ERROR (6):
+                The instance is experiencing an issue and might be unusable.
+                You can get further details from the ``statusMessage`` field
+                of the ``Instance`` resource.
+            RESTORING (7):
+                The instance is restoring a backup to an
+                existing file share and may be unusable during
+                this time.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -260,7 +311,27 @@ class Instance(proto.Message):
         RESTORING = 7
 
     class Tier(proto.Enum):
-        r"""Available service tiers."""
+        r"""Available service tiers.
+
+        Values:
+            TIER_UNSPECIFIED (0):
+                Not set.
+            STANDARD (1):
+                STANDARD tier.
+            PREMIUM (2):
+                PREMIUM tier.
+            BASIC_HDD (3):
+                BASIC instances offer a maximum capacity of 63.9 TB.
+                BASIC_HDD is an alias for STANDARD Tier, offering economical
+                performance backed by HDD.
+            BASIC_SSD (4):
+                BASIC instances offer a maximum capacity of 63.9 TB.
+                BASIC_SSD is an alias for PREMIUM Tier, and offers improved
+                performance backed by SSD.
+            HIGH_SCALE_SSD (5):
+                HIGH_SCALE instances offer expanded capacity and performance
+                scaling capabilities.
+        """
         TIER_UNSPECIFIED = 0
         STANDARD = 1
         PREMIUM = 2
@@ -585,7 +656,22 @@ class Backup(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The backup state."""
+        r"""The backup state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                State not set.
+            CREATING (1):
+                Backup is being created.
+            FINALIZING (2):
+                Backup has been taken and the operation is
+                being finalized. At this point, changes to the
+                file share will not be reflected in the backup.
+            READY (3):
+                Backup is available for use.
+            DELETING (4):
+                Backup is being deleted.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         FINALIZING = 2
