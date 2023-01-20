@@ -17,7 +17,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.apps.script.type import extension_point_pb2  # type: ignore
+import google.apps.script.type.types  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.apps.script.type.drive",
@@ -32,7 +32,7 @@ class DriveAddOnManifest(proto.Message):
     r"""Drive add-on manifest.
 
     Attributes:
-        homepage_trigger (google.apps.script.type.extension_point_pb2.HomepageExtensionPoint):
+        homepage_trigger (google.apps.script.type.types.HomepageExtensionPoint):
             If present, this overrides the configuration from
             ``addOns.common.homepageTrigger``.
         on_items_selected_trigger (google.apps.script.type.drive.types.DriveExtensionPoint):
@@ -41,10 +41,12 @@ class DriveAddOnManifest(proto.Message):
             (e.g. the My Drive Doclist).
     """
 
-    homepage_trigger: extension_point_pb2.HomepageExtensionPoint = proto.Field(
+    homepage_trigger: google.apps.script.type.types.HomepageExtensionPoint = (
+        proto.Field(
         proto.MESSAGE,
         number=1,
-        message=extension_point_pb2.HomepageExtensionPoint,
+            message=google.apps.script.type.types.HomepageExtensionPoint,
+        )
     )
     on_items_selected_trigger: "DriveExtensionPoint" = proto.Field(
         proto.MESSAGE,
