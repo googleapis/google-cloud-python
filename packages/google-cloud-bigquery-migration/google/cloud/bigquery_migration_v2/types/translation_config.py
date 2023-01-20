@@ -288,7 +288,16 @@ class TeradataDialect(proto.Message):
     """
 
     class Mode(proto.Enum):
-        r"""The sub-dialect options for Teradata."""
+        r"""The sub-dialect options for Teradata.
+
+        Values:
+            MODE_UNSPECIFIED (0):
+                Unspecified mode.
+            SQL (1):
+                Teradata SQL mode.
+            BTEQ (2):
+                BTEQ mode (which includes SQL).
+        """
         MODE_UNSPECIFIED = 0
         SQL = 1
         BTEQ = 2
@@ -404,7 +413,27 @@ class NameMappingKey(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""The type of the object that is being mapped."""
+        r"""The type of the object that is being mapped.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unspecified name mapping type.
+            DATABASE (1):
+                The object being mapped is a database.
+            SCHEMA (2):
+                The object being mapped is a schema.
+            RELATION (3):
+                The object being mapped is a relation.
+            ATTRIBUTE (4):
+                The object being mapped is an attribute.
+            RELATION_ALIAS (5):
+                The object being mapped is a relation alias.
+            ATTRIBUTE_ALIAS (6):
+                The object being mapped is a an attribute
+                alias.
+            FUNCTION (7):
+                The object being mapped is a function.
+        """
         TYPE_UNSPECIFIED = 0
         DATABASE = 1
         SCHEMA = 2

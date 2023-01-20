@@ -116,7 +116,24 @@ class TranslationTaskDetails(proto.Message):
     """
 
     class FileEncoding(proto.Enum):
-        r"""The file encoding types."""
+        r"""The file encoding types.
+
+        Values:
+            FILE_ENCODING_UNSPECIFIED (0):
+                File encoding setting is not specified.
+            UTF_8 (1):
+                File encoding is UTF_8.
+            ISO_8859_1 (2):
+                File encoding is ISO_8859_1.
+            US_ASCII (3):
+                File encoding is US_ASCII.
+            UTF_16 (4):
+                File encoding is UTF_16.
+            UTF_16LE (5):
+                File encoding is UTF_16LE.
+            UTF_16BE (6):
+                File encoding is UTF_16BE.
+        """
         FILE_ENCODING_UNSPECIFIED = 0
         UTF_8 = 1
         ISO_8859_1 = 2
@@ -126,7 +143,26 @@ class TranslationTaskDetails(proto.Message):
         UTF_16BE = 6
 
     class TokenType(proto.Enum):
-        r"""The special token data type."""
+        r"""The special token data type.
+
+        Values:
+            TOKEN_TYPE_UNSPECIFIED (0):
+                Token type is not specified.
+            STRING (1):
+                Token type as string.
+            INT64 (2):
+                Token type as integer.
+            NUMERIC (3):
+                Token type as numeric.
+            BOOL (4):
+                Token type as boolean.
+            FLOAT64 (5):
+                Token type as float.
+            DATE (6):
+                Token type as date.
+            TIMESTAMP (7):
+                Token type as timestamp.
+        """
         TOKEN_TYPE_UNSPECIFIED = 0
         STRING = 1
         INT64 = 2
@@ -220,14 +256,35 @@ class IdentifierSettings(proto.Message):
     """
 
     class IdentifierCase(proto.Enum):
-        r"""The identifier case type."""
+        r"""The identifier case type.
+
+        Values:
+            IDENTIFIER_CASE_UNSPECIFIED (0):
+                The identifier case is not specified.
+            ORIGINAL (1):
+                Identifiers' cases will be kept as the
+                original cases.
+            UPPER (2):
+                Identifiers will be in upper cases.
+            LOWER (3):
+                Identifiers will be in lower cases.
+        """
         IDENTIFIER_CASE_UNSPECIFIED = 0
         ORIGINAL = 1
         UPPER = 2
         LOWER = 3
 
     class IdentifierRewriteMode(proto.Enum):
-        r"""The SQL identifier rewrite mode."""
+        r"""The SQL identifier rewrite mode.
+
+        Values:
+            IDENTIFIER_REWRITE_MODE_UNSPECIFIED (0):
+                SQL Identifier rewrite mode is unspecified.
+            NONE (1):
+                SQL identifiers won't be rewrite.
+            REWRITE_ALL (2):
+                All SQL identifiers will be rewrite.
+        """
         IDENTIFIER_REWRITE_MODE_UNSPECIFIED = 0
         NONE = 1
         REWRITE_ALL = 2

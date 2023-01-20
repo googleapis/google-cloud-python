@@ -63,7 +63,27 @@ class MigrationWorkflow(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Possible migration workflow states."""
+        r"""Possible migration workflow states.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Workflow state is unspecified.
+            DRAFT (1):
+                Workflow is in draft status, i.e. tasks are
+                not yet eligible for execution.
+            RUNNING (2):
+                Workflow is running (i.e. tasks are eligible
+                for execution).
+            PAUSED (3):
+                Workflow is paused. Tasks currently in
+                progress may continue, but no further tasks will
+                be scheduled.
+            COMPLETED (4):
+                Workflow is complete. There should not be any
+                task in a non-terminal state, but if they are
+                (e.g. forced termination), they will not be
+                scheduled.
+        """
         STATE_UNSPECIFIED = 0
         DRAFT = 1
         RUNNING = 2
@@ -138,7 +158,26 @@ class MigrationTask(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Possible states of a migration task."""
+        r"""Possible states of a migration task.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state is unspecified.
+            PENDING (1):
+                The task is waiting for orchestration.
+            ORCHESTRATING (2):
+                The task is assigned to an orchestrator.
+            RUNNING (3):
+                The task is running, i.e. its subtasks are
+                ready for execution.
+            PAUSED (4):
+                Tha task is paused. Assigned subtasks can
+                continue, but no new subtasks will be scheduled.
+            SUCCEEDED (5):
+                The task finished successfully.
+            FAILED (6):
+                The task finished unsuccessfully.
+        """
         STATE_UNSPECIFIED = 0
         PENDING = 1
         ORCHESTRATING = 2
@@ -234,7 +273,27 @@ class MigrationSubtask(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Possible states of a migration subtask."""
+        r"""Possible states of a migration subtask.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state is unspecified.
+            ACTIVE (1):
+                The subtask is ready, i.e. it is ready for
+                execution.
+            RUNNING (2):
+                The subtask is running, i.e. it is assigned
+                to a worker for execution.
+            SUCCEEDED (3):
+                The subtask finished successfully.
+            FAILED (4):
+                The subtask finished unsuccessfully.
+            PAUSED (5):
+                The subtask is paused, i.e., it will not be
+                scheduled. If it was already assigned,it might
+                still finish but no new lease renewals will be
+                granted.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         RUNNING = 2
