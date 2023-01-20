@@ -50,6 +50,13 @@ __protobuf__ = proto.module(
 class EnrollmentLevel(proto.Enum):
     r"""Represents the type of enrollment for a given service to
     Access Approval.
+
+    Values:
+        ENROLLMENT_LEVEL_UNSPECIFIED (0):
+            Default value for proto, shouldn't be used.
+        BLOCK_ALL (1):
+            Service is enrolled in Access Approval for
+            all requests
     """
     ENROLLMENT_LEVEL_UNSPECIFIED = 0
     BLOCK_ALL = 1
@@ -113,7 +120,42 @@ class AccessReason(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Type of access justification."""
+        r"""Type of access justification.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Default value for proto, shouldn't be used.
+            CUSTOMER_INITIATED_SUPPORT (1):
+                Customer made a request or raised an issue that required the
+                principal to access customer data. ``detail`` is of the form
+                ("#####" is the issue ID):
+
+                -  "Feedback Report: #####"
+                -  "Case Number: #####"
+                -  "Case ID: #####"
+                -  "E-PIN Reference: #####"
+                -  "Google-#####"
+                -  "T-#####".
+            GOOGLE_INITIATED_SERVICE (2):
+                The principal accessed customer data in order
+                to diagnose or resolve a suspected issue in
+                services. Often this access is used to confirm
+                that customers are not affected by a suspected
+                service issue or to remediate a reversible
+                system issue.
+            GOOGLE_INITIATED_REVIEW (3):
+                Google initiated service for security, fraud,
+                abuse, or compliance purposes.
+            THIRD_PARTY_DATA_REQUEST (4):
+                The principal was compelled to access
+                customer data in order to respond to a legal
+                third party data request or process, including
+                legal processes from customers themselves.
+            GOOGLE_RESPONSE_TO_PRODUCTION_ALERT (5):
+                The principal accessed customer data in order
+                to diagnose or resolve a suspected issue in
+                services or a known outage.
+        """
         TYPE_UNSPECIFIED = 0
         CUSTOMER_INITIATED_SUPPORT = 1
         GOOGLE_INITIATED_SERVICE = 2

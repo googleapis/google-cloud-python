@@ -1443,7 +1443,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "AccessApprovalClient":
         return self
 
     def __exit__(self, type, value, traceback):
