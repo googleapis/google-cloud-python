@@ -154,7 +154,29 @@ class NodeTaint(proto.Message):
     """
 
     class Effect(proto.Enum):
-        r"""The taint effect."""
+        r"""The taint effect.
+
+        Values:
+            EFFECT_UNSPECIFIED (0):
+                Not set.
+            NO_SCHEDULE (1):
+                Do not allow new pods to schedule onto the
+                node unless they tolerate the taint, but allow
+                all pods submitted to Kubelet without going
+                through the scheduler to start, and allow all
+                already-running pods to continue running.
+                Enforced by the scheduler.
+            PREFER_NO_SCHEDULE (2):
+                Like TaintEffectNoSchedule, but the scheduler
+                tries not to schedule new pods onto the node,
+                rather than prohibiting new pods from scheduling
+                onto the node entirely. Enforced by the
+                scheduler.
+            NO_EXECUTE (3):
+                Evict any already-running pods that do not
+                tolerate the taint. Currently enforced by
+                NodeController.
+        """
         EFFECT_UNSPECIFIED = 0
         NO_SCHEDULE = 1
         PREFER_NO_SCHEDULE = 2
@@ -237,7 +259,18 @@ class LoggingComponentConfig(proto.Message):
     """
 
     class Component(proto.Enum):
-        r"""The components of the logging configuration;"""
+        r"""The components of the logging configuration;
+
+        Values:
+            COMPONENT_UNSPECIFIED (0):
+                No component is specified
+            SYSTEM_COMPONENTS (1):
+                This indicates that system logging components
+                is enabled.
+            WORKLOADS (2):
+                This indicates that user workload logging
+                component is enabled.
+        """
         COMPONENT_UNSPECIFIED = 0
         SYSTEM_COMPONENTS = 1
         WORKLOADS = 2

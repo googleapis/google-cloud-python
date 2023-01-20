@@ -135,7 +135,32 @@ class AwsCluster(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The lifecycle state of the cluster."""
+        r"""The lifecycle state of the cluster.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not set.
+            PROVISIONING (1):
+                The PROVISIONING state indicates the cluster
+                is being created.
+            RUNNING (2):
+                The RUNNING state indicates the cluster has
+                been created and is fully usable.
+            RECONCILING (3):
+                The RECONCILING state indicates that some
+                work is actively being done on the cluster, such
+                as upgrading the control plane replicas.
+            STOPPING (4):
+                The STOPPING state indicates the cluster is
+                being deleted.
+            ERROR (5):
+                The ERROR state indicates the cluster is in a
+                broken unrecoverable state.
+            DEGRADED (6):
+                The DEGRADED state indicates the cluster
+                requires user action to restore full
+                functionality.
+        """
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         RUNNING = 2
@@ -493,6 +518,14 @@ class AwsVolumeTemplate(proto.Message):
         See
         https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html
         for more information.
+
+        Values:
+            VOLUME_TYPE_UNSPECIFIED (0):
+                Not set.
+            GP2 (1):
+                GP2 (General Purpose SSD volume type).
+            GP3 (2):
+                GP3 (General Purpose SSD volume type).
         """
         VOLUME_TYPE_UNSPECIFIED = 0
         GP2 = 1
@@ -625,7 +658,31 @@ class AwsNodePool(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The lifecycle state of the node pool."""
+        r"""The lifecycle state of the node pool.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not set.
+            PROVISIONING (1):
+                The PROVISIONING state indicates the node
+                pool is being created.
+            RUNNING (2):
+                The RUNNING state indicates the node pool has
+                been created and is fully usable.
+            RECONCILING (3):
+                The RECONCILING state indicates that the node
+                pool is being reconciled.
+            STOPPING (4):
+                The STOPPING state indicates the node pool is
+                being deleted.
+            ERROR (5):
+                The ERROR state indicates the node pool is in
+                a broken unrecoverable state.
+            DEGRADED (6):
+                The DEGRADED state indicates the node pool
+                requires user action to restore full
+                functionality.
+        """
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         RUNNING = 2
@@ -967,6 +1024,16 @@ class AwsInstancePlacement(proto.Message):
     class Tenancy(proto.Enum):
         r"""Tenancy defines how EC2 instances are distributed across
         physical hardware.
+
+        Values:
+            TENANCY_UNSPECIFIED (0):
+                Not set.
+            DEFAULT (1):
+                Use default VPC tenancy.
+            DEDICATED (2):
+                Run a dedicated instance.
+            HOST (3):
+                Launch this instance to a dedicated host.
         """
         TENANCY_UNSPECIFIED = 0
         DEFAULT = 1

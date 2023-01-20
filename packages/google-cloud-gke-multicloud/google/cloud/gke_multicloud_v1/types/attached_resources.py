@@ -125,7 +125,32 @@ class AttachedCluster(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The lifecycle state of the cluster."""
+        r"""The lifecycle state of the cluster.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not set.
+            PROVISIONING (1):
+                The PROVISIONING state indicates the cluster
+                is being registered.
+            RUNNING (2):
+                The RUNNING state indicates the cluster has
+                been register and is fully usable.
+            RECONCILING (3):
+                The RECONCILING state indicates that some
+                work is actively being done on the cluster, such
+                as upgrading software components.
+            STOPPING (4):
+                The STOPPING state indicates the cluster is
+                being de-registered.
+            ERROR (5):
+                The ERROR state indicates the cluster is in a
+                broken unrecoverable state.
+            DEGRADED (6):
+                The DEGRADED state indicates the cluster
+                requires user action to restore full
+                functionality.
+        """
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         RUNNING = 2
