@@ -93,12 +93,49 @@ class VolumeBackup(proto.Message):
     """
 
     class VolumeBackupFormat(proto.Enum):
-        r"""Identifies the format used for the volume backup."""
+        r"""Identifies the format used for the volume backup.
+
+        Values:
+            VOLUME_BACKUP_FORMAT_UNSPECIFIED (0):
+                Default value, not specified.
+            GCE_PERSISTENT_DISK (1):
+                Compute Engine Persistent Disk snapshot based
+                volume backup.
+        """
         VOLUME_BACKUP_FORMAT_UNSPECIFIED = 0
         GCE_PERSISTENT_DISK = 1
 
     class State(proto.Enum):
-        r"""The current state of a VolumeBackup"""
+        r"""The current state of a VolumeBackup
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                This is an illegal state and should not be
+                encountered.
+            CREATING (1):
+                A volume for the backup was identified and
+                backup process is about to start.
+            SNAPSHOTTING (2):
+                The volume backup operation has begun and is
+                in the initial "snapshot" phase of the process.
+                Any defined ProtectedApplication "pre" hooks
+                will be executed before entering this state and
+                "post" hooks will be executed upon leaving this
+                state.
+            UPLOADING (3):
+                The snapshot phase of the volume backup
+                operation has completed and the snapshot is now
+                being uploaded to backup storage.
+            SUCCEEDED (4):
+                The volume backup operation has completed
+                successfully.
+            FAILED (5):
+                The volume backup operation has failed.
+            DELETING (6):
+                This VolumeBackup resource (and its
+                associated artifacts) is in the process of being
+                deleted.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         SNAPSHOTTING = 2
@@ -220,12 +257,37 @@ class VolumeRestore(proto.Message):
     """
 
     class VolumeType(proto.Enum):
-        r"""Supported volume types."""
+        r"""Supported volume types.
+
+        Values:
+            VOLUME_TYPE_UNSPECIFIED (0):
+                Default
+            GCE_PERSISTENT_DISK (1):
+                Compute Engine Persistent Disk volume
+        """
         VOLUME_TYPE_UNSPECIFIED = 0
         GCE_PERSISTENT_DISK = 1
 
     class State(proto.Enum):
-        r"""The current state of a VolumeRestore"""
+        r"""The current state of a VolumeRestore
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                This is an illegal state and should not be
+                encountered.
+            CREATING (1):
+                A volume for the restore was identified and
+                restore process is about to start.
+            RESTORING (2):
+                The volume is currently being restored.
+            SUCCEEDED (3):
+                The volume has been successfully restored.
+            FAILED (4):
+                The volume restoration process failed.
+            DELETING (5):
+                This VolumeRestore resource is in the process
+                of being deleted.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         RESTORING = 2

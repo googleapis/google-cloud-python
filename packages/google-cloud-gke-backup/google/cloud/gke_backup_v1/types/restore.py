@@ -109,7 +109,29 @@ class Restore(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Possible values for state of the Restore."""
+        r"""Possible values for state of the Restore.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The Restore resource is in the process of
+                being created.
+            CREATING (1):
+                The Restore resource has been created and the
+                associated RestoreJob Kubernetes resource has
+                been injected into target cluster.
+            IN_PROGRESS (2):
+                The gkebackup agent in the cluster has begun
+                executing the restore operation.
+            SUCCEEDED (3):
+                The restore operation has completed
+                successfully. Restored workloads may not yet be
+                operational.
+            FAILED (4):
+                The restore operation has failed.
+            DELETING (5):
+                This Restore resource is in the process of
+                being deleted.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         IN_PROGRESS = 2
@@ -255,7 +277,31 @@ class RestoreConfig(proto.Message):
     """
 
     class VolumeDataRestorePolicy(proto.Enum):
-        r"""Defines how volume data should be restored"""
+        r"""Defines how volume data should be restored
+
+        Values:
+            VOLUME_DATA_RESTORE_POLICY_UNSPECIFIED (0):
+                Unspecified (illegal).
+            RESTORE_VOLUME_DATA_FROM_BACKUP (1):
+                For each PVC to be restored, will create a
+                new underlying volume (and PV) from the
+                corresponding VolumeBackup contained within the
+                Backup.
+            REUSE_VOLUME_HANDLE_FROM_BACKUP (2):
+                For each PVC to be restored, attempt to reuse
+                the original PV contained in the Backup (with
+                its original underlying volume).  Note that
+                option is likely only usable when restoring a
+                workload to its original cluster.
+            NO_VOLUME_DATA_RESTORATION (3):
+                For each PVC to be restored, PVCs will be
+                created without any particular action to restore
+                data.  In this case, the normal Kubernetes
+                provisioning logic would kick in, and this would
+                likely result in either dynamically provisioning
+                blank PVs or binding to statically provisioned
+                PVs.
+        """
         VOLUME_DATA_RESTORE_POLICY_UNSPECIFIED = 0
         RESTORE_VOLUME_DATA_FROM_BACKUP = 1
         REUSE_VOLUME_HANDLE_FROM_BACKUP = 2
@@ -265,6 +311,21 @@ class RestoreConfig(proto.Message):
         r"""Defines the behavior for handling the situation where
         cluster-scoped resources being restored already exist in the
         target cluster.
+
+        Values:
+            CLUSTER_RESOURCE_CONFLICT_POLICY_UNSPECIFIED (0):
+                Unspecified. Only allowed if no
+                cluster-scoped resources will be restored.
+            USE_EXISTING_VERSION (1):
+                Do not attempt to restore the conflicting
+                resource.
+            USE_BACKUP_VERSION (2):
+                Delete the existing version before
+                re-creating it from the Backup. Note that this
+                is a dangerous option which could cause
+                unintentional data loss if used inappropriately
+                - for example, deleting a CRD will cause
+                Kubernetes to delete all CRs of that type.
         """
         CLUSTER_RESOURCE_CONFLICT_POLICY_UNSPECIFIED = 0
         USE_EXISTING_VERSION = 1
@@ -274,6 +335,31 @@ class RestoreConfig(proto.Message):
         r"""Defines the behavior for handling the situation where sets of
         namespaced resources being restored already exist in the target
         cluster.
+
+        Values:
+            NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED (0):
+                Unspecified (invalid).
+            DELETE_AND_RESTORE (1):
+                When conflicting top-level resources (either
+                Namespaces or ProtectedApplications, depending
+                upon the scope) are encountered, this will first
+                trigger a delete of the conflicting resource AND
+                ALL OF ITS REFERENCED RESOURCES (e.g., all
+                resources in the Namespace or all resources
+                referenced by the ProtectedApplication) before
+                restoring the resources from the Backup. This
+                mode should only be used when you are intending
+                to revert some portion of a cluster to an
+                earlier state.
+            FAIL_ON_CONFLICT (2):
+                If conflicting top-level resources (either
+                Namespaces or ProtectedApplications, depending
+                upon the scope) are encountered at the beginning
+                of a restore process, the Restore will fail.  If
+                a conflict occurs during the restore process
+                itself (e.g., because an out of band process
+                creates conflicting resources), a conflict will
+                be reported.
         """
         NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED = 0
         DELETE_AND_RESTORE = 1

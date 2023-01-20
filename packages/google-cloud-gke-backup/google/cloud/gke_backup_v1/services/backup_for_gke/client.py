@@ -3592,7 +3592,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "BackupForGKEClient":
         return self
 
     def __exit__(self, type, value, traceback):

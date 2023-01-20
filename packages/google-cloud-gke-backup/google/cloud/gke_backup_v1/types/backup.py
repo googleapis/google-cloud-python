@@ -170,7 +170,28 @@ class Backup(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State"""
+        r"""State
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The Backup resource is in the process of
+                being created.
+            CREATING (1):
+                The Backup resource has been created and the
+                associated BackupJob Kubernetes resource has
+                been injected into the source cluster.
+            IN_PROGRESS (2):
+                The gkebackup agent in the cluster has begun
+                executing the backup operation.
+            SUCCEEDED (3):
+                The backup operation has completed
+                successfully.
+            FAILED (4):
+                The backup operation has failed.
+            DELETING (5):
+                This Backup resource (and its associated
+                artifacts) is in the process of being deleted.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         IN_PROGRESS = 2
