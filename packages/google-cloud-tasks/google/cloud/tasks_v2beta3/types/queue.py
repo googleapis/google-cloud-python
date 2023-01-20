@@ -190,14 +190,58 @@ class Queue(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of the queue."""
+        r"""State of the queue.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified state.
+            RUNNING (1):
+                The queue is running. Tasks can be dispatched.
+
+                If the queue was created using Cloud Tasks and the queue has
+                had no activity (method calls or task dispatches) for 30
+                days, the queue may take a few minutes to re-activate. Some
+                method calls may return
+                [NOT_FOUND][google.rpc.Code.NOT_FOUND] and tasks may not be
+                dispatched for a few minutes until the queue has been
+                re-activated.
+            PAUSED (2):
+                Tasks are paused by the user. If the queue is
+                paused then Cloud Tasks will stop delivering
+                tasks from it, but more tasks can still be added
+                to it by the user.
+            DISABLED (3):
+                The queue is disabled.
+
+                A queue becomes ``DISABLED`` when
+                `queue.yaml <https://cloud.google.com/appengine/docs/python/config/queueref>`__
+                or
+                `queue.xml <https://cloud.google.com/appengine/docs/standard/java/config/queueref>`__
+                is uploaded which does not contain the queue. You cannot
+                directly disable a queue.
+
+                When a queue is disabled, tasks can still be added to a
+                queue but the tasks are not dispatched.
+
+                To permanently delete this queue and all of its tasks, call
+                [DeleteQueue][google.cloud.tasks.v2beta3.CloudTasks.DeleteQueue].
+        """
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         PAUSED = 2
         DISABLED = 3
 
     class Type(proto.Enum):
-        r"""The type of the queue."""
+        r"""The type of the queue.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Default value.
+            PULL (1):
+                A pull queue.
+            PUSH (2):
+                A push queue.
+        """
         TYPE_UNSPECIFIED = 0
         PULL = 1
         PUSH = 2

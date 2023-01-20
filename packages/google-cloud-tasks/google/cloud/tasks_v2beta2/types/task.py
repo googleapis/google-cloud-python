@@ -121,6 +121,29 @@ class Task(proto.Message):
         retrieved by default because some data, such as payloads, might be
         desirable to return only when needed because of its large size or
         because of the sensitivity of data that it contains.
+
+        Values:
+            VIEW_UNSPECIFIED (0):
+                Unspecified. Defaults to BASIC.
+            BASIC (1):
+                The basic view omits fields which can be large or can
+                contain sensitive data.
+
+                This view does not include the ([payload in
+                AppEngineHttpRequest][google.cloud.tasks.v2beta2.AppEngineHttpRequest]
+                and [payload in
+                PullMessage][google.cloud.tasks.v2beta2.PullMessage.payload]).
+                These payloads are desirable to return only when needed,
+                because they can be large and because of the sensitivity of
+                the data that you choose to store in it.
+            FULL (2):
+                All information is returned.
+
+                Authorization for
+                [FULL][google.cloud.tasks.v2beta2.Task.View.FULL] requires
+                ``cloudtasks.tasks.fullView`` `Google
+                IAM <https://cloud.google.com/iam/>`__ permission on the
+                [Queue][google.cloud.tasks.v2beta2.Queue] resource.
         """
         VIEW_UNSPECIFIED = 0
         BASIC = 1

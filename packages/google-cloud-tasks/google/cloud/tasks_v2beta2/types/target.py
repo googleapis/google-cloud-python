@@ -31,7 +31,22 @@ __protobuf__ = proto.module(
 
 
 class HttpMethod(proto.Enum):
-    r"""The HTTP method used to execute the task."""
+    r"""The HTTP method used to execute the task.
+
+    Values:
+        HTTP_METHOD_UNSPECIFIED (0):
+            HTTP method unspecified
+        POST (1):
+            HTTP POST
+        GET (2):
+            HTTP GET
+        HEAD (3):
+            HTTP HEAD
+        PUT (4):
+            HTTP PUT
+        DELETE (5):
+            HTTP DELETE
+    """
     HTTP_METHOD_UNSPECIFIED = 0
     POST = 1
     GET = 2
