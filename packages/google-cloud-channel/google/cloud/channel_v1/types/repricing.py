@@ -39,6 +39,19 @@ __protobuf__ = proto.module(
 class RebillingBasis(proto.Enum):
     r"""Specifies the different costs that the modified bill can be
     based on.
+
+    Values:
+        REBILLING_BASIS_UNSPECIFIED (0):
+            Not used.
+        COST_AT_LIST (1):
+            Use the list cost, also known as the MSRP.
+        DIRECT_CUSTOMER_COST (2):
+            Pass through all discounts except the
+            Reseller Program Discount. If this is the
+            default cost base and no adjustments are
+            specified, the output cost will be exactly what
+            the customer would see if they viewed the bill
+            in the Google Cloud Console.
     """
     REBILLING_BASIS_UNSPECIFIED = 0
     COST_AT_LIST = 1

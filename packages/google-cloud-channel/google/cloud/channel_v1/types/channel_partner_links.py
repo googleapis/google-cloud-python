@@ -34,6 +34,16 @@ class ChannelPartnerLinkView(proto.Enum):
     r"""The level of granularity the
     [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]
     will display.
+
+    Values:
+        UNSPECIFIED (0):
+            The default / unset value.
+            The API will default to the BASIC view.
+        BASIC (1):
+            Includes all fields except the
+            [ChannelPartnerLink.channel_partner_cloud_identity_info][google.cloud.channel.v1.ChannelPartnerLink.channel_partner_cloud_identity_info].
+        FULL (2):
+            Includes all fields.
     """
     UNSPECIFIED = 0
     BASIC = 1
@@ -43,6 +53,21 @@ class ChannelPartnerLinkView(proto.Enum):
 class ChannelPartnerLinkState(proto.Enum):
     r"""ChannelPartnerLinkState represents state of a channel partner
     link.
+
+    Values:
+        CHANNEL_PARTNER_LINK_STATE_UNSPECIFIED (0):
+            Not used.
+        INVITED (1):
+            An invitation has been sent to the reseller
+            to create a channel partner link.
+        ACTIVE (2):
+            Status when the reseller is active.
+        REVOKED (3):
+            Status when the reseller has been revoked by
+            the distributor.
+        SUSPENDED (4):
+            Status when the reseller is suspended by
+            Google or distributor.
     """
     CHANNEL_PARTNER_LINK_STATE_UNSPECIFIED = 0
     INVITED = 1

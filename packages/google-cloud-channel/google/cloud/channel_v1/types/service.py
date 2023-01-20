@@ -2033,7 +2033,17 @@ class ListPurchasableSkusRequest(proto.Message):
         """
 
         class ChangeType(proto.Enum):
-            r"""Change Type enum."""
+            r"""Change Type enum.
+
+            Values:
+                CHANGE_TYPE_UNSPECIFIED (0):
+                    Not used.
+                UPGRADE (1):
+                    SKU is an upgrade on the current entitlement.
+                DOWNGRADE (2):
+                    SKU is a downgrade on the current
+                    entitlement.
+            """
             CHANGE_TYPE_UNSPECIFIED = 0
             UPGRADE = 1
             DOWNGRADE = 2

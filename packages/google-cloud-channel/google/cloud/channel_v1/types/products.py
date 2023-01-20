@@ -30,7 +30,14 @@ __protobuf__ = proto.module(
 
 
 class MediaType(proto.Enum):
-    r"""Type of media used."""
+    r"""Type of media used.
+
+    Values:
+        MEDIA_TYPE_UNSPECIFIED (0):
+            Not used.
+        MEDIA_TYPE_IMAGE (1):
+            Type of image.
+    """
     MEDIA_TYPE_UNSPECIFIED = 0
     MEDIA_TYPE_IMAGE = 1
 

@@ -99,7 +99,16 @@ class Entitlement(proto.Message):
     """
 
     class ProvisioningState(proto.Enum):
-        r"""Indicates the current provisioning state of the entitlement."""
+        r"""Indicates the current provisioning state of the entitlement.
+
+        Values:
+            PROVISIONING_STATE_UNSPECIFIED (0):
+                Not used.
+            ACTIVE (1):
+                The entitlement is currently active.
+            SUSPENDED (5):
+                The entitlement is currently suspended.
+        """
         PROVISIONING_STATE_UNSPECIFIED = 0
         ACTIVE = 1
         SUSPENDED = 5
@@ -108,6 +117,23 @@ class Entitlement(proto.Message):
         r"""Suspension reason for an entitlement if
         [provisioning_state][google.cloud.channel.v1.Entitlement.provisioning_state]
         = SUSPENDED.
+
+        Values:
+            SUSPENSION_REASON_UNSPECIFIED (0):
+                Not used.
+            RESELLER_INITIATED (1):
+                Entitlement was manually suspended by the
+                Reseller.
+            TRIAL_ENDED (2):
+                Trial ended.
+            RENEWAL_WITH_TYPE_CANCEL (3):
+                Entitlement renewal was canceled.
+            PENDING_TOS_ACCEPTANCE (4):
+                Entitlement was automatically suspended on
+                creation for pending ToS acceptance on customer.
+            OTHER (100):
+                Other reasons (internal reasons, abuse,
+                etc.).
         """
         SUSPENSION_REASON_UNSPECIFIED = 0
         RESELLER_INITIATED = 1
@@ -395,7 +421,19 @@ class TransferEligibility(proto.Message):
     """
 
     class Reason(proto.Enum):
-        r"""Reason of ineligibility."""
+        r"""Reason of ineligibility.
+
+        Values:
+            REASON_UNSPECIFIED (0):
+                Not used.
+            PENDING_TOS_ACCEPTANCE (1):
+                Reseller needs to accept TOS before
+                transferring the SKU.
+            SKU_NOT_ELIGIBLE (2):
+                Reseller not eligible to sell the SKU.
+            SKU_SUSPENDED (3):
+                SKU subscription is suspended
+        """
         REASON_UNSPECIFIED = 0
         PENDING_TOS_ACCEPTANCE = 1
         SKU_NOT_ELIGIBLE = 2

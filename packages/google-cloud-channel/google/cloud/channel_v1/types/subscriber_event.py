@@ -40,7 +40,17 @@ class CustomerEvent(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Type of customer event."""
+        r"""Type of customer event.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Not used.
+            PRIMARY_DOMAIN_CHANGED (1):
+                Primary domain for customer was changed.
+            PRIMARY_DOMAIN_VERIFIED (2):
+                Primary domain of the customer has been
+                verified.
+        """
         TYPE_UNSPECIFIED = 0
         PRIMARY_DOMAIN_CHANGED = 1
         PRIMARY_DOMAIN_VERIFIED = 2
@@ -70,7 +80,45 @@ class EntitlementEvent(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Type of entitlement event."""
+        r"""Type of entitlement event.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Not used.
+            CREATED (1):
+                A new entitlement was created.
+            PRICE_PLAN_SWITCHED (3):
+                The offer type associated with an entitlement
+                was changed. This is not triggered if an
+                entitlement converts from a commit offer to a
+                flexible offer as part of a renewal.
+            COMMITMENT_CHANGED (4):
+                Annual commitment for a commit plan was
+                changed.
+            RENEWED (5):
+                An annual entitlement was renewed.
+            SUSPENDED (6):
+                Entitlement was suspended.
+            ACTIVATED (7):
+                Entitlement was unsuspended.
+            CANCELLED (8):
+                Entitlement was cancelled.
+            SKU_CHANGED (9):
+                Entitlement was upgraded or downgraded (e.g.
+                from Google Workspace Business Standard to
+                Google Workspace Business Plus).
+            RENEWAL_SETTING_CHANGED (10):
+                The renewal settings of an entitlement has
+                changed.
+            PAID_SERVICE_STARTED (11):
+                Paid service has started on trial
+                entitlement.
+            LICENSE_ASSIGNMENT_CHANGED (12):
+                License was assigned to or revoked from a
+                user.
+            LICENSE_CAP_CHANGED (13):
+                License cap was changed for the entitlement.
+        """
         TYPE_UNSPECIFIED = 0
         CREATED = 1
         PRICE_PLAN_SWITCHED = 3

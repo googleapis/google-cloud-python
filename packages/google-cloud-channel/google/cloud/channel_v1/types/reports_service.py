@@ -365,6 +365,22 @@ class Column(proto.Message):
     class DataType(proto.Enum):
         r"""Available data types for columns. Corresponds to the fields in the
         ReportValue ``oneof`` field.
+
+        Values:
+            DATA_TYPE_UNSPECIFIED (0):
+                Not used.
+            STRING (1):
+                ReportValues for this column will use string_value.
+            INT (2):
+                ReportValues for this column will use int_value.
+            DECIMAL (3):
+                ReportValues for this column will use decimal_value.
+            MONEY (4):
+                ReportValues for this column will use money_value.
+            DATE (5):
+                ReportValues for this column will use date_value.
+            DATE_TIME (6):
+                ReportValues for this column will use date_time_value.
         """
         DATA_TYPE_UNSPECIFIED = 0
         STRING = 1
@@ -550,7 +566,21 @@ class ReportStatus(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Available states of report generation."""
+        r"""Available states of report generation.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not used.
+            STARTED (1):
+                Report processing started.
+            WRITING (2):
+                Data generated from the report is being
+                staged.
+            AVAILABLE (3):
+                Report data is available for access.
+            FAILED (4):
+                Report failed.
+        """
         STATE_UNSPECIFIED = 0
         STARTED = 1
         WRITING = 2

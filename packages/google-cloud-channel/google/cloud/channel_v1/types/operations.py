@@ -36,7 +36,45 @@ class OperationMetadata(proto.Message):
     """
 
     class OperationType(proto.Enum):
-        r"""RPCs that return a Long Running Operation."""
+        r"""RPCs that return a Long Running Operation.
+
+        Values:
+            OPERATION_TYPE_UNSPECIFIED (0):
+                Not used.
+            CREATE_ENTITLEMENT (1):
+                Long Running Operation was triggered by
+                CreateEntitlement.
+            CHANGE_RENEWAL_SETTINGS (3):
+                Long Running Operation was triggered by
+                ChangeRenewalSettings.
+            START_PAID_SERVICE (5):
+                Long Running Operation was triggered by
+                StartPaidService.
+            ACTIVATE_ENTITLEMENT (7):
+                Long Running Operation was triggered by
+                ActivateEntitlement.
+            SUSPEND_ENTITLEMENT (8):
+                Long Running Operation was triggered by
+                SuspendEntitlement.
+            CANCEL_ENTITLEMENT (9):
+                Long Running Operation was triggered by
+                CancelEntitlement.
+            TRANSFER_ENTITLEMENTS (10):
+                Long Running Operation was triggered by
+                TransferEntitlements.
+            TRANSFER_ENTITLEMENTS_TO_GOOGLE (11):
+                Long Running Operation was triggered by
+                TransferEntitlementsToGoogle.
+            CHANGE_OFFER (14):
+                Long Running Operation was triggered by
+                ChangeOffer.
+            CHANGE_PARAMETERS (15):
+                Long Running Operation was triggered by
+                ChangeParameters.
+            PROVISION_CLOUD_IDENTITY (16):
+                Long Running Operation was triggered by
+                ProvisionCloudIdentity.
+        """
         OPERATION_TYPE_UNSPECIFIED = 0
         CREATE_ENTITLEMENT = 1
         CHANGE_RENEWAL_SETTINGS = 3

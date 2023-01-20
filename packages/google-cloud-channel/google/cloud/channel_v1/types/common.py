@@ -43,13 +43,41 @@ class EduData(proto.Message):
     """
 
     class InstituteType(proto.Enum):
-        r"""Enum to specify the institute type."""
+        r"""Enum to specify the institute type.
+
+        Values:
+            INSTITUTE_TYPE_UNSPECIFIED (0):
+                Not used.
+            K12 (1):
+                Elementary/Secondary Schools & Districts
+            UNIVERSITY (2):
+                Higher Education Universities & Colleges
+        """
         INSTITUTE_TYPE_UNSPECIFIED = 0
         K12 = 1
         UNIVERSITY = 2
 
     class InstituteSize(proto.Enum):
-        r"""Number of students and staff the institute has."""
+        r"""Number of students and staff the institute has.
+
+        Values:
+            INSTITUTE_SIZE_UNSPECIFIED (0):
+                Not used.
+            SIZE_1_100 (1):
+                1 - 100
+            SIZE_101_500 (2):
+                101 - 500
+            SIZE_501_1000 (3):
+                501 - 1,000
+            SIZE_1001_2000 (4):
+                1,001 - 2,000
+            SIZE_2001_5000 (5):
+                2,001 - 5,000
+            SIZE_5001_10000 (6):
+                5,001 - 10,000
+            SIZE_10001_OR_MORE (7):
+                10,001 +
+        """
         INSTITUTE_SIZE_UNSPECIFIED = 0
         SIZE_1_100 = 1
         SIZE_101_500 = 2
@@ -106,7 +134,18 @@ class CloudIdentityInfo(proto.Message):
     """
 
     class CustomerType(proto.Enum):
-        r"""CustomerType of the customer"""
+        r"""CustomerType of the customer
+
+        Values:
+            CUSTOMER_TYPE_UNSPECIFIED (0):
+                Not used.
+            DOMAIN (1):
+                Domain-owning customer which needs domain
+                verification to use services.
+            TEAM (2):
+                Team customer which needs email verification
+                to use services.
+        """
         CUSTOMER_TYPE_UNSPECIFIED = 0
         DOMAIN = 1
         TEAM = 2

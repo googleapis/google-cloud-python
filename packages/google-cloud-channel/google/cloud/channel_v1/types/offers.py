@@ -44,7 +44,21 @@ __protobuf__ = proto.module(
 
 
 class PromotionalOrderType(proto.Enum):
-    r"""Constraints type for Promotional offers."""
+    r"""Constraints type for Promotional offers.
+
+    Values:
+        PROMOTIONAL_TYPE_UNSPECIFIED (0):
+            Not used.
+        NEW_UPGRADE (1):
+            Order used for new customers, trial
+            conversions and upgrades.
+        TRANSFER (2):
+            All orders for transferring an existing
+            customer.
+        PROMOTION_SWITCH (3):
+            Orders for modifying an existing customer's
+            promotion on the same SKU.
+    """
     PROMOTIONAL_TYPE_UNSPECIFIED = 0
     NEW_UPGRADE = 1
     TRANSFER = 2
@@ -52,7 +66,22 @@ class PromotionalOrderType(proto.Enum):
 
 
 class PaymentPlan(proto.Enum):
-    r"""Describes how the reseller will be billed."""
+    r"""Describes how the reseller will be billed.
+
+    Values:
+        PAYMENT_PLAN_UNSPECIFIED (0):
+            Not used.
+        COMMITMENT (1):
+            Commitment.
+        FLEXIBLE (2):
+            No commitment.
+        FREE (3):
+            Free.
+        TRIAL (4):
+            Trial.
+        OFFLINE (5):
+            Price and ordering not available through API.
+    """
     PAYMENT_PLAN_UNSPECIFIED = 0
     COMMITMENT = 1
     FLEXIBLE = 2
@@ -62,7 +91,18 @@ class PaymentPlan(proto.Enum):
 
 
 class PaymentType(proto.Enum):
-    r"""Specifies when the payment needs to happen."""
+    r"""Specifies when the payment needs to happen.
+
+    Values:
+        PAYMENT_TYPE_UNSPECIFIED (0):
+            Not used.
+        PREPAY (1):
+            Prepay. Amount has to be paid before service
+            is rendered.
+        POSTPAY (2):
+            Postpay. Reseller is charged at the end of
+            the Payment cycle.
+    """
     PAYMENT_TYPE_UNSPECIFIED = 0
     PREPAY = 1
     POSTPAY = 2
@@ -73,6 +113,31 @@ class ResourceType(proto.Enum):
     which billing happens). For example, this could be MINUTES for
     Google Voice and GB for Google Drive. One SKU can map to
     multiple monetizable resources.
+
+    Values:
+        RESOURCE_TYPE_UNSPECIFIED (0):
+            Not used.
+        SEAT (1):
+            Seat.
+        MAU (2):
+            Monthly active user.
+        GB (3):
+            GB (used for storage SKUs).
+        LICENSED_USER (4):
+            Active licensed users(for Voice SKUs).
+        MINUTES (5):
+            Voice usage.
+        IAAS_USAGE (6):
+            For IaaS SKUs like Google Cloud Platform,
+            monetization is based on usage accrued on your
+            billing account irrespective of the type of
+            monetizable resource. This enum represents an
+            aggregated resource/container for all usage SKUs
+            on a billing account. Currently, only applicable
+            to Google Cloud Platform.
+        SUBSCRIPTION (7):
+            For Google Cloud Platform subscriptions like
+            Anthos or SAP.
     """
     RESOURCE_TYPE_UNSPECIFIED = 0
     SEAT = 1
@@ -85,7 +150,18 @@ class ResourceType(proto.Enum):
 
 
 class PeriodType(proto.Enum):
-    r"""Period Type."""
+    r"""Period Type.
+
+    Values:
+        PERIOD_TYPE_UNSPECIFIED (0):
+            Not used.
+        DAY (1):
+            Day.
+        MONTH (2):
+            Month.
+        YEAR (3):
+            Year.
+    """
     PERIOD_TYPE_UNSPECIFIED = 0
     DAY = 1
     MONTH = 2
@@ -205,7 +281,18 @@ class ParameterDefinition(proto.Message):
     """
 
     class ParameterType(proto.Enum):
-        r"""Data type of the parameter."""
+        r"""Data type of the parameter.
+
+        Values:
+            PARAMETER_TYPE_UNSPECIFIED (0):
+                Not used.
+            INT64 (1):
+                Int64 type.
+            STRING (2):
+                String type.
+            DOUBLE (3):
+                Double type.
+        """
         PARAMETER_TYPE_UNSPECIFIED = 0
         INT64 = 1
         STRING = 2
