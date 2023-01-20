@@ -27,7 +27,22 @@ __protobuf__ = proto.module(
 
 
 class Severity(proto.Enum):
-    r"""Note provider assigned severity/impact ranking."""
+    r"""Note provider assigned severity/impact ranking.
+
+    Values:
+        SEVERITY_UNSPECIFIED (0):
+            Unknown.
+        MINIMAL (1):
+            Minimal severity.
+        LOW (2):
+            Low severity.
+        MEDIUM (3):
+            Medium severity.
+        HIGH (4):
+            High severity.
+        CRITICAL (5):
+            Critical severity.
+    """
     SEVERITY_UNSPECIFIED = 0
     MINIMAL = 1
     LOW = 2

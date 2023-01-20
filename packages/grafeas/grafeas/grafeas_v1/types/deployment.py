@@ -71,7 +71,18 @@ class DeploymentOccurrence(proto.Message):
     """
 
     class Platform(proto.Enum):
-        r"""Types of platforms."""
+        r"""Types of platforms.
+
+        Values:
+            PLATFORM_UNSPECIFIED (0):
+                Unknown.
+            GKE (1):
+                Google Container Engine.
+            FLEX (2):
+                Google App Engine: Flexible Environment.
+            CUSTOM (3):
+                Custom user-defined platform.
+        """
         PLATFORM_UNSPECIFIED = 0
         GKE = 1
         FLEX = 2

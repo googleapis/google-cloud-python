@@ -34,7 +34,38 @@ __protobuf__ = proto.module(
 
 
 class NoteKind(proto.Enum):
-    r"""Kind represents the kinds of notes supported."""
+    r"""Kind represents the kinds of notes supported.
+
+    Values:
+        NOTE_KIND_UNSPECIFIED (0):
+            Default value. This value is unused.
+        VULNERABILITY (1):
+            The note and occurrence represent a package
+            vulnerability.
+        BUILD (2):
+            The note and occurrence assert build
+            provenance.
+        IMAGE (3):
+            This represents an image basis relationship.
+        PACKAGE (4):
+            This represents a package installed via a
+            package manager.
+        DEPLOYMENT (5):
+            The note and occurrence track deployment
+            events.
+        DISCOVERY (6):
+            The note and occurrence track the initial
+            discovery status of a resource.
+        ATTESTATION (7):
+            This represents a logical "role" that can
+            attest to artifacts.
+        UPGRADE (8):
+            This represents an available package upgrade.
+        COMPLIANCE (9):
+            This represents a Compliance Note
+        DSSE_ATTESTATION (10):
+            This represents a DSSE attestation Note
+    """
     NOTE_KIND_UNSPECIFIED = 0
     VULNERABILITY = 1
     BUILD = 2

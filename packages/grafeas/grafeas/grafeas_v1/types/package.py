@@ -36,6 +36,14 @@ __protobuf__ = proto.module(
 class Architecture(proto.Enum):
     r"""Instruction set architectures supported by various package
     managers.
+
+    Values:
+        ARCHITECTURE_UNSPECIFIED (0):
+            Unknown architecture.
+        X86 (1):
+            X86 architecture.
+        X64 (2):
+            X64 architecture.
     """
     ARCHITECTURE_UNSPECIFIED = 0
     X86 = 1
@@ -321,6 +329,18 @@ class Version(proto.Message):
     class VersionKind(proto.Enum):
         r"""Whether this is an ordinary package version or a sentinel
         MIN/MAX version.
+
+        Values:
+            VERSION_KIND_UNSPECIFIED (0):
+                Unknown.
+            NORMAL (1):
+                A standard package version.
+            MINIMUM (2):
+                A special version representing negative
+                infinity.
+            MAXIMUM (3):
+                A special version representing positive
+                infinity.
         """
         VERSION_KIND_UNSPECIFIED = 0
         NORMAL = 1

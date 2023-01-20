@@ -80,7 +80,17 @@ class DiscoveryOccurrence(proto.Message):
     """
 
     class ContinuousAnalysis(proto.Enum):
-        r"""Whether the resource is continuously analyzed."""
+        r"""Whether the resource is continuously analyzed.
+
+        Values:
+            CONTINUOUS_ANALYSIS_UNSPECIFIED (0):
+                Unknown.
+            ACTIVE (1):
+                The resource is continuously analyzed.
+            INACTIVE (2):
+                The resource is ignored for continuous
+                analysis.
+        """
         CONTINUOUS_ANALYSIS_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2
@@ -88,6 +98,24 @@ class DiscoveryOccurrence(proto.Message):
     class AnalysisStatus(proto.Enum):
         r"""Analysis status for a resource. Currently for initial
         analysis only (not updated in continuous analysis).
+
+        Values:
+            ANALYSIS_STATUS_UNSPECIFIED (0):
+                Unknown.
+            PENDING (1):
+                Resource is known but no action has been
+                taken yet.
+            SCANNING (2):
+                Resource is being analyzed.
+            FINISHED_SUCCESS (3):
+                Analysis has finished successfully.
+            COMPLETE (3):
+                Analysis has completed.
+            FINISHED_FAILED (4):
+                Analysis has finished unsuccessfully, the
+                analysis itself is in a bad state.
+            FINISHED_UNSUPPORTED (5):
+                The resource is known not to be supported.
         """
         _pb_options = {"allow_alias": True}
         ANALYSIS_STATUS_UNSPECIFIED = 0

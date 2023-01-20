@@ -29,7 +29,16 @@ __protobuf__ = proto.module(
 
 
 class CVSSVersion(proto.Enum):
-    r"""CVSS Version."""
+    r"""CVSS Version.
+
+    Values:
+        CVSS_VERSION_UNSPECIFIED (0):
+
+        CVSS_VERSION_2 (1):
+
+        CVSS_VERSION_3 (2):
+
+    """
     CVSS_VERSION_UNSPECIFIED = 0
     CVSS_VERSION_2 = 1
     CVSS_VERSION_3 = 2
@@ -70,7 +79,20 @@ class CVSSv3(proto.Message):
     """
 
     class AttackVector(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            ATTACK_VECTOR_UNSPECIFIED (0):
+
+            ATTACK_VECTOR_NETWORK (1):
+
+            ATTACK_VECTOR_ADJACENT (2):
+
+            ATTACK_VECTOR_LOCAL (3):
+
+            ATTACK_VECTOR_PHYSICAL (4):
+
+        """
         ATTACK_VECTOR_UNSPECIFIED = 0
         ATTACK_VECTOR_NETWORK = 1
         ATTACK_VECTOR_ADJACENT = 2
@@ -78,32 +100,81 @@ class CVSSv3(proto.Message):
         ATTACK_VECTOR_PHYSICAL = 4
 
     class AttackComplexity(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            ATTACK_COMPLEXITY_UNSPECIFIED (0):
+
+            ATTACK_COMPLEXITY_LOW (1):
+
+            ATTACK_COMPLEXITY_HIGH (2):
+
+        """
         ATTACK_COMPLEXITY_UNSPECIFIED = 0
         ATTACK_COMPLEXITY_LOW = 1
         ATTACK_COMPLEXITY_HIGH = 2
 
     class PrivilegesRequired(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            PRIVILEGES_REQUIRED_UNSPECIFIED (0):
+
+            PRIVILEGES_REQUIRED_NONE (1):
+
+            PRIVILEGES_REQUIRED_LOW (2):
+
+            PRIVILEGES_REQUIRED_HIGH (3):
+
+        """
         PRIVILEGES_REQUIRED_UNSPECIFIED = 0
         PRIVILEGES_REQUIRED_NONE = 1
         PRIVILEGES_REQUIRED_LOW = 2
         PRIVILEGES_REQUIRED_HIGH = 3
 
     class UserInteraction(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            USER_INTERACTION_UNSPECIFIED (0):
+
+            USER_INTERACTION_NONE (1):
+
+            USER_INTERACTION_REQUIRED (2):
+
+        """
         USER_INTERACTION_UNSPECIFIED = 0
         USER_INTERACTION_NONE = 1
         USER_INTERACTION_REQUIRED = 2
 
     class Scope(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            SCOPE_UNSPECIFIED (0):
+
+            SCOPE_UNCHANGED (1):
+
+            SCOPE_CHANGED (2):
+
+        """
         SCOPE_UNSPECIFIED = 0
         SCOPE_UNCHANGED = 1
         SCOPE_CHANGED = 2
 
     class Impact(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            IMPACT_UNSPECIFIED (0):
+
+            IMPACT_HIGH (1):
+
+            IMPACT_LOW (2):
+
+            IMPACT_NONE (3):
+
+        """
         IMPACT_UNSPECIFIED = 0
         IMPACT_HIGH = 1
         IMPACT_LOW = 2
@@ -203,7 +274,20 @@ class CVSS(proto.Message):
     """
 
     class AttackVector(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            ATTACK_VECTOR_UNSPECIFIED (0):
+
+            ATTACK_VECTOR_NETWORK (1):
+
+            ATTACK_VECTOR_ADJACENT (2):
+
+            ATTACK_VECTOR_LOCAL (3):
+
+            ATTACK_VECTOR_PHYSICAL (4):
+
+        """
         ATTACK_VECTOR_UNSPECIFIED = 0
         ATTACK_VECTOR_NETWORK = 1
         ATTACK_VECTOR_ADJACENT = 2
@@ -211,39 +295,99 @@ class CVSS(proto.Message):
         ATTACK_VECTOR_PHYSICAL = 4
 
     class AttackComplexity(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            ATTACK_COMPLEXITY_UNSPECIFIED (0):
+
+            ATTACK_COMPLEXITY_LOW (1):
+
+            ATTACK_COMPLEXITY_HIGH (2):
+
+        """
         ATTACK_COMPLEXITY_UNSPECIFIED = 0
         ATTACK_COMPLEXITY_LOW = 1
         ATTACK_COMPLEXITY_HIGH = 2
 
     class Authentication(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            AUTHENTICATION_UNSPECIFIED (0):
+
+            AUTHENTICATION_MULTIPLE (1):
+
+            AUTHENTICATION_SINGLE (2):
+
+            AUTHENTICATION_NONE (3):
+
+        """
         AUTHENTICATION_UNSPECIFIED = 0
         AUTHENTICATION_MULTIPLE = 1
         AUTHENTICATION_SINGLE = 2
         AUTHENTICATION_NONE = 3
 
     class PrivilegesRequired(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            PRIVILEGES_REQUIRED_UNSPECIFIED (0):
+
+            PRIVILEGES_REQUIRED_NONE (1):
+
+            PRIVILEGES_REQUIRED_LOW (2):
+
+            PRIVILEGES_REQUIRED_HIGH (3):
+
+        """
         PRIVILEGES_REQUIRED_UNSPECIFIED = 0
         PRIVILEGES_REQUIRED_NONE = 1
         PRIVILEGES_REQUIRED_LOW = 2
         PRIVILEGES_REQUIRED_HIGH = 3
 
     class UserInteraction(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            USER_INTERACTION_UNSPECIFIED (0):
+
+            USER_INTERACTION_NONE (1):
+
+            USER_INTERACTION_REQUIRED (2):
+
+        """
         USER_INTERACTION_UNSPECIFIED = 0
         USER_INTERACTION_NONE = 1
         USER_INTERACTION_REQUIRED = 2
 
     class Scope(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            SCOPE_UNSPECIFIED (0):
+
+            SCOPE_UNCHANGED (1):
+
+            SCOPE_CHANGED (2):
+
+        """
         SCOPE_UNSPECIFIED = 0
         SCOPE_UNCHANGED = 1
         SCOPE_CHANGED = 2
 
     class Impact(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            IMPACT_UNSPECIFIED (0):
+
+            IMPACT_HIGH (1):
+
+            IMPACT_LOW (2):
+
+            IMPACT_NONE (3):
+
+        """
         IMPACT_UNSPECIFIED = 0
         IMPACT_HIGH = 1
         IMPACT_LOW = 2
