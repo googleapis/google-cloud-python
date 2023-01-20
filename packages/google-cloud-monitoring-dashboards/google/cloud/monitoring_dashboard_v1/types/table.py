@@ -46,7 +46,16 @@ class TimeSeriesTable(proto.Message):
     """
 
     class MetricVisualization(proto.Enum):
-        r"""Enum for metric metric_visualization"""
+        r"""Enum for metric metric_visualization
+
+        Values:
+            METRIC_VISUALIZATION_UNSPECIFIED (0):
+                Unspecified state
+            NUMBER (1):
+                Default text rendering
+            BAR (2):
+                Horizontal bar rendering
+        """
         METRIC_VISUALIZATION_UNSPECIFIED = 0
         NUMBER = 1
         BAR = 2

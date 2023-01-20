@@ -50,7 +50,23 @@ class DashboardFilter(proto.Message):
     """
 
     class FilterType(proto.Enum):
-        r"""The type for the dashboard filter"""
+        r"""The type for the dashboard filter
+
+        Values:
+            FILTER_TYPE_UNSPECIFIED (0):
+                Filter type is unspecified. This is not valid
+                in a well-formed request.
+            RESOURCE_LABEL (1):
+                Filter on a resource label value
+            METRIC_LABEL (2):
+                Filter on a metrics label value
+            USER_METADATA_LABEL (3):
+                Filter on a user metadata label value
+            SYSTEM_METADATA_LABEL (4):
+                Filter on a system metadata label value
+            GROUP (5):
+                Filter on a group id
+        """
         FILTER_TYPE_UNSPECIFIED = 0
         RESOURCE_LABEL = 1
         METRIC_LABEL = 2

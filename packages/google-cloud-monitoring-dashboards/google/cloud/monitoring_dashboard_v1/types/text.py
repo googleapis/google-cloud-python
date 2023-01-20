@@ -37,7 +37,16 @@ class Text(proto.Message):
     """
 
     class Format(proto.Enum):
-        r"""The format type of the text content."""
+        r"""The format type of the text content.
+
+        Values:
+            FORMAT_UNSPECIFIED (0):
+                Format is unspecified. Defaults to MARKDOWN.
+            MARKDOWN (1):
+                The text contains Markdown formatting.
+            RAW (2):
+                The text contains no special formatting.
+        """
         FORMAT_UNSPECIFIED = 0
         MARKDOWN = 1
         RAW = 2

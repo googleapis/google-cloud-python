@@ -85,7 +85,36 @@ class XyChart(proto.Message):
         """
 
         class PlotType(proto.Enum):
-            r"""The types of plotting strategies for data sets."""
+            r"""The types of plotting strategies for data sets.
+
+            Values:
+                PLOT_TYPE_UNSPECIFIED (0):
+                    Plot type is unspecified. The view will default to ``LINE``.
+                LINE (1):
+                    The data is plotted as a set of lines (one
+                    line per series).
+                STACKED_AREA (2):
+                    The data is plotted as a set of filled areas
+                    (one area per series), with the areas stacked
+                    vertically (the base of each area is the top of
+                    its predecessor, and the base of the first area
+                    is the X axis). Since the areas do not overlap,
+                    each is filled with a different opaque color.
+                STACKED_BAR (3):
+                    The data is plotted as a set of rectangular
+                    boxes (one box per series), with the boxes
+                    stacked vertically (the base of each box is the
+                    top of its predecessor, and the base of the
+                    first box is the X axis). Since the boxes do not
+                    overlap, each is filled with a different opaque
+                    color.
+                HEATMAP (4):
+                    The data is plotted as a heatmap. The series being plotted
+                    must have a ``DISTRIBUTION`` value type. The value of each
+                    bucket in the distribution is displayed as a color. This
+                    type is not currently available in the Stackdriver
+                    Monitoring application.
+            """
             PLOT_TYPE_UNSPECIFIED = 0
             LINE = 1
             STACKED_AREA = 2
@@ -93,7 +122,17 @@ class XyChart(proto.Message):
             HEATMAP = 4
 
         class TargetAxis(proto.Enum):
-            r"""An axis identifier."""
+            r"""An axis identifier.
+
+            Values:
+                TARGET_AXIS_UNSPECIFIED (0):
+                    The target axis was not specified. Defaults
+                    to Y1.
+                Y1 (1):
+                    The y_axis (the right axis of chart).
+                Y2 (2):
+                    The y2_axis (the left axis of chart).
+            """
             TARGET_AXIS_UNSPECIFIED = 0
             Y1 = 1
             Y2 = 2
@@ -135,7 +174,16 @@ class XyChart(proto.Message):
         """
 
         class Scale(proto.Enum):
-            r"""Types of scales used in axes."""
+            r"""Types of scales used in axes.
+
+            Values:
+                SCALE_UNSPECIFIED (0):
+                    Scale is unspecified. The view will default to ``LINEAR``.
+                LINEAR (1):
+                    Linear scale.
+                LOG10 (2):
+                    Logarithmic scale (base 10).
+            """
             SCALE_UNSPECIFIED = 0
             LINEAR = 1
             LOG10 = 2
@@ -196,7 +244,23 @@ class ChartOptions(proto.Message):
     """
 
     class Mode(proto.Enum):
-        r"""Chart mode options."""
+        r"""Chart mode options.
+
+        Values:
+            MODE_UNSPECIFIED (0):
+                Mode is unspecified. The view will default to ``COLOR``.
+            COLOR (1):
+                The chart distinguishes data series using
+                different color. Line colors may get reused when
+                there are many lines in the chart.
+            X_RAY (2):
+                The chart uses the Stackdriver x-ray mode, in
+                which each data set is plotted using the same
+                semi-transparent color.
+            STATS (3):
+                The chart displays statistics such as
+                average, median, 95th percentile, and more.
+        """
         MODE_UNSPECIFIED = 0
         COLOR = 1
         X_RAY = 2

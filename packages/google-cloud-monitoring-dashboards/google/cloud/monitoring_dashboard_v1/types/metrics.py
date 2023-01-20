@@ -35,6 +35,16 @@ __protobuf__ = proto.module(
 class SparkChartType(proto.Enum):
     r"""Defines the possible types of spark chart supported by the
     ``Scorecard``.
+
+    Values:
+        SPARK_CHART_TYPE_UNSPECIFIED (0):
+            Not allowed in well-formed requests.
+        SPARK_LINE (1):
+            The sparkline will be rendered as a small
+            line chart.
+        SPARK_BAR (2):
+            The sparkbar will be rendered as a small bar
+            chart.
     """
     SPARK_CHART_TYPE_UNSPECIFIED = 0
     SPARK_LINE = 1
@@ -286,6 +296,17 @@ class Threshold(proto.Message):
         actual values cross the threshold. Comments on each color
         provide UX guidance on how users can be expected to interpret a
         given state color.
+
+        Values:
+            COLOR_UNSPECIFIED (0):
+                Color is unspecified. Not allowed in
+                well-formed requests.
+            YELLOW (4):
+                Crossing the threshold is "concerning"
+                behavior.
+            RED (6):
+                Crossing the threshold is "emergency"
+                behavior.
         """
         COLOR_UNSPECIFIED = 0
         YELLOW = 4
@@ -294,13 +315,33 @@ class Threshold(proto.Message):
     class Direction(proto.Enum):
         r"""Whether the threshold is considered crossed by an actual
         value above or below its threshold value.
+
+        Values:
+            DIRECTION_UNSPECIFIED (0):
+                Not allowed in well-formed requests.
+            ABOVE (1):
+                The threshold will be considered crossed if
+                the actual value is above the threshold value.
+            BELOW (2):
+                The threshold will be considered crossed if
+                the actual value is below the threshold value.
         """
         DIRECTION_UNSPECIFIED = 0
         ABOVE = 1
         BELOW = 2
 
     class TargetAxis(proto.Enum):
-        r"""An axis identifier."""
+        r"""An axis identifier.
+
+        Values:
+            TARGET_AXIS_UNSPECIFIED (0):
+                The target axis was not specified. Defaults
+                to Y1.
+            Y1 (1):
+                The y_axis (the right axis of chart).
+            Y2 (2):
+                The y2_axis (the left axis of chart).
+        """
         TARGET_AXIS_UNSPECIFIED = 0
         Y1 = 1
         Y2 = 2
