@@ -78,7 +78,17 @@ class ArrowSerializationOptions(proto.Message):
     """
 
     class CompressionCodec(proto.Enum):
-        r"""Compression codec's supported by Arrow."""
+        r"""Compression codec's supported by Arrow.
+
+        Values:
+            COMPRESSION_UNSPECIFIED (0):
+                If unspecified no compression will be used.
+            LZ4_FRAME (1):
+                LZ4 Frame
+                (https://github.com/lz4/lz4/blob/dev/doc/lz4_Frame_format.md)
+            ZSTD (2):
+                Zstandard compression.
+        """
         COMPRESSION_UNSPECIFIED = 0
         LZ4_FRAME = 1
         ZSTD = 2

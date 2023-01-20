@@ -422,6 +422,17 @@ class AppendRowsRequest(proto.Message):
         values are fields present in user schema but missing in rows. A
         missing value can represent a NULL or a column default value
         defined in BigQuery table schema.
+
+        Values:
+            MISSING_VALUE_INTERPRETATION_UNSPECIFIED (0):
+                Invalid missing value interpretation.
+                Requests with this value will be rejected.
+            NULL_VALUE (1):
+                Missing value is interpreted as NULL.
+            DEFAULT_VALUE (2):
+                Missing value is interpreted as column
+                default value if declared in the table schema,
+                NULL otherwise.
         """
         MISSING_VALUE_INTERPRETATION_UNSPECIFIED = 0
         NULL_VALUE = 1
@@ -748,7 +759,36 @@ class StorageError(proto.Message):
     """
 
     class StorageErrorCode(proto.Enum):
-        r"""Error code for ``StorageError``."""
+        r"""Error code for ``StorageError``.
+
+        Values:
+            STORAGE_ERROR_CODE_UNSPECIFIED (0):
+                Default error.
+            TABLE_NOT_FOUND (1):
+                Table is not found in the system.
+            STREAM_ALREADY_COMMITTED (2):
+                Stream is already committed.
+            STREAM_NOT_FOUND (3):
+                Stream is not found.
+            INVALID_STREAM_TYPE (4):
+                Invalid Stream type.
+                For example, you try to commit a stream that is
+                not pending.
+            INVALID_STREAM_STATE (5):
+                Invalid Stream state.
+                For example, you try to commit a stream that is
+                not finalized or is garbaged.
+            STREAM_FINALIZED (6):
+                Stream is finalized.
+            SCHEMA_MISMATCH_EXTRA_FIELDS (7):
+                There is a schema mismatch and it is caused
+                by user schema has extra field than bigquery
+                schema.
+            OFFSET_ALREADY_EXISTS (8):
+                Offset already exists.
+            OFFSET_OUT_OF_RANGE (9):
+                Offset out of range.
+        """
         STORAGE_ERROR_CODE_UNSPECIFIED = 0
         TABLE_NOT_FOUND = 1
         STREAM_ALREADY_COMMITTED = 2
@@ -789,7 +829,14 @@ class RowError(proto.Message):
     """
 
     class RowErrorCode(proto.Enum):
-        r"""Error code for ``RowError``."""
+        r"""Error code for ``RowError``.
+
+        Values:
+            ROW_ERROR_CODE_UNSPECIFIED (0):
+                Default error.
+            FIELDS_ERROR (1):
+                One or more fields in the row has errors.
+        """
         ROW_ERROR_CODE_UNSPECIFIED = 0
         FIELDS_ERROR = 1
 

@@ -69,7 +69,19 @@ class ArrowSerializationOptions(proto.Message):
     """
 
     class Format(proto.Enum):
-        r"""The IPC format to use when serializing Arrow streams."""
+        r"""The IPC format to use when serializing Arrow streams.
+
+        Values:
+            FORMAT_UNSPECIFIED (0):
+                If unspecied the IPC format as of 0.15
+                release will be used.
+            ARROW_0_14 (1):
+                Use the legacy IPC message format as of
+                Apache Arrow Release 0.14.
+            ARROW_0_15 (2):
+                Use the message format as of Apache Arrow
+                Release 0.15.
+        """
         FORMAT_UNSPECIFIED = 0
         ARROW_0_14 = 1
         ARROW_0_15 = 2

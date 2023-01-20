@@ -65,7 +65,43 @@ class TableFieldSchema(proto.Message):
     """
 
     class Type(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Illegal value
+            STRING (1):
+                64K, UTF8
+            INT64 (2):
+                64-bit signed
+            DOUBLE (3):
+                64-bit IEEE floating point
+            STRUCT (4):
+                Aggregate type
+            BYTES (5):
+                64K, Binary
+            BOOL (6):
+                2-valued
+            TIMESTAMP (7):
+                64-bit signed usec since UTC epoch
+            DATE (8):
+                Civil date - Year, Month, Day
+            TIME (9):
+                Civil time - Hour, Minute, Second,
+                Microseconds
+            DATETIME (10):
+                Combination of civil date and civil time
+            GEOGRAPHY (11):
+                Geography object
+            NUMERIC (12):
+                Numeric value
+            BIGNUMERIC (13):
+                BigNumeric value
+            INTERVAL (14):
+                Interval
+            JSON (15):
+                JSON, String
+        """
         TYPE_UNSPECIFIED = 0
         STRING = 1
         INT64 = 2
@@ -84,7 +120,18 @@ class TableFieldSchema(proto.Message):
         JSON = 15
 
     class Mode(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            MODE_UNSPECIFIED (0):
+
+            NULLABLE (1):
+
+            REQUIRED (2):
+
+            REPEATED (3):
+
+        """
         MODE_UNSPECIFIED = 0
         NULLABLE = 1
         REQUIRED = 2

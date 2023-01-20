@@ -36,7 +36,20 @@ __protobuf__ = proto.module(
 
 
 class DataFormat(proto.Enum):
-    r"""Data format for input or output data."""
+    r"""Data format for input or output data.
+
+    Values:
+        DATA_FORMAT_UNSPECIFIED (0):
+            Data format is unspecified.
+        AVRO (1):
+            Avro is a standard open source row based file
+            format. See https://avro.apache.org/ for more
+            details.
+        ARROW (2):
+            Arrow is a standard open source column-based
+            message format. See https://arrow.apache.org/
+            for more details.
+    """
     DATA_FORMAT_UNSPECIFIED = 0
     AVRO = 1
     ARROW = 2
@@ -45,6 +58,20 @@ class DataFormat(proto.Enum):
 class WriteStreamView(proto.Enum):
     r"""WriteStreamView is a view enum that controls what details
     about a write stream should be returned.
+
+    Values:
+        WRITE_STREAM_VIEW_UNSPECIFIED (0):
+            The default / unset value.
+        BASIC (1):
+            The BASIC projection returns basic metadata
+            about a write stream.  The basic view does not
+            include schema information.  This is the default
+            view returned by GetWriteStream.
+        FULL (2):
+            The FULL projection returns all available
+            write stream metadata, including the schema.
+            CreateWriteStream returns the full projection of
+            write stream metadata.
     """
     WRITE_STREAM_VIEW_UNSPECIFIED = 0
     BASIC = 1
@@ -334,14 +361,37 @@ class WriteStream(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Type enum of the stream."""
+        r"""Type enum of the stream.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unknown type.
+            COMMITTED (1):
+                Data will commit automatically and appear as
+                soon as the write is acknowledged.
+            PENDING (2):
+                Data is invisible until the stream is
+                committed.
+            BUFFERED (3):
+                Data is only visible up to the offset to
+                which it was flushed.
+        """
         TYPE_UNSPECIFIED = 0
         COMMITTED = 1
         PENDING = 2
         BUFFERED = 3
 
     class WriteMode(proto.Enum):
-        r"""Mode enum of the stream."""
+        r"""Mode enum of the stream.
+
+        Values:
+            WRITE_MODE_UNSPECIFIED (0):
+                Unknown type.
+            INSERT (1):
+                Insert new records into the table.
+                It is the default value if customers do not
+                specify it.
+        """
         WRITE_MODE_UNSPECIFIED = 0
         INSERT = 1
 

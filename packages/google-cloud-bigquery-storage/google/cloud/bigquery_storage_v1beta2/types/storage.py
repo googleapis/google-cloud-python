@@ -643,7 +643,28 @@ class StorageError(proto.Message):
     """
 
     class StorageErrorCode(proto.Enum):
-        r"""Error code for ``StorageError``."""
+        r"""Error code for ``StorageError``.
+
+        Values:
+            STORAGE_ERROR_CODE_UNSPECIFIED (0):
+                Default error.
+            TABLE_NOT_FOUND (1):
+                Table is not found in the system.
+            STREAM_ALREADY_COMMITTED (2):
+                Stream is already committed.
+            STREAM_NOT_FOUND (3):
+                Stream is not found.
+            INVALID_STREAM_TYPE (4):
+                Invalid Stream type.
+                For example, you try to commit a stream that is
+                not pending.
+            INVALID_STREAM_STATE (5):
+                Invalid Stream state.
+                For example, you try to commit a stream that is
+                not finalized or is garbaged.
+            STREAM_FINALIZED (6):
+                Stream is finalized.
+        """
         STORAGE_ERROR_CODE_UNSPECIFIED = 0
         TABLE_NOT_FOUND = 1
         STREAM_ALREADY_COMMITTED = 2

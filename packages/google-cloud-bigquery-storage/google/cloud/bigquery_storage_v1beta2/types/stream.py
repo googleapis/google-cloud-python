@@ -35,7 +35,20 @@ __protobuf__ = proto.module(
 
 
 class DataFormat(proto.Enum):
-    r"""Data format for input or output data."""
+    r"""Data format for input or output data.
+
+    Values:
+        DATA_FORMAT_UNSPECIFIED (0):
+
+        AVRO (1):
+            Avro is a standard open source row based file
+            format. See https://avro.apache.org/ for more
+            details.
+        ARROW (2):
+            Arrow is a standard open source column-based
+            message format. See https://arrow.apache.org/
+            for more details.
+    """
     DATA_FORMAT_UNSPECIFIED = 0
     AVRO = 1
     ARROW = 2
@@ -235,7 +248,21 @@ class WriteStream(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Type enum of the stream."""
+        r"""Type enum of the stream.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unknown type.
+            COMMITTED (1):
+                Data will commit automatically and appear as
+                soon as the write is acknowledged.
+            PENDING (2):
+                Data is invisible until the stream is
+                committed.
+            BUFFERED (3):
+                Data is only visible up to the offset to
+                which it was flushed.
+        """
         TYPE_UNSPECIFIED = 0
         COMMITTED = 1
         PENDING = 2
