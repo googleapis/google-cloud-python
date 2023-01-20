@@ -71,7 +71,35 @@ class Runtime(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The definition of the states of this runtime."""
+        r"""The definition of the states of this runtime.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                State is not specified.
+            STARTING (1):
+                The compute layer is starting the runtime. It
+                is not ready for use.
+            PROVISIONING (2):
+                The compute layer is installing required
+                frameworks and registering the runtime with
+                notebook proxy. It cannot be used.
+            ACTIVE (3):
+                The runtime is currently running. It is ready
+                for use.
+            STOPPING (4):
+                The control logic is stopping the runtime. It
+                cannot be used.
+            STOPPED (5):
+                The runtime is stopped. It cannot be used.
+            DELETING (6):
+                The runtime is being deleted. It cannot be
+                used.
+            UPGRADING (7):
+                The runtime is upgrading. It cannot be used.
+            INITIALIZING (8):
+                The runtime is being created and set up. It
+                is not ready for use.
+        """
         STATE_UNSPECIFIED = 0
         STARTING = 1
         PROVISIONING = 2
@@ -83,7 +111,26 @@ class Runtime(proto.Message):
         INITIALIZING = 8
 
     class HealthState(proto.Enum):
-        r"""The runtime substate."""
+        r"""The runtime substate.
+
+        Values:
+            HEALTH_STATE_UNSPECIFIED (0):
+                The runtime substate is unknown.
+            HEALTHY (1):
+                The runtime is known to be in an healthy
+                state (for example, critical daemons are
+                running) Applies to ACTIVE state.
+            UNHEALTHY (2):
+                The runtime is known to be in an unhealthy
+                state (for example, critical daemons are not
+                running) Applies to ACTIVE state.
+            AGENT_NOT_INSTALLED (3):
+                The runtime has not installed health
+                monitoring agent. Applies to ACTIVE state.
+            AGENT_NOT_RUNNING (4):
+                The runtime health monitoring agent is not
+                running. Applies to ACTIVE state.
+        """
         HEALTH_STATE_UNSPECIFIED = 0
         HEALTHY = 1
         UNHEALTHY = 2
@@ -159,7 +206,37 @@ class RuntimeAcceleratorConfig(proto.Message):
     """
 
     class AcceleratorType(proto.Enum):
-        r"""Type of this accelerator."""
+        r"""Type of this accelerator.
+
+        Values:
+            ACCELERATOR_TYPE_UNSPECIFIED (0):
+                Accelerator type is not specified.
+            NVIDIA_TESLA_K80 (1):
+                Accelerator type is Nvidia Tesla K80.
+            NVIDIA_TESLA_P100 (2):
+                Accelerator type is Nvidia Tesla P100.
+            NVIDIA_TESLA_V100 (3):
+                Accelerator type is Nvidia Tesla V100.
+            NVIDIA_TESLA_P4 (4):
+                Accelerator type is Nvidia Tesla P4.
+            NVIDIA_TESLA_T4 (5):
+                Accelerator type is Nvidia Tesla T4.
+            NVIDIA_TESLA_A100 (6):
+                Accelerator type is Nvidia Tesla A100.
+            TPU_V2 (7):
+                (Coming soon) Accelerator type is TPU V2.
+            TPU_V3 (8):
+                (Coming soon) Accelerator type is TPU V3.
+            NVIDIA_TESLA_T4_VWS (9):
+                Accelerator type is NVIDIA Tesla T4 Virtual
+                Workstations.
+            NVIDIA_TESLA_P100_VWS (10):
+                Accelerator type is NVIDIA Tesla P100 Virtual
+                Workstations.
+            NVIDIA_TESLA_P4_VWS (11):
+                Accelerator type is NVIDIA Tesla P4 Virtual
+                Workstations.
+        """
         ACCELERATOR_TYPE_UNSPECIFIED = 0
         NVIDIA_TESLA_K80 = 1
         NVIDIA_TESLA_P100 = 2
@@ -402,7 +479,20 @@ class LocalDiskInitializeParams(proto.Message):
     """
 
     class DiskType(proto.Enum):
-        r"""Possible disk types."""
+        r"""Possible disk types.
+
+        Values:
+            DISK_TYPE_UNSPECIFIED (0):
+                Disk type not set.
+            PD_STANDARD (1):
+                Standard persistent disk type.
+            PD_SSD (2):
+                SSD persistent disk type.
+            PD_BALANCED (3):
+                Balanced persistent disk type.
+            PD_EXTREME (4):
+                Extreme persistent disk type.
+        """
         DISK_TYPE_UNSPECIFIED = 0
         PD_STANDARD = 1
         PD_SSD = 2
@@ -450,6 +540,19 @@ class RuntimeAccessConfig(proto.Message):
     class RuntimeAccessType(proto.Enum):
         r"""Possible ways to access runtime. Authentication mode.
         Currently supports: Single User only.
+
+        Values:
+            RUNTIME_ACCESS_TYPE_UNSPECIFIED (0):
+                Unspecified access.
+            SINGLE_USER (1):
+                Single user login.
+            SERVICE_ACCOUNT (2):
+                Service Account mode.
+                In Service Account mode, Runtime creator will
+                specify a SA that exists in the consumer
+                project. Using Runtime Service Account field.
+                Users accessing the Runtime need ActAs (Service
+                Account User) permission.
         """
         RUNTIME_ACCESS_TYPE_UNSPECIFIED = 0
         SINGLE_USER = 1
@@ -534,7 +637,19 @@ class RuntimeSoftwareConfig(proto.Message):
     """
 
     class PostStartupScriptBehavior(proto.Enum):
-        r"""Behavior for the post startup script."""
+        r"""Behavior for the post startup script.
+
+        Values:
+            POST_STARTUP_SCRIPT_BEHAVIOR_UNSPECIFIED (0):
+                Unspecified post startup script behavior.
+                Will run only once at creation.
+            RUN_EVERY_START (1):
+                Runs the post startup script provided during
+                creation at every start.
+            DOWNLOAD_AND_RUN_EVERY_START (2):
+                Downloads and runs the provided post startup
+                script at every start.
+        """
         POST_STARTUP_SCRIPT_BEHAVIOR_UNSPECIFIED = 0
         RUN_EVERY_START = 1
         DOWNLOAD_AND_RUN_EVERY_START = 2
@@ -799,7 +914,16 @@ class VirtualMachineConfig(proto.Message):
     """
 
     class NicType(proto.Enum):
-        r"""The type of vNIC driver. Default should be UNSPECIFIED_NIC_TYPE."""
+        r"""The type of vNIC driver. Default should be UNSPECIFIED_NIC_TYPE.
+
+        Values:
+            UNSPECIFIED_NIC_TYPE (0):
+                No type specified.
+            VIRTIO_NET (1):
+                VIRTIO
+            GVNIC (2):
+                GVNIC
+        """
         UNSPECIFIED_NIC_TYPE = 0
         VIRTIO_NET = 1
         GVNIC = 2

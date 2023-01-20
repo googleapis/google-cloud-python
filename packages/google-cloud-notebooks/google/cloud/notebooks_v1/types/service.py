@@ -78,6 +78,18 @@ __protobuf__ = proto.module(
 class UpgradeType(proto.Enum):
     r"""Definition of the types of upgrade that can be used on this
     instance.
+
+    Values:
+        UPGRADE_TYPE_UNSPECIFIED (0):
+            Upgrade type is not specified.
+        UPGRADE_FRAMEWORK (1):
+            Upgrade ML framework.
+        UPGRADE_OS (2):
+            Upgrade Operating System.
+        UPGRADE_CUDA (3):
+            Upgrade CUDA.
+        UPGRADE_ALL (4):
+            Upgrade All (OS, Framework and CUDA).
     """
     UPGRADE_TYPE_UNSPECIFIED = 0
     UPGRADE_FRAMEWORK = 1
@@ -630,7 +642,26 @@ class GetInstanceHealthResponse(proto.Message):
     """
 
     class HealthState(proto.Enum):
-        r"""If an instance is healthy or not."""
+        r"""If an instance is healthy or not.
+
+        Values:
+            HEALTH_STATE_UNSPECIFIED (0):
+                The instance substate is unknown.
+            HEALTHY (1):
+                The instance is known to be in an healthy
+                state (for example, critical daemons are
+                running) Applies to ACTIVE state.
+            UNHEALTHY (2):
+                The instance is known to be in an unhealthy
+                state (for example, critical daemons are not
+                running) Applies to ACTIVE state.
+            AGENT_NOT_INSTALLED (3):
+                The instance has not installed health
+                monitoring agent. Applies to ACTIVE state.
+            AGENT_NOT_RUNNING (4):
+                The instance health monitoring agent is not
+                running. Applies to ACTIVE state.
+        """
         HEALTH_STATE_UNSPECIFIED = 0
         HEALTHY = 1
         UNHEALTHY = 2

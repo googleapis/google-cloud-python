@@ -41,7 +41,27 @@ class Event(proto.Message):
     """
 
     class EventType(proto.Enum):
-        r"""The definition of the event types."""
+        r"""The definition of the event types.
+
+        Values:
+            EVENT_TYPE_UNSPECIFIED (0):
+                Event is not specified.
+            IDLE (1):
+                The instance / runtime is idle
+            HEARTBEAT (2):
+                The instance / runtime is available.
+                This event indicates that instance / runtime
+                underlying compute is operational.
+            HEALTH (3):
+                The instance / runtime health is available.
+                This event indicates that instance / runtime
+                health information.
+            MAINTENANCE (4):
+                The instance / runtime is available.
+                This event allows instance / runtime to send
+                Host maintenance information to Control Plane.
+                https://cloud.google.com/compute/docs/gpus/gpu-host-maintenance
+        """
         EVENT_TYPE_UNSPECIFIED = 0
         IDLE = 1
         HEARTBEAT = 2

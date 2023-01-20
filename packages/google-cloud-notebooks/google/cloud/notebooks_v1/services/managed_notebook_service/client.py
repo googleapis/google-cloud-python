@@ -2050,7 +2050,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "ManagedNotebookServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

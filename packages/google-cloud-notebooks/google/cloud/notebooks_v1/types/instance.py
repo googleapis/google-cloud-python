@@ -46,6 +46,18 @@ class ReservationAffinity(proto.Message):
     class Type(proto.Enum):
         r"""Indicates whether to consume capacity from an reservation or
         not.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Default type.
+            NO_RESERVATION (1):
+                Do not consume from any allocated capacity.
+            ANY_RESERVATION (2):
+                Consume any reservation available.
+            SPECIFIC_RESERVATION (3):
+                Must consume from a specific reservation.
+                Must specify key value fields for specifying the
+                reservations.
         """
         TYPE_UNSPECIFIED = 0
         NO_RESERVATION = 1
@@ -236,6 +248,35 @@ class Instance(proto.Message):
     class AcceleratorType(proto.Enum):
         r"""Definition of the types of hardware accelerators that can be
         used on this instance.
+
+        Values:
+            ACCELERATOR_TYPE_UNSPECIFIED (0):
+                Accelerator type is not specified.
+            NVIDIA_TESLA_K80 (1):
+                Accelerator type is Nvidia Tesla K80.
+            NVIDIA_TESLA_P100 (2):
+                Accelerator type is Nvidia Tesla P100.
+            NVIDIA_TESLA_V100 (3):
+                Accelerator type is Nvidia Tesla V100.
+            NVIDIA_TESLA_P4 (4):
+                Accelerator type is Nvidia Tesla P4.
+            NVIDIA_TESLA_T4 (5):
+                Accelerator type is Nvidia Tesla T4.
+            NVIDIA_TESLA_A100 (11):
+                Accelerator type is Nvidia Tesla A100.
+            NVIDIA_TESLA_T4_VWS (8):
+                Accelerator type is NVIDIA Tesla T4 Virtual
+                Workstations.
+            NVIDIA_TESLA_P100_VWS (9):
+                Accelerator type is NVIDIA Tesla P100 Virtual
+                Workstations.
+            NVIDIA_TESLA_P4_VWS (10):
+                Accelerator type is NVIDIA Tesla P4 Virtual
+                Workstations.
+            TPU_V2 (6):
+                (Coming soon) Accelerator type is TPU V2.
+            TPU_V3 (7):
+                (Coming soon) Accelerator type is TPU V3.
         """
         ACCELERATOR_TYPE_UNSPECIFIED = 0
         NVIDIA_TESLA_K80 = 1
@@ -251,7 +292,36 @@ class Instance(proto.Message):
         TPU_V3 = 7
 
     class State(proto.Enum):
-        r"""The definition of the states of this instance."""
+        r"""The definition of the states of this instance.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                State is not specified.
+            STARTING (1):
+                The control logic is starting the instance.
+            PROVISIONING (2):
+                The control logic is installing required
+                frameworks and registering the instance with
+                notebook proxy
+            ACTIVE (3):
+                The instance is running.
+            STOPPING (4):
+                The control logic is stopping the instance.
+            STOPPED (5):
+                The instance is stopped.
+            DELETED (6):
+                The instance is deleted.
+            UPGRADING (7):
+                The instance is upgrading.
+            INITIALIZING (8):
+                The instance is being created.
+            REGISTERING (9):
+                The instance is getting registered.
+            SUSPENDING (10):
+                The instance is suspending.
+            SUSPENDED (11):
+                The instance is suspended.
+        """
         STATE_UNSPECIFIED = 0
         STARTING = 1
         PROVISIONING = 2
@@ -266,7 +336,20 @@ class Instance(proto.Message):
         SUSPENDED = 11
 
     class DiskType(proto.Enum):
-        r"""Possible disk types for notebook instances."""
+        r"""Possible disk types for notebook instances.
+
+        Values:
+            DISK_TYPE_UNSPECIFIED (0):
+                Disk type not set.
+            PD_STANDARD (1):
+                Standard persistent disk type.
+            PD_SSD (2):
+                SSD persistent disk type.
+            PD_BALANCED (3):
+                Balanced persistent disk type.
+            PD_EXTREME (4):
+                Extreme persistent disk type.
+        """
         DISK_TYPE_UNSPECIFIED = 0
         PD_STANDARD = 1
         PD_SSD = 2
@@ -274,13 +357,33 @@ class Instance(proto.Message):
         PD_EXTREME = 4
 
     class DiskEncryption(proto.Enum):
-        r"""Definition of the disk encryption options."""
+        r"""Definition of the disk encryption options.
+
+        Values:
+            DISK_ENCRYPTION_UNSPECIFIED (0):
+                Disk encryption is not specified.
+            GMEK (1):
+                Use Google managed encryption keys to encrypt
+                the boot disk.
+            CMEK (2):
+                Use customer managed encryption keys to
+                encrypt the boot disk.
+        """
         DISK_ENCRYPTION_UNSPECIFIED = 0
         GMEK = 1
         CMEK = 2
 
     class NicType(proto.Enum):
-        r"""The type of vNIC driver. Default should be UNSPECIFIED_NIC_TYPE."""
+        r"""The type of vNIC driver. Default should be UNSPECIFIED_NIC_TYPE.
+
+        Values:
+            UNSPECIFIED_NIC_TYPE (0):
+                No type specified.
+            VIRTIO_NET (1):
+                VIRTIO
+            GVNIC (2):
+                GVNIC
+        """
         UNSPECIFIED_NIC_TYPE = 0
         VIRTIO_NET = 1
         GVNIC = 2
@@ -531,14 +634,34 @@ class Instance(proto.Message):
         """
 
         class State(proto.Enum):
-            r"""The definition of the states of this upgrade history entry."""
+            r"""The definition of the states of this upgrade history entry.
+
+            Values:
+                STATE_UNSPECIFIED (0):
+                    State is not specified.
+                STARTED (1):
+                    The instance upgrade is started.
+                SUCCEEDED (2):
+                    The instance upgrade is succeeded.
+                FAILED (3):
+                    The instance upgrade is failed.
+            """
             STATE_UNSPECIFIED = 0
             STARTED = 1
             SUCCEEDED = 2
             FAILED = 3
 
         class Action(proto.Enum):
-            r"""The definition of operations of this upgrade history entry."""
+            r"""The definition of operations of this upgrade history entry.
+
+            Values:
+                ACTION_UNSPECIFIED (0):
+                    Operation is not specified.
+                UPGRADE (1):
+                    Upgrade.
+                ROLLBACK (2):
+                    Rollback.
+            """
             ACTION_UNSPECIFIED = 0
             UPGRADE = 1
             ROLLBACK = 2

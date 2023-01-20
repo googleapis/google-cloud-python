@@ -4238,7 +4238,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "NotebookServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

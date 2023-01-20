@@ -73,7 +73,30 @@ class Schedule(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of the job."""
+        r"""State of the job.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified state.
+            ENABLED (1):
+                The job is executing normally.
+            PAUSED (2):
+                The job is paused by the user. It will not execute. A user
+                can intentionally pause the job using [PauseJobRequest][].
+            DISABLED (3):
+                The job is disabled by the system due to
+                error. The user cannot directly set a job to be
+                disabled.
+            UPDATE_FAILED (4):
+                The job state resulting from a failed
+                [CloudScheduler.UpdateJob][] operation. To recover a job
+                from this state, retry [CloudScheduler.UpdateJob][] until a
+                successful response is received.
+            INITIALIZING (5):
+                The schedule resource is being created.
+            DELETING (6):
+                The schedule resource is being deleted.
+        """
         STATE_UNSPECIFIED = 0
         ENABLED = 1
         PAUSED = 2

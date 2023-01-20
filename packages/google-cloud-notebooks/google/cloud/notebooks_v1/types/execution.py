@@ -157,6 +157,33 @@ class ExecutionTemplate(proto.Message):
     class ScaleTier(proto.Enum):
         r"""Required. Specifies the machine types, the number of replicas
         for workers and parameter servers.
+
+        Values:
+            SCALE_TIER_UNSPECIFIED (0):
+                Unspecified Scale Tier.
+            BASIC (1):
+                A single worker instance. This tier is
+                suitable for learning how to use Cloud ML, and
+                for experimenting with new models using small
+                datasets.
+            STANDARD_1 (2):
+                Many workers and a few parameter servers.
+            PREMIUM_1 (3):
+                A large number of workers with many parameter
+                servers.
+            BASIC_GPU (4):
+                A single worker instance with a K80 GPU.
+            BASIC_TPU (5):
+                A single worker instance with a Cloud TPU.
+            CUSTOM (6):
+                The CUSTOM tier is not a set tier, but rather enables you to
+                use your own cluster specification. When you use this tier,
+                set values to configure your processing cluster according to
+                these guidelines:
+
+                -  You *must* set ``ExecutionTemplate.masterType`` to
+                   specify the type of machine to use for your master node.
+                   This is the only required setting.
         """
         SCALE_TIER_UNSPECIFIED = 0
         BASIC = 1
@@ -167,7 +194,29 @@ class ExecutionTemplate(proto.Message):
         CUSTOM = 6
 
     class SchedulerAcceleratorType(proto.Enum):
-        r"""Hardware accelerator types for AI Platform Training jobs."""
+        r"""Hardware accelerator types for AI Platform Training jobs.
+
+        Values:
+            SCHEDULER_ACCELERATOR_TYPE_UNSPECIFIED (0):
+                Unspecified accelerator type. Default to no
+                GPU.
+            NVIDIA_TESLA_K80 (1):
+                Nvidia Tesla K80 GPU.
+            NVIDIA_TESLA_P100 (2):
+                Nvidia Tesla P100 GPU.
+            NVIDIA_TESLA_V100 (3):
+                Nvidia Tesla V100 GPU.
+            NVIDIA_TESLA_P4 (4):
+                Nvidia Tesla P4 GPU.
+            NVIDIA_TESLA_T4 (5):
+                Nvidia Tesla T4 GPU.
+            NVIDIA_TESLA_A100 (10):
+                Nvidia Tesla A100 GPU.
+            TPU_V2 (6):
+                TPU v2.
+            TPU_V3 (7):
+                TPU v3.
+        """
         SCHEDULER_ACCELERATOR_TYPE_UNSPECIFIED = 0
         NVIDIA_TESLA_K80 = 1
         NVIDIA_TESLA_P100 = 2
@@ -179,7 +228,19 @@ class ExecutionTemplate(proto.Message):
         TPU_V3 = 7
 
     class JobType(proto.Enum):
-        r"""The backend used for this execution."""
+        r"""The backend used for this execution.
+
+        Values:
+            JOB_TYPE_UNSPECIFIED (0):
+                No type specified.
+            VERTEX_AI (1):
+                Custom Job in ``aiplatform.googleapis.com``. Default value
+                for an execution.
+            DATAPROC (2):
+                Run execution on a cluster with Dataproc as a
+                job.
+                https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.jobs
+        """
         JOB_TYPE_UNSPECIFIED = 0
         VERTEX_AI = 1
         DATAPROC = 2
@@ -358,7 +419,37 @@ class Execution(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Enum description of the state of the underlying AIP job."""
+        r"""Enum description of the state of the underlying AIP job.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The job state is unspecified.
+            QUEUED (1):
+                The job has been just created and processing
+                has not yet begun.
+            PREPARING (2):
+                The service is preparing to execution the
+                job.
+            RUNNING (3):
+                The job is in progress.
+            SUCCEEDED (4):
+                The job completed successfully.
+            FAILED (5):
+                The job failed. ``error_message`` should contain the details
+                of the failure.
+            CANCELLING (6):
+                The job is being cancelled. ``error_message`` should
+                describe the reason for the cancellation.
+            CANCELLED (7):
+                The job has been cancelled. ``error_message`` should
+                describe the reason for the cancellation.
+            EXPIRED (9):
+                The job has become expired (relevant to
+                Vertex AI jobs)
+                https://cloud.google.com/vertex-ai/docs/reference/rest/v1/JobState
+            INITIALIZING (10):
+                The Execution is being created.
+        """
         STATE_UNSPECIFIED = 0
         QUEUED = 1
         PREPARING = 2
