@@ -92,6 +92,12 @@ class Job(proto.Message):
         r"""The order that TaskGroups are scheduled relative to each
         other.
         Not yet implemented.
+
+        Values:
+            SCHEDULING_POLICY_UNSPECIFIED (0):
+                Unspecified.
+            AS_SOON_AS_POSSIBLE (1):
+                Run all TaskGroups as soon as possible.
         """
         SCHEDULING_POLICY_UNSPECIFIED = 0
         AS_SOON_AS_POSSIBLE = 1
@@ -181,7 +187,16 @@ class LogsPolicy(proto.Message):
     """
 
     class Destination(proto.Enum):
-        r"""The destination (if any) for logs."""
+        r"""The destination (if any) for logs.
+
+        Values:
+            DESTINATION_UNSPECIFIED (0):
+                Logs are not preserved.
+            CLOUD_LOGGING (1):
+                Logs are streamed to Cloud Logging.
+            PATH (2):
+                Logs are saved to a file path.
+        """
         DESTINATION_UNSPECIFIED = 0
         CLOUD_LOGGING = 1
         PATH = 2
@@ -214,7 +229,18 @@ class JobDependency(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Dependency type."""
+        r"""Dependency type.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unspecified.
+            SUCCEEDED (1):
+                The dependent Job has succeeded.
+            FAILED (2):
+                The dependent Job has failed.
+            FINISHED (3):
+                SUCCEEDED or FAILED.
+        """
         TYPE_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2
@@ -245,7 +271,32 @@ class JobStatus(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Valid Job states."""
+        r"""Valid Job states.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+
+            QUEUED (1):
+                Job is admitted (validated and persisted) and
+                waiting for resources.
+            SCHEDULED (2):
+                Job is scheduled to run as soon as resource
+                allocation is ready. The resource allocation may
+                happen at a later time but with a high chance to
+                succeed.
+            RUNNING (3):
+                Resource allocation has been successful. At
+                least one Task in the Job is RUNNING.
+            SUCCEEDED (4):
+                All Tasks in the Job have finished
+                successfully.
+            FAILED (5):
+                At least one Task in the Job has failed.
+            DELETION_IN_PROGRESS (6):
+                The Job will be deleted, but has not been
+                deleted yet. Typically this is because resources
+                used by the Job are still being cleaned up.
+        """
         STATE_UNSPECIFIED = 0
         QUEUED = 1
         SCHEDULED = 2
@@ -344,7 +395,16 @@ class JobNotification(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""The message type."""
+        r"""The message type.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unspecified.
+            JOB_STATE_CHANGED (1):
+                Notify users that the job state has changed.
+            TASK_STATE_CHANGED (2):
+                Notify users that the task state has changed.
+        """
         TYPE_UNSPECIFIED = 0
         JOB_STATE_CHANGED = 1
         TASK_STATE_CHANGED = 2
@@ -426,7 +486,24 @@ class AllocationPolicy(proto.Message):
     """
 
     class ProvisioningModel(proto.Enum):
-        r"""Compute Engine VM instance provisioning model."""
+        r"""Compute Engine VM instance provisioning model.
+
+        Values:
+            PROVISIONING_MODEL_UNSPECIFIED (0):
+                Unspecified.
+            STANDARD (1):
+                Standard VM.
+            SPOT (2):
+                SPOT VM.
+            PREEMPTIBLE (3):
+                Preemptible VM (PVM).
+                Above SPOT VM is the preferable model for
+                preemptible VM instances: the old preemptible VM
+                model (indicated by this field) is the older
+                model, and has been migrated to use the SPOT
+                model as the underlying technology. This old
+                model will still be supported.
+        """
         PROVISIONING_MODEL_UNSPECIFIED = 0
         STANDARD = 1
         SPOT = 2
@@ -881,6 +958,12 @@ class TaskGroup(proto.Message):
     class SchedulingPolicy(proto.Enum):
         r"""How Tasks in the TaskGroup should be scheduled relative to
         each other.
+
+        Values:
+            SCHEDULING_POLICY_UNSPECIFIED (0):
+                Unspecified.
+            AS_SOON_AS_POSSIBLE (1):
+                Run Tasks as soon as resources are available.
         """
         SCHEDULING_POLICY_UNSPECIFIED = 0
         AS_SOON_AS_POSSIBLE = 1

@@ -1170,7 +1170,7 @@ class BatchServiceClient(metaclass=BatchServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "BatchServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

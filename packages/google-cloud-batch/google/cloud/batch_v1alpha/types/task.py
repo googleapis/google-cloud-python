@@ -132,7 +132,23 @@ class TaskStatus(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Task states."""
+        r"""Task states.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                unknown state
+            PENDING (1):
+                The Task is created and waiting for
+                resources.
+            ASSIGNED (2):
+                The Task is assigned to at least one VM.
+            RUNNING (3):
+                The Task is running.
+            FAILED (4):
+                The Task has failed.
+            SUCCEEDED (5):
+                The Task has succeeded.
+        """
         STATE_UNSPECIFIED = 0
         PENDING = 1
         ASSIGNED = 2
@@ -476,7 +492,18 @@ class LifecyclePolicy(proto.Message):
     """
 
     class Action(proto.Enum):
-        r"""Action on task failures based on different conditions."""
+        r"""Action on task failures based on different conditions.
+
+        Values:
+            ACTION_UNSPECIFIED (0):
+                Action unspecified.
+            RETRY_TASK (1):
+                Action that tasks in the group will be
+                scheduled to re-execute.
+            FAIL_TASK (2):
+                Action that tasks in the group will be
+                stopped immediately.
+        """
         ACTION_UNSPECIFIED = 0
         RETRY_TASK = 1
         FAIL_TASK = 2
