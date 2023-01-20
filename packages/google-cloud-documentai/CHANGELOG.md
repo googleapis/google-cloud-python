@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.9.1](https://github.com/googleapis/python-documentai/compare/v2.9.0...v2.9.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([61256d1](https://github.com/googleapis/python-documentai/commit/61256d1728e17dc8b04cd4166e286a4f76c6018a))
+
+
+### Documentation
+
+* Add documentation for enums ([61256d1](https://github.com/googleapis/python-documentai/commit/61256d1728e17dc8b04cd4166e286a4f76c6018a))
+
 ## [2.9.0](https://github.com/googleapis/python-documentai/compare/v2.8.0...v2.9.0) (2023-01-17)
 
 
