@@ -367,6 +367,25 @@ class PatchJob(proto.Message):
     class State(proto.Enum):
         r"""Enumeration of the various states a patch job passes through
         as it executes.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                State must be specified.
+            STARTED (1):
+                The patch job was successfully initiated.
+            INSTANCE_LOOKUP (2):
+                The patch job is looking up instances to run
+                the patch on.
+            PATCHING (3):
+                Instances are being patched.
+            SUCCEEDED (4):
+                Patch job completed successfully.
+            COMPLETED_WITH_ERRORS (5):
+                Patch job completed but there were errors.
+            CANCELED (6):
+                The patch job was canceled.
+            TIMED_OUT (7):
+                The patch job timed out.
         """
         STATE_UNSPECIFIED = 0
         STARTED = 1
@@ -589,7 +608,24 @@ class PatchConfig(proto.Message):
     """
 
     class RebootConfig(proto.Enum):
-        r"""Post-patch reboot settings."""
+        r"""Post-patch reboot settings.
+
+        Values:
+            REBOOT_CONFIG_UNSPECIFIED (0):
+                The default behavior is DEFAULT.
+            DEFAULT (1):
+                The agent decides if a reboot is necessary by checking
+                signals such as registry keys on Windows or
+                ``/var/run/reboot-required`` on APT based systems. On RPM
+                based systems, a set of core system package install times
+                are compared with system boot time.
+            ALWAYS (2):
+                Always reboot the machine after the update
+                completes.
+            NEVER (3):
+                Never reboot the machine after the update
+                completes.
+        """
         REBOOT_CONFIG_UNSPECIFIED = 0
         DEFAULT = 1
         ALWAYS = 2
@@ -645,7 +681,50 @@ class Instance(proto.Message):
     r"""Namespace for instance state enums."""
 
     class PatchState(proto.Enum):
-        r"""Patch state of an instance."""
+        r"""Patch state of an instance.
+
+        Values:
+            PATCH_STATE_UNSPECIFIED (0):
+                Unspecified.
+            PENDING (1):
+                The instance is not yet notified.
+            INACTIVE (2):
+                Instance is inactive and cannot be patched.
+            NOTIFIED (3):
+                The instance is notified that it should be
+                patched.
+            STARTED (4):
+                The instance has started the patching
+                process.
+            DOWNLOADING_PATCHES (5):
+                The instance is downloading patches.
+            APPLYING_PATCHES (6):
+                The instance is applying patches.
+            REBOOTING (7):
+                The instance is rebooting.
+            SUCCEEDED (8):
+                The instance has completed applying patches.
+            SUCCEEDED_REBOOT_REQUIRED (9):
+                The instance has completed applying patches
+                but a reboot is required.
+            FAILED (10):
+                The instance has failed to apply the patch.
+            ACKED (11):
+                The instance acked the notification and will
+                start shortly.
+            TIMED_OUT (12):
+                The instance exceeded the time out while
+                applying the patch.
+            RUNNING_PRE_PATCH_STEP (13):
+                The instance is running the pre-patch step.
+            RUNNING_POST_PATCH_STEP (14):
+                The instance is running the post-patch step.
+            NO_AGENT_DETECTED (15):
+                The service could not detect the presence of
+                the agent. Check to ensure that the agent is
+                installed, running, and able to communicate with
+                the service.
+        """
         PATCH_STATE_UNSPECIFIED = 0
         PENDING = 1
         INACTIVE = 2
@@ -701,7 +780,16 @@ class AptSettings(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Apt patch type."""
+        r"""Apt patch type.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                By default, upgrade will be performed.
+            DIST (1):
+                Runs ``apt-get dist-upgrade``.
+            UPGRADE (2):
+                Runs ``apt-get upgrade``.
+        """
         TYPE_UNSPECIFIED = 0
         DIST = 1
         UPGRADE = 2
@@ -839,6 +927,52 @@ class WindowsUpdateSettings(proto.Message):
     class Classification(proto.Enum):
         r"""Microsoft Windows update classifications as defined in [1]
         https://support.microsoft.com/en-us/help/824684/description-of-the-standard-terminology-that-is-used-to-describe-micro
+
+        Values:
+            CLASSIFICATION_UNSPECIFIED (0):
+                Invalid. If classifications are included,
+                they must be specified.
+            CRITICAL (1):
+                "A widely released fix for a specific problem that addresses
+                a critical, non-security-related bug." [1]
+            SECURITY (2):
+                "A widely released fix for a product-specific,
+                security-related vulnerability. Security vulnerabilities are
+                rated by their severity. The severity rating is indicated in
+                the Microsoft security bulletin as critical, important,
+                moderate, or low." [1]
+            DEFINITION (3):
+                "A widely released and frequent software update that
+                contains additions to a product's definition database.
+                Definition databases are often used to detect objects that
+                have specific attributes, such as malicious code, phishing
+                websites, or junk mail." [1]
+            DRIVER (4):
+                "Software that controls the input and output of a device."
+                [1]
+            FEATURE_PACK (5):
+                "New product functionality that is first distributed outside
+                the context of a product release and that is typically
+                included in the next full product release." [1]
+            SERVICE_PACK (6):
+                "A tested, cumulative set of all hotfixes, security updates,
+                critical updates, and updates. Additionally, service packs
+                may contain additional fixes for problems that are found
+                internally since the release of the product. Service packs
+                my also contain a limited number of customer-requested
+                design changes or features." [1]
+            TOOL (7):
+                "A utility or feature that helps complete a task or set of
+                tasks." [1]
+            UPDATE_ROLLUP (8):
+                "A tested, cumulative set of hotfixes, security updates,
+                critical updates, and updates that are packaged together for
+                easy deployment. A rollup generally targets a specific area,
+                such as security, or a component of a product, such as
+                Internet Information Services (IIS)." [1]
+            UPDATE (9):
+                "A widely released fix for a specific problem. An update
+                addresses a noncritical, non-security-related bug." [1]
         """
         CLASSIFICATION_UNSPECIFIED = 0
         CRITICAL = 1
@@ -922,7 +1056,22 @@ class ExecStepConfig(proto.Message):
     """
 
     class Interpreter(proto.Enum):
-        r"""The interpreter used to execute the a file."""
+        r"""The interpreter used to execute the a file.
+
+        Values:
+            INTERPRETER_UNSPECIFIED (0):
+                Invalid for a Windows ExecStepConfig. For a
+                Linux ExecStepConfig, the interpreter will be
+                parsed from the shebang line of the script if
+                unspecified.
+            SHELL (1):
+                Indicates that the script is run with ``/bin/sh`` on Linux
+                and ``cmd`` on Windows.
+            POWERSHELL (2):
+                Indicates that the file is run with PowerShell flags
+                ``-NonInteractive``, ``-NoProfile``, and
+                ``-ExecutionPolicy Bypass``.
+        """
         INTERPRETER_UNSPECIFIED = 0
         SHELL = 1
         POWERSHELL = 2
@@ -1096,7 +1245,25 @@ class PatchRollout(proto.Message):
     """
 
     class Mode(proto.Enum):
-        r"""Type of the rollout."""
+        r"""Type of the rollout.
+
+        Values:
+            MODE_UNSPECIFIED (0):
+                Mode must be specified.
+            ZONE_BY_ZONE (1):
+                Patches are applied one zone at a time. The
+                patch job begins in the region with the lowest
+                number of targeted VMs. Within the region,
+                patching begins in the zone with the lowest
+                number of targeted VMs. If multiple regions (or
+                zones within a region) have the same number of
+                targeted VMs, a tie-breaker is achieved by
+                sorting the regions or zones in alphabetical
+                order.
+            CONCURRENT_ZONES (2):
+                Patches are applied to VMs in all zones at
+                the same time.
+        """
         MODE_UNSPECIFIED = 0
         ZONE_BY_ZONE = 1
         CONCURRENT_ZONES = 2

@@ -110,7 +110,20 @@ class PatchDeployment(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Represents state of patch peployment."""
+        r"""Represents state of patch peployment.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The default value. This value is used if the
+                state is omitted.
+            ACTIVE (1):
+                Active value means that patch deployment
+                generates Patch Jobs.
+            PAUSED (2):
+                Paused value means that patch deployment does
+                not generate Patch jobs. Requires user action to
+                move in and out from this state.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         PAUSED = 2
@@ -239,7 +252,21 @@ class RecurringSchedule(proto.Message):
     """
 
     class Frequency(proto.Enum):
-        r"""Specifies the frequency of the recurring patch deployments."""
+        r"""Specifies the frequency of the recurring patch deployments.
+
+        Values:
+            FREQUENCY_UNSPECIFIED (0):
+                Invalid. A frequency must be specified.
+            WEEKLY (1):
+                Indicates that the frequency of recurrence
+                should be expressed in terms of weeks.
+            MONTHLY (2):
+                Indicates that the frequency of recurrence
+                should be expressed in terms of months.
+            DAILY (3):
+                Indicates that the frequency of recurrence
+                should be expressed in terms of days.
+        """
         FREQUENCY_UNSPECIFIED = 0
         WEEKLY = 1
         MONTHLY = 2

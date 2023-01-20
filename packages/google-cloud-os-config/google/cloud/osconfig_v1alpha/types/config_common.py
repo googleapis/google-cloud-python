@@ -28,7 +28,22 @@ __protobuf__ = proto.module(
 
 
 class OSPolicyComplianceState(proto.Enum):
-    r"""Supported OSPolicy compliance states."""
+    r"""Supported OSPolicy compliance states.
+
+    Values:
+        OS_POLICY_COMPLIANCE_STATE_UNSPECIFIED (0):
+            Default value. This value is unused.
+        COMPLIANT (1):
+            Compliant state.
+        NON_COMPLIANT (2):
+            Non-compliant state
+        UNKNOWN (3):
+            Unknown compliance state.
+        NO_OS_POLICIES_APPLICABLE (4):
+            No applicable OS policies were found for the
+            instance. This state is only applicable to the
+            instance.
+    """
     _pb_options = {"deprecated": True}
     OS_POLICY_COMPLIANCE_STATE_UNSPECIFIED = 0
     COMPLIANT = 1
@@ -53,7 +68,31 @@ class OSPolicyResourceConfigStep(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Supported configuration step types"""
+        r"""Supported configuration step types
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            VALIDATION (1):
+                Validation to detect resource conflicts,
+                schema errors, etc.
+            DESIRED_STATE_CHECK (2):
+                Check the current desired state status of the
+                resource.
+            DESIRED_STATE_ENFORCEMENT (3):
+                Enforce the desired state for a resource that
+                is not in desired state.
+            DESIRED_STATE_CHECK_POST_ENFORCEMENT (4):
+                Re-check desired state status for a resource
+                after enforcement of all resources in the
+                current configuration run.
+                This step is used to determine the final desired
+                state status for the resource. It accounts for
+                any resources that might have drifted from their
+                desired state due to side effects from
+                configuring other resources during the current
+                configuration run.
+        """
         _pb_options = {"deprecated": True}
         TYPE_UNSPECIFIED = 0
         VALIDATION = 1
@@ -62,7 +101,16 @@ class OSPolicyResourceConfigStep(proto.Message):
         DESIRED_STATE_CHECK_POST_ENFORCEMENT = 4
 
     class Outcome(proto.Enum):
-        r"""Supported outcomes for a configuration step."""
+        r"""Supported outcomes for a configuration step.
+
+        Values:
+            OUTCOME_UNSPECIFIED (0):
+                Default value. This value is unused.
+            SUCCEEDED (1):
+                The step succeeded.
+            FAILED (2):
+                The step failed.
+        """
         _pb_options = {"deprecated": True}
         OUTCOME_UNSPECIFIED = 0
         SUCCEEDED = 1

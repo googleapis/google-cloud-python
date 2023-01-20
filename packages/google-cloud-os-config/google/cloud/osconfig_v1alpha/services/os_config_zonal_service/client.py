@@ -2487,7 +2487,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "OsConfigZonalServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

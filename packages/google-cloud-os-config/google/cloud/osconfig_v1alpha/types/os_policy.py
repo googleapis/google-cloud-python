@@ -65,7 +65,22 @@ class OSPolicy(proto.Message):
     """
 
     class Mode(proto.Enum):
-        r"""Policy mode"""
+        r"""Policy mode
+
+        Values:
+            MODE_UNSPECIFIED (0):
+                Invalid mode
+            VALIDATION (1):
+                This mode checks if the configuration
+                resources in the policy are in their desired
+                state. No actions are performed if they are not
+                in the desired state. This mode is used for
+                reporting purposes.
+            ENFORCEMENT (2):
+                This mode checks if the configuration
+                resources in the policy are in their desired
+                state, and if not, enforces the desired state.
+        """
         MODE_UNSPECIFIED = 0
         VALIDATION = 1
         ENFORCEMENT = 2
@@ -313,6 +328,15 @@ class OSPolicy(proto.Message):
             class DesiredState(proto.Enum):
                 r"""The desired state that the OS Config agent maintains on the
                 VM.
+
+                Values:
+                    DESIRED_STATE_UNSPECIFIED (0):
+                        Unspecified is invalid.
+                    INSTALLED (1):
+                        Ensure that the package is installed.
+                    REMOVED (2):
+                        The agent ensures that the package is not
+                        installed and uninstalls it if detected.
                 """
                 DESIRED_STATE_UNSPECIFIED = 0
                 INSTALLED = 1
@@ -557,7 +581,18 @@ class OSPolicy(proto.Message):
                 """
 
                 class ArchiveType(proto.Enum):
-                    r"""Type of archive."""
+                    r"""Type of archive.
+
+                    Values:
+                        ARCHIVE_TYPE_UNSPECIFIED (0):
+                            Unspecified is invalid.
+                        DEB (1):
+                            Deb indicates that the archive contains
+                            binary files.
+                        DEB_SRC (2):
+                            Deb-src indicates that the archive contains
+                            source files.
+                    """
                     ARCHIVE_TYPE_UNSPECIFIED = 0
                     DEB = 1
                     DEB_SRC = 2
@@ -789,7 +824,24 @@ class OSPolicy(proto.Message):
                 """
 
                 class Interpreter(proto.Enum):
-                    r"""The interpreter to use."""
+                    r"""The interpreter to use.
+
+                    Values:
+                        INTERPRETER_UNSPECIFIED (0):
+                            Invalid value, the request will return
+                            validation error.
+                        NONE (1):
+                            If an interpreter is not specified, the source is executed
+                            directly. This execution, without an interpreter, only
+                            succeeds for executables and scripts that have shebang
+                            lines.
+                        SHELL (2):
+                            Indicates that the script runs with ``/bin/sh`` on Linux and
+                            ``cmd.exe`` on Windows.
+                        POWERSHELL (3):
+                            Indicates that the script runs with
+                            PowerShell.
+                    """
                     INTERPRETER_UNSPECIFIED = 0
                     NONE = 1
                     SHELL = 2
@@ -878,7 +930,20 @@ class OSPolicy(proto.Message):
             """
 
             class DesiredState(proto.Enum):
-                r"""Desired state of the file."""
+                r"""Desired state of the file.
+
+                Values:
+                    DESIRED_STATE_UNSPECIFIED (0):
+                        Unspecified is invalid.
+                    PRESENT (1):
+                        Ensure file at path is present.
+                    ABSENT (2):
+                        Ensure file at path is absent.
+                    CONTENTS_MATCH (3):
+                        Ensure the contents of the file at path
+                        matches. If the file does not exist it will be
+                        created.
+                """
                 DESIRED_STATE_UNSPECIFIED = 0
                 PRESENT = 1
                 ABSENT = 2

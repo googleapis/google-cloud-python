@@ -32,7 +32,18 @@ __protobuf__ = proto.module(
 
 
 class InventoryView(proto.Enum):
-    r"""The view for inventory objects."""
+    r"""The view for inventory objects.
+
+    Values:
+        INVENTORY_VIEW_UNSPECIFIED (0):
+            The default value.
+            The API defaults to the BASIC view.
+        BASIC (1):
+            Returns the basic inventory information that includes
+            ``os_info``.
+        FULL (2):
+            Returns all fields.
+    """
     INVENTORY_VIEW_UNSPECIFIED = 0
     BASIC = 1
     FULL = 2
@@ -164,12 +175,32 @@ class Inventory(proto.Message):
         """
 
         class OriginType(proto.Enum):
-            r"""The origin of a specific inventory item."""
+            r"""The origin of a specific inventory item.
+
+            Values:
+                ORIGIN_TYPE_UNSPECIFIED (0):
+                    Invalid. An origin type must be specified.
+                INVENTORY_REPORT (1):
+                    This inventory item was discovered as the
+                    result of the agent reporting inventory via the
+                    reporting API.
+            """
             ORIGIN_TYPE_UNSPECIFIED = 0
             INVENTORY_REPORT = 1
 
         class Type(proto.Enum):
-            r"""The different types of inventory that are tracked on a VM."""
+            r"""The different types of inventory that are tracked on a VM.
+
+            Values:
+                TYPE_UNSPECIFIED (0):
+                    Invalid. An type must be specified.
+                INSTALLED_PACKAGE (1):
+                    This represents a package that is installed
+                    on the VM.
+                AVAILABLE_PACKAGE (2):
+                    This represents an update that is available
+                    for a package.
+            """
             TYPE_UNSPECIFIED = 0
             INSTALLED_PACKAGE = 1
             AVAILABLE_PACKAGE = 2

@@ -220,7 +220,23 @@ class OSPolicyAssignmentReport(proto.Message):
         """
 
         class ComplianceState(proto.Enum):
-            r"""Possible compliance states for an os policy."""
+            r"""Possible compliance states for an os policy.
+
+            Values:
+                UNKNOWN (0):
+                    The policy is in an unknown compliance state.
+
+                    Refer to the field ``compliance_state_reason`` to learn the
+                    exact reason for the policy to be in this compliance state.
+                COMPLIANT (1):
+                    Policy is compliant.
+                    The policy is compliant if all the underlying
+                    resources are also compliant.
+                NON_COMPLIANT (2):
+                    Policy is non-compliant.
+                    The policy is non-compliant if one or more
+                    underlying resources are non-compliant.
+            """
             UNKNOWN = 0
             COMPLIANT = 1
             NON_COMPLIANT = 2
@@ -262,7 +278,19 @@ class OSPolicyAssignmentReport(proto.Message):
             """
 
             class ComplianceState(proto.Enum):
-                r"""Possible compliance states for a resource."""
+                r"""Possible compliance states for a resource.
+
+                Values:
+                    UNKNOWN (0):
+                        The resource is in an unknown compliance state.
+
+                        To get more details about why the policy is in this state,
+                        review the output of the ``compliance_state_reason`` field.
+                    COMPLIANT (1):
+                        Resource is compliant.
+                    NON_COMPLIANT (2):
+                        Resource is non-compliant.
+                """
                 UNKNOWN = 0
                 COMPLIANT = 1
                 NON_COMPLIANT = 2
@@ -281,7 +309,30 @@ class OSPolicyAssignmentReport(proto.Message):
                 """
 
                 class Type(proto.Enum):
-                    r"""Supported configuration step types"""
+                    r"""Supported configuration step types
+
+                    Values:
+                        TYPE_UNSPECIFIED (0):
+                            Default value. This value is unused.
+                        VALIDATION (1):
+                            Checks for resource conflicts such as schema
+                            errors.
+                        DESIRED_STATE_CHECK (2):
+                            Checks the current status of the desired
+                            state for a resource.
+                        DESIRED_STATE_ENFORCEMENT (3):
+                            Enforces the desired state for a resource
+                            that is not in desired state.
+                        DESIRED_STATE_CHECK_POST_ENFORCEMENT (4):
+                            Re-checks the status of the desired state.
+                            This check is done for a resource after the
+                            enforcement of all OS policies.
+                            This step is used to determine the final desired
+                            state status for the resource. It accounts for
+                            any resources that might have drifted from their
+                            desired state due to side effects from executing
+                            other resources.
+                    """
                     TYPE_UNSPECIFIED = 0
                     VALIDATION = 1
                     DESIRED_STATE_CHECK = 2

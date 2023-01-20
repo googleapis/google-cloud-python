@@ -119,7 +119,20 @@ class OSPolicyAssignment(proto.Message):
     """
 
     class RolloutState(proto.Enum):
-        r"""OS policy assignment rollout state"""
+        r"""OS policy assignment rollout state
+
+        Values:
+            ROLLOUT_STATE_UNSPECIFIED (0):
+                Invalid value
+            IN_PROGRESS (1):
+                The rollout is in progress.
+            CANCELLING (2):
+                The rollout is being cancelled.
+            CANCELLED (3):
+                The rollout is cancelled.
+            SUCCEEDED (4):
+                The rollout has completed successfully.
+        """
         ROLLOUT_STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
         CANCELLING = 2
@@ -335,14 +348,38 @@ class OSPolicyAssignmentOperationMetadata(proto.Message):
     """
 
     class APIMethod(proto.Enum):
-        r"""The OS policy assignment API method."""
+        r"""The OS policy assignment API method.
+
+        Values:
+            API_METHOD_UNSPECIFIED (0):
+                Invalid value
+            CREATE (1):
+                Create OS policy assignment API method
+            UPDATE (2):
+                Update OS policy assignment API method
+            DELETE (3):
+                Delete OS policy assignment API method
+        """
         API_METHOD_UNSPECIFIED = 0
         CREATE = 1
         UPDATE = 2
         DELETE = 3
 
     class RolloutState(proto.Enum):
-        r"""State of the rollout"""
+        r"""State of the rollout
+
+        Values:
+            ROLLOUT_STATE_UNSPECIFIED (0):
+                Invalid value
+            IN_PROGRESS (1):
+                The rollout is in progress.
+            CANCELLING (2):
+                The rollout is being cancelled.
+            CANCELLED (3):
+                The rollout is cancelled.
+            SUCCEEDED (4):
+                The rollout has completed successfully.
+        """
         ROLLOUT_STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
         CANCELLING = 2
