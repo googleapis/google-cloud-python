@@ -738,7 +738,7 @@ class MetricsV1Beta3Client(metaclass=MetricsV1Beta3ClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "MetricsV1Beta3Client":
         return self
 
     def __exit__(self, type, value, traceback):

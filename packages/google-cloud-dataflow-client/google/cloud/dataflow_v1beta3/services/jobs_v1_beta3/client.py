@@ -1071,7 +1071,7 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "JobsV1Beta3Client":
         return self
 
     def __exit__(self, type, value, traceback):

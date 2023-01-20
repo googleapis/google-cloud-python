@@ -533,7 +533,7 @@ class MessagesV1Beta3Client(metaclass=MessagesV1Beta3ClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "MessagesV1Beta3Client":
         return self
 
     def __exit__(self, type, value, traceback):

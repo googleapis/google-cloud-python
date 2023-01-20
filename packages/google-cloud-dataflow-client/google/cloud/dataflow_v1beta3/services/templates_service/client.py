@@ -682,7 +682,7 @@ class TemplatesServiceClient(metaclass=TemplatesServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "TemplatesServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

@@ -59,7 +59,30 @@ __protobuf__ = proto.module(
 
 
 class KindType(proto.Enum):
-    r"""Type of transform or stage operation."""
+    r"""Type of transform or stage operation.
+
+    Values:
+        UNKNOWN_KIND (0):
+            Unrecognized transform type.
+        PAR_DO_KIND (1):
+            ParDo transform.
+        GROUP_BY_KEY_KIND (2):
+            Group By Key transform.
+        FLATTEN_KIND (3):
+            Flatten transform.
+        READ_KIND (4):
+            Read transform.
+        WRITE_KIND (5):
+            Write transform.
+        CONSTANT_KIND (6):
+            Constructs from a constant value, such as
+            with Create.of.
+        SINGLETON_KIND (7):
+            Creates a Singleton view of a collection.
+        SHUFFLE_KIND (8):
+            Opening or closing a shuffle session, often
+            as part of a GroupByKey.
+    """
     UNKNOWN_KIND = 0
     PAR_DO_KIND = 1
     GROUP_BY_KEY_KIND = 2
@@ -74,6 +97,79 @@ class KindType(proto.Enum):
 class JobState(proto.Enum):
     r"""Describes the overall state of a
     [google.dataflow.v1beta3.Job][google.dataflow.v1beta3.Job].
+
+    Values:
+        JOB_STATE_UNKNOWN (0):
+            The job's run state isn't specified.
+        JOB_STATE_STOPPED (1):
+            ``JOB_STATE_STOPPED`` indicates that the job has not yet
+            started to run.
+        JOB_STATE_RUNNING (2):
+            ``JOB_STATE_RUNNING`` indicates that the job is currently
+            running.
+        JOB_STATE_DONE (3):
+            ``JOB_STATE_DONE`` indicates that the job has successfully
+            completed. This is a terminal job state. This state may be
+            set by the Cloud Dataflow service, as a transition from
+            ``JOB_STATE_RUNNING``. It may also be set via a Cloud
+            Dataflow ``UpdateJob`` call, if the job has not yet reached
+            a terminal state.
+        JOB_STATE_FAILED (4):
+            ``JOB_STATE_FAILED`` indicates that the job has failed. This
+            is a terminal job state. This state may only be set by the
+            Cloud Dataflow service, and only as a transition from
+            ``JOB_STATE_RUNNING``.
+        JOB_STATE_CANCELLED (5):
+            ``JOB_STATE_CANCELLED`` indicates that the job has been
+            explicitly cancelled. This is a terminal job state. This
+            state may only be set via a Cloud Dataflow ``UpdateJob``
+            call, and only if the job has not yet reached another
+            terminal state.
+        JOB_STATE_UPDATED (6):
+            ``JOB_STATE_UPDATED`` indicates that the job was
+            successfully updated, meaning that this job was stopped and
+            another job was started, inheriting state from this one.
+            This is a terminal job state. This state may only be set by
+            the Cloud Dataflow service, and only as a transition from
+            ``JOB_STATE_RUNNING``.
+        JOB_STATE_DRAINING (7):
+            ``JOB_STATE_DRAINING`` indicates that the job is in the
+            process of draining. A draining job has stopped pulling from
+            its input sources and is processing any data that remains
+            in-flight. This state may be set via a Cloud Dataflow
+            ``UpdateJob`` call, but only as a transition from
+            ``JOB_STATE_RUNNING``. Jobs that are draining may only
+            transition to ``JOB_STATE_DRAINED``,
+            ``JOB_STATE_CANCELLED``, or ``JOB_STATE_FAILED``.
+        JOB_STATE_DRAINED (8):
+            ``JOB_STATE_DRAINED`` indicates that the job has been
+            drained. A drained job terminated by stopping pulling from
+            its input sources and processing any data that remained
+            in-flight when draining was requested. This state is a
+            terminal state, may only be set by the Cloud Dataflow
+            service, and only as a transition from
+            ``JOB_STATE_DRAINING``.
+        JOB_STATE_PENDING (9):
+            ``JOB_STATE_PENDING`` indicates that the job has been
+            created but is not yet running. Jobs that are pending may
+            only transition to ``JOB_STATE_RUNNING``, or
+            ``JOB_STATE_FAILED``.
+        JOB_STATE_CANCELLING (10):
+            ``JOB_STATE_CANCELLING`` indicates that the job has been
+            explicitly cancelled and is in the process of stopping. Jobs
+            that are cancelling may only transition to
+            ``JOB_STATE_CANCELLED`` or ``JOB_STATE_FAILED``.
+        JOB_STATE_QUEUED (11):
+            ``JOB_STATE_QUEUED`` indicates that the job has been created
+            but is being delayed until launch. Jobs that are queued may
+            only transition to ``JOB_STATE_PENDING`` or
+            ``JOB_STATE_CANCELLED``.
+        JOB_STATE_RESOURCE_CLEANING_UP (12):
+            ``JOB_STATE_RESOURCE_CLEANING_UP`` indicates that the batch
+            job's associated resources are currently being cleaned up
+            after a successful run. Currently, this is an opt-in
+            feature, please reach out to Cloud support team if you are
+            interested.
     """
     JOB_STATE_UNKNOWN = 0
     JOB_STATE_STOPPED = 1
@@ -93,6 +189,24 @@ class JobState(proto.Enum):
 class JobView(proto.Enum):
     r"""Selector for how much information is returned in Job
     responses.
+
+    Values:
+        JOB_VIEW_UNKNOWN (0):
+            The job view to return isn't specified, or is unknown.
+            Responses will contain at least the ``JOB_VIEW_SUMMARY``
+            information, and may contain additional information.
+        JOB_VIEW_SUMMARY (1):
+            Request summary information only:
+            Project ID, Job ID, job name, job type, job
+            status, start/end time, and Cloud SDK version
+            details.
+        JOB_VIEW_ALL (2):
+            Request all information available for this
+            job.
+        JOB_VIEW_DESCRIPTION (3):
+            Request summary info and limited job
+            description data for steps, labels and
+            environment.
     """
     JOB_VIEW_UNKNOWN = 0
     JOB_VIEW_SUMMARY = 1
@@ -522,7 +636,24 @@ class SdkVersion(proto.Message):
     """
 
     class SdkSupportStatus(proto.Enum):
-        r"""The support status of the SDK used to run the job."""
+        r"""The support status of the SDK used to run the job.
+
+        Values:
+            UNKNOWN (0):
+                Cloud Dataflow is unaware of this version.
+            SUPPORTED (1):
+                This is a known version of an SDK, and is
+                supported.
+            STALE (2):
+                A newer version of the SDK family exists, and
+                an update is recommended.
+            DEPRECATED (3):
+                This version of the SDK is deprecated and
+                will eventually be unsupported.
+            UNSUPPORTED (4):
+                Support for this SDK version has ended and it
+                should no longer be used.
+        """
         UNKNOWN = 0
         SUPPORTED = 1
         STALE = 2
@@ -1259,6 +1390,23 @@ class ListJobsRequest(proto.Message):
         r"""This field filters out and returns jobs in the specified job
         state. The order of data returned is determined by the filter
         used, and is subject to change.
+
+        Values:
+            UNKNOWN (0):
+                The filter isn't specified, or is unknown. This returns all
+                jobs ordered on descending ``JobUuid``.
+            ALL (1):
+                Returns all running jobs first ordered on
+                creation timestamp, then returns all terminated
+                jobs ordered on the termination timestamp.
+            TERMINATED (2):
+                Filters the jobs that have a terminated state, ordered on
+                the termination timestamp. Example terminated states:
+                ``JOB_STATE_STOPPED``, ``JOB_STATE_UPDATED``,
+                ``JOB_STATE_DRAINED``, etc.
+            ACTIVE (3):
+                Filters the jobs that are running ordered on
+                the creation timestamp.
         """
         UNKNOWN = 0
         ALL = 1

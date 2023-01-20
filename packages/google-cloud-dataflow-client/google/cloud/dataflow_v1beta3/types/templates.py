@@ -50,6 +50,35 @@ __protobuf__ = proto.module(
 class ParameterType(proto.Enum):
     r"""ParameterType specifies what kind of input we need for this
     parameter.
+
+    Values:
+        DEFAULT (0):
+            Default input type.
+        TEXT (1):
+            The parameter specifies generic text input.
+        GCS_READ_BUCKET (2):
+            The parameter specifies a Cloud Storage
+            Bucket to read from.
+        GCS_WRITE_BUCKET (3):
+            The parameter specifies a Cloud Storage
+            Bucket to write to.
+        GCS_READ_FILE (4):
+            The parameter specifies a Cloud Storage file
+            path to read from.
+        GCS_WRITE_FILE (5):
+            The parameter specifies a Cloud Storage file
+            path to write to.
+        GCS_READ_FOLDER (6):
+            The parameter specifies a Cloud Storage
+            folder path to read from.
+        GCS_WRITE_FOLDER (7):
+            The parameter specifies a Cloud Storage
+            folder to write to.
+        PUBSUB_TOPIC (8):
+            The parameter specifies a Pub/Sub Topic.
+        PUBSUB_SUBSCRIPTION (9):
+            The parameter specifies a Pub/Sub
+            Subscription.
     """
     DEFAULT = 0
     TEXT = 1
@@ -681,7 +710,16 @@ class SDKInfo(proto.Message):
     """
 
     class Language(proto.Enum):
-        r"""SDK Language."""
+        r"""SDK Language.
+
+        Values:
+            UNKNOWN (0):
+                UNKNOWN Language.
+            JAVA (1):
+                Java.
+            PYTHON (2):
+                Python.
+        """
         UNKNOWN = 0
         JAVA = 1
         PYTHON = 2
@@ -801,7 +839,13 @@ class GetTemplateRequest(proto.Message):
     """
 
     class TemplateView(proto.Enum):
-        r"""The various views of a template that may be retrieved."""
+        r"""The various views of a template that may be retrieved.
+
+        Values:
+            METADATA_ONLY (0):
+                Template view that retrieves only the
+                metadata associated with the template.
+        """
         METADATA_ONLY = 0
 
     project_id: str = proto.Field(
@@ -842,7 +886,16 @@ class GetTemplateResponse(proto.Message):
     """
 
     class TemplateType(proto.Enum):
-        r"""Template Type."""
+        r"""Template Type.
+
+        Values:
+            UNKNOWN (0):
+                Unknown Template Type.
+            LEGACY (1):
+                Legacy Template.
+            FLEX (2):
+                Flex Template.
+        """
         UNKNOWN = 0
         LEGACY = 1
         FLEX = 2

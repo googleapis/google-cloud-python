@@ -33,7 +33,48 @@ __protobuf__ = proto.module(
 
 
 class JobMessageImportance(proto.Enum):
-    r"""Indicates the importance of the message."""
+    r"""Indicates the importance of the message.
+
+    Values:
+        JOB_MESSAGE_IMPORTANCE_UNKNOWN (0):
+            The message importance isn't specified, or is
+            unknown.
+        JOB_MESSAGE_DEBUG (1):
+            The message is at the 'debug' level:
+            typically only useful for software engineers
+            working on the code the job is running.
+            Typically, Dataflow pipeline runners do not
+            display log messages at this level by default.
+        JOB_MESSAGE_DETAILED (2):
+            The message is at the 'detailed' level:
+            somewhat verbose, but potentially useful to
+            users.  Typically, Dataflow pipeline runners do
+            not display log messages at this level by
+            default. These messages are displayed by default
+            in the Dataflow monitoring UI.
+        JOB_MESSAGE_BASIC (5):
+            The message is at the 'basic' level: useful
+            for keeping track of the execution of a Dataflow
+            pipeline.  Typically, Dataflow pipeline runners
+            display log messages at this level by default,
+            and these messages are displayed by default in
+            the Dataflow monitoring UI.
+        JOB_MESSAGE_WARNING (3):
+            The message is at the 'warning' level:
+            indicating a condition pertaining to a job which
+            may require human intervention. Typically,
+            Dataflow pipeline runners display log messages
+            at this level by default, and these messages are
+            displayed by default in the Dataflow monitoring
+            UI.
+        JOB_MESSAGE_ERROR (4):
+            The message is at the 'error' level:
+            indicating a condition preventing a job from
+            succeeding.  Typically, Dataflow pipeline
+            runners display log messages at this level by
+            default, and these messages are displayed by
+            default in the Dataflow monitoring UI.
+    """
     JOB_MESSAGE_IMPORTANCE_UNKNOWN = 0
     JOB_MESSAGE_DEBUG = 1
     JOB_MESSAGE_DETAILED = 2
@@ -154,7 +195,33 @@ class AutoscalingEvent(proto.Message):
     """
 
     class AutoscalingEventType(proto.Enum):
-        r"""Indicates the type of autoscaling event."""
+        r"""Indicates the type of autoscaling event.
+
+        Values:
+            TYPE_UNKNOWN (0):
+                Default type for the enum.  Value should
+                never be returned.
+            TARGET_NUM_WORKERS_CHANGED (1):
+                The TARGET_NUM_WORKERS_CHANGED type should be used when the
+                target worker pool size has changed at the start of an
+                actuation. An event should always be specified as
+                TARGET_NUM_WORKERS_CHANGED if it reflects a change in the
+                target_num_workers.
+            CURRENT_NUM_WORKERS_CHANGED (2):
+                The CURRENT_NUM_WORKERS_CHANGED type should be used when
+                actual worker pool size has been changed, but the
+                target_num_workers has not changed.
+            ACTUATION_FAILURE (3):
+                The ACTUATION_FAILURE type should be used when we want to
+                report an error to the user indicating why the current
+                number of workers in the pool could not be changed.
+                Displayed in the current status and history widgets.
+            NO_CHANGE (4):
+                Used when we want to report to the user a reason why we are
+                not currently adjusting the number of workers. Should
+                specify both target_num_workers, current_num_workers and a
+                decision_message.
+        """
         TYPE_UNKNOWN = 0
         TARGET_NUM_WORKERS_CHANGED = 1
         CURRENT_NUM_WORKERS_CHANGED = 2

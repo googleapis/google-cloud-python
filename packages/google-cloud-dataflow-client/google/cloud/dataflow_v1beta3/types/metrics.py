@@ -40,7 +40,23 @@ __protobuf__ = proto.module(
 
 
 class ExecutionState(proto.Enum):
-    r"""The state of some component of job execution."""
+    r"""The state of some component of job execution.
+
+    Values:
+        EXECUTION_STATE_UNKNOWN (0):
+            The component state is unknown or
+            unspecified.
+        EXECUTION_STATE_NOT_STARTED (1):
+            The component is not yet running.
+        EXECUTION_STATE_RUNNING (2):
+            The component is currently running.
+        EXECUTION_STATE_SUCCEEDED (3):
+            The component succeeded.
+        EXECUTION_STATE_FAILED (4):
+            The component failed.
+        EXECUTION_STATE_CANCELLED (5):
+            Execution of the component was cancelled.
+    """
     EXECUTION_STATE_UNKNOWN = 0
     EXECUTION_STATE_NOT_STARTED = 1
     EXECUTION_STATE_RUNNING = 2

@@ -35,7 +35,24 @@ __protobuf__ = proto.module(
 
 
 class SnapshotState(proto.Enum):
-    r"""Snapshot state."""
+    r"""Snapshot state.
+
+    Values:
+        UNKNOWN_SNAPSHOT_STATE (0):
+            Unknown state.
+        PENDING (1):
+            Snapshot intent to create has been persisted,
+            snapshotting of state has not yet started.
+        RUNNING (2):
+            Snapshotting is being performed.
+        READY (3):
+            Snapshot has been created and is ready to be
+            used.
+        FAILED (4):
+            Snapshot failed to be created.
+        DELETED (5):
+            Snapshot has been deleted.
+    """
     UNKNOWN_SNAPSHOT_STATE = 0
     PENDING = 1
     RUNNING = 2

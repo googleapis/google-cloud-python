@@ -47,6 +47,19 @@ class JobType(proto.Enum):
     [google.dataflow.v1beta3.Job], which determines the way the Job is
     managed by the Cloud Dataflow service (how workers are scheduled,
     how inputs are sharded, etc).
+
+    Values:
+        JOB_TYPE_UNKNOWN (0):
+            The type of the job is unspecified, or
+            unknown.
+        JOB_TYPE_BATCH (1):
+            A batch job with a well-defined end point:
+            data is read, data is processed, data is
+            written, and the job is done.
+        JOB_TYPE_STREAMING (2):
+            A continuously streaming job with no end:
+            data is read, processed, and written
+            continuously.
     """
     JOB_TYPE_UNKNOWN = 0
     JOB_TYPE_BATCH = 1
@@ -56,6 +69,14 @@ class JobType(proto.Enum):
 class FlexResourceSchedulingGoal(proto.Enum):
     r"""Specifies the resource to optimize for in Flexible Resource
     Scheduling.
+
+    Values:
+        FLEXRS_UNSPECIFIED (0):
+            Run in the default mode.
+        FLEXRS_SPEED_OPTIMIZED (1):
+            Optimize for lower execution time.
+        FLEXRS_COST_OPTIMIZED (2):
+            Optimize for lower cost.
     """
     FLEXRS_UNSPECIFIED = 0
     FLEXRS_SPEED_OPTIMIZED = 1
@@ -66,6 +87,19 @@ class TeardownPolicy(proto.Enum):
     r"""Specifies what happens to a resource when a Cloud Dataflow
     [google.dataflow.v1beta3.Job][google.dataflow.v1beta3.Job] has
     completed.
+
+    Values:
+        TEARDOWN_POLICY_UNKNOWN (0):
+            The teardown policy isn't specified, or is
+            unknown.
+        TEARDOWN_ALWAYS (1):
+            Always teardown the resource.
+        TEARDOWN_ON_SUCCESS (2):
+            Teardown the resource on success. This is
+            useful for debugging failures.
+        TEARDOWN_NEVER (3):
+            Never teardown the resource. This is useful
+            for debugging and development.
     """
     TEARDOWN_POLICY_UNKNOWN = 0
     TEARDOWN_ALWAYS = 1
@@ -76,6 +110,21 @@ class TeardownPolicy(proto.Enum):
 class DefaultPackageSet(proto.Enum):
     r"""The default set of packages to be staged on a pool of
     workers.
+
+    Values:
+        DEFAULT_PACKAGE_SET_UNKNOWN (0):
+            The default set of packages to stage is
+            unknown, or unspecified.
+        DEFAULT_PACKAGE_SET_NONE (1):
+            Indicates that no packages should be staged
+            at the worker unless explicitly specified by the
+            job.
+        DEFAULT_PACKAGE_SET_JAVA (2):
+            Stage packages typically useful to workers
+            written in Java.
+        DEFAULT_PACKAGE_SET_PYTHON (3):
+            Stage packages typically useful to workers
+            written in Python.
     """
     DEFAULT_PACKAGE_SET_UNKNOWN = 0
     DEFAULT_PACKAGE_SET_NONE = 1
@@ -88,6 +137,15 @@ class AutoscalingAlgorithm(proto.Enum):
     worker processes to run at any given point in time, based on the
     amount of data left to process, the number of workers, and how
     quickly existing workers are processing data.
+
+    Values:
+        AUTOSCALING_ALGORITHM_UNKNOWN (0):
+            The algorithm is unknown, or unspecified.
+        AUTOSCALING_ALGORITHM_NONE (1):
+            Disable autoscaling.
+        AUTOSCALING_ALGORITHM_BASIC (2):
+            Increase worker count over time to reduce job
+            execution time.
     """
     AUTOSCALING_ALGORITHM_UNKNOWN = 0
     AUTOSCALING_ALGORITHM_NONE = 1
@@ -97,6 +155,14 @@ class AutoscalingAlgorithm(proto.Enum):
 class WorkerIPAddressConfiguration(proto.Enum):
     r"""Specifies how IP addresses should be allocated to the worker
     machines.
+
+    Values:
+        WORKER_IP_UNSPECIFIED (0):
+            The configuration is unknown, or unspecified.
+        WORKER_IP_PUBLIC (1):
+            Workers should have public IP addresses.
+        WORKER_IP_PRIVATE (2):
+            Workers should have private IP addresses.
     """
     WORKER_IP_UNSPECIFIED = 0
     WORKER_IP_PUBLIC = 1
@@ -108,6 +174,14 @@ class ShuffleMode(proto.Enum):
     which determines the approach data is shuffled during processing.
     More details in:
     https://cloud.google.com/dataflow/docs/guides/deploying-a-pipeline#dataflow-shuffle
+
+    Values:
+        SHUFFLE_MODE_UNSPECIFIED (0):
+            Shuffle mode information is not available.
+        VM_BASED (1):
+            Shuffle is done on the worker VMs.
+        SERVICE_BASED (2):
+            Shuffle is done on the service side.
     """
     SHUFFLE_MODE_UNSPECIFIED = 0
     VM_BASED = 1
