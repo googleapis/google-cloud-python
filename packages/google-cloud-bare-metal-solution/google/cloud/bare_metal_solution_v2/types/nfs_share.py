@@ -50,12 +50,30 @@ class NfsShare(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The possible states for this NFS share."""
+        r"""The possible states for this NFS share.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The share is in an unknown state.
+            PROVISIONED (1):
+                The share has been provisioned.
+        """
         STATE_UNSPECIFIED = 0
         PROVISIONED = 1
 
     class MountPermissions(proto.Enum):
-        r"""The possible mount permissions."""
+        r"""The possible mount permissions.
+
+        Values:
+            MOUNT_PERMISSIONS_UNSPECIFIED (0):
+                Permissions were not specified.
+            READ (1):
+                NFS share can be mount with read-only
+                permissions.
+            READ_WRITE (2):
+                NFS share can be mount with read-write
+                permissions.
+        """
         MOUNT_PERMISSIONS_UNSPECIFIED = 0
         READ = 1
         READ_WRITE = 2

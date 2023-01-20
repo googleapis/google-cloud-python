@@ -75,13 +75,33 @@ class Network(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Network type."""
+        r"""Network type.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unspecified value.
+            CLIENT (1):
+                Client network, a network peered to a Google
+                Cloud VPC.
+            PRIVATE (2):
+                Private network, a network local to the Bare
+                Metal Solution environment.
+        """
         TYPE_UNSPECIFIED = 0
         CLIENT = 1
         PRIVATE = 2
 
     class State(proto.Enum):
-        r"""The possible states for this Network."""
+        r"""The possible states for this Network.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The Network is in an unknown state.
+            PROVISIONING (1):
+                The Network is provisioning.
+            PROVISIONED (2):
+                The Network has been provisioned.
+        """
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         PROVISIONED = 2
@@ -188,7 +208,16 @@ class VRF(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The possible states for this VRF."""
+        r"""The possible states for this VRF.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The unspecified state.
+            PROVISIONING (1):
+                The vrf is provisioning.
+            PROVISIONED (2):
+                The vrf is provisioned.
+        """
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         PROVISIONED = 2

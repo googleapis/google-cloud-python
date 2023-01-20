@@ -59,7 +59,20 @@ class Lun(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The possible states for the LUN."""
+        r"""The possible states for the LUN.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The LUN is in an unknown state.
+            CREATING (1):
+                The LUN is being created.
+            UPDATING (2):
+                The LUN is being updated.
+            READY (3):
+                The LUN is ready for use.
+            DELETING (4):
+                The LUN has been requested to be deleted.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         UPDATING = 2
@@ -69,12 +82,27 @@ class Lun(proto.Message):
     class MultiprotocolType(proto.Enum):
         r"""Display the operating systems present for the LUN
         multiprotocol type.
+
+        Values:
+            MULTIPROTOCOL_TYPE_UNSPECIFIED (0):
+                Server has no OS specified.
+            LINUX (1):
+                Server with Linux OS.
         """
         MULTIPROTOCOL_TYPE_UNSPECIFIED = 0
         LINUX = 1
 
     class StorageType(proto.Enum):
-        r"""The storage types for a LUN."""
+        r"""The storage types for a LUN.
+
+        Values:
+            STORAGE_TYPE_UNSPECIFIED (0):
+                The storage type for this LUN is unknown.
+            SSD (1):
+                This storage type for this LUN is SSD.
+            HDD (2):
+                This storage type for this LUN is HDD.
+        """
         STORAGE_TYPE_UNSPECIFIED = 0
         SSD = 1
         HDD = 2

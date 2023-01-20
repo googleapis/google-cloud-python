@@ -103,7 +103,18 @@ class Instance(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The possible states for this server."""
+        r"""The possible states for this server.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The server is in an unknown state.
+            PROVISIONING (1):
+                The server is being provisioned.
+            RUNNING (2):
+                The server is running.
+            DELETED (3):
+                The server has been deleted.
+        """
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         RUNNING = 2
@@ -385,7 +396,16 @@ class ServerNetworkTemplate(proto.Message):
         """
 
         class InterfaceType(proto.Enum):
-            r"""Interface type."""
+            r"""Interface type.
+
+            Values:
+                INTERFACE_TYPE_UNSPECIFIED (0):
+                    Unspecified value.
+                BOND (1):
+                    Bond interface type.
+                NIC (2):
+                    NIC interface type.
+            """
             INTERFACE_TYPE_UNSPECIFIED = 0
             BOND = 1
             NIC = 2

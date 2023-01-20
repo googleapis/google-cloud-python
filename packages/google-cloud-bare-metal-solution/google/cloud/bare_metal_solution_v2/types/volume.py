@@ -81,13 +81,34 @@ class Volume(proto.Message):
     """
 
     class StorageType(proto.Enum):
-        r"""The storage type for a volume."""
+        r"""The storage type for a volume.
+
+        Values:
+            STORAGE_TYPE_UNSPECIFIED (0):
+                The storage type for this volume is unknown.
+            SSD (1):
+                The storage type for this volume is SSD.
+            HDD (2):
+                This storage type for this volume is HDD.
+        """
         STORAGE_TYPE_UNSPECIFIED = 0
         SSD = 1
         HDD = 2
 
     class State(proto.Enum):
-        r"""The possible states for a storage volume."""
+        r"""The possible states for a storage volume.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The storage volume is in an unknown state.
+            CREATING (1):
+                The storage volume is being created.
+            READY (2):
+                The storage volume is ready for use.
+            DELETING (3):
+                The storage volume has been requested to be
+                deleted.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -96,6 +117,18 @@ class Volume(proto.Message):
     class SnapshotAutoDeleteBehavior(proto.Enum):
         r"""The kinds of auto delete behavior to use when snapshot
         reserved space is full.
+
+        Values:
+            SNAPSHOT_AUTO_DELETE_BEHAVIOR_UNSPECIFIED (0):
+                The unspecified behavior.
+            DISABLED (1):
+                Don't delete any snapshots. This disables new
+                snapshot creation, as long as the snapshot
+                reserved space is full.
+            OLDEST_FIRST (2):
+                Delete the oldest snapshots first.
+            NEWEST_FIRST (3):
+                Delete the newest snapshots first.
         """
         SNAPSHOT_AUTO_DELETE_BEHAVIOR_UNSPECIFIED = 0
         DISABLED = 1
