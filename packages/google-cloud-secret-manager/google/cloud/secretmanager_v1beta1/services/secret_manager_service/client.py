@@ -2211,7 +2211,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "SecretManagerServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

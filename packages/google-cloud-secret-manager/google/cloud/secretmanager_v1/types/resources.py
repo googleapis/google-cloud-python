@@ -238,6 +238,27 @@ class SecretVersion(proto.Message):
         r"""The state of a
         [SecretVersion][google.cloud.secretmanager.v1.SecretVersion],
         indicating if it can be accessed.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not specified. This value is unused and
+                invalid.
+            ENABLED (1):
+                The
+                [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
+                may be accessed.
+            DISABLED (2):
+                The
+                [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
+                may not be accessed, but the secret data is still available
+                and can be placed back into the
+                [ENABLED][google.cloud.secretmanager.v1.SecretVersion.State.ENABLED]
+                state.
+            DESTROYED (3):
+                The
+                [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
+                is destroyed and the secret data is no longer stored. A
+                version may not leave this state once entered.
         """
         STATE_UNSPECIFIED = 0
         ENABLED = 1
