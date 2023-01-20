@@ -4916,7 +4916,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "ClusterManagerClient":
         return self
 
     def __exit__(self, type, value, traceback):

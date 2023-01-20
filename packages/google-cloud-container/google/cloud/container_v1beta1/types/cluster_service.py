@@ -192,6 +192,18 @@ __protobuf__ = proto.module(
 class PrivateIPv6GoogleAccess(proto.Enum):
     r"""PrivateIPv6GoogleAccess controls whether and how the pods can
     communicate with Google Services through gRPC over IPv6.
+
+    Values:
+        PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED (0):
+            Default value. Same as DISABLED
+        PRIVATE_IPV6_GOOGLE_ACCESS_DISABLED (1):
+            No private access to or from Google Services
+        PRIVATE_IPV6_GOOGLE_ACCESS_TO_GOOGLE (2):
+            Enables private IPv6 access to Google
+            Services from GKE
+        PRIVATE_IPV6_GOOGLE_ACCESS_BIDIRECTIONAL (3):
+            Enables priate IPv6 access to and from Google
+            Services
     """
     PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED = 0
     PRIVATE_IPV6_GOOGLE_ACCESS_DISABLED = 1
@@ -202,6 +214,14 @@ class PrivateIPv6GoogleAccess(proto.Enum):
 class UpgradeResourceType(proto.Enum):
     r"""UpgradeResourceType is the resource type that is upgrading.
     It is used in upgrade notifications.
+
+    Values:
+        UPGRADE_RESOURCE_TYPE_UNSPECIFIED (0):
+            Default value. This shouldn't be used.
+        MASTER (1):
+            Master / control plane
+        NODE_POOL (2):
+            Node pool
     """
     UPGRADE_RESOURCE_TYPE_UNSPECIFIED = 0
     MASTER = 1
@@ -209,7 +229,18 @@ class UpgradeResourceType(proto.Enum):
 
 
 class NodePoolUpdateStrategy(proto.Enum):
-    r"""Strategy used for node pool update."""
+    r"""Strategy used for node pool update.
+
+    Values:
+        NODE_POOL_UPDATE_STRATEGY_UNSPECIFIED (0):
+            Default value.
+        BLUE_GREEN (2):
+            blue-green upgrade.
+        SURGE (3):
+            SURGE is the traditional way of upgrading a node pool.
+            max_surge and max_unavailable determines the level of
+            upgrade parallelism.
+    """
     NODE_POOL_UPDATE_STRATEGY_UNSPECIFIED = 0
     BLUE_GREEN = 2
     SURGE = 3
@@ -219,6 +250,18 @@ class DatapathProvider(proto.Enum):
     r"""The datapath provider selects the implementation of the
     Kubernetes networking model for service resolution and network
     policy enforcement.
+
+    Values:
+        DATAPATH_PROVIDER_UNSPECIFIED (0):
+            Default value.
+        LEGACY_DATAPATH (1):
+            Use the IPTables implementation based on
+            kube-proxy.
+        ADVANCED_DATAPATH (2):
+            Use the eBPF based GKE Dataplane V2 with additional
+            features. See the `GKE Dataplane V2
+            documentation <https://cloud.google.com/kubernetes-engine/docs/how-to/dataplane-v2>`__
+            for more.
     """
     DATAPATH_PROVIDER_UNSPECIFIED = 0
     LEGACY_DATAPATH = 1
@@ -226,7 +269,17 @@ class DatapathProvider(proto.Enum):
 
 
 class StackType(proto.Enum):
-    r"""Possible values for IP stack type"""
+    r"""Possible values for IP stack type
+
+    Values:
+        STACK_TYPE_UNSPECIFIED (0):
+            By default, the clusters will be IPV4 only
+        IPV4 (1):
+            The value used if the cluster is a IPV4 only
+        IPV4_IPV6 (2):
+            The value used if the cluster is a dual stack
+            cluster
+    """
     STACK_TYPE_UNSPECIFIED = 0
     IPV4 = 1
     IPV4_IPV6 = 2
@@ -253,7 +306,20 @@ class LinuxNodeConfig(proto.Message):
     """
 
     class CgroupMode(proto.Enum):
-        r"""Possible cgroup modes that can be used."""
+        r"""Possible cgroup modes that can be used.
+
+        Values:
+            CGROUP_MODE_UNSPECIFIED (0):
+                CGROUP_MODE_UNSPECIFIED is when unspecified cgroup
+                configuration is used. The default for the GKE node OS image
+                will be used.
+            CGROUP_MODE_V1 (1):
+                CGROUP_MODE_V1 specifies to use cgroupv1 for the cgroup
+                configuration on the node image.
+            CGROUP_MODE_V2 (2):
+                CGROUP_MODE_V2 specifies to use cgroupv2 for the cgroup
+                configuration on the node image.
+        """
         CGROUP_MODE_UNSPECIFIED = 0
         CGROUP_MODE_V1 = 1
         CGROUP_MODE_V2 = 2
@@ -282,7 +348,18 @@ class WindowsNodeConfig(proto.Message):
     """
 
     class OSVersion(proto.Enum):
-        r"""Possible OS version that can be used."""
+        r"""Possible OS version that can be used.
+
+        Values:
+            OS_VERSION_UNSPECIFIED (0):
+                When OSVersion is not specified
+            OS_VERSION_LTSC2019 (1):
+                LTSC2019 specifies to use LTSC2019 as the
+                Windows Servercore Base Image
+            OS_VERSION_LTSC2022 (2):
+                LTSC2022 specifies to use LTSC2022 as the
+                Windows Servercore Base Image
+        """
         OS_VERSION_UNSPECIFIED = 0
         OS_VERSION_LTSC2019 = 1
         OS_VERSION_LTSC2022 = 2
@@ -840,7 +917,15 @@ class NodeNetworkConfig(proto.Message):
         """
 
         class Tier(proto.Enum):
-            r"""Node network tier"""
+            r"""Node network tier
+
+            Values:
+                TIER_UNSPECIFIED (0):
+                    Default value
+                TIER_1 (1):
+                    Higher bandwidth, actual values based on VM
+                    size.
+            """
             TIER_UNSPECIFIED = 0
             TIER_1 = 1
 
@@ -928,7 +1013,14 @@ class SandboxConfig(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Possible types of sandboxes."""
+        r"""Possible types of sandboxes.
+
+        Values:
+            UNSPECIFIED (0):
+                Default value. This should not be used.
+            GVISOR (1):
+                Run sandbox using gvisor.
+        """
         UNSPECIFIED = 0
         GVISOR = 1
 
@@ -1044,6 +1136,18 @@ class ReservationAffinity(proto.Message):
     class Type(proto.Enum):
         r"""Indicates whether to consume capacity from a reservation or
         not.
+
+        Values:
+            UNSPECIFIED (0):
+                Default value. This should not be used.
+            NO_RESERVATION (1):
+                Do not consume from any reserved capacity.
+            ANY_RESERVATION (2):
+                Consume any reservation available.
+            SPECIFIC_RESERVATION (3):
+                Must consume from a specific reservation.
+                Must specify key value fields for specifying the
+                reservations.
         """
         UNSPECIFIED = 0
         NO_RESERVATION = 1
@@ -1084,7 +1188,18 @@ class NodeTaint(proto.Message):
     """
 
     class Effect(proto.Enum):
-        r"""Possible values for Effect in taint."""
+        r"""Possible values for Effect in taint.
+
+        Values:
+            EFFECT_UNSPECIFIED (0):
+                Not set
+            NO_SCHEDULE (1):
+                NoSchedule
+            PREFER_NO_SCHEDULE (2):
+                PreferNoSchedule
+            NO_EXECUTE (3):
+                NoExecute
+        """
         EFFECT_UNSPECIFIED = 0
         NO_SCHEDULE = 1
         PREFER_NO_SCHEDULE = 2
@@ -1636,6 +1751,12 @@ class IstioConfig(proto.Message):
     class IstioAuthMode(proto.Enum):
         r"""Istio auth mode,
         https://istio.io/docs/concepts/security/mutual-tls.html
+
+        Values:
+            AUTH_NONE (0):
+                auth not enabled
+            AUTH_MUTUAL_TLS (1):
+                auth mutual TLS enabled
         """
         AUTH_NONE = 0
         AUTH_MUTUAL_TLS = 1
@@ -1664,7 +1785,17 @@ class CloudRunConfig(proto.Message):
     """
 
     class LoadBalancerType(proto.Enum):
-        r"""Load balancer type of ingress service of Cloud Run."""
+        r"""Load balancer type of ingress service of Cloud Run.
+
+        Values:
+            LOAD_BALANCER_TYPE_UNSPECIFIED (0):
+                Load balancer type for Cloud Run is
+                unspecified.
+            LOAD_BALANCER_TYPE_EXTERNAL (1):
+                Install external load balancer for Cloud Run.
+            LOAD_BALANCER_TYPE_INTERNAL (2):
+                Install internal load balancer for Cloud Run.
+        """
         LOAD_BALANCER_TYPE_UNSPECIFIED = 0
         LOAD_BALANCER_TYPE_EXTERNAL = 1
         LOAD_BALANCER_TYPE_INTERNAL = 2
@@ -1773,7 +1904,14 @@ class NetworkPolicy(proto.Message):
     """
 
     class Provider(proto.Enum):
-        r"""Allowed Network Policy providers."""
+        r"""Allowed Network Policy providers.
+
+        Values:
+            PROVIDER_UNSPECIFIED (0):
+                Not set
+            CALICO (1):
+                Tigera (Calico Felix).
+        """
         PROVIDER_UNSPECIFIED = 0
         CALICO = 1
 
@@ -1939,13 +2077,35 @@ class IPAllocationPolicy(proto.Message):
     """
 
     class StackType(proto.Enum):
-        r"""Possible values for IP stack type"""
+        r"""Possible values for IP stack type
+
+        Values:
+            STACK_TYPE_UNSPECIFIED (0):
+                By default, the clusters will be IPV4 only
+            IPV4 (1):
+                The value used if the cluster is a IPV4 only
+            IPV4_IPV6 (2):
+                The value used if the cluster is a dual stack
+                cluster
+        """
         STACK_TYPE_UNSPECIFIED = 0
         IPV4 = 1
         IPV4_IPV6 = 2
 
     class IPv6AccessType(proto.Enum):
-        r"""IPv6 access type"""
+        r"""IPv6 access type
+
+        Values:
+            IPV6_ACCESS_TYPE_UNSPECIFIED (0):
+                Default value, will be defaulted as type
+                external.
+            INTERNAL (1):
+                Access type internal (all v6 addresses are
+                internal IPs)
+            EXTERNAL (2):
+                Access type external (all v6 addresses are
+                external IPs)
+        """
         IPV6_ACCESS_TYPE_UNSPECIFIED = 0
         INTERNAL = 1
         EXTERNAL = 2
@@ -2042,7 +2202,19 @@ class BinaryAuthorization(proto.Message):
     """
 
     class EvaluationMode(proto.Enum):
-        r"""Binary Authorization mode of operation."""
+        r"""Binary Authorization mode of operation.
+
+        Values:
+            EVALUATION_MODE_UNSPECIFIED (0):
+                Default value
+            DISABLED (1):
+                Disable BinaryAuthorization
+            PROJECT_SINGLETON_POLICY_ENFORCE (2):
+                Enforce Kubernetes admission requests with
+                BinaryAuthorization using the project's
+                singleton policy. This is equivalent to setting
+                the enabled boolean to true.
+        """
         EVALUATION_MODE_UNSPECIFIED = 0
         DISABLED = 1
         PROJECT_SINGLETON_POLICY_ENFORCE = 2
@@ -2107,7 +2279,19 @@ class ClusterTelemetry(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Type of the integration."""
+        r"""Type of the integration.
+
+        Values:
+            UNSPECIFIED (0):
+                Not set.
+            DISABLED (1):
+                Monitoring integration is disabled.
+            ENABLED (2):
+                Monitoring integration is enabled.
+            SYSTEM_ONLY (3):
+                Only system components are monitored and
+                logged.
+        """
         UNSPECIFIED = 0
         DISABLED = 1
         ENABLED = 2
@@ -2461,7 +2645,33 @@ class Cluster(proto.Message):
     """
 
     class Status(proto.Enum):
-        r"""The current status of the cluster."""
+        r"""The current status of the cluster.
+
+        Values:
+            STATUS_UNSPECIFIED (0):
+                Not set.
+            PROVISIONING (1):
+                The PROVISIONING state indicates the cluster
+                is being created.
+            RUNNING (2):
+                The RUNNING state indicates the cluster has
+                been created and is fully usable.
+            RECONCILING (3):
+                The RECONCILING state indicates that some work is actively
+                being done on the cluster, such as upgrading the master or
+                node software. Details can be found in the ``statusMessage``
+                field.
+            STOPPING (4):
+                The STOPPING state indicates the cluster is
+                being deleted.
+            ERROR (5):
+                The ERROR state indicates the cluster may be unusable.
+                Details can be found in the ``statusMessage`` field.
+            DEGRADED (6):
+                The DEGRADED state indicates the cluster requires user
+                action to restore full functionality. Details can be found
+                in the ``statusMessage`` field.
+        """
         STATUS_UNSPECIFIED = 0
         PROVISIONING = 1
         RUNNING = 2
@@ -2819,7 +3029,27 @@ class WorkloadConfig(proto.Message):
     """
 
     class Mode(proto.Enum):
-        r"""Mode defines how to audit the workload configs."""
+        r"""Mode defines how to audit the workload configs.
+
+        Values:
+            MODE_UNSPECIFIED (0):
+                Default value meaning that no mode has been
+                specified.
+            DISABLED (1):
+                This disables Workload Configuration auditing
+                on the cluster, meaning that nothing is
+                surfaced.
+            BASIC (4):
+                Applies the default set of policy auditing to
+                a cluster's workloads.
+            BASELINE (2):
+                Surfaces configurations that are not in line
+                with the Pod Security Standard Baseline policy.
+            RESTRICTED (3):
+                Surfaces configurations that are not in line
+                with the Pod Security Standard Restricted
+                policy.
+        """
         MODE_UNSPECIFIED = 0
         DISABLED = 1
         BASIC = 4
@@ -2857,6 +3087,16 @@ class ProtectConfig(proto.Message):
     class WorkloadVulnerabilityMode(proto.Enum):
         r"""WorkloadVulnerabilityMode defines mode to perform
         vulnerability scanning.
+
+        Values:
+            WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED (0):
+                Default value not specified.
+            DISABLED (1):
+                Disables Workload Vulnerability Scanning
+                feature on the cluster.
+            BASIC (2):
+                Applies basic vulnerability scanning settings
+                for cluster workloads.
         """
         WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED = 0
         DISABLED = 1
@@ -3433,7 +3673,21 @@ class Operation(proto.Message):
     """
 
     class Status(proto.Enum):
-        r"""Current status of the operation."""
+        r"""Current status of the operation.
+
+        Values:
+            STATUS_UNSPECIFIED (0):
+                Not set.
+            PENDING (1):
+                The operation has been created.
+            RUNNING (2):
+                The operation is currently running.
+            DONE (3):
+                The operation is done, either cancelled or
+                completed.
+            ABORTING (4):
+                The operation is aborting.
+        """
         STATUS_UNSPECIFIED = 0
         PENDING = 1
         RUNNING = 2
@@ -3441,7 +3695,44 @@ class Operation(proto.Message):
         ABORTING = 4
 
     class Type(proto.Enum):
-        r"""Operation type."""
+        r"""Operation type.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Not set.
+            CREATE_CLUSTER (1):
+                Cluster create.
+            DELETE_CLUSTER (2):
+                Cluster delete.
+            UPGRADE_MASTER (3):
+                A master upgrade.
+            UPGRADE_NODES (4):
+                A node upgrade.
+            REPAIR_CLUSTER (5):
+                Cluster repair.
+            UPDATE_CLUSTER (6):
+                Cluster update.
+            CREATE_NODE_POOL (7):
+                Node pool create.
+            DELETE_NODE_POOL (8):
+                Node pool delete.
+            SET_NODE_POOL_MANAGEMENT (9):
+                Set node pool management.
+            AUTO_REPAIR_NODES (10):
+                Automatic node pool repair.
+            AUTO_UPGRADE_NODES (11):
+                Automatic node upgrade.
+            SET_LABELS (12):
+                Set labels.
+            SET_MASTER_AUTH (13):
+                Set/generate master auth materials
+            SET_NODE_POOL_SIZE (14):
+                Set node pool size.
+            SET_NETWORK_POLICY (15):
+                Updates network policy for a cluster.
+            SET_MAINTENANCE_POLICY (16):
+                Set the maintenance policy.
+        """
         TYPE_UNSPECIFIED = 0
         CREATE_CLUSTER = 1
         DELETE_CLUSTER = 2
@@ -4355,7 +4646,22 @@ class SetMasterAuthRequest(proto.Message):
     """
 
     class Action(proto.Enum):
-        r"""Operation type: what type update to perform."""
+        r"""Operation type: what type update to perform.
+
+        Values:
+            UNKNOWN (0):
+                Operation is unknown and will error out.
+            SET_PASSWORD (1):
+                Set the password to a user generated value.
+            GENERATE_PASSWORD (2):
+                Generate a new password and set it to that.
+            SET_USERNAME (3):
+                Set the username.  If an empty username is
+                provided, basic authentication is disabled for
+                the cluster.  If a non-empty username is
+                provided, basic authentication is enabled, with
+                either a provided password or a generated one.
+        """
         UNKNOWN = 0
         SET_PASSWORD = 1
         GENERATE_PASSWORD = 2
@@ -5205,7 +5511,34 @@ class NodePool(proto.Message):
     """
 
     class Status(proto.Enum):
-        r"""The current status of the node pool instance."""
+        r"""The current status of the node pool instance.
+
+        Values:
+            STATUS_UNSPECIFIED (0):
+                Not set.
+            PROVISIONING (1):
+                The PROVISIONING state indicates the node
+                pool is being created.
+            RUNNING (2):
+                The RUNNING state indicates the node pool has
+                been created and is fully usable.
+            RUNNING_WITH_ERROR (3):
+                The RUNNING_WITH_ERROR state indicates the node pool has
+                been created and is partially usable. Some error state has
+                occurred and some functionality may be impaired. Customer
+                may need to reissue a request or trigger a new update.
+            RECONCILING (4):
+                The RECONCILING state indicates that some work is actively
+                being done on the node pool, such as upgrading node
+                software. Details can be found in the ``statusMessage``
+                field.
+            STOPPING (5):
+                The STOPPING state indicates the node pool is
+                being deleted.
+            ERROR (6):
+                The ERROR state indicates the node pool may be unusable.
+                Details can be found in the ``statusMessage`` field.
+        """
         STATUS_UNSPECIFIED = 0
         PROVISIONING = 1
         RUNNING = 2
@@ -5323,6 +5656,25 @@ class NodePool(proto.Message):
             class Phase(proto.Enum):
                 r"""Phase represents the different stages blue-green upgrade is
                 running in.
+
+                Values:
+                    PHASE_UNSPECIFIED (0):
+                        Unspecified phase.
+                    UPDATE_STARTED (1):
+                        blue-green upgrade has been initiated.
+                    CREATING_GREEN_POOL (2):
+                        Start creating green pool nodes.
+                    CORDONING_BLUE_POOL (3):
+                        Start cordoning blue pool nodes.
+                    DRAINING_BLUE_POOL (4):
+                        Start draining blue pool nodes.
+                    NODE_POOL_SOAKING (5):
+                        Start soaking time after draining entire blue
+                        pool.
+                    DELETING_BLUE_POOL (6):
+                        Start deleting blue nodes.
+                    ROLLBACK_STARTED (7):
+                        Rollback has been initiated.
                 """
                 PHASE_UNSPECIFIED = 0
                 UPDATE_STARTED = 1
@@ -5371,7 +5723,17 @@ class NodePool(proto.Message):
         """
 
         class Type(proto.Enum):
-            r"""Type defines the type of placement policy."""
+            r"""Type defines the type of placement policy.
+
+            Values:
+                TYPE_UNSPECIFIED (0):
+                    TYPE_UNSPECIFIED specifies no requirements on nodes
+                    placement.
+                COMPACT (1):
+                    COMPACT specifies node placement in the same
+                    availability domain to ensure low communication
+                    latency.
+            """
             TYPE_UNSPECIFIED = 0
             COMPACT = 1
 
@@ -5651,7 +6013,21 @@ class MaintenanceExclusionOptions(proto.Message):
     """
 
     class Scope(proto.Enum):
-        r"""Scope of exclusion."""
+        r"""Scope of exclusion.
+
+        Values:
+            NO_UPGRADES (0):
+                NO_UPGRADES excludes all upgrades, including patch upgrades
+                and minor upgrades across control planes and nodes. This is
+                the default exclusion behavior.
+            NO_MINOR_UPGRADES (1):
+                NO_MINOR_UPGRADES excludes all minor upgrades for the
+                cluster, only patches are allowed.
+            NO_MINOR_OR_NODE_UPGRADES (2):
+                NO_MINOR_OR_NODE_UPGRADES excludes all minor upgrades for
+                the cluster, and also exclude all node pool upgrades. Only
+                control plane patches are allowed.
+        """
         NO_UPGRADES = 0
         NO_MINOR_UPGRADES = 1
         NO_MINOR_OR_NODE_UPGRADES = 2
@@ -5979,7 +6355,18 @@ class ClusterAutoscaling(proto.Message):
     """
 
     class AutoscalingProfile(proto.Enum):
-        r"""Defines possible options for autoscaling_profile field."""
+        r"""Defines possible options for autoscaling_profile field.
+
+        Values:
+            PROFILE_UNSPECIFIED (0):
+                No change to autoscaling configuration.
+            OPTIMIZE_UTILIZATION (1):
+                Prioritize optimizing utilization of
+                resources.
+            BALANCED (2):
+                Use default (balanced) autoscaling
+                configuration.
+        """
         PROFILE_UNSPECIFIED = 0
         OPTIMIZE_UTILIZATION = 1
         BALANCED = 2
@@ -6193,6 +6580,16 @@ class NodePoolAutoscaling(proto.Message):
     class LocationPolicy(proto.Enum):
         r"""Location policy specifies how zones are picked when scaling
         up the nodepool.
+
+        Values:
+            LOCATION_POLICY_UNSPECIFIED (0):
+                Not set.
+            BALANCED (1):
+                BALANCED is a best effort policy that aims to
+                balance the sizes of different zones.
+            ANY (2):
+                ANY policy picks zones that have the highest
+                capacity available.
         """
         LOCATION_POLICY_UNSPECIFIED = 0
         BALANCED = 1
@@ -6509,7 +6906,14 @@ class GPUSharingConfig(proto.Message):
     """
 
     class GPUSharingStrategy(proto.Enum):
-        r"""The type of GPU sharing strategy currently provided."""
+        r"""The type of GPU sharing strategy currently provided.
+
+        Values:
+            GPU_SHARING_STRATEGY_UNSPECIFIED (0):
+                Default value.
+            TIME_SHARING (1):
+                GPUs are time-shared between containers.
+        """
         GPU_SHARING_STRATEGY_UNSPECIFIED = 0
         TIME_SHARING = 1
 
@@ -6557,6 +6961,32 @@ class WorkloadMetadataConfig(proto.Message):
     class NodeMetadata(proto.Enum):
         r"""NodeMetadata is the configuration for if and how to expose
         the node metadata to the workload running on the node.
+
+        Values:
+            UNSPECIFIED (0):
+                Not set.
+            SECURE (1):
+                Prevent workloads not in hostNetwork from
+                accessing certain VM metadata, specifically
+                kube-env, which contains Kubelet credentials,
+                and the instance identity token.
+
+                Metadata concealment is a temporary security
+                solution available while the bootstrapping
+                process for cluster nodes is being redesigned
+                with significant security improvements.  This
+                feature is scheduled to be deprecated in the
+                future and later removed.
+            EXPOSE (2):
+                Expose all VM metadata to pods.
+            GKE_METADATA_SERVER (3):
+                Run the GKE Metadata Server on this node. The
+                GKE Metadata Server exposes a metadata API to
+                workloads that is compatible with the V1 Compute
+                Metadata APIs exposed by the Compute Engine and
+                App Engine Metadata Servers. This feature can
+                only be enabled if Workload Identity is enabled
+                at the cluster level.
         """
         UNSPECIFIED = 0
         SECURE = 1
@@ -6566,6 +6996,20 @@ class WorkloadMetadataConfig(proto.Message):
     class Mode(proto.Enum):
         r"""Mode is the configuration for how to expose metadata to
         workloads running on the node.
+
+        Values:
+            MODE_UNSPECIFIED (0):
+                Not set.
+            GCE_METADATA (1):
+                Expose all Compute Engine metadata to pods.
+            GKE_METADATA (2):
+                Run the GKE Metadata Server on this node. The
+                GKE Metadata Server exposes a metadata API to
+                workloads that is compatible with the V1 Compute
+                Metadata APIs exposed by the Compute Engine and
+                App Engine Metadata Servers. This feature can
+                only be enabled if Workload Identity is enabled
+                at the cluster level.
         """
         MODE_UNSPECIFIED = 0
         GCE_METADATA = 1
@@ -6746,7 +7190,19 @@ class Location(proto.Message):
     """
 
     class LocationType(proto.Enum):
-        r"""LocationType is the type of GKE location, regional or zonal."""
+        r"""LocationType is the type of GKE location, regional or zonal.
+
+        Values:
+            LOCATION_TYPE_UNSPECIFIED (0):
+                LOCATION_TYPE_UNSPECIFIED means the location type was not
+                determined.
+            ZONE (1):
+                A GKE Location where Zonal clusters can be
+                created.
+            REGION (2):
+                A GKE Location where Regional clusters can be
+                created.
+        """
         LOCATION_TYPE_UNSPECIFIED = 0
         ZONE = 1
         REGION = 2
@@ -6782,7 +7238,30 @@ class StatusCondition(proto.Message):
     """
 
     class Code(proto.Enum):
-        r"""Code for each condition"""
+        r"""Code for each condition
+
+        Values:
+            UNKNOWN (0):
+                UNKNOWN indicates a generic condition.
+            GCE_STOCKOUT (1):
+                GCE_STOCKOUT indicates that Google Compute Engine resources
+                are temporarily unavailable.
+            GKE_SERVICE_ACCOUNT_DELETED (2):
+                GKE_SERVICE_ACCOUNT_DELETED indicates that the user deleted
+                their robot service account.
+            GCE_QUOTA_EXCEEDED (3):
+                Google Compute Engine quota was exceeded.
+            SET_BY_OPERATOR (4):
+                Cluster state was manually changed by an SRE
+                due to a system logic error.
+            CLOUD_KMS_KEY_ERROR (7):
+                Unable to perform an encrypt operation
+                against the CloudKMS key used for etcd level
+                encryption.
+            CA_EXPIRING (9):
+                Cluster CA is expiring soon.
+                More codes TBA
+        """
         _pb_options = {"deprecated": True}
         UNKNOWN = 0
         GCE_STOCKOUT = 1
@@ -6918,6 +7397,18 @@ class GatewayAPIConfig(proto.Message):
     class Channel(proto.Enum):
         r"""Channel describes if/how Gateway API should be installed and
         implemented in a cluster.
+
+        Values:
+            CHANNEL_UNSPECIFIED (0):
+                Default value.
+            CHANNEL_DISABLED (1):
+                Gateway API support is disabled
+            CHANNEL_EXPERIMENTAL (3):
+                Gateway API support is enabled, experimental
+                CRDs are installed
+            CHANNEL_STANDARD (4):
+                Gateway API support is enabled, standard CRDs
+                are installed
         """
         CHANNEL_UNSPECIFIED = 0
         CHANNEL_DISABLED = 1
@@ -7039,7 +7530,26 @@ class UsableSubnetworkSecondaryRange(proto.Message):
     """
 
     class Status(proto.Enum):
-        r"""Status shows the current usage of a secondary IP range."""
+        r"""Status shows the current usage of a secondary IP range.
+
+        Values:
+            UNKNOWN (0):
+                UNKNOWN is the zero value of the Status enum.
+                It's not a valid status.
+            UNUSED (1):
+                UNUSED denotes that this range is unclaimed
+                by any cluster.
+            IN_USE_SERVICE (2):
+                IN_USE_SERVICE denotes that this range is claimed by a
+                cluster for services. It cannot be used for other clusters.
+            IN_USE_SHAREABLE_POD (3):
+                IN_USE_SHAREABLE_POD denotes this range was created by the
+                network admin and is currently claimed by a cluster for
+                pods. It can only be used by other clusters as a pod range.
+            IN_USE_MANAGED_POD (4):
+                IN_USE_MANAGED_POD denotes this range was created by GKE and
+                is claimed for pods. It cannot be used for other clusters.
+        """
         UNKNOWN = 0
         UNUSED = 1
         IN_USE_SERVICE = 2
@@ -7191,7 +7701,17 @@ class DNSConfig(proto.Message):
     """
 
     class Provider(proto.Enum):
-        r"""Provider lists the various in-cluster DNS providers."""
+        r"""Provider lists the various in-cluster DNS providers.
+
+        Values:
+            PROVIDER_UNSPECIFIED (0):
+                Default value
+            PLATFORM_DEFAULT (1):
+                Use GKE default DNS provider(kube-dns) for
+                DNS resolution.
+            CLOUD_DNS (2):
+                Use CloudDNS for DNS resolution.
+        """
         PROVIDER_UNSPECIFIED = 0
         PLATFORM_DEFAULT = 1
         CLOUD_DNS = 2
@@ -7199,6 +7719,17 @@ class DNSConfig(proto.Message):
     class DNSScope(proto.Enum):
         r"""DNSScope lists the various scopes of access to cluster DNS
         records.
+
+        Values:
+            DNS_SCOPE_UNSPECIFIED (0):
+                Default value, will be inferred as cluster
+                scope.
+            CLUSTER_SCOPE (1):
+                DNS records are accessible from within the
+                cluster.
+            VPC_SCOPE (2):
+                DNS records are accessible from within the
+                VPC.
         """
         DNS_SCOPE_UNSPECIFIED = 0
         CLUSTER_SCOPE = 1
@@ -7351,7 +7882,18 @@ class DatabaseEncryption(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of etcd encryption."""
+        r"""State of etcd encryption.
+
+        Values:
+            UNKNOWN (0):
+                Should never be set
+            ENCRYPTED (1):
+                Secrets in etcd are encrypted.
+            DECRYPTED (2):
+                Secrets in etcd are stored in plain text (at
+                etcd level) - this is unrelated to Compute
+                Engine level full disk encryption.
+        """
         UNKNOWN = 0
         ENCRYPTED = 1
         DECRYPTED = 2
@@ -7657,7 +8199,29 @@ class ReleaseChannel(proto.Message):
     """
 
     class Channel(proto.Enum):
-        r"""Possible values for 'channel'."""
+        r"""Possible values for 'channel'.
+
+        Values:
+            UNSPECIFIED (0):
+                No channel specified.
+            RAPID (1):
+                RAPID channel is offered on an early access
+                basis for customers who want to test new
+                releases.
+                WARNING: Versions available in the RAPID Channel
+                may be subject to unresolved issues with no
+                known workaround and are not subject to any
+                SLAs.
+            REGULAR (2):
+                Clusters subscribed to REGULAR receive
+                versions that are considered GA quality. REGULAR
+                is intended for production users who want to
+                take advantage of new features.
+            STABLE (3):
+                Clusters subscribed to STABLE receive
+                versions that are known to be stable and
+                reliable in production.
+        """
         UNSPECIFIED = 0
         RAPID = 1
         REGULAR = 2
@@ -7743,6 +8307,16 @@ class NotificationConfig(proto.Message):
     class EventType(proto.Enum):
         r"""Types of notifications currently supported. Can be used to
         filter what notifications are sent.
+
+        Values:
+            EVENT_TYPE_UNSPECIFIED (0):
+                Not set, will be ignored.
+            UPGRADE_AVAILABLE_EVENT (1):
+                Corresponds with UpgradeAvailableEvent.
+            UPGRADE_EVENT (2):
+                Corresponds with UpgradeEvent.
+            SECURITY_BULLETIN_EVENT (3):
+                Corresponds with SecurityBulletinEvent.
         """
         EVENT_TYPE_UNSPECIFIED = 0
         UPGRADE_AVAILABLE_EVENT = 1
@@ -8046,7 +8620,22 @@ class LoggingComponentConfig(proto.Message):
     """
 
     class Component(proto.Enum):
-        r"""GKE components exposing logs"""
+        r"""GKE components exposing logs
+
+        Values:
+            COMPONENT_UNSPECIFIED (0):
+                Default value. This shouldn't be used.
+            SYSTEM_COMPONENTS (1):
+                system components
+            WORKLOADS (2):
+                workloads
+            APISERVER (3):
+                kube-apiserver
+            SCHEDULER (4):
+                kube-scheduler
+            CONTROLLER_MANAGER (5):
+                kube-controller-manager
+        """
         COMPONENT_UNSPECIFIED = 0
         SYSTEM_COMPONENTS = 1
         WORKLOADS = 2
@@ -8110,7 +8699,16 @@ class LoggingVariantConfig(proto.Message):
     """
 
     class Variant(proto.Enum):
-        r"""Logging component variants."""
+        r"""Logging component variants.
+
+        Values:
+            VARIANT_UNSPECIFIED (0):
+                Default value. This shouldn't be used.
+            DEFAULT (1):
+                default logging variant.
+            MAX_THROUGHPUT (2):
+                maximum logging throughput variant.
+        """
         VARIANT_UNSPECIFIED = 0
         DEFAULT = 1
         MAX_THROUGHPUT = 2
@@ -8133,7 +8731,23 @@ class MonitoringComponentConfig(proto.Message):
     """
 
     class Component(proto.Enum):
-        r"""GKE components exposing metrics"""
+        r"""GKE components exposing metrics
+
+        Values:
+            COMPONENT_UNSPECIFIED (0):
+                Default value. This shouldn't be used.
+            SYSTEM_COMPONENTS (1):
+                system components
+            WORKLOADS (2):
+                Deprecated: Use Google Cloud Managed Service
+                for Prometheus.
+            APISERVER (3):
+                kube-apiserver
+            SCHEDULER (4):
+                kube-scheduler
+            CONTROLLER_MANAGER (5):
+                kube-controller-manager
+        """
         COMPONENT_UNSPECIFIED = 0
         SYSTEM_COMPONENTS = 1
         WORKLOADS = 2
