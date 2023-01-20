@@ -181,7 +181,28 @@ class Job(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of the job."""
+        r"""State of the job.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified state.
+            ENABLED (1):
+                The job is executing normally.
+            PAUSED (2):
+                The job is paused by the user. It will not execute. A user
+                can intentionally pause the job using
+                [PauseJobRequest][google.cloud.scheduler.v1beta1.PauseJobRequest].
+            DISABLED (3):
+                The job is disabled by the system due to
+                error. The user cannot directly set a job to be
+                disabled.
+            UPDATE_FAILED (4):
+                The job state resulting from a failed
+                [CloudScheduler.UpdateJob][google.cloud.scheduler.v1beta1.CloudScheduler.UpdateJob]
+                operation. To recover a job from this state, retry
+                [CloudScheduler.UpdateJob][google.cloud.scheduler.v1beta1.CloudScheduler.UpdateJob]
+                until a successful response is received.
+        """
         STATE_UNSPECIFIED = 0
         ENABLED = 1
         PAUSED = 2
