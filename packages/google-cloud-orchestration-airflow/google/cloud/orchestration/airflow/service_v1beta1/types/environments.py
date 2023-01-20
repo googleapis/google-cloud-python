@@ -720,7 +720,18 @@ class EnvironmentConfig(proto.Message):
     """
 
     class EnvironmentSize(proto.Enum):
-        r"""The size of the Cloud Composer environment."""
+        r"""The size of the Cloud Composer environment.
+
+        Values:
+            ENVIRONMENT_SIZE_UNSPECIFIED (0):
+                The size of the environment is unspecified.
+            ENVIRONMENT_SIZE_SMALL (1):
+                The environment size is small.
+            ENVIRONMENT_SIZE_MEDIUM (2):
+                The environment size is medium.
+            ENVIRONMENT_SIZE_LARGE (3):
+                The environment size is large.
+        """
         ENVIRONMENT_SIZE_UNSPECIFIED = 0
         ENVIRONMENT_SIZE_SMALL = 1
         ENVIRONMENT_SIZE_MEDIUM = 2
@@ -1321,6 +1332,18 @@ class NetworkingConfig(proto.Message):
         r"""Represents connection type between Composer environment in
         Customer Project and the corresponding Tenant project, from a
         predefined list of available connection modes.
+
+        Values:
+            CONNECTION_TYPE_UNSPECIFIED (0):
+                No specific connection type was requested, so
+                the environment uses the default value
+                corresponding to the rest of its configuration.
+            VPC_PEERING (1):
+                Requests the use of VPC peerings for
+                connecting the Customer and Tenant projects.
+            PRIVATE_SERVICE_CONNECT (2):
+                Requests the use of Private Service Connect
+                for connecting the Customer and Tenant projects.
         """
         CONNECTION_TYPE_UNSPECIFIED = 0
         VPC_PEERING = 1
@@ -1882,7 +1905,28 @@ class Environment(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of the environment."""
+        r"""State of the environment.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state of the environment is unknown.
+            CREATING (1):
+                The environment is in the process of being
+                created.
+            RUNNING (2):
+                The environment is currently running and
+                healthy. It is ready for use.
+            UPDATING (3):
+                The environment is being updated. It remains
+                usable but cannot receive additional update
+                requests or be deleted at this time.
+            DELETING (4):
+                The environment is undergoing deletion. It
+                cannot be used.
+            ERROR (5):
+                The environment has encountered an error and
+                cannot be used.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         RUNNING = 2
@@ -2003,6 +2047,15 @@ class CheckUpgradeResponse(proto.Message):
     class ConflictResult(proto.Enum):
         r"""Whether there were python modules conflict during image
         build.
+
+        Values:
+            CONFLICT_RESULT_UNSPECIFIED (0):
+                It is unknown whether build had conflicts or
+                not.
+            CONFLICT (1):
+                There were python packages conflicts.
+            NO_CONFLICT (2):
+                There were no python packages conflicts.
         """
         CONFLICT_RESULT_UNSPECIFIED = 0
         CONFLICT = 1

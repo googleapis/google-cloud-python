@@ -53,7 +53,24 @@ class OperationMetadata(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""An enum describing the overall state of an operation."""
+        r"""An enum describing the overall state of an operation.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unused.
+            PENDING (1):
+                The operation has been created but is not yet
+                started.
+            RUNNING (2):
+                The operation is underway.
+            SUCCEEDED (3):
+                The operation completed successfully.
+            SUCCESSFUL (3):
+                No description available.
+            FAILED (4):
+                The operation is no longer running but did
+                not succeed.
+        """
         _pb_options = {"allow_alias": True}
         STATE_UNSPECIFIED = 0
         PENDING = 1
@@ -63,7 +80,24 @@ class OperationMetadata(proto.Message):
         FAILED = 4
 
     class Type(proto.Enum):
-        r"""Type of longrunning operation."""
+        r"""Type of longrunning operation.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unused.
+            CREATE (1):
+                A resource creation operation.
+            DELETE (2):
+                A resource deletion operation.
+            UPDATE (3):
+                A resource update operation.
+            CHECK (4):
+                A resource check operation.
+            SAVE_SNAPSHOT (5):
+                Saves snapshot of the resource operation.
+            LOAD_SNAPSHOT (6):
+                Loads snapshot of the resource operation.
+        """
         TYPE_UNSPECIFIED = 0
         CREATE = 1
         DELETE = 2

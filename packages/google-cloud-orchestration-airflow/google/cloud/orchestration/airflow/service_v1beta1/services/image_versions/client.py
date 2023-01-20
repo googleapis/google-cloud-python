@@ -536,7 +536,7 @@ class ImageVersionsClient(metaclass=ImageVersionsClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "ImageVersionsClient":
         return self
 
     def __exit__(self, type, value, traceback):
