@@ -1117,7 +1117,7 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "UptimeCheckServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

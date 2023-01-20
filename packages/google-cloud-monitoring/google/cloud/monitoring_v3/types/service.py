@@ -391,6 +391,21 @@ class ServiceLevelObjective(proto.Message):
         ``ServiceLevelObjective`` is returned from
         ``GetServiceLevelObjective``, ``ListServiceLevelObjectives``, and
         ``ListServiceLevelObjectiveVersions`` RPCs.
+
+        Values:
+            VIEW_UNSPECIFIED (0):
+                Same as FULL.
+            FULL (2):
+                Return the embedded ``ServiceLevelIndicator`` in the form in
+                which it was defined. If it was defined using a
+                ``BasicSli``, return that ``BasicSli``.
+            EXPLICIT (1):
+                For ``ServiceLevelIndicator``\ s using ``BasicSli``
+                articulation, instead return the ``ServiceLevelIndicator``
+                with its mode of computation fully spelled out as a
+                ``RequestBasedSli``. For ``ServiceLevelIndicator``\ s using
+                ``RequestBasedSli`` or ``WindowsBasedSli``, return the
+                ``ServiceLevelIndicator`` as it was provided.
         """
         VIEW_UNSPECIFIED = 0
         FULL = 2

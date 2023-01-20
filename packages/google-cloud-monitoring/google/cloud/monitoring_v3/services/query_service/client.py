@@ -514,7 +514,7 @@ class QueryServiceClient(metaclass=QueryServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "QueryServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

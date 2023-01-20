@@ -1610,7 +1610,7 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
             metadata=metadata,
         )
 
-    def __enter__(self):
+    def __enter__(self) -> "ServiceMonitoringServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

@@ -34,7 +34,26 @@ __protobuf__ = proto.module(
 
 
 class UptimeCheckRegion(proto.Enum):
-    r"""The regions from which an Uptime check can be run."""
+    r"""The regions from which an Uptime check can be run.
+
+    Values:
+        REGION_UNSPECIFIED (0):
+            Default value if no region is specified. Will
+            result in Uptime checks running from all
+            regions.
+        USA (1):
+            Allows checks to run from locations within
+            the United States of America.
+        EUROPE (2):
+            Allows checks to run from locations within
+            the continent of Europe.
+        SOUTH_AMERICA (3):
+            Allows checks to run from locations within
+            the continent of South America.
+        ASIA_PACIFIC (4):
+            Allows checks to run from locations within
+            the Asia Pacific area (ex: Singapore).
+    """
     REGION_UNSPECIFIED = 0
     USA = 1
     EUROPE = 2
@@ -48,6 +67,15 @@ class GroupResourceType(proto.Enum):
     ``gce_instance`` and ``aws_ec2_instance`` resource types. The
     resource types ``gae_app`` and ``uptime_url`` are not valid here
     because group checks on App Engine modules and URLs are not allowed.
+
+    Values:
+        RESOURCE_TYPE_UNSPECIFIED (0):
+            Default value (not valid).
+        INSTANCE (1):
+            A group of instances from Google Cloud
+            Platform (GCP) or Amazon Web Services (AWS).
+        AWS_ELB_LOAD_BALANCER (2):
+            A group of Amazon ELB load balancers.
     """
     RESOURCE_TYPE_UNSPECIFIED = 0
     INSTANCE = 1
@@ -94,7 +122,29 @@ class InternalChecker(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Operational states for an internal checker."""
+        r"""Operational states for an internal checker.
+
+        Values:
+            UNSPECIFIED (0):
+                An internal checker should never be in the
+                unspecified state.
+            CREATING (1):
+                The checker is being created, provisioned, and configured. A
+                checker in this state can be returned by
+                ``ListInternalCheckers`` or ``GetInternalChecker``, as well
+                as by examining the `long running
+                Operation <https://cloud.google.com/apis/design/design_patterns#long_running_operations>`__
+                that created it.
+            RUNNING (2):
+                The checker is running and available for use. A checker in
+                this state can be returned by ``ListInternalCheckers`` or
+                ``GetInternalChecker`` as well as by examining the `long
+                running
+                Operation <https://cloud.google.com/apis/design/design_patterns#long_running_operations>`__
+                that created it. If a checker is being torn down, it is
+                neither visible nor usable, so there is no "deleting" or
+                "down" state.
+        """
         UNSPECIFIED = 0
         CREATING = 1
         RUNNING = 2
@@ -322,7 +372,16 @@ class UptimeCheckConfig(proto.Message):
         """
 
         class RequestMethod(proto.Enum):
-            r"""The HTTP request method options."""
+            r"""The HTTP request method options.
+
+            Values:
+                METHOD_UNSPECIFIED (0):
+                    No request method specified.
+                GET (1):
+                    GET request.
+                POST (2):
+                    POST request.
+            """
             METHOD_UNSPECIFIED = 0
             GET = 1
             POST = 2
@@ -330,6 +389,14 @@ class UptimeCheckConfig(proto.Message):
         class ContentType(proto.Enum):
             r"""Header options corresponding to the content type of a HTTP
             request body.
+
+            Values:
+                TYPE_UNSPECIFIED (0):
+                    No content type specified.
+                URL_ENCODED (1):
+                    ``body`` is in URL-encoded form. Equivalent to setting the
+                    ``Content-Type`` to ``application/x-www-form-urlencoded`` in
+                    the HTTP request.
             """
             TYPE_UNSPECIFIED = 0
             URL_ENCODED = 1
@@ -437,7 +504,32 @@ class UptimeCheckConfig(proto.Message):
         """
 
         class ContentMatcherOption(proto.Enum):
-            r"""Options to perform content matching."""
+            r"""Options to perform content matching.
+
+            Values:
+                CONTENT_MATCHER_OPTION_UNSPECIFIED (0):
+                    No content matcher type specified (maintained for backward
+                    compatibility, but deprecated for future use). Treated as
+                    ``CONTAINS_STRING``.
+                CONTAINS_STRING (1):
+                    Selects substring matching. The match succeeds if the output
+                    contains the ``content`` string. This is the default value
+                    for checks without a ``matcher`` option, or where the value
+                    of ``matcher`` is ``CONTENT_MATCHER_OPTION_UNSPECIFIED``.
+                NOT_CONTAINS_STRING (2):
+                    Selects negation of substring matching. The match succeeds
+                    if the output does *NOT* contain the ``content`` string.
+                MATCHES_REGEX (3):
+                    Selects regular-expression matching. The match succeeds of
+                    the output matches the regular expression specified in the
+                    ``content`` string. Regex matching is only supported for
+                    HTTP/HTTPS checks.
+                NOT_MATCHES_REGEX (4):
+                    Selects negation of regular-expression matching. The match
+                    succeeds if the output does *NOT* match the regular
+                    expression specified in the ``content`` string. Regex
+                    matching is only supported for HTTP/HTTPS checks.
+            """
             CONTENT_MATCHER_OPTION_UNSPECIFIED = 0
             CONTAINS_STRING = 1
             NOT_CONTAINS_STRING = 2

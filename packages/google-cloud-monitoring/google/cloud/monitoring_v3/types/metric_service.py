@@ -367,7 +367,17 @@ class ListTimeSeriesRequest(proto.Message):
     """
 
     class TimeSeriesView(proto.Enum):
-        r"""Controls which fields are returned by ``ListTimeSeries``."""
+        r"""Controls which fields are returned by ``ListTimeSeries``.
+
+        Values:
+            FULL (0):
+                Returns the identity of the metric(s), the
+                time series, and the time series data.
+            HEADERS (1):
+                Returns the identity of the metric and the
+                time series resource, but not the time series
+                data.
+        """
         FULL = 0
         HEADERS = 1
 

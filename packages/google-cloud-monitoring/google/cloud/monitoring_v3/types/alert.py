@@ -133,7 +133,26 @@ class AlertPolicy(proto.Message):
     """
 
     class ConditionCombinerType(proto.Enum):
-        r"""Operators for combining conditions."""
+        r"""Operators for combining conditions.
+
+        Values:
+            COMBINE_UNSPECIFIED (0):
+                An unspecified combiner.
+            AND (1):
+                Combine conditions using the logical ``AND`` operator. An
+                incident is created only if all the conditions are met
+                simultaneously. This combiner is satisfied if all conditions
+                are met, even if they are met on completely different
+                resources.
+            OR (2):
+                Combine conditions using the logical ``OR`` operator. An
+                incident is created if any of the listed conditions is met.
+            AND_WITH_MATCHING_RESOURCE (3):
+                Combine conditions using logical ``AND`` operator, but
+                unlike the regular ``AND`` option, an incident is created
+                only if all conditions are met simultaneously on at least
+                one resource.
+        """
         COMBINE_UNSPECIFIED = 0
         AND = 1
         OR = 2
@@ -243,6 +262,20 @@ class AlertPolicy(proto.Message):
             r"""A condition control that determines how metric-threshold
             conditions are evaluated when data stops arriving.
             This control doesn't affect metric-absence policies.
+
+            Values:
+                EVALUATION_MISSING_DATA_UNSPECIFIED (0):
+                    An unspecified evaluation missing data option. Equivalent to
+                    EVALUATION_MISSING_DATA_NO_OP.
+                EVALUATION_MISSING_DATA_INACTIVE (1):
+                    If there is no data to evaluate the
+                    condition, then evaluate the condition as false.
+                EVALUATION_MISSING_DATA_ACTIVE (2):
+                    If there is no data to evaluate the
+                    condition, then evaluate the condition as true.
+                EVALUATION_MISSING_DATA_NO_OP (3):
+                    Do not evaluate the condition to any value if
+                    there is no data.
             """
             EVALUATION_MISSING_DATA_UNSPECIFIED = 0
             EVALUATION_MISSING_DATA_INACTIVE = 1

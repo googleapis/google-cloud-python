@@ -37,6 +37,28 @@ __protobuf__ = proto.module(
 class ComparisonType(proto.Enum):
     r"""Specifies an ordering relationship on two arguments, called ``left``
     and ``right``.
+
+    Values:
+        COMPARISON_UNSPECIFIED (0):
+            No ordering relationship is specified.
+        COMPARISON_GT (1):
+            True if the left argument is greater than the
+            right argument.
+        COMPARISON_GE (2):
+            True if the left argument is greater than or
+            equal to the right argument.
+        COMPARISON_LT (3):
+            True if the left argument is less than the
+            right argument.
+        COMPARISON_LE (4):
+            True if the left argument is less than or
+            equal to the right argument.
+        COMPARISON_EQ (5):
+            True if the left argument is equal to the
+            right argument.
+        COMPARISON_NE (6):
+            True if the left argument is not equal to the
+            right argument.
     """
     COMPARISON_UNSPECIFIED = 0
     COMPARISON_GT = 1
@@ -51,6 +73,25 @@ class ServiceTier(proto.Enum):
     r"""The tier of service for a Workspace. Please see the `service tiers
     documentation <https://cloud.google.com/monitoring/workspaces/tiers>`__
     for more details.
+
+    Values:
+        SERVICE_TIER_UNSPECIFIED (0):
+            An invalid sentinel value, used to indicate
+            that a tier has not been provided explicitly.
+        SERVICE_TIER_BASIC (1):
+            The Stackdriver Basic tier, a free tier of service that
+            provides basic features, a moderate allotment of logs, and
+            access to built-in metrics. A number of features are not
+            available in this tier. For more details, see `the service
+            tiers
+            documentation <https://cloud.google.com/monitoring/workspaces/tiers>`__.
+        SERVICE_TIER_PREMIUM (2):
+            The Stackdriver Premium tier, a higher, more expensive tier
+            of service that provides access to all Stackdriver features,
+            lets you use Stackdriver with AWS accounts, and has a larger
+            allotments for logs and metrics. For more details, see `the
+            service tiers
+            documentation <https://cloud.google.com/monitoring/workspaces/tiers>`__.
     """
     _pb_options = {"deprecated": True}
     SERVICE_TIER_UNSPECIFIED = 0
@@ -300,6 +341,153 @@ class Aggregation(proto.Message):
         For example, if you apply a counting operation to boolean values,
         the data ``value_type`` in the original time series is ``BOOLEAN``,
         but the ``value_type`` in the aligned result is ``INT64``.
+
+        Values:
+            ALIGN_NONE (0):
+                No alignment. Raw data is returned. Not valid if
+                cross-series reduction is requested. The ``value_type`` of
+                the result is the same as the ``value_type`` of the input.
+            ALIGN_DELTA (1):
+                Align and convert to
+                [DELTA][google.api.MetricDescriptor.MetricKind.DELTA]. The
+                output is ``delta = y1 - y0``.
+
+                This alignment is valid for
+                [CUMULATIVE][google.api.MetricDescriptor.MetricKind.CUMULATIVE]
+                and ``DELTA`` metrics. If the selected alignment period
+                results in periods with no data, then the aligned value for
+                such a period is created by interpolation. The
+                ``value_type`` of the aligned result is the same as the
+                ``value_type`` of the input.
+            ALIGN_RATE (2):
+                Align and convert to a rate. The result is computed as
+                ``rate = (y1 - y0)/(t1 - t0)``, or "delta over time". Think
+                of this aligner as providing the slope of the line that
+                passes through the value at the start and at the end of the
+                ``alignment_period``.
+
+                This aligner is valid for ``CUMULATIVE`` and ``DELTA``
+                metrics with numeric values. If the selected alignment
+                period results in periods with no data, then the aligned
+                value for such a period is created by interpolation. The
+                output is a ``GAUGE`` metric with ``value_type`` ``DOUBLE``.
+
+                If, by "rate", you mean "percentage change", see the
+                ``ALIGN_PERCENT_CHANGE`` aligner instead.
+            ALIGN_INTERPOLATE (3):
+                Align by interpolating between adjacent points around the
+                alignment period boundary. This aligner is valid for
+                ``GAUGE`` metrics with numeric values. The ``value_type`` of
+                the aligned result is the same as the ``value_type`` of the
+                input.
+            ALIGN_NEXT_OLDER (4):
+                Align by moving the most recent data point before the end of
+                the alignment period to the boundary at the end of the
+                alignment period. This aligner is valid for ``GAUGE``
+                metrics. The ``value_type`` of the aligned result is the
+                same as the ``value_type`` of the input.
+            ALIGN_MIN (10):
+                Align the time series by returning the minimum value in each
+                alignment period. This aligner is valid for ``GAUGE`` and
+                ``DELTA`` metrics with numeric values. The ``value_type`` of
+                the aligned result is the same as the ``value_type`` of the
+                input.
+            ALIGN_MAX (11):
+                Align the time series by returning the maximum value in each
+                alignment period. This aligner is valid for ``GAUGE`` and
+                ``DELTA`` metrics with numeric values. The ``value_type`` of
+                the aligned result is the same as the ``value_type`` of the
+                input.
+            ALIGN_MEAN (12):
+                Align the time series by returning the mean value in each
+                alignment period. This aligner is valid for ``GAUGE`` and
+                ``DELTA`` metrics with numeric values. The ``value_type`` of
+                the aligned result is ``DOUBLE``.
+            ALIGN_COUNT (13):
+                Align the time series by returning the number of values in
+                each alignment period. This aligner is valid for ``GAUGE``
+                and ``DELTA`` metrics with numeric or Boolean values. The
+                ``value_type`` of the aligned result is ``INT64``.
+            ALIGN_SUM (14):
+                Align the time series by returning the sum of the values in
+                each alignment period. This aligner is valid for ``GAUGE``
+                and ``DELTA`` metrics with numeric and distribution values.
+                The ``value_type`` of the aligned result is the same as the
+                ``value_type`` of the input.
+            ALIGN_STDDEV (15):
+                Align the time series by returning the standard deviation of
+                the values in each alignment period. This aligner is valid
+                for ``GAUGE`` and ``DELTA`` metrics with numeric values. The
+                ``value_type`` of the output is ``DOUBLE``.
+            ALIGN_COUNT_TRUE (16):
+                Align the time series by returning the number of ``True``
+                values in each alignment period. This aligner is valid for
+                ``GAUGE`` metrics with Boolean values. The ``value_type`` of
+                the output is ``INT64``.
+            ALIGN_COUNT_FALSE (24):
+                Align the time series by returning the number of ``False``
+                values in each alignment period. This aligner is valid for
+                ``GAUGE`` metrics with Boolean values. The ``value_type`` of
+                the output is ``INT64``.
+            ALIGN_FRACTION_TRUE (17):
+                Align the time series by returning the ratio of the number
+                of ``True`` values to the total number of values in each
+                alignment period. This aligner is valid for ``GAUGE``
+                metrics with Boolean values. The output value is in the
+                range [0.0, 1.0] and has ``value_type`` ``DOUBLE``.
+            ALIGN_PERCENTILE_99 (18):
+                Align the time series by using `percentile
+                aggregation <https://en.wikipedia.org/wiki/Percentile>`__.
+                The resulting data point in each alignment period is the
+                99th percentile of all data points in the period. This
+                aligner is valid for ``GAUGE`` and ``DELTA`` metrics with
+                distribution values. The output is a ``GAUGE`` metric with
+                ``value_type`` ``DOUBLE``.
+            ALIGN_PERCENTILE_95 (19):
+                Align the time series by using `percentile
+                aggregation <https://en.wikipedia.org/wiki/Percentile>`__.
+                The resulting data point in each alignment period is the
+                95th percentile of all data points in the period. This
+                aligner is valid for ``GAUGE`` and ``DELTA`` metrics with
+                distribution values. The output is a ``GAUGE`` metric with
+                ``value_type`` ``DOUBLE``.
+            ALIGN_PERCENTILE_50 (20):
+                Align the time series by using `percentile
+                aggregation <https://en.wikipedia.org/wiki/Percentile>`__.
+                The resulting data point in each alignment period is the
+                50th percentile of all data points in the period. This
+                aligner is valid for ``GAUGE`` and ``DELTA`` metrics with
+                distribution values. The output is a ``GAUGE`` metric with
+                ``value_type`` ``DOUBLE``.
+            ALIGN_PERCENTILE_05 (21):
+                Align the time series by using `percentile
+                aggregation <https://en.wikipedia.org/wiki/Percentile>`__.
+                The resulting data point in each alignment period is the 5th
+                percentile of all data points in the period. This aligner is
+                valid for ``GAUGE`` and ``DELTA`` metrics with distribution
+                values. The output is a ``GAUGE`` metric with ``value_type``
+                ``DOUBLE``.
+            ALIGN_PERCENT_CHANGE (23):
+                Align and convert to a percentage change. This aligner is
+                valid for ``GAUGE`` and ``DELTA`` metrics with numeric
+                values. This alignment returns
+                ``((current - previous)/previous) * 100``, where the value
+                of ``previous`` is determined based on the
+                ``alignment_period``.
+
+                If the values of ``current`` and ``previous`` are both 0,
+                then the returned value is 0. If only ``previous`` is 0, the
+                returned value is infinity.
+
+                A 10-minute moving mean is computed at each point of the
+                alignment period prior to the above calculation to smooth
+                the metric and prevent false positives from very short-lived
+                spikes. The moving mean is only applicable for data whose
+                values are ``>= 0``. Any values ``< 0`` are treated as a
+                missing datapoint, and are ignored. While ``DELTA`` metrics
+                are accepted by this alignment, special care should be taken
+                that the values for the metric will always be positive. The
+                output is a ``GAUGE`` metric with ``value_type`` ``DOUBLE``.
         """
         ALIGN_NONE = 0
         ALIGN_DELTA = 1
@@ -326,6 +514,95 @@ class Aggregation(proto.Message):
         from multiple time series into a single time series, where the
         value of each data point in the resulting series is a function
         of all the already aligned values in the input time series.
+
+        Values:
+            REDUCE_NONE (0):
+                No cross-time series reduction. The output of the
+                ``Aligner`` is returned.
+            REDUCE_MEAN (1):
+                Reduce by computing the mean value across time series for
+                each alignment period. This reducer is valid for
+                [DELTA][google.api.MetricDescriptor.MetricKind.DELTA] and
+                [GAUGE][google.api.MetricDescriptor.MetricKind.GAUGE]
+                metrics with numeric or distribution values. The
+                ``value_type`` of the output is
+                [DOUBLE][google.api.MetricDescriptor.ValueType.DOUBLE].
+            REDUCE_MIN (2):
+                Reduce by computing the minimum value across time series for
+                each alignment period. This reducer is valid for ``DELTA``
+                and ``GAUGE`` metrics with numeric values. The
+                ``value_type`` of the output is the same as the
+                ``value_type`` of the input.
+            REDUCE_MAX (3):
+                Reduce by computing the maximum value across time series for
+                each alignment period. This reducer is valid for ``DELTA``
+                and ``GAUGE`` metrics with numeric values. The
+                ``value_type`` of the output is the same as the
+                ``value_type`` of the input.
+            REDUCE_SUM (4):
+                Reduce by computing the sum across time series for each
+                alignment period. This reducer is valid for ``DELTA`` and
+                ``GAUGE`` metrics with numeric and distribution values. The
+                ``value_type`` of the output is the same as the
+                ``value_type`` of the input.
+            REDUCE_STDDEV (5):
+                Reduce by computing the standard deviation across time
+                series for each alignment period. This reducer is valid for
+                ``DELTA`` and ``GAUGE`` metrics with numeric or distribution
+                values. The ``value_type`` of the output is ``DOUBLE``.
+            REDUCE_COUNT (6):
+                Reduce by computing the number of data points across time
+                series for each alignment period. This reducer is valid for
+                ``DELTA`` and ``GAUGE`` metrics of numeric, Boolean,
+                distribution, and string ``value_type``. The ``value_type``
+                of the output is ``INT64``.
+            REDUCE_COUNT_TRUE (7):
+                Reduce by computing the number of ``True``-valued data
+                points across time series for each alignment period. This
+                reducer is valid for ``DELTA`` and ``GAUGE`` metrics of
+                Boolean ``value_type``. The ``value_type`` of the output is
+                ``INT64``.
+            REDUCE_COUNT_FALSE (15):
+                Reduce by computing the number of ``False``-valued data
+                points across time series for each alignment period. This
+                reducer is valid for ``DELTA`` and ``GAUGE`` metrics of
+                Boolean ``value_type``. The ``value_type`` of the output is
+                ``INT64``.
+            REDUCE_FRACTION_TRUE (8):
+                Reduce by computing the ratio of the number of
+                ``True``-valued data points to the total number of data
+                points for each alignment period. This reducer is valid for
+                ``DELTA`` and ``GAUGE`` metrics of Boolean ``value_type``.
+                The output value is in the range [0.0, 1.0] and has
+                ``value_type`` ``DOUBLE``.
+            REDUCE_PERCENTILE_99 (9):
+                Reduce by computing the `99th
+                percentile <https://en.wikipedia.org/wiki/Percentile>`__ of
+                data points across time series for each alignment period.
+                This reducer is valid for ``GAUGE`` and ``DELTA`` metrics of
+                numeric and distribution type. The value of the output is
+                ``DOUBLE``.
+            REDUCE_PERCENTILE_95 (10):
+                Reduce by computing the `95th
+                percentile <https://en.wikipedia.org/wiki/Percentile>`__ of
+                data points across time series for each alignment period.
+                This reducer is valid for ``GAUGE`` and ``DELTA`` metrics of
+                numeric and distribution type. The value of the output is
+                ``DOUBLE``.
+            REDUCE_PERCENTILE_50 (11):
+                Reduce by computing the `50th
+                percentile <https://en.wikipedia.org/wiki/Percentile>`__ of
+                data points across time series for each alignment period.
+                This reducer is valid for ``GAUGE`` and ``DELTA`` metrics of
+                numeric and distribution type. The value of the output is
+                ``DOUBLE``.
+            REDUCE_PERCENTILE_05 (12):
+                Reduce by computing the `5th
+                percentile <https://en.wikipedia.org/wiki/Percentile>`__ of
+                data points across time series for each alignment period.
+                This reducer is valid for ``GAUGE`` and ``DELTA`` metrics of
+                numeric and distribution type. The value of the output is
+                ``DOUBLE``.
         """
         REDUCE_NONE = 0
         REDUCE_MEAN = 1
