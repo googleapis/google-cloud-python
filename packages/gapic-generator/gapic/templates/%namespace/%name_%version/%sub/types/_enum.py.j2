@@ -4,8 +4,12 @@ class {{ enum.name }}({{ p }}.Enum):
     Values:
     {% for enum_value in enum.values %}
         {{ enum_value.name }} ({{ enum_value.number }}):
+        {% if enum_value.meta.doc|length > 0 %}
             {{ enum_value.meta.doc|rst(width=72, indent=12, nl=False) }}
-    {% endfor %}
+        {% else %}
+            No description available.
+        {% endif %}
+    {%- endfor %}
     """
     {% if enum.enum_pb.HasField("options") %}
     _pb_options = {{ enum.options_dict }}
