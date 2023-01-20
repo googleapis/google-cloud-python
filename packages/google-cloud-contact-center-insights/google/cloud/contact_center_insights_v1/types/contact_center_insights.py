@@ -90,7 +90,20 @@ __protobuf__ = proto.module(
 
 
 class ConversationView(proto.Enum):
-    r"""Represents the options for viewing a conversation."""
+    r"""Represents the options for viewing a conversation.
+
+    Values:
+        CONVERSATION_VIEW_UNSPECIFIED (0):
+            The conversation view is not specified.
+
+            -  Defaults to ``FULL`` in ``GetConversationRequest``.
+            -  Defaults to ``BASIC`` in ``ListConversationsRequest``.
+        FULL (2):
+            Populates all fields in the conversation.
+        BASIC (1):
+            Populates all fields in the conversation
+            except the transcript.
+    """
     CONVERSATION_VIEW_UNSPECIFIED = 0
     FULL = 2
     BASIC = 1
@@ -859,6 +872,18 @@ class ExportInsightsDataRequest(proto.Message):
     class WriteDisposition(proto.Enum):
         r"""Specifies the action that occurs if the destination table
         already exists.
+
+        Values:
+            WRITE_DISPOSITION_UNSPECIFIED (0):
+                Write disposition is not specified. Defaults to
+                WRITE_TRUNCATE.
+            WRITE_TRUNCATE (1):
+                If the table already exists, BigQuery will
+                overwrite the table data and use the schema from
+                the load.
+            WRITE_APPEND (2):
+                If the table already exists, BigQuery will
+                append data to the table.
         """
         WRITE_DISPOSITION_UNSPECIFIED = 0
         WRITE_TRUNCATE = 1

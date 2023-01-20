@@ -149,7 +149,18 @@ class Conversation(proto.Message):
     """
 
     class Medium(proto.Enum):
-        r"""Possible media for the conversation."""
+        r"""Possible media for the conversation.
+
+        Values:
+            MEDIUM_UNSPECIFIED (0):
+                Default value, if unspecified will default to PHONE_CALL.
+            PHONE_CALL (1):
+                The format for conversations that took place
+                over the phone.
+            CHAT (2):
+                The format for conversations that took place
+                over chat.
+        """
         MEDIUM_UNSPECIFIED = 0
         PHONE_CALL = 1
         CHAT = 2
@@ -896,6 +907,69 @@ class Entity(proto.Message):
         metadata is a Wikipedia URL (``wikipedia_url``) and Knowledge Graph
         MID (``mid``). The table below lists the associated fields for
         entities that have different metadata.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unspecified.
+            PERSON (1):
+                Person.
+            LOCATION (2):
+                Location.
+            ORGANIZATION (3):
+                Organization.
+            EVENT (4):
+                Event.
+            WORK_OF_ART (5):
+                Artwork.
+            CONSUMER_GOOD (6):
+                Consumer product.
+            OTHER (7):
+                Other types of entities.
+            PHONE_NUMBER (9):
+                Phone number.
+
+                The metadata lists the phone number (formatted according to
+                local convention), plus whichever additional elements appear
+                in the text:
+
+                -  ``number`` - The actual number, broken down into sections
+                   according to local convention.
+                -  ``national_prefix`` - Country code, if detected.
+                -  ``area_code`` - Region or area code, if detected.
+                -  ``extension`` - Phone extension (to be dialed after
+                   connection), if detected.
+            ADDRESS (10):
+                Address.
+
+                The metadata identifies the street number and locality plus
+                whichever additional elements appear in the text:
+
+                -  ``street_number`` - Street number.
+                -  ``locality`` - City or town.
+                -  ``street_name`` - Street/route name, if detected.
+                -  ``postal_code`` - Postal code, if detected.
+                -  ``country`` - Country, if detected.
+                -  ``broad_region`` - Administrative area, such as the
+                   state, if detected.
+                -  ``narrow_region`` - Smaller administrative area, such as
+                   county, if detected.
+                -  ``sublocality`` - Used in Asian addresses to demark a
+                   district within a city, if detected.
+            DATE (11):
+                Date.
+
+                The metadata identifies the components of the date:
+
+                -  ``year`` - Four digit year, if detected.
+                -  ``month`` - Two digit month number, if detected.
+                -  ``day`` - Two digit day number, if detected.
+            NUMBER (12):
+                Number.
+                The metadata is the number itself.
+            PRICE (13):
+                Price.
+
+                The metadata identifies the ``value`` and ``currency``.
         """
         TYPE_UNSPECIFIED = 0
         PERSON = 1
@@ -1025,7 +1099,16 @@ class EntityMentionData(proto.Message):
     """
 
     class MentionType(proto.Enum):
-        r"""The supported types of mentions."""
+        r"""The supported types of mentions.
+
+        Values:
+            MENTION_TYPE_UNSPECIFIED (0):
+                Unspecified.
+            PROPER (1):
+                Proper noun.
+            COMMON (2):
+                Common noun (or noun compound).
+        """
         MENTION_TYPE_UNSPECIFIED = 0
         PROPER = 1
         COMMON = 2
@@ -1129,7 +1212,24 @@ class IssueModel(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of the model."""
+        r"""State of the model.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified.
+            UNDEPLOYED (1):
+                Model is not deployed but is ready to deploy.
+            DEPLOYING (2):
+                Model is being deployed.
+            DEPLOYED (3):
+                Model is deployed and is ready to be used. A
+                model can only be used in analysis if it's in
+                this state.
+            UNDEPLOYING (4):
+                Model is being undeployed.
+            DELETING (5):
+                Model is being deleted.
+        """
         STATE_UNSPECIFIED = 0
         UNDEPLOYED = 1
         DEPLOYING = 2
@@ -1353,6 +1453,16 @@ class PhraseMatcher(proto.Message):
     class PhraseMatcherType(proto.Enum):
         r"""Specifies how to combine each phrase match rule group to
         determine whether there is a match.
+
+        Values:
+            PHRASE_MATCHER_TYPE_UNSPECIFIED (0):
+                Unspecified.
+            ALL_OF (1):
+                Must meet all phrase match rule groups or
+                there is no match.
+            ANY_OF (2):
+                If any of the phrase match rule groups are
+                met, there is a match.
         """
         PHRASE_MATCHER_TYPE_UNSPECIFIED = 0
         ALL_OF = 1
@@ -1427,6 +1537,16 @@ class PhraseMatchRuleGroup(proto.Message):
     class PhraseMatchRuleGroupType(proto.Enum):
         r"""Specifies how to combine each phrase match rule for whether
         there is a match.
+
+        Values:
+            PHRASE_MATCH_RULE_GROUP_TYPE_UNSPECIFIED (0):
+                Unspecified.
+            ALL_OF (1):
+                Must meet all phrase match rules or there is
+                no match.
+            ANY_OF (2):
+                If any of the phrase match rules are met,
+                there is a match.
         """
         PHRASE_MATCH_RULE_GROUP_TYPE_UNSPECIFIED = 0
         ALL_OF = 1
@@ -1741,7 +1861,18 @@ class AnswerFeedback(proto.Message):
     """
 
     class CorrectnessLevel(proto.Enum):
-        r"""The correctness level of an answer."""
+        r"""The correctness level of an answer.
+
+        Values:
+            CORRECTNESS_LEVEL_UNSPECIFIED (0):
+                Correctness level unspecified.
+            NOT_CORRECT (1):
+                Answer is totally wrong.
+            PARTIALLY_CORRECT (2):
+                Answer is partially correct.
+            FULLY_CORRECT (3):
+                Answer is fully correct.
+        """
         CORRECTNESS_LEVEL_UNSPECIFIED = 0
         NOT_CORRECT = 1
         PARTIALLY_CORRECT = 2
@@ -2001,7 +2132,22 @@ class ConversationParticipant(proto.Message):
     """
 
     class Role(proto.Enum):
-        r"""The role of the participant."""
+        r"""The role of the participant.
+
+        Values:
+            ROLE_UNSPECIFIED (0):
+                Participant's role is not set.
+            HUMAN_AGENT (1):
+                Participant is a human agent.
+            AUTOMATED_AGENT (2):
+                Participant is an automated agent.
+            END_USER (3):
+                Participant is an end user who conversed with
+                the contact center.
+            ANY_AGENT (4):
+                Participant is either a human or automated
+                agent.
+        """
         ROLE_UNSPECIFIED = 0
         HUMAN_AGENT = 1
         AUTOMATED_AGENT = 2

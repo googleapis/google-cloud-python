@@ -4689,7 +4689,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
             metadata=metadata,
         )
 
-    def __enter__(self):
+    def __enter__(self) -> "ContactCenterInsightsClient":
         return self
 
     def __exit__(self, type, value, traceback):
