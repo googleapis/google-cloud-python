@@ -41,6 +41,21 @@ class ProtectionLevel(proto.Enum):
     cryptographic operations are performed. For more information, see
     [Protection levels]
     (https://cloud.google.com/kms/docs/algorithms#protection_levels).
+
+    Values:
+        PROTECTION_LEVEL_UNSPECIFIED (0):
+            Not specified.
+        SOFTWARE (1):
+            Crypto operations are performed in software.
+        HSM (2):
+            Crypto operations are performed in a Hardware
+            Security Module.
+        EXTERNAL (3):
+            Crypto operations are performed by an
+            external key manager.
+        EXTERNAL_VPC (4):
+            Crypto operations are performed in an
+            EKM-over-VPC backend.
     """
     PROTECTION_LEVEL_UNSPECIFIED = 0
     SOFTWARE = 1
@@ -200,6 +215,32 @@ class CryptoKey(proto.Message):
         used for the operations allowed by its purpose. For more
         information, see `Key
         purposes <https://cloud.google.com/kms/docs/algorithms#key_purposes>`__.
+
+        Values:
+            CRYPTO_KEY_PURPOSE_UNSPECIFIED (0):
+                Not specified.
+            ENCRYPT_DECRYPT (1):
+                [CryptoKeys][google.cloud.kms.v1.CryptoKey] with this
+                purpose may be used with
+                [Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt]
+                and
+                [Decrypt][google.cloud.kms.v1.KeyManagementService.Decrypt].
+            ASYMMETRIC_SIGN (5):
+                [CryptoKeys][google.cloud.kms.v1.CryptoKey] with this
+                purpose may be used with
+                [AsymmetricSign][google.cloud.kms.v1.KeyManagementService.AsymmetricSign]
+                and
+                [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
+            ASYMMETRIC_DECRYPT (6):
+                [CryptoKeys][google.cloud.kms.v1.CryptoKey] with this
+                purpose may be used with
+                [AsymmetricDecrypt][google.cloud.kms.v1.KeyManagementService.AsymmetricDecrypt]
+                and
+                [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
+            MAC (9):
+                [CryptoKeys][google.cloud.kms.v1.CryptoKey] with this
+                purpose may be used with
+                [MacSign][google.cloud.kms.v1.KeyManagementService.MacSign].
         """
         CRYPTO_KEY_PURPOSE_UNSPECIFIED = 0
         ENCRYPT_DECRYPT = 1
@@ -322,7 +363,22 @@ class KeyOperationAttestation(proto.Message):
     """
 
     class AttestationFormat(proto.Enum):
-        r"""Attestation formats provided by the HSM."""
+        r"""Attestation formats provided by the HSM.
+
+        Values:
+            ATTESTATION_FORMAT_UNSPECIFIED (0):
+                Not specified.
+            CAVIUM_V1_COMPRESSED (3):
+                Cavium HSM attestation compressed with gzip.
+                Note that this format is defined by Cavium and
+                subject to change at any time.
+                See
+                https://www.marvell.com/products/security-solutions/nitrox-hs-adapters/software-key-attestation.html.
+            CAVIUM_V2_COMPRESSED (4):
+                Cavium HSM attestation V2 compressed with
+                gzip. This is a new format introduced in
+                Cavium's version 3.2-08.
+        """
         ATTESTATION_FORMAT_UNSPECIFIED = 0
         CAVIUM_V1_COMPRESSED = 3
         CAVIUM_V2_COMPRESSED = 4
@@ -512,6 +568,74 @@ class CryptoKeyVersion(proto.Message):
 
         For more information, see [Key purposes and algorithms]
         (https://cloud.google.com/kms/docs/algorithms).
+
+        Values:
+            CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED (0):
+                Not specified.
+            GOOGLE_SYMMETRIC_ENCRYPTION (1):
+                Creates symmetric encryption keys.
+            RSA_SIGN_PSS_2048_SHA256 (2):
+                RSASSA-PSS 2048 bit key with a SHA256 digest.
+            RSA_SIGN_PSS_3072_SHA256 (3):
+                RSASSA-PSS 3072 bit key with a SHA256 digest.
+            RSA_SIGN_PSS_4096_SHA256 (4):
+                RSASSA-PSS 4096 bit key with a SHA256 digest.
+            RSA_SIGN_PSS_4096_SHA512 (15):
+                RSASSA-PSS 4096 bit key with a SHA512 digest.
+            RSA_SIGN_PKCS1_2048_SHA256 (5):
+                RSASSA-PKCS1-v1_5 with a 2048 bit key and a SHA256 digest.
+            RSA_SIGN_PKCS1_3072_SHA256 (6):
+                RSASSA-PKCS1-v1_5 with a 3072 bit key and a SHA256 digest.
+            RSA_SIGN_PKCS1_4096_SHA256 (7):
+                RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA256 digest.
+            RSA_SIGN_PKCS1_4096_SHA512 (16):
+                RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA512 digest.
+            RSA_SIGN_RAW_PKCS1_2048 (28):
+                RSASSA-PKCS1-v1_5 signing without encoding, with a 2048 bit
+                key.
+            RSA_SIGN_RAW_PKCS1_3072 (29):
+                RSASSA-PKCS1-v1_5 signing without encoding, with a 3072 bit
+                key.
+            RSA_SIGN_RAW_PKCS1_4096 (30):
+                RSASSA-PKCS1-v1_5 signing without encoding, with a 4096 bit
+                key.
+            RSA_DECRYPT_OAEP_2048_SHA256 (8):
+                RSAES-OAEP 2048 bit key with a SHA256 digest.
+            RSA_DECRYPT_OAEP_3072_SHA256 (9):
+                RSAES-OAEP 3072 bit key with a SHA256 digest.
+            RSA_DECRYPT_OAEP_4096_SHA256 (10):
+                RSAES-OAEP 4096 bit key with a SHA256 digest.
+            RSA_DECRYPT_OAEP_4096_SHA512 (17):
+                RSAES-OAEP 4096 bit key with a SHA512 digest.
+            RSA_DECRYPT_OAEP_2048_SHA1 (37):
+                RSAES-OAEP 2048 bit key with a SHA1 digest.
+            RSA_DECRYPT_OAEP_3072_SHA1 (38):
+                RSAES-OAEP 3072 bit key with a SHA1 digest.
+            RSA_DECRYPT_OAEP_4096_SHA1 (39):
+                RSAES-OAEP 4096 bit key with a SHA1 digest.
+            EC_SIGN_P256_SHA256 (12):
+                ECDSA on the NIST P-256 curve with a SHA256
+                digest.
+            EC_SIGN_P384_SHA384 (13):
+                ECDSA on the NIST P-384 curve with a SHA384
+                digest.
+            EC_SIGN_SECP256K1_SHA256 (31):
+                ECDSA on the non-NIST secp256k1 curve. This
+                curve is only supported for HSM protection
+                level.
+            HMAC_SHA256 (32):
+                HMAC-SHA256 signing with a 256 bit key.
+            HMAC_SHA1 (33):
+                HMAC-SHA1 signing with a 160 bit key.
+            HMAC_SHA384 (34):
+                HMAC-SHA384 signing with a 384 bit key.
+            HMAC_SHA512 (35):
+                HMAC-SHA512 signing with a 512 bit key.
+            HMAC_SHA224 (36):
+                HMAC-SHA224 signing with a 224 bit key.
+            EXTERNAL_SYMMETRIC_ENCRYPTION (18):
+                Algorithm representing symmetric encryption
+                by an external key manager.
         """
         CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED = 0
         GOOGLE_SYMMETRIC_ENCRYPTION = 1
@@ -547,6 +671,51 @@ class CryptoKeyVersion(proto.Message):
         r"""The state of a
         [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion], indicating
         if it can be used.
+
+        Values:
+            CRYPTO_KEY_VERSION_STATE_UNSPECIFIED (0):
+                Not specified.
+            PENDING_GENERATION (5):
+                This version is still being generated. It may not be used,
+                enabled, disabled, or destroyed yet. Cloud KMS will
+                automatically mark this version
+                [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
+                as soon as the version is ready.
+            ENABLED (1):
+                This version may be used for cryptographic
+                operations.
+            DISABLED (2):
+                This version may not be used, but the key material is still
+                available, and the version can be placed back into the
+                [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
+                state.
+            DESTROYED (3):
+                This version is destroyed, and the key material is no longer
+                stored. This version may only become
+                [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
+                again if this version is
+                [reimport_eligible][google.cloud.kms.v1.CryptoKeyVersion.reimport_eligible]
+                and the original key material is reimported with a call to
+                [KeyManagementService.ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion].
+            DESTROY_SCHEDULED (4):
+                This version is scheduled for destruction, and will be
+                destroyed soon. Call
+                [RestoreCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.RestoreCryptoKeyVersion]
+                to put it back into the
+                [DISABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DISABLED]
+                state.
+            PENDING_IMPORT (6):
+                This version is still being imported. It may not be used,
+                enabled, disabled, or destroyed yet. Cloud KMS will
+                automatically mark this version
+                [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
+                as soon as the version is ready.
+            IMPORT_FAILED (7):
+                This version was not imported successfully. It may not be
+                used, enabled, disabled, or destroyed. The submitted key
+                material has been discarded. Additional details can be found
+                in
+                [CryptoKeyVersion.import_failure_reason][google.cloud.kms.v1.CryptoKeyVersion.import_failure_reason].
         """
         CRYPTO_KEY_VERSION_STATE_UNSPECIFIED = 0
         PENDING_GENERATION = 5
@@ -565,6 +734,19 @@ class CryptoKeyVersion(proto.Message):
         [KeyManagementService.ListCryptoKeyVersions][google.cloud.kms.v1.KeyManagementService.ListCryptoKeyVersions]
         and
         [KeyManagementService.ListCryptoKeys][google.cloud.kms.v1.KeyManagementService.ListCryptoKeys].
+
+        Values:
+            CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED (0):
+                Default view for each
+                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
+                Does not include the
+                [attestation][google.cloud.kms.v1.CryptoKeyVersion.attestation]
+                field.
+            FULL (1):
+                Provides all fields in each
+                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion],
+                including the
+                [attestation][google.cloud.kms.v1.CryptoKeyVersion.attestation].
         """
         CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED = 0
         FULL = 1
@@ -804,6 +986,52 @@ class ImportJob(proto.Message):
         r"""[ImportMethod][google.cloud.kms.v1.ImportJob.ImportMethod] describes
         the key wrapping method chosen for this
         [ImportJob][google.cloud.kms.v1.ImportJob].
+
+        Values:
+            IMPORT_METHOD_UNSPECIFIED (0):
+                Not specified.
+            RSA_OAEP_3072_SHA1_AES_256 (1):
+                This ImportMethod represents the CKM_RSA_AES_KEY_WRAP key
+                wrapping scheme defined in the PKCS #11 standard. In
+                summary, this involves wrapping the raw key with an
+                ephemeral AES key, and wrapping the ephemeral AES key with a
+                3072 bit RSA key. For more details, see `RSA AES key wrap
+                mechanism <http://docs.oasis-open.org/pkcs11/pkcs11-curr/v2.40/cos01/pkcs11-curr-v2.40-cos01.html#_Toc408226908>`__.
+            RSA_OAEP_4096_SHA1_AES_256 (2):
+                This ImportMethod represents the CKM_RSA_AES_KEY_WRAP key
+                wrapping scheme defined in the PKCS #11 standard. In
+                summary, this involves wrapping the raw key with an
+                ephemeral AES key, and wrapping the ephemeral AES key with a
+                4096 bit RSA key. For more details, see `RSA AES key wrap
+                mechanism <http://docs.oasis-open.org/pkcs11/pkcs11-curr/v2.40/cos01/pkcs11-curr-v2.40-cos01.html#_Toc408226908>`__.
+            RSA_OAEP_3072_SHA256_AES_256 (3):
+                This ImportMethod represents the CKM_RSA_AES_KEY_WRAP key
+                wrapping scheme defined in the PKCS #11 standard. In
+                summary, this involves wrapping the raw key with an
+                ephemeral AES key, and wrapping the ephemeral AES key with a
+                3072 bit RSA key. For more details, see `RSA AES key wrap
+                mechanism <http://docs.oasis-open.org/pkcs11/pkcs11-curr/v2.40/cos01/pkcs11-curr-v2.40-cos01.html#_Toc408226908>`__.
+            RSA_OAEP_4096_SHA256_AES_256 (4):
+                This ImportMethod represents the CKM_RSA_AES_KEY_WRAP key
+                wrapping scheme defined in the PKCS #11 standard. In
+                summary, this involves wrapping the raw key with an
+                ephemeral AES key, and wrapping the ephemeral AES key with a
+                4096 bit RSA key. For more details, see `RSA AES key wrap
+                mechanism <http://docs.oasis-open.org/pkcs11/pkcs11-curr/v2.40/cos01/pkcs11-curr-v2.40-cos01.html#_Toc408226908>`__.
+            RSA_OAEP_3072_SHA256 (5):
+                This ImportMethod represents RSAES-OAEP with
+                a 3072 bit RSA key. The key material to be
+                imported is wrapped directly with the RSA key.
+                Due to technical limitations of RSA wrapping,
+                this method cannot be used to wrap RSA keys for
+                import.
+            RSA_OAEP_4096_SHA256 (6):
+                This ImportMethod represents RSAES-OAEP with
+                a 4096 bit RSA key. The key material to be
+                imported is wrapped directly with the RSA key.
+                Due to technical limitations of RSA wrapping,
+                this method cannot be used to wrap RSA keys for
+                import.
         """
         IMPORT_METHOD_UNSPECIFIED = 0
         RSA_OAEP_3072_SHA1_AES_256 = 1
@@ -816,6 +1044,25 @@ class ImportJob(proto.Message):
     class ImportJobState(proto.Enum):
         r"""The state of the [ImportJob][google.cloud.kms.v1.ImportJob],
         indicating if it can be used.
+
+        Values:
+            IMPORT_JOB_STATE_UNSPECIFIED (0):
+                Not specified.
+            PENDING_GENERATION (1):
+                The wrapping key for this job is still being generated. It
+                may not be used. Cloud KMS will automatically mark this job
+                as
+                [ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE]
+                as soon as the wrapping key is generated.
+            ACTIVE (2):
+                This job may be used in
+                [CreateCryptoKey][google.cloud.kms.v1.KeyManagementService.CreateCryptoKey]
+                and
+                [CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion]
+                requests.
+            EXPIRED (3):
+                This job can no longer be used and may not
+                leave this state once entered.
         """
         IMPORT_JOB_STATE_UNSPECIFIED = 0
         PENDING_GENERATION = 1
