@@ -36,7 +36,26 @@ __protobuf__ = proto.module(
 
 
 class ResolutionStatus(proto.Enum):
-    r"""Resolution status of an error group."""
+    r"""Resolution status of an error group.
+
+    Values:
+        RESOLUTION_STATUS_UNSPECIFIED (0):
+            Status is unknown. When left unspecified in
+            requests, it is treated like OPEN.
+        OPEN (1):
+            The error group is not being addressed. This
+            is the default for new groups. It is also used
+            for errors re-occurring after marked RESOLVED.
+        ACKNOWLEDGED (2):
+            Error Group manually acknowledged, it can
+            have an issue link attached.
+        RESOLVED (3):
+            Error Group manually resolved, more events
+            for this group are not expected to occur.
+        MUTED (4):
+            The error group is muted and excluded by
+            default on group stats requests.
+    """
     RESOLUTION_STATUS_UNSPECIFIED = 0
     OPEN = 1
     ACKNOWLEDGED = 2

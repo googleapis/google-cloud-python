@@ -44,6 +44,25 @@ __protobuf__ = proto.module(
 class TimedCountAlignment(proto.Enum):
     r"""Specifies how the time periods of error group counts are
     aligned.
+
+    Values:
+        ERROR_COUNT_ALIGNMENT_UNSPECIFIED (0):
+            No alignment specified.
+        ALIGNMENT_EQUAL_ROUNDED (1):
+            The time periods shall be consecutive, have width equal to
+            the requested duration, and be aligned at the
+            ``alignment_time`` provided in the request. The
+            ``alignment_time`` does not have to be inside the query
+            period but even if it is outside, only time periods are
+            returned which overlap with the query period. A rounded
+            alignment will typically result in a different size of the
+            first or the last time period.
+        ALIGNMENT_EQUAL_AT_END (2):
+            The time periods shall be consecutive, have
+            width equal to the requested duration, and be
+            aligned at the end of the requested time period.
+            This can result in a different size of the first
+            time period.
     """
     ERROR_COUNT_ALIGNMENT_UNSPECIFIED = 0
     ALIGNMENT_EQUAL_ROUNDED = 1
@@ -51,7 +70,24 @@ class TimedCountAlignment(proto.Enum):
 
 
 class ErrorGroupOrder(proto.Enum):
-    r"""A sorting order of error groups."""
+    r"""A sorting order of error groups.
+
+    Values:
+        GROUP_ORDER_UNSPECIFIED (0):
+            No group order specified.
+        COUNT_DESC (1):
+            Total count of errors in the given time
+            window in descending order.
+        LAST_SEEN_DESC (2):
+            Timestamp when the group was last seen in the
+            given time window in descending order.
+        CREATED_DESC (3):
+            Timestamp when the group was created in
+            descending order.
+        AFFECTED_USERS_DESC (4):
+            Number of affected users in the given time
+            window in descending order.
+    """
     GROUP_ORDER_UNSPECIFIED = 0
     COUNT_DESC = 1
     LAST_SEEN_DESC = 2
@@ -440,7 +476,30 @@ class QueryTimeRange(proto.Message):
     """
 
     class Period(proto.Enum):
-        r"""The supported time ranges."""
+        r"""The supported time ranges.
+
+        Values:
+            PERIOD_UNSPECIFIED (0):
+                Do not use.
+            PERIOD_1_HOUR (1):
+                Retrieve data for the last hour.
+                Recommended minimum timed count duration: 1 min.
+            PERIOD_6_HOURS (2):
+                Retrieve data for the last 6 hours.
+                Recommended minimum timed count duration: 10
+                min.
+            PERIOD_1_DAY (3):
+                Retrieve data for the last day.
+                Recommended minimum timed count duration: 1
+                hour.
+            PERIOD_1_WEEK (4):
+                Retrieve data for the last week.
+                Recommended minimum timed count duration: 6
+                hours.
+            PERIOD_30_DAYS (5):
+                Retrieve data for the last 30 days.
+                Recommended minimum timed count duration: 1 day.
+        """
         PERIOD_UNSPECIFIED = 0
         PERIOD_1_HOUR = 1
         PERIOD_6_HOURS = 2
