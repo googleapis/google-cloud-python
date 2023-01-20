@@ -37,6 +37,16 @@ __protobuf__ = proto.module(
 class VersionView(proto.Enum):
     r"""The view, which determines what version information is
     returned in a response.
+
+    Values:
+        VERSION_VIEW_UNSPECIFIED (0):
+            The default / unset value.
+            The API will default to the BASIC view.
+        BASIC (1):
+            Includes basic information about the version,
+            but not any related tags.
+        FULL (2):
+            Include everything.
     """
     VERSION_VIEW_UNSPECIFIED = 0
     BASIC = 1

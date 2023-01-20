@@ -45,7 +45,19 @@ class ProjectSettings(proto.Message):
     """
 
     class RedirectionState(proto.Enum):
-        r"""The possible redirection states for legacy repositories."""
+        r"""The possible redirection states for legacy repositories.
+
+        Values:
+            REDIRECTION_STATE_UNSPECIFIED (0):
+                No redirection status has been set.
+            REDIRECTION_FROM_GCR_IO_DISABLED (1):
+                Redirection is disabled.
+            REDIRECTION_FROM_GCR_IO_ENABLED (2):
+                Redirection is enabled.
+            REDIRECTION_FROM_GCR_IO_FINALIZED (3):
+                Redirection is enabled, and has been
+                finalized so cannot be reverted.
+        """
         REDIRECTION_STATE_UNSPECIFIED = 0
         REDIRECTION_FROM_GCR_IO_DISABLED = 1
         REDIRECTION_FROM_GCR_IO_ENABLED = 2

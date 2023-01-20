@@ -58,7 +58,16 @@ class AptArtifact(proto.Message):
     """
 
     class PackageType(proto.Enum):
-        r"""Package type is either binary or source."""
+        r"""Package type is either binary or source.
+
+        Values:
+            PACKAGE_TYPE_UNSPECIFIED (0):
+                Package type is not specified.
+            BINARY (1):
+                Binary package.
+            SOURCE (2):
+                Source package.
+        """
         PACKAGE_TYPE_UNSPECIFIED = 0
         BINARY = 1
         SOURCE = 2

@@ -77,7 +77,24 @@ class Repository(proto.Message):
     """
 
     class Format(proto.Enum):
-        r"""A package format."""
+        r"""A package format.
+
+        Values:
+            FORMAT_UNSPECIFIED (0):
+                Unspecified package format.
+            DOCKER (1):
+                Docker package format.
+            MAVEN (2):
+                Maven package format.
+            NPM (3):
+                NPM package format.
+            APT (5):
+                APT package format.
+            YUM (6):
+                YUM package format.
+            PYTHON (8):
+                Python package format.
+        """
         FORMAT_UNSPECIFIED = 0
         DOCKER = 1
         MAVEN = 2
@@ -101,7 +118,20 @@ class Repository(proto.Message):
         """
 
         class VersionPolicy(proto.Enum):
-            r"""VersionPolicy is the version policy for the repository."""
+            r"""VersionPolicy is the version policy for the repository.
+
+            Values:
+                VERSION_POLICY_UNSPECIFIED (0):
+                    VERSION_POLICY_UNSPECIFIED - the version policy is not
+                    defined. When the version policy is not defined, no
+                    validation is performed for the versions.
+                RELEASE (1):
+                    RELEASE - repository will accept only Release
+                    versions.
+                SNAPSHOT (2):
+                    SNAPSHOT - repository will accept only
+                    Snapshot versions.
+            """
             VERSION_POLICY_UNSPECIFIED = 0
             RELEASE = 1
             SNAPSHOT = 2
