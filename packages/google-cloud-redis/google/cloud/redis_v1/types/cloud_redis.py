@@ -247,7 +247,36 @@ class Instance(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Represents the different states of a Redis instance."""
+        r"""Represents the different states of a Redis instance.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not set.
+            CREATING (1):
+                Redis instance is being created.
+            READY (2):
+                Redis instance has been created and is fully
+                usable.
+            UPDATING (3):
+                Redis instance configuration is being
+                updated. Certain kinds of updates may cause the
+                instance to become unusable while the update is
+                in progress.
+            DELETING (4):
+                Redis instance is being deleted.
+            REPAIRING (5):
+                Redis instance is being repaired and may be
+                unusable.
+            MAINTENANCE (6):
+                Maintenance is being performed on this Redis
+                instance.
+            IMPORTING (8):
+                Redis instance is importing data
+                (availability may be affected).
+            FAILING_OVER (9):
+                Redis instance is failing over (availability
+                may be affected).
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -259,25 +288,71 @@ class Instance(proto.Message):
         FAILING_OVER = 9
 
     class Tier(proto.Enum):
-        r"""Available service tiers to choose from"""
+        r"""Available service tiers to choose from
+
+        Values:
+            TIER_UNSPECIFIED (0):
+                Not set.
+            BASIC (1):
+                BASIC tier: standalone instance
+            STANDARD_HA (3):
+                STANDARD_HA tier: highly available primary/replica instances
+        """
         TIER_UNSPECIFIED = 0
         BASIC = 1
         STANDARD_HA = 3
 
     class ConnectMode(proto.Enum):
-        r"""Available connection modes."""
+        r"""Available connection modes.
+
+        Values:
+            CONNECT_MODE_UNSPECIFIED (0):
+                Not set.
+            DIRECT_PEERING (1):
+                Connect via direct peering to the Memorystore
+                for Redis hosted service.
+            PRIVATE_SERVICE_ACCESS (2):
+                Connect your Memorystore for Redis instance
+                using Private Service Access. Private services
+                access provides an IP address range for multiple
+                Google Cloud services, including Memorystore.
+        """
         CONNECT_MODE_UNSPECIFIED = 0
         DIRECT_PEERING = 1
         PRIVATE_SERVICE_ACCESS = 2
 
     class TransitEncryptionMode(proto.Enum):
-        r"""Available TLS modes."""
+        r"""Available TLS modes.
+
+        Values:
+            TRANSIT_ENCRYPTION_MODE_UNSPECIFIED (0):
+                Not set.
+            SERVER_AUTHENTICATION (1):
+                Client to Server traffic encryption enabled
+                with server authentication.
+            DISABLED (2):
+                TLS is disabled for the instance.
+        """
         TRANSIT_ENCRYPTION_MODE_UNSPECIFIED = 0
         SERVER_AUTHENTICATION = 1
         DISABLED = 2
 
     class ReadReplicasMode(proto.Enum):
-        r"""Read replicas mode."""
+        r"""Read replicas mode.
+
+        Values:
+            READ_REPLICAS_MODE_UNSPECIFIED (0):
+                If not set, Memorystore Redis backend will default to
+                READ_REPLICAS_DISABLED.
+            READ_REPLICAS_DISABLED (1):
+                If disabled, read endpoint will not be
+                provided and the instance cannot scale up or
+                down the number of replicas.
+            READ_REPLICAS_ENABLED (2):
+                If enabled, read endpoint will be provided
+                and the instance can scale up and down the
+                number of replicas. Not valid for basic tier.
+        """
         READ_REPLICAS_MODE_UNSPECIFIED = 0
         READ_REPLICAS_DISABLED = 1
         READ_REPLICAS_ENABLED = 2
@@ -435,7 +510,22 @@ class RescheduleMaintenanceRequest(proto.Message):
     """
 
     class RescheduleType(proto.Enum):
-        r"""Reschedule options."""
+        r"""Reschedule options.
+
+        Values:
+            RESCHEDULE_TYPE_UNSPECIFIED (0):
+                Not set.
+            IMMEDIATE (1):
+                If the user wants to schedule the maintenance
+                to happen now.
+            NEXT_AVAILABLE_WINDOW (2):
+                If the user wants to use the existing
+                maintenance policy to find the next available
+                window.
+            SPECIFIC_TIME (3):
+                If the user wants to reschedule the
+                maintenance to a specific time.
+        """
         RESCHEDULE_TYPE_UNSPECIFIED = 0
         IMMEDIATE = 1
         NEXT_AVAILABLE_WINDOW = 2
@@ -956,6 +1046,20 @@ class FailoverInstanceRequest(proto.Message):
     class DataProtectionMode(proto.Enum):
         r"""Specifies different modes of operation in relation to the
         data retention.
+
+        Values:
+            DATA_PROTECTION_MODE_UNSPECIFIED (0):
+                Defaults to LIMITED_DATA_LOSS if a data protection mode is
+                not specified.
+            LIMITED_DATA_LOSS (1):
+                Instance failover will be protected with data
+                loss control. More specifically, the failover
+                will only be performed if the current
+                replication offset diff between primary and
+                replica is under a certain threshold.
+            FORCE_DATA_LOSS (2):
+                Instance failover will be performed without
+                data loss control.
         """
         DATA_PROTECTION_MODE_UNSPECIFIED = 0
         LIMITED_DATA_LOSS = 1
