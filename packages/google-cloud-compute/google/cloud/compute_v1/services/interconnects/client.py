@@ -1543,7 +1543,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "InterconnectsClient":
         return self
 
     def __exit__(self, type, value, traceback):

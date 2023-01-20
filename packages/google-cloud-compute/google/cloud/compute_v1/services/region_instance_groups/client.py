@@ -1046,7 +1046,7 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "RegionInstanceGroupsClient":
         return self
 
     def __exit__(self, type, value, traceback):

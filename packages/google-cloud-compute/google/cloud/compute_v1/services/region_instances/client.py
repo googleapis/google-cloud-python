@@ -657,7 +657,7 @@ class RegionInstancesClient(metaclass=RegionInstancesClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "RegionInstancesClient":
         return self
 
     def __exit__(self, type, value, traceback):

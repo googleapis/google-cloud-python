@@ -2131,7 +2131,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "ImagesClient":
         return self
 
     def __exit__(self, type, value, traceback):

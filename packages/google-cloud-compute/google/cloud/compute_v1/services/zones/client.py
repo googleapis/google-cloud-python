@@ -596,7 +596,7 @@ class ZonesClient(metaclass=ZonesClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "ZonesClient":
         return self
 
     def __exit__(self, type, value, traceback):

@@ -1401,7 +1401,7 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "VpnTunnelsClient":
         return self
 
     def __exit__(self, type, value, traceback):

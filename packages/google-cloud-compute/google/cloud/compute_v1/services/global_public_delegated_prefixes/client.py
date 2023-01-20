@@ -1269,7 +1269,7 @@ class GlobalPublicDelegatedPrefixesClient(
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "GlobalPublicDelegatedPrefixesClient":
         return self
 
     def __exit__(self, type, value, traceback):

@@ -1699,7 +1699,7 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "RegionUrlMapsClient":
         return self
 
     def __exit__(self, type, value, traceback):

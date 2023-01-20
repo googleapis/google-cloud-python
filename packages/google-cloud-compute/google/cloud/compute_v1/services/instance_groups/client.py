@@ -2143,7 +2143,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "InstanceGroupsClient":
         return self
 
     def __exit__(self, type, value, traceback):

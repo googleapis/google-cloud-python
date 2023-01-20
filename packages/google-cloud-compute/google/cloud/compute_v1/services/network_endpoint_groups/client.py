@@ -2022,7 +2022,7 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "NetworkEndpointGroupsClient":
         return self
 
     def __exit__(self, type, value, traceback):

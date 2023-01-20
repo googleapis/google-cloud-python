@@ -710,7 +710,7 @@ class MachineTypesClient(metaclass=MachineTypesClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "MachineTypesClient":
         return self
 
     def __exit__(self, type, value, traceback):

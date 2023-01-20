@@ -1309,6 +1309,11 @@ def test_insert_rest(request_type):
                 "kind": "kind_value",
                 "name": "name_value",
                 "resource_policies": {},
+                "resource_status": {
+                    "specific_sku_allocation": {
+                        "source_instance_template_id": "source_instance_template_id_value"
+                    }
+                },
                 "satisfies_pzs": True,
                 "self_link": "self_link_value",
                 "share_settings": {"project_map": {}, "share_type": "share_type_value"},
@@ -1330,6 +1335,7 @@ def test_insert_rest(request_type):
                         "machine_type": "machine_type_value",
                         "min_cpu_platform": "min_cpu_platform_value",
                     },
+                    "source_instance_template": "source_instance_template_value",
                 },
                 "specific_reservation_required": True,
                 "status": "status_value",
@@ -1612,6 +1618,11 @@ def test_insert_rest_bad_request(
                 "kind": "kind_value",
                 "name": "name_value",
                 "resource_policies": {},
+                "resource_status": {
+                    "specific_sku_allocation": {
+                        "source_instance_template_id": "source_instance_template_id_value"
+                    }
+                },
                 "satisfies_pzs": True,
                 "self_link": "self_link_value",
                 "share_settings": {"project_map": {}, "share_type": "share_type_value"},
@@ -1633,6 +1644,7 @@ def test_insert_rest_bad_request(
                         "machine_type": "machine_type_value",
                         "min_cpu_platform": "min_cpu_platform_value",
                     },
+                    "source_instance_template": "source_instance_template_value",
                 },
                 "specific_reservation_required": True,
                 "status": "status_value",
@@ -1777,6 +1789,11 @@ def test_insert_unary_rest(request_type):
                 "kind": "kind_value",
                 "name": "name_value",
                 "resource_policies": {},
+                "resource_status": {
+                    "specific_sku_allocation": {
+                        "source_instance_template_id": "source_instance_template_id_value"
+                    }
+                },
                 "satisfies_pzs": True,
                 "self_link": "self_link_value",
                 "share_settings": {"project_map": {}, "share_type": "share_type_value"},
@@ -1798,6 +1815,7 @@ def test_insert_unary_rest(request_type):
                         "machine_type": "machine_type_value",
                         "min_cpu_platform": "min_cpu_platform_value",
                     },
+                    "source_instance_template": "source_instance_template_value",
                 },
                 "specific_reservation_required": True,
                 "status": "status_value",
@@ -2058,6 +2076,11 @@ def test_insert_unary_rest_bad_request(
                 "kind": "kind_value",
                 "name": "name_value",
                 "resource_policies": {},
+                "resource_status": {
+                    "specific_sku_allocation": {
+                        "source_instance_template_id": "source_instance_template_id_value"
+                    }
+                },
                 "satisfies_pzs": True,
                 "self_link": "self_link_value",
                 "share_settings": {"project_map": {}, "share_type": "share_type_value"},
@@ -2079,6 +2102,7 @@ def test_insert_unary_rest_bad_request(
                         "machine_type": "machine_type_value",
                         "min_cpu_platform": "min_cpu_platform_value",
                     },
+                    "source_instance_template": "source_instance_template_value",
                 },
                 "specific_reservation_required": True,
                 "status": "status_value",
@@ -2582,6 +2606,11 @@ def test_update_rest(request_type):
                 "kind": "kind_value",
                 "name": "name_value",
                 "resource_policies": {},
+                "resource_status": {
+                    "specific_sku_allocation": {
+                        "source_instance_template_id": "source_instance_template_id_value"
+                    }
+                },
                 "satisfies_pzs": True,
                 "self_link": "self_link_value",
                 "share_settings": {"project_map": {}, "share_type": "share_type_value"},
@@ -2603,6 +2632,7 @@ def test_update_rest(request_type):
                         "machine_type": "machine_type_value",
                         "min_cpu_platform": "min_cpu_platform_value",
                     },
+                    "source_instance_template": "source_instance_template_value",
                 },
                 "specific_reservation_required": True,
                 "status": "status_value",
@@ -2902,6 +2932,11 @@ def test_update_rest_bad_request(
                 "kind": "kind_value",
                 "name": "name_value",
                 "resource_policies": {},
+                "resource_status": {
+                    "specific_sku_allocation": {
+                        "source_instance_template_id": "source_instance_template_id_value"
+                    }
+                },
                 "satisfies_pzs": True,
                 "self_link": "self_link_value",
                 "share_settings": {"project_map": {}, "share_type": "share_type_value"},
@@ -2923,6 +2958,7 @@ def test_update_rest_bad_request(
                         "machine_type": "machine_type_value",
                         "min_cpu_platform": "min_cpu_platform_value",
                     },
+                    "source_instance_template": "source_instance_template_value",
                 },
                 "specific_reservation_required": True,
                 "status": "status_value",
@@ -3073,6 +3109,11 @@ def test_update_unary_rest(request_type):
                 "kind": "kind_value",
                 "name": "name_value",
                 "resource_policies": {},
+                "resource_status": {
+                    "specific_sku_allocation": {
+                        "source_instance_template_id": "source_instance_template_id_value"
+                    }
+                },
                 "satisfies_pzs": True,
                 "self_link": "self_link_value",
                 "share_settings": {"project_map": {}, "share_type": "share_type_value"},
@@ -3094,6 +3135,7 @@ def test_update_unary_rest(request_type):
                         "machine_type": "machine_type_value",
                         "min_cpu_platform": "min_cpu_platform_value",
                     },
+                    "source_instance_template": "source_instance_template_value",
                 },
                 "specific_reservation_required": True,
                 "status": "status_value",
@@ -3371,6 +3413,11 @@ def test_update_unary_rest_bad_request(
                 "kind": "kind_value",
                 "name": "name_value",
                 "resource_policies": {},
+                "resource_status": {
+                    "specific_sku_allocation": {
+                        "source_instance_template_id": "source_instance_template_id_value"
+                    }
+                },
                 "satisfies_pzs": True,
                 "self_link": "self_link_value",
                 "share_settings": {"project_map": {}, "share_type": "share_type_value"},
@@ -3392,6 +3439,7 @@ def test_update_unary_rest_bad_request(
                         "machine_type": "machine_type_value",
                         "min_cpu_platform": "min_cpu_platform_value",
                     },
+                    "source_instance_template": "source_instance_template_value",
                 },
                 "specific_reservation_required": True,
                 "status": "status_value",

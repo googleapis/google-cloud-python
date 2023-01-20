@@ -1594,7 +1594,7 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "AutoscalersClient":
         return self
 
     def __exit__(self, type, value, traceback):

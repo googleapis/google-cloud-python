@@ -93,6 +93,8 @@ __protobuf__ = proto.module(
         "AggregatedListVpnGatewaysRequest",
         "AggregatedListVpnTunnelsRequest",
         "AliasIpRange",
+        "AllocationResourceStatus",
+        "AllocationResourceStatusSpecificSKUAllocation",
         "AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk",
         "AllocationSpecificSKUAllocationReservedInstanceProperties",
         "AllocationSpecificSKUReservation",
@@ -1910,6 +1912,22 @@ class AccessConfig(proto.Message):
         this networkTier. If an AccessConfig with a valid external IP
         address is specified, it must match that of the networkTier
         associated with the Address resource owning that IP.
+
+        Values:
+            UNDEFINED_NETWORK_TIER (0):
+                A value indicating that the enum field is not
+                set.
+            FIXED_STANDARD (310464328):
+                Public internet quality with fixed bandwidth.
+            PREMIUM (399530551):
+                High quality, Google-grade network tier,
+                support for all networking products.
+            STANDARD (484642493):
+                Public internet quality, only limited support
+                for other networking products.
+            STANDARD_OVERRIDES_FIXED_STANDARD (465847234):
+                (Output only) Temporary tier for FIXED_STANDARD when fixed
+                standard tier is expired or not configured.
         """
         UNDEFINED_NETWORK_TIER = 0
         FIXED_STANDARD = 310464328
@@ -1920,6 +1938,15 @@ class AccessConfig(proto.Message):
     class Type(proto.Enum):
         r"""The type of configuration. The default and only option is
         ONE_TO_ONE_NAT.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            DIRECT_IPV6 (4397213):
+                No description available.
+            ONE_TO_ONE_NAT (84090205):
+                No description available.
         """
         UNDEFINED_TYPE = 0
         DIRECT_IPV6 = 4397213
@@ -3240,6 +3267,19 @@ class Address(proto.Message):
     class AddressType(proto.Enum):
         r"""The type of address to reserve, either INTERNAL or EXTERNAL.
         If unspecified, defaults to EXTERNAL.
+
+        Values:
+            UNDEFINED_ADDRESS_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            EXTERNAL (35607499):
+                A publicly visible external IP address.
+            INTERNAL (279295677):
+                A private network IP address, for use with an
+                Instance or Internal Load Balancer forwarding
+                rule.
+            UNSPECIFIED_TYPE (53933922):
+                No description available.
         """
         UNDEFINED_ADDRESS_TYPE = 0
         EXTERNAL = 35607499
@@ -3250,6 +3290,17 @@ class Address(proto.Message):
         r"""The IP version that will be used by this address. Valid
         options are IPV4 or IPV6. This can only be specified for a
         global address.
+
+        Values:
+            UNDEFINED_IP_VERSION (0):
+                A value indicating that the enum field is not
+                set.
+            IPV4 (2254341):
+                No description available.
+            IPV6 (2254343):
+                No description available.
+            UNSPECIFIED_VERSION (21850000):
+                No description available.
         """
         UNDEFINED_IP_VERSION = 0
         IPV4 = 2254341
@@ -3260,6 +3311,16 @@ class Address(proto.Message):
         r"""The endpoint type of this address, which should be VM or
         NETLB. This is used for deciding which type of endpoint this
         address can be used after the external IPv6 address reservation.
+
+        Values:
+            UNDEFINED_IPV6_ENDPOINT_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            NETLB (74173363):
+                Reserved IPv6 address can be used on network
+                load balancer.
+            VM (2743):
+                Reserved IPv6 address can be used on VM.
         """
         UNDEFINED_IPV6_ENDPOINT_TYPE = 0
         NETLB = 74173363
@@ -3272,6 +3333,22 @@ class Address(proto.Message):
         external IP addresses are always Premium Tier; regional external
         IP addresses can be either Standard or Premium Tier. If this
         field is not specified, it is assumed to be PREMIUM.
+
+        Values:
+            UNDEFINED_NETWORK_TIER (0):
+                A value indicating that the enum field is not
+                set.
+            FIXED_STANDARD (310464328):
+                Public internet quality with fixed bandwidth.
+            PREMIUM (399530551):
+                High quality, Google-grade network tier,
+                support for all networking products.
+            STANDARD (484642493):
+                Public internet quality, only limited support
+                for other networking products.
+            STANDARD_OVERRIDES_FIXED_STANDARD (465847234):
+                (Output only) Temporary tier for FIXED_STANDARD when fixed
+                standard tier is expired or not configured.
         """
         UNDEFINED_NETWORK_TIER = 0
         FIXED_STANDARD = 310464328
@@ -3297,6 +3374,44 @@ class Address(proto.Message):
         ``PRIVATE_SERVICE_CONNECT`` for a private network address that is
         used to configure Private Service Connect. Only global internal
         addresses can use this purpose.
+
+        Values:
+            UNDEFINED_PURPOSE (0):
+                A value indicating that the enum field is not
+                set.
+            DNS_RESOLVER (476114556):
+                DNS resolver address in the subnetwork.
+            GCE_ENDPOINT (230515243):
+                VM internal/alias IP, Internal LB service IP,
+                etc.
+            IPSEC_INTERCONNECT (340437251):
+                A regional internal IP address range reserved
+                for the VLAN attachment that is used in HA VPN
+                over Cloud Interconnect. This regional internal
+                IP address range must not overlap with any IP
+                address range of subnet/route in the VPC network
+                and its peering networks. After the VLAN
+                attachment is created with the reserved IP
+                address range, when creating a new VPN gateway,
+                its interface IP address is allocated from the
+                associated VLAN attachment���s IP address range.
+            NAT_AUTO (163666477):
+                External IP automatically reserved for Cloud
+                NAT.
+            PRIVATE_SERVICE_CONNECT (48134724):
+                A private network IP address that can be used
+                to configure Private Service Connect. This
+                purpose can be specified only for GLOBAL
+                addresses of Type INTERNAL
+            SERVERLESS (270492508):
+                A regional internal IP address range reserved
+                for Serverless.
+            SHARED_LOADBALANCER_VIP (294447572):
+                A private network IP address that can be
+                shared by multiple Internal Load Balancer
+                forwarding rules.
+            VPC_PEERING (400800170):
+                IP range for peer networks.
         """
         UNDEFINED_PURPOSE = 0
         DNS_RESOLVER = 476114556
@@ -3314,6 +3429,18 @@ class Address(proto.Message):
         currently in the process of being reserved. A RESERVED address is
         currently reserved and available to use. An IN_USE address is
         currently being used by another resource and is not available.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            IN_USE (17393485):
+                Address is being used by another resource and
+                is not available.
+            RESERVED (432241448):
+                Address is reserved and available to use.
+            RESERVING (514587225):
+                Address is being reserved.
         """
         UNDEFINED_STATUS = 0
         IN_USE = 17393485
@@ -9260,6 +9387,45 @@ class AliasIpRange(proto.Message):
     )
 
 
+class AllocationResourceStatus(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        specific_sku_allocation (google.cloud.compute_v1.types.AllocationResourceStatusSpecificSKUAllocation):
+
+            This field is a member of `oneof`_ ``_specific_sku_allocation``.
+    """
+
+    specific_sku_allocation: "AllocationResourceStatusSpecificSKUAllocation" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=196231151,
+            optional=True,
+            message="AllocationResourceStatusSpecificSKUAllocation",
+        )
+    )
+
+
+class AllocationResourceStatusSpecificSKUAllocation(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        source_instance_template_id (str):
+
+            This field is a member of `oneof`_ ``_source_instance_template_id``.
+    """
+
+    source_instance_template_id: str = proto.Field(
+        proto.STRING,
+        number=111196154,
+        optional=True,
+    )
+
+
 class AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk(
     proto.Message
 ):
@@ -9288,6 +9454,15 @@ class AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk(
         which is either SCSI or NVME. The default is SCSI. For
         performance characteristics of SCSI over NVMe, see Local SSD
         performance.
+
+        Values:
+            UNDEFINED_INTERFACE (0):
+                A value indicating that the enum field is not
+                set.
+            NVME (2408800):
+                No description available.
+            SCSI (2539686):
+                No description available.
         """
         UNDEFINED_INTERFACE = 0
         NVME = 2408800
@@ -9391,6 +9566,19 @@ class AllocationSpecificSKUReservation(proto.Message):
             The instance properties for the reservation.
 
             This field is a member of `oneof`_ ``_instance_properties``.
+        source_instance_template (str):
+            Specifies the instance template to create the
+            reservation. If you use this field, you must
+            exclude the instanceProperties field. This field
+            is optional, and it can be a full or partial
+            URL. For example, the following are all valid
+            URLs to an instance template: -
+            https://www.googleapis.com/compute/v1/projects/project
+            /global/instanceTemplates/instanceTemplate -
+            projects/project/global/instanceTemplates/instanceTemplate
+            - global/instanceTemplates/instanceTemplate
+
+            This field is a member of `oneof`_ ``_source_instance_template``.
     """
 
     assured_count: int = proto.Field(
@@ -9415,6 +9603,11 @@ class AllocationSpecificSKUReservation(proto.Message):
             optional=True,
             message="AllocationSpecificSKUAllocationReservedInstanceProperties",
         )
+    )
+    source_instance_template: str = proto.Field(
+        proto.STRING,
+        number=332423616,
+        optional=True,
     )
 
 
@@ -9868,6 +10061,18 @@ class AttachedDisk(proto.Message):
     class Architecture(proto.Enum):
         r"""[Output Only] The architecture of the attached disk. Valid values
         are ARM64 or X86_64.
+
+        Values:
+            UNDEFINED_ARCHITECTURE (0):
+                A value indicating that the enum field is not
+                set.
+            ARCHITECTURE_UNSPECIFIED (394750507):
+                Default value indicating Architecture is not
+                set.
+            ARM64 (62547450):
+                Machines with architecture ARM64
+            X86_64 (425300551):
+                Machines with architecture X86_64
         """
         UNDEFINED_ARCHITECTURE = 0
         ARCHITECTURE_UNSPECIFIED = 394750507
@@ -9880,6 +10085,15 @@ class AttachedDisk(proto.Message):
         default is SCSI. Local SSDs can use either NVME or SCSI. In
         certain configurations, persistent disks can use NVMe. For more
         information, see About persistent disks.
+
+        Values:
+            UNDEFINED_INTERFACE (0):
+                A value indicating that the enum field is not
+                set.
+            NVME (2408800):
+                No description available.
+            SCSI (2539686):
+                No description available.
         """
         UNDEFINED_INTERFACE = 0
         NVME = 2408800
@@ -9889,6 +10103,19 @@ class AttachedDisk(proto.Message):
         r"""The mode in which to attach this disk, either READ_WRITE or
         READ_ONLY. If not specified, the default is to attach the disk in
         READ_WRITE mode.
+
+        Values:
+            UNDEFINED_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            READ_ONLY (91950261):
+                Attaches this disk in read-only mode.
+                Multiple virtual machines can use a disk in
+                read-only mode at a time.
+            READ_WRITE (173607894):
+                *[Default]* Attaches this disk in read-write mode. Only one
+                virtual machine at a time can be attached to a disk in
+                read-write mode.
         """
         UNDEFINED_MODE = 0
         READ_ONLY = 91950261
@@ -9897,6 +10124,15 @@ class AttachedDisk(proto.Message):
     class Type(proto.Enum):
         r"""Specifies the type of the disk, either SCRATCH or PERSISTENT.
         If not specified, the default is PERSISTENT.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            PERSISTENT (460683927):
+                No description available.
+            SCRATCH (496778970):
+                No description available.
         """
         UNDEFINED_TYPE = 0
         PERSISTENT = 460683927
@@ -10148,6 +10384,18 @@ class AttachedDiskInitializeParams(proto.Message):
     class Architecture(proto.Enum):
         r"""The architecture of the attached disk. Valid values are arm64 or
         x86_64.
+
+        Values:
+            UNDEFINED_ARCHITECTURE (0):
+                A value indicating that the enum field is not
+                set.
+            ARCHITECTURE_UNSPECIFIED (394750507):
+                Default value indicating Architecture is not
+                set.
+            ARM64 (62547450):
+                Machines with architecture ARM64
+            X86_64 (425300551):
+                Machines with architecture X86_64
         """
         UNDEFINED_ARCHITECTURE = 0
         ARCHITECTURE_UNSPECIFIED = 394750507
@@ -10157,6 +10405,20 @@ class AttachedDiskInitializeParams(proto.Message):
     class OnUpdateAction(proto.Enum):
         r"""Specifies which action to take on instance update with this
         disk. Default is to use the existing disk.
+
+        Values:
+            UNDEFINED_ON_UPDATE_ACTION (0):
+                A value indicating that the enum field is not
+                set.
+            RECREATE_DISK (494767853):
+                Always recreate the disk.
+            RECREATE_DISK_IF_SOURCE_CHANGED (398099712):
+                Recreate the disk if source (image, snapshot)
+                of this disk is different from source of
+                existing disk.
+            USE_EXISTING_DISK (232682233):
+                Use the existing disk, this is the default
+                behaviour.
         """
         UNDEFINED_ON_UPDATE_ACTION = 0
         RECREATE_DISK = 494767853
@@ -10324,7 +10586,21 @@ class AuditLogConfig(proto.Message):
     """
 
     class LogType(proto.Enum):
-        r"""The log type that this config enables."""
+        r"""The log type that this config enables.
+
+        Values:
+            UNDEFINED_LOG_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            ADMIN_READ (128951462):
+                Admin reads. Example: CloudIAM getIamPolicy
+            DATA_READ (305224971):
+                Data reads. Example: CloudSQL Users list
+            DATA_WRITE (340181738):
+                Data writes. Example: CloudSQL Users create
+            LOG_TYPE_UNSPECIFIED (154527053):
+                Default case. Should never be this.
+        """
         UNDEFINED_LOG_TYPE = 0
         ADMIN_READ = 128951462
         DATA_READ = 305224971
@@ -10362,7 +10638,28 @@ class AuthorizationLoggingOptions(proto.Message):
     """
 
     class PermissionType(proto.Enum):
-        r"""This is deprecated and has no effect. Do not use."""
+        r"""This is deprecated and has no effect. Do not use.
+
+        Values:
+            UNDEFINED_PERMISSION_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            ADMIN_READ (128951462):
+                This is deprecated and has no effect. Do not
+                use.
+            ADMIN_WRITE (244412079):
+                This is deprecated and has no effect. Do not
+                use.
+            DATA_READ (305224971):
+                This is deprecated and has no effect. Do not
+                use.
+            DATA_WRITE (340181738):
+                This is deprecated and has no effect. Do not
+                use.
+            PERMISSION_TYPE_UNSPECIFIED (440313346):
+                This is deprecated and has no effect. Do not
+                use.
+        """
         UNDEFINED_PERMISSION_TYPE = 0
         ADMIN_READ = 128951462
         ADMIN_WRITE = 244412079
@@ -10494,6 +10791,21 @@ class Autoscaler(proto.Message):
         Some warnings might be present in the statusDetails field. - ERROR:
         Configuration has errors. Actionable for users. Details are present
         in the statusDetails field. New values might be added in the future.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            ACTIVE (314733318):
+                Configuration is acknowledged to be effective
+            DELETING (528602024):
+                Configuration is being deleted
+            ERROR (66247144):
+                Configuration has errors. Actionable for
+                users.
+            PENDING (35394935):
+                Autoscaler backend hasn't read new/updated
+                configuration
         """
         UNDEFINED_STATUS = 0
         ACTIVE = 314733318
@@ -10831,6 +11143,83 @@ class AutoscalerStatusDetails(proto.Message):
         there is a resource stockout. New values might be added in the
         future. Some of the values might not be available in all API
         versions.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            ALL_INSTANCES_UNHEALTHY (404965477):
+                All instances in the instance group are
+                unhealthy (not in RUNNING state).
+            BACKEND_SERVICE_DOES_NOT_EXIST (191417626):
+                There is no backend service attached to the
+                instance group.
+            CAPPED_AT_MAX_NUM_REPLICAS (518617):
+                Autoscaler recommends a size greater than
+                maxNumReplicas.
+            CUSTOM_METRIC_DATA_POINTS_TOO_SPARSE (328964659):
+                The custom metric samples are not exported
+                often enough to be a credible base for
+                autoscaling.
+            CUSTOM_METRIC_INVALID (204430550):
+                The custom metric that was specified does not
+                exist or does not have the necessary labels.
+            MIN_EQUALS_MAX (2821361):
+                The minNumReplicas is equal to
+                maxNumReplicas. This means the autoscaler cannot
+                add or remove instances from the instance group.
+            MISSING_CUSTOM_METRIC_DATA_POINTS (94885086):
+                The autoscaler did not receive any data from
+                the custom metric configured for autoscaling.
+            MISSING_LOAD_BALANCING_DATA_POINTS (509858898):
+                The autoscaler is configured to scale based
+                on a load balancing signal but the instance
+                group has not received any requests from the
+                load balancer.
+            MODE_OFF (164169907):
+                Autoscaling is turned off. The number of
+                instances in the group won't change
+                automatically. The autoscaling configuration is
+                preserved.
+            MODE_ONLY_SCALE_OUT (3840994):
+                Autoscaling is in the "Autoscale only scale
+                out" mode. Instances in the group will be only
+                added.
+            MODE_ONLY_UP (100969842):
+                Autoscaling is in the "Autoscale only out"
+                mode. Instances in the group will be only added.
+            MORE_THAN_ONE_BACKEND_SERVICE (151922141):
+                The instance group cannot be autoscaled
+                because it has more than one backend service
+                attached to it.
+            NOT_ENOUGH_QUOTA_AVAILABLE (403101631):
+                There is insufficient quota for the necessary
+                resources, such as CPU or number of instances.
+            REGION_RESOURCE_STOCKOUT (528622846):
+                Showed only for regional autoscalers: there
+                is a resource stockout in the chosen region.
+            SCALING_TARGET_DOES_NOT_EXIST (122636699):
+                The target to be scaled does not exist.
+            SCHEDULED_INSTANCES_GREATER_THAN_AUTOSCALER_MAX (29275586):
+                For some scaling schedules
+                minRequiredReplicas is greater than
+                maxNumReplicas. Autoscaler always recommends at
+                most maxNumReplicas instances.
+            SCHEDULED_INSTANCES_LESS_THAN_AUTOSCALER_MIN (398287669):
+                For some scaling schedules
+                minRequiredReplicas is less than minNumReplicas.
+                Autoscaler always recommends at least
+                minNumReplicas instances.
+            UNKNOWN (433141802):
+                No description available.
+            UNSUPPORTED_MAX_RATE_LOAD_BALANCING_CONFIGURATION (330845009):
+                Autoscaling does not work with an HTTP/S load
+                balancer that has been configured for maxRate.
+            ZONE_RESOURCE_STOCKOUT (210200502):
+                For zonal autoscalers: there is a resource
+                stockout in the chosen zone. For regional
+                autoscalers: in at least one of the zones you're
+                using there is a resource stockout.
         """
         UNDEFINED_TYPE = 0
         ALL_INSTANCES_UNHEALTHY = 404965477
@@ -10964,7 +11353,26 @@ class AutoscalingPolicy(proto.Message):
     """
 
     class Mode(proto.Enum):
-        r"""Defines operating mode for this policy."""
+        r"""Defines operating mode for this policy.
+
+        Values:
+            UNDEFINED_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            OFF (78159):
+                Do not automatically scale the MIG in or out. The
+                recommended_size field contains the size of MIG that would
+                be set if the actuation mode was enabled.
+            ON (2527):
+                Automatically scale the MIG in and out
+                according to the policy.
+            ONLY_SCALE_OUT (152713670):
+                Automatically create VMs according to the
+                policy, but do not scale the MIG in.
+            ONLY_UP (478095374):
+                Automatically create VMs according to the
+                policy, but do not scale the MIG in.
+        """
         UNDEFINED_MODE = 0
         OFF = 78159
         ON = 2527
@@ -11068,6 +11476,19 @@ class AutoscalingPolicyCpuUtilization(proto.Message):
         based on real-time metrics. \* OPTIMIZE_AVAILABILITY. Predictive
         autoscaling improves availability by monitoring daily and weekly
         load patterns and scaling out ahead of anticipated demand.
+
+        Values:
+            UNDEFINED_PREDICTIVE_METHOD (0):
+                A value indicating that the enum field is not
+                set.
+            NONE (2402104):
+                No predictive method is used. The autoscaler
+                scales the group to meet current demand based on
+                real-time metrics
+            OPTIMIZE_AVAILABILITY (11629437):
+                Predictive autoscaling improves availability
+                by monitoring daily and weekly load patterns and
+                scaling out ahead of anticipated demand.
         """
         UNDEFINED_PREDICTIVE_METHOD = 0
         NONE = 2402104
@@ -11169,6 +11590,26 @@ class AutoscalingPolicyCustomMetricUtilization(proto.Message):
         r"""Defines how target utilization value is expressed for a Stackdriver
         Monitoring metric. Either GAUGE, DELTA_PER_SECOND, or
         DELTA_PER_MINUTE.
+
+        Values:
+            UNDEFINED_UTILIZATION_TARGET_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            DELTA_PER_MINUTE (87432861):
+                Sets the utilization target value for a
+                cumulative or delta metric, expressed as the
+                rate of growth per minute.
+            DELTA_PER_SECOND (255180029):
+                Sets the utilization target value for a
+                cumulative or delta metric, expressed as the
+                rate of growth per second.
+            GAUGE (67590361):
+                Sets the utilization target value for a gauge
+                metric. The autoscaler will collect the average
+                utilization of the virtual machines from the
+                last couple of minutes, and compare the value to
+                the utilization target value to perform
+                autoscaling.
         """
         UNDEFINED_UTILIZATION_TARGET_TYPE = 0
         DELTA_PER_MINUTE = 87432861
@@ -11486,6 +11927,18 @@ class Backend(proto.Message):
         and is ignored. Specifically, Backend.maxUtilization is ignored
         when Backend.balancingMode is RATE. In the future, this
         incompatible combination will be rejected.
+
+        Values:
+            UNDEFINED_BALANCING_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            CONNECTION (246311646):
+                Balance based on the number of simultaneous
+                connections.
+            RATE (2508000):
+                Balance based on requests per second (RPS).
+            UTILIZATION (157008386):
+                Balance based on the backend utilization.
         """
         UNDEFINED_BALANCING_MODE = 0
         CONNECTION = 246311646
@@ -11632,6 +12085,19 @@ class BackendBucket(proto.Message):
     class CompressionMode(proto.Enum):
         r"""Compress text responses using Brotli or gzip compression,
         based on the client's Accept-Encoding header.
+
+        Values:
+            UNDEFINED_COMPRESSION_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            AUTOMATIC (165298699):
+                Automatically uses the best compression based
+                on the Accept-Encoding header sent by the
+                client.
+            DISABLED (516696700):
+                Disables compression. Existing compressed
+                responses cached by Cloud CDN will not be served
+                to clients.
         """
         UNDEFINED_COMPRESSION_MODE = 0
         AUTOMATIC = 165298699
@@ -11864,6 +12330,34 @@ class BackendBucketCdnPolicy(proto.Message):
         and audio), and web assets (JavaScript and CSS). Requests and
         responses that are marked as uncacheable, as well as dynamic content
         (including HTML), will not be cached.
+
+        Values:
+            UNDEFINED_CACHE_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            CACHE_ALL_STATIC (355027945):
+                Automatically cache static content, including
+                common image formats, media (video and audio),
+                and web assets (JavaScript and CSS). Requests
+                and responses that are marked as uncacheable, as
+                well as dynamic content (including HTML), will
+                not be cached.
+            FORCE_CACHE_ALL (486026928):
+                Cache all content, ignoring any "private",
+                "no-store" or "no-cache" directives in
+                Cache-Control response headers. Warning: this
+                may result in Cloud CDN caching private,
+                per-user (user identifiable) content.
+            INVALID_CACHE_MODE (381295560):
+                No description available.
+            USE_ORIGIN_HEADERS (55380261):
+                Requires the origin to set valid caching
+                headers to cache content. Responses without
+                these headers will not be cached at Google's
+                edge, and will require a full trip to the origin
+                on every request, potentially impacting
+                performance and increasing load on the origin
+                server.
         """
         UNDEFINED_CACHE_MODE = 0
         CACHE_ALL_STATIC = 355027945
@@ -12444,6 +12938,19 @@ class BackendService(proto.Message):
     class CompressionMode(proto.Enum):
         r"""Compress text responses using Brotli or gzip compression,
         based on the client's Accept-Encoding header.
+
+        Values:
+            UNDEFINED_COMPRESSION_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            AUTOMATIC (165298699):
+                Automatically uses the best compression based
+                on the Accept-Encoding header sent by the
+                client.
+            DISABLED (516696700):
+                Disables compression. Existing compressed
+                responses cached by Cloud CDN will not be served
+                to clients.
         """
         UNDEFINED_COMPRESSION_MODE = 0
         AUTOMATIC = 165298699
@@ -12453,6 +12960,29 @@ class BackendService(proto.Message):
         r"""Specifies the load balancer type. A backend service created
         for one type of load balancer cannot be used with another. For
         more information, refer to Choosing a load balancer.
+
+        Values:
+            UNDEFINED_LOAD_BALANCING_SCHEME (0):
+                A value indicating that the enum field is not
+                set.
+            EXTERNAL (35607499):
+                Signifies that this will be used for external
+                HTTP(S), SSL Proxy, TCP Proxy, or Network Load
+                Balancing
+            EXTERNAL_MANAGED (512006923):
+                Signifies that this will be used for External
+                Managed HTTP(S) Load Balancing.
+            INTERNAL (279295677):
+                Signifies that this will be used for Internal
+                TCP/UDP Load Balancing.
+            INTERNAL_MANAGED (37350397):
+                Signifies that this will be used for Internal
+                HTTP(S) Load Balancing.
+            INTERNAL_SELF_MANAGED (236211150):
+                Signifies that this will be used by Traffic
+                Director.
+            INVALID_LOAD_BALANCING_SCHEME (275352060):
+                No description available.
         """
         UNDEFINED_LOAD_BALANCING_SCHEME = 0
         EXTERNAL = 35607499
@@ -12490,6 +13020,45 @@ class BackendService(proto.Message):
         ROUND_ROBIN and RING_HASH are supported when the backend service is
         referenced by a URL map that is bound to target gRPC proxy that has
         validateForProxyless field set to true.
+
+        Values:
+            UNDEFINED_LOCALITY_LB_POLICY (0):
+                A value indicating that the enum field is not
+                set.
+            INVALID_LB_POLICY (323318707):
+                No description available.
+            LEAST_REQUEST (46604921):
+                An O(1) algorithm which selects two random
+                healthy hosts and picks the host which has fewer
+                active requests.
+            MAGLEV (119180266):
+                This algorithm implements consistent hashing
+                to backends. Maglev can be used as a drop in
+                replacement for the ring hash load balancer.
+                Maglev is not as stable as ring hash but has
+                faster table lookup build times and host
+                selection times. For more information about
+                Maglev, see
+                https://ai.google/research/pubs/pub44824
+            ORIGINAL_DESTINATION (166297216):
+                Backend host is selected based on the client
+                connection metadata, i.e., connections are
+                opened to the same address as the destination
+                address of the incoming connection before the
+                connection was redirected to the load balancer.
+            RANDOM (262527171):
+                The load balancer selects a random healthy
+                host.
+            RING_HASH (432795069):
+                The ring/modulo hash load balancer implements
+                consistent hashing to backends. The algorithm
+                has the property that the addition/removal of a
+                host from a set of N hosts only affects 1/N of
+                the requests.
+            ROUND_ROBIN (153895801):
+                This is a simple policy in which each healthy
+                backend is selected in round robin order. This
+                is the default.
         """
         UNDEFINED_LOCALITY_LB_POLICY = 0
         INVALID_LB_POLICY = 323318707
@@ -12508,6 +13077,29 @@ class BackendService(proto.Message):
         balancers or for Traffic Director for more information. Must be
         set to GRPC when the backend service is referenced by a URL map
         that is bound to target gRPC proxy.
+
+        Values:
+            UNDEFINED_PROTOCOL (0):
+                A value indicating that the enum field is not
+                set.
+            GRPC (2196510):
+                gRPC (available for Traffic Director).
+            HTTP (2228360):
+                No description available.
+            HTTP2 (69079210):
+                HTTP/2 with SSL.
+            HTTPS (69079243):
+                No description available.
+            SSL (82412):
+                TCP proxying with SSL.
+            TCP (82881):
+                TCP proxying or TCP pass-through.
+            UDP (83873):
+                UDP.
+            UNSPECIFIED (526786327):
+                If a Backend Service has UNSPECIFIED as its
+                protocol, it can be used with any L3/L4
+                Forwarding Rules.
         """
         UNDEFINED_PROTOCOL = 0
         GRPC = 2196510
@@ -12526,6 +13118,55 @@ class BackendService(proto.Message):
         validateForProxyless field set to true. For more details, see:
         `Session
         Affinity <https://cloud.google.com/load-balancing/docs/backend-service#session_affinity>`__.
+
+        Values:
+            UNDEFINED_SESSION_AFFINITY (0):
+                A value indicating that the enum field is not
+                set.
+            CLIENT_IP (345665051):
+                2-tuple hash on packet's source and
+                destination IP addresses. Connections from the
+                same source IP address to the same destination
+                IP address will be served by the same backend VM
+                while that VM remains healthy.
+            CLIENT_IP_NO_DESTINATION (106122516):
+                1-tuple hash only on packet's source IP
+                address. Connections from the same source IP
+                address will be served by the same backend VM
+                while that VM remains healthy. This option can
+                only be used for Internal TCP/UDP Load
+                Balancing.
+            CLIENT_IP_PORT_PROTO (221722926):
+                5-tuple hash on packet's source and
+                destination IP addresses, IP protocol, and
+                source and destination ports. Connections for
+                the same IP protocol from the same source IP
+                address and port to the same destination IP
+                address and port will be served by the same
+                backend VM while that VM remains healthy. This
+                option cannot be used for HTTP(S) load
+                balancing.
+            CLIENT_IP_PROTO (25322148):
+                3-tuple hash on packet's source and
+                destination IP addresses, and IP protocol.
+                Connections for the same IP protocol from the
+                same source IP address to the same destination
+                IP address will be served by the same backend VM
+                while that VM remains healthy. This option
+                cannot be used for HTTP(S) load balancing.
+            GENERATED_COOKIE (370321204):
+                Hash based on a cookie generated by the L7
+                loadbalancer. Only valid for HTTP(S) load
+                balancing.
+            HEADER_FIELD (200737960):
+                The hash is based on a user specified header
+                field.
+            HTTP_COOKIE (494981627):
+                The hash is based on a user provided cookie.
+            NONE (2402104):
+                No session affinity. Connections from the
+                same client IP may go to any instance in the
+                pool.
         """
         UNDEFINED_SESSION_AFFINITY = 0
         CLIENT_IP = 345665051
@@ -12990,6 +13631,34 @@ class BackendServiceCdnPolicy(proto.Message):
         and audio), and web assets (JavaScript and CSS). Requests and
         responses that are marked as uncacheable, as well as dynamic content
         (including HTML), will not be cached.
+
+        Values:
+            UNDEFINED_CACHE_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            CACHE_ALL_STATIC (355027945):
+                Automatically cache static content, including
+                common image formats, media (video and audio),
+                and web assets (JavaScript and CSS). Requests
+                and responses that are marked as uncacheable, as
+                well as dynamic content (including HTML), will
+                not be cached.
+            FORCE_CACHE_ALL (486026928):
+                Cache all content, ignoring any "private",
+                "no-store" or "no-cache" directives in
+                Cache-Control response headers. Warning: this
+                may result in Cloud CDN caching private,
+                per-user (user identifiable) content.
+            INVALID_CACHE_MODE (381295560):
+                No description available.
+            USE_ORIGIN_HEADERS (55380261):
+                Requires the origin to set valid caching
+                headers to cache content. Responses without
+                these headers will not be cached at Google's
+                edge, and will require a full trip to the origin
+                on every request, potentially impacting
+                performance and increasing load on the origin
+                server.
         """
         UNDEFINED_CACHE_MODE = 0
         CACHE_ALL_STATIC = 355027945
@@ -13206,6 +13875,17 @@ class BackendServiceConnectionTrackingPolicy(proto.Message):
         Balancing <https://cloud.google.com/load-balancing/docs/network/networklb-backend-service#connection-persistence>`__
         and `Connection Persistence for Internal TCP/UDP Load
         Balancing <https://cloud.google.com/load-balancing/docs/internal#connection-persistence>`__.
+
+        Values:
+            UNDEFINED_CONNECTION_PERSISTENCE_ON_UNHEALTHY_BACKENDS (0):
+                A value indicating that the enum field is not
+                set.
+            ALWAYS_PERSIST (38400900):
+                No description available.
+            DEFAULT_FOR_PROTOCOL (145265356):
+                No description available.
+            NEVER_PERSIST (138646241):
+                No description available.
         """
         UNDEFINED_CONNECTION_PERSISTENCE_ON_UNHEALTHY_BACKENDS = 0
         ALWAYS_PERSIST = 38400900
@@ -13223,6 +13903,17 @@ class BackendServiceConnectionTrackingPolicy(proto.Message):
         Balancing <https://cloud.google.com/load-balancing/docs/network/networklb-backend-service#tracking-mode>`__
         and `Tracking Mode for Internal TCP/UDP Load
         Balancing <https://cloud.google.com/load-balancing/docs/internal#tracking-mode>`__.
+
+        Values:
+            UNDEFINED_TRACKING_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            INVALID_TRACKING_MODE (49234371):
+                No description available.
+            PER_CONNECTION (85162848):
+                No description available.
+            PER_SESSION (182099252):
+                No description available.
         """
         UNDEFINED_TRACKING_MODE = 0
         INVALID_TRACKING_MODE = 49234371
@@ -13587,6 +14278,45 @@ class BackendServiceLocalityLoadBalancingPolicyConfigPolicy(proto.Message):
         field is not used. Note that specifying the same policy more than
         once for a backend is not a valid configuration and will be
         rejected.
+
+        Values:
+            UNDEFINED_NAME (0):
+                A value indicating that the enum field is not
+                set.
+            INVALID_LB_POLICY (323318707):
+                No description available.
+            LEAST_REQUEST (46604921):
+                An O(1) algorithm which selects two random
+                healthy hosts and picks the host which has fewer
+                active requests.
+            MAGLEV (119180266):
+                This algorithm implements consistent hashing
+                to backends. Maglev can be used as a drop in
+                replacement for the ring hash load balancer.
+                Maglev is not as stable as ring hash but has
+                faster table lookup build times and host
+                selection times. For more information about
+                Maglev, see
+                https://ai.google/research/pubs/pub44824
+            ORIGINAL_DESTINATION (166297216):
+                Backend host is selected based on the client
+                connection metadata, i.e., connections are
+                opened to the same address as the destination
+                address of the incoming connection before the
+                connection was redirected to the load balancer.
+            RANDOM (262527171):
+                The load balancer selects a random healthy
+                host.
+            RING_HASH (432795069):
+                The ring/modulo hash load balancer implements
+                consistent hashing to backends. The algorithm
+                has the property that the addition/removal of a
+                host from a set of N hosts only affects 1/N of
+                the requests.
+            ROUND_ROBIN (153895801):
+                This is a simple policy in which each healthy
+                backend is selected in round robin order. This
+                is the default.
         """
         UNDEFINED_NAME = 0
         INVALID_LB_POLICY = 323318707
@@ -13797,6 +14527,31 @@ class BfdPacket(proto.Message):
         determine the reason that the previous session failed, for
         example. These diagnostic codes are specified in section 4.1 of
         RFC5880
+
+        Values:
+            UNDEFINED_DIAGNOSTIC (0):
+                A value indicating that the enum field is not
+                set.
+            ADMINISTRATIVELY_DOWN (121685798):
+                No description available.
+            CONCATENATED_PATH_DOWN (26186892):
+                No description available.
+            CONTROL_DETECTION_TIME_EXPIRED (135478383):
+                No description available.
+            DIAGNOSTIC_UNSPECIFIED (58720895):
+                No description available.
+            ECHO_FUNCTION_FAILED (220687466):
+                No description available.
+            FORWARDING_PLANE_RESET (19715882):
+                No description available.
+            NEIGHBOR_SIGNALED_SESSION_DOWN (374226742):
+                No description available.
+            NO_DIAGNOSTIC (222503141):
+                No description available.
+            PATH_DOWN (290605180):
+                No description available.
+            REVERSE_CONCATENATED_PATH_DOWN (479337129):
+                No description available.
         """
         UNDEFINED_DIAGNOSTIC = 0
         ADMINISTRATIVELY_DOWN = 121685798
@@ -13813,6 +14568,21 @@ class BfdPacket(proto.Message):
     class State(proto.Enum):
         r"""The current BFD session state as seen by the transmitting
         system. These states are specified in section 4.1 of RFC5880
+
+        Values:
+            UNDEFINED_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            ADMIN_DOWN (128544690):
+                No description available.
+            DOWN (2104482):
+                No description available.
+            INIT (2252048):
+                No description available.
+            STATE_UNSPECIFIED (470755401):
+                No description available.
+            UP (2715):
+                No description available.
         """
         UNDEFINED_STATE = 0
         ADMIN_DOWN = 128544690
@@ -13979,6 +14749,17 @@ class BfdStatus(proto.Message):
         this BGP peer. If set to PASSIVE, the Cloud Router will wait for
         the peer router to initiate the BFD session for this BGP peer.
         If set to DISABLED, BFD is disabled for this BGP peer.
+
+        Values:
+            UNDEFINED_BFD_SESSION_INITIALIZATION_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            ACTIVE (314733318):
+                No description available.
+            DISABLED (516696700):
+                No description available.
+            PASSIVE (462813959):
+                No description available.
         """
         UNDEFINED_BFD_SESSION_INITIALIZATION_MODE = 0
         ACTIVE = 314733318
@@ -13991,6 +14772,31 @@ class BfdStatus(proto.Message):
         determine the reason that the previous session failed, for
         example. These diagnostic codes are specified in section 4.1 of
         RFC5880
+
+        Values:
+            UNDEFINED_LOCAL_DIAGNOSTIC (0):
+                A value indicating that the enum field is not
+                set.
+            ADMINISTRATIVELY_DOWN (121685798):
+                No description available.
+            CONCATENATED_PATH_DOWN (26186892):
+                No description available.
+            CONTROL_DETECTION_TIME_EXPIRED (135478383):
+                No description available.
+            DIAGNOSTIC_UNSPECIFIED (58720895):
+                No description available.
+            ECHO_FUNCTION_FAILED (220687466):
+                No description available.
+            FORWARDING_PLANE_RESET (19715882):
+                No description available.
+            NEIGHBOR_SIGNALED_SESSION_DOWN (374226742):
+                No description available.
+            NO_DIAGNOSTIC (222503141):
+                No description available.
+            PATH_DOWN (290605180):
+                No description available.
+            REVERSE_CONCATENATED_PATH_DOWN (479337129):
+                No description available.
         """
         UNDEFINED_LOCAL_DIAGNOSTIC = 0
         ADMINISTRATIVELY_DOWN = 121685798
@@ -14007,6 +14813,21 @@ class BfdStatus(proto.Message):
     class LocalState(proto.Enum):
         r"""The current BFD session state as seen by the transmitting
         system. These states are specified in section 4.1 of RFC5880
+
+        Values:
+            UNDEFINED_LOCAL_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            ADMIN_DOWN (128544690):
+                No description available.
+            DOWN (2104482):
+                No description available.
+            INIT (2252048):
+                No description available.
+            STATE_UNSPECIFIED (470755401):
+                No description available.
+            UP (2715):
+                No description available.
         """
         UNDEFINED_LOCAL_STATE = 0
         ADMIN_DOWN = 128544690
@@ -14961,6 +15782,17 @@ class Commitment(proto.Message):
         commitments composed of software licenses, listed in
         licenseResources. Note that only MACHINE commitments should have
         a Type specified.
+
+        Values:
+            UNDEFINED_CATEGORY (0):
+                A value indicating that the enum field is not
+                set.
+            CATEGORY_UNSPECIFIED (509189462):
+                No description available.
+            LICENSE (347869217):
+                No description available.
+            MACHINE (469553191):
+                No description available.
         """
         UNDEFINED_CATEGORY = 0
         CATEGORY_UNSPECIFIED = 509189462
@@ -14971,6 +15803,17 @@ class Commitment(proto.Message):
         r"""The plan for this commitment, which determines duration and discount
         rate. The currently supported plans are TWELVE_MONTH (1 year), and
         THIRTY_SIX_MONTH (3 years).
+
+        Values:
+            UNDEFINED_PLAN (0):
+                A value indicating that the enum field is not
+                set.
+            INVALID (530283991):
+                No description available.
+            THIRTY_SIX_MONTH (266295942):
+                No description available.
+            TWELVE_MONTH (173083962):
+                No description available.
         """
         UNDEFINED_PLAN = 0
         INVALID = 530283991
@@ -14981,6 +15824,21 @@ class Commitment(proto.Message):
         r"""[Output Only] Status of the commitment with regards to eventual
         expiration (each commitment has an end date defined). One of the
         following values: NOT_YET_ACTIVE, ACTIVE, EXPIRED.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            ACTIVE (314733318):
+                No description available.
+            CANCELLED (41957681):
+                No description available.
+            CREATING (455564985):
+                No description available.
+            EXPIRED (482489093):
+                No description available.
+            NOT_YET_ACTIVE (20607337):
+                No description available.
         """
         UNDEFINED_STATUS = 0
         ACTIVE = 314733318
@@ -14995,6 +15853,33 @@ class Commitment(proto.Message):
         that will only apply to memory optimized machines. Type
         ACCELERATOR_OPTIMIZED specifies a commitment that will only apply to
         accelerator optimized machines.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            ACCELERATOR_OPTIMIZED (280848403):
+                No description available.
+            COMPUTE_OPTIMIZED (158349023):
+                No description available.
+            COMPUTE_OPTIMIZED_C2D (383246453):
+                No description available.
+            GENERAL_PURPOSE (299793543):
+                No description available.
+            GENERAL_PURPOSE_E2 (301911877):
+                No description available.
+            GENERAL_PURPOSE_N2 (301912156):
+                No description available.
+            GENERAL_PURPOSE_N2D (232471400):
+                No description available.
+            GENERAL_PURPOSE_T2D (232477166):
+                No description available.
+            MEMORY_OPTIMIZED (281753417):
+                No description available.
+            MEMORY_OPTIMIZED_M3 (276301372):
+                No description available.
+            TYPE_UNSPECIFIED (437714322):
+                No description available.
         """
         UNDEFINED_TYPE = 0
         ACCELERATOR_OPTIMIZED = 280848403
@@ -15333,6 +16218,32 @@ class Condition(proto.Message):
         r"""This is deprecated and has no effect. Do not use. Additional
         supported values which may be not listed in the enum directly due to
         technical reasons: NO_ATTR
+
+        Values:
+            UNDEFINED_IAM (0):
+                A value indicating that the enum field is not
+                set.
+            APPROVER (357258949):
+                This is deprecated and has no effect. Do not
+                use.
+            ATTRIBUTION (232465503):
+                This is deprecated and has no effect. Do not
+                use.
+            AUTHORITY (504108835):
+                This is deprecated and has no effect. Do not
+                use.
+            CREDENTIALS_TYPE (348222141):
+                This is deprecated and has no effect. Do not
+                use.
+            CREDS_ASSERTION (332343272):
+                This is deprecated and has no effect. Do not
+                use.
+            JUSTIFICATION_TYPE (206147719):
+                This is deprecated and has no effect. Do not
+                use.
+            SECURITY_REALM (526269616):
+                This is deprecated and has no effect. Do not
+                use.
         """
         UNDEFINED_IAM = 0
         APPROVER = 357258949
@@ -15344,7 +16255,31 @@ class Condition(proto.Message):
         SECURITY_REALM = 526269616
 
     class Op(proto.Enum):
-        r"""This is deprecated and has no effect. Do not use."""
+        r"""This is deprecated and has no effect. Do not use.
+
+        Values:
+            UNDEFINED_OP (0):
+                A value indicating that the enum field is not
+                set.
+            DISCHARGED (266338274):
+                This is deprecated and has no effect. Do not
+                use.
+            EQUALS (442201023):
+                This is deprecated and has no effect. Do not
+                use.
+            IN (2341):
+                This is deprecated and has no effect. Do not
+                use.
+            NOT_EQUALS (19718859):
+                This is deprecated and has no effect. Do not
+                use.
+            NOT_IN (161144369):
+                This is deprecated and has no effect. Do not
+                use.
+            NO_OP (74481951):
+                This is deprecated and has no effect. Do not
+                use.
+        """
         UNDEFINED_OP = 0
         DISCHARGED = 266338274
         EQUALS = 442201023
@@ -15357,6 +16292,23 @@ class Condition(proto.Message):
         r"""This is deprecated and has no effect. Do not use. Additional
         supported values which may be not listed in the enum directly due to
         technical reasons: NO_ATTR
+
+        Values:
+            UNDEFINED_SYS (0):
+                A value indicating that the enum field is not
+                set.
+            IP (2343):
+                This is deprecated and has no effect. Do not
+                use.
+            NAME (2388619):
+                This is deprecated and has no effect. Do not
+                use.
+            REGION (266017524):
+                This is deprecated and has no effect. Do not
+                use.
+            SERVICE (17781397):
+                This is deprecated and has no effect. Do not
+                use.
         """
         UNDEFINED_SYS = 0
         IP = 2343
@@ -20302,6 +21254,19 @@ class DeprecationStatus(proto.Message):
         deprecated resource and recommending its replacement. Operations
         which use OBSOLETE or DELETED resources will be rejected and
         result in an error.
+
+        Values:
+            UNDEFINED_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            ACTIVE (314733318):
+                No description available.
+            DELETED (120962041):
+                No description available.
+            DEPRECATED (463360435):
+                No description available.
+            OBSOLETE (66532761):
+                No description available.
         """
         UNDEFINED_STATE = 0
         ACTIVE = 314733318
@@ -20919,7 +21884,20 @@ class Disk(proto.Message):
     """
 
     class Architecture(proto.Enum):
-        r"""The architecture of the disk. Valid values are ARM64 or X86_64."""
+        r"""The architecture of the disk. Valid values are ARM64 or X86_64.
+
+        Values:
+            UNDEFINED_ARCHITECTURE (0):
+                A value indicating that the enum field is not
+                set.
+            ARCHITECTURE_UNSPECIFIED (394750507):
+                Default value indicating Architecture is not
+                set.
+            ARM64 (62547450):
+                Machines with architecture ARM64
+            X86_64 (425300551):
+                Machines with architecture X86_64
+        """
         UNDEFINED_ARCHITECTURE = 0
         ARCHITECTURE_UNSPECIFIED = 394750507
         ARM64 = 62547450
@@ -20930,6 +21908,21 @@ class Disk(proto.Message):
         provisioning. - RESTORING: Source data is being copied into the
         disk. - FAILED: Disk creation failed. - READY: Disk is ready for
         use. - DELETING: Disk is deleting.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            CREATING (455564985):
+                Disk is provisioning
+            DELETING (528602024):
+                Disk is deleting.
+            FAILED (455706685):
+                Disk creation failed.
+            READY (77848963):
+                Disk is ready for use.
+            RESTORING (404263851):
+                Source data is being copied into the disk.
         """
         UNDEFINED_STATUS = 0
         CREATING = 455564985
@@ -21275,6 +22268,47 @@ class DiskInstantiationConfig(proto.Message):
         Applicable to read-only disks. - do-not-include: to exclude a
         disk from the template. Applicable to additional read-write
         disks, local SSDs, and read-only disks.
+
+        Values:
+            UNDEFINED_INSTANTIATE_FROM (0):
+                A value indicating that the enum field is not
+                set.
+            ATTACH_READ_ONLY (513775419):
+                Attach the existing disk in read-only mode.
+                The request will fail if the disk was attached
+                in read-write mode on the source instance.
+                Applicable to: read-only disks.
+            BLANK (63281460):
+                Create a blank disk. The disk will be created
+                unformatted. Applicable to: additional
+                read-write disks, local SSDs.
+            CUSTOM_IMAGE (196311789):
+                Use the custom image specified in the custom_image field.
+                Applicable to: boot disk, additional read-write disks.
+            DEFAULT (115302945):
+                Use the default instantiation option for the
+                corresponding type of disk. For boot disk and
+                any other R/W disks, new custom images will be
+                created from each disk. For read-only disks,
+                they will be attached in read-only mode. Local
+                SSD disks will be created as blank volumes.
+            DO_NOT_INCLUDE (104218952):
+                Do not include the disk in the instance
+                template. Applicable to: additional read-write
+                disks, local SSDs, read-only disks.
+            SOURCE_IMAGE (62631959):
+                Use the same source image used for creation
+                of the source instance's corresponding disk. The
+                request will fail if the source VM's disk was
+                created from a snapshot. Applicable to: boot
+                disk, additional read-write disks.
+            SOURCE_IMAGE_FAMILY (76850316):
+                Use the same source image family used for
+                creation of the source instance's corresponding
+                disk. The request will fail if the source image
+                of the source disk does not belong to any image
+                family. Applicable to: boot disk, additional
+                read-write disks.
         """
         UNDEFINED_INSTANTIATE_FROM = 0
         ATTACH_READ_ONLY = 513775419
@@ -21874,6 +22908,34 @@ class DistributionPolicy(proto.Message):
         r"""The distribution shape to which the group converges either
         proactively or on resize events (depending on the value set in
         updatePolicy.instanceRedistributionType).
+
+        Values:
+            UNDEFINED_TARGET_SHAPE (0):
+                A value indicating that the enum field is not
+                set.
+            ANY (64972):
+                The group picks zones for creating VM
+                instances to fulfill the requested number of VMs
+                within present resource constraints and to
+                maximize utilization of unused zonal
+                reservations. Recommended for batch workloads
+                that do not require high availability.
+            BALANCED (468409608):
+                The group prioritizes acquisition of
+                resources, scheduling VMs in zones where
+                resources are available while distributing VMs
+                as evenly as possible across selected zones to
+                minimize the impact of zonal failure.
+                Recommended for highly available serving
+                workloads.
+            EVEN (2140442):
+                The group schedules VM instance creation and
+                deletion to achieve and maintain an even number
+                of managed instances across the selected zones.
+                The distribution is even when the number of
+                managed instances does not differ by more than 1
+                between any two zones. Recommended for highly
+                available serving workloads.
         """
         UNDEFINED_TARGET_SHAPE = 0
         ANY = 64972
@@ -22256,7 +23318,20 @@ class ExchangedPeeringRoute(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""The type of the peering route."""
+        r"""The type of the peering route.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            DYNAMIC_PEERING_ROUTE (469794858):
+                For routes exported from local network.
+            STATIC_PEERING_ROUTE (473407545):
+                The peering route.
+            SUBNET_PEERING_ROUTE (465782504):
+                The peering route corresponding to subnetwork
+                range.
+        """
         UNDEFINED_TYPE = 0
         DYNAMIC_PEERING_ROUTE = 469794858
         STATIC_PEERING_ROUTE = 473407545
@@ -22587,6 +23662,43 @@ class ExternalVpnGateway(proto.Message):
     class RedundancyType(proto.Enum):
         r"""Indicates the user-supplied redundancy type of this external
         VPN gateway.
+
+        Values:
+            UNDEFINED_REDUNDANCY_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            FOUR_IPS_REDUNDANCY (520087913):
+                The external VPN gateway has four public IP addresses; at
+                the time of writing this API, the AWS virtual private
+                gateway is an example which has four public IP addresses for
+                high availability connections; there should be two VPN
+                connections in the AWS virtual private gateway , each AWS
+                VPN connection has two public IP addresses; please make sure
+                to put two public IP addresses from one AWS VPN connection
+                into interfaces 0 and 1 of this external VPN gateway, and
+                put the other two public IP addresses from another AWS VPN
+                connection into interfaces 2 and 3 of this external VPN
+                gateway. When displaying highly available configuration
+                status for the VPN tunnels connected to FOUR_IPS_REDUNDANCY
+                external VPN gateway, Google will always detect whether
+                interfaces 0 and 1 are connected on one interface of HA
+                Cloud VPN gateway, and detect whether interfaces 2 and 3 are
+                connected to another interface of the HA Cloud VPN gateway.
+            SINGLE_IP_INTERNALLY_REDUNDANT (133914873):
+                The external VPN gateway has only one public
+                IP address which internally provide redundancy
+                or failover.
+            TWO_IPS_REDUNDANCY (367049635):
+                The external VPN gateway has two public IP
+                addresses which are redundant with each other,
+                the following two types of setup on your
+                on-premises side would have this type of
+                redundancy: (1) Two separate on-premises
+                gateways, each with one public IP address, the
+                two on-premises gateways are redundant with each
+                other. (2) A single on-premise gateway with two
+                public IP addresses that are redundant with
+                eatch other.
         """
         UNDEFINED_REDUNDANCY_TYPE = 0
         FOUR_IPS_REDUNDANCY = 520087913
@@ -22785,7 +23897,19 @@ class FileContentBuffer(proto.Message):
     """
 
     class FileType(proto.Enum):
-        r"""The file type of source file."""
+        r"""The file type of source file.
+
+        Values:
+            UNDEFINED_FILE_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            BIN (65767):
+                No description available.
+            UNDEFINED (137851184):
+                No description available.
+            X509 (2674086):
+                No description available.
+        """
         UNDEFINED_FILE_TYPE = 0
         BIN = 65767
         UNDEFINED = 137851184
@@ -22981,6 +24105,17 @@ class Firewall(proto.Message):
         r"""Direction of traffic to which this firewall applies, either
         ``INGRESS`` or ``EGRESS``. The default is ``INGRESS``. For
         ``EGRESS`` traffic, you cannot specify the sourceTags fields.
+
+        Values:
+            UNDEFINED_DIRECTION (0):
+                A value indicating that the enum field is not
+                set.
+            EGRESS (432880501):
+                Indicates that firewall should apply to
+                outgoing traffic.
+            INGRESS (516931221):
+                Indicates that firewall should apply to
+                incoming traffic.
         """
         UNDEFINED_DIRECTION = 0
         EGRESS = 432880501
@@ -23178,6 +24313,15 @@ class FirewallLogConfig(proto.Message):
         r"""This field can only be specified for a particular firewall
         rule if logging is enabled for that rule. This field denotes
         whether to include or exclude metadata for firewall logs.
+
+        Values:
+            UNDEFINED_METADATA (0):
+                A value indicating that the enum field is not
+                set.
+            EXCLUDE_ALL_METADATA (334519954):
+                No description available.
+            INCLUDE_ALL_METADATA (164619908):
+                No description available.
         """
         UNDEFINED_METADATA = 0
         EXCLUDE_ALL_METADATA = 334519954
@@ -23547,10 +24691,8 @@ class FirewallPolicyRule(proto.Message):
 
     Attributes:
         action (str):
-            The Action to perform when the client
-            connection triggers the rule. Can currently be
-            either "allow" or "deny()" where valid values
-            for status are 403, 404, and 502.
+            The Action to perform when the client connection triggers
+            the rule. Valid actions are "allow", "deny" and "goto_next".
 
             This field is a member of `oneof`_ ``_action``.
         description (str):
@@ -23633,7 +24775,17 @@ class FirewallPolicyRule(proto.Message):
     """
 
     class Direction(proto.Enum):
-        r"""The direction in which this rule applies."""
+        r"""The direction in which this rule applies.
+
+        Values:
+            UNDEFINED_DIRECTION (0):
+                A value indicating that the enum field is not
+                set.
+            EGRESS (432880501):
+                No description available.
+            INGRESS (516931221):
+                No description available.
+        """
         UNDEFINED_DIRECTION = 0
         EGRESS = 432880501
         INGRESS = 516931221
@@ -23811,6 +24963,15 @@ class FirewallPolicyRuleSecureTag(proto.Message):
         r"""[Output Only] State of the secure tag, either ``EFFECTIVE`` or
         ``INEFFECTIVE``. A secure tag is ``INEFFECTIVE`` when it is deleted
         or its network is deleted.
+
+        Values:
+            UNDEFINED_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            EFFECTIVE (244201863):
+                No description available.
+            INEFFECTIVE (304458242):
+                No description available.
         """
         UNDEFINED_STATE = 0
         EFFECTIVE = 244201863
@@ -24208,13 +25369,16 @@ class ForwardingRule(proto.Message):
             in the same region as the forwarding rule. For global
             forwarding rules, this target must be a global load
             balancing resource. The forwarded traffic must be of a type
-            appropriate to the target object. For more information, see
+            appropriate to the target object. - For load balancers, see
             the "Target" column in `Port
             specifications <https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts#ip_address_specifications>`__.
-            For Private Service Connect forwarding rules that forward
+            - For Private Service Connect forwarding rules that forward
             traffic to Google APIs, provide the name of a supported
             Google API bundle: - vpc-sc - APIs that support VPC Service
-            Controls. - all-apis - All supported Google APIs.
+            Controls. - all-apis - All supported Google APIs. - For
+            Private Service Connect forwarding rules that forward
+            traffic to managed services, the target must be a service
+            attachment.
 
             This field is a member of `oneof`_ ``_target``.
     """
@@ -24225,6 +25389,25 @@ class ForwardingRule(proto.Message):
         valid IP protocols are different for different load balancing
         products as described in `Load balancing
         features <https://cloud.google.com/load-balancing/docs/features#protocols_from_the_load_balancer_to_the_backends>`__.
+
+        Values:
+            UNDEFINED_I_P_PROTOCOL_ENUM (0):
+                A value indicating that the enum field is not
+                set.
+            AH (2087):
+                No description available.
+            ESP (68962):
+                No description available.
+            ICMP (2241597):
+                No description available.
+            L3_DEFAULT (48151369):
+                No description available.
+            SCTP (2539724):
+                No description available.
+            TCP (82881):
+                No description available.
+            UDP (83873):
+                No description available.
         """
         UNDEFINED_I_P_PROTOCOL_ENUM = 0
         AH = 2087
@@ -24238,6 +25421,17 @@ class ForwardingRule(proto.Message):
     class IpVersion(proto.Enum):
         r"""The IP Version that will be used by this forwarding rule.
         Valid options are IPV4 or IPV6.
+
+        Values:
+            UNDEFINED_IP_VERSION (0):
+                A value indicating that the enum field is not
+                set.
+            IPV4 (2254341):
+                No description available.
+            IPV6 (2254343):
+                No description available.
+            UNSPECIFIED_VERSION (21850000):
+                No description available.
         """
         UNDEFINED_IP_VERSION = 0
         IPV4 = 2254341
@@ -24247,6 +25441,23 @@ class ForwardingRule(proto.Message):
     class LoadBalancingScheme(proto.Enum):
         r"""Specifies the forwarding rule type. For more information
         about forwarding rules, refer to Forwarding rule concepts.
+
+        Values:
+            UNDEFINED_LOAD_BALANCING_SCHEME (0):
+                A value indicating that the enum field is not
+                set.
+            EXTERNAL (35607499):
+                No description available.
+            EXTERNAL_MANAGED (512006923):
+                No description available.
+            INTERNAL (279295677):
+                No description available.
+            INTERNAL_MANAGED (37350397):
+                No description available.
+            INTERNAL_SELF_MANAGED (236211150):
+                No description available.
+            INVALID (530283991):
+                No description available.
         """
         UNDEFINED_LOAD_BALANCING_SCHEME = 0
         EXTERNAL = 35607499
@@ -24264,6 +25475,22 @@ class ForwardingRule(proto.Message):
         is PREMIUM. If this field is not specified, it is assumed to be
         PREMIUM. If IPAddress is specified, this value must be equal to
         the networkTier of the Address.
+
+        Values:
+            UNDEFINED_NETWORK_TIER (0):
+                A value indicating that the enum field is not
+                set.
+            FIXED_STANDARD (310464328):
+                Public internet quality with fixed bandwidth.
+            PREMIUM (399530551):
+                High quality, Google-grade network tier,
+                support for all networking products.
+            STANDARD (484642493):
+                Public internet quality, only limited support
+                for other networking products.
+            STANDARD_OVERRIDES_FIXED_STANDARD (465847234):
+                (Output only) Temporary tier for FIXED_STANDARD when fixed
+                standard tier is expired or not configured.
         """
         UNDEFINED_NETWORK_TIER = 0
         FIXED_STANDARD = 310464328
@@ -24272,7 +25499,33 @@ class ForwardingRule(proto.Message):
         STANDARD_OVERRIDES_FIXED_STANDARD = 465847234
 
     class PscConnectionStatus(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            UNDEFINED_PSC_CONNECTION_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            ACCEPTED (246714279):
+                The connection has been accepted by the
+                producer.
+            CLOSED (380163436):
+                The connection has been closed by the
+                producer and will not serve traffic going
+                forward.
+            NEEDS_ATTENTION (344491452):
+                The connection has been accepted by the
+                producer, but the producer needs to take further
+                action before the forwarding rule can serve
+                traffic.
+            PENDING (35394935):
+                The connection is pending acceptance by the
+                producer.
+            REJECTED (174130302):
+                The connection has been rejected by the
+                producer.
+            STATUS_UNSPECIFIED (42133066):
+                No description available.
+        """
         UNDEFINED_PSC_CONNECTION_STATUS = 0
         ACCEPTED = 246714279
         CLOSED = 380163436
@@ -24766,6 +26019,25 @@ class GRPCHealthCheck(proto.Message):
         backends, the health check uses the port number determined by
         looking up the backend service's named port in the instance group's
         list of named ports.
+
+        Values:
+            UNDEFINED_PORT_SPECIFICATION (0):
+                A value indicating that the enum field is not
+                set.
+            USE_FIXED_PORT (190235748):
+                The port number in the health check's port is
+                used for health checking. Applies to network
+                endpoint group and instance group backends.
+            USE_NAMED_PORT (349300671):
+                Not supported.
+            USE_SERVING_PORT (362637516):
+                For network endpoint group backends, the
+                health check uses the port number specified on
+                each endpoint in the network endpoint group. For
+                instance group backends, the health check uses
+                the port number specified for the backend
+                service's named port defined in the instance
+                group's named ports.
         """
         UNDEFINED_PORT_SPECIFICATION = 0
         USE_FIXED_PORT = 190235748
@@ -28953,6 +30225,29 @@ class GuestOsFeature(proto.Message):
         VIRTIO_SCSI_MULTIQUEUE - WINDOWS - MULTI_IP_SUBNET - UEFI_COMPATIBLE
         - GVNIC - SEV_CAPABLE - SUSPEND_RESUME_COMPATIBLE - SEV_SNP_CAPABLE
         For more information, see Enabling guest operating system features.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            FEATURE_TYPE_UNSPECIFIED (531767259):
+                No description available.
+            GVNIC (68209305):
+                No description available.
+            MULTI_IP_SUBNET (151776719):
+                No description available.
+            SECURE_BOOT (376811194):
+                No description available.
+            SEV_CAPABLE (87083793):
+                No description available.
+            SEV_SNP_CAPABLE (426919):
+                No description available.
+            UEFI_COMPATIBLE (195865408):
+                No description available.
+            VIRTIO_SCSI_MULTIQUEUE (201597069):
+                No description available.
+            WINDOWS (456863331):
+                No description available.
         """
         UNDEFINED_TYPE = 0
         FEATURE_TYPE_UNSPECIFIED = 531767259
@@ -28960,6 +30255,7 @@ class GuestOsFeature(proto.Message):
         MULTI_IP_SUBNET = 151776719
         SECURE_BOOT = 376811194
         SEV_CAPABLE = 87083793
+        SEV_SNP_CAPABLE = 426919
         UEFI_COMPATIBLE = 195865408
         VIRTIO_SCSI_MULTIQUEUE = 201597069
         WINDOWS = 456863331
@@ -29071,6 +30367,25 @@ class HTTP2HealthCheck(proto.Message):
         backends, the health check uses the port number determined by
         looking up the backend service's named port in the instance group's
         list of named ports.
+
+        Values:
+            UNDEFINED_PORT_SPECIFICATION (0):
+                A value indicating that the enum field is not
+                set.
+            USE_FIXED_PORT (190235748):
+                The port number in the health check's port is
+                used for health checking. Applies to network
+                endpoint group and instance group backends.
+            USE_NAMED_PORT (349300671):
+                Not supported.
+            USE_SERVING_PORT (362637516):
+                For network endpoint group backends, the
+                health check uses the port number specified on
+                each endpoint in the network endpoint group. For
+                instance group backends, the health check uses
+                the port number specified for the backend
+                service's named port defined in the instance
+                group's named ports.
         """
         UNDEFINED_PORT_SPECIFICATION = 0
         USE_FIXED_PORT = 190235748
@@ -29080,6 +30395,15 @@ class HTTP2HealthCheck(proto.Message):
     class ProxyHeader(proto.Enum):
         r"""Specifies the type of proxy header to append before sending data to
         the backend, either NONE or PROXY_V1. The default is NONE.
+
+        Values:
+            UNDEFINED_PROXY_HEADER (0):
+                A value indicating that the enum field is not
+                set.
+            NONE (2402104):
+                No description available.
+            PROXY_V1 (334352940):
+                No description available.
         """
         UNDEFINED_PROXY_HEADER = 0
         NONE = 2402104
@@ -29223,6 +30547,25 @@ class HTTPHealthCheck(proto.Message):
         endpoint group. For instance group backends, the health check uses
         the port number determined by looking up the backend service's named
         port in the instance group's list of named ports.
+
+        Values:
+            UNDEFINED_PORT_SPECIFICATION (0):
+                A value indicating that the enum field is not
+                set.
+            USE_FIXED_PORT (190235748):
+                The port number in the health check's port is
+                used for health checking. Applies to network
+                endpoint group and instance group backends.
+            USE_NAMED_PORT (349300671):
+                Not supported.
+            USE_SERVING_PORT (362637516):
+                For network endpoint group backends, the
+                health check uses the port number specified on
+                each endpoint in the network endpoint group. For
+                instance group backends, the health check uses
+                the port number specified for the backend
+                service's named port defined in the instance
+                group's named ports.
         """
         UNDEFINED_PORT_SPECIFICATION = 0
         USE_FIXED_PORT = 190235748
@@ -29232,6 +30575,15 @@ class HTTPHealthCheck(proto.Message):
     class ProxyHeader(proto.Enum):
         r"""Specifies the type of proxy header to append before sending data to
         the backend, either NONE or PROXY_V1. The default is NONE.
+
+        Values:
+            UNDEFINED_PROXY_HEADER (0):
+                A value indicating that the enum field is not
+                set.
+            NONE (2402104):
+                No description available.
+            PROXY_V1 (334352940):
+                No description available.
         """
         UNDEFINED_PROXY_HEADER = 0
         NONE = 2402104
@@ -29374,6 +30726,25 @@ class HTTPSHealthCheck(proto.Message):
         backends, the health check uses the port number determined by
         looking up the backend service's named port in the instance group's
         list of named ports.
+
+        Values:
+            UNDEFINED_PORT_SPECIFICATION (0):
+                A value indicating that the enum field is not
+                set.
+            USE_FIXED_PORT (190235748):
+                The port number in the health check's port is
+                used for health checking. Applies to network
+                endpoint group and instance group backends.
+            USE_NAMED_PORT (349300671):
+                Not supported.
+            USE_SERVING_PORT (362637516):
+                For network endpoint group backends, the
+                health check uses the port number specified on
+                each endpoint in the network endpoint group. For
+                instance group backends, the health check uses
+                the port number specified for the backend
+                service's named port defined in the instance
+                group's named ports.
         """
         UNDEFINED_PORT_SPECIFICATION = 0
         USE_FIXED_PORT = 190235748
@@ -29383,6 +30754,15 @@ class HTTPSHealthCheck(proto.Message):
     class ProxyHeader(proto.Enum):
         r"""Specifies the type of proxy header to append before sending data to
         the backend, either NONE or PROXY_V1. The default is NONE.
+
+        Values:
+            UNDEFINED_PROXY_HEADER (0):
+                A value indicating that the enum field is not
+                set.
+            NONE (2402104):
+                No description available.
+            PROXY_V1 (334352940):
+                No description available.
         """
         UNDEFINED_PROXY_HEADER = 0
         NONE = 2402104
@@ -29550,6 +30930,25 @@ class HealthCheck(proto.Message):
         HTTPS, HTTP2 or GRPC. Exactly one of the protocol-specific
         health check fields must be specified, which must match type
         field.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            GRPC (2196510):
+                No description available.
+            HTTP (2228360):
+                No description available.
+            HTTP2 (69079210):
+                No description available.
+            HTTPS (69079243):
+                No description available.
+            INVALID (530283991):
+                No description available.
+            SSL (82412):
+                No description available.
+            TCP (82881):
+                No description available.
         """
         UNDEFINED_TYPE = 0
         GRPC = 2196510
@@ -29902,6 +31301,20 @@ class HealthCheckService(proto.Message):
         HealthState of the endpoint. If all health checks report HEALTHY,
         the HealthState of the endpoint is HEALTHY. . This is only allowed
         with regional HealthCheckService.
+
+        Values:
+            UNDEFINED_HEALTH_STATUS_AGGREGATION_POLICY (0):
+                A value indicating that the enum field is not
+                set.
+            AND (64951):
+                If any backend's health check reports
+                UNHEALTHY, then UNHEALTHY is the HealthState of
+                the entire health check service. If all
+                backend's are healthy, the HealthState of the
+                health check service is HEALTHY.
+            NO_AGGREGATION (426445124):
+                An EndpointHealth message is returned for
+                each backend in the health check service.
         """
         UNDEFINED_HEALTH_STATUS_AGGREGATION_POLICY = 0
         AND = 64951
@@ -30227,13 +31640,55 @@ class HealthStatus(proto.Message):
     """
 
     class HealthState(proto.Enum):
-        r"""Health state of the instance."""
+        r"""Health state of the instance.
+
+        Values:
+            UNDEFINED_HEALTH_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            HEALTHY (439801213):
+                No description available.
+            UNHEALTHY (462118084):
+                No description available.
+        """
         UNDEFINED_HEALTH_STATE = 0
         HEALTHY = 439801213
         UNHEALTHY = 462118084
 
     class WeightError(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            UNDEFINED_WEIGHT_ERROR (0):
+                A value indicating that the enum field is not
+                set.
+            INVALID_WEIGHT (383698400):
+                The response to a Health Check probe had the
+                HTTP response header field
+                X-Load-Balancing-Endpoint-Weight, but its
+                content was invalid (i.e., not a non-negative
+                single-precision floating-point number in
+                decimal string representation).
+            MISSING_WEIGHT (384027537):
+                The response to a Health Check probe did not
+                have the HTTP response header field
+                X-Load-Balancing-Endpoint-Weight.
+            UNAVAILABLE_WEIGHT (439464295):
+                This is the value when the accompanied health
+                status is either TIMEOUT (i.e.,the Health Check
+                probe was not able to get a response in time) or
+                UNKNOWN. For the latter, it should be typically
+                because there has not been sufficient time to
+                parse and report the weight for a new backend
+                (which is with 0.0.0.0 ip address). However, it
+                can be also due to an outage case for which the
+                health status is explicitly reset to UNKNOWN.
+            WEIGHT_NONE (502428831):
+                This is the default value when WeightReportMode is DISABLE,
+                and is also the initial value when WeightReportMode has just
+                updated to ENABLE or DRY_RUN and there has not been
+                sufficient time to parse and report the backend weight.
+        """
         UNDEFINED_WEIGHT_ERROR = 0
         INVALID_WEIGHT = 383698400
         MISSING_WEIGHT = 384027537
@@ -30325,6 +31780,19 @@ class HealthStatusForNetworkEndpoint(proto.Message):
     class HealthState(proto.Enum):
         r"""Health state of the network endpoint determined based on the
         health checks configured.
+
+        Values:
+            UNDEFINED_HEALTH_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            DRAINING (480455402):
+                No description available.
+            HEALTHY (439801213):
+                No description available.
+            UNHEALTHY (462118084):
+                No description available.
+            UNKNOWN (433141802):
+                No description available.
         """
         UNDEFINED_HEALTH_STATE = 0
         DRAINING = 480455402
@@ -30926,6 +32394,23 @@ class HttpRedirectAction(proto.Message):
         corresponds to 307. In this case, the request method is retained. -
         PERMANENT_REDIRECT, which corresponds to 308. In this case, the
         request method is retained.
+
+        Values:
+            UNDEFINED_REDIRECT_RESPONSE_CODE (0):
+                A value indicating that the enum field is not
+                set.
+            FOUND (67084130):
+                Http Status Code 302 - Found.
+            MOVED_PERMANENTLY_DEFAULT (386698449):
+                Http Status Code 301 - Moved Permanently.
+            PERMANENT_REDIRECT (382006381):
+                Http Status Code 308 - Permanent Redirect
+                maintaining HTTP method.
+            SEE_OTHER (445380580):
+                Http Status Code 303 - See Other.
+            TEMPORARY_REDIRECT (489550378):
+                Http Status Code 307 - Temporary Redirect
+                maintaining HTTP method.
         """
         UNDEFINED_REDIRECT_RESPONSE_CODE = 0
         FOUND = 67084130
@@ -31674,7 +33159,20 @@ class Image(proto.Message):
     """
 
     class Architecture(proto.Enum):
-        r"""The architecture of the image. Valid values are ARM64 or X86_64."""
+        r"""The architecture of the image. Valid values are ARM64 or X86_64.
+
+        Values:
+            UNDEFINED_ARCHITECTURE (0):
+                A value indicating that the enum field is not
+                set.
+            ARCHITECTURE_UNSPECIFIED (394750507):
+                Default value indicating Architecture is not
+                set.
+            ARM64 (62547450):
+                Machines with architecture ARM64
+            X86_64 (425300551):
+                Machines with architecture X86_64
+        """
         UNDEFINED_ARCHITECTURE = 0
         ARCHITECTURE_UNSPECIFIED = 394750507
         ARM64 = 62547450
@@ -31683,6 +33181,13 @@ class Image(proto.Message):
     class SourceType(proto.Enum):
         r"""The type of the image used to create this disk. The default
         and only valid value is RAW.
+
+        Values:
+            UNDEFINED_SOURCE_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            RAW (80904):
+                No description available.
         """
         UNDEFINED_SOURCE_TYPE = 0
         RAW = 80904
@@ -31692,6 +33197,19 @@ class Image(proto.Message):
         create other resources, such as instances, only after the image has
         been successfully created and the status is set to READY. Possible
         values are FAILED, PENDING, or READY.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            DELETING (528602024):
+                Image is deleting.
+            FAILED (455706685):
+                Image creation failed due to an error.
+            PENDING (35394935):
+                Image hasn't been created as yet.
+            READY (77848963):
+                Image has been successfully created.
         """
         UNDEFINED_STATUS = 0
         DELETING = 528602024
@@ -36053,6 +37571,18 @@ class Instance(proto.Message):
         r"""KeyRevocationActionType of the instance. Supported options
         are "STOP" and "NONE". The default value is "NONE" if it is not
         specified.
+
+        Values:
+            UNDEFINED_KEY_REVOCATION_ACTION_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            KEY_REVOCATION_ACTION_TYPE_UNSPECIFIED (467110106):
+                Default value. This value is unused.
+            NONE (2402104):
+                Indicates user chose no operation.
+            STOP (2555906):
+                Indicates user chose to opt for VM shutdown
+                on key revocation.
         """
         UNDEFINED_KEY_REVOCATION_ACTION_TYPE = 0
         KEY_REVOCATION_ACTION_TYPE_UNSPECIFIED = 467110106
@@ -36062,6 +37592,26 @@ class Instance(proto.Message):
     class PrivateIpv6GoogleAccess(proto.Enum):
         r"""The private IPv6 google access type for the VM. If not specified,
         use INHERIT_FROM_SUBNETWORK as default.
+
+        Values:
+            UNDEFINED_PRIVATE_IPV6_GOOGLE_ACCESS (0):
+                A value indicating that the enum field is not
+                set.
+            ENABLE_BIDIRECTIONAL_ACCESS_TO_GOOGLE (427975994):
+                Bidirectional private IPv6 access to/from
+                Google services. If specified, the subnetwork
+                who is attached to the instance's default
+                network interface will be assigned an internal
+                IPv6 prefix if it doesn't have before.
+            ENABLE_OUTBOUND_VM_ACCESS_TO_GOOGLE (288210263):
+                Outbound private IPv6 access from VMs in this
+                subnet to Google services. If specified, the
+                subnetwork who is attached to the instance's
+                default network interface will be assigned an
+                internal IPv6 prefix if it doesn't have before.
+            INHERIT_FROM_SUBNETWORK (530256959):
+                Each network interface inherits
+                PrivateIpv6GoogleAccess from its subnetwork.
         """
         UNDEFINED_PRIVATE_IPV6_GOOGLE_ACCESS = 0
         ENABLE_BIDIRECTIONAL_ACCESS_TO_GOOGLE = 427975994
@@ -36073,6 +37623,37 @@ class Instance(proto.Message):
         values: PROVISIONING, STAGING, RUNNING, STOPPING, SUSPENDING,
         SUSPENDED, REPAIRING, and TERMINATED. For more information about the
         status of the instance, see Instance life cycle.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            DEPROVISIONING (428935662):
+                The Nanny is halted and we are performing
+                tear down tasks like network deprogramming,
+                releasing quota, IP, tearing down disks etc.
+            PROVISIONING (290896621):
+                Resources are being allocated for the
+                instance.
+            REPAIRING (413483285):
+                The instance is in repair.
+            RUNNING (121282975):
+                The instance is running.
+            STAGING (431072283):
+                All required resources have been allocated
+                and the instance is being started.
+            STOPPED (444276141):
+                The instance has stopped successfully.
+            STOPPING (350791796):
+                The instance is currently stopping (either
+                being deleted or killed).
+            SUSPENDED (51223995):
+                The instance has suspended.
+            SUSPENDING (514206246):
+                The instance is suspending.
+            TERMINATED (250018339):
+                The instance has stopped (either by explicit
+                action or underlying failure).
         """
         UNDEFINED_STATUS = 0
         DEPROVISIONING = 428935662
@@ -36959,6 +38540,21 @@ class InstanceGroupManager(proto.Message):
     class ListManagedInstancesResults(proto.Enum):
         r"""Pagination behavior of the listManagedInstances API method
         for this managed instance group.
+
+        Values:
+            UNDEFINED_LIST_MANAGED_INSTANCES_RESULTS (0):
+                A value indicating that the enum field is not
+                set.
+            PAGELESS (32183464):
+                (Default) Pagination is disabled for the
+                group's listManagedInstances API method.
+                maxResults and pageToken query parameters are
+                ignored and all instances are returned in a
+                single response.
+            PAGINATED (40190637):
+                Pagination is enabled for the group's
+                listManagedInstances API method. maxResults and
+                pageToken query parameters are respected.
         """
         UNDEFINED_LIST_MANAGED_INSTANCES_RESULTS = 0
         PAGELESS = 32183464
@@ -37707,6 +39303,11 @@ class InstanceGroupManagerUpdatePolicy(proto.Message):
         values which may be not listed in the enum directly due to
         technical reasons: NONE
         PROACTIVE
+
+        Values:
+            UNDEFINED_INSTANCE_REDISTRIBUTION_TYPE (0):
+                A value indicating that the enum field is not
+                set.
         """
         UNDEFINED_INSTANCE_REDISTRIBUTION_TYPE = 0
 
@@ -37728,6 +39329,11 @@ class InstanceGroupManagerUpdatePolicy(proto.Message):
         REFRESH
         REPLACE
         RESTART
+
+        Values:
+            UNDEFINED_MINIMAL_ACTION (0):
+                A value indicating that the enum field is not
+                set.
         """
         UNDEFINED_MINIMAL_ACTION = 0
 
@@ -37745,12 +39351,28 @@ class InstanceGroupManagerUpdatePolicy(proto.Message):
         REFRESH
         REPLACE
         RESTART
+
+        Values:
+            UNDEFINED_MOST_DISRUPTIVE_ALLOWED_ACTION (0):
+                A value indicating that the enum field is not
+                set.
         """
         UNDEFINED_MOST_DISRUPTIVE_ALLOWED_ACTION = 0
 
     class ReplacementMethod(proto.Enum):
         r"""What action should be used to replace instances. See
         minimal_action.REPLACE
+
+        Values:
+            UNDEFINED_REPLACEMENT_METHOD (0):
+                A value indicating that the enum field is not
+                set.
+            RECREATE (522644719):
+                Instances will be recreated (with the same
+                name)
+            SUBSTITUTE (280924314):
+                Default option: instances will be deleted and
+                created (with a new name)
         """
         UNDEFINED_REPLACEMENT_METHOD = 0
         RECREATE = 522644719
@@ -37765,6 +39387,17 @@ class InstanceGroupManagerUpdatePolicy(proto.Message):
         resizes or recreateInstances calls). Additional supported values
         which may be not listed in the enum directly due to technical
         reasons: PROACTIVE
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            OPPORTUNISTIC (429530089):
+                No action is being proactively performed in
+                order to bring this IGM to its target version
+                distribution (regardless of whether this
+                distribution is expressed using instanceTemplate
+                or versions field).
         """
         UNDEFINED_TYPE = 0
         OPPORTUNISTIC = 429530089
@@ -37943,6 +39576,11 @@ class InstanceGroupManagersApplyUpdatesRequest(proto.Message):
         REFRESH
         REPLACE
         RESTART
+
+        Values:
+            UNDEFINED_MINIMAL_ACTION (0):
+                A value indicating that the enum field is not
+                set.
         """
         UNDEFINED_MINIMAL_ACTION = 0
 
@@ -37959,6 +39597,11 @@ class InstanceGroupManagersApplyUpdatesRequest(proto.Message):
         REFRESH
         REPLACE
         RESTART
+
+        Values:
+            UNDEFINED_MOST_DISRUPTIVE_ALLOWED_ACTION (0):
+                A value indicating that the enum field is not
+                set.
         """
         UNDEFINED_MOST_DISRUPTIVE_ALLOWED_ACTION = 0
 
@@ -38422,6 +40065,17 @@ class InstanceGroupsListInstancesRequest(proto.Message):
         group. Valid options are ALL or RUNNING. If you do not specify
         this parameter the list includes all instances regardless of
         their state.
+
+        Values:
+            UNDEFINED_INSTANCE_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            ALL (64897):
+                Includes all instances in the generated list
+                regardless of their state.
+            RUNNING (121282975):
+                Includes instances in the generated list only
+                if they have a RUNNING state.
         """
         UNDEFINED_INSTANCE_STATE = 0
         ALL = 64897
@@ -38740,6 +40394,69 @@ class InstanceManagedByIgmErrorInstanceActionDetails(proto.Message):
     class Action(proto.Enum):
         r"""[Output Only] Action that managed instance group was executing on
         the instance when the error occurred. Possible values:
+
+        Values:
+            UNDEFINED_ACTION (0):
+                A value indicating that the enum field is not
+                set.
+            ABANDONING (388244813):
+                The managed instance group is abandoning this
+                instance. The instance will be removed from the
+                instance group and from any target pools that
+                are associated with this group.
+            CREATING (455564985):
+                The managed instance group is creating this
+                instance. If the group fails to create this
+                instance, it will try again until it is
+                successful.
+            CREATING_WITHOUT_RETRIES (428843785):
+                The managed instance group is attempting to
+                create this instance only once. If the group
+                fails to create this instance, it does not try
+                again and the group's targetSize value is
+                decreased.
+            DELETING (528602024):
+                The managed instance group is permanently
+                deleting this instance.
+            NONE (2402104):
+                The managed instance group has not scheduled
+                any actions for this instance.
+            RECREATING (287278572):
+                The managed instance group is recreating this
+                instance.
+            REFRESHING (163266343):
+                The managed instance group is applying
+                configuration changes to the instance without
+                stopping it. For example, the group can update
+                the target pool list for an instance without
+                stopping that instance.
+            RESTARTING (320534387):
+                The managed instance group is restarting this
+                instance.
+            RESUMING (446856618):
+                The managed instance group is resuming this
+                instance.
+            STARTING (488820800):
+                The managed instance group is starting this
+                instance.
+            STOPPING (350791796):
+                The managed instance group is stopping this
+                instance.
+            SUSPENDING (514206246):
+                The managed instance group is suspending this
+                instance.
+            VERIFYING (16982185):
+                The managed instance group is verifying this
+                already created instance. Verification happens
+                every time the instance is (re)created or
+                restarted and consists of: 1. Waiting until
+                health check specified as part of this managed
+                instance group's autohealing policy reports
+                HEALTHY. Note: Applies only if autohealing
+                policy has a health check specified 2. Waiting
+                for addition verification steps performed as
+                post-instance creation (subject to future
+                extensions).
         """
         UNDEFINED_ACTION = 0
         ABANDONING = 388244813
@@ -39004,6 +40721,18 @@ class InstanceProperties(proto.Message):
         r"""KeyRevocationActionType of the instance. Supported options
         are "STOP" and "NONE". The default value is "NONE" if it is not
         specified.
+
+        Values:
+            UNDEFINED_KEY_REVOCATION_ACTION_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            KEY_REVOCATION_ACTION_TYPE_UNSPECIFIED (467110106):
+                Default value. This value is unused.
+            NONE (2402104):
+                Indicates user chose no operation.
+            STOP (2555906):
+                Indicates user chose to opt for VM shutdown
+                on key revocation.
         """
         UNDEFINED_KEY_REVOCATION_ACTION_TYPE = 0
         KEY_REVOCATION_ACTION_TYPE_UNSPECIFIED = 467110106
@@ -39014,6 +40743,26 @@ class InstanceProperties(proto.Message):
         r"""The private IPv6 google access type for VMs. If not specified, use
         INHERIT_FROM_SUBNETWORK as default. Note that for MachineImage, this
         is not supported yet.
+
+        Values:
+            UNDEFINED_PRIVATE_IPV6_GOOGLE_ACCESS (0):
+                A value indicating that the enum field is not
+                set.
+            ENABLE_BIDIRECTIONAL_ACCESS_TO_GOOGLE (427975994):
+                Bidirectional private IPv6 access to/from
+                Google services. If specified, the subnetwork
+                who is attached to the instance's default
+                network interface will be assigned an internal
+                IPv6 prefix if it doesn't have before.
+            ENABLE_OUTBOUND_VM_ACCESS_TO_GOOGLE (288210263):
+                Outbound private IPv6 access from VMs in this
+                subnet to Google services. If specified, the
+                subnetwork who is attached to the instance's
+                default network interface will be assigned an
+                internal IPv6 prefix if it doesn't have before.
+            INHERIT_FROM_SUBNETWORK (530256959):
+                Each network interface inherits
+                PrivateIpv6GoogleAccess from its subnetwork.
         """
         UNDEFINED_PRIVATE_IPV6_GOOGLE_ACCESS = 0
         ENABLE_BIDIRECTIONAL_ACCESS_TO_GOOGLE = 427975994
@@ -39367,7 +41116,39 @@ class InstanceWithNamedPorts(proto.Message):
     """
 
     class Status(proto.Enum):
-        r"""[Output Only] The status of the instance."""
+        r"""[Output Only] The status of the instance.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            DEPROVISIONING (428935662):
+                The Nanny is halted and we are performing
+                tear down tasks like network deprogramming,
+                releasing quota, IP, tearing down disks etc.
+            PROVISIONING (290896621):
+                Resources are being allocated for the
+                instance.
+            REPAIRING (413483285):
+                The instance is in repair.
+            RUNNING (121282975):
+                The instance is running.
+            STAGING (431072283):
+                All required resources have been allocated
+                and the instance is being started.
+            STOPPED (444276141):
+                The instance has stopped successfully.
+            STOPPING (350791796):
+                The instance is currently stopping (either
+                being deleted or killed).
+            SUSPENDED (51223995):
+                The instance has suspended.
+            SUSPENDING (514206246):
+                The instance is suspending.
+            TERMINATED (250018339):
+                The instance has stopped (either by explicit
+                action or underlying failure).
+        """
         UNDEFINED_STATUS = 0
         DEPROVISIONING = 428935662
         PROVISIONING = 290896621
@@ -39468,6 +41249,19 @@ class InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy(proto.Messag
     class Type(proto.Enum):
         r"""[Output Only] The type of the firewall policy. Can be one of
         HIERARCHY, NETWORK, NETWORK_REGIONAL.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            HIERARCHY (69902869):
+                No description available.
+            NETWORK (413984270):
+                No description available.
+            NETWORK_REGIONAL (190804272):
+                No description available.
+            UNSPECIFIED (526786327):
+                No description available.
         """
         UNDEFINED_TYPE = 0
         HIERARCHY = 69902869
@@ -39817,8 +41611,11 @@ class Interconnect(proto.Message):
             operations and maintenance notifications
             regarding this Interconnect. If specified, this
             will be used for notifications in addition to
-            all other forms described, such as Stackdriver
-            logs alerting and Cloud Notifications.
+            all other forms described, such as Cloud
+            Monitoring logs alerting and Cloud
+            Notifications. This field is required for users
+            who sign up for Cloud Interconnect using
+            workforce identity federation.
 
             This field is a member of `oneof`_ ``_noc_contact_email``.
         operational_status (str):
@@ -39882,6 +41679,20 @@ class Interconnect(proto.Message):
         though a partner. - DEDICATED: A dedicated physical interconnection
         with the customer. Note that a value IT_PRIVATE has been deprecated
         in favor of DEDICATED.
+
+        Values:
+            UNDEFINED_INTERCONNECT_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            DEDICATED (258411983):
+                A dedicated physical interconnection with the
+                customer.
+            IT_PRIVATE (335677007):
+                [Deprecated] A private, physical interconnection with the
+                customer.
+            PARTNER (461924520):
+                A partner-managed interconnection shared
+                between customers via partner.
         """
         UNDEFINED_INTERCONNECT_TYPE = 0
         DEDICATED = 258411983
@@ -39894,6 +41705,15 @@ class Interconnect(proto.Message):
         LINK_TYPE_ETHERNET_100G_LR: A 100G Ethernet with LR optics. Note
         that this field indicates the speed of each of the links in the
         bundle, not the speed of the entire bundle.
+
+        Values:
+            UNDEFINED_LINK_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            LINK_TYPE_ETHERNET_100G_LR (337672551):
+                100G Ethernet, LR Optics.
+            LINK_TYPE_ETHERNET_10G_LR (236739749):
+                10G Ethernet, LR Optics. [(rate_bps) = 10000000000];
         """
         UNDEFINED_LINK_TYPE = 0
         LINK_TYPE_ETHERNET_100G_LR = 337672551
@@ -39909,6 +41729,19 @@ class Interconnect(proto.Message):
         OS_UNDER_MAINTENANCE: An Interconnect that is undergoing internal
         maintenance. No attachments may be provisioned or updated on this
         Interconnect.
+
+        Values:
+            UNDEFINED_OPERATIONAL_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            OS_ACTIVE (55721409):
+                The interconnect is valid, turned up, and
+                ready to use. Attachments may be provisioned on
+                this interconnect.
+            OS_UNPROVISIONED (239771840):
+                The interconnect has not completed turnup. No
+                attachments may be provisioned on this
+                interconnect.
         """
         UNDEFINED_OPERATIONAL_STATUS = 0
         OS_ACTIVE = 55721409
@@ -39923,6 +41756,19 @@ class Interconnect(proto.Message):
         Interconnect. - UNDER_MAINTENANCE: The Interconnect is undergoing
         internal maintenance. No attachments may be provisioned or updated
         on this Interconnect.
+
+        Values:
+            UNDEFINED_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            ACTIVE (314733318):
+                The interconnect is valid, turned up, and
+                ready to use. Attachments may be provisioned on
+                this interconnect.
+            UNPROVISIONED (517333979):
+                The interconnect has not completed turnup. No
+                attachments may be provisioned on this
+                interconnect.
         """
         UNDEFINED_STATE = 0
         ACTIVE = 314733318
@@ -40355,6 +42201,35 @@ class InterconnectAttachment(proto.Message):
         - BPS_500M: 500 Mbit/s - BPS_1G: 1 Gbit/s - BPS_2G: 2 Gbit/s -
         BPS_5G: 5 Gbit/s - BPS_10G: 10 Gbit/s - BPS_20G: 20 Gbit/s -
         BPS_50G: 50 Gbit/s
+
+        Values:
+            UNDEFINED_BANDWIDTH (0):
+                A value indicating that the enum field is not
+                set.
+            BPS_100M (49547958):
+                100 Mbit/s
+            BPS_10G (278693006):
+                10 Gbit/s
+            BPS_1G (355358448):
+                1 Gbit/s
+            BPS_200M (49577749):
+                200 Mbit/s
+            BPS_20G (278693967):
+                20 Gbit/s
+            BPS_2G (355358479):
+                2 Gbit/s
+            BPS_300M (49607540):
+                300 Mbit/s
+            BPS_400M (49637331):
+                400 Mbit/s
+            BPS_500M (49667122):
+                500 Mbit/s
+            BPS_50G (278696850):
+                50 Gbit/s
+            BPS_50M (278696856):
+                50 Mbit/s
+            BPS_5G (355358572):
+                5 Gbit/s
         """
         UNDEFINED_BANDWIDTH = 0
         BPS_100M = 49547958
@@ -40380,6 +42255,17 @@ class InterconnectAttachment(proto.Message):
         pairing key, so that the provisioned circuit will lie in the
         specified domain. If not specified, the value will default to
         AVAILABILITY_DOMAIN_ANY.
+
+        Values:
+            UNDEFINED_EDGE_AVAILABILITY_DOMAIN (0):
+                A value indicating that the enum field is not
+                set.
+            AVAILABILITY_DOMAIN_1 (349552090):
+                No description available.
+            AVAILABILITY_DOMAIN_2 (349552091):
+                No description available.
+            AVAILABILITY_DOMAIN_ANY (375256373):
+                No description available.
         """
         UNDEFINED_EDGE_AVAILABILITY_DOMAIN = 0
         AVAILABILITY_DOMAIN_1 = 349552090
@@ -40399,6 +42285,25 @@ class InterconnectAttachment(proto.Message):
         receive traffic from, such a VLAN attachment. To use *HA VPN over
         Cloud Interconnect*, the VLAN attachment must be created with this
         option.
+
+        Values:
+            UNDEFINED_ENCRYPTION (0):
+                A value indicating that the enum field is not
+                set.
+            IPSEC (69882282):
+                The interconnect attachment will carry only
+                encrypted traffic that is encrypted by an IPsec
+                device such as HA VPN gateway; VMs cannot
+                directly send traffic to or receive traffic from
+                such an interconnect attachment. To use HA VPN
+                over Cloud Interconnect, the interconnect
+                attachment must be created with this option.
+            NONE (2402104):
+                This is the default value, which means the
+                Interconnect Attachment will carry unencrypted
+                traffic. VMs will be able to send traffic to or
+                receive traffic from such interconnect
+                attachment.
         """
         UNDEFINED_ENCRYPTION = 0
         IPSEC = 69882282
@@ -40410,6 +42315,17 @@ class InterconnectAttachment(proto.Message):
         values: - OS_ACTIVE: The attachment has been turned up and is ready
         to use. - OS_UNPROVISIONED: The attachment is not ready to use yet,
         because turnup is not complete.
+
+        Values:
+            UNDEFINED_OPERATIONAL_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            OS_ACTIVE (55721409):
+                Indicates that attachment has been turned up
+                and is ready to use.
+            OS_UNPROVISIONED (239771840):
+                Indicates that attachment is not ready to use
+                yet, because turnup is not complete.
         """
         UNDEFINED_OPERATIONAL_STATUS = 0
         OS_ACTIVE = 55721409
@@ -40420,6 +42336,17 @@ class InterconnectAttachment(proto.Message):
         the IPv6 feature is enabled or not. If not specified, IPV4_ONLY will
         be used. This field can be both set at interconnect attachments
         creation and update interconnect attachment operations.
+
+        Values:
+            UNDEFINED_STACK_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            IPV4_IPV6 (22197249):
+                The interconnect attachment can have both
+                IPv4 and IPv6 addresses.
+            IPV4_ONLY (22373798):
+                The interconnect attachment will only be
+                assigned IPv4 addresses.
         """
         UNDEFINED_STACK_TYPE = 0
         IPV4_IPV6 = 22197249
@@ -40444,6 +42371,35 @@ class InterconnectAttachment(proto.Message):
         deleted externally and is no longer functional. This could be
         because the associated Interconnect was removed, or because the
         other side of a Partner attachment was deleted.
+
+        Values:
+            UNDEFINED_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            ACTIVE (314733318):
+                Indicates that attachment has been turned up
+                and is ready to use.
+            DEFUNCT (115891759):
+                The attachment was deleted externally and is
+                no longer functional. This could be because the
+                associated Interconnect was wiped out, or
+                because the other side of a Partner attachment
+                was deleted.
+            PARTNER_REQUEST_RECEIVED (513587304):
+                A PARTNER attachment is in the process of provisioning after
+                a PARTNER_PROVIDER attachment was created that references
+                it.
+            PENDING_CUSTOMER (167494054):
+                PARTNER or PARTNER_PROVIDER attachment that is waiting for
+                the customer to activate.
+            PENDING_PARTNER (387890656):
+                A newly created PARTNER attachment that has
+                not yet been configured on the Partner side.
+            STATE_UNSPECIFIED (470755401):
+                No description available.
+            UNPROVISIONED (517333979):
+                Indicates that attachment is not ready to use
+                yet, because turnup is not complete.
         """
         UNDEFINED_STATE = 0
         ACTIVE = 314733318
@@ -40460,6 +42416,19 @@ class InterconnectAttachment(proto.Message):
         Interconnect. - PARTNER: an attachment to a Partner Interconnect,
         created by the customer. - PARTNER_PROVIDER: an attachment to a
         Partner Interconnect, created by the partner.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            DEDICATED (258411983):
+                Attachment to a dedicated interconnect.
+            PARTNER (461924520):
+                Attachment to a partner interconnect, created
+                by the customer.
+            PARTNER_PROVIDER (483261352):
+                Attachment to a partner interconnect, created
+                by the partner.
         """
         UNDEFINED_TYPE = 0
         DEDICATED = 258411983
@@ -40989,13 +42958,42 @@ class InterconnectDiagnostics(proto.Message):
     """
 
     class BundleAggregationType(proto.Enum):
-        r"""The aggregation type of the bundle interface."""
+        r"""The aggregation type of the bundle interface.
+
+        Values:
+            UNDEFINED_BUNDLE_AGGREGATION_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            BUNDLE_AGGREGATION_TYPE_LACP (27758925):
+                LACP is enabled.
+            BUNDLE_AGGREGATION_TYPE_STATIC (50678873):
+                LACP is disabled.
+        """
         UNDEFINED_BUNDLE_AGGREGATION_TYPE = 0
         BUNDLE_AGGREGATION_TYPE_LACP = 27758925
         BUNDLE_AGGREGATION_TYPE_STATIC = 50678873
 
     class BundleOperationalStatus(proto.Enum):
-        r"""The operational status of the bundle interface."""
+        r"""The operational status of the bundle interface.
+
+        Values:
+            UNDEFINED_BUNDLE_OPERATIONAL_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            BUNDLE_OPERATIONAL_STATUS_DOWN (453842693):
+                If bundleAggregationType is LACP: LACP is not
+                established and/or all links in the bundle have
+                DOWN operational status. If
+                bundleAggregationType is STATIC: one or more
+                links in the bundle has DOWN operational status.
+            BUNDLE_OPERATIONAL_STATUS_UP (161366462):
+                If bundleAggregationType is LACP: LACP is
+                established and at least one link in the bundle
+                has UP operational status. If
+                bundleAggregationType is STATIC: all links in
+                the bundle (typically just one) have UP
+                operational status.
+        """
         UNDEFINED_BUNDLE_OPERATIONAL_STATUS = 0
         BUNDLE_OPERATIONAL_STATUS_DOWN = 453842693
         BUNDLE_OPERATIONAL_STATUS_UP = 161366462
@@ -41090,6 +43088,18 @@ class InterconnectDiagnosticsLinkLACPStatus(proto.Message):
         values: - ACTIVE: The link is configured and active within the
         bundle. - DETACHED: The link is not configured within the
         bundle. This means that the rest of the object should be empty.
+
+        Values:
+            UNDEFINED_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            ACTIVE (314733318):
+                The link is configured and active within the
+                bundle.
+            DETACHED (216562546):
+                The link is not configured within the bundle,
+                this means the rest of the object should be
+                empty.
         """
         UNDEFINED_STATE = 0
         ACTIVE = 314733318
@@ -41151,6 +43161,26 @@ class InterconnectDiagnosticsLinkOpticalPower(proto.Message):
         warning threshold. - LOW_ALARM: The value has crossed below the low
         alarm threshold. - HIGH_ALARM: The value has crossed above the high
         alarm threshold.
+
+        Values:
+            UNDEFINED_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            HIGH_ALARM (305363284):
+                The value has crossed above the high alarm
+                threshold.
+            HIGH_WARNING (220984799):
+                The value of the current optical power has
+                crossed above the high warning threshold.
+            LOW_ALARM (316659046):
+                The value of the current optical power has
+                crossed below the low alarm threshold.
+            LOW_WARNING (338793841):
+                The value of the current optical power has
+                crossed below the low warning threshold.
+            OK (2524):
+                The value of the current optical power has
+                not crossed a warning threshold.
         """
         UNDEFINED_STATE = 0
         HIGH_ALARM = 305363284
@@ -41216,7 +43246,19 @@ class InterconnectDiagnosticsLinkStatus(proto.Message):
     """
 
     class OperationalStatus(proto.Enum):
-        r"""The operational status of the link."""
+        r"""The operational status of the link.
+
+        Values:
+            UNDEFINED_OPERATIONAL_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            LINK_OPERATIONAL_STATUS_DOWN (281653885):
+                The interface is unable to communicate with
+                the remote end.
+            LINK_OPERATIONAL_STATUS_UP (305879862):
+                The interface has low level communication
+                with the remote end.
+        """
         UNDEFINED_OPERATIONAL_STATUS = 0
         LINK_OPERATIONAL_STATUS_DOWN = 281653885
         LINK_OPERATIONAL_STATUS_UP = 305879862
@@ -41443,6 +43485,31 @@ class InterconnectLocation(proto.Message):
         r"""[Output Only] Continent for this location, which can take one of the
         following values: - AFRICA - ASIA_PAC - EUROPE - NORTH_AMERICA -
         SOUTH_AMERICA
+
+        Values:
+            UNDEFINED_CONTINENT (0):
+                A value indicating that the enum field is not
+                set.
+            AFRICA (317443706):
+                No description available.
+            ASIA_PAC (119782269):
+                No description available.
+            C_AFRICA (71993846):
+                No description available.
+            C_ASIA_PAC (465668089):
+                No description available.
+            C_EUROPE (200369438):
+                No description available.
+            C_NORTH_AMERICA (275697048):
+                No description available.
+            C_SOUTH_AMERICA (397149792):
+                No description available.
+            EUROPE (445819298):
+                No description available.
+            NORTH_AMERICA (448015508):
+                No description available.
+            SOUTH_AMERICA (32597340):
+                No description available.
         """
         UNDEFINED_CONTINENT = 0
         AFRICA = 317443706
@@ -41462,6 +43529,17 @@ class InterconnectLocation(proto.Message):
         is closed and is unavailable for provisioning new Interconnects. -
         AVAILABLE: The InterconnectLocation is available for provisioning
         new Interconnects.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            AVAILABLE (442079913):
+                The InterconnectLocation is available for
+                provisioning new Interconnects.
+            CLOSED (380163436):
+                The InterconnectLocation is closed for
+                provisioning new Interconnects.
         """
         UNDEFINED_STATUS = 0
         AVAILABLE = 442079913
@@ -41656,7 +43734,25 @@ class InterconnectLocationRegionInfo(proto.Message):
     """
 
     class LocationPresence(proto.Enum):
-        r"""Identifies the network presence of this location."""
+        r"""Identifies the network presence of this location.
+
+        Values:
+            UNDEFINED_LOCATION_PRESENCE (0):
+                A value indicating that the enum field is not
+                set.
+            GLOBAL (494663587):
+                This region is not in any common network
+                presence with this InterconnectLocation.
+            LOCAL_REGION (403535464):
+                This region shares the same regional network
+                presence as this InterconnectLocation.
+            LP_GLOBAL (429584062):
+                [Deprecated] This region is not in any common network
+                presence with this InterconnectLocation.
+            LP_LOCAL_REGION (488598851):
+                [Deprecated] This region shares the same regional network
+                presence as this InterconnectLocation.
+        """
         UNDEFINED_LOCATION_PRESENCE = 0
         GLOBAL = 494663587
         LOCAL_REGION = 403535464
@@ -41752,6 +43848,27 @@ class InterconnectOutageNotification(proto.Message):
         should remain up, but with reduced bandwidth. Note that the versions
         of this enum prefixed with `IT_` have been deprecated in favor of
         the unprefixed values.
+
+        Values:
+            UNDEFINED_ISSUE_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            IT_OUTAGE (175779973):
+                [Deprecated] The Interconnect may be completely out of
+                service for some or all of the specified window.
+            IT_PARTIAL_OUTAGE (92103971):
+                [Deprecated] Some circuits comprising the Interconnect will
+                be out of service during the expected window. The
+                interconnect as a whole should remain up, albeit with
+                reduced bandwidth.
+            OUTAGE (195285745):
+                The Interconnect may be completely out of
+                service for some or all of the specified window.
+            PARTIAL_OUTAGE (147053455):
+                Some circuits comprising the Interconnect
+                will be out of service during the expected
+                window. The interconnect as a whole should
+                remain up, albeit with reduced bandwidth.
         """
         UNDEFINED_ISSUE_TYPE = 0
         IT_OUTAGE = 175779973
@@ -41764,6 +43881,15 @@ class InterconnectOutageNotification(proto.Message):
         following value: - GOOGLE: this notification as generated by Google.
         Note that the value of NSRC_GOOGLE has been deprecated in favor of
         GOOGLE.
+
+        Values:
+            UNDEFINED_SOURCE (0):
+                A value indicating that the enum field is not
+                set.
+            GOOGLE (497439289):
+                This notification was generated by Google.
+            NSRC_GOOGLE (510574562):
+                [Deprecated] This notification was generated by Google.
         """
         UNDEFINED_SOURCE = 0
         GOOGLE = 497439289
@@ -41778,6 +43904,29 @@ class InterconnectOutageNotification(proto.Message):
         - COMPLETED: The outage associated with this notification is
         complete. Note that the versions of this enum prefixed with `NS_`
         have been deprecated in favor of the unprefixed values.
+
+        Values:
+            UNDEFINED_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            ACTIVE (314733318):
+                This outage notification is active. The event could be in
+                the future, present, or past. See start_time and end_time
+                for scheduling.
+            CANCELLED (41957681):
+                The outage associated with this notification
+                was cancelled before the outage was due to
+                start.
+            COMPLETED (309921323):
+                The outage associated with this notification
+                is complete.
+            NS_ACTIVE (252563136):
+                [Deprecated] This outage notification is active. The event
+                could be in the future, present, or past. See start_time and
+                end_time for scheduling.
+            NS_CANCELED (506579411):
+                [Deprecated] The outage associated with this notification
+                was canceled before the outage was due to start.
         """
         UNDEFINED_STATE = 0
         ACTIVE = 314733318
@@ -42105,7 +44254,27 @@ class LicenseCode(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""[Output Only] Current state of this License Code."""
+        r"""[Output Only] Current state of this License Code.
+
+        Values:
+            UNDEFINED_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            DISABLED (516696700):
+                Machines are not allowed to attach boot disks
+                with this License Code. Requests to create new
+                resources with this license will be rejected.
+            ENABLED (182130465):
+                Use is allowed for anyone with USE_READ_ONLY access to this
+                License Code.
+            RESTRICTED (261551195):
+                Use of this license is limited to a project
+                whitelist.
+            STATE_UNSPECIFIED (470755401):
+                No description available.
+            TERMINATED (250018339):
+                Reserved state.
+        """
         UNDEFINED_STATE = 0
         DISABLED = 516696700
         ENABLED = 182130465
@@ -48531,7 +50700,17 @@ class ListPeeringRoutesNetworksRequest(proto.Message):
     """
 
     class Direction(proto.Enum):
-        r"""The direction of the exchanged routes."""
+        r"""The direction of the exchanged routes.
+
+        Values:
+            UNDEFINED_DIRECTION (0):
+                A value indicating that the enum field is not
+                set.
+            INCOMING (338552870):
+                For routes exported from peer network.
+            OUTGOING (307438444):
+                For routes exported from local network.
+        """
         UNDEFINED_DIRECTION = 0
         INCOMING = 338552870
         OUTGOING = 307438444
@@ -55225,7 +57404,35 @@ class LocationPolicy(proto.Message):
     """
 
     class TargetShape(proto.Enum):
-        r"""Strategy for distributing VMs across zones in a region."""
+        r"""Strategy for distributing VMs across zones in a region.
+
+        Values:
+            UNDEFINED_TARGET_SHAPE (0):
+                A value indicating that the enum field is not
+                set.
+            ANY (64972):
+                GCE picks zones for creating VM instances to
+                fulfill the requested number of VMs within
+                present resource constraints and to maximize
+                utilization of unused zonal reservations.
+                Recommended for batch workloads that do not
+                require high availability.
+            ANY_SINGLE_ZONE (61100880):
+                GCE always selects a single zone for all the
+                VMs, optimizing for resource quotas, available
+                reservations and general capacity. Recommended
+                for batch workloads that cannot tollerate
+                distribution over multiple zones. This the
+                default shape in Bulk Insert and Capacity
+                Advisor APIs.
+            BALANCED (468409608):
+                GCE prioritizes acquisition of resources,
+                scheduling VMs in zones where resources are
+                available while distributing VMs as evenly as
+                possible across allowed zones to minimize the
+                impact of zonal failure. Recommended for highly
+                available serving workloads.
+        """
         UNDEFINED_TARGET_SHAPE = 0
         ANY = 64972
         ANY_SINGLE_ZONE = 61100880
@@ -55264,7 +57471,19 @@ class LocationPolicyLocation(proto.Message):
     """
 
     class Preference(proto.Enum):
-        r"""Preference for a given location. Set to either ALLOW or DENY."""
+        r"""Preference for a given location. Set to either ALLOW or DENY.
+
+        Values:
+            UNDEFINED_PREFERENCE (0):
+                A value indicating that the enum field is not
+                set.
+            ALLOW (62368553):
+                Location is allowed for use.
+            DENY (2094604):
+                Location is prohibited.
+            PREFERENCE_UNSPECIFIED (496219571):
+                Default value, unused.
+        """
         UNDEFINED_PREFERENCE = 0
         ALLOW = 62368553
         DENY = 2094604
@@ -55367,7 +57586,22 @@ class LogConfigCloudAuditOptions(proto.Message):
     """
 
     class LogName(proto.Enum):
-        r"""This is deprecated and has no effect. Do not use."""
+        r"""This is deprecated and has no effect. Do not use.
+
+        Values:
+            UNDEFINED_LOG_NAME (0):
+                A value indicating that the enum field is not
+                set.
+            ADMIN_ACTIVITY (427503135):
+                This is deprecated and has no effect. Do not
+                use.
+            DATA_ACCESS (238070681):
+                This is deprecated and has no effect. Do not
+                use.
+            UNSPECIFIED_LOG_NAME (410515182):
+                This is deprecated and has no effect. Do not
+                use.
+        """
         UNDEFINED_LOG_NAME = 0
         ADMIN_ACTIVITY = 427503135
         DATA_ACCESS = 238070681
@@ -55471,7 +57705,19 @@ class LogConfigDataAccessOptions(proto.Message):
     """
 
     class LogMode(proto.Enum):
-        r"""This is deprecated and has no effect. Do not use."""
+        r"""This is deprecated and has no effect. Do not use.
+
+        Values:
+            UNDEFINED_LOG_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            LOG_FAIL_CLOSED (360469778):
+                This is deprecated and has no effect. Do not
+                use.
+            LOG_MODE_UNSPECIFIED (88160822):
+                This is deprecated and has no effect. Do not
+                use.
+        """
         UNDEFINED_LOG_MODE = 0
         LOG_FAIL_CLOSED = 360469778
         LOG_MODE_UNSPECIFIED = 88160822
@@ -55608,6 +57854,21 @@ class MachineImage(proto.Message):
     class Status(proto.Enum):
         r"""[Output Only] The status of the machine image. One of the following
         values: INVALID, CREATING, READY, DELETING, and UPLOADING.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            CREATING (455564985):
+                No description available.
+            DELETING (528602024):
+                No description available.
+            INVALID (530283991):
+                No description available.
+            READY (77848963):
+                No description available.
+            UPLOADING (267603489):
+                No description available.
         """
         UNDEFINED_STATUS = 0
         CREATING = 455564985
@@ -56229,6 +58490,63 @@ class ManagedInstance(proto.Message):
         the instance and it is in the process of being verified. Additional
         supported values which may be not listed in the enum directly due to
         technical reasons: STOPPING SUSPENDING
+
+        Values:
+            UNDEFINED_CURRENT_ACTION (0):
+                A value indicating that the enum field is not
+                set.
+            ABANDONING (388244813):
+                The managed instance group is abandoning this
+                instance. The instance will be removed from the
+                instance group and from any target pools that
+                are associated with this group.
+            CREATING (455564985):
+                The managed instance group is creating this
+                instance. If the group fails to create this
+                instance, it will try again until it is
+                successful.
+            CREATING_WITHOUT_RETRIES (428843785):
+                The managed instance group is attempting to
+                create this instance only once. If the group
+                fails to create this instance, it does not try
+                again and the group's targetSize value is
+                decreased.
+            DELETING (528602024):
+                The managed instance group is permanently
+                deleting this instance.
+            NONE (2402104):
+                The managed instance group has not scheduled
+                any actions for this instance.
+            RECREATING (287278572):
+                The managed instance group is recreating this
+                instance.
+            REFRESHING (163266343):
+                The managed instance group is applying
+                configuration changes to the instance without
+                stopping it. For example, the group can update
+                the target pool list for an instance without
+                stopping that instance.
+            RESTARTING (320534387):
+                The managed instance group is restarting this
+                instance.
+            RESUMING (446856618):
+                The managed instance group is resuming this
+                instance.
+            STARTING (488820800):
+                The managed instance group is starting this
+                instance.
+            VERIFYING (16982185):
+                The managed instance group is verifying this
+                already created instance. Verification happens
+                every time the instance is (re)created or
+                restarted and consists of: 1. Waiting until
+                health check specified as part of this managed
+                instance group's autohealing policy reports
+                HEALTHY. Note: Applies only if autohealing
+                policy has a health check specified 2. Waiting
+                for addition verification steps performed as
+                post-instance creation (subject to future
+                extensions).
         """
         UNDEFINED_CURRENT_ACTION = 0
         ABANDONING = 388244813
@@ -56248,6 +58566,36 @@ class ManagedInstance(proto.Message):
         the instance does not exist. Additional supported values which may
         be not listed in the enum directly due to technical reasons:
         STOPPING SUSPENDING
+
+        Values:
+            UNDEFINED_INSTANCE_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            DEPROVISIONING (428935662):
+                The Nanny is halted and we are performing
+                tear down tasks like network deprogramming,
+                releasing quota, IP, tearing down disks etc.
+            PROVISIONING (290896621):
+                Resources are being allocated for the
+                instance.
+            REPAIRING (413483285):
+                The instance is in repair.
+            RUNNING (121282975):
+                The instance is running.
+            STAGING (431072283):
+                All required resources have been allocated
+                and the instance is being started.
+            STOPPED (444276141):
+                The instance has stopped successfully.
+            STOPPING (350791796):
+                No description available.
+            SUSPENDED (51223995):
+                The instance has suspended.
+            SUSPENDING (514206246):
+                No description available.
+            TERMINATED (250018339):
+                The instance has stopped (either by explicit
+                action or underlying failure).
         """
         UNDEFINED_INSTANCE_STATUS = 0
         DEPROVISIONING = 428935662
@@ -56334,7 +58682,35 @@ class ManagedInstanceInstanceHealth(proto.Message):
     """
 
     class DetailedHealthState(proto.Enum):
-        r"""[Output Only] The current detailed instance health state."""
+        r"""[Output Only] The current detailed instance health state.
+
+        Values:
+            UNDEFINED_DETAILED_HEALTH_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            DRAINING (480455402):
+                The instance is being drained. The existing
+                connections to the instance have time to
+                complete, but the new ones are being refused.
+            HEALTHY (439801213):
+                The instance is reachable i.e. a connection
+                to the application health checking endpoint can
+                be established, and conforms to the requirements
+                defined by the health check.
+            TIMEOUT (477813057):
+                The instance is unreachable i.e. a connection
+                to the application health checking endpoint
+                cannot be established, or the server does not
+                respond within the specified timeout.
+            UNHEALTHY (462118084):
+                The instance is reachable, but does not
+                conform to the requirements defined by the
+                health check.
+            UNKNOWN (433141802):
+                The health checking system is aware of the
+                instance but its health is not known at the
+                moment.
+        """
         UNDEFINED_DETAILED_HEALTH_STATE = 0
         DRAINING = 480455402
         HEALTHY = 439801213
@@ -56496,6 +58872,21 @@ class MetadataFilter(proto.Message):
         filterLabels must have a matching label in the provided metadata. -
         MATCH_ALL: all filterLabels must have matching labels in the
         provided metadata.
+
+        Values:
+            UNDEFINED_FILTER_MATCH_CRITERIA (0):
+                A value indicating that the enum field is not
+                set.
+            MATCH_ALL (180663271):
+                Specifies that all filterLabels must match
+                for the metadataFilter to be considered a match.
+            MATCH_ANY (180663346):
+                Specifies that any filterLabel must match for
+                the metadataFilter to be considered a match.
+            NOT_SET (163646646):
+                Indicates that the match criteria was not
+                set. A metadataFilter must never be created with
+                this value.
         """
         UNDEFINED_FILTER_MATCH_CRITERIA = 0
         MATCH_ALL = 180663271
@@ -56858,6 +59249,15 @@ class Network(proto.Message):
         r"""The network firewall policy enforcement order. Can be either
         AFTER_CLASSIC_FIREWALL or BEFORE_CLASSIC_FIREWALL. Defaults to
         AFTER_CLASSIC_FIREWALL if the field is not specified.
+
+        Values:
+            UNDEFINED_NETWORK_FIREWALL_POLICY_ENFORCEMENT_ORDER (0):
+                A value indicating that the enum field is not
+                set.
+            AFTER_CLASSIC_FIREWALL (154582608):
+                No description available.
+            BEFORE_CLASSIC_FIREWALL (338458349):
+                No description available.
         """
         UNDEFINED_NETWORK_FIREWALL_POLICY_ENFORCEMENT_ORDER = 0
         AFTER_CLASSIC_FIREWALL = 154582608
@@ -57043,7 +59443,19 @@ class NetworkAttachment(proto.Message):
     """
 
     class ConnectionPreference(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            UNDEFINED_CONNECTION_PREFERENCE (0):
+                A value indicating that the enum field is not
+                set.
+            ACCEPT_AUTOMATIC (75250580):
+                No description available.
+            ACCEPT_MANUAL (373061341):
+                No description available.
+            INVALID (530283991):
+                No description available.
+        """
         UNDEFINED_CONNECTION_PREFERENCE = 0
         ACCEPT_AUTOMATIC = 75250580
         ACCEPT_MANUAL = 373061341
@@ -57234,6 +59646,28 @@ class NetworkAttachmentConnectedEndpoint(proto.Message):
     class Status(proto.Enum):
         r"""The status of a connected endpoint to this network
         attachment.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            ACCEPTED (246714279):
+                The consumer allows traffic from the producer
+                to reach its VPC.
+            CLOSED (380163436):
+                The consumer network attachment no longer
+                exists.
+            NEEDS_ATTENTION (344491452):
+                The consumer needs to take further action
+                before traffic can be served.
+            PENDING (35394935):
+                The consumer neither allows nor prohibits
+                traffic from the producer to reach its VPC.
+            REJECTED (174130302):
+                The consumer prohibits traffic from the
+                producer to reach its VPC.
+            STATUS_UNSPECIFIED (42133066):
+                No description available.
         """
         UNDEFINED_STATUS = 0
         ACCEPTED = 246714279
@@ -57818,6 +60252,35 @@ class NetworkEndpointGroup(proto.Message):
         of GCE_VM_IP, GCE_VM_IP_PORT, NON_GCP_PRIVATE_IP_PORT,
         INTERNET_FQDN_PORT, INTERNET_IP_PORT, SERVERLESS,
         PRIVATE_SERVICE_CONNECT.
+
+        Values:
+            UNDEFINED_NETWORK_ENDPOINT_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            GCE_VM_IP (401880793):
+                The network endpoint is represented by an IP
+                address.
+            GCE_VM_IP_PORT (501838375):
+                The network endpoint is represented by IP
+                address and port pair.
+            INTERNET_FQDN_PORT (404154477):
+                The network endpoint is represented by fully
+                qualified domain name and port.
+            INTERNET_IP_PORT (477719963):
+                The network endpoint is represented by an
+                internet IP address and port.
+            NON_GCP_PRIVATE_IP_PORT (336447968):
+                The network endpoint is represented by an IP
+                address and port. The endpoint belongs to a VM
+                or pod running in a customer's on-premises.
+            PRIVATE_SERVICE_CONNECT (48134724):
+                The network endpoint is either public Google
+                APIs or services exposed by other GCP Project
+                with a Service Attachment. The connection is set
+                up by private service connect
+            SERVERLESS (270492508):
+                The network endpoint is handled by specified
+                serverless infrastructure.
         """
         UNDEFINED_NETWORK_ENDPOINT_TYPE = 0
         GCE_VM_IP = 401880793
@@ -58277,7 +60740,33 @@ class NetworkEndpointGroupPscData(proto.Message):
     """
 
     class PscConnectionStatus(proto.Enum):
-        r"""[Output Only] The connection status of the PSC Forwarding Rule."""
+        r"""[Output Only] The connection status of the PSC Forwarding Rule.
+
+        Values:
+            UNDEFINED_PSC_CONNECTION_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            ACCEPTED (246714279):
+                The connection has been accepted by the
+                producer.
+            CLOSED (380163436):
+                The connection has been closed by the
+                producer and will not serve traffic going
+                forward.
+            NEEDS_ATTENTION (344491452):
+                The connection has been accepted by the
+                producer, but the producer needs to take further
+                action before the forwarding rule can serve
+                traffic.
+            PENDING (35394935):
+                The connection is pending acceptance by the
+                producer.
+            REJECTED (174130302):
+                The connection has been rejected by the
+                producer.
+            STATUS_UNSPECIFIED (42133066):
+                No description available.
+        """
         UNDEFINED_PSC_CONNECTION_STATUS = 0
         ACCEPTED = 246714279
         CLOSED = 380163436
@@ -58356,6 +60845,17 @@ class NetworkEndpointGroupsListEndpointsRequest(proto.Message):
         each network endpoint. Valid options are SKIP or SHOW. If you
         don't specify this parameter, the health status of network
         endpoints will not be provided.
+
+        Values:
+            UNDEFINED_HEALTH_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            SHOW (2544381):
+                Show the health status for each network
+                endpoint. Impacts latency of the call.
+            SKIP (2547071):
+                Health status for network endpoints will not
+                be provided.
         """
         UNDEFINED_HEALTH_STATUS = 0
         SHOW = 2544381
@@ -58574,6 +61074,12 @@ class NetworkInterface(proto.Message):
             global/networks/default
 
             This field is a member of `oneof`_ ``_network``.
+        network_attachment (str):
+            The URL of the network attachment that this interface should
+            connect to in the following format:
+            projects/{project_number}/regions/{region_name}/networkAttachments/{network_attachment_name}.
+
+            This field is a member of `oneof`_ ``_network_attachment``.
         network_i_p (str):
             An IPv4 internal IP address to assign to the
             instance for this network interface. If not
@@ -58625,6 +61131,19 @@ class NetworkInterface(proto.Message):
         r"""[Output Only] One of EXTERNAL, INTERNAL to indicate whether the IP
         can be accessed from the Internet. This field is always inherited
         from its subnetwork. Valid only if stackType is IPV4_IPV6.
+
+        Values:
+            UNDEFINED_IPV6_ACCESS_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            EXTERNAL (35607499):
+                This network interface can have external
+                IPv6.
+            INTERNAL (279295677):
+                This network interface can have internal
+                IPv6.
+            UNSPECIFIED_IPV6_ACCESS_TYPE (313080613):
+                No description available.
         """
         UNDEFINED_IPV6_ACCESS_TYPE = 0
         EXTERNAL = 35607499
@@ -58634,6 +61153,17 @@ class NetworkInterface(proto.Message):
     class NicType(proto.Enum):
         r"""The type of vNIC to be used on this interface. This may be
         gVNIC or VirtioNet.
+
+        Values:
+            UNDEFINED_NIC_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            GVNIC (68209305):
+                GVNIC
+            UNSPECIFIED_NIC_TYPE (67411801):
+                No type specified.
+            VIRTIO_NET (452123481):
+                VIRTIO
         """
         UNDEFINED_NIC_TYPE = 0
         GVNIC = 68209305
@@ -58645,6 +61175,19 @@ class NetworkInterface(proto.Message):
         IPv6 feature is enabled or not. If not specified, IPV4_ONLY will be
         used. This field can be both set at instance creation and update
         network interface operations.
+
+        Values:
+            UNDEFINED_STACK_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            IPV4_IPV6 (22197249):
+                The network interface can have both IPv4 and
+                IPv6 addresses.
+            IPV4_ONLY (22373798):
+                The network interface will be assigned IPv4
+                address.
+            UNSPECIFIED_STACK_TYPE (298084569):
+                No description available.
         """
         UNDEFINED_STACK_TYPE = 0
         IPV4_IPV6 = 22197249
@@ -58699,6 +61242,11 @@ class NetworkInterface(proto.Message):
     network: str = proto.Field(
         proto.STRING,
         number=232872494,
+        optional=True,
+    )
+    network_attachment: str = proto.Field(
+        proto.STRING,
+        number=224644052,
         optional=True,
     )
     network_i_p: str = proto.Field(
@@ -58904,6 +61452,19 @@ class NetworkPeering(proto.Message):
     class StackType(proto.Enum):
         r"""Which IP version(s) of traffic and routes are allowed to be imported
         or exported between peer networks. The default value is IPV4_ONLY.
+
+        Values:
+            UNDEFINED_STACK_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            IPV4_IPV6 (22197249):
+                This Peering will allow IPv4 traffic and routes to be
+                exchanged. Additionally if the matching peering is
+                IPV4_IPV6, IPv6 traffic and routes will be exchanged as
+                well.
+            IPV4_ONLY (22373798):
+                This Peering will only allow IPv4 traffic and routes to be
+                exchanged, even if the matching peering is IPV4_IPV6.
         """
         UNDEFINED_STACK_TYPE = 0
         IPV4_IPV6 = 22197249
@@ -58913,6 +61474,17 @@ class NetworkPeering(proto.Message):
         r"""[Output Only] State for the peering, either ``ACTIVE`` or
         ``INACTIVE``. The peering is ``ACTIVE`` when there's a matching
         configuration in the peer network.
+
+        Values:
+            UNDEFINED_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            ACTIVE (314733318):
+                Matching configuration exists on the peer.
+            INACTIVE (270421099):
+                There is no matching configuration on the
+                peer, including the case when peer does not
+                exist.
         """
         UNDEFINED_STATE = 0
         ACTIVE = 314733318
@@ -58994,7 +61566,17 @@ class NetworkPerformanceConfig(proto.Message):
     """
 
     class TotalEgressBandwidthTier(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            UNDEFINED_TOTAL_EGRESS_BANDWIDTH_TIER (0):
+                A value indicating that the enum field is not
+                set.
+            DEFAULT (115302945):
+                No description available.
+            TIER_1 (326919444):
+                No description available.
+        """
         UNDEFINED_TOTAL_EGRESS_BANDWIDTH_TIER = 0
         DEFAULT = 115302945
         TIER_1 = 326919444
@@ -59035,6 +61617,15 @@ class NetworkRoutingConfig(proto.Message):
         subnets of this network in the same region as the router. If set
         to GLOBAL, this network's Cloud Routers will advertise routes
         with all subnets of this network, across regions.
+
+        Values:
+            UNDEFINED_ROUTING_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            GLOBAL (494663587):
+                No description available.
+            REGIONAL (92288543):
+                No description available.
         """
         UNDEFINED_ROUTING_MODE = 0
         GLOBAL = 494663587
@@ -59164,7 +61755,19 @@ class NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy(proto.Message
     """
 
     class Type(proto.Enum):
-        r"""[Output Only] The type of the firewall policy."""
+        r"""[Output Only] The type of the firewall policy.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            HIERARCHY (69902869):
+                No description available.
+            NETWORK (413984270):
+                No description available.
+            UNSPECIFIED (526786327):
+                No description available.
+        """
         UNDEFINED_TYPE = 0
         HIERARCHY = 69902869
         NETWORK = 413984270
@@ -59340,6 +61943,31 @@ class NodeGroup(proto.Message):
         maintenance. Set to one of: DEFAULT, RESTART_IN_PLACE, or
         MIGRATE_WITHIN_NODE_GROUP. The default value is DEFAULT. For more
         information, see Maintenance policies.
+
+        Values:
+            UNDEFINED_MAINTENANCE_POLICY (0):
+                A value indicating that the enum field is not
+                set.
+            DEFAULT (115302945):
+                Allow the node and corresponding instances to
+                retain default maintenance behavior.
+            MAINTENANCE_POLICY_UNSPECIFIED (72964182):
+                No description available.
+            MIGRATE_WITHIN_NODE_GROUP (153483394):
+                When maintenance must be done on a node, the
+                instances on that node will be moved to other
+                nodes in the group. Instances with
+                onHostMaintenance = MIGRATE will live migrate to
+                their destinations while instances with
+                onHostMaintenance = TERMINATE will terminate and
+                then restart on their destination nodes if
+                automaticRestart = true.
+            RESTART_IN_PLACE (228647325):
+                Instances in this group will restart on the
+                same node when maintenance has completed.
+                Instances must have onHostMaintenance =
+                TERMINATE, and they will only restart if
+                automaticRestart = true.
         """
         UNDEFINED_MAINTENANCE_POLICY = 0
         DEFAULT = 115302945
@@ -59348,7 +61976,21 @@ class NodeGroup(proto.Message):
         RESTART_IN_PLACE = 228647325
 
     class Status(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            CREATING (455564985):
+                No description available.
+            DELETING (528602024):
+                No description available.
+            INVALID (530283991):
+                No description available.
+            READY (77848963):
+                No description available.
+        """
         UNDEFINED_STATUS = 0
         CREATING = 455564985
         DELETING = 528602024
@@ -59550,6 +62192,20 @@ class NodeGroupAutoscalingPolicy(proto.Message):
     class Mode(proto.Enum):
         r"""The autoscaling mode. Set to one of: ON, OFF, or ONLY_SCALE_OUT. For
         more information, see Autoscaler modes.
+
+        Values:
+            UNDEFINED_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            MODE_UNSPECIFIED (371348091):
+                No description available.
+            OFF (78159):
+                Autoscaling is disabled.
+            ON (2527):
+                Autocaling is fully enabled.
+            ONLY_SCALE_OUT (152713670):
+                Autoscaling will only scale out and will not
+                remove nodes.
         """
         UNDEFINED_MODE = 0
         MODE_UNSPECIFIED = 371348091
@@ -59743,14 +62399,42 @@ class NodeGroupNode(proto.Message):
     """
 
     class CpuOvercommitType(proto.Enum):
-        r"""CPU overcommit."""
+        r"""CPU overcommit.
+
+        Values:
+            UNDEFINED_CPU_OVERCOMMIT_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            CPU_OVERCOMMIT_TYPE_UNSPECIFIED (520665615):
+                No description available.
+            ENABLED (182130465):
+                No description available.
+            NONE (2402104):
+                No description available.
+        """
         UNDEFINED_CPU_OVERCOMMIT_TYPE = 0
         CPU_OVERCOMMIT_TYPE_UNSPECIFIED = 520665615
         ENABLED = 182130465
         NONE = 2402104
 
     class Status(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            CREATING (455564985):
+                No description available.
+            DELETING (528602024):
+                No description available.
+            INVALID (530283991):
+                No description available.
+            READY (77848963):
+                No description available.
+            REPAIRING (413483285):
+                No description available.
+        """
         UNDEFINED_STATUS = 0
         CREATING = 455564985
         DELETING = 528602024
@@ -60084,7 +62768,19 @@ class NodeTemplate(proto.Message):
     """
 
     class CpuOvercommitType(proto.Enum):
-        r"""CPU overcommit."""
+        r"""CPU overcommit.
+
+        Values:
+            UNDEFINED_CPU_OVERCOMMIT_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            CPU_OVERCOMMIT_TYPE_UNSPECIFIED (520665615):
+                No description available.
+            ENABLED (182130465):
+                No description available.
+            NONE (2402104):
+                No description available.
+        """
         UNDEFINED_CPU_OVERCOMMIT_TYPE = 0
         CPU_OVERCOMMIT_TYPE_UNSPECIFIED = 520665615
         ENABLED = 182130465
@@ -60093,6 +62789,19 @@ class NodeTemplate(proto.Message):
     class Status(proto.Enum):
         r"""[Output Only] The status of the node template. One of the following
         values: CREATING, READY, and DELETING.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            CREATING (455564985):
+                Resources are being allocated.
+            DELETING (528602024):
+                The node template is currently being deleted.
+            INVALID (530283991):
+                Invalid status.
+            READY (77848963):
+                The node template is ready.
         """
         UNDEFINED_STATUS = 0
         CREATING = 455564985
@@ -61120,6 +63829,17 @@ class Operation(proto.Message):
     class Status(proto.Enum):
         r"""[Output Only] The status of the operation, which can be one of the
         following: ``PENDING``, ``RUNNING``, or ``DONE``.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            DONE (2104194):
+                No description available.
+            PENDING (35394935):
+                No description available.
+            RUNNING (121282975):
+                No description available.
         """
         UNDEFINED_STATUS = 0
         DONE = 2104194
@@ -61650,7 +64370,21 @@ class PacketIntervals(proto.Message):
     """
 
     class Duration(proto.Enum):
-        r"""From how long ago in the past these intervals were observed."""
+        r"""From how long ago in the past these intervals were observed.
+
+        Values:
+            UNDEFINED_DURATION (0):
+                A value indicating that the enum field is not
+                set.
+            DURATION_UNSPECIFIED (529071340):
+                No description available.
+            HOUR (2223588):
+                No description available.
+            MAX (76100):
+                From BfdSession object creation time.
+            MINUTE (126786068):
+                No description available.
+        """
         UNDEFINED_DURATION = 0
         DURATION_UNSPECIFIED = 529071340
         HOUR = 2223588
@@ -61660,6 +64394,21 @@ class PacketIntervals(proto.Message):
     class Type(proto.Enum):
         r"""The type of packets for which inter-packet intervals were
         computed.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            LOOPBACK (356174219):
+                Only applies to Echo packets. This shows the
+                intervals between sending and receiving the same
+                packet.
+            RECEIVE (189660867):
+                Intervals between received packets.
+            TRANSMIT (452903600):
+                Intervals between transmitted packets.
+            TYPE_UNSPECIFIED (437714322):
+                No description available.
         """
         UNDEFINED_TYPE = 0
         LOOPBACK = 356174219
@@ -61804,6 +64553,15 @@ class PacketMirroring(proto.Message):
         r"""Indicates whether or not this packet mirroring takes effect.
         If set to FALSE, this packet mirroring policy will not be
         enforced on the network. The default is TRUE.
+
+        Values:
+            UNDEFINED_ENABLE (0):
+                A value indicating that the enum field is not
+                set.
+            FALSE (66658563):
+                No description available.
+            TRUE (2583950):
+                No description available.
         """
         UNDEFINED_ENABLE = 0
         FALSE = 66658563
@@ -61993,6 +64751,17 @@ class PacketMirroringFilter(proto.Message):
     class Direction(proto.Enum):
         r"""Direction of traffic to mirror, either INGRESS, EGRESS, or
         BOTH. The default is BOTH.
+
+        Values:
+            UNDEFINED_DIRECTION (0):
+                A value indicating that the enum field is not
+                set.
+            BOTH (2044801):
+                Default, both directions are mirrored.
+            EGRESS (432880501):
+                Only egress traffic is mirrored.
+            INGRESS (516931221):
+                Only ingress traffic is mirrored.
         """
         UNDEFINED_DIRECTION = 0
         BOTH = 2044801
@@ -65197,6 +67966,34 @@ class PerInstanceConfig(proto.Message):
     class Status(proto.Enum):
         r"""The status of applying this per-instance configuration on the
         corresponding managed instance.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            APPLYING (352003508):
+                The per-instance configuration is being
+                applied to the instance, but is not yet
+                effective, possibly waiting for the instance to,
+                for example, REFRESH.
+            DELETING (528602024):
+                The per-instance configuration deletion is
+                being applied on the instance, possibly waiting
+                for the instance to, for example, REFRESH.
+            EFFECTIVE (244201863):
+                The per-instance configuration is effective
+                on the instance, meaning that all disks, ips and
+                metadata specified in this configuration are
+                attached or set on the instance.
+            NONE (2402104):
+                *[Default]* The default status, when no per-instance
+                configuration exists.
+            UNAPPLIED (483935140):
+                The per-instance configuration is set on an
+                instance but not been applied yet.
+            UNAPPLIED_DELETION (313956873):
+                The per-instance configuration has been
+                deleted, but the deletion is not yet applied.
         """
         UNDEFINED_STATUS = 0
         APPLYING = 352003508
@@ -65442,6 +68239,15 @@ class PreservedStatePreservedDisk(proto.Message):
         if the disk should be deleted after it is no longer used by the
         group, e.g. when the given instance or the whole MIG is deleted.
         Note: disks attached in READ_ONLY mode cannot be auto-deleted.
+
+        Values:
+            UNDEFINED_AUTO_DELETE (0):
+                A value indicating that the enum field is not
+                set.
+            NEVER (74175084):
+                No description available.
+            ON_PERMANENT_INSTANCE_DELETION (95727719):
+                No description available.
         """
         UNDEFINED_AUTO_DELETE = 0
         NEVER = 74175084
@@ -65451,6 +68257,18 @@ class PreservedStatePreservedDisk(proto.Message):
         r"""The mode in which to attach this disk, either READ_WRITE or
         READ_ONLY. If not specified, the default is to attach the disk in
         READ_WRITE mode.
+
+        Values:
+            UNDEFINED_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            READ_ONLY (91950261):
+                Attaches this disk in read-only mode. Multiple VM instances
+                can use a disk in READ_ONLY mode at a time.
+            READ_WRITE (173607894):
+                *[Default]* Attaches this disk in READ_WRITE mode. Only one
+                VM instance at a time can be attached to a disk in
+                READ_WRITE mode.
         """
         UNDEFINED_MODE = 0
         READ_ONLY = 91950261
@@ -65599,6 +68417,22 @@ class Project(proto.Message):
         resources of the project and can only take the following values:
         PREMIUM, STANDARD. Initially the default network tier is
         PREMIUM.
+
+        Values:
+            UNDEFINED_DEFAULT_NETWORK_TIER (0):
+                A value indicating that the enum field is not
+                set.
+            FIXED_STANDARD (310464328):
+                Public internet quality with fixed bandwidth.
+            PREMIUM (399530551):
+                High quality, Google-grade network tier,
+                support for all networking products.
+            STANDARD (484642493):
+                Public internet quality, only limited support
+                for other networking products.
+            STANDARD_OVERRIDES_FIXED_STANDARD (465847234):
+                (Output only) Temporary tier for FIXED_STANDARD when fixed
+                standard tier is expired or not configured.
         """
         UNDEFINED_DEFAULT_NETWORK_TIER = 0
         FIXED_STANDARD = 310464328
@@ -65609,6 +68443,19 @@ class Project(proto.Message):
     class VmDnsSetting(proto.Enum):
         r"""[Output Only] Default internal DNS setting used by VMs running in
         this project.
+
+        Values:
+            UNDEFINED_VM_DNS_SETTING (0):
+                A value indicating that the enum field is not
+                set.
+            GLOBAL_DEFAULT (345419141):
+                No description available.
+            UNSPECIFIED_VM_DNS_SETTING (35691930):
+                No description available.
+            ZONAL_DEFAULT (368475782):
+                No description available.
+            ZONAL_ONLY (521198951):
+                No description available.
         """
         UNDEFINED_VM_DNS_SETTING = 0
         GLOBAL_DEFAULT = 345419141
@@ -65620,6 +68467,15 @@ class Project(proto.Message):
         r"""[Output Only] The role this project has in a shared VPC
         configuration. Currently, only projects with the host role, which is
         specified by the value HOST, are differentiated.
+
+        Values:
+            UNDEFINED_XPN_PROJECT_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            HOST (2223528):
+                No description available.
+            UNSPECIFIED_XPN_PROJECT_STATUS (340393257):
+                No description available.
         """
         UNDEFINED_XPN_PROJECT_STATUS = 0
         HOST = 2223528
@@ -65823,7 +68679,24 @@ class ProjectsSetDefaultNetworkTierRequest(proto.Message):
     """
 
     class NetworkTier(proto.Enum):
-        r"""Default network tier to be set."""
+        r"""Default network tier to be set.
+
+        Values:
+            UNDEFINED_NETWORK_TIER (0):
+                A value indicating that the enum field is not
+                set.
+            FIXED_STANDARD (310464328):
+                Public internet quality with fixed bandwidth.
+            PREMIUM (399530551):
+                High quality, Google-grade network tier,
+                support for all networking products.
+            STANDARD (484642493):
+                Public internet quality, only limited support
+                for other networking products.
+            STANDARD_OVERRIDES_FIXED_STANDARD (465847234):
+                (Output only) Temporary tier for FIXED_STANDARD when fixed
+                standard tier is expired or not configured.
+        """
         UNDEFINED_NETWORK_TIER = 0
         FIXED_STANDARD = 310464328
         PREMIUM = 399530551
@@ -65939,6 +68812,25 @@ class PublicAdvertisedPrefix(proto.Message):
         configured. - ``PREFIX_CONFIGURATION_COMPLETE``: The prefix is fully
         configured. - ``PREFIX_REMOVAL_IN_PROGRESS``: The prefix is being
         removed.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            INITIAL (518841124):
+                RPKI validation is complete.
+            PREFIX_CONFIGURATION_COMPLETE (480889551):
+                The prefix is fully configured.
+            PREFIX_CONFIGURATION_IN_PROGRESS (378550961):
+                The prefix is being configured.
+            PREFIX_REMOVAL_IN_PROGRESS (284375783):
+                The prefix is being removed.
+            PTR_CONFIGURED (513497167):
+                User has configured the PTR.
+            REVERSE_DNS_LOOKUP_FAILED (295755183):
+                Reverse DNS lookup failed.
+            VALIDATED (66197998):
+                Reverse DNS lookup is successful.
         """
         UNDEFINED_STATUS = 0
         INITIAL = 518841124
@@ -66259,6 +69151,22 @@ class PublicDelegatedPrefix(proto.Message):
         migration prefix and is active. - ``ANNOUNCED`` The public delegated
         prefix is active. - ``DELETING`` The public delegated prefix is
         being deprovsioned.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            ANNOUNCED (365103355):
+                The public delegated prefix is active.
+            DELETING (528602024):
+                The public delegated prefix is being
+                deprovsioned.
+            INITIALIZING (306588749):
+                The public delegated prefix is being
+                initialized and addresses cannot be created yet.
+            READY_TO_ANNOUNCE (64641265):
+                The public delegated prefix is currently
+                withdrawn but ready to be announced.
         """
         UNDEFINED_STATUS = 0
         ANNOUNCED = 365103355
@@ -66537,7 +69445,17 @@ class PublicDelegatedPrefixPublicDelegatedSubPrefix(proto.Message):
     """
 
     class Status(proto.Enum):
-        r"""[Output Only] The status of the sub public delegated prefix."""
+        r"""[Output Only] The status of the sub public delegated prefix.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            ACTIVE (314733318):
+                No description available.
+            INACTIVE (270421099):
+                No description available.
+        """
         UNDEFINED_STATUS = 0
         ACTIVE = 314733318
         INACTIVE = 270421099
@@ -66637,7 +69555,296 @@ class Quota(proto.Message):
     """
 
     class Metric(proto.Enum):
-        r"""[Output Only] Name of the quota metric."""
+        r"""[Output Only] Name of the quota metric.
+
+        Values:
+            UNDEFINED_METRIC (0):
+                A value indicating that the enum field is not
+                set.
+            A2_CPUS (153206585):
+                No description available.
+            AFFINITY_GROUPS (108303563):
+                No description available.
+            AUTOSCALERS (471248988):
+                No description available.
+            BACKEND_BUCKETS (137626846):
+                No description available.
+            BACKEND_SERVICES (269623753):
+                No description available.
+            C2D_CPUS (508182517):
+                No description available.
+            C2_CPUS (317601211):
+                No description available.
+            C3_CPUS (346230362):
+                No description available.
+            COMMITMENTS (456141790):
+                No description available.
+            COMMITTED_A2_CPUS (59330902):
+                No description available.
+            COMMITTED_C2D_CPUS (282390904):
+                No description available.
+            COMMITTED_C2_CPUS (223725528):
+                No description available.
+            COMMITTED_C3_CPUS (252354679):
+                No description available.
+            COMMITTED_CPUS (292394702):
+                No description available.
+            COMMITTED_E2_CPUS (388120154):
+                No description available.
+            COMMITTED_LICENSES (357606869):
+                No description available.
+            COMMITTED_LOCAL_SSD_TOTAL_GB (308393480):
+                No description available.
+            COMMITTED_M3_CPUS (585985):
+                No description available.
+            COMMITTED_MEMORY_OPTIMIZED_CPUS (489057886):
+                No description available.
+            COMMITTED_N2A_CPUS (40064304):
+                No description available.
+            COMMITTED_N2D_CPUS (125951757):
+                No description available.
+            COMMITTED_N2_CPUS (322589603):
+                No description available.
+            COMMITTED_NVIDIA_A100_80GB_GPUS (464326565):
+                No description available.
+            COMMITTED_NVIDIA_A100_GPUS (375799445):
+                No description available.
+            COMMITTED_NVIDIA_K80_GPUS (3857188):
+                No description available.
+            COMMITTED_NVIDIA_P100_GPUS (107528100):
+                No description available.
+            COMMITTED_NVIDIA_P4_GPUS (347952897):
+                No description available.
+            COMMITTED_NVIDIA_T4_GPUS (139871237):
+                No description available.
+            COMMITTED_NVIDIA_V100_GPUS (219562):
+                No description available.
+            COMMITTED_T2A_CPUS (296378986):
+                No description available.
+            COMMITTED_T2D_CPUS (382266439):
+                No description available.
+            CPUS (2075595):
+                Guest CPUs
+            CPUS_ALL_REGIONS (470911149):
+                No description available.
+            DISKS_TOTAL_GB (353520543):
+                No description available.
+            E2_CPUS (481995837):
+                No description available.
+            EXTERNAL_MANAGED_FORWARDING_RULES (150790089):
+                No description available.
+            EXTERNAL_NETWORK_LB_FORWARDING_RULES (374298265):
+                No description available.
+            EXTERNAL_PROTOCOL_FORWARDING_RULES (63478888):
+                No description available.
+            EXTERNAL_VPN_GATEWAYS (272457134):
+                No description available.
+            FIREWALLS (374485843):
+                No description available.
+            FORWARDING_RULES (432668949):
+                No description available.
+            GLOBAL_EXTERNAL_MANAGED_BACKEND_SERVICES (164566753):
+                No description available.
+            GLOBAL_EXTERNAL_MANAGED_FORWARDING_RULES (327611949):
+                No description available.
+            GLOBAL_EXTERNAL_PROXY_LB_BACKEND_SERVICES (400256169):
+                No description available.
+            GLOBAL_INTERNAL_ADDRESSES (42738332):
+                No description available.
+            GLOBAL_INTERNAL_MANAGED_BACKEND_SERVICES (256608303):
+                No description available.
+            GLOBAL_INTERNAL_TRAFFIC_DIRECTOR_BACKEND_SERVICES (323514196):
+                No description available.
+            GPUS_ALL_REGIONS (39387177):
+                No description available.
+            HEALTH_CHECKS (289347502):
+                No description available.
+            IMAGES (15562360):
+                No description available.
+            INSTANCES (131337822):
+                No description available.
+            INSTANCE_GROUPS (355919038):
+                No description available.
+            INSTANCE_GROUP_MANAGERS (101798192):
+                No description available.
+            INSTANCE_TEMPLATES (226188271):
+                No description available.
+            INTERCONNECTS (415204741):
+                No description available.
+            INTERCONNECT_ATTACHMENTS_PER_REGION (159968086):
+                No description available.
+            INTERCONNECT_ATTACHMENTS_TOTAL_MBPS (425090419):
+                No description available.
+            INTERCONNECT_TOTAL_GBPS (285341866):
+                No description available.
+            INTERNAL_ADDRESSES (197899392):
+                No description available.
+            INTERNAL_TRAFFIC_DIRECTOR_FORWARDING_RULES (266433668):
+                No description available.
+            IN_PLACE_SNAPSHOTS (151359133):
+                No description available.
+            IN_USE_ADDRESSES (402125072):
+                No description available.
+            IN_USE_BACKUP_SCHEDULES (32786705):
+                No description available.
+            IN_USE_SNAPSHOT_SCHEDULES (462104083):
+                No description available.
+            LOCAL_SSD_TOTAL_GB (330878021):
+                No description available.
+            M1_CPUS (37203366):
+                No description available.
+            M2_CPUS (65832517):
+                No description available.
+            M3_CPUS (94461668):
+                No description available.
+            MACHINE_IMAGES (446986640):
+                No description available.
+            N2A_CPUS (265855917):
+                No description available.
+            N2D_CPUS (351743370):
+                No description available.
+            N2_CPUS (416465286):
+                No description available.
+            NETWORKS (485481477):
+                No description available.
+            NETWORK_ENDPOINT_GROUPS (102144909):
+                No description available.
+            NETWORK_FIREWALL_POLICIES (101117374):
+                No description available.
+            NODE_GROUPS (24624817):
+                No description available.
+            NODE_TEMPLATES (474896668):
+                No description available.
+            NVIDIA_A100_80GB_GPUS (286389320):
+                No description available.
+            NVIDIA_A100_GPUS (504872978):
+                No description available.
+            NVIDIA_K80_GPUS (163886599):
+                No description available.
+            NVIDIA_P100_GPUS (236601633):
+                No description available.
+            NVIDIA_P100_VWS_GPUS (213970574):
+                No description available.
+            NVIDIA_P4_GPUS (283841470):
+                No description available.
+            NVIDIA_P4_VWS_GPUS (528296619):
+                No description available.
+            NVIDIA_T4_GPUS (75759810):
+                No description available.
+            NVIDIA_T4_VWS_GPUS (319813039):
+                No description available.
+            NVIDIA_V100_GPUS (129293095):
+                No description available.
+            PACKET_MIRRORINGS (15578407):
+                No description available.
+            PD_EXTREME_TOTAL_PROVISIONED_IOPS (69593965):
+                No description available.
+            PREEMPTIBLE_CPUS (251184841):
+                No description available.
+            PREEMPTIBLE_LOCAL_SSD_GB (260819336):
+                No description available.
+            PREEMPTIBLE_NVIDIA_A100_80GB_GPUS (151942410):
+                No description available.
+            PREEMPTIBLE_NVIDIA_A100_GPUS (68832784):
+                No description available.
+            PREEMPTIBLE_NVIDIA_K80_GPUS (374960201):
+                No description available.
+            PREEMPTIBLE_NVIDIA_P100_GPUS (337432351):
+                No description available.
+            PREEMPTIBLE_NVIDIA_P100_VWS_GPUS (313544076):
+                No description available.
+            PREEMPTIBLE_NVIDIA_P4_GPUS (429197628):
+                No description available.
+            PREEMPTIBLE_NVIDIA_P4_VWS_GPUS (252981545):
+                No description available.
+            PREEMPTIBLE_NVIDIA_T4_GPUS (221115968):
+                No description available.
+            PREEMPTIBLE_NVIDIA_T4_VWS_GPUS (44497965):
+                No description available.
+            PREEMPTIBLE_NVIDIA_V100_GPUS (230123813):
+                No description available.
+            PSC_ILB_CONSUMER_FORWARDING_RULES_PER_PRODUCER_NETWORK (231164291):
+                No description available.
+            PSC_INTERNAL_LB_FORWARDING_RULES (169005435):
+                No description available.
+            PUBLIC_ADVERTISED_PREFIXES (471371980):
+                No description available.
+            PUBLIC_DELEGATED_PREFIXES (532465974):
+                No description available.
+            REGIONAL_AUTOSCALERS (29363772):
+                No description available.
+            REGIONAL_EXTERNAL_MANAGED_BACKEND_SERVICES (4240989):
+                No description available.
+            REGIONAL_EXTERNAL_NETWORK_LB_BACKEND_SERVICES (409564525):
+                No description available.
+            REGIONAL_INSTANCE_GROUP_MANAGERS (37543696):
+                No description available.
+            REGIONAL_INTERNAL_LB_BACKEND_SERVICES (137983760):
+                No description available.
+            REGIONAL_INTERNAL_MANAGED_BACKEND_SERVICES (96282539):
+                No description available.
+            RESERVATIONS (32644647):
+                No description available.
+            RESOURCE_POLICIES (83955297):
+                No description available.
+            ROUTERS (493018666):
+                No description available.
+            ROUTES (275680074):
+                No description available.
+            SECURITY_POLICIES (189518703):
+                No description available.
+            SECURITY_POLICIES_PER_REGION (249041734):
+                No description available.
+            SECURITY_POLICY_CEVAL_RULES (470815689):
+                No description available.
+            SECURITY_POLICY_RULES (203549225):
+                No description available.
+            SECURITY_POLICY_RULES_PER_REGION (126510156):
+                No description available.
+            SERVICE_ATTACHMENTS (471521510):
+                No description available.
+            SNAPSHOTS (343405327):
+                The total number of snapshots allowed for a
+                single project.
+            SSD_TOTAL_GB (161732561):
+                No description available.
+            SSL_CERTIFICATES (378372399):
+                No description available.
+            STATIC_ADDRESSES (93624049):
+                No description available.
+            STATIC_BYOIP_ADDRESSES (275809649):
+                No description available.
+            STATIC_EXTERNAL_IPV6_ADDRESS_RANGES (472346774):
+                No description available.
+            SUBNETWORKS (421330469):
+                No description available.
+            T2A_CPUS (522170599):
+                No description available.
+            T2D_CPUS (71187140):
+                No description available.
+            TARGET_HTTPS_PROXIES (219522506):
+                No description available.
+            TARGET_HTTP_PROXIES (164117155):
+                No description available.
+            TARGET_INSTANCES (284519728):
+                No description available.
+            TARGET_POOLS (348261257):
+                No description available.
+            TARGET_SSL_PROXIES (159216235):
+                No description available.
+            TARGET_TCP_PROXIES (182243136):
+                No description available.
+            TARGET_VPN_GATEWAYS (75029928):
+                No description available.
+            URL_MAPS (378660743):
+                No description available.
+            VPN_GATEWAYS (35620282):
+                No description available.
+            VPN_TUNNELS (104327296):
+                No description available.
+            XPN_SERVICE_PROJECTS (95191981):
+                No description available.
+        """
         UNDEFINED_METRIC = 0
         A2_CPUS = 153206585
         AFFINITY_GROUPS = 108303563
@@ -66890,6 +70097,13 @@ class RawDisk(proto.Message):
         which should be TAR. This is just a container and transmission
         format and not a runtime format. Provided by the client when the
         disk image is created.
+
+        Values:
+            UNDEFINED_CONTAINER_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            TAR (82821):
+                No description available.
         """
         UNDEFINED_CONTAINER_TYPE = 0
         TAR = 82821
@@ -67141,7 +70355,17 @@ class Region(proto.Message):
     """
 
     class Status(proto.Enum):
-        r"""[Output Only] Status of the region, either UP or DOWN."""
+        r"""[Output Only] Status of the region, either UP or DOWN.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            DOWN (2104482):
+                No description available.
+            UP (2715):
+                No description available.
+        """
         UNDEFINED_STATUS = 0
         DOWN = 2104482
         UP = 2715
@@ -67673,6 +70897,11 @@ class RegionInstanceGroupManagersApplyUpdatesRequest(proto.Message):
         REFRESH
         REPLACE
         RESTART
+
+        Values:
+            UNDEFINED_MINIMAL_ACTION (0):
+                A value indicating that the enum field is not
+                set.
         """
         UNDEFINED_MINIMAL_ACTION = 0
 
@@ -67689,6 +70918,11 @@ class RegionInstanceGroupManagersApplyUpdatesRequest(proto.Message):
         REFRESH
         REPLACE
         RESTART
+
+        Values:
+            UNDEFINED_MOST_DISRUPTIVE_ALLOWED_ACTION (0):
+                A value indicating that the enum field is not
+                set.
         """
         UNDEFINED_MOST_DISRUPTIVE_ALLOWED_ACTION = 0
 
@@ -68045,6 +71279,17 @@ class RegionInstanceGroupsListInstancesRequest(proto.Message):
     class InstanceState(proto.Enum):
         r"""Instances in which state should be returned. Valid options
         are: 'ALL', 'RUNNING'. By default, it lists all instances.
+
+        Values:
+            UNDEFINED_INSTANCE_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            ALL (64897):
+                Matches any status of the instances, running,
+                non-running and others.
+            RUNNING (121282975):
+                Instance is in RUNNING state if it is
+                running.
         """
         UNDEFINED_INSTANCE_STATE = 0
         ALL = 64897
@@ -68224,6 +71469,19 @@ class RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponseEffectiveFirewal
     class Type(proto.Enum):
         r"""[Output Only] The type of the firewall policy. Can be one of
         HIERARCHY, NETWORK, NETWORK_REGIONAL.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            HIERARCHY (69902869):
+                No description available.
+            NETWORK (413984270):
+                No description available.
+            NETWORK_REGIONAL (190804272):
+                No description available.
+            UNSPECIFIED (526786327):
+                No description available.
         """
         UNDEFINED_TYPE = 0
         HIERARCHY = 69902869
@@ -69241,10 +72499,11 @@ class Reservation(proto.Message):
 
             This field is a member of `oneof`_ ``_name``.
         resource_policies (MutableMapping[str, str]):
-            Resource policies to be added to this
-            reservation. The key is defined by user, and the
-            value is resource policy url. This is to define
-            placement policy with reservation.
+
+        resource_status (google.cloud.compute_v1.types.AllocationResourceStatus):
+            [Output Only] Status information for Reservation resource.
+
+            This field is a member of `oneof`_ ``_resource_status``.
         satisfies_pzs (bool):
             [Output Only] Reserved for future use.
 
@@ -69289,7 +72548,24 @@ class Reservation(proto.Message):
     """
 
     class Status(proto.Enum):
-        r"""[Output Only] The status of the reservation."""
+        r"""[Output Only] The status of the reservation.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            CREATING (455564985):
+                Resources are being allocated for the
+                reservation.
+            DELETING (528602024):
+                Reservation is currently being deleted.
+            INVALID (530283991):
+                No description available.
+            READY (77848963):
+                Reservation has allocated all its resources.
+            UPDATING (494614342):
+                Reservation is currently being resized.
+        """
         UNDEFINED_STATUS = 0
         CREATING = 455564985
         DELETING = 528602024
@@ -69331,6 +72607,12 @@ class Reservation(proto.Message):
         proto.STRING,
         proto.STRING,
         number=22220385,
+    )
+    resource_status: "AllocationResourceStatus" = proto.Field(
+        proto.MESSAGE,
+        number=249429315,
+        optional=True,
+        message="AllocationResourceStatus",
     )
     satisfies_pzs: bool = proto.Field(
         proto.BOOL,
@@ -69407,6 +72689,21 @@ class ReservationAffinity(proto.Message):
         r"""Specifies the type of reservation from which this instance can
         consume resources: ANY_RESERVATION (default), SPECIFIC_RESERVATION,
         or NO_RESERVATION. See Consuming reserved instances for examples.
+
+        Values:
+            UNDEFINED_CONSUME_RESERVATION_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            ANY_RESERVATION (200008121):
+                Consume any allocation available.
+            NO_RESERVATION (169322030):
+                Do not consume from any allocated capacity.
+            SPECIFIC_RESERVATION (229889055):
+                Must consume from a specific reservation.
+                Must specify key value fields for specifying the
+                reservations.
+            UNSPECIFIED (526786327):
+                No description available.
         """
         UNDEFINED_CONSUME_RESERVATION_TYPE = 0
         ANY_RESERVATION = 200008121
@@ -70023,6 +73320,21 @@ class ResourceCommitment(proto.Message):
     class Type(proto.Enum):
         r"""Type of resource for which this commitment applies. Possible values
         are VCPU, MEMORY, LOCAL_SSD, and ACCELERATOR.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            ACCELERATOR (429815371):
+                No description available.
+            LOCAL_SSD (508934896):
+                No description available.
+            MEMORY (123056385):
+                No description available.
+            UNSPECIFIED (526786327):
+                No description available.
+            VCPU (2628978):
+                No description available.
         """
         UNDEFINED_TYPE = 0
         ACCELERATOR = 429815371
@@ -70171,7 +73483,24 @@ class ResourcePolicy(proto.Message):
     """
 
     class Status(proto.Enum):
-        r"""[Output Only] The status of resource policy creation."""
+        r"""[Output Only] The status of resource policy creation.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            CREATING (455564985):
+                Resource policy is being created.
+            DELETING (528602024):
+                Resource policy is being deleted.
+            EXPIRED (482489093):
+                Resource policy is expired and will not run
+                again.
+            INVALID (530283991):
+                No description available.
+            READY (77848963):
+                Resource policy is ready to be used.
+        """
         UNDEFINED_STATUS = 0
         CREATING = 455564985
         DELETING = 528602024
@@ -70410,7 +73739,17 @@ class ResourcePolicyGroupPlacementPolicy(proto.Message):
     """
 
     class Collocation(proto.Enum):
-        r"""Specifies network collocation"""
+        r"""Specifies network collocation
+
+        Values:
+            UNDEFINED_COLLOCATION (0):
+                A value indicating that the enum field is not
+                set.
+            COLLOCATED (103257554):
+                No description available.
+            UNSPECIFIED_COLLOCATION (464308205):
+                No description available.
+        """
         UNDEFINED_COLLOCATION = 0
         COLLOCATED = 103257554
         UNSPECIFIED_COLLOCATION = 464308205
@@ -70774,6 +74113,17 @@ class ResourcePolicySnapshotSchedulePolicyRetentionPolicy(proto.Message):
     class OnSourceDiskDelete(proto.Enum):
         r"""Specifies the behavior to apply to scheduled snapshots when
         the source disk is deleted.
+
+        Values:
+            UNDEFINED_ON_SOURCE_DISK_DELETE (0):
+                A value indicating that the enum field is not
+                set.
+            APPLY_RETENTION_POLICY (535071332):
+                No description available.
+            KEEP_AUTO_SNAPSHOTS (258925689):
+                No description available.
+            UNSPECIFIED_ON_SOURCE_DISK_DELETE (239140769):
+                No description available.
         """
         UNDEFINED_ON_SOURCE_DISK_DELETE = 0
         APPLY_RETENTION_POLICY = 535071332
@@ -70927,6 +74277,27 @@ class ResourcePolicyWeeklyCycleDayOfWeek(proto.Message):
         r"""Defines a schedule that runs on specific days of the week.
         Specify one or more days. The following options are available:
         MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY.
+
+        Values:
+            UNDEFINED_DAY (0):
+                A value indicating that the enum field is not
+                set.
+            FRIDAY (471398751):
+                No description available.
+            INVALID (530283991):
+                No description available.
+            MONDAY (132310288):
+                No description available.
+            SATURDAY (279037881):
+                No description available.
+            SUNDAY (309626320):
+                No description available.
+            THURSDAY (207198682):
+                No description available.
+            TUESDAY (277509677):
+                No description available.
+            WEDNESDAY (422029110):
+                No description available.
         """
         UNDEFINED_DAY = 0
         FRIDAY = 471398751
@@ -71171,7 +74542,26 @@ class Route(proto.Message):
     """
 
     class RouteStatus(proto.Enum):
-        r"""[Output only] The status of the route."""
+        r"""[Output only] The status of the route.
+
+        Values:
+            UNDEFINED_ROUTE_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            ACTIVE (314733318):
+                This route is processed and active.
+            DROPPED (496235424):
+                The route is dropped due to the VPC exceeding
+                the dynamic route limit. For dynamic route
+                limit, please refer to the Learned route example
+            INACTIVE (270421099):
+                This route is processed but inactive due to
+                failure from the backend. The backend may have
+                rejected the route
+            PENDING (35394935):
+                This route is being processed internally. The
+                status will change once processed.
+        """
         UNDEFINED_ROUTE_STATUS = 0
         ACTIVE = 314733318
         DROPPED = 496235424
@@ -71185,6 +74575,19 @@ class Route(proto.Message):
         BGP peers - 'SUBNET' for a route from a subnet of the VPC - 'BGP'
         for a route learned from a BGP peer of this router - 'STATIC' for a
         static route
+
+        Values:
+            UNDEFINED_ROUTE_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            BGP (65707):
+                No description available.
+            STATIC (308331118):
+                No description available.
+            SUBNET (309278557):
+                No description available.
+            TRANSIT (187793843):
+                No description available.
         """
         UNDEFINED_ROUTE_TYPE = 0
         BGP = 65707
@@ -71330,6 +74733,19 @@ class RouteAsPath(proto.Message):
         the local confederation that the route has traversed -
         'AS_CONFED_SET': unordered set of Member Autonomous Systems in the
         local confederation that the route has traversed
+
+        Values:
+            UNDEFINED_PATH_SEGMENT_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            AS_CONFED_SEQUENCE (222152624):
+                No description available.
+            AS_CONFED_SET (374040307):
+                No description available.
+            AS_SEQUENCE (106735918):
+                No description available.
+            AS_SET (329846453):
+                No description available.
         """
         UNDEFINED_PATH_SEGMENT_TYPE = 0
         AS_CONFED_SEQUENCE = 222152624
@@ -71743,13 +75159,31 @@ class RouterBgp(proto.Message):
     class AdvertiseMode(proto.Enum):
         r"""User-specified flag to indicate which mode to use for
         advertisement. The options are DEFAULT or CUSTOM.
+
+        Values:
+            UNDEFINED_ADVERTISE_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            CUSTOM (388595569):
+                No description available.
+            DEFAULT (115302945):
+                No description available.
         """
         UNDEFINED_ADVERTISE_MODE = 0
         CUSTOM = 388595569
         DEFAULT = 115302945
 
     class AdvertisedGroups(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            UNDEFINED_ADVERTISED_GROUPS (0):
+                A value indicating that the enum field is not
+                set.
+            ALL_SUBNETS (3622872):
+                Advertise all available subnets (including
+                peer VPC subnets).
+        """
         UNDEFINED_ADVERTISED_GROUPS = 0
         ALL_SUBNETS = 3622872
 
@@ -71912,13 +75346,31 @@ class RouterBgpPeer(proto.Message):
     class AdvertiseMode(proto.Enum):
         r"""User-specified flag to indicate which mode to use for
         advertisement.
+
+        Values:
+            UNDEFINED_ADVERTISE_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            CUSTOM (388595569):
+                No description available.
+            DEFAULT (115302945):
+                No description available.
         """
         UNDEFINED_ADVERTISE_MODE = 0
         CUSTOM = 388595569
         DEFAULT = 115302945
 
     class AdvertisedGroups(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            UNDEFINED_ADVERTISED_GROUPS (0):
+                A value indicating that the enum field is not
+                set.
+            ALL_SUBNETS (3622872):
+                Advertise all available subnets (including
+                peer VPC subnets).
+        """
         UNDEFINED_ADVERTISED_GROUPS = 0
         ALL_SUBNETS = 3622872
 
@@ -71928,6 +75380,15 @@ class RouterBgpPeer(proto.Message):
         routing information is removed. If set to TRUE, the peer
         connection can be established with routing information. The
         default is TRUE.
+
+        Values:
+            UNDEFINED_ENABLE (0):
+                A value indicating that the enum field is not
+                set.
+            FALSE (66658563):
+                No description available.
+            TRUE (2583950):
+                No description available.
         """
         UNDEFINED_ENABLE = 0
         FALSE = 66658563
@@ -71941,6 +75402,25 @@ class RouterBgpPeer(proto.Message):
         InterconnectAttachment of type PARTNER. Google automatically
         creates, updates, and deletes this type of BGP peer when the PARTNER
         InterconnectAttachment is created, updated, or deleted.
+
+        Values:
+            UNDEFINED_MANAGEMENT_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            MANAGED_BY_ATTACHMENT (458926411):
+                The BGP peer is automatically created for
+                PARTNER type InterconnectAttachment; Google will
+                automatically create/delete this BGP peer when
+                the PARTNER InterconnectAttachment is
+                created/deleted, and Google will update the
+                ipAddress and peerIpAddress when the PARTNER
+                InterconnectAttachment is provisioned. This type
+                of BGP peer cannot be created or deleted, but
+                can be modified for all fields except for name,
+                ipAddress and peerIpAddress.
+            MANAGED_BY_USER (317294067):
+                Default value, the BGP peer is manually
+                created and managed by user.
         """
         UNDEFINED_MANAGEMENT_TYPE = 0
         MANAGED_BY_ATTACHMENT = 458926411
@@ -72090,6 +75570,17 @@ class RouterBgpPeerBfd(proto.Message):
         the peer router to initiate the BFD session for this BGP peer.
         If set to DISABLED, BFD is disabled for this BGP peer. The
         default is DISABLED.
+
+        Values:
+            UNDEFINED_SESSION_INITIALIZATION_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            ACTIVE (314733318):
+                No description available.
+            DISABLED (516696700):
+                No description available.
+            PASSIVE (462813959):
+                No description available.
         """
         UNDEFINED_SESSION_INITIALIZATION_MODE = 0
         ACTIVE = 314733318
@@ -72217,6 +75708,22 @@ class RouterInterface(proto.Message):
         InterconnectAttachment of type PARTNER. Google automatically
         creates, updates, and deletes this type of interface when the
         PARTNER InterconnectAttachment is created, updated, or deleted.
+
+        Values:
+            UNDEFINED_MANAGEMENT_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            MANAGED_BY_ATTACHMENT (458926411):
+                The interface is automatically created for
+                PARTNER type InterconnectAttachment, Google will
+                automatically create/update/delete this
+                interface when the PARTNER
+                InterconnectAttachment is
+                created/provisioned/deleted. This type of
+                interface cannot be manually managed by user.
+            MANAGED_BY_USER (317294067):
+                Default value, the interface is manually
+                created and managed by user.
         """
         UNDEFINED_MANAGEMENT_TYPE = 0
         MANAGED_BY_ATTACHMENT = 458926411
@@ -72512,7 +76019,18 @@ class RouterNat(proto.Message):
     """
 
     class EndpointTypes(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            UNDEFINED_ENDPOINT_TYPES (0):
+                A value indicating that the enum field is not
+                set.
+            ENDPOINT_TYPE_SWG (159344456):
+                This is used for Secure Web Gateway
+                endpoints.
+            ENDPOINT_TYPE_VM (57095474):
+                This is the default.
+        """
         UNDEFINED_ENDPOINT_TYPES = 0
         ENDPOINT_TYPE_SWG = 159344456
         ENDPOINT_TYPE_VM = 57095474
@@ -72524,6 +76042,18 @@ class RouterNat(proto.Message):
         service fails for new VMs. - AUTO_ONLY: Nat IPs are allocated by
         Google Cloud Platform; customers can't specify any Nat IPs. When
         choosing AUTO_ONLY, then nat_ip should be empty.
+
+        Values:
+            UNDEFINED_NAT_IP_ALLOCATE_OPTION (0):
+                A value indicating that the enum field is not
+                set.
+            AUTO_ONLY (182333500):
+                Nat IPs are allocated by GCP; customers can
+                not specify any Nat IPs.
+            MANUAL_ONLY (261251205):
+                Only use Nat IPs provided by customers. When
+                specified Nat IPs are not enough then the Nat
+                service fails for new VMs.
         """
         UNDEFINED_NAT_IP_ALLOCATE_OPTION = 0
         AUTO_ONLY = 182333500
@@ -72542,6 +76072,20 @@ class RouterNat(proto.Message):
         ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES, then there should not be any
         other Router.Nat section in any Router for this network in this
         region.
+
+        Values:
+            UNDEFINED_SOURCE_SUBNETWORK_IP_RANGES_TO_NAT (0):
+                A value indicating that the enum field is not
+                set.
+            ALL_SUBNETWORKS_ALL_IP_RANGES (179964376):
+                All the IP ranges in every Subnetwork are
+                allowed to Nat.
+            ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES (185573819):
+                All the primary IP ranges in every Subnetwork
+                are allowed to Nat.
+            LIST_OF_SUBNETWORKS (517542270):
+                A list of Subnetworks are allowed to Nat
+                (specified in the field subnetwork below)
         """
         UNDEFINED_SOURCE_SUBNETWORK_IP_RANGES_TO_NAT = 0
         ALL_SUBNETWORKS_ALL_IP_RANGES = 179964376
@@ -72669,6 +76213,18 @@ class RouterNatLogConfig(proto.Message):
         logs only for connection failures. - TRANSLATIONS_ONLY: Export logs
         only for successful connections. - ALL: Export logs for all
         connections, successful and unsuccessful.
+
+        Values:
+            UNDEFINED_FILTER (0):
+                A value indicating that the enum field is not
+                set.
+            ALL (64897):
+                Export logs for all (successful and
+                unsuccessful) connections.
+            ERRORS_ONLY (307484672):
+                Export logs for connection failures only.
+            TRANSLATIONS_ONLY (357212649):
+                Export logs for successful connections only.
         """
         UNDEFINED_FILTER = 0
         ALL = 64897
@@ -72801,7 +76357,21 @@ class RouterNatSubnetworkToNat(proto.Message):
     """
 
     class SourceIpRangesToNat(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            UNDEFINED_SOURCE_IP_RANGES_TO_NAT (0):
+                A value indicating that the enum field is not
+                set.
+            ALL_IP_RANGES (35608496):
+                The primary and all the secondary ranges are
+                allowed to Nat.
+            LIST_OF_SECONDARY_IP_RANGES (192289308):
+                A list of secondary ranges are allowed to
+                Nat.
+            PRIMARY_IP_RANGE (297109954):
+                The primary range is allowed to Nat.
+        """
         UNDEFINED_SOURCE_IP_RANGES_TO_NAT = 0
         ALL_IP_RANGES = 35608496
         LIST_OF_SECONDARY_IP_RANGES = 192289308
@@ -72962,14 +76532,39 @@ class RouterStatusBgpPeerStatus(proto.Message):
     """
 
     class Status(proto.Enum):
-        r"""Status of the BGP peer: {UP, DOWN}"""
+        r"""Status of the BGP peer: {UP, DOWN}
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            DOWN (2104482):
+                No description available.
+            UNKNOWN (433141802):
+                No description available.
+            UP (2715):
+                No description available.
+        """
         UNDEFINED_STATUS = 0
         DOWN = 2104482
         UNKNOWN = 433141802
         UP = 2715
 
     class StatusReason(proto.Enum):
-        r"""Indicates why particular status was returned."""
+        r"""Indicates why particular status was returned.
+
+        Values:
+            UNDEFINED_STATUS_REASON (0):
+                A value indicating that the enum field is not
+                set.
+            MD5_AUTH_INTERNAL_PROBLEM (140462259):
+                Indicates internal problems with
+                configuration of MD5 authentication. This
+                particular reason can only be returned when
+                md5AuthEnabled is true and status is DOWN.
+            STATUS_REASON_UNSPECIFIED (394331913):
+                No description available.
+        """
         UNDEFINED_STATUS_REASON = 0
         MD5_AUTH_INTERNAL_PROBLEM = 140462259
         STATUS_REASON_UNSPECIFIED = 394331913
@@ -73313,7 +76908,31 @@ class Rule(proto.Message):
     """
 
     class Action(proto.Enum):
-        r"""This is deprecated and has no effect. Do not use."""
+        r"""This is deprecated and has no effect. Do not use.
+
+        Values:
+            UNDEFINED_ACTION (0):
+                A value indicating that the enum field is not
+                set.
+            ALLOW (62368553):
+                This is deprecated and has no effect. Do not
+                use.
+            ALLOW_WITH_LOG (76034177):
+                This is deprecated and has no effect. Do not
+                use.
+            DENY (2094604):
+                This is deprecated and has no effect. Do not
+                use.
+            DENY_WITH_LOG (351433982):
+                This is deprecated and has no effect. Do not
+                use.
+            LOG (75556):
+                This is deprecated and has no effect. Do not
+                use.
+            NO_ACTION (260643444):
+                This is deprecated and has no effect. Do not
+                use.
+        """
         UNDEFINED_ACTION = 0
         ALLOW = 62368553
         ALLOW_WITH_LOG = 76034177
@@ -73447,6 +77066,25 @@ class SSLHealthCheck(proto.Message):
         backends, the health check uses the port number determined by
         looking up the backend service's named port in the instance group's
         list of named ports.
+
+        Values:
+            UNDEFINED_PORT_SPECIFICATION (0):
+                A value indicating that the enum field is not
+                set.
+            USE_FIXED_PORT (190235748):
+                The port number in the health check's port is
+                used for health checking. Applies to network
+                endpoint group and instance group backends.
+            USE_NAMED_PORT (349300671):
+                Not supported.
+            USE_SERVING_PORT (362637516):
+                For network endpoint group backends, the
+                health check uses the port number specified on
+                each endpoint in the network endpoint group. For
+                instance group backends, the health check uses
+                the port number specified for the backend
+                service's named port defined in the instance
+                group's named ports.
         """
         UNDEFINED_PORT_SPECIFICATION = 0
         USE_FIXED_PORT = 190235748
@@ -73456,6 +77094,15 @@ class SSLHealthCheck(proto.Message):
     class ProxyHeader(proto.Enum):
         r"""Specifies the type of proxy header to append before sending data to
         the backend, either NONE or PROXY_V1. The default is NONE.
+
+        Values:
+            UNDEFINED_PROXY_HEADER (0):
+                A value indicating that the enum field is not
+                set.
+            NONE (2402104):
+                No description available.
+            PROXY_V1 (334352940):
+                No description available.
         """
         UNDEFINED_PROXY_HEADER = 0
         NONE = 2402104
@@ -73593,6 +77240,15 @@ class SavedAttachedDisk(proto.Message):
     class Interface(proto.Enum):
         r"""Specifies the disk interface to use for attaching this disk,
         which is either SCSI or NVME.
+
+        Values:
+            UNDEFINED_INTERFACE (0):
+                A value indicating that the enum field is not
+                set.
+            NVME (2408800):
+                No description available.
+            SCSI (2539686):
+                No description available.
         """
         UNDEFINED_INTERFACE = 0
         NVME = 2408800
@@ -73601,6 +77257,19 @@ class SavedAttachedDisk(proto.Message):
     class Mode(proto.Enum):
         r"""The mode in which this disk is attached to the source instance,
         either READ_WRITE or READ_ONLY.
+
+        Values:
+            UNDEFINED_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            READ_ONLY (91950261):
+                Attaches this disk in read-only mode.
+                Multiple virtual machines can use a disk in
+                read-only mode at a time.
+            READ_WRITE (173607894):
+                *[Default]* Attaches this disk in read-write mode. Only one
+                virtual machine at a time can be attached to a disk in
+                read-write mode.
         """
         UNDEFINED_MODE = 0
         READ_ONLY = 91950261
@@ -73612,6 +77281,15 @@ class SavedAttachedDisk(proto.Message):
         This status can either be UPDATING, meaning the size of the snapshot
         is being updated, or UP_TO_DATE, meaning the size of the snapshot is
         up-to-date.
+
+        Values:
+            UNDEFINED_STORAGE_BYTES_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            UPDATING (494614342):
+                No description available.
+            UP_TO_DATE (101306702):
+                No description available.
         """
         UNDEFINED_STORAGE_BYTES_STATUS = 0
         UPDATING = 494614342
@@ -73620,6 +77298,15 @@ class SavedAttachedDisk(proto.Message):
     class Type(proto.Enum):
         r"""Specifies the type of the attached disk, either SCRATCH or
         PERSISTENT.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            PERSISTENT (460683927):
+                No description available.
+            SCRATCH (496778970):
+                No description available.
         """
         UNDEFINED_TYPE = 0
         PERSISTENT = 460683927
@@ -73746,7 +77433,20 @@ class SavedDisk(proto.Message):
     """
 
     class Architecture(proto.Enum):
-        r"""[Output Only] The architecture of the attached disk."""
+        r"""[Output Only] The architecture of the attached disk.
+
+        Values:
+            UNDEFINED_ARCHITECTURE (0):
+                A value indicating that the enum field is not
+                set.
+            ARCHITECTURE_UNSPECIFIED (394750507):
+                Default value indicating Architecture is not
+                set.
+            ARM64 (62547450):
+                Machines with architecture ARM64
+            X86_64 (425300551):
+                Machines with architecture X86_64
+        """
         UNDEFINED_ARCHITECTURE = 0
         ARCHITECTURE_UNSPECIFIED = 394750507
         ARM64 = 62547450
@@ -73758,6 +77458,15 @@ class SavedDisk(proto.Message):
         This status can either be UPDATING, meaning the size of the snapshot
         is being updated, or UP_TO_DATE, meaning the size of the snapshot is
         up-to-date.
+
+        Values:
+            UNDEFINED_STORAGE_BYTES_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            UPDATING (494614342):
+                No description available.
+            UP_TO_DATE (101306702):
+                No description available.
         """
         UNDEFINED_STORAGE_BYTES_STATUS = 0
         UPDATING = 494614342
@@ -73818,7 +77527,25 @@ class ScalingScheduleStatus(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""[Output Only] The current state of a scaling schedule."""
+        r"""[Output Only] The current state of a scaling schedule.
+
+        Values:
+            UNDEFINED_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            ACTIVE (314733318):
+                The current autoscaling recommendation is
+                influenced by this scaling schedule.
+            DISABLED (516696700):
+                This scaling schedule has been disabled by
+                the user.
+            OBSOLETE (66532761):
+                This scaling schedule will never become
+                active again.
+            READY (77848963):
+                The current autoscaling recommendation is not
+                influenced by this scaling schedule.
+        """
         UNDEFINED_STATE = 0
         ACTIVE = 314733318
         DISABLED = 516696700
@@ -73910,7 +77637,20 @@ class Scheduling(proto.Message):
     """
 
     class InstanceTerminationAction(proto.Enum):
-        r"""Specifies the termination action for the instance."""
+        r"""Specifies the termination action for the instance.
+
+        Values:
+            UNDEFINED_INSTANCE_TERMINATION_ACTION (0):
+                A value indicating that the enum field is not
+                set.
+            DELETE (402225579):
+                Delete the VM.
+            INSTANCE_TERMINATION_ACTION_UNSPECIFIED (92954803):
+                Default value. This value is unused.
+            STOP (2555906):
+                Stop the VM without storing in-memory
+                content. default action.
+        """
         UNDEFINED_INSTANCE_TERMINATION_ACTION = 0
         DELETE = 402225579
         INSTANCE_TERMINATION_ACTION_UNSPECIFIED = 92954803
@@ -73922,13 +77662,41 @@ class Scheduling(proto.Message):
         preemptible instances, the default and only possible behavior is
         TERMINATE. For more information, see Set VM host maintenance
         policy.
+
+        Values:
+            UNDEFINED_ON_HOST_MAINTENANCE (0):
+                A value indicating that the enum field is not
+                set.
+            MIGRATE (165699979):
+                *[Default]* Allows Compute Engine to automatically migrate
+                instances out of the way of maintenance events.
+            TERMINATE (527617601):
+                Tells Compute Engine to terminate and
+                (optionally) restart the instance away from the
+                maintenance activity. If you would like your
+                instance to be restarted, set the
+                automaticRestart flag to true. Your instance may
+                be restarted more than once, and it may be
+                restarted outside the window of maintenance
+                events.
         """
         UNDEFINED_ON_HOST_MAINTENANCE = 0
         MIGRATE = 165699979
         TERMINATE = 527617601
 
     class ProvisioningModel(proto.Enum):
-        r"""Specifies the provisioning model of the instance."""
+        r"""Specifies the provisioning model of the instance.
+
+        Values:
+            UNDEFINED_PROVISIONING_MODEL (0):
+                A value indicating that the enum field is not
+                set.
+            SPOT (2552066):
+                Heavily discounted, no guaranteed runtime.
+            STANDARD (484642493):
+                Standard provisioning with user controlled
+                runtime, no discounts.
+        """
         UNDEFINED_PROVISIONING_MODEL = 0
         SPOT = 2552066
         STANDARD = 484642493
@@ -74002,6 +77770,19 @@ class SchedulingNodeAffinity(proto.Message):
     class Operator(proto.Enum):
         r"""Defines the operation of node selection. Valid operators are IN for
         affinity and NOT_IN for anti-affinity.
+
+        Values:
+            UNDEFINED_OPERATOR (0):
+                A value indicating that the enum field is not
+                set.
+            IN (2341):
+                Requires Compute Engine to seek for matched
+                nodes.
+            NOT_IN (161144369):
+                Requires Compute Engine to avoid certain
+                nodes.
+            OPERATOR_UNSPECIFIED (128892924):
+                No description available.
         """
         UNDEFINED_OPERATOR = 0
         IN = 2341
@@ -74351,6 +78132,17 @@ class SecurityPolicy(proto.Message):
         targeting services managed by Traffic Director in a service mesh.
         They filter requests before the request is served from the
         application. This field can be set only at resource creation time.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            CLOUD_ARMOR (260640373):
+                No description available.
+            CLOUD_ARMOR_EDGE (250728775):
+                No description available.
+            CLOUD_ARMOR_NETWORK (488527428):
+                No description available.
         """
         UNDEFINED_TYPE = 0
         CLOUD_ARMOR = 260640373
@@ -74479,6 +78271,15 @@ class SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(proto.Messag
     class RuleVisibility(proto.Enum):
         r"""Rule visibility can be one of the following: STANDARD -
         opaque rules. (default) PREMIUM - transparent rules.
+
+        Values:
+            UNDEFINED_RULE_VISIBILITY (0):
+                A value indicating that the enum field is not
+                set.
+            PREMIUM (399530551):
+                No description available.
+            STANDARD (484642493):
+                No description available.
         """
         UNDEFINED_RULE_VISIBILITY = 0
         PREMIUM = 399530551
@@ -74520,13 +78321,33 @@ class SecurityPolicyAdvancedOptionsConfig(proto.Message):
     """
 
     class JsonParsing(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            UNDEFINED_JSON_PARSING (0):
+                A value indicating that the enum field is not
+                set.
+            DISABLED (516696700):
+                No description available.
+            STANDARD (484642493):
+                No description available.
+        """
         UNDEFINED_JSON_PARSING = 0
         DISABLED = 516696700
         STANDARD = 484642493
 
     class LogLevel(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            UNDEFINED_LOG_LEVEL (0):
+                A value indicating that the enum field is not
+                set.
+            NORMAL (161067239):
+                No description available.
+            VERBOSE (532219234):
+                No description available.
+        """
         UNDEFINED_LOG_LEVEL = 0
         NORMAL = 161067239
         VERBOSE = 532219234
@@ -74584,7 +78405,17 @@ class SecurityPolicyDdosProtectionConfig(proto.Message):
     """
 
     class DdosProtection(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            UNDEFINED_DDOS_PROTECTION (0):
+                A value indicating that the enum field is not
+                set.
+            ADVANCED (63789090):
+                No description available.
+            STANDARD (484642493):
+                No description available.
+        """
         UNDEFINED_DDOS_PROTECTION = 0
         ADVANCED = 63789090
         STANDARD = 484642493
@@ -74912,6 +78743,14 @@ class SecurityPolicyRuleMatcher(proto.Message):
         config must also be specified. Available preconfigured expressions
         along with their requirements are: SRC_IPS_V1 - must specify the
         corresponding src_ip_range field in config.
+
+        Values:
+            UNDEFINED_VERSIONED_EXPR (0):
+                A value indicating that the enum field is not
+                set.
+            SRC_IPS_V1 (70925961):
+                Matches the source IP address of a request to
+                the IP ranges supplied in config.
         """
         UNDEFINED_VERSIONED_EXPR = 0
         SRC_IPS_V1 = 70925961
@@ -75059,6 +78898,27 @@ class SecurityPolicyRuleRateLimitOptions(proto.Message):
         request. The key value is truncated to the first 128 bytes. The key
         type defaults to ALL on a HTTP session. - REGION_CODE: The
         country/region from which the request originates.
+
+        Values:
+            UNDEFINED_ENFORCE_ON_KEY (0):
+                A value indicating that the enum field is not
+                set.
+            ALL (64897):
+                No description available.
+            HTTP_COOKIE (494981627):
+                No description available.
+            HTTP_HEADER (91597348):
+                No description available.
+            HTTP_PATH (311503228):
+                No description available.
+            IP (2343):
+                No description available.
+            REGION_CODE (79559768):
+                No description available.
+            SNI (82254):
+                No description available.
+            XFF_IP (438707118):
+                No description available.
         """
         UNDEFINED_ENFORCE_ON_KEY = 0
         ALL = 64897
@@ -75166,7 +79026,17 @@ class SecurityPolicyRuleRedirectOptions(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Type of the redirect action."""
+        r"""Type of the redirect action.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            EXTERNAL_302 (395733761):
+                No description available.
+            GOOGLE_RECAPTCHA (518803009):
+                No description available.
+        """
         UNDEFINED_TYPE = 0
         EXTERNAL_302 = 395733761
         GOOGLE_RECAPTCHA = 518803009
@@ -75344,7 +79214,21 @@ class ServerBinding(proto.Message):
     """
 
     class Type(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            RESTART_NODE_ON_ANY_SERVER (502950985):
+                Node may associate with any physical server
+                over its lifetime.
+            RESTART_NODE_ON_MINIMAL_SERVERS (204166495):
+                Node may associate with minimal physical
+                servers over its lifetime.
+            SERVER_BINDING_TYPE_UNSPECIFIED (180825512):
+                No description available.
+        """
         UNDEFINED_TYPE = 0
         RESTART_NODE_ON_ANY_SERVER = 502950985
         RESTART_NODE_ON_MINIMAL_SERVERS = 204166495
@@ -75508,6 +79392,17 @@ class ServiceAttachment(proto.Message):
         set to ACCEPT_AUTOMATIC. An ACCEPT_AUTOMATIC service attachment is
         one that always accepts the connection from consumer forwarding
         rules.
+
+        Values:
+            UNDEFINED_CONNECTION_PREFERENCE (0):
+                A value indicating that the enum field is not
+                set.
+            ACCEPT_AUTOMATIC (75250580):
+                No description available.
+            ACCEPT_MANUAL (373061341):
+                No description available.
+            CONNECTION_PREFERENCE_UNSPECIFIED (34590772):
+                No description available.
         """
         UNDEFINED_CONNECTION_PREFERENCE = 0
         ACCEPT_AUTOMATIC = 75250580
@@ -75715,6 +79610,30 @@ class ServiceAttachmentConnectedEndpoint(proto.Message):
     class Status(proto.Enum):
         r"""The status of a connected endpoint to this service
         attachment.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            ACCEPTED (246714279):
+                The connection has been accepted by the
+                producer.
+            CLOSED (380163436):
+                The connection has been closed by the
+                producer.
+            NEEDS_ATTENTION (344491452):
+                The connection has been accepted by the
+                producer, but the producer needs to take further
+                action before the forwarding rule can serve
+                traffic.
+            PENDING (35394935):
+                The connection is pending acceptance by the
+                producer.
+            REJECTED (174130302):
+                The consumer is still connected but not using
+                the connection.
+            STATUS_UNSPECIFIED (42133066):
+                No description available.
         """
         UNDEFINED_STATUS = 0
         ACCEPTED = 246714279
@@ -79773,7 +83692,23 @@ class ShareSettings(proto.Message):
     """
 
     class ShareType(proto.Enum):
-        r"""Type of sharing for this shared-reservation"""
+        r"""Type of sharing for this shared-reservation
+
+        Values:
+            UNDEFINED_SHARE_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            LOCAL (72607563):
+                Default value.
+            ORGANIZATION (274978099):
+                Shared-reservation is open to entire
+                Organization
+            SHARE_TYPE_UNSPECIFIED (494771730):
+                Default value. This value is unused.
+            SPECIFIC_PROJECTS (347838695):
+                Shared-reservation is open to specific
+                projects
+        """
         UNDEFINED_SHARE_TYPE = 0
         LOCAL = 72607563
         ORGANIZATION = 274978099
@@ -80212,6 +84147,18 @@ class Snapshot(proto.Message):
     class Architecture(proto.Enum):
         r"""[Output Only] The architecture of the snapshot. Valid values are
         ARM64 or X86_64.
+
+        Values:
+            UNDEFINED_ARCHITECTURE (0):
+                A value indicating that the enum field is not
+                set.
+            ARCHITECTURE_UNSPECIFIED (394750507):
+                Default value indicating Architecture is not
+                set.
+            ARM64 (62547450):
+                Machines with architecture ARM64
+            X86_64 (425300551):
+                Machines with architecture X86_64
         """
         UNDEFINED_ARCHITECTURE = 0
         ARCHITECTURE_UNSPECIFIED = 394750507
@@ -80219,7 +84166,17 @@ class Snapshot(proto.Message):
         X86_64 = 425300551
 
     class SnapshotType(proto.Enum):
-        r"""Indicates the type of the snapshot."""
+        r"""Indicates the type of the snapshot.
+
+        Values:
+            UNDEFINED_SNAPSHOT_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            ARCHIVE (506752162):
+                No description available.
+            STANDARD (484642493):
+                No description available.
+        """
         UNDEFINED_SNAPSHOT_TYPE = 0
         ARCHIVE = 506752162
         STANDARD = 484642493
@@ -80227,6 +84184,21 @@ class Snapshot(proto.Message):
     class Status(proto.Enum):
         r"""[Output Only] The status of the snapshot. This can be CREATING,
         DELETING, FAILED, READY, or UPLOADING.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            CREATING (455564985):
+                Snapshot creation is in progress.
+            DELETING (528602024):
+                Snapshot is currently being deleted.
+            FAILED (455706685):
+                Snapshot creation failed.
+            READY (77848963):
+                Snapshot has been created successfully.
+            UPLOADING (267603489):
+                Snapshot is being uploaded.
         """
         UNDEFINED_STATUS = 0
         CREATING = 455564985
@@ -80241,6 +84213,15 @@ class Snapshot(proto.Message):
         This status can either be UPDATING, meaning the size of the snapshot
         is being updated, or UP_TO_DATE, meaning the size of the snapshot is
         up-to-date.
+
+        Values:
+            UNDEFINED_STORAGE_BYTES_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            UPDATING (494614342):
+                No description available.
+            UP_TO_DATE (101306702):
+                No description available.
         """
         UNDEFINED_STORAGE_BYTES_STATUS = 0
         UPDATING = 494614342
@@ -80629,6 +84610,18 @@ class SourceInstanceProperties(proto.Message):
         r"""KeyRevocationActionType of the instance. Supported options
         are "STOP" and "NONE". The default value is "NONE" if it is not
         specified.
+
+        Values:
+            UNDEFINED_KEY_REVOCATION_ACTION_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            KEY_REVOCATION_ACTION_TYPE_UNSPECIFIED (467110106):
+                Default value. This value is unused.
+            NONE (2402104):
+                Indicates user chose no operation.
+            STOP (2555906):
+                Indicates user chose to opt for VM shutdown
+                on key revocation.
         """
         UNDEFINED_KEY_REVOCATION_ACTION_TYPE = 0
         KEY_REVOCATION_ACTION_TYPE_UNSPECIFIED = 467110106
@@ -80816,6 +84809,17 @@ class SslCertificate(proto.Message):
         r"""(Optional) Specifies the type of SSL certificate, either
         "SELF_MANAGED" or "MANAGED". If not specified, the certificate is
         self-managed and the fields certificate and private_key are used.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            MANAGED (479501183):
+                Google-managed SSLCertificate.
+            SELF_MANAGED (434437516):
+                Certificate uploaded by user.
+            TYPE_UNSPECIFIED (437714322):
+                No description available.
         """
         UNDEFINED_TYPE = 0
         MANAGED = 479501183
@@ -81073,7 +85077,38 @@ class SslCertificateManagedSslCertificate(proto.Message):
     """
 
     class Status(proto.Enum):
-        r"""[Output only] Status of the managed certificate resource."""
+        r"""[Output only] Status of the managed certificate resource.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            ACTIVE (314733318):
+                The certificate management is working, and a
+                certificate has been provisioned.
+            MANAGED_CERTIFICATE_STATUS_UNSPECIFIED (474800850):
+                No description available.
+            PROVISIONING (290896621):
+                The certificate management is working. GCP
+                will attempt to provision the first certificate.
+            PROVISIONING_FAILED (76813775):
+                Certificate provisioning failed due to an issue with the DNS
+                or load balancing configuration. For details of which domain
+                failed, consult domain_status field.
+            PROVISIONING_FAILED_PERMANENTLY (275036203):
+                Certificate provisioning failed due to an issue with the DNS
+                or load balancing configuration. It won't be retried. To try
+                again delete and create a new managed SslCertificate
+                resource. For details of which domain failed, consult
+                domain_status field.
+            RENEWAL_FAILED (434659076):
+                Renewal of the certificate has failed due to an issue with
+                the DNS or load balancing configuration. The existing cert
+                is still serving; however, it will expire shortly. To
+                provision a renewed certificate, delete and create a new
+                managed SslCertificate resource. For details on which domain
+                failed, consult domain_status field.
+        """
         UNDEFINED_STATUS = 0
         ACTIVE = 314733318
         MANAGED_CERTIFICATE_STATUS_UNSPECIFIED = 474800850
@@ -81464,6 +85499,17 @@ class SslPolicy(proto.Message):
         r"""The minimum version of SSL protocol that can be used by the clients
         to establish a connection with the load balancer. This can be one of
         TLS_1_0, TLS_1_1, TLS_1_2.
+
+        Values:
+            UNDEFINED_MIN_TLS_VERSION (0):
+                A value indicating that the enum field is not
+                set.
+            TLS_1_0 (33116734):
+                TLS 1.0
+            TLS_1_1 (33116735):
+                TLS 1.1
+            TLS_1_2 (33116736):
+                TLS 1.2
         """
         UNDEFINED_MIN_TLS_VERSION = 0
         TLS_1_0 = 33116734
@@ -81476,6 +85522,28 @@ class SslPolicy(proto.Message):
         one of COMPATIBLE, MODERN, RESTRICTED, or CUSTOM. If using
         CUSTOM, the set of SSL features to enable must be specified in
         the customFeatures field.
+
+        Values:
+            UNDEFINED_PROFILE (0):
+                A value indicating that the enum field is not
+                set.
+            COMPATIBLE (179357396):
+                Compatible profile. Allows the broadset set
+                of clients, even those which support only
+                out-of-date SSL features to negotiate with the
+                load balancer.
+            CUSTOM (388595569):
+                Custom profile. Allow only the set of allowed
+                SSL features specified in the customFeatures
+                field.
+            MODERN (132013855):
+                Modern profile. Supports a wide set of SSL
+                features, allowing modern clients to negotiate
+                SSL with the load balancer.
+            RESTRICTED (261551195):
+                Restricted profile. Supports a reduced set of
+                SSL features, intended to meet stricter
+                compliance requirements.
         """
         UNDEFINED_PROFILE = 0
         COMPATIBLE = 179357396
@@ -81746,6 +85814,15 @@ class StatefulPolicyPreservedStateDiskDevice(proto.Message):
         by the group, e.g. when the given instance or the whole group is
         deleted. Note: disks attached in READ_ONLY mode cannot be
         auto-deleted.
+
+        Values:
+            UNDEFINED_AUTO_DELETE (0):
+                A value indicating that the enum field is not
+                set.
+            NEVER (74175084):
+                No description available.
+            ON_PERMANENT_INSTANCE_DELETION (95727719):
+                No description available.
         """
         UNDEFINED_AUTO_DELETE = 0
         NEVER = 74175084
@@ -82022,6 +86099,21 @@ class Subnetwork(proto.Message):
         r"""The access type of IPv6 address this subnet holds. It's immutable
         and can only be specified during creation or the first time the
         subnet is updated into IPV4_IPV6 dual stack.
+
+        Values:
+            UNDEFINED_IPV6_ACCESS_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            EXTERNAL (35607499):
+                VMs on this subnet will be assigned IPv6
+                addresses that are accessible via the Internet,
+                as well as the VPC network.
+            INTERNAL (279295677):
+                VMs on this subnet will be assigned IPv6
+                addresses that are only accessible over the VPC
+                network.
+            UNSPECIFIED_IPV6_ACCESS_TYPE (313080613):
+                No description available.
         """
         UNDEFINED_IPV6_ACCESS_TYPE = 0
         EXTERNAL = 35607499
@@ -82031,6 +86123,20 @@ class Subnetwork(proto.Message):
     class PrivateIpv6GoogleAccess(proto.Enum):
         r"""This field is for internal use. This field can be both set at
         resource creation time and updated using patch.
+
+        Values:
+            UNDEFINED_PRIVATE_IPV6_GOOGLE_ACCESS (0):
+                A value indicating that the enum field is not
+                set.
+            DISABLE_GOOGLE_ACCESS (450958579):
+                Disable private IPv6 access to/from Google
+                services.
+            ENABLE_BIDIRECTIONAL_ACCESS_TO_GOOGLE (427975994):
+                Bidirectional private IPv6 access to/from
+                Google services.
+            ENABLE_OUTBOUND_VM_ACCESS_TO_GOOGLE (288210263):
+                Outbound private IPv6 access from VMs in this
+                subnet to Google services.
         """
         UNDEFINED_PRIVATE_IPV6_GOOGLE_ACCESS = 0
         DISABLE_GOOGLE_ACCESS = 450958579
@@ -82045,6 +86151,26 @@ class Subnetwork(proto.Message):
         unspecified, the purpose defaults to PRIVATE_RFC_1918. The
         enableFlowLogs field isn't supported with the purpose field set to
         INTERNAL_HTTPS_LOAD_BALANCER.
+
+        Values:
+            UNDEFINED_PURPOSE (0):
+                A value indicating that the enum field is not
+                set.
+            INTERNAL_HTTPS_LOAD_BALANCER (248748889):
+                Subnet reserved for Internal HTTP(S) Load
+                Balancing.
+            PRIVATE (403485027):
+                Regular user created or automatically created
+                subnet.
+            PRIVATE_RFC_1918 (254902107):
+                Regular user created or automatically created
+                subnet.
+            PRIVATE_SERVICE_CONNECT (48134724):
+                Subnetworks created for Private Service
+                Connect in the producer network.
+            REGIONAL_MANAGED_PROXY (153049966):
+                Subnetwork used for Regional
+                Internal/External HTTP(S) Load Balancing.
         """
         UNDEFINED_PURPOSE = 0
         INTERNAL_HTTPS_LOAD_BALANCER = 248748889
@@ -82060,6 +86186,16 @@ class Subnetwork(proto.Message):
         being used for Internal HTTP(S) Load Balancing. A BACKUP subnetwork
         is one that is ready to be promoted to ACTIVE or is currently
         draining. This field can be updated with a patch request.
+
+        Values:
+            UNDEFINED_ROLE (0):
+                A value indicating that the enum field is not
+                set.
+            ACTIVE (314733318):
+                The ACTIVE subnet that is currently used.
+            BACKUP (341010882):
+                The BACKUP subnet that could be promoted to
+                ACTIVE.
         """
         UNDEFINED_ROLE = 0
         ACTIVE = 314733318
@@ -82071,6 +86207,19 @@ class Subnetwork(proto.Message):
         VMs in the subnet can be assigned both IPv4 and IPv6 addresses. If
         not specified, IPV4_ONLY is used. This field can be both set at
         resource creation time and updated using patch.
+
+        Values:
+            UNDEFINED_STACK_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            IPV4_IPV6 (22197249):
+                New VMs in this subnet can have both IPv4 and
+                IPv6 addresses.
+            IPV4_ONLY (22373798):
+                New VMs in this subnet will only be assigned
+                IPv4 addresses.
+            UNSPECIFIED_STACK_TYPE (298084569):
+                No description available.
         """
         UNDEFINED_STACK_TYPE = 0
         IPV4_IPV6 = 22197249
@@ -82084,6 +86233,15 @@ class Subnetwork(proto.Message):
         to INTERNAL_HTTPS_LOAD_BALANCER and indicates that connections to
         the load balancer are being drained. A subnetwork that is draining
         cannot be used or modified until it reaches a status of READY
+
+        Values:
+            UNDEFINED_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            DRAINING (480455402):
+                Subnetwork is being drained.
+            READY (77848963):
+                Subnetwork is ready for use.
         """
         UNDEFINED_STATE = 0
         DRAINING = 480455402
@@ -82432,6 +86590,23 @@ class SubnetworkLogConfig(proto.Message):
         logs. Increasing the interval time will reduce the amount of
         generated flow logs for long lasting connections. Default is an
         interval of 5 seconds per connection.
+
+        Values:
+            UNDEFINED_AGGREGATION_INTERVAL (0):
+                A value indicating that the enum field is not
+                set.
+            INTERVAL_10_MIN (487155916):
+                No description available.
+            INTERVAL_15_MIN (491773521):
+                No description available.
+            INTERVAL_1_MIN (69052714):
+                No description available.
+            INTERVAL_30_SEC (7548937):
+                No description available.
+            INTERVAL_5_MIN (72746798):
+                No description available.
+            INTERVAL_5_SEC (72752429):
+                No description available.
         """
         UNDEFINED_AGGREGATION_INTERVAL = 0
         INTERVAL_10_MIN = 487155916
@@ -82446,6 +86621,17 @@ class SubnetworkLogConfig(proto.Message):
         enabled. Configures whether all, none or a subset of metadata fields
         should be added to the reported VPC flow logs. Default is
         EXCLUDE_ALL_METADATA.
+
+        Values:
+            UNDEFINED_METADATA (0):
+                A value indicating that the enum field is not
+                set.
+            CUSTOM_METADATA (62450749):
+                No description available.
+            EXCLUDE_ALL_METADATA (334519954):
+                No description available.
+            INCLUDE_ALL_METADATA (164619908):
+                No description available.
         """
         UNDEFINED_METADATA = 0
         CUSTOM_METADATA = 62450749
@@ -82610,7 +86796,31 @@ class Subsetting(proto.Message):
     """
 
     class Policy(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            UNDEFINED_POLICY (0):
+                A value indicating that the enum field is not
+                set.
+            CONSISTENT_HASH_SUBSETTING (108989492):
+                Subsetting based on consistent hashing. For Traffic
+                Director, the number of backends per backend group (the
+                subset size) is based on the ``subset_size`` parameter. For
+                Internal HTTP(S) load balancing, the number of backends per
+                backend group (the subset size) is dynamically adjusted in
+                two cases: - As the number of proxy instances participating
+                in Internal HTTP(S) load balancing increases, the subset
+                size decreases. - When the total number of backends in a
+                network exceeds the capacity of a single proxy instance,
+                subset sizes are reduced automatically for each service that
+                has backend subsetting enabled.
+            NONE (2402104):
+                No Subsetting. Clients may open connections
+                and send traffic to all backends of this backend
+                service. This can lead to performance issues if
+                there is substantial imbalance in the count of
+                clients and backends.
+        """
         UNDEFINED_POLICY = 0
         CONSISTENT_HASH_SUBSETTING = 108989492
         NONE = 2402104
@@ -82822,6 +87032,25 @@ class TCPHealthCheck(proto.Message):
         backends, the health check uses the port number determined by
         looking up the backend service's named port in the instance group's
         list of named ports.
+
+        Values:
+            UNDEFINED_PORT_SPECIFICATION (0):
+                A value indicating that the enum field is not
+                set.
+            USE_FIXED_PORT (190235748):
+                The port number in the health check's port is
+                used for health checking. Applies to network
+                endpoint group and instance group backends.
+            USE_NAMED_PORT (349300671):
+                Not supported.
+            USE_SERVING_PORT (362637516):
+                For network endpoint group backends, the
+                health check uses the port number specified on
+                each endpoint in the network endpoint group. For
+                instance group backends, the health check uses
+                the port number specified for the backend
+                service's named port defined in the instance
+                group's named ports.
         """
         UNDEFINED_PORT_SPECIFICATION = 0
         USE_FIXED_PORT = 190235748
@@ -82831,6 +87060,15 @@ class TCPHealthCheck(proto.Message):
     class ProxyHeader(proto.Enum):
         r"""Specifies the type of proxy header to append before sending data to
         the backend, either NONE or PROXY_V1. The default is NONE.
+
+        Values:
+            UNDEFINED_PROXY_HEADER (0):
+                A value indicating that the enum field is not
+                set.
+            NONE (2402104):
+                No description available.
+            PROXY_V1 (334352940):
+                No description available.
         """
         UNDEFINED_PROXY_HEADER = 0
         NONE = 2402104
@@ -83500,7 +87738,23 @@ class TargetHttpsProxiesSetQuicOverrideRequest(proto.Message):
     """
 
     class QuicOverride(proto.Enum):
-        r"""QUIC policy for the TargetHttpsProxy resource."""
+        r"""QUIC policy for the TargetHttpsProxy resource.
+
+        Values:
+            UNDEFINED_QUIC_OVERRIDE (0):
+                A value indicating that the enum field is not
+                set.
+            DISABLE (241807048):
+                The load balancer will not attempt to
+                negotiate QUIC with clients.
+            ENABLE (438835587):
+                The load balancer will attempt to negotiate
+                QUIC with clients.
+            NONE (2402104):
+                No overrides to the default QUIC policy. This
+                option is implicit if no QUIC override has been
+                specified in the request.
+        """
         UNDEFINED_QUIC_OVERRIDE = 0
         DISABLE = 241807048
         ENABLE = 438835587
@@ -83699,6 +87953,21 @@ class TargetHttpsProxy(proto.Message):
         quic-override is set to DISABLE, the load balancer doesn't use
         QUIC. - If the quic-override flag is not specified, NONE is
         implied.
+
+        Values:
+            UNDEFINED_QUIC_OVERRIDE (0):
+                A value indicating that the enum field is not
+                set.
+            DISABLE (241807048):
+                The load balancer will not attempt to
+                negotiate QUIC with clients.
+            ENABLE (438835587):
+                The load balancer will attempt to negotiate
+                QUIC with clients.
+            NONE (2402104):
+                No overrides to the default QUIC policy. This
+                option is implicit if no QUIC override has been
+                specified in the request.
         """
         UNDEFINED_QUIC_OVERRIDE = 0
         DISABLE = 241807048
@@ -84030,6 +88299,13 @@ class TargetInstance(proto.Message):
         r"""Must have a value of NO_NAT. Protocol forwarding delivers packets
         while preserving the destination IP address of the forwarding rule
         referencing the target instance.
+
+        Values:
+            UNDEFINED_NAT_POLICY (0):
+                A value indicating that the enum field is not
+                set.
+            NO_NAT (161455491):
+                No NAT performed.
         """
         UNDEFINED_NAT_POLICY = 0
         NO_NAT = 161455491
@@ -84386,6 +88662,55 @@ class TargetPool(proto.Message):
         CLIENT_IP_PROTO: Connections from the same client IP with the same
         IP protocol will go to the same instance in the pool while that
         instance remains healthy.
+
+        Values:
+            UNDEFINED_SESSION_AFFINITY (0):
+                A value indicating that the enum field is not
+                set.
+            CLIENT_IP (345665051):
+                2-tuple hash on packet's source and
+                destination IP addresses. Connections from the
+                same source IP address to the same destination
+                IP address will be served by the same backend VM
+                while that VM remains healthy.
+            CLIENT_IP_NO_DESTINATION (106122516):
+                1-tuple hash only on packet's source IP
+                address. Connections from the same source IP
+                address will be served by the same backend VM
+                while that VM remains healthy. This option can
+                only be used for Internal TCP/UDP Load
+                Balancing.
+            CLIENT_IP_PORT_PROTO (221722926):
+                5-tuple hash on packet's source and
+                destination IP addresses, IP protocol, and
+                source and destination ports. Connections for
+                the same IP protocol from the same source IP
+                address and port to the same destination IP
+                address and port will be served by the same
+                backend VM while that VM remains healthy. This
+                option cannot be used for HTTP(S) load
+                balancing.
+            CLIENT_IP_PROTO (25322148):
+                3-tuple hash on packet's source and
+                destination IP addresses, and IP protocol.
+                Connections for the same IP protocol from the
+                same source IP address to the same destination
+                IP address will be served by the same backend VM
+                while that VM remains healthy. This option
+                cannot be used for HTTP(S) load balancing.
+            GENERATED_COOKIE (370321204):
+                Hash based on a cookie generated by the L7
+                loadbalancer. Only valid for HTTP(S) load
+                balancing.
+            HEADER_FIELD (200737960):
+                The hash is based on a user specified header
+                field.
+            HTTP_COOKIE (494981627):
+                The hash is based on a user provided cookie.
+            NONE (2402104):
+                No session affinity. Connections from the
+                same client IP may go to any instance in the
+                pool.
         """
         UNDEFINED_SESSION_AFFINITY = 0
         CLIENT_IP = 345665051
@@ -84820,6 +89145,15 @@ class TargetSslProxiesSetProxyHeaderRequest(proto.Message):
     class ProxyHeader(proto.Enum):
         r"""The new type of proxy header to append before sending data to the
         backend. NONE or PROXY_V1 are allowed.
+
+        Values:
+            UNDEFINED_PROXY_HEADER (0):
+                A value indicating that the enum field is not
+                set.
+            NONE (2402104):
+                No description available.
+            PROXY_V1 (334352940):
+                No description available.
         """
         UNDEFINED_PROXY_HEADER = 0
         NONE = 2402104
@@ -84933,6 +89267,15 @@ class TargetSslProxy(proto.Message):
     class ProxyHeader(proto.Enum):
         r"""Specifies the type of proxy header to append before sending data to
         the backend, either NONE or PROXY_V1. The default is NONE.
+
+        Values:
+            UNDEFINED_PROXY_HEADER (0):
+                A value indicating that the enum field is not
+                set.
+            NONE (2402104):
+                No description available.
+            PROXY_V1 (334352940):
+                No description available.
         """
         UNDEFINED_PROXY_HEADER = 0
         NONE = 2402104
@@ -85133,6 +89476,15 @@ class TargetTcpProxiesSetProxyHeaderRequest(proto.Message):
     class ProxyHeader(proto.Enum):
         r"""The new type of proxy header to append before sending data to the
         backend. NONE or PROXY_V1 are allowed.
+
+        Values:
+            UNDEFINED_PROXY_HEADER (0):
+                A value indicating that the enum field is not
+                set.
+            NONE (2402104):
+                No description available.
+            PROXY_V1 (334352940):
+                No description available.
         """
         UNDEFINED_PROXY_HEADER = 0
         NONE = 2402104
@@ -85225,6 +89577,15 @@ class TargetTcpProxy(proto.Message):
     class ProxyHeader(proto.Enum):
         r"""Specifies the type of proxy header to append before sending data to
         the backend, either NONE or PROXY_V1. The default is NONE.
+
+        Values:
+            UNDEFINED_PROXY_HEADER (0):
+                A value indicating that the enum field is not
+                set.
+            NONE (2402104):
+                No description available.
+            PROXY_V1 (334352940):
+                No description available.
         """
         UNDEFINED_PROXY_HEADER = 0
         NONE = 2402104
@@ -85515,6 +89876,19 @@ class TargetVpnGateway(proto.Message):
     class Status(proto.Enum):
         r"""[Output Only] The status of the VPN gateway, which can be one of the
         following: CREATING, READY, FAILED, or DELETING.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            CREATING (455564985):
+                No description available.
+            DELETING (528602024):
+                No description available.
+            FAILED (455706685):
+                No description available.
+            READY (77848963):
+                No description available.
         """
         UNDEFINED_STATUS = 0
         CREATING = 455564985
@@ -87111,6 +91485,11 @@ class UpdateInstanceRequest(proto.Message):
         require. Additional supported values which may be not listed in the
         enum directly due to technical reasons: INVALID NO_EFFECT REFRESH
         RESTART
+
+        Values:
+            UNDEFINED_MINIMAL_ACTION (0):
+                A value indicating that the enum field is not
+                set.
         """
         UNDEFINED_MINIMAL_ACTION = 0
 
@@ -87122,6 +91501,11 @@ class UpdateInstanceRequest(proto.Message):
         NO_EFFECT, REFRESH, and RESTART. Additional supported values which
         may be not listed in the enum directly due to technical reasons:
         INVALID NO_EFFECT REFRESH RESTART
+
+        Values:
+            UNDEFINED_MOST_DISRUPTIVE_ALLOWED_ACTION (0):
+                A value indicating that the enum field is not
+                set.
         """
         UNDEFINED_MOST_DISRUPTIVE_ALLOWED_ACTION = 0
 
@@ -88603,7 +92987,25 @@ class UrlMapsValidateRequest(proto.Message):
     """
 
     class LoadBalancingSchemes(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            UNDEFINED_LOAD_BALANCING_SCHEMES (0):
+                A value indicating that the enum field is not
+                set.
+            EXTERNAL (35607499):
+                Signifies that this will be used for Classic
+                L7 External Load Balancing.
+            EXTERNAL_MANAGED (512006923):
+                Signifies that this will be used for
+                Envoy-based L7 External Load Balancing.
+            LOAD_BALANCING_SCHEME_UNSPECIFIED (526507452):
+                If unspecified, the validation will try to
+                infer the scheme from the backend service
+                resources this Url map references. If the
+                inferrence is not possible, EXTERNAL will be
+                used as the default type.
+        """
         UNDEFINED_LOAD_BALANCING_SCHEMES = 0
         EXTERNAL = 35607499
         EXTERNAL_MANAGED = 512006923
@@ -88756,6 +93158,19 @@ class UsableSubnetwork(proto.Message):
         r"""The access type of IPv6 address this subnet holds. It's immutable
         and can only be specified during creation or the first time the
         subnet is updated into IPV4_IPV6 dual stack.
+
+        Values:
+            UNDEFINED_IPV6_ACCESS_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            EXTERNAL (35607499):
+                VMs on this subnet will be assigned IPv6
+                addresses that are accessible via the Internet,
+                as well as the VPC network.
+            INTERNAL (279295677):
+                VMs on this subnet will be assigned IPv6
+                addresses that are only accessible over the VPC
+                network.
         """
         UNDEFINED_IPV6_ACCESS_TYPE = 0
         EXTERNAL = 35607499
@@ -88769,6 +93184,26 @@ class UsableSubnetwork(proto.Message):
         unspecified, the purpose defaults to PRIVATE_RFC_1918. The
         enableFlowLogs field isn't supported with the purpose field set to
         INTERNAL_HTTPS_LOAD_BALANCER.
+
+        Values:
+            UNDEFINED_PURPOSE (0):
+                A value indicating that the enum field is not
+                set.
+            INTERNAL_HTTPS_LOAD_BALANCER (248748889):
+                Subnet reserved for Internal HTTP(S) Load
+                Balancing.
+            PRIVATE (403485027):
+                Regular user created or automatically created
+                subnet.
+            PRIVATE_RFC_1918 (254902107):
+                Regular user created or automatically created
+                subnet.
+            PRIVATE_SERVICE_CONNECT (48134724):
+                Subnetworks created for Private Service
+                Connect in the producer network.
+            REGIONAL_MANAGED_PROXY (153049966):
+                Subnetwork used for Regional
+                Internal/External HTTP(S) Load Balancing.
         """
         UNDEFINED_PURPOSE = 0
         INTERNAL_HTTPS_LOAD_BALANCER = 248748889
@@ -88784,6 +93219,16 @@ class UsableSubnetwork(proto.Message):
         being used for Internal HTTP(S) Load Balancing. A BACKUP subnetwork
         is one that is ready to be promoted to ACTIVE or is currently
         draining. This field can be updated with a patch request.
+
+        Values:
+            UNDEFINED_ROLE (0):
+                A value indicating that the enum field is not
+                set.
+            ACTIVE (314733318):
+                The ACTIVE subnet that is currently used.
+            BACKUP (341010882):
+                The BACKUP subnet that could be promoted to
+                ACTIVE.
         """
         UNDEFINED_ROLE = 0
         ACTIVE = 314733318
@@ -88795,6 +93240,17 @@ class UsableSubnetwork(proto.Message):
         VMs in the subnet can be assigned both IPv4 and IPv6 addresses. If
         not specified, IPV4_ONLY is used. This field can be both set at
         resource creation time and updated using patch.
+
+        Values:
+            UNDEFINED_STACK_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            IPV4_IPV6 (22197249):
+                New VMs in this subnet can have both IPv4 and
+                IPv6 addresses.
+            IPV4_ONLY (22373798):
+                New VMs in this subnet will only be assigned
+                IPv4 addresses.
         """
         UNDEFINED_STACK_TYPE = 0
         IPV4_IPV6 = 22197249
@@ -89414,6 +93870,16 @@ class VpnGateway(proto.Message):
         r"""The stack type for this VPN gateway to identify the IP protocols
         that are enabled. Possible values are: IPV4_ONLY, IPV4_IPV6. If not
         specified, IPV4_ONLY will be used.
+
+        Values:
+            UNDEFINED_STACK_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            IPV4_IPV6 (22197249):
+                Enable VPN gateway with both IPv4 and IPv6
+                protocols.
+            IPV4_ONLY (22373798):
+                Enable VPN gateway with only IPv4 protocol.
         """
         UNDEFINED_STACK_TYPE = 0
         IPV4_IPV6 = 22197249
@@ -89683,6 +94149,25 @@ class VpnGatewayStatusHighAvailabilityRequirementState(proto.Message):
         r"""Indicates the high availability requirement state for the VPN
         connection. Valid values are CONNECTION_REDUNDANCY_MET,
         CONNECTION_REDUNDANCY_NOT_MET.
+
+        Values:
+            UNDEFINED_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            CONNECTION_REDUNDANCY_MET (505242907):
+                VPN tunnels are configured with adequate
+                redundancy from Cloud VPN gateway to the peer
+                VPN gateway. For both GCP-to-non-GCP and
+                GCP-to-GCP connections, the adequate redundancy
+                is a pre-requirement for users to get 99.99%
+                availability on GCP side; please note that for
+                any connection, end-to-end 99.99% availability
+                is subject to proper configuration on the peer
+                VPN gateway.
+            CONNECTION_REDUNDANCY_NOT_MET (511863311):
+                VPN tunnels are not configured with adequate
+                redundancy from the Cloud VPN gateway to the
+                peer gateway
         """
         UNDEFINED_STATE = 0
         CONNECTION_REDUNDANCY_MET = 505242907
@@ -89692,6 +94177,13 @@ class VpnGatewayStatusHighAvailabilityRequirementState(proto.Message):
         r"""Indicates the reason why the VPN connection does not meet the high
         availability redundancy criteria/requirement. Valid values is
         INCOMPLETE_TUNNELS_COVERAGE.
+
+        Values:
+            UNDEFINED_UNSATISFIED_REASON (0):
+                A value indicating that the enum field is not
+                set.
+            INCOMPLETE_TUNNELS_COVERAGE (55917437):
+                No description available.
         """
         UNDEFINED_UNSATISFIED_REASON = 0
         INCOMPLETE_TUNNELS_COVERAGE = 55917437
@@ -90096,6 +94588,47 @@ class VpnTunnel(proto.Message):
         PEER_IDENTITY_MISMATCH: Peer identity does not match peer IP,
         probably behind NAT. - TS_NARROWING_NOT_ALLOWED: Traffic selector
         narrowing not allowed for an HA-VPN tunnel.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            ALLOCATING_RESOURCES (320922816):
+                Cloud VPN is in the process of allocating all
+                required resources (specifically, a borg task).
+            AUTHORIZATION_ERROR (23580290):
+                Auth error (e.g. bad shared secret).
+            DEPROVISIONING (428935662):
+                Resources is being deallocated for the VPN
+                tunnel.
+            ESTABLISHED (88852344):
+                Secure session is successfully established
+                with peer VPN.
+            FAILED (455706685):
+                Tunnel creation has failed and the tunnel is
+                not ready to be used.
+            FIRST_HANDSHAKE (191393000):
+                Successful first handshake with peer VPN.
+            NEGOTIATION_FAILURE (360325868):
+                Handshake failed.
+            NETWORK_ERROR (193912951):
+                Deprecated, replaced by NO_INCOMING_PACKETS
+            NO_INCOMING_PACKETS (119983216):
+                No incoming packets from peer
+            PROVISIONING (290896621):
+                Resource is being allocated for the VPN
+                tunnel.
+            REJECTED (174130302):
+                Tunnel configuration was rejected, can be
+                result of being denylisted.
+            STOPPED (444276141):
+                Tunnel is stopped due to its Forwarding Rules
+                being deleted.
+            WAITING_FOR_FULL_CONFIG (41640522):
+                Waiting to receive all VPN-related configs
+                from user. Network, TargetVpnGateway, VpnTunnel,
+                ForwardingRule and Route resources are needed to
+                setup VPN tunnel.
         """
         UNDEFINED_STATUS = 0
         ALLOCATING_RESOURCES = 320922816
@@ -90573,6 +95106,93 @@ class Warning(proto.Message):
         r"""[Output Only] A warning code, if applicable. For example, Compute
         Engine returns NO_RESULTS_ON_PAGE if there are no results in the
         response.
+
+        Values:
+            UNDEFINED_CODE (0):
+                A value indicating that the enum field is not
+                set.
+            CLEANUP_FAILED (150308440):
+                Warning about failed cleanup of transient
+                changes made by a failed operation.
+            DEPRECATED_RESOURCE_USED (391835586):
+                A link to a deprecated resource was created.
+            DEPRECATED_TYPE_USED (346526230):
+                When deploying and at least one of the
+                resources has a type marked as deprecated
+            DISK_SIZE_LARGER_THAN_IMAGE_SIZE (369442967):
+                The user created a boot disk that is larger
+                than image size.
+            EXPERIMENTAL_TYPE_USED (451954443):
+                When deploying and at least one of the
+                resources has a type marked as experimental
+            EXTERNAL_API_WARNING (175546307):
+                Warning that is present in an external api
+                call
+            FIELD_VALUE_OVERRIDEN (329669423):
+                Warning that value of a field has been
+                overridden. Deprecated unused field.
+            INJECTED_KERNELS_DEPRECATED (417377419):
+                The operation involved use of an injected
+                kernel, which is deprecated.
+            INVALID_HEALTH_CHECK_FOR_DYNAMIC_WIEGHTED_LB (401542606):
+                A WEIGHTED_MAGLEV backend service is associated with a
+                health check that is not of type HTTP/HTTPS/HTTP2.
+            LARGE_DEPLOYMENT_WARNING (481440678):
+                When deploying a deployment with a
+                exceedingly large number of resources
+            MISSING_TYPE_DEPENDENCY (344505463):
+                A resource depends on a missing type
+            NEXT_HOP_ADDRESS_NOT_ASSIGNED (324964999):
+                The route's nextHopIp address is not assigned
+                to an instance on the network.
+            NEXT_HOP_CANNOT_IP_FORWARD (383382887):
+                The route's next hop instance cannot ip
+                forward.
+            NEXT_HOP_INSTANCE_HAS_NO_IPV6_INTERFACE (146748434):
+                The route's nextHopInstance URL refers to an
+                instance that does not have an ipv6 interface on
+                the same network as the route.
+            NEXT_HOP_INSTANCE_NOT_FOUND (464250446):
+                The route's nextHopInstance URL refers to an
+                instance that does not exist.
+            NEXT_HOP_INSTANCE_NOT_ON_NETWORK (243758146):
+                The route's nextHopInstance URL refers to an
+                instance that is not on the same network as the
+                route.
+            NEXT_HOP_NOT_RUNNING (417081265):
+                The route's next hop instance does not have a
+                status of RUNNING.
+            NOT_CRITICAL_ERROR (105763924):
+                Error which is not critical. We decided to
+                continue the process despite the mentioned
+                error.
+            NO_RESULTS_ON_PAGE (30036744):
+                No results are present on a particular list
+                page.
+            PARTIAL_SUCCESS (39966469):
+                Success is reported, but some results may be
+                missing due to errors
+            REQUIRED_TOS_AGREEMENT (3745539):
+                The user attempted to use a resource that
+                requires a TOS they have not accepted.
+            RESOURCE_IN_USE_BY_OTHER_RESOURCE_WARNING (496728641):
+                Warning that a resource is in use.
+            RESOURCE_NOT_DELETED (168598460):
+                One or more of the resources set to
+                auto-delete could not be deleted because they
+                were in use.
+            SCHEMA_VALIDATION_IGNORED (275245642):
+                When a resource schema validation is ignored.
+            SINGLE_INSTANCE_PROPERTY_TEMPLATE (268305617):
+                Instance template used in instance group
+                manager is valid as such, but its application
+                does not make a lot of sense, because it allows
+                only single instance in instance group.
+            UNDECLARED_PROPERTIES (390513439):
+                When undeclared properties in the schema are
+                present
+            UNREACHABLE (13328052):
+                A given scope cannot be reached.
         """
         UNDEFINED_CODE = 0
         CLEANUP_FAILED = 150308440
@@ -90648,6 +95268,93 @@ class Warnings(proto.Message):
         r"""[Output Only] A warning code, if applicable. For example, Compute
         Engine returns NO_RESULTS_ON_PAGE if there are no results in the
         response.
+
+        Values:
+            UNDEFINED_CODE (0):
+                A value indicating that the enum field is not
+                set.
+            CLEANUP_FAILED (150308440):
+                Warning about failed cleanup of transient
+                changes made by a failed operation.
+            DEPRECATED_RESOURCE_USED (391835586):
+                A link to a deprecated resource was created.
+            DEPRECATED_TYPE_USED (346526230):
+                When deploying and at least one of the
+                resources has a type marked as deprecated
+            DISK_SIZE_LARGER_THAN_IMAGE_SIZE (369442967):
+                The user created a boot disk that is larger
+                than image size.
+            EXPERIMENTAL_TYPE_USED (451954443):
+                When deploying and at least one of the
+                resources has a type marked as experimental
+            EXTERNAL_API_WARNING (175546307):
+                Warning that is present in an external api
+                call
+            FIELD_VALUE_OVERRIDEN (329669423):
+                Warning that value of a field has been
+                overridden. Deprecated unused field.
+            INJECTED_KERNELS_DEPRECATED (417377419):
+                The operation involved use of an injected
+                kernel, which is deprecated.
+            INVALID_HEALTH_CHECK_FOR_DYNAMIC_WIEGHTED_LB (401542606):
+                A WEIGHTED_MAGLEV backend service is associated with a
+                health check that is not of type HTTP/HTTPS/HTTP2.
+            LARGE_DEPLOYMENT_WARNING (481440678):
+                When deploying a deployment with a
+                exceedingly large number of resources
+            MISSING_TYPE_DEPENDENCY (344505463):
+                A resource depends on a missing type
+            NEXT_HOP_ADDRESS_NOT_ASSIGNED (324964999):
+                The route's nextHopIp address is not assigned
+                to an instance on the network.
+            NEXT_HOP_CANNOT_IP_FORWARD (383382887):
+                The route's next hop instance cannot ip
+                forward.
+            NEXT_HOP_INSTANCE_HAS_NO_IPV6_INTERFACE (146748434):
+                The route's nextHopInstance URL refers to an
+                instance that does not have an ipv6 interface on
+                the same network as the route.
+            NEXT_HOP_INSTANCE_NOT_FOUND (464250446):
+                The route's nextHopInstance URL refers to an
+                instance that does not exist.
+            NEXT_HOP_INSTANCE_NOT_ON_NETWORK (243758146):
+                The route's nextHopInstance URL refers to an
+                instance that is not on the same network as the
+                route.
+            NEXT_HOP_NOT_RUNNING (417081265):
+                The route's next hop instance does not have a
+                status of RUNNING.
+            NOT_CRITICAL_ERROR (105763924):
+                Error which is not critical. We decided to
+                continue the process despite the mentioned
+                error.
+            NO_RESULTS_ON_PAGE (30036744):
+                No results are present on a particular list
+                page.
+            PARTIAL_SUCCESS (39966469):
+                Success is reported, but some results may be
+                missing due to errors
+            REQUIRED_TOS_AGREEMENT (3745539):
+                The user attempted to use a resource that
+                requires a TOS they have not accepted.
+            RESOURCE_IN_USE_BY_OTHER_RESOURCE_WARNING (496728641):
+                Warning that a resource is in use.
+            RESOURCE_NOT_DELETED (168598460):
+                One or more of the resources set to
+                auto-delete could not be deleted because they
+                were in use.
+            SCHEMA_VALIDATION_IGNORED (275245642):
+                When a resource schema validation is ignored.
+            SINGLE_INSTANCE_PROPERTY_TEMPLATE (268305617):
+                Instance template used in instance group
+                manager is valid as such, but its application
+                does not make a lot of sense, because it allows
+                only single instance in instance group.
+            UNDECLARED_PROPERTIES (390513439):
+                When undeclared properties in the schema are
+                present
+            UNREACHABLE (13328052):
+                A given scope cannot be reached.
         """
         UNDEFINED_CODE = 0
         CLEANUP_FAILED = 150308440
@@ -90857,7 +95564,17 @@ class XpnResourceId(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""The type of the service resource."""
+        r"""The type of the service resource.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            PROJECT (408671993):
+                No description available.
+            XPN_RESOURCE_TYPE_UNSPECIFIED (151607034):
+                No description available.
+        """
         UNDEFINED_TYPE = 0
         PROJECT = 408671993
         XPN_RESOURCE_TYPE_UNSPECIFIED = 151607034
@@ -90935,7 +95652,17 @@ class Zone(proto.Message):
     """
 
     class Status(proto.Enum):
-        r"""[Output Only] Status of the zone, either UP or DOWN."""
+        r"""[Output Only] Status of the zone, either UP or DOWN.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            DOWN (2104482):
+                No description available.
+            UP (2715):
+                No description available.
+        """
         UNDEFINED_STATUS = 0
         DOWN = 2104482
         UP = 2715

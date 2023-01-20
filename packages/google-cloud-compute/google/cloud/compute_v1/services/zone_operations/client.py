@@ -858,7 +858,7 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "ZoneOperationsClient":
         return self
 
     def __exit__(self, type, value, traceback):

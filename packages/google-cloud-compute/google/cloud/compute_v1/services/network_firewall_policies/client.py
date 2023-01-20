@@ -3120,7 +3120,7 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "NetworkFirewallPoliciesClient":
         return self
 
     def __exit__(self, type, value, traceback):

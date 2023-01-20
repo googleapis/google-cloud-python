@@ -1717,7 +1717,7 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "GlobalForwardingRulesClient":
         return self
 
     def __exit__(self, type, value, traceback):

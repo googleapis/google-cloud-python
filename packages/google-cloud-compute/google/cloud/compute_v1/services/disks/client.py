@@ -2839,7 +2839,7 @@ class DisksClient(metaclass=DisksClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "DisksClient":
         return self
 
     def __exit__(self, type, value, traceback):

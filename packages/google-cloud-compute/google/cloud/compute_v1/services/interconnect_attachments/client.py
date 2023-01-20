@@ -1703,7 +1703,7 @@ class InterconnectAttachmentsClient(metaclass=InterconnectAttachmentsClientMeta)
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "InterconnectAttachmentsClient":
         return self
 
     def __exit__(self, type, value, traceback):

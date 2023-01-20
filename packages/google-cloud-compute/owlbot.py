@@ -52,7 +52,6 @@ for library in s.get_staging_dirs(default_version):
     s.replace(library / "google/cloud/**/types/compute.py", """\"IT_\"""", """`IT_`""")
     s.replace(library / "google/cloud/**/types/compute.py", """\"NS_\"""", """`NS_`""")
     s.replace(library / "google/cloud/**/types/compute.py", """\/\[a-zA-Z0-9-_\]\/""", """`[a-zA-Z0-9-_]`""")
-    s.replace(library /"google/cloud/**/types/compute.py", """\/\[A-Z0-9_\]\+\/""", """`[A-Z0-9_]+`""")
 
     s.move([library], excludes=["**/gapic_version.py", "README.rst"])
 s.remove_staging_dirs()

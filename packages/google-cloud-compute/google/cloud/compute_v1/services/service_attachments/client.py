@@ -1839,7 +1839,7 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "ServiceAttachmentsClient":
         return self
 
     def __exit__(self, type, value, traceback):

@@ -2531,7 +2531,7 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "TargetHttpsProxiesClient":
         return self
 
     def __exit__(self, type, value, traceback):

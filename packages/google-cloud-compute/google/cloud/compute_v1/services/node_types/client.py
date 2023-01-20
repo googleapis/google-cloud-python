@@ -711,7 +711,7 @@ class NodeTypesClient(metaclass=NodeTypesClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "NodeTypesClient":
         return self
 
     def __exit__(self, type, value, traceback):

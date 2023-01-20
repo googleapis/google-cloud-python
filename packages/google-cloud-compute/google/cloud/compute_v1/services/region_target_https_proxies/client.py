@@ -1885,7 +1885,7 @@ class RegionTargetHttpsProxiesClient(metaclass=RegionTargetHttpsProxiesClientMet
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "RegionTargetHttpsProxiesClient":
         return self
 
     def __exit__(self, type, value, traceback):

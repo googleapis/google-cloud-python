@@ -2030,7 +2030,7 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "RegionBackendServicesClient":
         return self
 
     def __exit__(self, type, value, traceback):
