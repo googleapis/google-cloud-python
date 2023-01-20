@@ -221,7 +221,16 @@ class CertificateIssuanceConfig(proto.Message):
     """
 
     class KeyAlgorithm(proto.Enum):
-        r"""The type of keypair to generate."""
+        r"""The type of keypair to generate.
+
+        Values:
+            KEY_ALGORITHM_UNSPECIFIED (0):
+                Unspecified key algorithm.
+            RSA_2048 (1):
+                Specifies RSA with a 2048-bit modulus.
+            ECDSA_P256 (4):
+                Specifies ECDSA with curve P256.
+        """
         KEY_ALGORITHM_UNSPECIFIED = 0
         RSA_2048 = 1
         ECDSA_P256 = 4

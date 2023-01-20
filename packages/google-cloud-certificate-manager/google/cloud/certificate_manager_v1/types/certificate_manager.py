@@ -57,7 +57,17 @@ __protobuf__ = proto.module(
 
 
 class ServingState(proto.Enum):
-    r"""Defines set of serving states associated with a resource."""
+    r"""Defines set of serving states associated with a resource.
+
+    Values:
+        SERVING_STATE_UNSPECIFIED (0):
+            The status is undefined.
+        ACTIVE (1):
+            The configuration is serving.
+        PENDING (2):
+            Update is in progress. Some frontends may
+            serve this configuration.
+    """
     SERVING_STATE_UNSPECIFIED = 0
     ACTIVE = 1
     PENDING = 2
@@ -866,7 +876,17 @@ class Certificate(proto.Message):
     """
 
     class Scope(proto.Enum):
-        r"""Certificate scope."""
+        r"""Certificate scope.
+
+        Values:
+            DEFAULT (0):
+                Certificates with default scope are served
+                from core Google data centers. If unsure, choose
+                this option.
+            EDGE_CACHE (1):
+                Certificates with scope EDGE_CACHE are special-purposed
+                certificates, served from non-core Google data centers.
+        """
         DEFAULT = 0
         EDGE_CACHE = 1
 
@@ -930,7 +950,24 @@ class Certificate(proto.Message):
         """
 
         class State(proto.Enum):
-            r""""""
+            r"""
+
+            Values:
+                STATE_UNSPECIFIED (0):
+
+                PROVISIONING (1):
+                    Certificate Manager attempts to provision or renew the
+                    certificate. If the process takes longer than expected,
+                    consult the ``provisioning_issue`` field.
+                FAILED (2):
+                    Multiple certificate provisioning attempts failed and
+                    Certificate Manager gave up. To try again, delete and create
+                    a new managed Certificate resource. For details see the
+                    ``provisioning_issue`` field.
+                ACTIVE (3):
+                    The certificate management is working, and a
+                    certificate has been provisioned.
+            """
             STATE_UNSPECIFIED = 0
             PROVISIONING = 1
             FAILED = 2
@@ -952,7 +989,21 @@ class Certificate(proto.Message):
             """
 
             class Reason(proto.Enum):
-                r""""""
+                r"""
+
+                Values:
+                    REASON_UNSPECIFIED (0):
+
+                    AUTHORIZATION_ISSUE (1):
+                        Certificate provisioning failed due to an issue with one or
+                        more of the domains on the certificate. For details of which
+                        domains failed, consult the ``authorization_attempt_info``
+                        field.
+                    RATE_LIMITED (2):
+                        Exceeded Certificate Authority quotas or
+                        internal rate limits of the system. Provisioning
+                        may take longer to complete.
+                """
                 REASON_UNSPECIFIED = 0
                 AUTHORIZATION_ISSUE = 1
                 RATE_LIMITED = 2
@@ -991,14 +1042,47 @@ class Certificate(proto.Message):
             """
 
             class State(proto.Enum):
-                r""""""
+                r"""
+
+                Values:
+                    STATE_UNSPECIFIED (0):
+
+                    AUTHORIZING (1):
+                        Certificate provisioning for this domain is
+                        under way. GCP will attempt to authorize the
+                        domain.
+                    AUTHORIZED (6):
+                        A managed certificate can be provisioned, no
+                        issues for this domain.
+                    FAILED (7):
+                        Attempt to authorize the domain failed. This prevents the
+                        Managed Certificate from being issued. See
+                        ``failure_reason`` and ``details`` fields for more
+                        information.
+                """
                 STATE_UNSPECIFIED = 0
                 AUTHORIZING = 1
                 AUTHORIZED = 6
                 FAILED = 7
 
             class FailureReason(proto.Enum):
-                r""""""
+                r"""
+
+                Values:
+                    FAILURE_REASON_UNSPECIFIED (0):
+
+                    CONFIG (1):
+                        There was a problem with the user's DNS or
+                        load balancer configuration for this domain.
+                    CAA (2):
+                        Certificate issuance forbidden by an explicit
+                        CAA record for the domain or a failure to check
+                        CAA records for the domain.
+                    RATE_LIMITED (3):
+                        Reached a CA or internal rate-limit for the
+                        domain, e.g. for certificates per top-level
+                        private domain.
+                """
                 FAILURE_REASON_UNSPECIFIED = 0
                 CONFIG = 1
                 CAA = 2
@@ -1287,6 +1371,14 @@ class CertificateMapEntry(proto.Message):
     class Matcher(proto.Enum):
         r"""Defines predefined cases other than SNI-hostname match when
         this configuration should be applied.
+
+        Values:
+            MATCHER_UNSPECIFIED (0):
+                A matcher has't been recognized.
+            PRIMARY (1):
+                A primary certificate that is served when SNI
+                wasn't specified in the request or SNI couldn't
+                be found in the map.
         """
         MATCHER_UNSPECIFIED = 0
         PRIMARY = 1

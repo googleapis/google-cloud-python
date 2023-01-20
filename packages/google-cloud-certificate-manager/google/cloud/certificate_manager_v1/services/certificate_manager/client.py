@@ -3657,7 +3657,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "CertificateManagerClient":
         return self
 
     def __exit__(self, type, value, traceback):
