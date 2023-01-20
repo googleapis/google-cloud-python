@@ -45,6 +45,16 @@ __protobuf__ = proto.module(
 class KmsKeyState(proto.Enum):
     r"""Represents the accessibility state of a customer-managed KMS
     key used for CMEK integration.
+
+    Values:
+        KMS_KEY_STATE_UNSPECIFIED (0):
+            Unspecified.
+        KMS_KEY_STATE_KEY_AVAILABLE (1):
+            The key is available for use, and dependent
+            resources should be accessible.
+        KMS_KEY_STATE_KEY_UNAVAILABLE (2):
+            The key is unavailable for an unspecified
+            reason. Dependent resources may be inaccessible.
     """
     KMS_KEY_STATE_UNSPECIFIED = 0
     KMS_KEY_STATE_KEY_AVAILABLE = 1
@@ -456,7 +466,16 @@ class VpnConnection(proto.Message):
     """
 
     class BgpRoutingMode(proto.Enum):
-        r"""Routing mode."""
+        r"""Routing mode.
+
+        Values:
+            BGP_ROUTING_MODE_UNSPECIFIED (0):
+                Unknown.
+            REGIONAL (1):
+                Regional mode.
+            GLOBAL (2):
+                Global mode.
+        """
         BGP_ROUTING_MODE_UNSPECIFIED = 0
         REGIONAL = 1
         GLOBAL = 2
@@ -505,7 +524,18 @@ class VpnConnection(proto.Message):
         """
 
         class State(proto.Enum):
-            r"""The current connection state."""
+            r"""The current connection state.
+
+            Values:
+                STATE_UNSPECIFIED (0):
+                    Unknown.
+                STATE_CONNECTED (1):
+                    Connected.
+                STATE_CONNECTING (2):
+                    Still connecting.
+                STATE_ERROR (3):
+                    Error occurred.
+            """
             STATE_UNSPECIFIED = 0
             STATE_CONNECTED = 1
             STATE_CONNECTING = 2
