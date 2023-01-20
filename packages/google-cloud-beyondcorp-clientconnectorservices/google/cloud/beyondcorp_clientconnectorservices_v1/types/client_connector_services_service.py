@@ -63,7 +63,27 @@ class ClientConnectorService(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Represents the different states of a ClientConnectorService."""
+        r"""Represents the different states of a ClientConnectorService.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            CREATING (1):
+                ClientConnectorService is being created.
+            UPDATING (2):
+                ClientConnectorService is being updated.
+            DELETING (3):
+                ClientConnectorService is being deleted.
+            RUNNING (4):
+                ClientConnectorService is running.
+            DOWN (5):
+                ClientConnectorService is down and may be
+                restored in the future. This happens when CCFE
+                sends ProjectState = OFF.
+            ERROR (6):
+                ClientConnectorService encountered an error
+                and is in an indeterministic state.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         UPDATING = 2
@@ -99,7 +119,14 @@ class ClientConnectorService(proto.Message):
             """
 
             class TransportProtocol(proto.Enum):
-                r"""The protocol used to connect to the server."""
+                r"""The protocol used to connect to the server.
+
+                Values:
+                    TRANSPORT_PROTOCOL_UNSPECIFIED (0):
+                        Default value. This value is unused.
+                    TCP (1):
+                        TCP protocol.
+                """
                 TRANSPORT_PROTOCOL_UNSPECIFIED = 0
                 TCP = 1
 
