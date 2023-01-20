@@ -38,6 +38,24 @@ __protobuf__ = proto.module(
 class SsmlVoiceGender(proto.Enum):
     r"""Gender of the voice as described in `SSML voice
     element <https://www.w3.org/TR/speech-synthesis11/#edef_voice>`__.
+
+    Values:
+        SSML_VOICE_GENDER_UNSPECIFIED (0):
+            An unspecified gender.
+            In VoiceSelectionParams, this means that the
+            client doesn't care which gender the selected
+            voice will have. In the Voice field of
+            ListVoicesResponse, this may mean that the voice
+            doesn't fit any of the other categories in this
+            enum, or that the gender of the voice isn't
+            known.
+        MALE (1):
+            A male voice.
+        FEMALE (2):
+            A female voice.
+        NEUTRAL (3):
+            A gender-neutral voice. This voice is not yet
+            supported.
     """
     SSML_VOICE_GENDER_UNSPECIFIED = 0
     MALE = 1
@@ -48,6 +66,32 @@ class SsmlVoiceGender(proto.Enum):
 class AudioEncoding(proto.Enum):
     r"""Configuration to set up audio encoder. The encoding
     determines the output audio format that we'd like.
+
+    Values:
+        AUDIO_ENCODING_UNSPECIFIED (0):
+            Not specified. Will return result
+            [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
+        LINEAR16 (1):
+            Uncompressed 16-bit signed little-endian
+            samples (Linear PCM). Audio content returned as
+            LINEAR16 also contains a WAV header.
+        MP3 (2):
+            MP3 audio at 32kbps.
+        OGG_OPUS (3):
+            Opus encoded audio wrapped in an ogg
+            container. The result will be a file which can
+            be played natively on Android, and in browsers
+            (at least Chrome and Firefox). The quality of
+            the encoding is considerably higher than MP3
+            while using approximately the same bitrate.
+        MULAW (5):
+            8-bit samples that compand 14-bit audio
+            samples using G.711 PCMU/mu-law. Audio content
+            returned as MULAW also contains a WAV header.
+        ALAW (6):
+            8-bit samples that compand 14-bit audio
+            samples using G.711 PCMU/A-law. Audio content
+            returned as ALAW also contains a WAV header.
     """
     AUDIO_ENCODING_UNSPECIFIED = 0
     LINEAR16 = 1
@@ -353,6 +397,20 @@ class CustomVoiceParams(proto.Message):
         r"""The usage of the synthesized audio. You must report your
         honest and correct usage of the service as it's regulated by
         contract and will cause significant difference in billing.
+
+        Values:
+            REPORTED_USAGE_UNSPECIFIED (0):
+                Request with reported usage unspecified will
+                be rejected.
+            REALTIME (1):
+                For scenarios where the synthesized audio is
+                not downloadable and can only be used once. For
+                example, real-time request in IVR system.
+            OFFLINE (2):
+                For scenarios where the synthesized audio is
+                downloadable and can be reused. For example, the
+                synthesized audio is downloaded, stored in
+                customer service system and played repeatedly.
         """
         REPORTED_USAGE_UNSPECIFIED = 0
         REALTIME = 1
