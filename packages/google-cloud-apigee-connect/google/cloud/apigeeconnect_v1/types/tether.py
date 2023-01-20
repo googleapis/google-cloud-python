@@ -38,13 +38,32 @@ __protobuf__ = proto.module(
 
 
 class Action(proto.Enum):
-    r"""The action taken by agent."""
+    r"""The action taken by agent.
+
+    Values:
+        ACTION_UNSPECIFIED (0):
+            Unspecified Action.
+        OPEN_NEW_STREAM (1):
+            Indicates that agent should open a new
+            stream.
+    """
     ACTION_UNSPECIFIED = 0
     OPEN_NEW_STREAM = 1
 
 
 class TetherEndpoint(proto.Enum):
-    r"""Endpoint indicates where the messages will be delivered."""
+    r"""Endpoint indicates where the messages will be delivered.
+
+    Values:
+        TETHER_ENDPOINT_UNSPECIFIED (0):
+            Unspecified tether endpoint.
+        APIGEE_MART (1):
+            Apigee MART endpoint.
+        APIGEE_RUNTIME (2):
+            Apigee Runtime endpoint.
+        APIGEE_MINT_RATING (3):
+            Apigee Mint Rating endpoint.
+    """
     TETHER_ENDPOINT_UNSPECIFIED = 0
     APIGEE_MART = 1
     APIGEE_RUNTIME = 2
@@ -52,7 +71,14 @@ class TetherEndpoint(proto.Enum):
 
 
 class Scheme(proto.Enum):
-    r"""HTTP Scheme."""
+    r"""HTTP Scheme.
+
+    Values:
+        SCHEME_UNSPECIFIED (0):
+            Unspecified scheme.
+        HTTPS (1):
+            HTTPS protocol.
+    """
     SCHEME_UNSPECIFIED = 0
     HTTPS = 1
 

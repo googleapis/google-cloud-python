@@ -507,7 +507,7 @@ class TetherClient(metaclass=TetherClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "TetherClient":
         return self
 
     def __exit__(self, type, value, traceback):
