@@ -58,7 +58,20 @@ __protobuf__ = proto.module(
 
 
 class MetricAggregation(proto.Enum):
-    r"""Represents aggregation of metrics."""
+    r"""Represents aggregation of metrics.
+
+    Values:
+        METRIC_AGGREGATION_UNSPECIFIED (0):
+            Unspecified operator.
+        TOTAL (1):
+            SUM operator.
+        MINIMUM (5):
+            Minimum operator.
+        MAXIMUM (6):
+            Maximum operator.
+        COUNT (4):
+            Count operator.
+    """
     METRIC_AGGREGATION_UNSPECIFIED = 0
     TOTAL = 1
     MINIMUM = 5
@@ -67,7 +80,46 @@ class MetricAggregation(proto.Enum):
 
 
 class MetricType(proto.Enum):
-    r"""A metric's value type."""
+    r"""A metric's value type.
+
+    Values:
+        METRIC_TYPE_UNSPECIFIED (0):
+            Unspecified type.
+        TYPE_INTEGER (1):
+            Integer type.
+        TYPE_FLOAT (2):
+            Floating point type.
+        TYPE_SECONDS (4):
+            A duration of seconds; a special floating
+            point type.
+        TYPE_MILLISECONDS (5):
+            A duration in milliseconds; a special
+            floating point type.
+        TYPE_MINUTES (6):
+            A duration in minutes; a special floating
+            point type.
+        TYPE_HOURS (7):
+            A duration in hours; a special floating point
+            type.
+        TYPE_STANDARD (8):
+            A custom metric of standard type; a special
+            floating point type.
+        TYPE_CURRENCY (9):
+            An amount of money; a special floating point
+            type.
+        TYPE_FEET (10):
+            A length in feet; a special floating point
+            type.
+        TYPE_MILES (11):
+            A length in miles; a special floating point
+            type.
+        TYPE_METERS (12):
+            A length in meters; a special floating point
+            type.
+        TYPE_KILOMETERS (13):
+            A length in kilometers; a special floating
+            point type.
+    """
     METRIC_TYPE_UNSPECIFIED = 0
     TYPE_INTEGER = 1
     TYPE_FLOAT = 2
@@ -86,6 +138,14 @@ class MetricType(proto.Enum):
 class RestrictedMetricType(proto.Enum):
     r"""Categories of data that you may be restricted from viewing on
     certain GA4 properties.
+
+    Values:
+        RESTRICTED_METRIC_TYPE_UNSPECIFIED (0):
+            Unspecified type.
+        COST_DATA (1):
+            Cost metrics such as ``adCost``.
+        REVENUE_DATA (2):
+            Revenue metrics such as ``purchaseRevenue``.
     """
     RESTRICTED_METRIC_TYPE_UNSPECIFIED = 0
     COST_DATA = 1
@@ -93,7 +153,20 @@ class RestrictedMetricType(proto.Enum):
 
 
 class Compatibility(proto.Enum):
-    r"""The compatibility types for a single dimension or metric."""
+    r"""The compatibility types for a single dimension or metric.
+
+    Values:
+        COMPATIBILITY_UNSPECIFIED (0):
+            Unspecified compatibility.
+        COMPATIBLE (1):
+            The dimension or metric is compatible. This
+            dimension or metric can be successfully added to
+            a report.
+        INCOMPATIBLE (2):
+            The dimension or metric is incompatible. This
+            dimension or metric cannot be successfully added
+            to a report.
+    """
     COMPATIBILITY_UNSPECIFIED = 0
     COMPATIBLE = 1
     INCOMPATIBLE = 2
@@ -503,7 +576,26 @@ class Filter(proto.Message):
         """
 
         class MatchType(proto.Enum):
-            r"""The match type of a string filter"""
+            r"""The match type of a string filter
+
+            Values:
+                MATCH_TYPE_UNSPECIFIED (0):
+                    Unspecified
+                EXACT (1):
+                    Exact match of the string value.
+                BEGINS_WITH (2):
+                    Begins with the string value.
+                ENDS_WITH (3):
+                    Ends with the string value.
+                CONTAINS (4):
+                    Contains the string value.
+                FULL_REGEXP (5):
+                    Full match for the regular expression with
+                    the string value.
+                PARTIAL_REGEXP (6):
+                    Partial match for the regular expression with
+                    the string value.
+            """
             MATCH_TYPE_UNSPECIFIED = 0
             EXACT = 1
             BEGINS_WITH = 2
@@ -557,7 +649,22 @@ class Filter(proto.Message):
         """
 
         class Operation(proto.Enum):
-            r"""The operation applied to a numeric filter"""
+            r"""The operation applied to a numeric filter
+
+            Values:
+                OPERATION_UNSPECIFIED (0):
+                    Unspecified.
+                EQUAL (1):
+                    Equal
+                LESS_THAN (2):
+                    Less than
+                LESS_THAN_OR_EQUAL (3):
+                    Less than or equal
+                GREATER_THAN (4):
+                    Greater than
+                GREATER_THAN_OR_EQUAL (5):
+                    Greater than or equal
+            """
             OPERATION_UNSPECIFIED = 0
             EQUAL = 1
             LESS_THAN = 2
@@ -684,7 +791,25 @@ class OrderBy(proto.Message):
         """
 
         class OrderType(proto.Enum):
-            r"""Rule to order the string dimension values by."""
+            r"""Rule to order the string dimension values by.
+
+            Values:
+                ORDER_TYPE_UNSPECIFIED (0):
+                    Unspecified.
+                ALPHANUMERIC (1):
+                    Alphanumeric sort by Unicode code point. For
+                    example, "2" < "A" < "X" < "b" < "z".
+                CASE_INSENSITIVE_ALPHANUMERIC (2):
+                    Case insensitive alphanumeric sort by lower
+                    case Unicode code point. For example, "2" < "A"
+                    < "b" < "X" < "z".
+                NUMERIC (3):
+                    Dimension values are converted to numbers before sorting.
+                    For example in NUMERIC sort, "25" < "100", and in
+                    ``ALPHANUMERIC`` sort, "100" < "25". Non-numeric dimension
+                    values all have equal ordering value below all numeric
+                    values.
+            """
             ORDER_TYPE_UNSPECIFIED = 0
             ALPHANUMERIC = 1
             CASE_INSENSITIVE_ALPHANUMERIC = 2
@@ -1006,6 +1131,23 @@ class CohortsRange(proto.Message):
         r"""The granularity used to interpret the ``startOffset`` and
         ``endOffset`` for the extended reporting date range for a cohort
         report.
+
+        Values:
+            GRANULARITY_UNSPECIFIED (0):
+                Should never be specified.
+            DAILY (1):
+                Daily granularity. Commonly used if the cohort's
+                ``dateRange`` is a single day and the request contains
+                ``cohortNthDay``.
+            WEEKLY (2):
+                Weekly granularity. Commonly used if the cohort's
+                ``dateRange`` is a week in duration (starting on Sunday and
+                ending on Saturday) and the request contains
+                ``cohortNthWeek``.
+            MONTHLY (3):
+                Monthly granularity. Commonly used if the cohort's
+                ``dateRange`` is a month in duration and the request
+                contains ``cohortNthMonth``.
         """
         GRANULARITY_UNSPECIFIED = 0
         DAILY = 1
@@ -1599,7 +1741,20 @@ class MetricMetadata(proto.Message):
     """
 
     class BlockedReason(proto.Enum):
-        r"""Justifications for why this metric is blocked."""
+        r"""Justifications for why this metric is blocked.
+
+        Values:
+            BLOCKED_REASON_UNSPECIFIED (0):
+                Will never be specified in API response.
+            NO_REVENUE_METRICS (1):
+                If present, your access is blocked to revenue
+                related metrics for this property, and this
+                metric is revenue related.
+            NO_COST_METRICS (2):
+                If present, your access is blocked to cost
+                related metrics for this property, and this
+                metric is cost related.
+        """
         BLOCKED_REASON_UNSPECIFIED = 0
         NO_REVENUE_METRICS = 1
         NO_COST_METRICS = 2

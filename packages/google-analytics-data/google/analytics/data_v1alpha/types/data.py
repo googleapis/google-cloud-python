@@ -91,6 +91,19 @@ __protobuf__ = proto.module(
 class UserCriteriaScoping(proto.Enum):
     r"""Scoping specifies which events are considered when evaluating
     if a user meets a criteria.
+
+    Values:
+        USER_CRITERIA_SCOPING_UNSPECIFIED (0):
+            Unspecified criteria scoping. Do not specify.
+        USER_CRITERIA_WITHIN_SAME_EVENT (1):
+            If the criteria is satisfied within one
+            event, the user matches the criteria.
+        USER_CRITERIA_WITHIN_SAME_SESSION (2):
+            If the criteria is satisfied within one
+            session, the user matches the criteria.
+        USER_CRITERIA_ACROSS_ALL_SESSIONS (3):
+            If the criteria is satisfied by any events
+            for the user, the user matches the criteria.
     """
     USER_CRITERIA_SCOPING_UNSPECIFIED = 0
     USER_CRITERIA_WITHIN_SAME_EVENT = 1
@@ -101,6 +114,17 @@ class UserCriteriaScoping(proto.Enum):
 class UserExclusionDuration(proto.Enum):
     r"""Enumerates options for how long an exclusion will last if a user
     matches the ``userExclusionCriteria``.
+
+    Values:
+        USER_EXCLUSION_DURATION_UNSPECIFIED (0):
+            Unspecified exclusion duration. Do not
+            specify.
+        USER_EXCLUSION_TEMPORARY (1):
+            Temporarily exclude users from the segment during periods
+            when the user meets the ``userExclusionCriteria`` condition.
+        USER_EXCLUSION_PERMANENT (2):
+            Permanently exclude users from the segment if the user ever
+            meets the ``userExclusionCriteria`` condition.
     """
     USER_EXCLUSION_DURATION_UNSPECIFIED = 0
     USER_EXCLUSION_TEMPORARY = 1
@@ -110,6 +134,16 @@ class UserExclusionDuration(proto.Enum):
 class SessionCriteriaScoping(proto.Enum):
     r"""Scoping specifies which events are considered when evaluating
     if a session meets a criteria.
+
+    Values:
+        SESSION_CRITERIA_SCOPING_UNSPECIFIED (0):
+            Unspecified criteria scoping. Do not specify.
+        SESSION_CRITERIA_WITHIN_SAME_EVENT (1):
+            If the criteria is satisfied within one
+            event, the session matches the criteria.
+        SESSION_CRITERIA_WITHIN_SAME_SESSION (2):
+            If the criteria is satisfied within one
+            session, the session matches the criteria.
     """
     SESSION_CRITERIA_SCOPING_UNSPECIFIED = 0
     SESSION_CRITERIA_WITHIN_SAME_EVENT = 1
@@ -119,6 +153,18 @@ class SessionCriteriaScoping(proto.Enum):
 class SessionExclusionDuration(proto.Enum):
     r"""Enumerates options for how long an exclusion will last if a session
     matches the ``sessionExclusionCriteria``.
+
+    Values:
+        SESSION_EXCLUSION_DURATION_UNSPECIFIED (0):
+            Unspecified exclusion duration. Do not
+            specify.
+        SESSION_EXCLUSION_TEMPORARY (1):
+            Temporarily exclude sessions from the segment during periods
+            when the session meets the ``sessionExclusionCriteria``
+            condition.
+        SESSION_EXCLUSION_PERMANENT (2):
+            Permanently exclude sessions from the segment if the session
+            ever meets the ``sessionExclusionCriteria`` condition.
     """
     SESSION_EXCLUSION_DURATION_UNSPECIFIED = 0
     SESSION_EXCLUSION_TEMPORARY = 1
@@ -128,6 +174,13 @@ class SessionExclusionDuration(proto.Enum):
 class EventCriteriaScoping(proto.Enum):
     r"""Scoping specifies which events are considered when evaluating
     if an event meets a criteria.
+
+    Values:
+        EVENT_CRITERIA_SCOPING_UNSPECIFIED (0):
+            Unspecified criteria scoping. Do not specify.
+        EVENT_CRITERIA_WITHIN_SAME_EVENT (1):
+            If the criteria is satisfied within one
+            event, the event matches the criteria.
     """
     EVENT_CRITERIA_SCOPING_UNSPECIFIED = 0
     EVENT_CRITERIA_WITHIN_SAME_EVENT = 1
@@ -136,13 +189,60 @@ class EventCriteriaScoping(proto.Enum):
 class EventExclusionDuration(proto.Enum):
     r"""Enumerates options for how long an exclusion will last if an event
     matches the ``eventExclusionCriteria``.
+
+    Values:
+        EVENT_EXCLUSION_DURATION_UNSPECIFIED (0):
+            Unspecified exclusion duration. Do not
+            specify.
+        EVENT_EXCLUSION_PERMANENT (1):
+            Permanently exclude events from the segment if the event
+            ever meets the ``eventExclusionCriteria`` condition.
     """
     EVENT_EXCLUSION_DURATION_UNSPECIFIED = 0
     EVENT_EXCLUSION_PERMANENT = 1
 
 
 class MetricType(proto.Enum):
-    r"""A metric's value type."""
+    r"""A metric's value type.
+
+    Values:
+        METRIC_TYPE_UNSPECIFIED (0):
+            Unspecified type.
+        TYPE_INTEGER (1):
+            Integer type.
+        TYPE_FLOAT (2):
+            Floating point type.
+        TYPE_SECONDS (4):
+            A duration of seconds; a special floating
+            point type.
+        TYPE_MILLISECONDS (5):
+            A duration in milliseconds; a special
+            floating point type.
+        TYPE_MINUTES (6):
+            A duration in minutes; a special floating
+            point type.
+        TYPE_HOURS (7):
+            A duration in hours; a special floating point
+            type.
+        TYPE_STANDARD (8):
+            A custom metric of standard type; a special
+            floating point type.
+        TYPE_CURRENCY (9):
+            An amount of money; a special floating point
+            type.
+        TYPE_FEET (10):
+            A length in feet; a special floating point
+            type.
+        TYPE_MILES (11):
+            A length in miles; a special floating point
+            type.
+        TYPE_METERS (12):
+            A length in meters; a special floating point
+            type.
+        TYPE_KILOMETERS (13):
+            A length in kilometers; a special floating
+            point type.
+    """
     METRIC_TYPE_UNSPECIFIED = 0
     TYPE_INTEGER = 1
     TYPE_FLOAT = 2
@@ -482,7 +582,26 @@ class StringFilter(proto.Message):
     """
 
     class MatchType(proto.Enum):
-        r"""The match type of a string filter"""
+        r"""The match type of a string filter
+
+        Values:
+            MATCH_TYPE_UNSPECIFIED (0):
+                Unspecified
+            EXACT (1):
+                Exact match of the string value.
+            BEGINS_WITH (2):
+                Begins with the string value.
+            ENDS_WITH (3):
+                Ends with the string value.
+            CONTAINS (4):
+                Contains the string value.
+            FULL_REGEXP (5):
+                Full match for the regular expression with
+                the string value.
+            PARTIAL_REGEXP (6):
+                Partial match for the regular expression with
+                the string value.
+        """
         MATCH_TYPE_UNSPECIFIED = 0
         EXACT = 1
         BEGINS_WITH = 2
@@ -538,7 +657,22 @@ class NumericFilter(proto.Message):
     """
 
     class Operation(proto.Enum):
-        r"""The operation applied to a numeric filter"""
+        r"""The operation applied to a numeric filter
+
+        Values:
+            OPERATION_UNSPECIFIED (0):
+                Unspecified.
+            EQUAL (1):
+                Equal
+            LESS_THAN (2):
+                Less than
+            LESS_THAN_OR_EQUAL (3):
+                Less than or equal
+            GREATER_THAN (4):
+                Greater than
+            GREATER_THAN_OR_EQUAL (5):
+                Greater than or equal
+        """
         OPERATION_UNSPECIFIED = 0
         EQUAL = 1
         LESS_THAN = 2

@@ -107,6 +107,18 @@ class RunFunnelReportRequest(proto.Message):
     class FunnelVisualizationType(proto.Enum):
         r"""Controls the dimensions present in the funnel visualization
         sub report response.
+
+        Values:
+            FUNNEL_VISUALIZATION_TYPE_UNSPECIFIED (0):
+                Unspecified type.
+            STANDARD_FUNNEL (1):
+                A standard (stepped) funnel. The funnel
+                visualization sub report in the response will
+                not contain date.
+            TRENDED_FUNNEL (2):
+                A trended (line chart) funnel. The funnel
+                visualization sub report in the response will
+                contain the date dimension.
         """
         FUNNEL_VISUALIZATION_TYPE_UNSPECIFIED = 0
         STANDARD_FUNNEL = 1
