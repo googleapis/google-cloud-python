@@ -33,7 +33,26 @@ __protobuf__ = proto.module(
 
 
 class SettingView(proto.Enum):
-    r"""View options for Settings."""
+    r"""View options for Settings.
+
+    Values:
+        SETTING_VIEW_UNSPECIFIED (0):
+            The default / unset value. The API will default to the
+            SETTING_VIEW_BASIC view.
+        SETTING_VIEW_BASIC (1):
+            Include
+            [Setting.metadata][google.cloud.resourcesettings.v1.Setting.metadata],
+            but nothing else. This is the default value (for both
+            ListSettings and GetSetting).
+        SETTING_VIEW_EFFECTIVE_VALUE (2):
+            Include
+            [Setting.effective_value][google.cloud.resourcesettings.v1.Setting.effective_value],
+            but nothing else.
+        SETTING_VIEW_LOCAL_VALUE (3):
+            Include
+            [Setting.local_value][google.cloud.resourcesettings.v1.Setting.local_value],
+            but nothing else.
+    """
     SETTING_VIEW_UNSPECIFIED = 0
     SETTING_VIEW_BASIC = 1
     SETTING_VIEW_EFFECTIVE_VALUE = 2
@@ -143,6 +162,18 @@ class SettingMetadata(proto.Message):
         r"""The data type for setting values of this setting. See
         [Value][google.cloud.resourcesettings.v1.Value] for more details on
         the available data types.
+
+        Values:
+            DATA_TYPE_UNSPECIFIED (0):
+                Unspecified data type.
+            BOOLEAN (1):
+                A boolean setting.
+            STRING (2):
+                A string setting.
+            STRING_SET (3):
+                A string set setting.
+            ENUM_VALUE (4):
+                A Enum setting
         """
         DATA_TYPE_UNSPECIFIED = 0
         BOOLEAN = 1
