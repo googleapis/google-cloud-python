@@ -28,6 +28,22 @@ __protobuf__ = proto.module(
 class RouteLabel(proto.Enum):
     r"""Labels for the ``Route`` that are useful to identify specific
     properties of the route to compare against others.
+
+    Values:
+        ROUTE_LABEL_UNSPECIFIED (0):
+            Default - not used.
+        DEFAULT_ROUTE (1):
+            The default "best" route returned for the
+            route computation.
+        DEFAULT_ROUTE_ALTERNATE (2):
+            An alternative to the default "best" route. Routes like this
+            will be returned when
+            ``ComputeRoutesRequest.compute_alternative_routes`` is
+            specified.
+        FUEL_EFFICIENT (3):
+            Fuel efficient route. Routes labeled with
+            this value are determined to be optimized for
+            Eco parameters such as fuel consumption.
     """
     ROUTE_LABEL_UNSPECIFIED = 0
     DEFAULT_ROUTE = 1

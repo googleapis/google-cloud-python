@@ -34,7 +34,23 @@ __protobuf__ = proto.module(
 
 
 class UpdateType(proto.Enum):
-    r"""Update type of the requests."""
+    r"""Update type of the requests.
+
+    Values:
+        UPDATE_TYPE_UNSPECIFIED (0):
+            Defaults to full replace behavior, ie. FULL_REPLACE.
+        UPDATE_TYPE_REPLACE (1):
+            Fully replace all the fields. Any field masks
+            will be ignored.
+        UPDATE_TYPE_MERGE (2):
+            Merge the fields into the existing entities.
+        UPDATE_TYPE_INSERT_PROPERTIES_BY_NAMES (3):
+            Inserts the properties by names.
+        UPDATE_TYPE_REPLACE_PROPERTIES_BY_NAMES (4):
+            Replace the properties by names.
+        UPDATE_TYPE_DELETE_PROPERTIES_BY_NAMES (5):
+            Delete the properties by names.
+    """
     UPDATE_TYPE_UNSPECIFIED = 0
     UPDATE_TYPE_REPLACE = 1
     UPDATE_TYPE_MERGE = 2
@@ -44,14 +60,39 @@ class UpdateType(proto.Enum):
 
 
 class DatabaseType(proto.Enum):
-    r"""Type of database used by the customer"""
+    r"""Type of database used by the customer
+
+    Values:
+        DB_UNKNOWN (0):
+            This value is required by protobuf best
+            practices
+        DB_INFRA_SPANNER (1):
+            Internal Spanner
+        DB_CLOUD_SQL_POSTGRES (2):
+            Cloud Sql with a Postgres Sql instance
+    """
     DB_UNKNOWN = 0
     DB_INFRA_SPANNER = 1
     DB_CLOUD_SQL_POSTGRES = 2
 
 
 class AccessControlMode(proto.Enum):
-    r"""Access Control Mode."""
+    r"""Access Control Mode.
+
+    Values:
+        ACL_MODE_UNKNOWN (0):
+            This value is required by protobuf best
+            practices
+        ACL_MODE_UNIVERSAL_ACCESS (1):
+            Universal Access: No document level access
+            control.
+        ACL_MODE_DOCUMENT_LEVEL_ACCESS_CONTROL_BYOID (2):
+            Document level access control with customer
+            own Identity Service.
+        ACL_MODE_DOCUMENT_LEVEL_ACCESS_CONTROL_GCI (3):
+            Document level access control using Google
+            Cloud Identity.
+    """
     ACL_MODE_UNKNOWN = 0
     ACL_MODE_UNIVERSAL_ACCESS = 1
     ACL_MODE_DOCUMENT_LEVEL_ACCESS_CONTROL_BYOID = 2

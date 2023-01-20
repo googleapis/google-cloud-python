@@ -31,6 +31,20 @@ class RouteTravelMode(proto.Enum):
     missing clear sidewalks, pedestrian paths, or bicycling paths. You
     must display this warning to the user for all walking, bicycling,
     and two-wheel routes that you display in your app.
+
+    Values:
+        TRAVEL_MODE_UNSPECIFIED (0):
+            No travel mode specified. Defaults to ``DRIVE``.
+        DRIVE (1):
+            Travel by passenger car.
+        BICYCLE (2):
+            Travel by bicycle.
+        WALK (3):
+            Travel by walking.
+        TWO_WHEELER (4):
+            Two-wheeled, motorized vehicle. For example, motorcycle.
+            Note that this differs from the ``BICYCLE`` travel mode
+            which covers human-powered mode.
     """
     TRAVEL_MODE_UNSPECIFIED = 0
     DRIVE = 1

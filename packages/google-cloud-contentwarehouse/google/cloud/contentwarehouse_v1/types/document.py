@@ -45,6 +45,21 @@ __protobuf__ = proto.module(
 class RawDocumentFileType(proto.Enum):
     r"""When a raw document is supplied, this indicates the file
     format
+
+    Values:
+        RAW_DOCUMENT_FILE_TYPE_UNSPECIFIED (0):
+            No raw document specified or it is
+            non-parsable
+        RAW_DOCUMENT_FILE_TYPE_PDF (1):
+            Adobe PDF format
+        RAW_DOCUMENT_FILE_TYPE_DOCX (2):
+            Microsoft Word format
+        RAW_DOCUMENT_FILE_TYPE_XLSX (3):
+            Microsoft Excel format
+        RAW_DOCUMENT_FILE_TYPE_PPTX (4):
+            Microsoft Powerpoint format
+        RAW_DOCUMENT_FILE_TYPE_TEXT (5):
+            UTF-8 encoded text format
     """
     RAW_DOCUMENT_FILE_TYPE_UNSPECIFIED = 0
     RAW_DOCUMENT_FILE_TYPE_PDF = 1

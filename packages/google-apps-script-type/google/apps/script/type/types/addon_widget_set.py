@@ -34,7 +34,29 @@ class AddOnWidgetSet(proto.Message):
     """
 
     class WidgetType(proto.Enum):
-        r"""The Widget type. DEFAULT is the basic widget set."""
+        r"""The Widget type. DEFAULT is the basic widget set.
+
+        Values:
+            WIDGET_TYPE_UNSPECIFIED (0):
+                The default widget set.
+            DATE_PICKER (1):
+                The date picker.
+            STYLED_BUTTONS (2):
+                Styled buttons include filled buttons and
+                disabled buttons.
+            PERSISTENT_FORMS (3):
+                Persistent forms allow persisting form values
+                during actions.
+            FIXED_FOOTER (4):
+                Fixed footer in card.
+            UPDATE_SUBJECT_AND_RECIPIENTS (5):
+                Update the subject and recipients of a draft.
+            GRID_WIDGET (6):
+                The grid widget.
+            ADDON_COMPOSE_UI_ACTION (7):
+                A Gmail add-on action that applies to the
+                addon compose UI.
+        """
         WIDGET_TYPE_UNSPECIFIED = 0
         DATE_PICKER = 1
         STYLED_BUTTONS = 2

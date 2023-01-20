@@ -28,14 +28,40 @@ __protobuf__ = proto.module(
 
 
 class FallbackReason(proto.Enum):
-    r"""Reasons for using fallback response."""
+    r"""Reasons for using fallback response.
+
+    Values:
+        FALLBACK_REASON_UNSPECIFIED (0):
+            No fallback reason specified.
+        SERVER_ERROR (1):
+            A server error happened while calculating
+            routes with your preferred routing mode, but we
+            were able to return a result calculated by an
+            alternative mode.
+        LATENCY_EXCEEDED (2):
+            We were not able to finish the calculation
+            with your preferred routing mode on time, but we
+            were able to return a result calculated by an
+            alternative mode.
+    """
     FALLBACK_REASON_UNSPECIFIED = 0
     SERVER_ERROR = 1
     LATENCY_EXCEEDED = 2
 
 
 class FallbackRoutingMode(proto.Enum):
-    r"""Actual routing mode used for returned fallback response."""
+    r"""Actual routing mode used for returned fallback response.
+
+    Values:
+        FALLBACK_ROUTING_MODE_UNSPECIFIED (0):
+            Not used.
+        FALLBACK_TRAFFIC_UNAWARE (1):
+            Indicates the "TRAFFIC_UNAWARE" routing mode was used to
+            compute the response.
+        FALLBACK_TRAFFIC_AWARE (2):
+            Indicates the "TRAFFIC_AWARE" routing mode was used to
+            compute the response.
+    """
     FALLBACK_ROUTING_MODE_UNSPECIFIED = 0
     FALLBACK_TRAFFIC_UNAWARE = 1
     FALLBACK_TRAFFIC_AWARE = 2

@@ -62,6 +62,28 @@ class CalendarAddOnManifest(proto.Message):
     class EventAccess(proto.Enum):
         r"""An enum defining the level of data access event triggers
         require.
+
+        Values:
+            UNSPECIFIED (0):
+                Default value when nothing is set for
+                EventAccess.
+            METADATA (1):
+                METADATA gives event triggers the permission
+                to access the metadata of events such as event
+                id and calendar id.
+            READ (3):
+                READ gives event triggers access to all
+                provided event fields including the metadata,
+                attendees, and conference data.
+            WRITE (4):
+                WRITE gives event triggers access to the
+                metadata of events and the ability to perform
+                all actions, including adding attendees and
+                setting conference data.
+            READ_WRITE (5):
+                READ_WRITE gives event triggers access to all provided event
+                fields including the metadata, attendees, and conference
+                data and the ability to perform all actions.
         """
         UNSPECIFIED = 0
         METADATA = 1

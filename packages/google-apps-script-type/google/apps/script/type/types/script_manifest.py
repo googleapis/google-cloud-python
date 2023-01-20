@@ -32,7 +32,20 @@ __protobuf__ = proto.module(
 
 
 class HttpAuthorizationHeader(proto.Enum):
-    r"""Authorization header sent in add-on HTTP requests"""
+    r"""Authorization header sent in add-on HTTP requests
+
+    Values:
+        HTTP_AUTHORIZATION_HEADER_UNSPECIFIED (0):
+            Default value, equivalent to ``SYSTEM_ID_TOKEN``
+        SYSTEM_ID_TOKEN (1):
+            Send an ID token for the project-specific
+            Google Workspace Add-ons system service account
+            (default)
+        USER_ID_TOKEN (2):
+            Send an ID token for the end user
+        NONE (3):
+            Do not send an Authentication header
+    """
     HTTP_AUTHORIZATION_HEADER_UNSPECIFIED = 0
     SYSTEM_ID_TOKEN = 1
     USER_ID_TOKEN = 2

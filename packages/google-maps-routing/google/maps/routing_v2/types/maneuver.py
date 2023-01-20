@@ -28,6 +28,46 @@ __protobuf__ = proto.module(
 class Maneuver(proto.Enum):
     r"""A set of values that specify the navigation action to take
     for the current step (e.g., turn left, merge, straight, etc.).
+
+    Values:
+        MANEUVER_UNSPECIFIED (0):
+            Not used.
+        TURN_SLIGHT_LEFT (1):
+            Turn slightly to the left.
+        TURN_SHARP_LEFT (2):
+            Turn sharply to the left.
+        UTURN_LEFT (3):
+            Make a left u-turn.
+        TURN_LEFT (4):
+            Turn left.
+        TURN_SLIGHT_RIGHT (5):
+            Turn slightly to the right.
+        TURN_SHARP_RIGHT (6):
+            Turn sharply to the right.
+        UTURN_RIGHT (7):
+            Make a right u-turn.
+        TURN_RIGHT (8):
+            Turn right.
+        STRAIGHT (9):
+            Go straight.
+        RAMP_LEFT (10):
+            Take the left ramp.
+        RAMP_RIGHT (11):
+            Take the right ramp.
+        MERGE (12):
+            Merge into traffic.
+        FORK_LEFT (13):
+            Take the left fork.
+        FORK_RIGHT (14):
+            Take the right fork.
+        FERRY (15):
+            Take the ferry.
+        FERRY_TRAIN (16):
+            Take the train leading onto the ferry.
+        ROUNDABOUT_LEFT (17):
+            Turn left at the roundabout.
+        ROUNDABOUT_RIGHT (18):
+            Turn right at the roundabout.
     """
     MANEUVER_UNSPECIFIED = 0
     TURN_SLIGHT_LEFT = 1

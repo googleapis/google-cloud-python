@@ -149,6 +149,27 @@ class ProvideValidationFeedbackRequest(proto.Message):
     class ValidationConclusion(proto.Enum):
         r"""The possible final outcomes of the sequence of address
         validation requests needed to validate an address.
+
+        Values:
+            VALIDATION_CONCLUSION_UNSPECIFIED (0):
+                This value is unused. If the
+                ``ProvideValidationFeedbackRequest.conclusion`` field is set
+                to ``VALIDATION_CONCLUSION_UNSPECIFIED``, an
+                ``INVALID_ARGUMENT`` error will be returned.
+            VALIDATED_VERSION_USED (1):
+                The version of the address returned by the
+                Address Validation API was used for the
+                transaction.
+            USER_VERSION_USED (2):
+                The version of the address provided by the
+                user was used for the transaction
+            UNVALIDATED_VERSION_USED (3):
+                A version of the address that was entered
+                after the last validation attempt but that was
+                not re-validated was used for the transaction.
+            UNUSED (4):
+                The transaction was abandoned and the address
+                was not used.
         """
         VALIDATION_CONCLUSION_UNSPECIFIED = 0
         VALIDATED_VERSION_USED = 1
@@ -293,6 +314,28 @@ class Verdict(proto.Message):
         However, if we are unable to find a geocode for "123 Main Street" in
         Redwood City, the geocode returned might be of ``LOCALITY``
         granularity even though the address is more granular.
+
+        Values:
+            GRANULARITY_UNSPECIFIED (0):
+                Default value. This value is unused.
+            SUB_PREMISE (1):
+                Below-building level result, such as an
+                apartment.
+            PREMISE (2):
+                Building-level result.
+            PREMISE_PROXIMITY (3):
+                A geocode that should be very close to the
+                building-level location of the address.
+            BLOCK (4):
+                The address or geocode indicates a block.
+                Only used in regions which have block-level
+                addressing, such as Japan.
+            ROUTE (5):
+                The geocode or address is granular to route,
+                such as a street, road, or highway.
+            OTHER (6):
+                All other granularities, which are bucketed
+                together since they are not deliverable.
         """
         GRANULARITY_UNSPECIFIED = 0
         SUB_PREMISE = 1

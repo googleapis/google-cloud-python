@@ -161,6 +161,20 @@ class ComposeTrigger(proto.Message):
     class DraftAccess(proto.Enum):
         r"""An enum defining the level of data access this compose
         trigger requires.
+
+        Values:
+            UNSPECIFIED (0):
+                Default value when nothing is set for
+                DraftAccess.
+            NONE (1):
+                NONE means compose trigger won't be able to
+                access any data of the draft when a compose
+                addon is triggered.
+            METADATA (2):
+                METADATA gives compose trigger the permission
+                to access the metadata of the draft when a
+                compose addon is triggered. This includes the
+                audience list (To/cc list) of a draft message.
         """
         UNSPECIFIED = 0
         NONE = 1

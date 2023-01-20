@@ -135,7 +135,22 @@ class Run(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The current state of the run."""
+        r"""The current state of the run.
+
+        Values:
+            UNKNOWN (0):
+                The state is unknown. The true state may be
+                any of the below or a different state that is
+                not supported here explicitly.
+            STARTED (1):
+                The run is still executing.
+            COMPLETED (2):
+                The run completed.
+            FAILED (3):
+                The run failed.
+            ABORTED (4):
+                The run aborted.
+        """
         UNKNOWN = 0
         STARTED = 1
         COMPLETED = 2
@@ -295,7 +310,22 @@ class OperationMetadata(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""An enum with the state of the operation."""
+        r"""An enum with the state of the operation.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unused.
+            PENDING (1):
+                The operation has been created but is not yet
+                started.
+            RUNNING (2):
+                The operation is underway.
+            SUCCEEDED (3):
+                The operation completed successfully.
+            FAILED (4):
+                The operation is no longer running and did
+                not succeed.
+        """
         STATE_UNSPECIFIED = 0
         PENDING = 1
         RUNNING = 2
@@ -303,7 +333,14 @@ class OperationMetadata(proto.Message):
         FAILED = 4
 
     class Type(proto.Enum):
-        r"""Type of the long running operation."""
+        r"""Type of the long running operation.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unused.
+            DELETE (1):
+                The resource deletion operation.
+        """
         TYPE_UNSPECIFIED = 0
         DELETE = 1
 
@@ -1119,7 +1156,22 @@ class Origin(proto.Message):
     """
 
     class SourceType(proto.Enum):
-        r"""Type of the source of a process."""
+        r"""Type of the source of a process.
+
+        Values:
+            SOURCE_TYPE_UNSPECIFIED (0):
+                Source is Unspecified
+            CUSTOM (1):
+                A custom source
+            BIGQUERY (2):
+                BigQuery
+            DATA_FUSION (3):
+                Data Fusion
+            COMPOSER (4):
+                Composer
+            LOOKER_STUDIO (5):
+                Looker Studio
+        """
         SOURCE_TYPE_UNSPECIFIED = 0
         CUSTOM = 1
         BIGQUERY = 2
