@@ -118,7 +118,22 @@ class Repository(proto.Message):
         """
 
         class TokenStatus(proto.Enum):
-            r"""Indicates the status of a Git authentication token."""
+            r"""Indicates the status of a Git authentication token.
+
+            Values:
+                TOKEN_STATUS_UNSPECIFIED (0):
+                    Default value. This value is unused.
+                NOT_FOUND (1):
+                    The token could not be found in Secret
+                    Manager (or the Dataform Service Account did not
+                    have permission to access it).
+                INVALID (2):
+                    The token could not be used to authenticate
+                    against the Git remote.
+                VALID (3):
+                    The token was used successfully to
+                    authenticate against the Git remote.
+            """
             TOKEN_STATUS_UNSPECIFIED = 0
             NOT_FOUND = 1
             INVALID = 2
@@ -624,7 +639,20 @@ class FetchFileGitStatusesResponse(proto.Message):
         """
 
         class State(proto.Enum):
-            r"""Indicates the status of an uncommitted file change."""
+            r"""Indicates the status of an uncommitted file change.
+
+            Values:
+                STATE_UNSPECIFIED (0):
+                    Default value. This value is unused.
+                ADDED (1):
+                    The file has been newly added.
+                DELETED (2):
+                    The file has been deleted.
+                MODIFIED (3):
+                    The file has been modified.
+                HAS_CONFLICTS (4):
+                    The file contains merge conflicts.
+            """
             STATE_UNSPECIFIED = 0
             ADDED = 1
             DELETED = 2
@@ -1571,7 +1599,20 @@ class CompilationResultAction(proto.Message):
         """
 
         class RelationType(proto.Enum):
-            r"""Indicates the type of this relation."""
+            r"""Indicates the type of this relation.
+
+            Values:
+                RELATION_TYPE_UNSPECIFIED (0):
+                    Default value. This value is unused.
+                TABLE (1):
+                    The relation is a table.
+                VIEW (2):
+                    The relation is a view.
+                INCREMENTAL_TABLE (3):
+                    The relation is an incrementalized table.
+                MATERIALIZED_VIEW (4):
+                    The relation is a materialized view.
+            """
             RELATION_TYPE_UNSPECIFIED = 0
             TABLE = 1
             VIEW = 2
@@ -1947,7 +1988,26 @@ class WorkflowInvocation(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Represents the current state of a workflow invocation."""
+        r"""Represents the current state of a workflow invocation.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            RUNNING (1):
+                The workflow invocation is currently running.
+            SUCCEEDED (2):
+                The workflow invocation succeeded. A terminal
+                state.
+            CANCELLED (3):
+                The workflow invocation was cancelled. A
+                terminal state.
+            FAILED (4):
+                The workflow invocation failed. A terminal
+                state.
+            CANCELING (5):
+                The workflow invocation is being cancelled,
+                but some actions are still running.
+        """
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2
@@ -2194,6 +2254,27 @@ class WorkflowInvocationAction(proto.Message):
     class State(proto.Enum):
         r"""Represents the current state of an workflow invocation
         action.
+
+        Values:
+            PENDING (0):
+                The action has not yet been considered for
+                invocation.
+            RUNNING (1):
+                The action is currently running.
+            SKIPPED (2):
+                Execution of the action was skipped because
+                upstream dependencies did not all complete
+                successfully. A terminal state.
+            DISABLED (3):
+                Execution of the action was disabled as per
+                the configuration of the corresponding
+                compilation result action. A terminal state.
+            SUCCEEDED (4):
+                The action succeeded. A terminal state.
+            CANCELLED (5):
+                The action was cancelled. A terminal state.
+            FAILED (6):
+                The action failed. A terminal state.
         """
         PENDING = 0
         RUNNING = 1
