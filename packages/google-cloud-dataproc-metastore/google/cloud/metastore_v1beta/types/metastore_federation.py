@@ -80,7 +80,30 @@ class Federation(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The current state of the federation."""
+        r"""The current state of the federation.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state of the metastore federation is
+                unknown.
+            CREATING (1):
+                The metastore federation is in the process of
+                being created.
+            ACTIVE (2):
+                The metastore federation is running and ready
+                to serve queries.
+            UPDATING (3):
+                The metastore federation is being updated. It
+                remains usable but cannot accept additional
+                update requests or be deleted at this time.
+            DELETING (4):
+                The metastore federation is undergoing
+                deletion. It cannot be used.
+            ERROR (5):
+                The metastore federation has encountered an
+                error and cannot be used. The metastore
+                federation should be deleted.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -161,7 +184,16 @@ class BackendMetastore(proto.Message):
     """
 
     class MetastoreType(proto.Enum):
-        r"""The type of the backend metastore."""
+        r"""The type of the backend metastore.
+
+        Values:
+            METASTORE_TYPE_UNSPECIFIED (0):
+                The metastore type is not set.
+            BIGQUERY (2):
+                The backend metastore is BigQuery.
+            DATAPROC_METASTORE (3):
+                The backend metastore is Dataproc Metastore.
+        """
         METASTORE_TYPE_UNSPECIFIED = 0
         BIGQUERY = 2
         DATAPROC_METASTORE = 3

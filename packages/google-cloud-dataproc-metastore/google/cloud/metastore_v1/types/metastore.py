@@ -146,7 +146,37 @@ class Service(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The current state of the metastore service."""
+        r"""The current state of the metastore service.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state of the metastore service is
+                unknown.
+            CREATING (1):
+                The metastore service is in the process of
+                being created.
+            ACTIVE (2):
+                The metastore service is running and ready to
+                serve queries.
+            SUSPENDING (3):
+                The metastore service is entering suspension.
+                Its query-serving availability may cease
+                unexpectedly.
+            SUSPENDED (4):
+                The metastore service is suspended and unable
+                to serve queries.
+            UPDATING (5):
+                The metastore service is being updated. It
+                remains usable but cannot accept additional
+                update requests or be deleted at this time.
+            DELETING (6):
+                The metastore service is undergoing deletion.
+                It cannot be used.
+            ERROR (7):
+                The metastore service has encountered an
+                error and cannot be used. The metastore service
+                should be deleted.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -157,7 +187,20 @@ class Service(proto.Message):
         ERROR = 7
 
     class Tier(proto.Enum):
-        r"""Available service tiers."""
+        r"""Available service tiers.
+
+        Values:
+            TIER_UNSPECIFIED (0):
+                The tier is not set.
+            DEVELOPER (1):
+                The developer tier provides limited
+                scalability and no fault tolerance. Good for
+                low-cost proof-of-concept.
+            ENTERPRISE (3):
+                The enterprise tier provides multi-zone high
+                availability, and sufficient scalability for
+                enterprise-level Dataproc Metastore workloads.
+        """
         TIER_UNSPECIFIED = 0
         DEVELOPER = 1
         ENTERPRISE = 3
@@ -167,13 +210,36 @@ class Service(proto.Message):
         stability. Newer features may be introduced initially into less
         stable release channels and can be automatically promoted into
         more stable release channels.
+
+        Values:
+            RELEASE_CHANNEL_UNSPECIFIED (0):
+                Release channel is not specified.
+            CANARY (1):
+                The ``CANARY`` release channel contains the newest features,
+                which may be unstable and subject to unresolved issues with
+                no known workarounds. Services using the ``CANARY`` release
+                channel are not subject to any SLAs.
+            STABLE (2):
+                The ``STABLE`` release channel contains features that are
+                considered stable and have been validated for production
+                use.
         """
         RELEASE_CHANNEL_UNSPECIFIED = 0
         CANARY = 1
         STABLE = 2
 
     class DatabaseType(proto.Enum):
-        r"""The backend database type for the metastore service."""
+        r"""The backend database type for the metastore service.
+
+        Values:
+            DATABASE_TYPE_UNSPECIFIED (0):
+                The DATABASE_TYPE is not set.
+            MYSQL (1):
+                MySQL is used to persist the metastore data.
+            SPANNER (2):
+                Spanner is used to persist the metastore
+                data.
+        """
         DATABASE_TYPE_UNSPECIFIED = 0
         MYSQL = 1
         SPANNER = 2
@@ -472,7 +538,16 @@ class TelemetryConfig(proto.Message):
     """
 
     class LogFormat(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            LOG_FORMAT_UNSPECIFIED (0):
+                The LOG_FORMAT is not set.
+            LEGACY (1):
+                Logging output uses the legacy ``textPayload`` format.
+            JSON (2):
+                Logging output uses the ``jsonPayload`` format.
+        """
         LOG_FORMAT_UNSPECIFIED = 0
         LEGACY = 1
         JSON = 2
@@ -541,7 +616,21 @@ class MetadataImport(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The current state of the metadata import."""
+        r"""The current state of the metadata import.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state of the metadata import is unknown.
+            RUNNING (1):
+                The metadata import is running.
+            SUCCEEDED (2):
+                The metadata import completed successfully.
+            UPDATING (3):
+                The metadata import is being updated.
+            FAILED (4):
+                The metadata import failed, and attempted
+                metadata changes were rolled back.
+        """
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2
@@ -565,7 +654,14 @@ class MetadataImport(proto.Message):
         """
 
         class DatabaseType(proto.Enum):
-            r"""The type of the database."""
+            r"""The type of the database.
+
+            Values:
+                DATABASE_TYPE_UNSPECIFIED (0):
+                    The type of the source database is unknown.
+                MYSQL (1):
+                    The type of the source database is MySQL.
+            """
             DATABASE_TYPE_UNSPECIFIED = 0
             MYSQL = 1
 
@@ -645,7 +741,20 @@ class MetadataExport(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The current state of the metadata export."""
+        r"""The current state of the metadata export.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state of the metadata export is unknown.
+            RUNNING (1):
+                The metadata export is running.
+            SUCCEEDED (2):
+                The metadata export completed successfully.
+            FAILED (3):
+                The metadata export failed.
+            CANCELLED (4):
+                The metadata export is cancelled.
+        """
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2
@@ -707,7 +816,22 @@ class Backup(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The current state of the backup."""
+        r"""The current state of the backup.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state of the backup is unknown.
+            CREATING (1):
+                The backup is being created.
+            DELETING (2):
+                The backup is being deleted.
+            ACTIVE (3):
+                The backup is active and ready to use.
+            FAILED (4):
+                The backup failed.
+            RESTORING (5):
+                The backup is being restored.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         DELETING = 2
@@ -775,7 +899,20 @@ class Restore(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The current state of the restore."""
+        r"""The current state of the restore.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state of the metadata restore is unknown.
+            RUNNING (1):
+                The metadata restore is running.
+            SUCCEEDED (2):
+                The metadata restore completed successfully.
+            FAILED (3):
+                The metadata restore failed.
+            CANCELLED (4):
+                The metadata restore is cancelled.
+        """
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2
@@ -783,7 +920,17 @@ class Restore(proto.Message):
         CANCELLED = 4
 
     class RestoreType(proto.Enum):
-        r"""The type of restore. If unspecified, defaults to ``METADATA_ONLY``."""
+        r"""The type of restore. If unspecified, defaults to ``METADATA_ONLY``.
+
+        Values:
+            RESTORE_TYPE_UNSPECIFIED (0):
+                The restore type is unknown.
+            FULL (1):
+                The service's metadata and configuration are
+                restored.
+            METADATA_ONLY (2):
+                Only the service's metadata is restored.
+        """
         RESTORE_TYPE_UNSPECIFIED = 0
         FULL = 1
         METADATA_ONLY = 2
@@ -1735,7 +1882,16 @@ class DatabaseDumpSpec(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""The type of the database dump."""
+        r"""The type of the database dump.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                The type of the database dump is unknown.
+            MYSQL (1):
+                Database dump is a MySQL dump file.
+            AVRO (2):
+                Database dump contains Avro files.
+        """
         TYPE_UNSPECIFIED = 0
         MYSQL = 1
         AVRO = 2
