@@ -111,7 +111,20 @@ class DocumentDimensions(proto.Message):
     """
 
     class DocumentDimensionUnit(proto.Enum):
-        r"""Unit of the document dimension."""
+        r"""Unit of the document dimension.
+
+        Values:
+            DOCUMENT_DIMENSION_UNIT_UNSPECIFIED (0):
+                Should not be used.
+            INCH (1):
+                Document dimension is measured in inches.
+            CENTIMETER (2):
+                Document dimension is measured in
+                centimeters.
+            POINT (3):
+                Document dimension is measured in points. 72
+                points = 1 inch.
+        """
         DOCUMENT_DIMENSION_UNIT_UNSPECIFIED = 0
         INCH = 1
         CENTIMETER = 2
@@ -182,6 +195,42 @@ class Document(proto.Message):
         class TextSegmentType(proto.Enum):
             r"""The type of TextSegment in the context of the original
             document.
+
+            Values:
+                TEXT_SEGMENT_TYPE_UNSPECIFIED (0):
+                    Should not be used.
+                TOKEN (1):
+                    The text segment is a token. e.g. word.
+                PARAGRAPH (2):
+                    The text segment is a paragraph.
+                FORM_FIELD (3):
+                    The text segment is a form field.
+                FORM_FIELD_NAME (4):
+                    The text segment is the name part of a form field. It will
+                    be treated as child of another FORM_FIELD TextSegment if its
+                    span is subspan of another TextSegment with type FORM_FIELD.
+                FORM_FIELD_CONTENTS (5):
+                    The text segment is the text content part of a form field.
+                    It will be treated as child of another FORM_FIELD
+                    TextSegment if its span is subspan of another TextSegment
+                    with type FORM_FIELD.
+                TABLE (6):
+                    The text segment is a whole table, including
+                    headers, and all rows.
+                TABLE_HEADER (7):
+                    The text segment is a table's headers. It
+                    will be treated as child of another TABLE
+                    TextSegment if its span is subspan of another
+                    TextSegment with type TABLE.
+                TABLE_ROW (8):
+                    The text segment is a row in table. It will
+                    be treated as child of another TABLE TextSegment
+                    if its span is subspan of another TextSegment
+                    with type TABLE.
+                TABLE_CELL (9):
+                    The text segment is a cell in table. It will be treated as
+                    child of another TABLE_ROW TextSegment if its span is
+                    subspan of another TextSegment with type TABLE_ROW.
             """
             TEXT_SEGMENT_TYPE_UNSPECIFIED = 0
             TOKEN = 1

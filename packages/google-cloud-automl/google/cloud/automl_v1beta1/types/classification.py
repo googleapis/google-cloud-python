@@ -32,7 +32,16 @@ __protobuf__ = proto.module(
 
 
 class ClassificationType(proto.Enum):
-    r"""Type of the classification problem."""
+    r"""Type of the classification problem.
+
+    Values:
+        CLASSIFICATION_TYPE_UNSPECIFIED (0):
+            An un-set value of this enum.
+        MULTICLASS (1):
+            At most one label is allowed per example.
+        MULTILABEL (2):
+            Multiple labels are allowed for one example.
+    """
     CLASSIFICATION_TYPE_UNSPECIFIED = 0
     MULTICLASS = 1
     MULTILABEL = 2

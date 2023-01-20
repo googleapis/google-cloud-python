@@ -106,7 +106,17 @@ class Model(proto.Message):
     """
 
     class DeploymentState(proto.Enum):
-        r"""Deployment state of the model."""
+        r"""Deployment state of the model.
+
+        Values:
+            DEPLOYMENT_STATE_UNSPECIFIED (0):
+                Should not be used, an un-set enum has this
+                value by default.
+            DEPLOYED (1):
+                Model is deployed.
+            UNDEPLOYED (2):
+                Model is not deployed.
+        """
         DEPLOYMENT_STATE_UNSPECIFIED = 0
         DEPLOYED = 1
         UNDEPLOYED = 2

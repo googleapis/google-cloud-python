@@ -31,6 +31,38 @@ __protobuf__ = proto.module(
 class TypeCode(proto.Enum):
     r"""``TypeCode`` is used as a part of
     [DataType][google.cloud.automl.v1beta1.DataType].
+
+    Values:
+        TYPE_CODE_UNSPECIFIED (0):
+            Not specified. Should not be used.
+        FLOAT64 (3):
+            Encoded as ``number``, or the strings ``"NaN"``,
+            ``"Infinity"``, or ``"-Infinity"``.
+        TIMESTAMP (4):
+            Must be between 0AD and 9999AD. Encoded as ``string``
+            according to
+            [time_format][google.cloud.automl.v1beta1.DataType.time_format],
+            or, if that format is not set, then in RFC 3339
+            ``date-time`` format, where ``time-offset`` = ``"Z"`` (e.g.
+            1985-04-12T23:20:50.52Z).
+        STRING (6):
+            Encoded as ``string``.
+        ARRAY (8):
+            Encoded as ``list``, where the list elements are represented
+            according to
+
+            [list_element_type][google.cloud.automl.v1beta1.DataType.list_element_type].
+        STRUCT (9):
+            Encoded as ``struct``, where field values are represented
+            according to
+            [struct_type][google.cloud.automl.v1beta1.DataType.struct_type].
+        CATEGORY (10):
+            Values of this type are not further understood by AutoML,
+            e.g. AutoML is unable to tell the order of values (as it
+            could with FLOAT64), or is unable to say if one value
+            contains another (as it could with STRING). Encoded as
+            ``string`` (bytes should be base64-encoded, as described in
+            RFC 4648, section 4).
     """
     TYPE_CODE_UNSPECIFIED = 0
     FLOAT64 = 3
