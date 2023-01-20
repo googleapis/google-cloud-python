@@ -318,7 +318,16 @@ class CloudSqlProperties(proto.Message):
     """
 
     class DatabaseType(proto.Enum):
-        r"""Supported Cloud SQL database types."""
+        r"""Supported Cloud SQL database types.
+
+        Values:
+            DATABASE_TYPE_UNSPECIFIED (0):
+                Unspecified database type.
+            POSTGRES (1):
+                Cloud SQL for PostgreSQL.
+            MYSQL (2):
+                Cloud SQL for MySQL.
+        """
         DATABASE_TYPE_UNSPECIFIED = 0
         POSTGRES = 1
         MYSQL = 2
