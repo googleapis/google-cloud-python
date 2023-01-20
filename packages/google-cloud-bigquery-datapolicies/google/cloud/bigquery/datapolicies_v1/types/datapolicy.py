@@ -244,7 +244,19 @@ class DataPolicy(proto.Message):
     """
 
     class DataPolicyType(proto.Enum):
-        r"""A list of supported data policy types."""
+        r"""A list of supported data policy types.
+
+        Values:
+            DATA_POLICY_TYPE_UNSPECIFIED (0):
+                Default value for the data policy type. This
+                should not be used.
+            COLUMN_LEVEL_SECURITY_POLICY (3):
+                Used to create a data policy for column-level
+                security, without data masking.
+            DATA_MASKING_POLICY (2):
+                Used to create a data policy for data
+                masking.
+        """
         DATA_POLICY_TYPE_UNSPECIFIED = 0
         COLUMN_LEVEL_SECURITY_POLICY = 3
         DATA_MASKING_POLICY = 2
@@ -292,6 +304,38 @@ class DataMaskingPolicy(proto.Message):
     class PredefinedExpression(proto.Enum):
         r"""The available masking rules. Learn more here:
         https://cloud.google.com/bigquery/docs/column-data-masking-intro#masking_options.
+
+        Values:
+            PREDEFINED_EXPRESSION_UNSPECIFIED (0):
+                Default, unspecified predefined expression.
+                No masking will take place since no expression
+                is specified.
+            SHA256 (3):
+                Masking expression to replace data with
+                SHA-256 hash.
+            ALWAYS_NULL (5):
+                Masking expression to replace data with
+                NULLs.
+            DEFAULT_MASKING_VALUE (7):
+                Masking expression to replace data with their default
+                masking values. The default masking values for each type
+                listed as below:
+
+                -  STRING: ""
+                -  BYTES: b''
+                -  INTEGER: 0
+                -  FLOAT: 0.0
+                -  NUMERIC: 0
+                -  BOOLEAN: FALSE
+                -  TIMESTAMP: 0001-01-01 00:00:00 UTC
+                -  DATE: 0001-01-01
+                -  TIME: 00:00:00
+                -  DATETIME: 0001-01-01T00:00:00
+                -  GEOGRAPHY: POINT(0 0)
+                -  BIGNUMERIC: 0
+                -  ARRAY: []
+                -  STRUCT: NOT_APPLICABLE
+                -  JSON: NULL
         """
         PREDEFINED_EXPRESSION_UNSPECIFIED = 0
         SHA256 = 3
