@@ -1295,7 +1295,7 @@ class AppConnectionsServiceClient(metaclass=AppConnectionsServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "AppConnectionsServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):
