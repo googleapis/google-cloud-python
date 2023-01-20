@@ -4491,7 +4491,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
             metadata=metadata,
         )
 
-    def __enter__(self):
+    def __enter__(self) -> "RegistryClient":
         return self
 
     def __exit__(self, type, value, traceback):

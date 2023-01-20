@@ -172,7 +172,28 @@ class Instance(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of the Instance."""
+        r"""State of the Instance.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The default value. This value is used if the
+                state is omitted.
+            INACTIVE (1):
+                The Instance has not been initialized or has
+                been deleted.
+            CREATING (2):
+                The Instance is being created.
+            ACTIVE (3):
+                The Instance has been created and is ready
+                for use.
+            UPDATING (4):
+                The Instance is being updated.
+            DELETING (5):
+                The Instance is being deleted.
+            FAILED (6):
+                The Instance encountered an error during a
+                state change.
+        """
         STATE_UNSPECIFIED = 0
         INACTIVE = 1
         CREATING = 2
