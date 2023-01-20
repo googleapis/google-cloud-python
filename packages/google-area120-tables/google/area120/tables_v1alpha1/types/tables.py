@@ -52,7 +52,15 @@ __protobuf__ = proto.module(
 
 
 class View(proto.Enum):
-    r"""Column identifier used for the values in the row."""
+    r"""Column identifier used for the values in the row.
+
+    Values:
+        VIEW_UNSPECIFIED (0):
+            Defaults to user entered text.
+        COLUMN_ID_VIEW (1):
+            Uses internally generated column id to
+            identify values.
+    """
     VIEW_UNSPECIFIED = 0
     COLUMN_ID_VIEW = 1
 

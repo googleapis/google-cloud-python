@@ -1617,7 +1617,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
             metadata=metadata,
         )
 
-    def __enter__(self):
+    def __enter__(self) -> "TablesServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):
