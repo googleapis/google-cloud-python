@@ -458,14 +458,38 @@ class ReauthSettings(proto.Message):
     """
 
     class Method(proto.Enum):
-        r"""Types of reauthentication methods supported by IAP."""
+        r"""Types of reauthentication methods supported by IAP.
+
+        Values:
+            METHOD_UNSPECIFIED (0):
+                Reauthentication disabled.
+            LOGIN (1):
+                Prompts the user to log in again.
+            PASSWORD (2):
+                Deprecated, no longer accepted by IAP APIs.
+            SECURE_KEY (3):
+                User must use their secure key 2nd factor
+                device.
+        """
         METHOD_UNSPECIFIED = 0
         LOGIN = 1
         PASSWORD = 2
         SECURE_KEY = 3
 
     class PolicyType(proto.Enum):
-        r"""Type of policy in the case of hierarchial policies."""
+        r"""Type of policy in the case of hierarchial policies.
+
+        Values:
+            POLICY_TYPE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            MINIMUM (1):
+                This policy acts as a minimum to other
+                policies, lower in the hierarchy. Effective
+                policy may only be the same or stricter.
+            DEFAULT (2):
+                This policy acts as a default if no other
+                reauth policy is set.
+        """
         POLICY_TYPE_UNSPECIFIED = 0
         MINIMUM = 1
         DEFAULT = 2
@@ -676,6 +700,20 @@ class AttributePropagationSettings(proto.Message):
         output credential maps to a "field" in the response. For
         example, selecting JWT will propagate all attributes in the IAP
         JWT, header in the headers, etc.
+
+        Values:
+            OUTPUT_CREDENTIALS_UNSPECIFIED (0):
+                No output credential. This is an unsupported
+                default.
+            HEADER (1):
+                Propagate attributes in the headers with
+                "x-goog-iap-attr-" prefix.
+            JWT (2):
+                Propagate attributes in the JWT of the form:
+                ``"additional_claims": { "my_attribute": ["value1", "value2"] }``
+            RCTOKEN (3):
+                Propagate attributes in the RCToken of the form:
+                ``"additional_claims": { "my_attribute": ["value1", "value2"] }``
         """
         OUTPUT_CREDENTIALS_UNSPECIFIED = 0
         HEADER = 1
