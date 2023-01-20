@@ -36,7 +36,18 @@ __protobuf__ = proto.module(
 
 
 class TransferType(proto.Enum):
-    r"""DEPRECATED. Represents data transfer type."""
+    r"""DEPRECATED. Represents data transfer type.
+
+    Values:
+        TRANSFER_TYPE_UNSPECIFIED (0):
+            Invalid or Unknown transfer type placeholder.
+        BATCH (1):
+            Batch data transfer.
+        STREAMING (2):
+            Streaming data transfer. Streaming data
+            source currently doesn't support multiple
+            transfer configs per project.
+    """
     _pb_options = {"deprecated": True}
     TRANSFER_TYPE_UNSPECIFIED = 0
     BATCH = 1
@@ -44,7 +55,23 @@ class TransferType(proto.Enum):
 
 
 class TransferState(proto.Enum):
-    r"""Represents data transfer run state."""
+    r"""Represents data transfer run state.
+
+    Values:
+        TRANSFER_STATE_UNSPECIFIED (0):
+            State placeholder (0).
+        PENDING (2):
+            Data transfer is scheduled and is waiting to
+            be picked up by data transfer backend (2).
+        RUNNING (3):
+            Data transfer is in progress (3).
+        SUCCEEDED (4):
+            Data transfer completed successfully (4).
+        FAILED (5):
+            Data transfer failed (5).
+        CANCELLED (6):
+            Data transfer is cancelled (6).
+    """
     TRANSFER_STATE_UNSPECIFIED = 0
     PENDING = 2
     RUNNING = 3
@@ -466,7 +493,18 @@ class TransferMessage(proto.Message):
     """
 
     class MessageSeverity(proto.Enum):
-        r"""Represents data transfer user facing message severity."""
+        r"""Represents data transfer user facing message severity.
+
+        Values:
+            MESSAGE_SEVERITY_UNSPECIFIED (0):
+                No severity specified.
+            INFO (1):
+                Informational message.
+            WARNING (2):
+                Warning message.
+            ERROR (3):
+                Error message.
+        """
         MESSAGE_SEVERITY_UNSPECIFIED = 0
         INFO = 1
         WARNING = 2

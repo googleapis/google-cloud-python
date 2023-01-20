@@ -102,7 +102,25 @@ class DataSourceParameter(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Parameter type."""
+        r"""Parameter type.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Type unspecified.
+            STRING (1):
+                String parameter.
+            INTEGER (2):
+                Integer parameter (64-bits).
+                Will be serialized to json as string.
+            DOUBLE (3):
+                Double precision floating point parameter.
+            BOOLEAN (4):
+                Boolean parameter.
+            RECORD (5):
+                Deprecated. This field has no effect.
+            PLUS_PAGE (6):
+                Page ID for a Google+ Page.
+        """
         TYPE_UNSPECIFIED = 0
         STRING = 1
         INTEGER = 2
@@ -246,14 +264,44 @@ class DataSource(proto.Message):
     """
 
     class AuthorizationType(proto.Enum):
-        r"""The type of authorization needed for this data source."""
+        r"""The type of authorization needed for this data source.
+
+        Values:
+            AUTHORIZATION_TYPE_UNSPECIFIED (0):
+                Type unspecified.
+            AUTHORIZATION_CODE (1):
+                Use OAuth 2 authorization codes that can be
+                exchanged for a refresh token on the backend.
+            GOOGLE_PLUS_AUTHORIZATION_CODE (2):
+                Return an authorization code for a given
+                Google+ page that can then be exchanged for a
+                refresh token on the backend.
+            FIRST_PARTY_OAUTH (3):
+                Use First Party OAuth.
+        """
         AUTHORIZATION_TYPE_UNSPECIFIED = 0
         AUTHORIZATION_CODE = 1
         GOOGLE_PLUS_AUTHORIZATION_CODE = 2
         FIRST_PARTY_OAUTH = 3
 
     class DataRefreshType(proto.Enum):
-        r"""Represents how the data source supports data auto refresh."""
+        r"""Represents how the data source supports data auto refresh.
+
+        Values:
+            DATA_REFRESH_TYPE_UNSPECIFIED (0):
+                The data source won't support data auto
+                refresh, which is default value.
+            SLIDING_WINDOW (1):
+                The data source supports data auto refresh,
+                and runs will be scheduled for the past few
+                days. Does not allow custom values to be set for
+                each transfer config.
+            CUSTOM_SLIDING_WINDOW (2):
+                The data source supports data auto refresh,
+                and runs will be scheduled for the past few
+                days. Allows custom values to be set for each
+                transfer config.
+        """
         DATA_REFRESH_TYPE_UNSPECIFIED = 0
         SLIDING_WINDOW = 1
         CUSTOM_SLIDING_WINDOW = 2
@@ -775,7 +823,14 @@ class ListTransferRunsRequest(proto.Message):
     """
 
     class RunAttempt(proto.Enum):
-        r"""Represents which runs should be pulled."""
+        r"""Represents which runs should be pulled.
+
+        Values:
+            RUN_ATTEMPT_UNSPECIFIED (0):
+                All runs should be returned.
+            LATEST (1):
+                Only latest run per day should be returned.
+        """
         RUN_ATTEMPT_UNSPECIFIED = 0
         LATEST = 1
 

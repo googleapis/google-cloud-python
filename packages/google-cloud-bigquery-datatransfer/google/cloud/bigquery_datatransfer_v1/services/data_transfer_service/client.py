@@ -2131,7 +2131,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
             metadata=metadata,
         )
 
-    def __enter__(self):
+    def __enter__(self) -> "DataTransferServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):
