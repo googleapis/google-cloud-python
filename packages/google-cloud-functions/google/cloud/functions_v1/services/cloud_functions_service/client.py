@@ -1751,7 +1751,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "CloudFunctionsServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

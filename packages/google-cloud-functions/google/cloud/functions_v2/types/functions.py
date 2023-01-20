@@ -55,7 +55,16 @@ __protobuf__ = proto.module(
 
 
 class Environment(proto.Enum):
-    r"""The environment the function is hosted on."""
+    r"""The environment the function is hosted on.
+
+    Values:
+        ENVIRONMENT_UNSPECIFIED (0):
+            Unspecified
+        GEN_1 (1):
+            Gen 1
+        GEN_2 (2):
+            Gen 2
+    """
     ENVIRONMENT_UNSPECIFIED = 0
     GEN_1 = 1
     GEN_2 = 2
@@ -100,7 +109,27 @@ class Function(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Describes the current state of the function."""
+        r"""Describes the current state of the function.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not specified. Invalid state.
+            ACTIVE (1):
+                Function has been successfully deployed and
+                is serving.
+            FAILED (2):
+                Function deployment failed and the function
+                is not serving.
+            DEPLOYING (3):
+                Function is being created or updated.
+            DELETING (4):
+                Function is being deleted.
+            UNKNOWN (5):
+                Function deployment failed and the function
+                serving state is undefined. The function should
+                be updated or deleted to move it out of this
+                state.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         FAILED = 2
@@ -172,7 +201,18 @@ class StateMessage(proto.Message):
     """
 
     class Severity(proto.Enum):
-        r"""Severity of the state message."""
+        r"""Severity of the state message.
+
+        Values:
+            SEVERITY_UNSPECIFIED (0):
+                Not specified. Invalid severity.
+            ERROR (1):
+                ERROR-level severity.
+            WARNING (2):
+                WARNING-level severity.
+            INFO (3):
+                INFO-level severity.
+        """
         SEVERITY_UNSPECIFIED = 0
         ERROR = 1
         WARNING = 2
@@ -555,6 +595,16 @@ class ServiceConfig(proto.Message):
 
         This controls what traffic is diverted through the VPC Access
         Connector resource. By default PRIVATE_RANGES_ONLY will be used.
+
+        Values:
+            VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED (0):
+                Unspecified.
+            PRIVATE_RANGES_ONLY (1):
+                Use the VPC Access Connector only for private
+                IP space from RFC1918.
+            ALL_TRAFFIC (2):
+                Force the use of VPC Access Connector for all
+                egress traffic from the function.
         """
         VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED = 0
         PRIVATE_RANGES_ONLY = 1
@@ -566,6 +616,19 @@ class ServiceConfig(proto.Message):
         This controls what traffic can reach the function.
 
         If unspecified, ALLOW_ALL will be used.
+
+        Values:
+            INGRESS_SETTINGS_UNSPECIFIED (0):
+                Unspecified.
+            ALLOW_ALL (1):
+                Allow HTTP traffic from public and private
+                sources.
+            ALLOW_INTERNAL_ONLY (2):
+                Allow HTTP traffic from only private VPC
+                sources.
+            ALLOW_INTERNAL_AND_GCLB (3):
+                Allow HTTP traffic from private VPC sources
+                and through GCLB.
         """
         INGRESS_SETTINGS_UNSPECIFIED = 0
         ALLOW_ALL = 1
@@ -806,6 +869,15 @@ class EventTrigger(proto.Message):
     class RetryPolicy(proto.Enum):
         r"""Describes the retry policy in case of function's execution
         failure. Retried execution is charged as any other execution.
+
+        Values:
+            RETRY_POLICY_UNSPECIFIED (0):
+                Not specified.
+            RETRY_POLICY_DO_NOT_RETRY (1):
+                Do not retry.
+            RETRY_POLICY_RETRY (2):
+                Retry on any failure, retry up to 7 days with
+                an exponential backoff (capped at 10 seconds).
         """
         RETRY_POLICY_UNSPECIFIED = 0
         RETRY_POLICY_DO_NOT_RETRY = 1
@@ -1168,7 +1240,24 @@ class ListRuntimesResponse(proto.Message):
     """
 
     class RuntimeStage(proto.Enum):
-        r"""The various stages that a runtime can be in."""
+        r"""The various stages that a runtime can be in.
+
+        Values:
+            RUNTIME_STAGE_UNSPECIFIED (0):
+                Not specified.
+            DEVELOPMENT (1):
+                The runtime is in development.
+            ALPHA (2):
+                The runtime is in the Alpha stage.
+            BETA (3):
+                The runtime is in the Beta stage.
+            GA (4):
+                The runtime is generally available.
+            DEPRECATED (5):
+                The runtime is deprecated.
+            DECOMMISSIONED (6):
+                The runtime is no longer supported.
+        """
         RUNTIME_STAGE_UNSPECIFIED = 0
         DEVELOPMENT = 1
         ALPHA = 2
@@ -1321,7 +1410,24 @@ class Stage(proto.Message):
     """
 
     class Name(proto.Enum):
-        r"""Possible names for a Stage"""
+        r"""Possible names for a Stage
+
+        Values:
+            NAME_UNSPECIFIED (0):
+                Not specified. Invalid name.
+            ARTIFACT_REGISTRY (1):
+                Artifact Regsitry Stage
+            BUILD (2):
+                Build Stage
+            SERVICE (3):
+                Service Stage
+            TRIGGER (4):
+                Trigger Stage
+            SERVICE_ROLLBACK (5):
+                Service Rollback Stage
+            TRIGGER_ROLLBACK (6):
+                Trigger Rollback Stage
+        """
         NAME_UNSPECIFIED = 0
         ARTIFACT_REGISTRY = 1
         BUILD = 2
@@ -1331,7 +1437,18 @@ class Stage(proto.Message):
         TRIGGER_ROLLBACK = 6
 
     class State(proto.Enum):
-        r"""Possible states for a Stage"""
+        r"""Possible states for a Stage
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not specified. Invalid state.
+            NOT_STARTED (1):
+                Stage has not started.
+            IN_PROGRESS (2):
+                Stage is in progress.
+            COMPLETE (3):
+                Stage has completed.
+        """
         STATE_UNSPECIFIED = 0
         NOT_STARTED = 1
         IN_PROGRESS = 2

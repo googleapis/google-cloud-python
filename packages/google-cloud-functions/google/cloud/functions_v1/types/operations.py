@@ -29,7 +29,18 @@ __protobuf__ = proto.module(
 
 
 class OperationType(proto.Enum):
-    r"""A type of an operation."""
+    r"""A type of an operation.
+
+    Values:
+        OPERATION_UNSPECIFIED (0):
+            Unknown operation type.
+        CREATE_FUNCTION (1):
+            Triggered by CreateFunction call
+        UPDATE_FUNCTION (2):
+            Triggered by UpdateFunction call
+        DELETE_FUNCTION (3):
+            Triggered by DeleteFunction call.
+    """
     OPERATION_UNSPECIFIED = 0
     CREATE_FUNCTION = 1
     UPDATE_FUNCTION = 2

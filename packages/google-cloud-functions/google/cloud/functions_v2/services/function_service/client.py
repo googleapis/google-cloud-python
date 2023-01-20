@@ -1546,7 +1546,7 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "FunctionServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

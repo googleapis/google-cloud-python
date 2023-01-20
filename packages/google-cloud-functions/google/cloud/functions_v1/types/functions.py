@@ -48,7 +48,27 @@ __protobuf__ = proto.module(
 
 
 class CloudFunctionStatus(proto.Enum):
-    r"""Describes the current stage of a deployment."""
+    r"""Describes the current stage of a deployment.
+
+    Values:
+        CLOUD_FUNCTION_STATUS_UNSPECIFIED (0):
+            Not specified. Invalid state.
+        ACTIVE (1):
+            Function has been successfully deployed and
+            is serving.
+        OFFLINE (2):
+            Function deployment failed and the function
+            isn’t serving.
+        DEPLOY_IN_PROGRESS (3):
+            Function is being created or updated.
+        DELETE_IN_PROGRESS (4):
+            Function is being deleted.
+        UNKNOWN (5):
+            Function deployment failed and the function
+            serving state is undefined. The function should
+            be updated or deleted to move it out of this
+            state.
+    """
     CLOUD_FUNCTION_STATUS_UNSPECIFIED = 0
     ACTIVE = 1
     OFFLINE = 2
@@ -294,6 +314,16 @@ class CloudFunction(proto.Message):
 
         This controls what traffic is diverted through the VPC Access
         Connector resource. By default PRIVATE_RANGES_ONLY will be used.
+
+        Values:
+            VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED (0):
+                Unspecified.
+            PRIVATE_RANGES_ONLY (1):
+                Use the VPC Access Connector only for private
+                IP space from RFC1918.
+            ALL_TRAFFIC (2):
+                Force the use of VPC Access Connector for all
+                egress traffic from the function.
         """
         VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED = 0
         PRIVATE_RANGES_ONLY = 1
@@ -305,6 +335,19 @@ class CloudFunction(proto.Message):
         This controls what traffic can reach the function.
 
         If unspecified, ALLOW_ALL will be used.
+
+        Values:
+            INGRESS_SETTINGS_UNSPECIFIED (0):
+                Unspecified.
+            ALLOW_ALL (1):
+                Allow HTTP traffic from public and private
+                sources.
+            ALLOW_INTERNAL_ONLY (2):
+                Allow HTTP traffic from only private VPC
+                sources.
+            ALLOW_INTERNAL_AND_GCLB (3):
+                Allow HTTP traffic from private VPC sources
+                and through GCLB.
         """
         INGRESS_SETTINGS_UNSPECIFIED = 0
         ALLOW_ALL = 1
@@ -312,7 +355,22 @@ class CloudFunction(proto.Message):
         ALLOW_INTERNAL_AND_GCLB = 3
 
     class DockerRegistry(proto.Enum):
-        r"""Docker Registry to use for storing function Docker images."""
+        r"""Docker Registry to use for storing function Docker images.
+
+        Values:
+            DOCKER_REGISTRY_UNSPECIFIED (0):
+                Unspecified.
+            CONTAINER_REGISTRY (1):
+                Docker images will be stored in multi-regional Container
+                Registry repositories named ``gcf``.
+            ARTIFACT_REGISTRY (2):
+                Docker images will be stored in regional Artifact Registry
+                repositories. By default, GCF will create and use
+                repositories named ``gcf-artifacts`` in every region in
+                which a function is deployed. But the repository to use can
+                also be specified by the user using the
+                ``docker_repository`` field.
+        """
         DOCKER_REGISTRY_UNSPECIFIED = 0
         CONTAINER_REGISTRY = 1
         ARTIFACT_REGISTRY = 2
@@ -525,6 +583,20 @@ class HttpsTrigger(proto.Message):
         This controls the methods to enforce security (HTTPS) on a URL.
 
         If unspecified, SECURE_OPTIONAL will be used.
+
+        Values:
+            SECURITY_LEVEL_UNSPECIFIED (0):
+                Unspecified.
+            SECURE_ALWAYS (1):
+                Requests for a URL that match this handler
+                that do not use HTTPS are automatically
+                redirected to the HTTPS URL with the same path.
+                Query parameters are reserved for the redirect.
+            SECURE_OPTIONAL (2):
+                Both HTTP and HTTPS requests with URLs that
+                match the handler succeed without redirects. The
+                application can examine the request to determine
+                which protocol was used and respond accordingly.
         """
         SECURITY_LEVEL_UNSPECIFIED = 0
         SECURE_ALWAYS = 1
