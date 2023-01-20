@@ -49,7 +49,14 @@ __protobuf__ = proto.module(
 
 
 class MemcacheVersion(proto.Enum):
-    r"""Memcached versions supported by our service."""
+    r"""Memcached versions supported by our service.
+
+    Values:
+        MEMCACHE_VERSION_UNSPECIFIED (0):
+
+        MEMCACHE_1_5 (1):
+            Memcached 1.5 version.
+    """
     MEMCACHE_VERSION_UNSPECIFIED = 0
     MEMCACHE_1_5 = 1
 
@@ -143,7 +150,25 @@ class Instance(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Different states of a Memcached instance."""
+        r"""Different states of a Memcached instance.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                State not set.
+            CREATING (1):
+                Memcached instance is being created.
+            READY (2):
+                Memcached instance has been created and ready
+                to be used.
+            UPDATING (3):
+                Memcached instance is updating configuration
+                such as maintenance policy and schedule.
+            DELETING (4):
+                Memcached instance is being deleted.
+            PERFORMING_MAINTENANCE (5):
+                Memcached instance is going through
+                maintenance, e.g. data plane rollout.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -201,7 +226,20 @@ class Instance(proto.Message):
         """
 
         class State(proto.Enum):
-            r"""Different states of a Memcached node."""
+            r"""Different states of a Memcached node.
+
+            Values:
+                STATE_UNSPECIFIED (0):
+                    Node state is not set.
+                CREATING (1):
+                    Node is being created.
+                READY (2):
+                    Node has been created and ready to be used.
+                DELETING (3):
+                    Node is being deleted.
+                UPDATING (4):
+                    Node is being updated.
+            """
             STATE_UNSPECIFIED = 0
             CREATING = 1
             READY = 2
@@ -252,7 +290,14 @@ class Instance(proto.Message):
         """
 
         class Code(proto.Enum):
-            r""""""
+            r"""
+
+            Values:
+                CODE_UNSPECIFIED (0):
+                    Message Code not set.
+                ZONE_DISTRIBUTION_UNBALANCED (1):
+                    Memcached nodes are distributed unevenly.
+            """
             CODE_UNSPECIFIED = 0
             ZONE_DISTRIBUTION_UNBALANCED = 1
 
@@ -673,7 +718,22 @@ class RescheduleMaintenanceRequest(proto.Message):
     """
 
     class RescheduleType(proto.Enum):
-        r"""Reschedule options."""
+        r"""Reschedule options.
+
+        Values:
+            RESCHEDULE_TYPE_UNSPECIFIED (0):
+                Not set.
+            IMMEDIATE (1):
+                If the user wants to schedule the maintenance
+                to happen now.
+            NEXT_AVAILABLE_WINDOW (2):
+                If the user wants to use the existing
+                maintenance policy to find the next available
+                window.
+            SPECIFIC_TIME (3):
+                If the user wants to reschedule the
+                maintenance to a specific time.
+        """
         RESCHEDULE_TYPE_UNSPECIFIED = 0
         IMMEDIATE = 1
         NEXT_AVAILABLE_WINDOW = 2

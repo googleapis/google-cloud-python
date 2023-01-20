@@ -1529,7 +1529,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "CloudMemcacheClient":
         return self
 
     def __exit__(self, type, value, traceback):
