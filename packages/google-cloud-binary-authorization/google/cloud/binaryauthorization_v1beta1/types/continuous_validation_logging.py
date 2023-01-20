@@ -67,7 +67,15 @@ class ContinuousValidationEvent(proto.Message):
         """
 
         class PolicyConformanceVerdict(proto.Enum):
-            r"""Audit time policy conformance verdict."""
+            r"""Audit time policy conformance verdict.
+
+            Values:
+                POLICY_CONFORMANCE_VERDICT_UNSPECIFIED (0):
+                    We should always have a verdict. This is an
+                    error.
+                VIOLATES_POLICY (1):
+                    The pod violates the policy.
+            """
             POLICY_CONFORMANCE_VERDICT_UNSPECIFIED = 0
             VIOLATES_POLICY = 1
 
@@ -84,7 +92,16 @@ class ContinuousValidationEvent(proto.Message):
             """
 
             class AuditResult(proto.Enum):
-                r"""Result of the audit."""
+                r"""Result of the audit.
+
+                Values:
+                    AUDIT_RESULT_UNSPECIFIED (0):
+                        Unspecified result. This is an error.
+                    ALLOW (1):
+                        Image is allowed.
+                    DENY (2):
+                        Image is denied.
+                """
                 AUDIT_RESULT_UNSPECIFIED = 0
                 ALLOW = 1
                 DENY = 2

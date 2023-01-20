@@ -1290,7 +1290,7 @@ class BinauthzManagementServiceV1Beta1Client(
             metadata=metadata,
         )
 
-    def __enter__(self):
+    def __enter__(self) -> "BinauthzManagementServiceV1Beta1Client":
         return self
 
     def __exit__(self, type, value, traceback):

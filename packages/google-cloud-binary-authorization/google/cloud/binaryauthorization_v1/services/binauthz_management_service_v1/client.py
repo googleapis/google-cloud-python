@@ -1277,7 +1277,7 @@ class BinauthzManagementServiceV1Client(
             metadata=metadata,
         )
 
-    def __enter__(self):
+    def __enter__(self) -> "BinauthzManagementServiceV1Client":
         return self
 
     def __exit__(self, type, value, traceback):

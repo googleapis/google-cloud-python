@@ -540,7 +540,7 @@ class SystemPolicyV1Beta1Client(metaclass=SystemPolicyV1Beta1ClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "SystemPolicyV1Beta1Client":
         return self
 
     def __exit__(self, type, value, traceback):

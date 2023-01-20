@@ -89,7 +89,16 @@ class Policy(proto.Message):
     """
 
     class GlobalPolicyEvaluationMode(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            GLOBAL_POLICY_EVALUATION_MODE_UNSPECIFIED (0):
+                Not specified: DISABLE is assumed.
+            ENABLE (1):
+                Enables system policy evaluation.
+            DISABLE (2):
+                Disables system policy evaluation.
+        """
         GLOBAL_POLICY_EVALUATION_MODE_UNSPECIFIED = 0
         ENABLE = 1
         DISABLE = 2
@@ -212,7 +221,20 @@ class AdmissionRule(proto.Message):
     """
 
     class EvaluationMode(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            EVALUATION_MODE_UNSPECIFIED (0):
+                Do not use.
+            ALWAYS_ALLOW (1):
+                This rule allows all all pod creations.
+            REQUIRE_ATTESTATION (2):
+                This rule allows a pod creation if all the attestors listed
+                in 'require_attestations_by' have valid attestations for all
+                of the images in the pod spec.
+            ALWAYS_DENY (3):
+                This rule denies all pod creations.
+        """
         EVALUATION_MODE_UNSPECIFIED = 0
         ALWAYS_ALLOW = 1
         REQUIRE_ATTESTATION = 2
@@ -221,6 +243,17 @@ class AdmissionRule(proto.Message):
     class EnforcementMode(proto.Enum):
         r"""Defines the possible actions when a pod creation is denied by
         an admission rule.
+
+        Values:
+            ENFORCEMENT_MODE_UNSPECIFIED (0):
+                Do not use.
+            ENFORCED_BLOCK_AND_AUDIT_LOG (1):
+                Enforce the admission rule by blocking the
+                pod creation.
+            DRYRUN_AUDIT_LOG_ONLY (2):
+                Dryrun mode: Audit logging only.  This will
+                allow the pod creation as if the admission
+                request had specified break-glass.
         """
         ENFORCEMENT_MODE_UNSPECIFIED = 0
         ENFORCED_BLOCK_AND_AUDIT_LOG = 1
@@ -372,6 +405,44 @@ class PkixPublicKey(proto.Message):
         algorithms. See https://cloud.google.com/kms/docs/algorithms. In
         the future, BinAuthz might support additional public key types
         independently of Tink and/or KMS.
+
+        Values:
+            SIGNATURE_ALGORITHM_UNSPECIFIED (0):
+                Not specified.
+            RSA_PSS_2048_SHA256 (1):
+                RSASSA-PSS 2048 bit key with a SHA256 digest.
+            RSA_PSS_3072_SHA256 (2):
+                RSASSA-PSS 3072 bit key with a SHA256 digest.
+            RSA_PSS_4096_SHA256 (3):
+                RSASSA-PSS 4096 bit key with a SHA256 digest.
+            RSA_PSS_4096_SHA512 (4):
+                RSASSA-PSS 4096 bit key with a SHA512 digest.
+            RSA_SIGN_PKCS1_2048_SHA256 (5):
+                RSASSA-PKCS1-v1_5 with a 2048 bit key and a SHA256 digest.
+            RSA_SIGN_PKCS1_3072_SHA256 (6):
+                RSASSA-PKCS1-v1_5 with a 3072 bit key and a SHA256 digest.
+            RSA_SIGN_PKCS1_4096_SHA256 (7):
+                RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA256 digest.
+            RSA_SIGN_PKCS1_4096_SHA512 (8):
+                RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA512 digest.
+            ECDSA_P256_SHA256 (9):
+                ECDSA on the NIST P-256 curve with a SHA256
+                digest.
+            EC_SIGN_P256_SHA256 (9):
+                ECDSA on the NIST P-256 curve with a SHA256
+                digest.
+            ECDSA_P384_SHA384 (10):
+                ECDSA on the NIST P-384 curve with a SHA384
+                digest.
+            EC_SIGN_P384_SHA384 (10):
+                ECDSA on the NIST P-384 curve with a SHA384
+                digest.
+            ECDSA_P521_SHA512 (11):
+                ECDSA on the NIST P-521 curve with a SHA512
+                digest.
+            EC_SIGN_P521_SHA512 (11):
+                ECDSA on the NIST P-521 curve with a SHA512
+                digest.
         """
         _pb_options = {"allow_alias": True}
         SIGNATURE_ALGORITHM_UNSPECIFIED = 0

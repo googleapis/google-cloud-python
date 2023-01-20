@@ -300,7 +300,18 @@ class ValidateAttestationOccurrenceResponse(proto.Message):
     """
 
     class Result(proto.Enum):
-        r"""The enum returned in the "result" field."""
+        r"""The enum returned in the "result" field.
+
+        Values:
+            RESULT_UNSPECIFIED (0):
+                Unspecified.
+            VERIFIED (1):
+                The Attestation was able to verified by the
+                Attestor.
+            ATTESTATION_NOT_VERIFIABLE (2):
+                The Attestation was not able to verified by
+                the Attestor.
+        """
         RESULT_UNSPECIFIED = 0
         VERIFIED = 1
         ATTESTATION_NOT_VERIFIABLE = 2
