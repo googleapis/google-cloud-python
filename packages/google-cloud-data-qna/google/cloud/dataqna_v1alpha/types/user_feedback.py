@@ -40,7 +40,16 @@ class UserFeedback(proto.Message):
     """
 
     class UserFeedbackRating(proto.Enum):
-        r"""Enumeration of feedback ratings."""
+        r"""Enumeration of feedback ratings.
+
+        Values:
+            USER_FEEDBACK_RATING_UNSPECIFIED (0):
+                No rating was specified.
+            POSITIVE (1):
+                The user provided positive feedback.
+            NEGATIVE (2):
+                The user provided negative feedback.
+        """
         USER_FEEDBACK_RATING_UNSPECIFIED = 0
         POSITIVE = 1
         NEGATIVE = 2

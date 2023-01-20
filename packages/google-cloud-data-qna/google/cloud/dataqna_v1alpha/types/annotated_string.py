@@ -67,7 +67,26 @@ class AnnotatedString(proto.Message):
     """
 
     class SemanticMarkupType(proto.Enum):
-        r"""Semantic markup types."""
+        r"""Semantic markup types.
+
+        Values:
+            MARKUP_TYPE_UNSPECIFIED (0):
+                No markup type was specified.
+            METRIC (1):
+                Markup for a substring denoting a metric.
+            DIMENSION (2):
+                Markup for a substring denoting a dimension.
+            FILTER (3):
+                Markup for a substring denoting a filter.
+            UNUSED (4):
+                Markup for an unused substring.
+            BLOCKED (5):
+                Markup for a substring containing blocked
+                phrases.
+            ROW (6):
+                Markup for a substring that contains terms
+                for row.
+        """
         MARKUP_TYPE_UNSPECIFIED = 0
         METRIC = 1
         DIMENSION = 2

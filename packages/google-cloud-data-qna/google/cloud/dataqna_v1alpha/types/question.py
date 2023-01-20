@@ -40,7 +40,16 @@ __protobuf__ = proto.module(
 
 
 class InterpretEntity(proto.Enum):
-    r"""Query entities of an interpretation."""
+    r"""Query entities of an interpretation.
+
+    Values:
+        INTERPRET_ENTITY_UNSPECIFIED (0):
+            No interpret entity was specified.
+        DIMENSION (1):
+            A dimenstion entity.
+        METRIC (2):
+            A metric entity.
+    """
     INTERPRET_ENTITY_UNSPECIFIED = 0
     DIMENSION = 1
     METRIC = 2
@@ -167,6 +176,21 @@ class InterpretError(proto.Message):
     class InterpretErrorCode(proto.Enum):
         r"""The interpret error code provides an error category why the
         interpretation failed.
+
+        Values:
+            INTERPRET_ERROR_CODE_UNSPECIFIED (0):
+                No interpret error code was specified.
+            INVALID_QUERY (1):
+                The query is not valid.
+            FAILED_TO_UNDERSTAND (2):
+                The interpreter failed to understand the
+                question. For example, because it was too
+                ambiguous.
+            FAILED_TO_ANSWER (3):
+                The interpreter could understand the
+                question, but was not able to arrive at an
+                answer. For example, because a requested
+                operation is not supported.
         """
         INTERPRET_ERROR_CODE_UNSPECIFIED = 0
         INVALID_QUERY = 1
@@ -280,7 +304,20 @@ class ExecutionInfo(proto.Message):
     """
 
     class JobExecutionState(proto.Enum):
-        r"""Enum of possible job execution statuses."""
+        r"""Enum of possible job execution statuses.
+
+        Values:
+            JOB_EXECUTION_STATE_UNSPECIFIED (0):
+                No job execution was specified.
+            NOT_EXECUTED (1):
+                No job execution was requested, yet.
+            RUNNING (2):
+                The job is running.
+            SUCCEEDED (3):
+                The job completed successfully.
+            FAILED (4):
+                The job completed unsuccessfully.
+        """
         JOB_EXECUTION_STATE_UNSPECIFIED = 0
         NOT_EXECUTED = 1
         RUNNING = 2
@@ -463,6 +500,52 @@ class InterpretationStructure(proto.Message):
     class VisualizationType(proto.Enum):
         r"""Enumeration of visualzation types to use for query response
         data.
+
+        Values:
+            VISUALIZATION_TYPE_UNSPECIFIED (0):
+                No visualization type was specified.
+            TABLE (1):
+                Show a table.
+            BAR_CHART (2):
+                Show a `bar
+                chart <https://developers.google.com/chart/interactive/docs/gallery/barchart>`__.
+            COLUMN_CHART (3):
+                Show a `column
+                chart <https://developers.google.com/chart/interactive/docs/gallery/columnchart>`__.
+            TIMELINE (4):
+                Show a
+                `timeline <https://developers.google.com/chart/interactive/docs/gallery/timeline>`__.
+            SCATTER_PLOT (5):
+                Show a `scatter
+                plot <https://developers.google.com/chart/interactive/docs/gallery/scatterchart>`__.
+            PIE_CHART (6):
+                Show a `pie
+                chart <https://developers.google.com/chart/interactive/docs/gallery/piechart>`__.
+            LINE_CHART (7):
+                Show a `line
+                chart <https://developers.google.com/chart/interactive/docs/gallery/linechart>`__.
+            AREA_CHART (8):
+                Show an `area
+                chart <https://developers.google.com/chart/interactive/docs/gallery/areachart>`__.
+            COMBO_CHART (9):
+                Show a `combo
+                chart <https://developers.google.com/chart/interactive/docs/gallery/combochart>`__.
+            HISTOGRAM (10):
+                Show a
+                `histogram <https://developers.google.com/chart/interactive/docs/gallery/histogram>`__.
+            GENERIC_CHART (11):
+                This denotes queries when the user has not
+                specified the particular type of chart and has
+                mentioned only a generic chart name such as
+                "Chart", "Plot", "Graph", etc. This will
+                differentiate it from specific charting terms
+                such as "Bar chart", "Pie chart", etc.
+            CHART_NOT_UNDERSTOOD (12):
+                The user tried to specify a chart type, but
+                the interpreter could not understand the type.
+                The client should display a generic chart and
+                may give a hint to the user that the requested
+                type was not understood.
         """
         VISUALIZATION_TYPE_UNSPECIFIED = 0
         TABLE = 1

@@ -32,7 +32,18 @@ __protobuf__ = proto.module(
 
 
 class SuggestionType(proto.Enum):
-    r"""The type of suggestion."""
+    r"""The type of suggestion.
+
+    Values:
+        SUGGESTION_TYPE_UNSPECIFIED (0):
+            No suggestiont type is specified.
+        ENTITY (1):
+            Entity suggestion type. Suggestions are for
+            single entities.
+        TEMPLATE (2):
+            Template suggestion type. Suggestions are for
+            full sentences.
+    """
     SUGGESTION_TYPE_UNSPECIFIED = 0
     ENTITY = 1
     TEMPLATE = 2
