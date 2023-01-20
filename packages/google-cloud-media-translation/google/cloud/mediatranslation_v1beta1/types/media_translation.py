@@ -277,7 +277,26 @@ class StreamingTranslateSpeechResponse(proto.Message):
     """
 
     class SpeechEventType(proto.Enum):
-        r"""Indicates the type of speech event."""
+        r"""Indicates the type of speech event.
+
+        Values:
+            SPEECH_EVENT_TYPE_UNSPECIFIED (0):
+                No speech event specified.
+            END_OF_SINGLE_UTTERANCE (1):
+                This event indicates that the server has detected the end of
+                the user's speech utterance and expects no additional
+                speech. Therefore, the server will not process additional
+                audio (although it may subsequently return additional
+                results). When the client receives 'END_OF_SINGLE_UTTERANCE'
+                event, the client should stop sending the requests. However,
+                clients should keep receiving remaining responses until the
+                stream is terminated. To construct the complete sentence in
+                a streaming way, one should override (if 'is_final' of
+                previous response is false), or append (if 'is_final' of
+                previous response is true). This event is only sent if
+                ``single_utterance`` was set to ``true``, and is not used
+                otherwise.
+        """
         SPEECH_EVENT_TYPE_UNSPECIFIED = 0
         END_OF_SINGLE_UTTERANCE = 1
 
