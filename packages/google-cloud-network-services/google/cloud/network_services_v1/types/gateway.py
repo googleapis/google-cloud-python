@@ -91,6 +91,17 @@ class Gateway(proto.Message):
 
         -  OPEN_MESH
         -  SECURE_WEB_GATEWAY
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                The type of the customer managed gateway is
+                unspecified.
+            OPEN_MESH (1):
+                The type of the customer managed gateway is
+                TrafficDirector Open Mesh.
+            SECURE_WEB_GATEWAY (2):
+                The type of the customer managed gateway is
+                SecureWebGateway (SWG).
         """
         TYPE_UNSPECIFIED = 0
         OPEN_MESH = 1

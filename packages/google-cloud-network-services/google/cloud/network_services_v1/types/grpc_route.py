@@ -145,7 +145,17 @@ class GrpcRoute(proto.Message):
         """
 
         class Type(proto.Enum):
-            r"""The type of the match."""
+            r"""The type of the match.
+
+            Values:
+                TYPE_UNSPECIFIED (0):
+                    Unspecified.
+                EXACT (1):
+                    Will only match the exact name provided.
+                REGULAR_EXPRESSION (2):
+                    Will interpret grpc_method and grpc_service as regexes. RE2
+                    syntax is supported.
+            """
             TYPE_UNSPECIFIED = 0
             EXACT = 1
             REGULAR_EXPRESSION = 2
@@ -184,7 +194,17 @@ class GrpcRoute(proto.Message):
         """
 
         class Type(proto.Enum):
-            r"""The type of match."""
+            r"""The type of match.
+
+            Values:
+                TYPE_UNSPECIFIED (0):
+                    Unspecified.
+                EXACT (1):
+                    Will only match the exact value provided.
+                REGULAR_EXPRESSION (2):
+                    Will match paths conforming to the prefix
+                    specified by value. RE2 syntax is supported.
+            """
             TYPE_UNSPECIFIED = 0
             EXACT = 1
             REGULAR_EXPRESSION = 2

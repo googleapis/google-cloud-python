@@ -97,7 +97,16 @@ class EndpointPolicy(proto.Message):
     """
 
     class EndpointPolicyType(proto.Enum):
-        r"""The type of endpoint policy."""
+        r"""The type of endpoint policy.
+
+        Values:
+            ENDPOINT_POLICY_TYPE_UNSPECIFIED (0):
+                Default value. Must not be used.
+            SIDECAR_PROXY (1):
+                Represents a proxy deployed as a sidecar.
+            GRPC_SERVER (2):
+                Represents a proxyless gRPC backend.
+        """
         ENDPOINT_POLICY_TYPE_UNSPECIFIED = 0
         SIDECAR_PROXY = 1
         GRPC_SERVER = 2

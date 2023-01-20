@@ -164,6 +164,17 @@ class EndpointMatcher(proto.Message):
         class MetadataLabelMatchCriteria(proto.Enum):
             r"""Possible criteria values that define logic of how matching is
             made.
+
+            Values:
+                METADATA_LABEL_MATCH_CRITERIA_UNSPECIFIED (0):
+                    Default value. Should not be used.
+                MATCH_ANY (1):
+                    At least one of the Labels specified in the
+                    matcher should match the metadata presented by
+                    xDS client.
+                MATCH_ALL (2):
+                    The metadata presented by the xDS client
+                    should contain all of the labels specified here.
             """
             METADATA_LABEL_MATCH_CRITERIA_UNSPECIFIED = 0
             MATCH_ANY = 1

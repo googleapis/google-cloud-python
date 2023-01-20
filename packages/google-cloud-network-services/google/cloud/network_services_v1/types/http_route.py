@@ -446,7 +446,24 @@ class HttpRoute(proto.Message):
         """
 
         class ResponseCode(proto.Enum):
-            r"""Supported HTTP response code."""
+            r"""Supported HTTP response code.
+
+            Values:
+                RESPONSE_CODE_UNSPECIFIED (0):
+                    Default value
+                MOVED_PERMANENTLY_DEFAULT (1):
+                    Corresponds to 301.
+                FOUND (2):
+                    Corresponds to 302.
+                SEE_OTHER (3):
+                    Corresponds to 303.
+                TEMPORARY_REDIRECT (4):
+                    Corresponds to 307. In this case, the request
+                    method will be retained.
+                PERMANENT_REDIRECT (5):
+                    Corresponds to 308. In this case, the request
+                    method will be retained.
+            """
             RESPONSE_CODE_UNSPECIFIED = 0
             MOVED_PERMANENTLY_DEFAULT = 1
             FOUND = 2
