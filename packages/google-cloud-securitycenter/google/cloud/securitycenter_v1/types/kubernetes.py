@@ -136,7 +136,16 @@ class Kubernetes(proto.Message):
         """
 
         class Kind(proto.Enum):
-            r"""Types of Kubernetes roles."""
+            r"""Types of Kubernetes roles.
+
+            Values:
+                KIND_UNSPECIFIED (0):
+                    Role type is not specified.
+                ROLE (1):
+                    Kubernetes Role.
+                CLUSTER_ROLE (2):
+                    Kubernetes ClusterRole.
+            """
             KIND_UNSPECIFIED = 0
             ROLE = 1
             CLUSTER_ROLE = 2
@@ -203,7 +212,19 @@ class Kubernetes(proto.Message):
         """
 
         class AuthType(proto.Enum):
-            r"""Auth types that can be used for Subject's kind field."""
+            r"""Auth types that can be used for Subject's kind field.
+
+            Values:
+                AUTH_TYPE_UNSPECIFIED (0):
+                    Authentication is not specified.
+                USER (1):
+                    User with valid certificate.
+                SERVICEACCOUNT (2):
+                    Users managed by Kubernetes API with
+                    credentials stored as Secrets.
+                GROUP (3):
+                    Collection of users.
+            """
             AUTH_TYPE_UNSPECIFIED = 0
             USER = 1
             SERVICEACCOUNT = 2

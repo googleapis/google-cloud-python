@@ -42,7 +42,16 @@ class IamBinding(proto.Message):
     """
 
     class Action(proto.Enum):
-        r"""The type of action performed on a Binding in a policy."""
+        r"""The type of action performed on a Binding in a policy.
+
+        Values:
+            ACTION_UNSPECIFIED (0):
+                Unspecified.
+            ADD (1):
+                Addition of a Binding.
+            REMOVE (2):
+                Removal of a Binding.
+        """
         ACTION_UNSPECIFIED = 0
         ADD = 1
         REMOVE = 2

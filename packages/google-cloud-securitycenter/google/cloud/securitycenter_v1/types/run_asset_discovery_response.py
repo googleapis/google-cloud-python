@@ -38,7 +38,21 @@ class RunAssetDiscoveryResponse(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The state of an asset discovery run."""
+        r"""The state of an asset discovery run.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Asset discovery run state was unspecified.
+            COMPLETED (1):
+                Asset discovery run completed successfully.
+            SUPERSEDED (2):
+                Asset discovery run was cancelled with tasks
+                still pending, as another run for the same
+                organization was started with a higher priority.
+            TERMINATED (3):
+                Asset discovery run was killed and
+                terminated.
+        """
         STATE_UNSPECIFIED = 0
         COMPLETED = 1
         SUPERSEDED = 2

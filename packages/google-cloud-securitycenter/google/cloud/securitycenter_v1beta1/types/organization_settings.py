@@ -66,6 +66,20 @@ class OrganizationSettings(proto.Message):
             projects are discovered during asset discovery. If neither are set,
             then all projects within the organization are discovered during
             asset discovery.
+
+            Values:
+                INCLUSION_MODE_UNSPECIFIED (0):
+                    Unspecified. Setting the mode with this value
+                    will disable inclusion/exclusion filtering for
+                    Asset Discovery.
+                INCLUDE_ONLY (1):
+                    Asset Discovery will capture only the
+                    resources within the projects specified. All
+                    other resources will be ignored.
+                EXCLUDE (2):
+                    Asset Discovery will ignore all resources
+                    under the projects specified. All other
+                    resources will be retrieved.
             """
             INCLUSION_MODE_UNSPECIFIED = 0
             INCLUDE_ONLY = 1

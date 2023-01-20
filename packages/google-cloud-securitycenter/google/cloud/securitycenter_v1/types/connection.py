@@ -46,7 +46,22 @@ class Connection(proto.Message):
     """
 
     class Protocol(proto.Enum):
-        r"""IANA Internet Protocol Number such as TCP(6) and UDP(17)."""
+        r"""IANA Internet Protocol Number such as TCP(6) and UDP(17).
+
+        Values:
+            PROTOCOL_UNSPECIFIED (0):
+                Unspecified protocol (not HOPOPT).
+            ICMP (1):
+                Internet Control Message Protocol.
+            TCP (6):
+                Transmission Control Protocol.
+            UDP (17):
+                User Datagram Protocol.
+            GRE (47):
+                Generic Routing Encapsulation.
+            ESP (50):
+                Encap Security Payload.
+        """
         PROTOCOL_UNSPECIFIED = 0
         ICMP = 1
         TCP = 6

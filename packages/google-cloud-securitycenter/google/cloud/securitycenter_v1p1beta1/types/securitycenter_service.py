@@ -1061,6 +1061,17 @@ class ListAssetsResponse(proto.Message):
             between the two points: ADDED, REMOVED, or ACTIVE. If there was no
             compare_duration supplied in the request the state change will be:
             UNUSED
+
+            Values:
+                UNUSED (0):
+                    State change is unused, this is the canonical
+                    default for this enum.
+                ADDED (1):
+                    Asset was added between the points in time.
+                REMOVED (2):
+                    Asset was removed between the points in time.
+                ACTIVE (3):
+                    Asset was present at both point(s) in time.
             """
             UNUSED = 0
             ADDED = 1
@@ -1324,6 +1335,24 @@ class ListFindingsResponse(proto.Message):
             finding at timestamp does not match the filter specified, but it did
             at timestamp - compare_duration. If there was no compare_duration
             supplied in the request the state change will be: UNUSED
+
+            Values:
+                UNUSED (0):
+                    State change is unused, this is the canonical
+                    default for this enum.
+                CHANGED (1):
+                    The finding has changed state in some way
+                    between the points in time and existed at both
+                    points.
+                UNCHANGED (2):
+                    The finding has not changed state between the
+                    points in time and existed at both points.
+                ADDED (3):
+                    The finding was created between the points in
+                    time.
+                REMOVED (4):
+                    The finding at timestamp does not match the filter
+                    specified, but it did at timestamp - compare_duration.
             """
             UNUSED = 0
             CHANGED = 1

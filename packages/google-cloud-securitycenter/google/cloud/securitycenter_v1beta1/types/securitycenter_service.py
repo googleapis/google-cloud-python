@@ -697,6 +697,19 @@ class ListAssetsResponse(proto.Message):
             When querying across two points in time this describes the change
             between the two points: ADDED, REMOVED, or ACTIVE. If there was no
             compare_duration supplied in the request the state should be: UNUSED
+
+            Values:
+                STATE_UNSPECIFIED (0):
+                    Unspecified state.
+                UNUSED (1):
+                    Request did not specify use of this field in
+                    the result.
+                ADDED (2):
+                    Asset was added between the points in time.
+                REMOVED (3):
+                    Asset was removed between the points in time.
+                ACTIVE (4):
+                    Asset was active at both point(s) in time.
             """
             STATE_UNSPECIFIED = 0
             UNUSED = 1

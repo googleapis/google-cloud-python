@@ -61,7 +61,14 @@ class NotificationConfig(proto.Message):
     """
 
     class EventType(proto.Enum):
-        r"""The type of events."""
+        r"""The type of events.
+
+        Values:
+            EVENT_TYPE_UNSPECIFIED (0):
+                Unspecified event type.
+            FINDING (1):
+                Events for findings.
+        """
         EVENT_TYPE_UNSPECIFIED = 0
         FINDING = 1
 

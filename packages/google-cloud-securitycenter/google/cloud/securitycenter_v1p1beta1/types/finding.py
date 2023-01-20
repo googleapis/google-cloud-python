@@ -109,7 +109,19 @@ class Finding(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The state of the finding."""
+        r"""The state of the finding.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified state.
+            ACTIVE (1):
+                The finding requires attention and has not
+                been addressed yet.
+            INACTIVE (2):
+                The finding has been fixed, triaged as a
+                non-issue or otherwise addressed and is no
+                longer active.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2
@@ -117,6 +129,18 @@ class Finding(proto.Message):
     class Severity(proto.Enum):
         r"""The severity of the finding. This field is managed by the
         source that writes the finding.
+
+        Values:
+            SEVERITY_UNSPECIFIED (0):
+                No severity specified. The default value.
+            CRITICAL (1):
+                Critical severity.
+            HIGH (2):
+                High severity.
+            MEDIUM (3):
+                Medium severity.
+            LOW (4):
+                Low severity.
         """
         SEVERITY_UNSPECIFIED = 0
         CRITICAL = 1

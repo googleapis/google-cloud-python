@@ -96,7 +96,19 @@ class Finding(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The state of the finding."""
+        r"""The state of the finding.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified state.
+            ACTIVE (1):
+                The finding requires attention and has not
+                been addressed yet.
+            INACTIVE (2):
+                The finding has been fixed, triaged as a
+                non-issue or otherwise addressed and is no
+                longer active.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2

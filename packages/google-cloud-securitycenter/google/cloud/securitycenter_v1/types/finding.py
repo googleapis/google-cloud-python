@@ -218,13 +218,93 @@ class Finding(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The state of the finding."""
+        r"""The state of the finding.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified state.
+            ACTIVE (1):
+                The finding requires attention and has not
+                been addressed yet.
+            INACTIVE (2):
+                The finding has been fixed, triaged as a
+                non-issue or otherwise addressed and is no
+                longer active.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2
 
     class Severity(proto.Enum):
-        r"""The severity of the finding."""
+        r"""The severity of the finding.
+
+        Values:
+            SEVERITY_UNSPECIFIED (0):
+                This value is used for findings when a source
+                doesn't write a severity value.
+            CRITICAL (1):
+                Vulnerability:
+                A critical vulnerability is easily discoverable
+                by an external actor, exploitable, and results
+                in the direct ability to execute arbitrary code,
+                exfiltrate data, and otherwise gain additional
+                access and privileges to cloud resources and
+                workloads. Examples include publicly accessible
+                unprotected user data, public SSH access with
+                weak or no passwords, etc.
+                Threat:
+                Indicates a threat that is able to access,
+                modify, or delete data or execute unauthorized
+                code within existing resources.
+            HIGH (2):
+                Vulnerability:
+                A high risk vulnerability can be easily
+                discovered and exploited in combination with
+                other vulnerabilities in order to gain direct
+                access and the ability to execute arbitrary
+                code, exfiltrate data, and otherwise gain
+                additional access and privileges to cloud
+                resources and workloads. An example is a
+                database with weak or no passwords that is only
+                accessible internally. This database could
+                easily be compromised by an actor that had
+                access to the internal network.
+                Threat:
+                Indicates a threat that is able to create new
+                computational resources in an environment but
+                not able to access data or execute code in
+                existing resources.
+            MEDIUM (3):
+                Vulnerability:
+                A medium risk vulnerability could be used by an
+                actor to gain access to resources or privileges
+                that enable them to eventually (through multiple
+                steps or a complex exploit) gain access and the
+                ability to execute arbitrary code or exfiltrate
+                data. An example is a service account with
+                access to more projects than it should have. If
+                an actor gains access to the service account,
+                they could potentially use that access to
+                manipulate a project the service account was not
+                intended to.
+                Threat:
+                Indicates a threat that is able to cause
+                operational impact but may not access data or
+                execute unauthorized code.
+            LOW (4):
+                Vulnerability:
+                A low risk vulnerability hampers a security
+                organization's ability to detect vulnerabilities
+                or active threats in their deployment, or
+                prevents the root cause investigation of
+                security issues. An example is monitoring and
+                logs being disabled for resource configurations
+                and access.
+                Threat:
+                Indicates a threat that has obtained minimal
+                access to an environment but is not able to
+                access data, execute code, or create resources.
+        """
         SEVERITY_UNSPECIFIED = 0
         CRITICAL = 1
         HIGH = 2
@@ -232,14 +312,46 @@ class Finding(proto.Message):
         LOW = 4
 
     class Mute(proto.Enum):
-        r"""Mute state a finding can be in."""
+        r"""Mute state a finding can be in.
+
+        Values:
+            MUTE_UNSPECIFIED (0):
+                Unspecified.
+            MUTED (1):
+                Finding has been muted.
+            UNMUTED (2):
+                Finding has been unmuted.
+            UNDEFINED (4):
+                Finding has never been muted/unmuted.
+        """
         MUTE_UNSPECIFIED = 0
         MUTED = 1
         UNMUTED = 2
         UNDEFINED = 4
 
     class FindingClass(proto.Enum):
-        r"""Represents what kind of Finding it is."""
+        r"""Represents what kind of Finding it is.
+
+        Values:
+            FINDING_CLASS_UNSPECIFIED (0):
+                Unspecified finding class.
+            THREAT (1):
+                Describes unwanted or malicious activity.
+            VULNERABILITY (2):
+                Describes a potential weakness in software
+                that increases risk to Confidentiality &
+                Integrity & Availability.
+            MISCONFIGURATION (3):
+                Describes a potential weakness in cloud
+                resource/asset configuration that increases
+                risk.
+            OBSERVATION (4):
+                Describes a security observation that is for
+                informational purposes.
+            SCC_ERROR (5):
+                Describes an error that prevents some SCC
+                functionality.
+        """
         FINDING_CLASS_UNSPECIFIED = 0
         THREAT = 1
         VULNERABILITY = 2
