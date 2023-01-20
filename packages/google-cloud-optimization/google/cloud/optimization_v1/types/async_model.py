@@ -34,7 +34,16 @@ __protobuf__ = proto.module(
 
 
 class DataFormat(proto.Enum):
-    r"""Data formats for input and output files."""
+    r"""Data formats for input and output files.
+
+    Values:
+        DATA_FORMAT_UNSPECIFIED (0):
+            Default value.
+        JSON (1):
+            Input data in json format.
+        STRING (2):
+            Input data in string format.
+    """
     DATA_FORMAT_UNSPECIFIED = 0
     JSON = 1
     STRING = 2
@@ -148,7 +157,21 @@ class AsyncModelMetadata(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Possible states of the operation."""
+        r"""Possible states of the operation.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The default value. This value is used if the
+                state is omitted.
+            RUNNING (1):
+                Request is being processed.
+            SUCCEEDED (2):
+                The operation completed successfully.
+            CANCELLED (3):
+                The operation was cancelled.
+            FAILED (4):
+                The operation has failed.
+        """
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2

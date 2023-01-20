@@ -288,6 +288,24 @@ class OptimizeToursRequest(proto.Message):
         ``INVALID_REQUEST`` error. See
         [max_validation_errors][google.cloud.optimization.v1.OptimizeToursRequest.max_validation_errors]
         to cap the number of errors returned.
+
+        Values:
+            DEFAULT_SOLVE (0):
+                Solve the model.
+            VALIDATE_ONLY (1):
+                Only validates the model without solving it: populates as
+                many
+                [OptimizeToursResponse.validation_errors][google.cloud.optimization.v1.OptimizeToursResponse.validation_errors]
+                as possible.
+            DETECT_SOME_INFEASIBLE_SHIPMENTS (2):
+                Only populates
+                [OptimizeToursResponse.skipped_shipments][google.cloud.optimization.v1.OptimizeToursResponse.skipped_shipments],
+                and doesn't actually solve the rest of the request
+                (``status`` and ``routes`` are unset in the response).
+
+                *IMPORTANT*: not all infeasible shipments are returned here,
+                but only the ones that are detected as infeasible as a
+                preprocessing.
         """
         DEFAULT_SOLVE = 0
         VALIDATE_ONLY = 1
@@ -297,6 +315,16 @@ class OptimizeToursRequest(proto.Message):
         r"""Mode defining the behavior of the search, trading off latency
         versus solution quality. In all modes, the global request
         deadline is enforced.
+
+        Values:
+            SEARCH_MODE_UNSPECIFIED (0):
+                Unspecified search mode, equivalent to ``RETURN_FAST``.
+            RETURN_FAST (1):
+                Stop the search after finding the first good
+                solution.
+            CONSUME_ALL_AVAILABLE_TIME (2):
+                Spend all the available time to search for
+                better solutions.
         """
         SEARCH_MODE_UNSPECIFIED = 0
         RETURN_FAST = 1
@@ -1540,6 +1568,25 @@ class ShipmentTypeIncompatibility(proto.Message):
     class IncompatibilityMode(proto.Enum):
         r"""Modes defining how the appearance of incompatible shipments
         are restricted on the same route.
+
+        Values:
+            INCOMPATIBILITY_MODE_UNSPECIFIED (0):
+                Unspecified incompatibility mode. This value
+                should never be used.
+            NOT_PERFORMED_BY_SAME_VEHICLE (1):
+                In this mode, two shipments with incompatible
+                types can never share the same vehicle.
+            NOT_IN_SAME_VEHICLE_SIMULTANEOUSLY (2):
+                For two shipments with incompatible types with the
+                ``NOT_IN_SAME_VEHICLE_SIMULTANEOUSLY`` incompatibility mode:
+
+                -  If both are pickups only (no deliveries) or deliveries
+                   only (no pickups), they cannot share the same vehicle at
+                   all.
+                -  If one of the shipments has a delivery and the other a
+                   pickup, the two shipments can share the same vehicle iff
+                   the former shipment is delivered before the latter is
+                   picked up.
         """
         INCOMPATIBILITY_MODE_UNSPECIFIED = 0
         NOT_PERFORMED_BY_SAME_VEHICLE = 1
@@ -1580,6 +1627,32 @@ class ShipmentTypeRequirement(proto.Message):
     class RequirementMode(proto.Enum):
         r"""Modes defining the appearance of dependent shipments on a
         route.
+
+        Values:
+            REQUIREMENT_MODE_UNSPECIFIED (0):
+                Unspecified requirement mode. This value
+                should never be used.
+            PERFORMED_BY_SAME_VEHICLE (1):
+                In this mode, all "dependent" shipments must
+                share the same vehicle as at least one of their
+                "required" shipments.
+            IN_SAME_VEHICLE_AT_PICKUP_TIME (2):
+                With the ``IN_SAME_VEHICLE_AT_PICKUP_TIME`` mode, all
+                "dependent" shipments need to have at least one "required"
+                shipment on their vehicle at the time of their pickup.
+
+                A "dependent" shipment pickup must therefore have either:
+
+                -  A delivery-only "required" shipment delivered on the
+                   route after, or
+                -  A "required" shipment picked up on the route before it,
+                   and if the "required" shipment has a delivery, this
+                   delivery must be performed after the "dependent"
+                   shipment's pickup.
+            IN_SAME_VEHICLE_AT_DELIVERY_TIME (3):
+                Same as before, except the "dependent" shipments need to
+                have a "required" shipment on their vehicle at the time of
+                their *delivery*.
         """
         REQUIREMENT_MODE_UNSPECIFIED = 0
         PERFORMED_BY_SAME_VEHICLE = 1
@@ -1821,6 +1894,13 @@ class Vehicle(proto.Message):
         These should be a subset of the Google Maps Platform Routes
         Preferred API travel modes, see:
         https://developers.google.com/maps/documentation/routes_preferred/reference/rest/Shared.Types/RouteTravelMode.
+
+        Values:
+            TRAVEL_MODE_UNSPECIFIED (0):
+                Unspecified travel mode, equivalent to ``DRIVING``.
+            DRIVING (1):
+                Travel mode corresponding to driving
+                directions (car, ...).
         """
         TRAVEL_MODE_UNSPECIFIED = 0
         DRIVING = 1
@@ -1831,6 +1911,17 @@ class Vehicle(proto.Message):
 
         Other shipments are free to occur anywhere on the route independent
         of ``unloading_policy``.
+
+        Values:
+            UNLOADING_POLICY_UNSPECIFIED (0):
+                Unspecified unloading policy; deliveries must
+                just occur after their corresponding pickups.
+            LAST_IN_FIRST_OUT (1):
+                Deliveries must occur in reverse order of
+                pickups
+            FIRST_IN_FIRST_OUT (2):
+                Deliveries must occur in the same order as
+                pickups
         """
         UNLOADING_POLICY_UNSPECIFIED = 0
         LAST_IN_FIRST_OUT = 1
@@ -3410,6 +3501,47 @@ class SkippedShipment(proto.Message):
             meaningless. In particular, it gives no indication of whether a
             given reason will appear before another in the solution, if both
             apply.
+
+            Values:
+                CODE_UNSPECIFIED (0):
+                    This should never be used. If we are unable
+                    to understand why a shipment was skipped, we
+                    simply return an empty set of reasons.
+                NO_VEHICLE (1):
+                    There is no vehicle in the model making all
+                    shipments infeasible.
+                DEMAND_EXCEEDS_VEHICLE_CAPACITY (2):
+                    The demand of the shipment exceeds a vehicle's capacity for
+                    some capacity types, one of which is
+                    ``example_exceeded_capacity_type``.
+                CANNOT_BE_PERFORMED_WITHIN_VEHICLE_DISTANCE_LIMIT (3):
+                    The minimum distance necessary to perform this shipment,
+                    i.e. from the vehicle's ``start_location`` to the shipment's
+                    pickup and/or delivery locations and to the vehicle's end
+                    location exceeds the vehicle's ``route_distance_limit``.
+
+                    Note that for this computation we use the geodesic
+                    distances.
+                CANNOT_BE_PERFORMED_WITHIN_VEHICLE_DURATION_LIMIT (4):
+                    The minimum time necessary to perform this shipment,
+                    including travel time, wait time and service time exceeds
+                    the vehicle's ``route_duration_limit``.
+
+                    Note: travel time is computed in the best-case scenario,
+                    namely as geodesic distance x 36 m/s (roughly 130 km/hour).
+                CANNOT_BE_PERFORMED_WITHIN_VEHICLE_TRAVEL_DURATION_LIMIT (5):
+                    Same as above but we only compare minimum travel time and
+                    the vehicle's ``travel_duration_limit``.
+                CANNOT_BE_PERFORMED_WITHIN_VEHICLE_TIME_WINDOWS (6):
+                    The vehicle cannot perform this shipment in the best-case
+                    scenario (see
+                    ``CANNOT_BE_PERFORMED_WITHIN_VEHICLE_DURATION_LIMIT`` for
+                    time computation) if it starts at its earliest start time:
+                    the total time would make the vehicle end after its latest
+                    end time.
+                VEHICLE_NOT_ALLOWED (7):
+                    The ``allowed_vehicle_indices`` field of the shipment is not
+                    empty and this vehicle does not belong to it.
             """
             CODE_UNSPECIFIED = 0
             NO_VEHICLE = 1
@@ -3672,6 +3804,28 @@ class InjectedSolutionConstraint(proto.Message):
                 the threshold conditions.
 
                 The enumeration below is in order of increasing relaxation.
+
+                Values:
+                    LEVEL_UNSPECIFIED (0):
+                        Implicit default relaxation level: no constraints are
+                        relaxed, i.e., all visits are fully constrained.
+
+                        This value must not be explicly used in ``level``.
+                    RELAX_VISIT_TIMES_AFTER_THRESHOLD (1):
+                        Visit start times and vehicle start/end times
+                        will be relaxed, but each visit remains bound to
+                        the same vehicle and the visit sequence must be
+                        observed: no visit can be inserted between them
+                        or before them.
+                    RELAX_VISIT_TIMES_AND_SEQUENCE_AFTER_THRESHOLD (2):
+                        Same as ``RELAX_VISIT_TIMES_AFTER_THRESHOLD``, but the visit
+                        sequence is also relaxed: visits remain simply bound to
+                        their vehicle.
+                    RELAX_ALL_AFTER_THRESHOLD (3):
+                        Same as ``RELAX_VISIT_TIMES_AND_SEQUENCE_AFTER_THRESHOLD``,
+                        but the vehicle is also relaxed: visits are completely free
+                        at or after the threshold time and can potentially become
+                        unperformed.
                 """
                 LEVEL_UNSPECIFIED = 0
                 RELAX_VISIT_TIMES_AFTER_THRESHOLD = 1
