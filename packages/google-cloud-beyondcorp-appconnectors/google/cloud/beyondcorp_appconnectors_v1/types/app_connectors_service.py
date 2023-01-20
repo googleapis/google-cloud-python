@@ -398,7 +398,25 @@ class AppConnector(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Represents the different states of a AppConnector."""
+        r"""Represents the different states of a AppConnector.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            CREATING (1):
+                AppConnector is being created.
+            CREATED (2):
+                AppConnector has been created.
+            UPDATING (3):
+                AppConnector's configuration is being
+                updated.
+            DELETING (4):
+                AppConnector is being deleted.
+            DOWN (5):
+                AppConnector is down and may be restored in
+                the future. This happens when CCFE sends
+                ProjectState = OFF.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         CREATED = 2

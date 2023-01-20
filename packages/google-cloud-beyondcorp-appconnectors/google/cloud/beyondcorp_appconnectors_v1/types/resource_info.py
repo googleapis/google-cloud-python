@@ -29,7 +29,21 @@ __protobuf__ = proto.module(
 
 
 class HealthStatus(proto.Enum):
-    r"""HealthStatus represents the health status."""
+    r"""HealthStatus represents the health status.
+
+    Values:
+        HEALTH_STATUS_UNSPECIFIED (0):
+            Health status is unknown: not initialized or
+            failed to retrieve.
+        HEALTHY (1):
+            The resource is healthy.
+        UNHEALTHY (2):
+            The resource is unhealthy.
+        UNRESPONSIVE (3):
+            The resource is unresponsive.
+        DEGRADED (4):
+            Some sub-resources are UNHEALTHY.
+    """
     HEALTH_STATUS_UNSPECIFIED = 0
     HEALTHY = 1
     UNHEALTHY = 2
