@@ -99,6 +99,15 @@ class Version(proto.Message):
     class Type(proto.Enum):
         r"""Each type represents the release availability of a CDF
         version
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Version does not have availability yet
+            TYPE_PREVIEW (1):
+                Version is under development and not
+                considered stable
+            TYPE_GENERAL_AVAILABILITY (2):
+                Version is available for public use
         """
         TYPE_UNSPECIFIED = 0
         TYPE_PREVIEW = 1
@@ -136,6 +145,22 @@ class Accelerator(proto.Message):
     class AcceleratorType(proto.Enum):
         r"""Each type represents an Accelerator (Add-On) supported by
         Cloud Data Fusion service.
+
+        Values:
+            ACCELERATOR_TYPE_UNSPECIFIED (0):
+                Default value, if unspecified.
+            CDC (1):
+                Change Data Capture accelerator for CDF.
+            HEALTHCARE (2):
+                Cloud Healthcare accelerator for CDF. This
+                accelerator is to enable Cloud Healthcare
+                specific CDF plugins developed by Healthcare
+                team.
+            CCAI_INSIGHTS (3):
+                Contact Center AI Insights
+                This accelerator is used to enable import and
+                export pipelines custom built to streamline CCAI
+                Insights processing.
         """
         ACCELERATOR_TYPE_UNSPECIFIED = 0
         CDC = 1
@@ -143,7 +168,22 @@ class Accelerator(proto.Message):
         CCAI_INSIGHTS = 3
 
     class State(proto.Enum):
-        r"""Different values possible for the state of an accelerator"""
+        r"""Different values possible for the state of an accelerator
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default value, do not use
+            ENABLED (1):
+                Indicates that the accelerator is enabled and
+                available to use
+            DISABLED (2):
+                Indicates that the accelerator is disabled
+                and not available to use
+            UNKNOWN (3):
+                Indicates that accelerator state is currently
+                unknown. Requests for enable, disable could be
+                retried while in this state
+        """
         STATE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -279,6 +319,30 @@ class Instance(proto.Message):
     class Type(proto.Enum):
         r"""Represents the type of Data Fusion instance. Each type is
         configured with the default settings for processing and memory.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                No type specified. The instance creation will
+                fail.
+            BASIC (1):
+                Basic Data Fusion instance. In Basic type,
+                the user will be able to create data pipelines
+                using point and click UI. However, there are
+                certain limitations, such as fewer number of
+                concurrent pipelines, no support for streaming
+                pipelines, etc.
+            ENTERPRISE (2):
+                Enterprise Data Fusion instance. In
+                Enterprise type, the user will have all features
+                available, such as support for streaming
+                pipelines, higher number of concurrent
+                pipelines, etc.
+            DEVELOPER (3):
+                Developer Data Fusion instance. In Developer
+                type, the user will have all features available
+                but with restrictive capabilities. This is to
+                help enterprises design and develop their data
+                ingestion and integration pipelines at low cost.
         """
         TYPE_UNSPECIFIED = 0
         BASIC = 1
@@ -286,7 +350,34 @@ class Instance(proto.Message):
         DEVELOPER = 3
 
     class State(proto.Enum):
-        r"""Represents the state of a Data Fusion instance"""
+        r"""Represents the state of a Data Fusion instance
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Instance does not have a state yet
+            CREATING (1):
+                Instance is being created
+            ACTIVE (2):
+                Instance is active and ready for requests.
+                This corresponds to 'RUNNING' in
+                datafusion.v1beta1.
+            FAILED (3):
+                Instance creation failed
+            DELETING (4):
+                Instance is being deleted
+            UPGRADING (5):
+                Instance is being upgraded
+            RESTARTING (6):
+                Instance is being restarted
+            UPDATING (7):
+                Instance is being updated on customer request
+            AUTO_UPDATING (8):
+                Instance is being auto-updated
+            AUTO_UPGRADING (9):
+                Instance is being auto-upgraded
+            DISABLED (10):
+                Instance is disabled
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -302,6 +393,13 @@ class Instance(proto.Message):
     class DisabledReason(proto.Enum):
         r"""The reason for disabling the instance if the state is
         DISABLED.
+
+        Values:
+            DISABLED_REASON_UNSPECIFIED (0):
+                This is an unknown reason for disabling.
+            KMS_KEY_ISSUE (1):
+                The KMS key used by the instance is either
+                revoked or denied access to
         """
         DISABLED_REASON_UNSPECIFIED = 0
         KMS_KEY_ISSUE = 1
