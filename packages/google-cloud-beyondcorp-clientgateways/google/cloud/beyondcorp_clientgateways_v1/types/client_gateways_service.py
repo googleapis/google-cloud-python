@@ -57,7 +57,27 @@ class ClientGateway(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Represents the different states of a gateway."""
+        r"""Represents the different states of a gateway.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            CREATING (1):
+                Gateway is being created.
+            UPDATING (2):
+                Gateway is being updated.
+            DELETING (3):
+                Gateway is being deleted.
+            RUNNING (4):
+                Gateway is running.
+            DOWN (5):
+                Gateway is down and may be restored in the
+                future. This happens when CCFE sends
+                ProjectState = OFF.
+            ERROR (6):
+                ClientGateway encountered an error and is in
+                indeterministic state.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         UPDATING = 2
