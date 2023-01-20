@@ -496,7 +496,32 @@ class LabelImageRequest(proto.Message):
     """
 
     class Feature(proto.Enum):
-        r"""Image labeling task feature."""
+        r"""Image labeling task feature.
+
+        Values:
+            FEATURE_UNSPECIFIED (0):
+
+            CLASSIFICATION (1):
+                Label whole image with one or more of labels.
+            BOUNDING_BOX (2):
+                Label image with bounding boxes for labels.
+            ORIENTED_BOUNDING_BOX (6):
+                Label oriented bounding box. The box does not
+                have to be parallel to horizontal line.
+            BOUNDING_POLY (3):
+                Label images with bounding poly. A bounding
+                poly is a plane figure that is bounded by a
+                finite chain of straight line segments closing
+                in a loop.
+            POLYLINE (4):
+                Label images with polyline. Polyline is
+                formed by connected line segments which are not
+                in closed form.
+            SEGMENTATION (5):
+                Label images with segmentation. Segmentation
+                is different from bounding poly since it is more
+                fine-grained, pixel level annotation.
+        """
         FEATURE_UNSPECIFIED = 0
         CLASSIFICATION = 1
         BOUNDING_BOX = 2
@@ -592,7 +617,23 @@ class LabelVideoRequest(proto.Message):
     """
 
     class Feature(proto.Enum):
-        r"""Video labeling task feature."""
+        r"""Video labeling task feature.
+
+        Values:
+            FEATURE_UNSPECIFIED (0):
+
+            CLASSIFICATION (1):
+                Label whole video or video segment with one
+                or more labels.
+            OBJECT_DETECTION (2):
+                Label objects with bounding box on image
+                frames extracted from the video.
+            OBJECT_TRACKING (3):
+                Label and track objects in video.
+            EVENT (4):
+                Label the range of video for the specified
+                events.
+        """
         FEATURE_UNSPECIFIED = 0
         CLASSIFICATION = 1
         OBJECT_DETECTION = 2
@@ -676,7 +717,16 @@ class LabelTextRequest(proto.Message):
     """
 
     class Feature(proto.Enum):
-        r"""Text labeling task feature."""
+        r"""Text labeling task feature.
+
+        Values:
+            FEATURE_UNSPECIFIED (0):
+
+            TEXT_CLASSIFICATION (1):
+                Label text content to one of more labels.
+            TEXT_ENTITY_EXTRACTION (2):
+                Label entities and their span in text.
+        """
         FEATURE_UNSPECIFIED = 0
         TEXT_CLASSIFICATION = 1
         TEXT_ENTITY_EXTRACTION = 2

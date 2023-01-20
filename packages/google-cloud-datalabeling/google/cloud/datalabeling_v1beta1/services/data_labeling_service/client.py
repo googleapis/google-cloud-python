@@ -4624,7 +4624,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "DataLabelingServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

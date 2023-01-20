@@ -55,20 +55,74 @@ __protobuf__ = proto.module(
 class AnnotationSource(proto.Enum):
     r"""Specifies where the annotation comes from (whether it was
     provided by a human labeler or a different source).
+
+    Values:
+        ANNOTATION_SOURCE_UNSPECIFIED (0):
+
+        OPERATOR (3):
+            Answer is provided by a human contributor.
     """
     ANNOTATION_SOURCE_UNSPECIFIED = 0
     OPERATOR = 3
 
 
 class AnnotationSentiment(proto.Enum):
-    r""""""
+    r"""
+
+    Values:
+        ANNOTATION_SENTIMENT_UNSPECIFIED (0):
+
+        NEGATIVE (1):
+            This annotation describes negatively about
+            the data.
+        POSITIVE (2):
+            This label describes positively about the
+            data.
+    """
     ANNOTATION_SENTIMENT_UNSPECIFIED = 0
     NEGATIVE = 1
     POSITIVE = 2
 
 
 class AnnotationType(proto.Enum):
-    r""""""
+    r"""
+
+    Values:
+        ANNOTATION_TYPE_UNSPECIFIED (0):
+
+        IMAGE_CLASSIFICATION_ANNOTATION (1):
+            Classification annotations in an image.
+            Allowed for continuous evaluation.
+        IMAGE_BOUNDING_BOX_ANNOTATION (2):
+            Bounding box annotations in an image. A form
+            of image object detection. Allowed for
+            continuous evaluation.
+        IMAGE_ORIENTED_BOUNDING_BOX_ANNOTATION (13):
+            Oriented bounding box. The box does not have
+            to be parallel to horizontal line.
+        IMAGE_BOUNDING_POLY_ANNOTATION (10):
+            Bounding poly annotations in an image.
+        IMAGE_POLYLINE_ANNOTATION (11):
+            Polyline annotations in an image.
+        IMAGE_SEGMENTATION_ANNOTATION (12):
+            Segmentation annotations in an image.
+        VIDEO_SHOTS_CLASSIFICATION_ANNOTATION (3):
+            Classification annotations in video shots.
+        VIDEO_OBJECT_TRACKING_ANNOTATION (4):
+            Video object tracking annotation.
+        VIDEO_OBJECT_DETECTION_ANNOTATION (5):
+            Video object detection annotation.
+        VIDEO_EVENT_ANNOTATION (6):
+            Video event annotation.
+        TEXT_CLASSIFICATION_ANNOTATION (8):
+            Classification for text. Allowed for
+            continuous evaluation.
+        TEXT_ENTITY_EXTRACTION_ANNOTATION (9):
+            Entity extraction for text.
+        GENERAL_CLASSIFICATION_ANNOTATION (14):
+            General classification. Allowed for
+            continuous evaluation.
+    """
     ANNOTATION_TYPE_UNSPECIFIED = 0
     IMAGE_CLASSIFICATION_ANNOTATION = 1
     IMAGE_BOUNDING_BOX_ANNOTATION = 2

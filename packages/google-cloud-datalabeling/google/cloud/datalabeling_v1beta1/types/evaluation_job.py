@@ -106,7 +106,65 @@ class EvaluationJob(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of the job."""
+        r"""State of the job.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+
+            SCHEDULED (1):
+                The job is scheduled to run at the [configured
+                interval][google.cloud.datalabeling.v1beta1.EvaluationJob.schedule].
+                You can
+                [pause][google.cloud.datalabeling.v1beta1.DataLabelingService.PauseEvaluationJob]
+                or
+                [delete][google.cloud.datalabeling.v1beta1.DataLabelingService.DeleteEvaluationJob]
+                the job.
+
+                When the job is in this state, it samples prediction input
+                and output from your model version into your BigQuery table
+                as predictions occur.
+            RUNNING (2):
+                The job is currently running. When the job runs, Data
+                Labeling Service does several things:
+
+                1. If you have configured your job to use Data Labeling
+                   Service for ground truth labeling, the service creates a
+                   [Dataset][google.cloud.datalabeling.v1beta1.Dataset] and
+                   a labeling task for all data sampled since the last time
+                   the job ran. Human labelers provide ground truth labels
+                   for your data. Human labeling may take hours, or even
+                   days, depending on how much data has been sampled. The
+                   job remains in the ``RUNNING`` state during this time,
+                   and it can even be running multiple times in parallel if
+                   it gets triggered again (for example 24 hours later)
+                   before the earlier run has completed. When human labelers
+                   have finished labeling the data, the next step occurs. If
+                   you have configured your job to provide your own ground
+                   truth labels, Data Labeling Service still creates a
+                   [Dataset][google.cloud.datalabeling.v1beta1.Dataset] for
+                   newly sampled data, but it expects that you have already
+                   added ground truth labels to the BigQuery table by this
+                   time. The next step occurs immediately.
+
+                2. Data Labeling Service creates an
+                   [Evaluation][google.cloud.datalabeling.v1beta1.Evaluation]
+                   by comparing your model version's predictions with the
+                   ground truth labels.
+
+                If the job remains in this state for a long time, it
+                continues to sample prediction data into your BigQuery table
+                and will run again at the next interval, even if it causes
+                the job to run multiple times in parallel.
+            PAUSED (3):
+                The job is not sampling prediction input and output into
+                your BigQuery table and it will not run according to its
+                schedule. You can
+                [resume][google.cloud.datalabeling.v1beta1.DataLabelingService.ResumeEvaluationJob]
+                the job.
+            STOPPED (4):
+                The job has this state right before it is
+                deleted.
+        """
         STATE_UNSPECIFIED = 0
         SCHEDULED = 1
         RUNNING = 2

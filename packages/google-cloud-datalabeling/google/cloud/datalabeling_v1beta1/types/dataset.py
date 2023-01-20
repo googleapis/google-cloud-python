@@ -46,7 +46,15 @@ __protobuf__ = proto.module(
 
 
 class DataType(proto.Enum):
-    r""""""
+    r"""
+
+    Values:
+        DATA_TYPE_UNSPECIFIED (0):
+        IMAGE (1):
+        VIDEO (2):
+        TEXT (4):
+        GENERAL_DATA (6):
+    """
     DATA_TYPE_UNSPECIFIED = 0
     IMAGE = 1
     VIDEO = 2

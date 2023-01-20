@@ -39,7 +39,18 @@ __protobuf__ = proto.module(
 
 
 class StringAggregationType(proto.Enum):
-    r""""""
+    r"""
+
+    Values:
+        STRING_AGGREGATION_TYPE_UNSPECIFIED (0):
+
+        MAJORITY_VOTE (1):
+            Majority vote to aggregate answers.
+        UNANIMOUS_VOTE (2):
+            Unanimous answers will be adopted.
+        NO_AGGREGATION (3):
+            Preserve all answers by crowd compute.
+    """
     STRING_AGGREGATION_TYPE_UNSPECIFIED = 0
     MAJORITY_VOTE = 1
     UNANIMOUS_VOTE = 2
