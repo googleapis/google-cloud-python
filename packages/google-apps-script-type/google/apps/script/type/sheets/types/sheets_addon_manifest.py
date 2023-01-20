@@ -43,8 +43,8 @@ class SheetsAddOnManifest(proto.Message):
 
     homepage_trigger: google.apps.script.type.types.HomepageExtensionPoint = (
         proto.Field(
-        proto.MESSAGE,
-        number=3,
+            proto.MESSAGE,
+            number=3,
             message=google.apps.script.type.types.HomepageExtensionPoint,
         )
     )

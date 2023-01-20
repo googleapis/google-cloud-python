@@ -93,8 +93,8 @@ class CalendarAddOnManifest(proto.Message):
 
     homepage_trigger: google.apps.script.type.types.HomepageExtensionPoint = (
         proto.Field(
-        proto.MESSAGE,
-        number=6,
+            proto.MESSAGE,
+            number=6,
             message=google.apps.script.type.types.HomepageExtensionPoint,
         )
     )

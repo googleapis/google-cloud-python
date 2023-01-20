@@ -43,8 +43,8 @@ class DocsAddOnManifest(proto.Message):
 
     homepage_trigger: google.apps.script.type.types.HomepageExtensionPoint = (
         proto.Field(
-        proto.MESSAGE,
-        number=1,
+            proto.MESSAGE,
+            number=1,
             message=google.apps.script.type.types.HomepageExtensionPoint,
         )
     )
