@@ -70,7 +70,18 @@ class AuthorizationPolicy(proto.Message):
     """
 
     class Action(proto.Enum):
-        r"""Possible values that define what action to take."""
+        r"""Possible values that define what action to take.
+
+        Values:
+            ACTION_UNSPECIFIED (0):
+                Default value.
+            ALLOW (1):
+                Grant access.
+            DENY (2):
+                Deny access.
+                Deny rules should be avoided unless they are
+                used to provide a default "deny all" fallback.
+        """
         ACTION_UNSPECIFIED = 0
         ALLOW = 1
         DENY = 2
