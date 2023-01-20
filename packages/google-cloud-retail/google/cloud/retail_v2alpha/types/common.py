@@ -42,28 +42,74 @@ __protobuf__ = proto.module(
 
 
 class AttributeConfigLevel(proto.Enum):
-    r"""At which level we offer configuration for attributes."""
+    r"""At which level we offer configuration for attributes.
+
+    Values:
+        ATTRIBUTE_CONFIG_LEVEL_UNSPECIFIED (0):
+            Value used when unset. In this case, server behavior
+            defaults to
+            [CATALOG_LEVEL_ATTRIBUTE_CONFIG][google.cloud.retail.v2alpha.AttributeConfigLevel.CATALOG_LEVEL_ATTRIBUTE_CONFIG].
+        PRODUCT_LEVEL_ATTRIBUTE_CONFIG (1):
+            At this level, we honor the attribute configurations set in
+            [Product.attributes][google.cloud.retail.v2alpha.Product.attributes].
+        CATALOG_LEVEL_ATTRIBUTE_CONFIG (2):
+            At this level, we honor the attribute configurations set in
+            [CatalogConfig.attribute_configs][google.cloud.retail.v2alpha.CatalogConfig.attribute_configs].
+    """
     ATTRIBUTE_CONFIG_LEVEL_UNSPECIFIED = 0
     PRODUCT_LEVEL_ATTRIBUTE_CONFIG = 1
     CATALOG_LEVEL_ATTRIBUTE_CONFIG = 2
 
 
 class SolutionType(proto.Enum):
-    r"""The type of solution."""
+    r"""The type of solution.
+
+    Values:
+        SOLUTION_TYPE_UNSPECIFIED (0):
+            Default value.
+        SOLUTION_TYPE_RECOMMENDATION (1):
+            Used for Recommendations AI.
+        SOLUTION_TYPE_SEARCH (2):
+            Used for Retail Search.
+    """
     SOLUTION_TYPE_UNSPECIFIED = 0
     SOLUTION_TYPE_RECOMMENDATION = 1
     SOLUTION_TYPE_SEARCH = 2
 
 
 class RecommendationsFilteringOption(proto.Enum):
-    r"""If filtering for recommendations is enabled."""
+    r"""If filtering for recommendations is enabled.
+
+    Values:
+        RECOMMENDATIONS_FILTERING_OPTION_UNSPECIFIED (0):
+            Value used when unset. In this case, server behavior
+            defaults to
+            [RECOMMENDATIONS_FILTERING_DISABLED][google.cloud.retail.v2alpha.RecommendationsFilteringOption.RECOMMENDATIONS_FILTERING_DISABLED].
+        RECOMMENDATIONS_FILTERING_DISABLED (1):
+            Recommendation filtering is disabled.
+        RECOMMENDATIONS_FILTERING_ENABLED (3):
+            Recommendation filtering is enabled.
+    """
     RECOMMENDATIONS_FILTERING_OPTION_UNSPECIFIED = 0
     RECOMMENDATIONS_FILTERING_DISABLED = 1
     RECOMMENDATIONS_FILTERING_ENABLED = 3
 
 
 class SearchSolutionUseCase(proto.Enum):
-    r"""The use case of Cloud Retail Search."""
+    r"""The use case of Cloud Retail Search.
+
+    Values:
+        SEARCH_SOLUTION_USE_CASE_UNSPECIFIED (0):
+            The value when it's unspecified. In this case, server
+            behavior defaults to
+            [SEARCH_SOLUTION_USE_CASE_SEARCH][google.cloud.retail.v2alpha.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH].
+        SEARCH_SOLUTION_USE_CASE_SEARCH (1):
+            Search use case. Expects the traffic has a non-empty
+            [query][google.cloud.retail.v2alpha.SearchRequest.query].
+        SEARCH_SOLUTION_USE_CASE_BROWSE (2):
+            Browse use case. Expects the traffic has an empty
+            [query][google.cloud.retail.v2alpha.SearchRequest.query].
+    """
     SEARCH_SOLUTION_USE_CASE_UNSPECIFIED = 0
     SEARCH_SOLUTION_USE_CASE_SEARCH = 1
     SEARCH_SOLUTION_USE_CASE_BROWSE = 2

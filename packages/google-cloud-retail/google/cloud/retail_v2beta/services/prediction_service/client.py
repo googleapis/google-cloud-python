@@ -529,7 +529,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "PredictionServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

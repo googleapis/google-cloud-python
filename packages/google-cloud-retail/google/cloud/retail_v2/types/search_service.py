@@ -314,7 +314,44 @@ class SearchRequest(proto.Message):
     """
 
     class SearchMode(proto.Enum):
-        r"""The search mode of each search request."""
+        r"""The search mode of each search request.
+
+        Values:
+            SEARCH_MODE_UNSPECIFIED (0):
+                Default value. In this case both product search and faceted
+                search will be performed. Both
+                [SearchResponse.SearchResult][google.cloud.retail.v2.SearchResponse.SearchResult]
+                and
+                [SearchResponse.Facet][google.cloud.retail.v2.SearchResponse.Facet]
+                will be returned.
+            PRODUCT_SEARCH_ONLY (1):
+                Only product search will be performed. The faceted search
+                will be disabled.
+
+                Only
+                [SearchResponse.SearchResult][google.cloud.retail.v2.SearchResponse.SearchResult]
+                will be returned.
+                [SearchResponse.Facet][google.cloud.retail.v2.SearchResponse.Facet]
+                will not be returned, even if
+                [SearchRequest.facet_specs][google.cloud.retail.v2.SearchRequest.facet_specs]
+                or
+                [SearchRequest.dynamic_facet_spec][google.cloud.retail.v2.SearchRequest.dynamic_facet_spec]
+                is set.
+            FACETED_SEARCH_ONLY (2):
+                Only faceted search will be performed. The product search
+                will be disabled.
+
+                When in this mode, one or both of
+                [SearchRequest.facet_specs][google.cloud.retail.v2.SearchRequest.facet_specs]
+                and
+                [SearchRequest.dynamic_facet_spec][google.cloud.retail.v2.SearchRequest.dynamic_facet_spec]
+                should be set. Otherwise, an INVALID_ARGUMENT error is
+                returned. Only
+                [SearchResponse.Facet][google.cloud.retail.v2.SearchResponse.Facet]
+                will be returned.
+                [SearchResponse.SearchResult][google.cloud.retail.v2.SearchResponse.SearchResult]
+                will not be returned.
+        """
         SEARCH_MODE_UNSPECIFIED = 0
         PRODUCT_SEARCH_ONLY = 1
         FACETED_SEARCH_ONLY = 2
@@ -621,7 +658,16 @@ class SearchRequest(proto.Message):
         """
 
         class Mode(proto.Enum):
-            r"""Enum to control DynamicFacet mode"""
+            r"""Enum to control DynamicFacet mode
+
+            Values:
+                MODE_UNSPECIFIED (0):
+                    Default value.
+                DISABLED (1):
+                    Disable Dynamic Facet.
+                ENABLED (2):
+                    Automatic mode built by Google Retail Search.
+            """
             MODE_UNSPECIFIED = 0
             DISABLED = 1
             ENABLED = 2
@@ -736,6 +782,20 @@ class SearchRequest(proto.Message):
         class Condition(proto.Enum):
             r"""Enum describing under which condition query expansion should
             occur.
+
+            Values:
+                CONDITION_UNSPECIFIED (0):
+                    Unspecified query expansion condition. In this case, server
+                    behavior defaults to
+                    [Condition.DISABLED][google.cloud.retail.v2.SearchRequest.QueryExpansionSpec.Condition.DISABLED].
+                DISABLED (1):
+                    Disabled query expansion. Only the exact search query is
+                    used, even if
+                    [SearchResponse.total_size][google.cloud.retail.v2.SearchResponse.total_size]
+                    is zero.
+                AUTO (3):
+                    Automatic query expansion built by Google
+                    Retail Search.
             """
             CONDITION_UNSPECIFIED = 0
             DISABLED = 1
@@ -761,7 +821,18 @@ class SearchRequest(proto.Message):
         """
 
         class Mode(proto.Enum):
-            r"""The personalization mode of each search request."""
+            r"""The personalization mode of each search request.
+
+            Values:
+                MODE_UNSPECIFIED (0):
+                    Default value. In this case, server behavior defaults to
+                    [Mode.AUTO][google.cloud.retail.v2.SearchRequest.PersonalizationSpec.Mode.AUTO].
+                AUTO (1):
+                    Let CRS decide whether to use personalization
+                    based on quality of user event data.
+                DISABLED (2):
+                    Disable personalization.
+            """
             MODE_UNSPECIFIED = 0
             AUTO = 1
             DISABLED = 2
@@ -785,6 +856,21 @@ class SearchRequest(proto.Message):
         class Mode(proto.Enum):
             r"""Enum describing under which mode spell correction should
             occur.
+
+            Values:
+                MODE_UNSPECIFIED (0):
+                    Unspecified spell correction mode. In this case, server
+                    behavior defaults to
+                    [Mode.AUTO][google.cloud.retail.v2.SearchRequest.SpellCorrectionSpec.Mode.AUTO].
+                SUGGESTION_ONLY (1):
+                    Google Retail Search will try to find a spell suggestion if
+                    there is any and put in the
+                    [SearchResponse.corrected_query][google.cloud.retail.v2.SearchResponse.corrected_query].
+                    The spell suggestion will not be used as the search query.
+                AUTO (2):
+                    Automatic spell correction built by Google
+                    Retail Search. Search will be based on the
+                    corrected query if found.
             """
             MODE_UNSPECIFIED = 0
             SUGGESTION_ONLY = 1

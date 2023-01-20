@@ -1042,7 +1042,7 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "ControlServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

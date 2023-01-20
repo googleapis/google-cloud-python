@@ -258,6 +258,14 @@ class ServingConfig(proto.Message):
     class DiversityType(proto.Enum):
         r"""What type of diversity - data or rule based.
         If none is specified, default to rule based.
+
+        Values:
+            DIVERSITY_TYPE_UNSPECIFIED (0):
+                Default value.
+            RULE_BASED_DIVERSITY (2):
+                Rule based diversity.
+            DATA_DRIVEN_DIVERSITY (3):
+                Data driven diversity.
         """
         DIVERSITY_TYPE_UNSPECIFIED = 0
         RULE_BASED_DIVERSITY = 2

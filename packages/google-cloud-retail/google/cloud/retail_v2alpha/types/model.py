@@ -157,14 +157,35 @@ class Model(proto.Message):
     """
 
     class ServingState(proto.Enum):
-        r"""The serving state of the model."""
+        r"""The serving state of the model.
+
+        Values:
+            SERVING_STATE_UNSPECIFIED (0):
+                Unspecified serving state.
+            INACTIVE (1):
+                The model is not serving.
+            ACTIVE (2):
+                The model is serving and can be queried.
+            TUNED (3):
+                The model is trained on tuned hyperparameters
+                and can be queried.
+        """
         SERVING_STATE_UNSPECIFIED = 0
         INACTIVE = 1
         ACTIVE = 2
         TUNED = 3
 
     class TrainingState(proto.Enum):
-        r"""The training state of the model."""
+        r"""The training state of the model.
+
+        Values:
+            TRAINING_STATE_UNSPECIFIED (0):
+                Unspecified training state.
+            PAUSED (1):
+                The model training is paused.
+            TRAINING (2):
+                The model is training.
+        """
         TRAINING_STATE_UNSPECIFIED = 0
         PAUSED = 1
         TRAINING = 2
@@ -176,6 +197,23 @@ class Model(proto.Message):
         which starts a tuning process immediately and resets the quarterly
         schedule. Enabling or disabling periodic tuning does not affect any
         current tuning processes.
+
+        Values:
+            PERIODIC_TUNING_STATE_UNSPECIFIED (0):
+                Unspecified default value, should never be
+                explicitly set.
+            PERIODIC_TUNING_DISABLED (1):
+                The model has periodic tuning disabled. Tuning can be
+                reenabled by calling the ``EnableModelPeriodicTuning``
+                method or by calling the ``TuneModel`` method.
+            ALL_TUNING_DISABLED (3):
+                The model cannot be tuned with periodic tuning OR the
+                ``TuneModel`` method. Hide the options in customer UI and
+                reject any requests through the backend self serve API.
+            PERIODIC_TUNING_ENABLED (2):
+                The model has periodic tuning enabled. Tuning can be
+                disabled by calling the ``DisableModelPeriodicTuning``
+                method.
         """
         PERIODIC_TUNING_STATE_UNSPECIFIED = 0
         PERIODIC_TUNING_DISABLED = 1
@@ -185,6 +223,17 @@ class Model(proto.Message):
     class DataState(proto.Enum):
         r"""Describes whether this model have sufficient training data
         to be continuously trained.
+
+        Values:
+            DATA_STATE_UNSPECIFIED (0):
+                Unspecified default value, should never be
+                explicitly set.
+            DATA_OK (1):
+                The model has sufficient training data.
+            DATA_ERROR (2):
+                The model does not have sufficient training
+                data. Error messages can be queried via
+                Stackdriver.
         """
         DATA_STATE_UNSPECIFIED = 0
         DATA_OK = 1
@@ -235,7 +284,133 @@ class Model(proto.Message):
         """
 
         class Restriction(proto.Enum):
-            r"""Restrictions of expected returned results."""
+            r"""Restrictions of expected returned results.
+
+            Values:
+                RESTRICTION_UNSPECIFIED (0):
+                    Unspecified value for restriction.
+                NO_RESTRICTION (1):
+                    Allow any
+                    [ServingConfig][google.cloud.retail.v2alpha.ServingConfig]
+                    to be show on any number of panels.
+
+                    Example:
+
+                    ``Panel1 candidates``: pdp_ctr, pdp_cvr,
+                    home_page_ctr_no_diversity
+
+                    ``Panel2 candidates``: home_page_ctr_no_diversity,
+                    home_page_ctr_diversity, pdp_cvr_no_diversity
+
+                    ``Restriction`` = NO_RESTRICTION
+
+                    ``Valid combinations``:
+
+                    -   (pdp_ctr, home_page_ctr_no_diversity)
+                    -  (pdp_ctr, home_page_ctr_diversity)
+                    -  (pdp_ctr, pdp_cvr_no_diversity)
+                    -  (pdp_cvr, home_page_ctr_no_diversity)
+                    -  (pdp_cvr, home_page_ctr_diversity)
+                    -  (pdp_cvr, pdp_cvr_no_diversity)
+                    -  (home_page_ctr_no_diversity, home_page_ctr_no_diversity)
+                    -  (home_page_ctr_no_diversity, home_page_ctr_diversity)
+                    -  (home_page_ctr_no_diversity, pdp_cvr_no_diversity)
+
+                    ``Invalid combinations``: []
+                UNIQUE_SERVING_CONFIG_RESTRICTION (2):
+                    Do not allow the same
+                    [ServingConfig.name][google.cloud.retail.v2alpha.ServingConfig.name]
+                    to be shown on multiple panels.
+
+                    Example:
+
+                    ``Panel1 candidates``: pdp_ctr, pdp_cvr,
+                    home_page_ctr_no_diversity
+
+                    ``Panel2 candidates``: home_page_ctr_no_diversity,
+                    home_page_ctr_diversity_low, pdp_cvr_no_diversity
+
+                    ``Restriction`` = ``UNIQUE_SERVING_CONFIG_RESTRICTION``
+
+                    ``Valid combinations``:
+
+                    -   (pdp_ctr, home_page_ctr_no_diversity)
+                    -  (pdp_ctr, home_page_ctr_diversity_low)
+                    -  (pdp_ctr, pdp_cvr_no_diversity)
+                    -  (pdp_ctr, pdp_cvr_no_diversity)
+                    -  (pdp_cvr, home_page_ctr_no_diversity)
+                    -  (pdp_cvr, home_page_ctr_diversity_low)
+                    -  (pdp_cvr, pdp_cvr_no_diversity)
+                    -  (home_page_ctr_no_diversity, home_page_ctr_diversity_low)
+                    -  (home_page_ctr_no_diversity, pdp_cvr_no_diversity)
+
+                    ``Invalid combinations``:
+
+                    -   (home_page_ctr_no_diversity, home_page_ctr_no_diversity)
+                UNIQUE_MODEL_RESTRICTION (3):
+                    Do not allow multiple
+                    [ServingConfigs][google.cloud.retail.v2alpha.ServingConfig]
+                    with same
+                    [Model.name][google.cloud.retail.v2alpha.Model.name] to be
+                    show on on different panels.
+
+                    Example:
+
+                    ``Panel1 candidates``: pdp_ctr, pdp_cvr,
+                    home_page_ctr_no_diversity
+
+                    ``Panel2 candidates``: home_page_ctr_no_diversity,
+                    home_page_ctr_diversity_low, pdp_cvr_no_diversity
+
+                    ``Restriction`` = ``UNIQUE_MODEL_RESTRICTION``
+
+                    ``Valid combinations``:
+
+                    -   (pdp_ctr, home_page_ctr_no_diversity)
+                    -  (pdp_ctr, home_page_ctr_diversity)
+                    -  (pdp_ctr, pdp_cvr_no_diversity)
+                    -  (pdp_ctr, pdp_cvr_no_diversity)
+                    -  (pdp_cvr, home_page_ctr_no_diversity)
+                    -  (pdp_cvr, home_page_ctr_diversity_low)
+                    -  (home_page_ctr_no_diversity, pdp_cvr_no_diversity)
+
+                    ``Invalid combinations``:
+
+                    -   (home_page_ctr_no_diversity, home_page_ctr_no_diversity)
+                    -  (pdp_cvr, pdp_cvr_no_diversity)
+                UNIQUE_MODEL_TYPE_RESTRICTION (4):
+                    Do not allow multiple
+                    [ServingConfigs][google.cloud.retail.v2alpha.ServingConfig]
+                    with same
+                    [Model.type][google.cloud.retail.v2alpha.Model.type] to be
+                    shown on different panels.
+
+                    Example:
+
+                    ``Panel1 candidates``: pdp_ctr, pdp_cvr,
+                    home_page_ctr_no_diversity
+
+                    ``Panel2 candidates``: home_page_ctr_no_diversity,
+                    home_page_ctr_diversity_low, pdp_cvr_no_diversity
+
+                    ``Restriction`` = ``UNIQUE_MODEL_RESTRICTION``
+
+                    ``Valid combinations``:
+
+                    -   (pdp_ctr, home_page_ctr_no_diversity)
+                    -  (pdp_ctr, home_page_ctr_diversity)
+                    -  (pdp_cvr, home_page_ctr_no_diversity)
+                    -  (pdp_cvr, home_page_ctr_diversity_low)
+                    -  (home_page_ctr_no_diversity, pdp_cvr_no_diversity)
+
+                    ``Invalid combinations``:
+
+                    -   (pdp_ctr, pdp_cvr_no_diversity)
+                    -  (pdp_ctr, pdp_cvr_no_diversity)
+                    -  (pdp_cvr, pdp_cvr_no_diversity)
+                    -  (home_page_ctr_no_diversity, home_page_ctr_no_diversity)
+                    -  (home_page_ctr_no_diversity, home_page_ctr_diversity)
+            """
             RESTRICTION_UNSPECIFIED = 0
             NO_RESTRICTION = 1
             UNIQUE_SERVING_CONFIG_RESTRICTION = 2

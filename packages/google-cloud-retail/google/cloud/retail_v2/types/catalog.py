@@ -190,13 +190,34 @@ class CatalogAttribute(proto.Message):
     """
 
     class AttributeType(proto.Enum):
-        r"""The type of an attribute."""
+        r"""The type of an attribute.
+
+        Values:
+            UNKNOWN (0):
+                The type of the attribute is unknown.
+
+                Used when type cannot be derived from attribute that is not
+                [in_use][google.cloud.retail.v2.CatalogAttribute.in_use].
+            TEXTUAL (1):
+                Textual attribute.
+            NUMERICAL (2):
+                Numerical attribute.
+        """
         UNKNOWN = 0
         TEXTUAL = 1
         NUMERICAL = 2
 
     class IndexableOption(proto.Enum):
-        r"""The status of the indexable option of a catalog attribute."""
+        r"""The status of the indexable option of a catalog attribute.
+
+        Values:
+            INDEXABLE_OPTION_UNSPECIFIED (0):
+                Value used when unset.
+            INDEXABLE_ENABLED (1):
+                Indexable option enabled for an attribute.
+            INDEXABLE_DISABLED (2):
+                Indexable option disabled for an attribute.
+        """
         INDEXABLE_OPTION_UNSPECIFIED = 0
         INDEXABLE_ENABLED = 1
         INDEXABLE_DISABLED = 2
@@ -204,13 +225,32 @@ class CatalogAttribute(proto.Message):
     class DynamicFacetableOption(proto.Enum):
         r"""The status of the dynamic facetable option of a catalog
         attribute.
+
+        Values:
+            DYNAMIC_FACETABLE_OPTION_UNSPECIFIED (0):
+                Value used when unset.
+            DYNAMIC_FACETABLE_ENABLED (1):
+                Dynamic facetable option enabled for an
+                attribute.
+            DYNAMIC_FACETABLE_DISABLED (2):
+                Dynamic facetable option disabled for an
+                attribute.
         """
         DYNAMIC_FACETABLE_OPTION_UNSPECIFIED = 0
         DYNAMIC_FACETABLE_ENABLED = 1
         DYNAMIC_FACETABLE_DISABLED = 2
 
     class SearchableOption(proto.Enum):
-        r"""The status of the searchable option of a catalog attribute."""
+        r"""The status of the searchable option of a catalog attribute.
+
+        Values:
+            SEARCHABLE_OPTION_UNSPECIFIED (0):
+                Value used when unset.
+            SEARCHABLE_ENABLED (1):
+                Searchable option enabled for an attribute.
+            SEARCHABLE_DISABLED (2):
+                Searchable option disabled for an attribute.
+        """
         SEARCHABLE_OPTION_UNSPECIFIED = 0
         SEARCHABLE_ENABLED = 1
         SEARCHABLE_DISABLED = 2
@@ -218,13 +258,34 @@ class CatalogAttribute(proto.Message):
     class ExactSearchableOption(proto.Enum):
         r"""The status of the exact-searchable option of a catalog
         attribute.
+
+        Values:
+            EXACT_SEARCHABLE_OPTION_UNSPECIFIED (0):
+                Value used when unset. Defaults to
+                [EXACT_SEARCHABLE_DISABLED][google.cloud.retail.v2.CatalogAttribute.ExactSearchableOption.EXACT_SEARCHABLE_DISABLED].
+            EXACT_SEARCHABLE_ENABLED (1):
+                Exact searchable option enabled for an
+                attribute.
+            EXACT_SEARCHABLE_DISABLED (2):
+                Exact searchable option disabled for an
+                attribute.
         """
         EXACT_SEARCHABLE_OPTION_UNSPECIFIED = 0
         EXACT_SEARCHABLE_ENABLED = 1
         EXACT_SEARCHABLE_DISABLED = 2
 
     class RetrievableOption(proto.Enum):
-        r"""The status of the retrievable option of a catalog attribute."""
+        r"""The status of the retrievable option of a catalog attribute.
+
+        Values:
+            RETRIEVABLE_OPTION_UNSPECIFIED (0):
+                Value used when unset. Defaults to
+                [RETRIEVABLE_DISABLED][google.cloud.retail.v2.CatalogAttribute.RetrievableOption.RETRIEVABLE_DISABLED].
+            RETRIEVABLE_ENABLED (1):
+                Retrievable option enabled for an attribute.
+            RETRIEVABLE_DISABLED (2):
+                Retrievable option disabled for an attribute.
+        """
         RETRIEVABLE_OPTION_UNSPECIFIED = 0
         RETRIEVABLE_ENABLED = 1
         RETRIEVABLE_DISABLED = 2

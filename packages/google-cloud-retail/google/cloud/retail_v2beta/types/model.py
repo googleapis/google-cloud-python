@@ -150,14 +150,35 @@ class Model(proto.Message):
     """
 
     class ServingState(proto.Enum):
-        r"""The serving state of the model."""
+        r"""The serving state of the model.
+
+        Values:
+            SERVING_STATE_UNSPECIFIED (0):
+                Unspecified serving state.
+            INACTIVE (1):
+                The model is not serving.
+            ACTIVE (2):
+                The model is serving and can be queried.
+            TUNED (3):
+                The model is trained on tuned hyperparameters
+                and can be queried.
+        """
         SERVING_STATE_UNSPECIFIED = 0
         INACTIVE = 1
         ACTIVE = 2
         TUNED = 3
 
     class TrainingState(proto.Enum):
-        r"""The training state of the model."""
+        r"""The training state of the model.
+
+        Values:
+            TRAINING_STATE_UNSPECIFIED (0):
+                Unspecified training state.
+            PAUSED (1):
+                The model training is paused.
+            TRAINING (2):
+                The model is training.
+        """
         TRAINING_STATE_UNSPECIFIED = 0
         PAUSED = 1
         TRAINING = 2
@@ -169,6 +190,23 @@ class Model(proto.Message):
         which starts a tuning process immediately and resets the quarterly
         schedule. Enabling or disabling periodic tuning does not affect any
         current tuning processes.
+
+        Values:
+            PERIODIC_TUNING_STATE_UNSPECIFIED (0):
+                Unspecified default value, should never be
+                explicitly set.
+            PERIODIC_TUNING_DISABLED (1):
+                The model has periodic tuning disabled. Tuning can be
+                reenabled by calling the ``EnableModelPeriodicTuning``
+                method or by calling the ``TuneModel`` method.
+            ALL_TUNING_DISABLED (3):
+                The model cannot be tuned with periodic tuning OR the
+                ``TuneModel`` method. Hide the options in customer UI and
+                reject any requests through the backend self serve API.
+            PERIODIC_TUNING_ENABLED (2):
+                The model has periodic tuning enabled. Tuning can be
+                disabled by calling the ``DisableModelPeriodicTuning``
+                method.
         """
         PERIODIC_TUNING_STATE_UNSPECIFIED = 0
         PERIODIC_TUNING_DISABLED = 1
@@ -178,6 +216,17 @@ class Model(proto.Message):
     class DataState(proto.Enum):
         r"""Describes whether this model have sufficient training data
         to be continuously trained.
+
+        Values:
+            DATA_STATE_UNSPECIFIED (0):
+                Unspecified default value, should never be
+                explicitly set.
+            DATA_OK (1):
+                The model has sufficient training data.
+            DATA_ERROR (2):
+                The model does not have sufficient training
+                data. Error messages can be queried via
+                Stackdriver.
         """
         DATA_STATE_UNSPECIFIED = 0
         DATA_OK = 1

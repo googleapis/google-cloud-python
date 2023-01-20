@@ -1020,7 +1020,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "UserEventServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

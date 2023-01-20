@@ -149,6 +149,18 @@ class RejoinUserEventsRequest(proto.Message):
         events, set ``UserEventRejoinScope`` to ``JOINED_EVENTS``. If all
         events needs to be rejoined, set ``UserEventRejoinScope`` to
         ``USER_EVENT_REJOIN_SCOPE_UNSPECIFIED``.
+
+        Values:
+            USER_EVENT_REJOIN_SCOPE_UNSPECIFIED (0):
+                Rejoin all events with the latest product
+                catalog, including both joined events and
+                unjoined events.
+            JOINED_EVENTS (1):
+                Only rejoin joined events with the latest
+                product catalog.
+            UNJOINED_EVENTS (2):
+                Only rejoin unjoined events with the latest
+                product catalog.
         """
         USER_EVENT_REJOIN_SCOPE_UNSPECIFIED = 0
         JOINED_EVENTS = 1

@@ -570,7 +570,42 @@ class Product(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""The type of this product."""
+        r"""The type of this product.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Default value. Default to
+                [Catalog.product_level_config.ingestion_product_type][google.cloud.retail.v2beta.ProductLevelConfig.ingestion_product_type]
+                if unset.
+            PRIMARY (1):
+                The primary type.
+
+                As the primary unit for predicting, indexing and search
+                serving, a
+                [Type.PRIMARY][google.cloud.retail.v2beta.Product.Type.PRIMARY]
+                [Product][google.cloud.retail.v2beta.Product] is grouped
+                with multiple
+                [Type.VARIANT][google.cloud.retail.v2beta.Product.Type.VARIANT]
+                [Product][google.cloud.retail.v2beta.Product]s.
+            VARIANT (2):
+                The variant type.
+
+                [Type.VARIANT][google.cloud.retail.v2beta.Product.Type.VARIANT]
+                [Product][google.cloud.retail.v2beta.Product]s usually share
+                some common attributes on the same
+                [Type.PRIMARY][google.cloud.retail.v2beta.Product.Type.PRIMARY]
+                [Product][google.cloud.retail.v2beta.Product]s, but they
+                have variant attributes like different colors, sizes and
+                prices, etc.
+            COLLECTION (3):
+                The collection type. Collection products are bundled
+                [Type.PRIMARY][google.cloud.retail.v2beta.Product.Type.PRIMARY]
+                [Product][google.cloud.retail.v2beta.Product]s or
+                [Type.VARIANT][google.cloud.retail.v2beta.Product.Type.VARIANT]
+                [Product][google.cloud.retail.v2beta.Product]s that are sold
+                together, such as a jewelry set with necklaces, earrings and
+                rings, etc.
+        """
         TYPE_UNSPECIFIED = 0
         PRIMARY = 1
         VARIANT = 2
@@ -579,6 +614,21 @@ class Product(proto.Message):
     class Availability(proto.Enum):
         r"""Product availability. If this field is unspecified, the
         product is assumed to be in stock.
+
+        Values:
+            AVAILABILITY_UNSPECIFIED (0):
+                Default product availability. Default to
+                [Availability.IN_STOCK][google.cloud.retail.v2beta.Product.Availability.IN_STOCK]
+                if unset.
+            IN_STOCK (1):
+                Product in stock.
+            OUT_OF_STOCK (2):
+                Product out of stock.
+            PREORDER (3):
+                Product that is in pre-order state.
+            BACKORDER (4):
+                Product that is back-ordered (i.e.
+                temporarily out of stock).
         """
         AVAILABILITY_UNSPECIFIED = 0
         IN_STOCK = 1

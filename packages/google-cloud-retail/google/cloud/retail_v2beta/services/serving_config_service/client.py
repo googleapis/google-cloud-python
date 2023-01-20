@@ -1282,7 +1282,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "ServingConfigServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

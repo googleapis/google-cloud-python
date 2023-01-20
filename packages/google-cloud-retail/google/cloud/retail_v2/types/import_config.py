@@ -295,6 +295,18 @@ class ImportProductsRequest(proto.Message):
     class ReconciliationMode(proto.Enum):
         r"""Indicates how imported products are reconciled with the
         existing products created or imported before.
+
+        Values:
+            RECONCILIATION_MODE_UNSPECIFIED (0):
+                Defaults to INCREMENTAL.
+            INCREMENTAL (1):
+                Inserts new products or updates existing
+                products.
+            FULL (2):
+                Calculates diff and replaces the entire
+                product dataset. Existing products may be
+                deleted if they are not present in the source
+                location.
         """
         RECONCILIATION_MODE_UNSPECIFIED = 0
         INCREMENTAL = 1
