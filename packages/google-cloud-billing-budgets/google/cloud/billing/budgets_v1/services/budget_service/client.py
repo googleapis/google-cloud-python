@@ -1012,7 +1012,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
             metadata=metadata,
         )
 
-    def __enter__(self):
+    def __enter__(self) -> "BudgetServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

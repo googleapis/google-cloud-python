@@ -40,6 +40,19 @@ class CalendarPeriod(proto.Enum):
     period that has a canonical start. Grammatically, "the start of the
     current ``CalendarPeriod``". All calendar times begin at 12 AM US
     and Canadian Pacific Time (UTC-8).
+
+    Values:
+        CALENDAR_PERIOD_UNSPECIFIED (0):
+
+        MONTH (1):
+            A month. Month starts on the first day of
+            each month, such as January 1, February 1, March
+            1, and so on.
+        QUARTER (2):
+            A quarter. Quarters start on dates January 1,
+            April 1, July 1, and October 1 of each year.
+        YEAR (3):
+            A year. Year starts on January 1.
     """
     CALENDAR_PERIOD_UNSPECIFIED = 0
     MONTH = 1
@@ -201,6 +214,20 @@ class ThresholdRule(proto.Message):
     class Basis(proto.Enum):
         r"""The type of basis used to determine if spend has passed the
         threshold.
+
+        Values:
+            BASIS_UNSPECIFIED (0):
+                Unspecified threshold basis.
+            CURRENT_SPEND (1):
+                Use current spend as the basis for comparison
+                against the threshold.
+            FORECASTED_SPEND (2):
+                Use forecasted spend for the period as the basis for
+                comparison against the threshold. FORECASTED_SPEND can only
+                be set when the budget's time period is a
+                [Filter.calendar_period][google.cloud.billing.budgets.v1.Filter.calendar_period].
+                It cannot be set in combination with
+                [Filter.custom_period][google.cloud.billing.budgets.v1.Filter.custom_period].
         """
         BASIS_UNSPECIFIED = 0
         CURRENT_SPEND = 1
@@ -363,6 +390,24 @@ class Filter(proto.Message):
         applicable selected credits. `See the documentation for a list of
         credit
         types <https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type>`__.
+
+        Values:
+            CREDIT_TYPES_TREATMENT_UNSPECIFIED (0):
+
+            INCLUDE_ALL_CREDITS (1):
+                All types of credit are subtracted from the
+                gross cost to determine the spend for threshold
+                calculations.
+            EXCLUDE_ALL_CREDITS (2):
+                All types of credit are added to the net cost
+                to determine the spend for threshold
+                calculations.
+            INCLUDE_SPECIFIED_CREDITS (3):
+                `Credit
+                types <https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type>`__
+                specified in the credit_types field are subtracted from the
+                gross cost to determine the spend for threshold
+                calculations.
         """
         CREDIT_TYPES_TREATMENT_UNSPECIFIED = 0
         INCLUDE_ALL_CREDITS = 1
