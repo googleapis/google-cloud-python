@@ -1770,7 +1770,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
             metadata=metadata,
         )
 
-    def __enter__(self):
+    def __enter__(self) -> "StorageTransferServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

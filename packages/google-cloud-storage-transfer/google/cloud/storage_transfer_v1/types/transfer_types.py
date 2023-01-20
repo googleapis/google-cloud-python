@@ -569,25 +569,67 @@ class S3CompatibleMetadata(proto.Message):
     class AuthMethod(proto.Enum):
         r"""The authentication and authorization method used by the
         storage service.
+
+        Values:
+            AUTH_METHOD_UNSPECIFIED (0):
+                AuthMethod is not specified.
+            AUTH_METHOD_AWS_SIGNATURE_V4 (1):
+                Auth requests with AWS SigV4.
+            AUTH_METHOD_AWS_SIGNATURE_V2 (2):
+                Auth requests with AWS SigV2.
         """
         AUTH_METHOD_UNSPECIFIED = 0
         AUTH_METHOD_AWS_SIGNATURE_V4 = 1
         AUTH_METHOD_AWS_SIGNATURE_V2 = 2
 
     class RequestModel(proto.Enum):
-        r"""The request model of the API."""
+        r"""The request model of the API.
+
+        Values:
+            REQUEST_MODEL_UNSPECIFIED (0):
+                RequestModel is not specified.
+            REQUEST_MODEL_VIRTUAL_HOSTED_STYLE (1):
+                Perform requests using Virtual Hosted Style.
+                Example:
+                https://bucket-name.s3.region.amazonaws.com/key-name
+            REQUEST_MODEL_PATH_STYLE (2):
+                Perform requests using Path Style.
+                Example:
+                https://s3.region.amazonaws.com/bucket-name/key-name
+        """
         REQUEST_MODEL_UNSPECIFIED = 0
         REQUEST_MODEL_VIRTUAL_HOSTED_STYLE = 1
         REQUEST_MODEL_PATH_STYLE = 2
 
     class NetworkProtocol(proto.Enum):
-        r"""The agent network protocol to access the storage service."""
+        r"""The agent network protocol to access the storage service.
+
+        Values:
+            NETWORK_PROTOCOL_UNSPECIFIED (0):
+                NetworkProtocol is not specified.
+            NETWORK_PROTOCOL_HTTPS (1):
+                Perform requests using HTTPS.
+            NETWORK_PROTOCOL_HTTP (2):
+                Not recommended: This sends data in
+                clear-text. This is only appropriate within a
+                closed network or for publicly available data.
+                Perform requests using HTTP.
+        """
         NETWORK_PROTOCOL_UNSPECIFIED = 0
         NETWORK_PROTOCOL_HTTPS = 1
         NETWORK_PROTOCOL_HTTP = 2
 
     class ListApi(proto.Enum):
-        r"""The Listing API to use for discovering objects."""
+        r"""The Listing API to use for discovering objects.
+
+        Values:
+            LIST_API_UNSPECIFIED (0):
+                ListApi is not specified.
+            LIST_OBJECTS_V2 (1):
+                Perform listing using ListObjectsV2 API.
+            LIST_OBJECTS (2):
+                Legacy ListObjects API.
+        """
         LIST_API_UNSPECIFIED = 0
         LIST_OBJECTS_V2 = 1
         LIST_OBJECTS = 2
@@ -636,7 +678,25 @@ class AgentPool(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The state of an AgentPool."""
+        r"""The state of an AgentPool.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            CREATING (1):
+                This is an initialization state. During this
+                stage, the resources such as Pub/Sub topics are
+                allocated for the AgentPool.
+            CREATED (2):
+                Determines that the AgentPool is created for
+                use. At this state, Agents can join the
+                AgentPool and participate in the transfer jobs
+                in that pool.
+            DELETING (3):
+                Determines that the AgentPool deletion has
+                been initiated, and all the resources are
+                scheduled to be cleaned up and freed.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         CREATED = 2
@@ -714,6 +774,23 @@ class TransferOptions(proto.Message):
     class OverwriteWhen(proto.Enum):
         r"""Specifies when to overwrite an object in the sink when an
         object with matching name is found in the source.
+
+        Values:
+            OVERWRITE_WHEN_UNSPECIFIED (0):
+                Overwrite behavior is unspecified.
+            DIFFERENT (1):
+                Overwrites destination objects with the
+                source objects, only if the objects have the
+                same name but different HTTP ETags or checksum
+                values.
+            NEVER (2):
+                Never overwrites a destination object if a
+                source object has the same name. In this case,
+                the source object is not transferred.
+            ALWAYS (3):
+                Always overwrite the destination object with
+                the source object, even if the HTTP Etags or
+                checksum values are the same.
         """
         OVERWRITE_WHEN_UNSPECIFIED = 0
         DIFFERENT = 1
@@ -957,31 +1034,82 @@ class MetadataOptions(proto.Message):
     class Symlink(proto.Enum):
         r"""Whether symlinks should be skipped or preserved during a
         transfer job.
+
+        Values:
+            SYMLINK_UNSPECIFIED (0):
+                Symlink behavior is unspecified.
+            SYMLINK_SKIP (1):
+                Do not preserve symlinks during a transfer
+                job.
+            SYMLINK_PRESERVE (2):
+                Preserve symlinks during a transfer job.
         """
         SYMLINK_UNSPECIFIED = 0
         SYMLINK_SKIP = 1
         SYMLINK_PRESERVE = 2
 
     class Mode(proto.Enum):
-        r"""Options for handling file mode attribute."""
+        r"""Options for handling file mode attribute.
+
+        Values:
+            MODE_UNSPECIFIED (0):
+                Mode behavior is unspecified.
+            MODE_SKIP (1):
+                Do not preserve mode during a transfer job.
+            MODE_PRESERVE (2):
+                Preserve mode during a transfer job.
+        """
         MODE_UNSPECIFIED = 0
         MODE_SKIP = 1
         MODE_PRESERVE = 2
 
     class GID(proto.Enum):
-        r"""Options for handling file GID attribute."""
+        r"""Options for handling file GID attribute.
+
+        Values:
+            GID_UNSPECIFIED (0):
+                GID behavior is unspecified.
+            GID_SKIP (1):
+                Do not preserve GID during a transfer job.
+            GID_NUMBER (2):
+                Preserve GID during a transfer job.
+        """
         GID_UNSPECIFIED = 0
         GID_SKIP = 1
         GID_NUMBER = 2
 
     class UID(proto.Enum):
-        r"""Options for handling file UID attribute."""
+        r"""Options for handling file UID attribute.
+
+        Values:
+            UID_UNSPECIFIED (0):
+                UID behavior is unspecified.
+            UID_SKIP (1):
+                Do not preserve UID during a transfer job.
+            UID_NUMBER (2):
+                Preserve UID during a transfer job.
+        """
         UID_UNSPECIFIED = 0
         UID_SKIP = 1
         UID_NUMBER = 2
 
     class Acl(proto.Enum):
-        r"""Options for handling Cloud Storage object ACLs."""
+        r"""Options for handling Cloud Storage object ACLs.
+
+        Values:
+            ACL_UNSPECIFIED (0):
+                ACL behavior is unspecified.
+            ACL_DESTINATION_BUCKET_DEFAULT (1):
+                Use the destination bucket's default object
+                ACLS, if applicable.
+            ACL_PRESERVE (2):
+                Preserve the object's original ACLs. This requires the
+                service account to have ``storage.objects.getIamPolicy``
+                permission for the source object. `Uniform bucket-level
+                access <https://cloud.google.com/storage/docs/uniform-bucket-level-access>`__
+                must not be enabled on either the source or destination
+                buckets.
+        """
         ACL_UNSPECIFIED = 0
         ACL_DESTINATION_BUCKET_DEFAULT = 1
         ACL_PRESERVE = 2
@@ -989,6 +1117,25 @@ class MetadataOptions(proto.Message):
     class StorageClass(proto.Enum):
         r"""Options for handling Google Cloud Storage object storage
         class.
+
+        Values:
+            STORAGE_CLASS_UNSPECIFIED (0):
+                Storage class behavior is unspecified.
+            STORAGE_CLASS_DESTINATION_BUCKET_DEFAULT (1):
+                Use the destination bucket's default storage
+                class.
+            STORAGE_CLASS_PRESERVE (2):
+                Preserve the object's original storage class.
+                This is only supported for transfers from Google
+                Cloud Storage buckets.
+            STORAGE_CLASS_STANDARD (3):
+                Set the storage class to STANDARD.
+            STORAGE_CLASS_NEARLINE (4):
+                Set the storage class to NEARLINE.
+            STORAGE_CLASS_COLDLINE (5):
+                Set the storage class to COLDLINE.
+            STORAGE_CLASS_ARCHIVE (6):
+                Set the storage class to ARCHIVE.
         """
         STORAGE_CLASS_UNSPECIFIED = 0
         STORAGE_CLASS_DESTINATION_BUCKET_DEFAULT = 1
@@ -1001,6 +1148,16 @@ class MetadataOptions(proto.Message):
     class TemporaryHold(proto.Enum):
         r"""Options for handling temporary holds for Google Cloud Storage
         objects.
+
+        Values:
+            TEMPORARY_HOLD_UNSPECIFIED (0):
+                Temporary hold behavior is unspecified.
+            TEMPORARY_HOLD_SKIP (1):
+                Do not set a temporary hold on the
+                destination object.
+            TEMPORARY_HOLD_PRESERVE (2):
+                Preserve the object's original temporary hold
+                status.
         """
         TEMPORARY_HOLD_UNSPECIFIED = 0
         TEMPORARY_HOLD_SKIP = 1
@@ -1009,6 +1166,19 @@ class MetadataOptions(proto.Message):
     class KmsKey(proto.Enum):
         r"""Options for handling the KmsKey setting for Google Cloud
         Storage objects.
+
+        Values:
+            KMS_KEY_UNSPECIFIED (0):
+                KmsKey behavior is unspecified.
+            KMS_KEY_DESTINATION_BUCKET_DEFAULT (1):
+                Use the destination bucket's default
+                encryption settings.
+            KMS_KEY_PRESERVE (2):
+                Preserve the object's original Cloud KMS
+                customer-managed encryption key (CMEK) if
+                present. Objects that do not use a Cloud KMS
+                encryption key will be encrypted using the
+                destination bucket's encryption settings.
         """
         KMS_KEY_UNSPECIFIED = 0
         KMS_KEY_DESTINATION_BUCKET_DEFAULT = 1
@@ -1017,6 +1187,18 @@ class MetadataOptions(proto.Message):
     class TimeCreated(proto.Enum):
         r"""Options for handling ``timeCreated`` metadata for Google Cloud
         Storage objects.
+
+        Values:
+            TIME_CREATED_UNSPECIFIED (0):
+                TimeCreated behavior is unspecified.
+            TIME_CREATED_SKIP (1):
+                Do not preserve the ``timeCreated`` metadata from the source
+                object.
+            TIME_CREATED_PRESERVE_AS_CUSTOM_TIME (2):
+                Preserves the source object's ``timeCreated`` metadata in
+                the ``customTime`` field in the destination object. Note
+                that any value stored in the source object's ``customTime``
+                field will not be propagated to the destination object.
         """
         TIME_CREATED_UNSPECIFIED = 0
         TIME_CREATED_SKIP = 1
@@ -1278,7 +1460,23 @@ class TransferJob(proto.Message):
     """
 
     class Status(proto.Enum):
-        r"""The status of the transfer job."""
+        r"""The status of the transfer job.
+
+        Values:
+            STATUS_UNSPECIFIED (0):
+                Zero is an illegal value.
+            ENABLED (1):
+                New transfers are performed based on the
+                schedule.
+            DISABLED (2):
+                New transfers are not scheduled.
+            DELETED (3):
+                This is a soft delete state. After a transfer job is set to
+                this state, the job and all the transfer executions are
+                subject to garbage collection. Transfer jobs become eligible
+                for garbage collection 30 days after their status is set to
+                ``DELETED``.
+        """
         STATUS_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -1615,6 +1813,19 @@ class NotificationConfig(proto.Message):
         should either safely ignore unrecognized event types or
         explicitly specify which event types they are prepared to
         accept.
+
+        Values:
+            EVENT_TYPE_UNSPECIFIED (0):
+                Illegal value, to avoid allowing a default.
+            TRANSFER_OPERATION_SUCCESS (1):
+                ``TransferOperation`` completed with status
+                [SUCCESS][google.storagetransfer.v1.TransferOperation.Status.SUCCESS].
+            TRANSFER_OPERATION_FAILED (2):
+                ``TransferOperation`` completed with status
+                [FAILED][google.storagetransfer.v1.TransferOperation.Status.FAILED].
+            TRANSFER_OPERATION_ABORTED (3):
+                ``TransferOperation`` completed with status
+                [ABORTED][google.storagetransfer.v1.TransferOperation.Status.ABORTED].
         """
         EVENT_TYPE_UNSPECIFIED = 0
         TRANSFER_OPERATION_SUCCESS = 1
@@ -1624,6 +1835,16 @@ class NotificationConfig(proto.Message):
     class PayloadFormat(proto.Enum):
         r"""Enum for specifying the format of a notification message's
         payload.
+
+        Values:
+            PAYLOAD_FORMAT_UNSPECIFIED (0):
+                Illegal value, to avoid allowing a default.
+            NONE (1):
+                No payload is included with the notification.
+            JSON (2):
+                ``TransferOperation`` is `formatted as a JSON
+                response <https://developers.google.com/protocol-buffers/docs/proto3#json>`__,
+                in application/json.
         """
         PAYLOAD_FORMAT_UNSPECIFIED = 0
         NONE = 1
@@ -1679,14 +1900,39 @@ class LoggingConfig(proto.Message):
     """
 
     class LoggableAction(proto.Enum):
-        r"""Loggable actions."""
+        r"""Loggable actions.
+
+        Values:
+            LOGGABLE_ACTION_UNSPECIFIED (0):
+                Default value. This value is unused.
+            FIND (1):
+                Listing objects in a bucket.
+            DELETE (2):
+                Deleting objects at the source or the
+                destination.
+            COPY (3):
+                Copying objects to Google Cloud Storage.
+        """
         LOGGABLE_ACTION_UNSPECIFIED = 0
         FIND = 1
         DELETE = 2
         COPY = 3
 
     class LoggableActionState(proto.Enum):
-        r"""Loggable action states."""
+        r"""Loggable action states.
+
+        Values:
+            LOGGABLE_ACTION_STATE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            SUCCEEDED (1):
+                ``LoggableAction`` completed successfully. ``SUCCEEDED``
+                actions are logged as
+                [INFO][google.logging.type.LogSeverity.INFO].
+            FAILED (2):
+                ``LoggableAction`` terminated in an error state. ``FAILED``
+                actions are logged as
+                [ERROR][google.logging.type.LogSeverity.ERROR].
+        """
         LOGGABLE_ACTION_STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2
@@ -1738,7 +1984,25 @@ class TransferOperation(proto.Message):
     """
 
     class Status(proto.Enum):
-        r"""The status of a TransferOperation."""
+        r"""The status of a TransferOperation.
+
+        Values:
+            STATUS_UNSPECIFIED (0):
+                Zero is an illegal value.
+            IN_PROGRESS (1):
+                In progress.
+            PAUSED (2):
+                Paused.
+            SUCCESS (3):
+                Completed successfully.
+            FAILED (4):
+                Terminated due to an unrecoverable failure.
+            ABORTED (5):
+                Aborted by the user.
+            QUEUED (6):
+                Temporarily delayed by the system. No user
+                action is required.
+        """
         STATUS_UNSPECIFIED = 0
         IN_PROGRESS = 1
         PAUSED = 2
