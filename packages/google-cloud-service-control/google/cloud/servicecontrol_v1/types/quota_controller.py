@@ -121,7 +121,54 @@ class QuotaOperation(proto.Message):
     """
 
     class QuotaMode(proto.Enum):
-        r"""Supported quota modes."""
+        r"""Supported quota modes.
+
+        Values:
+            UNSPECIFIED (0):
+                Guard against implicit default. Must not be
+                used.
+            NORMAL (1):
+                For AllocateQuota request, allocates quota
+                for the amount specified in the service
+                configuration or specified using the quota
+                metrics. If the amount is higher than the
+                available quota, allocation error will be
+                returned and no quota will be allocated.
+                If multiple quotas are part of the request, and
+                one fails, none of the quotas are allocated or
+                released.
+            BEST_EFFORT (2):
+                The operation allocates quota for the amount specified in
+                the service configuration or specified using the quota
+                metrics. If the amount is higher than the available quota,
+                request does not fail but all available quota will be
+                allocated. For rate quota, BEST_EFFORT will continue to
+                deduct from other groups even if one does not have enough
+                quota. For allocation, it will find the minimum available
+                amount across all groups and deduct that amount from all the
+                affected groups.
+            CHECK_ONLY (3):
+                For AllocateQuota request, only checks if
+                there is enough quota available and does not
+                change the available quota. No lock is placed on
+                the available quota either.
+            QUERY_ONLY (4):
+                Unimplemented. When used in
+                AllocateQuotaRequest, this returns the effective
+                quota limit(s) in the response, and no quota
+                check will be performed. Not supported for other
+                requests, and even for AllocateQuotaRequest,
+                this is currently supported only for allowlisted
+                services.
+            ADJUST_ONLY (5):
+                The operation allocates quota for the amount
+                specified in the service configuration or
+                specified using the quota metrics. If the
+                requested amount is higher than the available
+                quota, request does not fail and remaining quota
+                would become negative (going over the limit).
+                Not supported for Rate Quota.
+        """
         UNSPECIFIED = 0
         NORMAL = 1
         BEST_EFFORT = 2
@@ -232,6 +279,23 @@ class QuotaError(proto.Message):
         quota_properties field, to perform these validations before calling
         the quota controller methods. These methods check only for project
         deletion to be wipe out compliant.
+
+        Values:
+            UNSPECIFIED (0):
+                This is never used.
+            RESOURCE_EXHAUSTED (8):
+                Quota allocation failed. Same as
+                [google.rpc.Code.RESOURCE_EXHAUSTED][google.rpc.Code.RESOURCE_EXHAUSTED].
+            BILLING_NOT_ACTIVE (107):
+                Consumer cannot access the service because
+                the service requires active billing.
+            PROJECT_DELETED (108):
+                Consumer's project has been marked as deleted
+                (soft deletion).
+            API_KEY_INVALID (105):
+                Specified API key is invalid.
+            API_KEY_EXPIRED (112):
+                Specified API Key has expired.
         """
         UNSPECIFIED = 0
         RESOURCE_EXHAUSTED = 8

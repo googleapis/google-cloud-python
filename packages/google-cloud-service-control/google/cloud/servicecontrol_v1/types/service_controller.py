@@ -141,6 +141,22 @@ class CheckResponse(proto.Message):
         class ConsumerType(proto.Enum):
             r"""The type of the consumer as defined in `Google Resource
             Manager <https://cloud.google.com/resource-manager/>`__.
+
+            Values:
+                CONSUMER_TYPE_UNSPECIFIED (0):
+                    This is never used.
+                PROJECT (1):
+                    The consumer is a Google Cloud Project.
+                FOLDER (2):
+                    The consumer is a Google Cloud Folder.
+                ORGANIZATION (3):
+                    The consumer is a Google Cloud Organization.
+                SERVICE_SPECIFIC (4):
+                    Service-specific resource container which is
+                    defined by the service producer to offer their
+                    users the ability to manage service control
+                    functionalities at a finer level of granularity
+                    than the PROJECT.
             """
             CONSUMER_TYPE_UNSPECIFIED = 0
             PROJECT = 1

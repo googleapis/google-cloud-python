@@ -50,7 +50,72 @@ class CheckError(proto.Message):
     """
 
     class Code(proto.Enum):
-        r"""Error codes for Check responses."""
+        r"""Error codes for Check responses.
+
+        Values:
+            ERROR_CODE_UNSPECIFIED (0):
+                This is never used in ``CheckResponse``.
+            NOT_FOUND (5):
+                The consumer's project id, network container, or resource
+                container was not found. Same as
+                [google.rpc.Code.NOT_FOUND][google.rpc.Code.NOT_FOUND].
+            PERMISSION_DENIED (7):
+                The consumer doesn't have access to the specified resource.
+                Same as
+                [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED].
+            RESOURCE_EXHAUSTED (8):
+                Quota check failed. Same as
+                [google.rpc.Code.RESOURCE_EXHAUSTED][google.rpc.Code.RESOURCE_EXHAUSTED].
+            SERVICE_NOT_ACTIVATED (104):
+                The consumer hasn't activated the service.
+            BILLING_DISABLED (107):
+                The consumer cannot access the service
+                because billing is disabled.
+            PROJECT_DELETED (108):
+                The consumer's project has been marked as
+                deleted (soft deletion).
+            PROJECT_INVALID (114):
+                The consumer's project number or id does not
+                represent a valid project.
+            CONSUMER_INVALID (125):
+                The input consumer info does not represent a
+                valid consumer folder or organization.
+            IP_ADDRESS_BLOCKED (109):
+                The IP address of the consumer is invalid for
+                the specific consumer project.
+            REFERER_BLOCKED (110):
+                The referer address of the consumer request
+                is invalid for the specific consumer project.
+            CLIENT_APP_BLOCKED (111):
+                The client application of the consumer
+                request is invalid for the specific consumer
+                project.
+            API_TARGET_BLOCKED (122):
+                The API targeted by this request is invalid
+                for the specified consumer project.
+            API_KEY_INVALID (105):
+                The consumer's API key is invalid.
+            API_KEY_EXPIRED (112):
+                The consumer's API Key has expired.
+            API_KEY_NOT_FOUND (113):
+                The consumer's API Key was not found in
+                config record.
+            INVALID_CREDENTIAL (123):
+                The credential in the request can not be
+                verified.
+            NAMESPACE_LOOKUP_UNAVAILABLE (300):
+                The backend server for looking up project
+                id/number is unavailable.
+            SERVICE_STATUS_UNAVAILABLE (301):
+                The backend server for checking service
+                status is unavailable.
+            BILLING_STATUS_UNAVAILABLE (302):
+                The backend server for checking billing
+                status is unavailable.
+            CLOUD_RESOURCE_MANAGER_BACKEND_UNAVAILABLE (305):
+                Cloud Resource Manager backend server is
+                unavailable.
+        """
         ERROR_CODE_UNSPECIFIED = 0
         NOT_FOUND = 5
         PERMISSION_DENIED = 7

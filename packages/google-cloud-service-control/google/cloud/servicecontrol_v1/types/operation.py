@@ -116,6 +116,17 @@ class Operation(proto.Message):
     class Importance(proto.Enum):
         r"""Defines the importance of the data contained in the
         operation.
+
+        Values:
+            LOW (0):
+                Allows data caching, batching, and
+                aggregation. It provides higher performance with
+                higher data loss risk.
+            HIGH (1):
+                Disables data aggregation to minimize data
+                loss. It is for operations that contains
+                significant monetary value or audit trail. This
+                feature only applies to the client libraries.
         """
         LOW = 0
         HIGH = 1
