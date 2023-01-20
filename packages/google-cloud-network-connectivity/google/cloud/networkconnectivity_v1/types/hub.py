@@ -49,7 +49,19 @@ __protobuf__ = proto.module(
 
 
 class LocationFeature(proto.Enum):
-    r"""Supported features for a location"""
+    r"""Supported features for a location
+
+    Values:
+        LOCATION_FEATURE_UNSPECIFIED (0):
+            No publicly supported feature in this
+            location
+        SITE_TO_CLOUD_SPOKES (1):
+            Site-to-cloud spokes are supported in this
+            location
+        SITE_TO_SITE_SPOKES (2):
+            Site-to-site spokes are supported in this
+            location
+    """
     LOCATION_FEATURE_UNSPECIFIED = 0
     SITE_TO_CLOUD_SPOKES = 1
     SITE_TO_SITE_SPOKES = 2
@@ -58,6 +70,21 @@ class LocationFeature(proto.Enum):
 class State(proto.Enum):
     r"""The State enum represents the lifecycle stage of a Network
     Connectivity Center resource.
+
+    Values:
+        STATE_UNSPECIFIED (0):
+            No state information available
+        CREATING (1):
+            The resource's create operation is in
+            progress
+        ACTIVE (2):
+            The resource is active
+        DELETING (3):
+            The resource's Delete operation is in
+            progress
+        UPDATING (6):
+            The resource's Update operation is in
+            progress
     """
     STATE_UNSPECIFIED = 0
     CREATING = 1

@@ -162,7 +162,15 @@ class PolicyBasedRoute(proto.Message):
         """
 
         class ProtocolVersion(proto.Enum):
-            r"""The internet protocol version."""
+            r"""The internet protocol version.
+
+            Values:
+                PROTOCOL_VERSION_UNSPECIFIED (0):
+                    Default value.
+                IPV4 (1):
+                    The PBR is for IPv4 internet protocol
+                    traffic.
+            """
             PROTOCOL_VERSION_UNSPECIFIED = 0
             IPV4 = 1
 
@@ -208,6 +216,18 @@ class PolicyBasedRoute(proto.Message):
         class Code(proto.Enum):
             r"""Warning code for Policy Based Routing. Expect to add values
             in the future.
+
+            Values:
+                WARNING_UNSPECIFIED (0):
+                    Default value.
+                RESOURCE_NOT_ACTIVE (1):
+                    The policy based route is not active and
+                    functioning. Common causes are the dependent
+                    network was deleted or the resource project was
+                    turned off.
+                RESOURCE_BEING_MODIFIED (2):
+                    The policy based route is being modified
+                    (e.g. created/deleted) at this time.
             """
             WARNING_UNSPECIFIED = 0
             RESOURCE_NOT_ACTIVE = 1

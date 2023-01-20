@@ -45,6 +45,18 @@ __protobuf__ = proto.module(
 class State(proto.Enum):
     r"""The State enum represents the lifecycle of a Network
     Connectivity Center resource.
+
+    Values:
+        STATE_UNSPECIFIED (0):
+            No state information available
+        CREATING (1):
+            The resource's create operation is in
+            progress
+        ACTIVE (2):
+            The resource is active
+        DELETING (3):
+            The resource's Delete operation is in
+            progress
     """
     STATE_UNSPECIFIED = 0
     CREATING = 1
