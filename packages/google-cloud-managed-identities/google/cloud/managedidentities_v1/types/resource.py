@@ -81,7 +81,28 @@ class Domain(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Represents the different states of a managed domain."""
+        r"""Represents the different states of a managed domain.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not set.
+            CREATING (1):
+                The domain is being created.
+            READY (2):
+                The domain has been created and is fully
+                usable.
+            UPDATING (3):
+                The domain's configuration is being updated.
+            DELETING (4):
+                The domain is being deleted.
+            REPAIRING (5):
+                The domain is being repaired and may be unusable. Details
+                can be found in the ``status_message`` field.
+            PERFORMING_MAINTENANCE (6):
+                The domain is undergoing maintenance.
+            UNAVAILABLE (7):
+                The domain is not serving requests.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -192,7 +213,22 @@ class Trust(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Represents the different states of a domain trust."""
+        r"""Represents the different states of a domain trust.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not set.
+            CREATING (1):
+                The domain trust is being created.
+            UPDATING (2):
+                The domain trust is being updated.
+            DELETING (3):
+                The domain trust is being deleted.
+            CONNECTED (4):
+                The domain trust is connected.
+            DISCONNECTED (5):
+                The domain trust is disconnected.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         UPDATING = 2
@@ -201,7 +237,16 @@ class Trust(proto.Message):
         DISCONNECTED = 5
 
     class TrustType(proto.Enum):
-        r"""Represents the different inter-forest trust types."""
+        r"""Represents the different inter-forest trust types.
+
+        Values:
+            TRUST_TYPE_UNSPECIFIED (0):
+                Not set.
+            FOREST (1):
+                The forest trust.
+            EXTERNAL (2):
+                The external domain trust.
+        """
         TRUST_TYPE_UNSPECIFIED = 0
         FOREST = 1
         EXTERNAL = 2
@@ -210,6 +255,19 @@ class Trust(proto.Message):
         r"""Represents the direction of trust. See
         `System.DirectoryServices.ActiveDirectory.TrustDirection <https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices.activedirectory.trustdirection?view=netframework-4.7.2>`__
         for more information.
+
+        Values:
+            TRUST_DIRECTION_UNSPECIFIED (0):
+                Not set.
+            INBOUND (1):
+                The inbound direction represents the trusting
+                side.
+            OUTBOUND (2):
+                The outboud direction represents the trusted
+                side.
+            BIDIRECTIONAL (3):
+                The bidirectional direction represents the
+                trusted / trusting side.
         """
         TRUST_DIRECTION_UNSPECIFIED = 0
         INBOUND = 1

@@ -1797,7 +1797,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "ManagedIdentitiesServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):
