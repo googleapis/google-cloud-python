@@ -46,7 +46,35 @@ __protobuf__ = proto.module(
 
 
 class InboundServiceType(proto.Enum):
-    r"""Available inbound services."""
+    r"""Available inbound services.
+
+    Values:
+        INBOUND_SERVICE_UNSPECIFIED (0):
+            Not specified.
+        INBOUND_SERVICE_MAIL (1):
+            Allows an application to receive mail.
+        INBOUND_SERVICE_MAIL_BOUNCE (2):
+            Allows an application to receive email-bound
+            notifications.
+        INBOUND_SERVICE_XMPP_ERROR (3):
+            Allows an application to receive error
+            stanzas.
+        INBOUND_SERVICE_XMPP_MESSAGE (4):
+            Allows an application to receive instant
+            messages.
+        INBOUND_SERVICE_XMPP_SUBSCRIBE (5):
+            Allows an application to receive user
+            subscription POSTs.
+        INBOUND_SERVICE_XMPP_PRESENCE (6):
+            Allows an application to receive a user's
+            chat presence.
+        INBOUND_SERVICE_CHANNEL_PRESENCE (7):
+            Registers an application for notifications
+            when a client connects or disconnects from a
+            channel.
+        INBOUND_SERVICE_WARMUP (9):
+            Enables warmup requests.
+    """
     INBOUND_SERVICE_UNSPECIFIED = 0
     INBOUND_SERVICE_MAIL = 1
     INBOUND_SERVICE_MAIL_BOUNCE = 2
@@ -59,7 +87,20 @@ class InboundServiceType(proto.Enum):
 
 
 class ServingStatus(proto.Enum):
-    r"""Run states of a version."""
+    r"""Run states of a version.
+
+    Values:
+        SERVING_STATUS_UNSPECIFIED (0):
+            Not specified.
+        SERVING (1):
+            Currently serving. Instances are created
+            according to the scaling settings of the
+            version.
+        STOPPED (2):
+            Disabled. No instances will be created and the scaling
+            settings are ignored until the state of the version changes
+            to ``SERVING``.
+    """
     SERVING_STATUS_UNSPECIFIED = 0
     SERVING = 1
     STOPPED = 2
@@ -497,7 +538,18 @@ class EndpointsApiService(proto.Message):
     """
 
     class RolloutStrategy(proto.Enum):
-        r"""Available rollout strategies."""
+        r"""Available rollout strategies.
+
+        Values:
+            UNSPECIFIED_ROLLOUT_STRATEGY (0):
+                Not specified. Defaults to ``FIXED``.
+            FIXED (1):
+                Endpoints service configuration ID will be fixed to the
+                configuration ID specified by ``config_id``.
+            MANAGED (2):
+                Endpoints service configuration ID will be
+                updated with each rollout.
+        """
         UNSPECIFIED_ROLLOUT_STRATEGY = 0
         FIXED = 1
         MANAGED = 2
@@ -981,6 +1033,16 @@ class VpcAccessConnector(proto.Message):
 
         This controls what traffic is diverted through the VPC Access
         Connector resource. By default PRIVATE_IP_RANGES will be used.
+
+        Values:
+            EGRESS_SETTING_UNSPECIFIED (0):
+
+            ALL_TRAFFIC (1):
+                Force the use of VPC Access for all egress
+                traffic from the function.
+            PRIVATE_IP_RANGES (2):
+                Use the VPC Access Connector for private IP
+                space from RFC1918.
         """
         EGRESS_SETTING_UNSPECIFIED = 0
         ALL_TRAFFIC = 1

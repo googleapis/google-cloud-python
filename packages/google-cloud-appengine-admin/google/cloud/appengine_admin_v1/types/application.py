@@ -104,14 +104,36 @@ class Application(proto.Message):
     """
 
     class ServingStatus(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            UNSPECIFIED (0):
+                Serving status is unspecified.
+            SERVING (1):
+                Application is serving.
+            USER_DISABLED (2):
+                Application has been disabled by the user.
+            SYSTEM_DISABLED (3):
+                Application has been disabled by the system.
+        """
         UNSPECIFIED = 0
         SERVING = 1
         USER_DISABLED = 2
         SYSTEM_DISABLED = 3
 
     class DatabaseType(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            DATABASE_TYPE_UNSPECIFIED (0):
+                Database type is unspecified.
+            CLOUD_DATASTORE (1):
+                Cloud Datastore
+            CLOUD_FIRESTORE (2):
+                Cloud Firestore Native
+            CLOUD_DATASTORE_COMPATIBILITY (3):
+                Cloud Firestore in Datastore Mode
+        """
         DATABASE_TYPE_UNSPECIFIED = 0
         CLOUD_DATASTORE = 1
         CLOUD_FIRESTORE = 2

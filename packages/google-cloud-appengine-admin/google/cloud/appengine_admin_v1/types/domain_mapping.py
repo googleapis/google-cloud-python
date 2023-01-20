@@ -107,7 +107,21 @@ class SslSettings(proto.Message):
     """
 
     class SslManagementType(proto.Enum):
-        r"""The SSL management type for this domain."""
+        r"""The SSL management type for this domain.
+
+        Values:
+            SSL_MANAGEMENT_TYPE_UNSPECIFIED (0):
+                Defaults to ``AUTOMATIC``.
+            AUTOMATIC (1):
+                SSL support for this domain is configured
+                automatically. The mapped SSL certificate will
+                be automatically renewed.
+            MANUAL (2):
+                SSL support for this domain is configured
+                manually by the user. Either the domain has no
+                SSL support or a user-obtained SSL certificate
+                has been explictly mapped to this domain.
+        """
         SSL_MANAGEMENT_TYPE_UNSPECIFIED = 0
         AUTOMATIC = 1
         MANUAL = 2
@@ -143,7 +157,21 @@ class ResourceRecord(proto.Message):
     """
 
     class RecordType(proto.Enum):
-        r"""A resource record type."""
+        r"""A resource record type.
+
+        Values:
+            RECORD_TYPE_UNSPECIFIED (0):
+                An unknown resource record.
+            A (1):
+                An A resource record. Data is an IPv4
+                address.
+            AAAA (2):
+                An AAAA resource record. Data is an IPv6
+                address.
+            CNAME (3):
+                A CNAME resource record. Data is a domain
+                name to be aliased.
+        """
         RECORD_TYPE_UNSPECIFIED = 0
         A = 1
         AAAA = 2

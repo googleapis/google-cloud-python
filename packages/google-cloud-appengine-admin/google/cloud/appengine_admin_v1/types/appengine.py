@@ -81,6 +81,17 @@ __protobuf__ = proto.module(
 class VersionView(proto.Enum):
     r"""Fields that should be returned when
     [Version][google.appengine.v1.Version] resources are retrieved.
+
+    Values:
+        BASIC (0):
+            Basic version information including scaling
+            and inbound services, but not detailed
+            deployment information.
+        FULL (1):
+            The information from ``BASIC``, plus detailed information
+            about the deployment. This format is required when creating
+            resources, but is not returned in ``Get`` or ``List`` by
+            default.
     """
     BASIC = 0
     FULL = 1
@@ -89,13 +100,39 @@ class VersionView(proto.Enum):
 class AuthorizedCertificateView(proto.Enum):
     r"""Fields that should be returned when an AuthorizedCertificate
     resource is retrieved.
+
+    Values:
+        BASIC_CERTIFICATE (0):
+            Basic certificate information, including
+            applicable domains and expiration date.
+        FULL_CERTIFICATE (1):
+            The information from ``BASIC_CERTIFICATE``, plus detailed
+            information on the domain mappings that have this
+            certificate mapped.
     """
     BASIC_CERTIFICATE = 0
     FULL_CERTIFICATE = 1
 
 
 class DomainOverrideStrategy(proto.Enum):
-    r"""Override strategy for mutating an existing mapping."""
+    r"""Override strategy for mutating an existing mapping.
+
+    Values:
+        UNSPECIFIED_DOMAIN_OVERRIDE_STRATEGY (0):
+            Strategy unspecified. Defaults to ``STRICT``.
+        STRICT (1):
+            Overrides not allowed. If a mapping already exists for the
+            specified domain, the request will return an ALREADY_EXISTS
+            (409).
+        OVERRIDE (2):
+            Overrides allowed. If a mapping already
+            exists for the specified domain, the request
+            will overwrite it. Note that this might stop
+            another Google product from serving. For
+            example, if the domain is mapped to another App
+            Engine application, that app will no longer
+            serve from that domain.
+    """
     UNSPECIFIED_DOMAIN_OVERRIDE_STRATEGY = 0
     STRICT = 1
     OVERRIDE = 2

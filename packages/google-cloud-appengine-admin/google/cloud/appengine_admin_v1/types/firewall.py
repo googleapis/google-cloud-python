@@ -61,7 +61,16 @@ class FirewallRule(proto.Message):
     """
 
     class Action(proto.Enum):
-        r"""Available actions to take on matching requests."""
+        r"""Available actions to take on matching requests.
+
+        Values:
+            UNSPECIFIED_ACTION (0):
+
+            ALLOW (1):
+                Matching requests are allowed.
+            DENY (2):
+                Matching requests are denied.
+        """
         UNSPECIFIED_ACTION = 0
         ALLOW = 1
         DENY = 2

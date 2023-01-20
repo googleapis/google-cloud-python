@@ -35,7 +35,21 @@ class NetworkSettings(proto.Message):
     """
 
     class IngressTrafficAllowed(proto.Enum):
-        r"""If unspecified, INGRESS_TRAFFIC_ALLOWED_ALL will be used."""
+        r"""If unspecified, INGRESS_TRAFFIC_ALLOWED_ALL will be used.
+
+        Values:
+            INGRESS_TRAFFIC_ALLOWED_UNSPECIFIED (0):
+                Unspecified
+            INGRESS_TRAFFIC_ALLOWED_ALL (1):
+                Allow HTTP traffic from public and private
+                sources.
+            INGRESS_TRAFFIC_ALLOWED_INTERNAL_ONLY (2):
+                Allow HTTP traffic from only private VPC
+                sources.
+            INGRESS_TRAFFIC_ALLOWED_INTERNAL_AND_LB (3):
+                Allow HTTP traffic from private VPC sources
+                and through load balancers.
+        """
         INGRESS_TRAFFIC_ALLOWED_UNSPECIFIED = 0
         INGRESS_TRAFFIC_ALLOWED_ALL = 1
         INGRESS_TRAFFIC_ALLOWED_INTERNAL_ONLY = 2

@@ -39,14 +39,42 @@ __protobuf__ = proto.module(
 
 
 class AuthFailAction(proto.Enum):
-    r"""Actions to take when the user is not logged in."""
+    r"""Actions to take when the user is not logged in.
+
+    Values:
+        AUTH_FAIL_ACTION_UNSPECIFIED (0):
+            Not specified. ``AUTH_FAIL_ACTION_REDIRECT`` is assumed.
+        AUTH_FAIL_ACTION_REDIRECT (1):
+            Redirects user to "accounts.google.com". The
+            user is redirected back to the application URL
+            after signing in or creating an account.
+        AUTH_FAIL_ACTION_UNAUTHORIZED (2):
+            Rejects request with a ``401`` HTTP status code and an error
+            message.
+    """
     AUTH_FAIL_ACTION_UNSPECIFIED = 0
     AUTH_FAIL_ACTION_REDIRECT = 1
     AUTH_FAIL_ACTION_UNAUTHORIZED = 2
 
 
 class LoginRequirement(proto.Enum):
-    r"""Methods to restrict access to a URL based on login status."""
+    r"""Methods to restrict access to a URL based on login status.
+
+    Values:
+        LOGIN_UNSPECIFIED (0):
+            Not specified. ``LOGIN_OPTIONAL`` is assumed.
+        LOGIN_OPTIONAL (1):
+            Does not require that the user is signed in.
+        LOGIN_ADMIN (2):
+            If the user is not signed in, the ``auth_fail_action`` is
+            taken. In addition, if the user is not an administrator for
+            the application, they are given an error message regardless
+            of ``auth_fail_action``. If the user is an administrator,
+            the handler proceeds.
+        LOGIN_REQUIRED (3):
+            If the user has signed in, the handler proceeds normally.
+            Otherwise, the auth_fail_action is taken.
+    """
     LOGIN_UNSPECIFIED = 0
     LOGIN_OPTIONAL = 1
     LOGIN_ADMIN = 2
@@ -54,7 +82,32 @@ class LoginRequirement(proto.Enum):
 
 
 class SecurityLevel(proto.Enum):
-    r"""Methods to enforce security (HTTPS) on a URL."""
+    r"""Methods to enforce security (HTTPS) on a URL.
+
+    Values:
+        SECURE_UNSPECIFIED (0):
+            Not specified.
+        SECURE_DEFAULT (0):
+            Both HTTP and HTTPS requests with URLs that
+            match the handler succeed without redirects. The
+            application can examine the request to determine
+            which protocol was used, and respond
+            accordingly.
+        SECURE_NEVER (1):
+            Requests for a URL that match this handler
+            that use HTTPS are automatically redirected to
+            the HTTP equivalent URL.
+        SECURE_OPTIONAL (2):
+            Both HTTP and HTTPS requests with URLs that
+            match the handler succeed without redirects. The
+            application can examine the request to determine
+            which protocol was used and respond accordingly.
+        SECURE_ALWAYS (3):
+            Requests for a URL that match this handler
+            that do not use HTTPS are automatically
+            redirected to the HTTPS URL with the same path.
+            Query parameters are reserved for the redirect.
+    """
     _pb_options = {"allow_alias": True}
     SECURE_UNSPECIFIED = 0
     SECURE_DEFAULT = 0
@@ -123,7 +176,22 @@ class ErrorHandler(proto.Message):
     """
 
     class ErrorCode(proto.Enum):
-        r"""Error codes."""
+        r"""Error codes.
+
+        Values:
+            ERROR_CODE_UNSPECIFIED (0):
+                Not specified. ERROR_CODE_DEFAULT is assumed.
+            ERROR_CODE_DEFAULT (0):
+                All other error types.
+            ERROR_CODE_OVER_QUOTA (1):
+                Application has exceeded a resource quota.
+            ERROR_CODE_DOS_API_DENIAL (2):
+                Client blocked by the application's Denial of
+                Service protection configuration.
+            ERROR_CODE_TIMEOUT (3):
+                Deadline reached before the application
+                responds.
+        """
         _pb_options = {"allow_alias": True}
         ERROR_CODE_UNSPECIFIED = 0
         ERROR_CODE_DEFAULT = 0
@@ -198,7 +266,20 @@ class UrlMap(proto.Message):
     """
 
     class RedirectHttpResponseCode(proto.Enum):
-        r"""Redirect codes."""
+        r"""Redirect codes.
+
+        Values:
+            REDIRECT_HTTP_RESPONSE_CODE_UNSPECIFIED (0):
+                Not specified. ``302`` is assumed.
+            REDIRECT_HTTP_RESPONSE_CODE_301 (1):
+                ``301 Moved Permanently`` code.
+            REDIRECT_HTTP_RESPONSE_CODE_302 (2):
+                ``302 Moved Temporarily`` code.
+            REDIRECT_HTTP_RESPONSE_CODE_303 (3):
+                ``303 See Other`` code.
+            REDIRECT_HTTP_RESPONSE_CODE_307 (4):
+                ``307 Temporary Redirect`` code.
+        """
         REDIRECT_HTTP_RESPONSE_CODE_UNSPECIFIED = 0
         REDIRECT_HTTP_RESPONSE_CODE_301 = 1
         REDIRECT_HTTP_RESPONSE_CODE_302 = 2

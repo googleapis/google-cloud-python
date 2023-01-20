@@ -127,7 +127,25 @@ class TrafficSplit(proto.Message):
     """
 
     class ShardBy(proto.Enum):
-        r"""Available sharding mechanisms."""
+        r"""Available sharding mechanisms.
+
+        Values:
+            UNSPECIFIED (0):
+                Diversion method unspecified.
+            COOKIE (1):
+                Diversion based on a specially named cookie,
+                "GOOGAPPUID." The cookie must be set by the
+                application itself or no diversion will occur.
+            IP (2):
+                Diversion based on applying the modulus
+                operation to a fingerprint of the IP address.
+            RANDOM (3):
+                Diversion based on weighted random
+                assignment. An incoming request is randomly
+                routed to a version in the traffic split, with
+                probability proportional to the version's
+                traffic share.
+        """
         UNSPECIFIED = 0
         COOKIE = 1
         IP = 2

@@ -32,6 +32,43 @@ __protobuf__ = proto.module(
 class ManagementStatus(proto.Enum):
     r"""State of certificate management. Refers to the most recent
     certificate acquisition or renewal attempt.
+
+    Values:
+        MANAGEMENT_STATUS_UNSPECIFIED (0):
+
+        OK (1):
+            Certificate was successfully obtained and
+            inserted into the serving system.
+        PENDING (2):
+            Certificate is under active attempts to
+            acquire or renew.
+        FAILED_RETRYING_NOT_VISIBLE (4):
+            Most recent renewal failed due to an invalid
+            DNS setup and will be retried. Renewal attempts
+            will continue to fail until the certificate
+            domain's DNS configuration is fixed. The last
+            successfully provisioned certificate may still
+            be serving.
+        FAILED_PERMANENT (6):
+            All renewal attempts have been exhausted,
+            likely due to an invalid DNS setup.
+        FAILED_RETRYING_CAA_FORBIDDEN (7):
+            Most recent renewal failed due to an explicit
+            CAA record that does not include one of the
+            in-use CAs (Google CA and Let's Encrypt).
+            Renewals will continue to fail until the CAA is
+            reconfigured. The last successfully provisioned
+            certificate may still be serving.
+        FAILED_RETRYING_CAA_CHECKING (8):
+            Most recent renewal failed due to a CAA
+            retrieval failure. This means that the domain's
+            DNS provider does not properly handle CAA
+            records, failing requests for CAA records when
+            no CAA records are defined. Renewals will
+            continue to fail until the DNS provider is
+            changed or a CAA record is added for the given
+            domain. The last successfully provisioned
+            certificate may still be serving.
     """
     MANAGEMENT_STATUS_UNSPECIFIED = 0
     OK = 1

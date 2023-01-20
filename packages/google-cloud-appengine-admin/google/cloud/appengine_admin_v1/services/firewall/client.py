@@ -920,7 +920,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
             metadata=metadata,
         )
 
-    def __enter__(self):
+    def __enter__(self) -> "FirewallClient":
         return self
 
     def __exit__(self, type, value, traceback):
