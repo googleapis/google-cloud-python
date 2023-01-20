@@ -308,12 +308,64 @@ class Listing(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of the listing."""
+        r"""State of the listing.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            ACTIVE (1):
+                Subscribable state. Users with
+                dataexchange.listings.subscribe permission can
+                subscribe to this listing.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
 
     class Category(proto.Enum):
-        r"""Listing categories."""
+        r"""Listing categories.
+
+        Values:
+            CATEGORY_UNSPECIFIED (0):
+
+            CATEGORY_OTHERS (1):
+
+            CATEGORY_ADVERTISING_AND_MARKETING (2):
+
+            CATEGORY_COMMERCE (3):
+
+            CATEGORY_CLIMATE_AND_ENVIRONMENT (4):
+
+            CATEGORY_DEMOGRAPHICS (5):
+
+            CATEGORY_ECONOMICS (6):
+
+            CATEGORY_EDUCATION (7):
+
+            CATEGORY_ENERGY (8):
+
+            CATEGORY_FINANCIAL (9):
+
+            CATEGORY_GAMING (10):
+
+            CATEGORY_GEOSPATIAL (11):
+
+            CATEGORY_HEALTHCARE_AND_LIFE_SCIENCE (12):
+
+            CATEGORY_MEDIA (13):
+
+            CATEGORY_PUBLIC_SECTOR (14):
+
+            CATEGORY_RETAIL (15):
+
+            CATEGORY_SPORTS (16):
+
+            CATEGORY_SCIENCE_AND_RESEARCH (17):
+
+            CATEGORY_TRANSPORTATION_AND_LOGISTICS (18):
+
+            CATEGORY_TRAVEL_AND_TOURISM (19):
+
+        """
         CATEGORY_UNSPECIFIED = 0
         CATEGORY_OTHERS = 1
         CATEGORY_ADVERTISING_AND_MARKETING = 2
