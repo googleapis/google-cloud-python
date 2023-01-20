@@ -3272,7 +3272,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "CloudDeployClient":
         return self
 
     def __exit__(self, type, value, traceback):

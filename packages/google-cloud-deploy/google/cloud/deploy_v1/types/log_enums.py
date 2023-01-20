@@ -28,6 +28,14 @@ __protobuf__ = proto.module(
 class Type(proto.Enum):
     r"""Type indicates the type of the log entry and can be used as a
     filter.
+
+    Values:
+        TYPE_UNSPECIFIED (0):
+            Type is unspecified.
+        TYPE_PUBSUB_NOTIFICATION_FAILURE (1):
+            A Pub/Sub notification failed to be sent.
+        TYPE_RENDER_STATUES_CHANGE (2):
+            Release render status changed notification.
     """
     TYPE_UNSPECIFIED = 0
     TYPE_PUBSUB_NOTIFICATION_FAILURE = 1

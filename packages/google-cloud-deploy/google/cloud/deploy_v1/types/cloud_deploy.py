@@ -869,7 +869,18 @@ class ExecutionConfig(proto.Message):
     """
 
     class ExecutionEnvironmentUsage(proto.Enum):
-        r"""Possible usages of this configuration."""
+        r"""Possible usages of this configuration.
+
+        Values:
+            EXECUTION_ENVIRONMENT_USAGE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            RENDER (1):
+                Use for rendering.
+            DEPLOY (2):
+                Use for deploying and deployment hooks.
+            VERIFY (3):
+                Use for deployment verification.
+        """
         EXECUTION_ENVIRONMENT_USAGE_UNSPECIFIED = 0
         RENDER = 1
         DEPLOY = 2
@@ -1409,7 +1420,20 @@ class Release(proto.Message):
     """
 
     class RenderState(proto.Enum):
-        r"""Valid states of the render operation."""
+        r"""Valid states of the render operation.
+
+        Values:
+            RENDER_STATE_UNSPECIFIED (0):
+                The render state is unspecified.
+            SUCCEEDED (1):
+                All rendering operations have completed
+                successfully.
+            FAILED (2):
+                All rendering operations have completed, and
+                one or more have failed.
+            IN_PROGRESS (3):
+                Rendering has started and is not complete.
+        """
         RENDER_STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2
@@ -1437,14 +1461,39 @@ class Release(proto.Message):
         """
 
         class TargetRenderState(proto.Enum):
-            r"""Valid states of the render operation."""
+            r"""Valid states of the render operation.
+
+            Values:
+                TARGET_RENDER_STATE_UNSPECIFIED (0):
+                    The render operation state is unspecified.
+                SUCCEEDED (1):
+                    The render operation has completed
+                    successfully.
+                FAILED (2):
+                    The render operation has failed.
+                IN_PROGRESS (3):
+                    The render operation is in progress.
+            """
             TARGET_RENDER_STATE_UNSPECIFIED = 0
             SUCCEEDED = 1
             FAILED = 2
             IN_PROGRESS = 3
 
         class FailureCause(proto.Enum):
-            r"""Well-known rendering failures."""
+            r"""Well-known rendering failures.
+
+            Values:
+                FAILURE_CAUSE_UNSPECIFIED (0):
+                    No reason for failure is specified.
+                CLOUD_BUILD_UNAVAILABLE (1):
+                    Cloud Build is not available, either because it is not
+                    enabled or because Google Cloud Deploy has insufficient
+                    permissions. See `required
+                    permission </deploy/docs/cloud-deploy-service-account#required_permissions>`__.
+                EXECUTION_FAILED (2):
+                    The render operation did not complete
+                    successfully; check Cloud Build logs.
+            """
             FAILURE_CAUSE_UNSPECIFIED = 0
             CLOUD_BUILD_UNAVAILABLE = 1
             EXECUTION_FAILED = 2
@@ -1858,7 +1907,20 @@ class Rollout(proto.Message):
     """
 
     class ApprovalState(proto.Enum):
-        r"""Valid approval states of a ``Rollout``."""
+        r"""Valid approval states of a ``Rollout``.
+
+        Values:
+            APPROVAL_STATE_UNSPECIFIED (0):
+                The ``Rollout`` has an unspecified approval state.
+            NEEDS_APPROVAL (1):
+                The ``Rollout`` requires approval.
+            DOES_NOT_NEED_APPROVAL (2):
+                The ``Rollout`` does not require approval.
+            APPROVED (3):
+                The ``Rollout`` has been approved.
+            REJECTED (4):
+                The ``Rollout`` has been rejected.
+        """
         APPROVAL_STATE_UNSPECIFIED = 0
         NEEDS_APPROVAL = 1
         DOES_NOT_NEED_APPROVAL = 2
@@ -1866,7 +1928,28 @@ class Rollout(proto.Message):
         REJECTED = 4
 
     class State(proto.Enum):
-        r"""Valid states of a ``Rollout``."""
+        r"""Valid states of a ``Rollout``.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The ``Rollout`` has an unspecified state.
+            SUCCEEDED (1):
+                The ``Rollout`` has completed successfully.
+            FAILED (2):
+                The ``Rollout`` has failed.
+            IN_PROGRESS (3):
+                The ``Rollout`` is being deployed.
+            PENDING_APPROVAL (4):
+                The ``Rollout`` needs approval.
+            APPROVAL_REJECTED (5):
+                An approver rejected the ``Rollout``.
+            PENDING (6):
+                The ``Rollout`` is waiting for an earlier Rollout(s) to
+                complete on this ``Target``.
+            PENDING_RELEASE (7):
+                The ``Rollout`` is waiting for the ``Release`` to be fully
+                rendered.
+        """
         STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2
@@ -1877,7 +1960,29 @@ class Rollout(proto.Message):
         PENDING_RELEASE = 7
 
     class FailureCause(proto.Enum):
-        r"""Well-known rollout failures."""
+        r"""Well-known rollout failures.
+
+        Values:
+            FAILURE_CAUSE_UNSPECIFIED (0):
+                No reason for failure is specified.
+            CLOUD_BUILD_UNAVAILABLE (1):
+                Cloud Build is not available, either because it is not
+                enabled or because Cloud Deploy has insufficient
+                permissions. See `required
+                permission </deploy/docs/cloud-deploy-service-account#required_permissions>`__.
+            EXECUTION_FAILED (2):
+                The deploy operation did not complete
+                successfully; check Cloud Build logs.
+            DEADLINE_EXCEEDED (3):
+                Deployment did not complete within the
+                alloted time.
+            RELEASE_FAILED (4):
+                Release is in a failed state.
+            RELEASE_ABANDONED (5):
+                Release is abandoned.
+            VERIFICATION_CONFIG_NOT_FOUND (6):
+                No skaffold verify configuration was found.
+        """
         FAILURE_CAUSE_UNSPECIFIED = 0
         CLOUD_BUILD_UNAVAILABLE = 1
         EXECUTION_FAILED = 2
@@ -2059,7 +2164,23 @@ class Phase(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Valid states of a Phase."""
+        r"""Valid states of a Phase.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The Phase has an unspecified state.
+            PENDING (1):
+                The Phase is waiting for an earlier Phase(s)
+                to complete.
+            IN_PROGRESS (2):
+                The Phase is in progress.
+            SUCCEEDED (3):
+                The Phase has succeeded.
+            FAILED (4):
+                The Phase has failed.
+            ABORTED (5):
+                The Phase was aborted.
+        """
         STATE_UNSPECIFIED = 0
         PENDING = 1
         IN_PROGRESS = 2
@@ -2137,7 +2258,25 @@ class Job(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Valid states of a Job."""
+        r"""Valid states of a Job.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The Job has an unspecified state.
+            PENDING (1):
+                The Job is waiting for an earlier Phase(s) or
+                Job(s) to complete.
+            DISABLED (2):
+                The Job is disabled.
+            IN_PROGRESS (3):
+                The Job is in progress.
+            SUCCEEDED (4):
+                The Job succeeded.
+            FAILED (5):
+                The Job failed.
+            ABORTED (6):
+                The Job was aborted.
+        """
         STATE_UNSPECIFIED = 0
         PENDING = 1
         DISABLED = 2
@@ -2534,7 +2673,18 @@ class JobRun(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Valid states of a ``JobRun``."""
+        r"""Valid states of a ``JobRun``.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The ``JobRun`` has an unspecified state.
+            IN_PROGRESS (1):
+                The ``JobRun`` is in progress.
+            SUCCEEDED (2):
+                The ``JobRun`` has succeeded.
+            FAILED (3):
+                The ``JobRun`` has failed.
+        """
         STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
         SUCCEEDED = 2
@@ -2615,7 +2765,23 @@ class DeployJobRun(proto.Message):
     """
 
     class FailureCause(proto.Enum):
-        r"""Well-known deploy failures."""
+        r"""Well-known deploy failures.
+
+        Values:
+            FAILURE_CAUSE_UNSPECIFIED (0):
+                No reason for failure is specified.
+            CLOUD_BUILD_UNAVAILABLE (1):
+                Cloud Build is not available, either because it is not
+                enabled or because Google Cloud Deploy has insufficient
+                permissions. See `Required
+                permission </deploy/docs/cloud-deploy-service-account#required_permissions>`__.
+            EXECUTION_FAILED (2):
+                The deploy operation did not complete
+                successfully; check Cloud Build logs.
+            DEADLINE_EXCEEDED (3):
+                The deploy build did not complete within the
+                alloted time.
+        """
         FAILURE_CAUSE_UNSPECIFIED = 0
         CLOUD_BUILD_UNAVAILABLE = 1
         EXECUTION_FAILED = 2
@@ -2666,7 +2832,25 @@ class VerifyJobRun(proto.Message):
     """
 
     class FailureCause(proto.Enum):
-        r"""Well-known verify failures."""
+        r"""Well-known verify failures.
+
+        Values:
+            FAILURE_CAUSE_UNSPECIFIED (0):
+                No reason for failure is specified.
+            CLOUD_BUILD_UNAVAILABLE (1):
+                Cloud Build is not available, either because it is not
+                enabled or because Google Cloud Deploy has insufficient
+                permissions. See `required
+                permission </deploy/docs/cloud-deploy-service-account#required_permissions>`__.
+            EXECUTION_FAILED (2):
+                The verify operation did not complete
+                successfully; check Cloud Build logs.
+            DEADLINE_EXCEEDED (3):
+                The verify build did not complete within the
+                alloted time.
+            VERIFICATION_CONFIG_NOT_FOUND (4):
+                No Skaffold verify configuration was found.
+        """
         FAILURE_CAUSE_UNSPECIFIED = 0
         CLOUD_BUILD_UNAVAILABLE = 1
         EXECUTION_FAILED = 2
