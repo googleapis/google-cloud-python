@@ -212,6 +212,20 @@ class ProductCatalogItem(proto.Message):
     class StockState(proto.Enum):
         r"""Item stock state. If this field is unspecified, the item is
         assumed to be in stock.
+
+        Values:
+            STOCK_STATE_UNSPECIFIED (0):
+                Default item stock status. Should never be
+                used.
+            IN_STOCK (0):
+                Item in stock.
+            OUT_OF_STOCK (1):
+                Item out of stock.
+            PREORDER (2):
+                Item that is in pre-order state.
+            BACKORDER (3):
+                Item that is back-ordered (i.e. temporarily
+                out of stock).
         """
         _pb_options = {"allow_alias": True}
         STOCK_STATE_UNSPECIFIED = 0

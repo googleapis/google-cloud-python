@@ -837,7 +837,7 @@ class PredictionApiKeyRegistryClient(metaclass=PredictionApiKeyRegistryClientMet
             metadata=metadata,
         )
 
-    def __enter__(self):
+    def __enter__(self) -> "PredictionApiKeyRegistryClient":
         return self
 
     def __exit__(self, type, value, traceback):

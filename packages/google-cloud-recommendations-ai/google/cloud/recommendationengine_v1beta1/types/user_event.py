@@ -103,7 +103,22 @@ class UserEvent(proto.Message):
     """
 
     class EventSource(proto.Enum):
-        r"""User event source."""
+        r"""User event source.
+
+        Values:
+            EVENT_SOURCE_UNSPECIFIED (0):
+                Unspecified event source.
+            AUTOML (1):
+                The event is ingested via a javascript pixel
+                or Recommendations AI Tag through automl
+                datalayer or JS Macros.
+            ECOMMERCE (2):
+                The event is ingested via Recommendations AI
+                Tag through Enhanced Ecommerce datalayer.
+            BATCH_UPLOAD (3):
+                The event is ingested via Import user events
+                API.
+        """
         EVENT_SOURCE_UNSPECIFIED = 0
         AUTOML = 1
         ECOMMERCE = 2
