@@ -68,6 +68,26 @@ class ContactPrivacy(proto.Enum):
     and requires that each domain name have an entry. Choose from these
     options to control how much information in your ``ContactSettings``
     is published.
+
+    Values:
+        CONTACT_PRIVACY_UNSPECIFIED (0):
+            The contact privacy settings are undefined.
+        PUBLIC_CONTACT_DATA (1):
+            All the data from ``ContactSettings`` is publicly available.
+            When setting this option, you must also provide a
+            ``PUBLIC_CONTACT_DATA_ACKNOWLEDGEMENT`` in the
+            ``contact_notices`` field of the request.
+        PRIVATE_CONTACT_DATA (2):
+            None of the data from ``ContactSettings`` is publicly
+            available. Instead, proxy contact data is published for your
+            domain. Email sent to the proxy email address is forwarded
+            to the registrant's email address. Cloud Domains provides
+            this privacy proxy service at no additional cost.
+        REDACTED_CONTACT_DATA (3):
+            Some data from ``ContactSettings`` is publicly available.
+            The actual information redacted depends on the domain. For
+            details, see `the registration privacy
+            article <https://support.google.com/domains/answer/3251242>`__.
     """
     CONTACT_PRIVACY_UNSPECIFIED = 0
     PUBLIC_CONTACT_DATA = 1
@@ -76,19 +96,50 @@ class ContactPrivacy(proto.Enum):
 
 
 class DomainNotice(proto.Enum):
-    r"""Notices about special properties of certain domains."""
+    r"""Notices about special properties of certain domains.
+
+    Values:
+        DOMAIN_NOTICE_UNSPECIFIED (0):
+            The notice is undefined.
+        HSTS_PRELOADED (1):
+            Indicates that the domain is preloaded on the HTTP Strict
+            Transport Security list in browsers. Serving a website on
+            such domain requires an SSL certificate. For details, see
+            `how to get an SSL
+            certificate <https://support.google.com/domains/answer/7638036>`__.
+    """
     DOMAIN_NOTICE_UNSPECIFIED = 0
     HSTS_PRELOADED = 1
 
 
 class ContactNotice(proto.Enum):
-    r"""Notices related to contact information."""
+    r"""Notices related to contact information.
+
+    Values:
+        CONTACT_NOTICE_UNSPECIFIED (0):
+            The notice is undefined.
+        PUBLIC_CONTACT_DATA_ACKNOWLEDGEMENT (1):
+            Required when setting the ``privacy`` field of
+            ``ContactSettings`` to ``PUBLIC_CONTACT_DATA``, which
+            exposes contact data publicly.
+    """
     CONTACT_NOTICE_UNSPECIFIED = 0
     PUBLIC_CONTACT_DATA_ACKNOWLEDGEMENT = 1
 
 
 class TransferLockState(proto.Enum):
-    r"""Possible states of a ``Registration``'s transfer lock."""
+    r"""Possible states of a ``Registration``'s transfer lock.
+
+    Values:
+        TRANSFER_LOCK_STATE_UNSPECIFIED (0):
+            The state is unspecified.
+        UNLOCKED (1):
+            The domain is unlocked and can be transferred
+            to another registrar.
+        LOCKED (2):
+            The domain is locked and cannot be
+            transferred to another registrar.
+    """
     TRANSFER_LOCK_STATE_UNSPECIFIED = 0
     UNLOCKED = 1
     LOCKED = 2
@@ -169,7 +220,40 @@ class Registration(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Possible states of a ``Registration``."""
+        r"""Possible states of a ``Registration``.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state is undefined.
+            REGISTRATION_PENDING (1):
+                The domain is being registered.
+            REGISTRATION_FAILED (2):
+                The domain registration failed. You can
+                delete resources in this state to allow
+                registration to be retried.
+            TRANSFER_PENDING (3):
+                The domain is being transferred from another
+                registrar to Cloud Domains.
+            TRANSFER_FAILED (4):
+                The attempt to transfer the domain from
+                another registrar to Cloud Domains failed. You
+                can delete resources in this state and retry the
+                transfer.
+            ACTIVE (6):
+                The domain is registered and operational. The
+                domain renews automatically as long as it
+                remains in this state.
+            SUSPENDED (7):
+                The domain is suspended and inoperative. For more details,
+                see the ``issues`` field.
+            EXPORTED (8):
+                The domain is no longer managed with Cloud Domains. It may
+                have been transferred to another registrar or exported for
+                management in `Google Domains <https://domains.google/>`__.
+                You can no longer update it with this API, and information
+                shown about it may be stale. Domains in this state are not
+                automatically renewed by Cloud Domains.
+        """
         STATE_UNSPECIFIED = 0
         REGISTRATION_PENDING = 1
         REGISTRATION_FAILED = 2
@@ -180,7 +264,25 @@ class Registration(proto.Message):
         EXPORTED = 8
 
     class Issue(proto.Enum):
-        r"""Possible issues with a ``Registration`` that require attention."""
+        r"""Possible issues with a ``Registration`` that require attention.
+
+        Values:
+            ISSUE_UNSPECIFIED (0):
+                The issue is undefined.
+            CONTACT_SUPPORT (1):
+                Contact the Cloud Support team to resolve a
+                problem with this domain.
+            UNVERIFIED_EMAIL (2):
+                `ICANN <https://icann.org/>`__ requires verification of the
+                email address in the ``Registration``'s
+                ``contact_settings.registrant_contact`` field. To verify the
+                email address, follow the instructions in the email the
+                ``registrant_contact`` receives following registration. If
+                you do not complete email verification within 15 days of
+                registration, the domain is suspended. To resend the
+                verification email, call ConfigureContactSettings and
+                provide the current ``registrant_contact.email``.
+        """
         ISSUE_UNSPECIFIED = 0
         CONTACT_SUPPORT = 1
         UNVERIFIED_EMAIL = 2
@@ -258,7 +360,25 @@ class ManagementSettings(proto.Message):
     """
 
     class RenewalMethod(proto.Enum):
-        r"""Defines how the ``Registration`` is renewed."""
+        r"""Defines how the ``Registration`` is renewed.
+
+        Values:
+            RENEWAL_METHOD_UNSPECIFIED (0):
+                The renewal method is undefined.
+            AUTOMATIC_RENEWAL (1):
+                The domain is automatically renewed each year .
+
+                To disable automatic renewals, delete the resource by
+                calling ``DeleteRegistration`` or export it by calling
+                ``ExportRegistration``.
+            MANUAL_RENEWAL (2):
+                The domain must be explicitly renewed each year before its
+                ``expire_time``. This option is only available when the
+                ``Registration`` is in state ``EXPORTED``.
+
+                To manage the domain's current billing and renewal settings,
+                go to `Google Domains <https://domains.google/>`__.
+        """
         RENEWAL_METHOD_UNSPECIFIED = 0
         AUTOMATIC_RENEWAL = 1
         MANUAL_RENEWAL = 2
@@ -303,7 +423,22 @@ class DnsSettings(proto.Message):
     """
 
     class DsState(proto.Enum):
-        r"""The publication state of DS records for a ``Registration``."""
+        r"""The publication state of DS records for a ``Registration``.
+
+        Values:
+            DS_STATE_UNSPECIFIED (0):
+                DS state is unspecified.
+            DS_RECORDS_UNPUBLISHED (1):
+                DNSSEC is disabled for this domain. No DS
+                records for this domain are published in the
+                parent DNS zone.
+            DS_RECORDS_PUBLISHED (2):
+                DNSSEC is enabled for this domain. Appropriate DS records
+                for this domain are published in the parent DNS zone. This
+                option is valid only if the DNS zone referenced in the
+                ``Registration``'s ``dns_provider`` field is already
+                DNSSEC-signed.
+        """
         DS_STATE_UNSPECIFIED = 0
         DS_RECORDS_UNPUBLISHED = 1
         DS_RECORDS_PUBLISHED = 2
@@ -397,6 +532,52 @@ class DnsSettings(proto.Message):
         class Algorithm(proto.Enum):
             r"""List of algorithms used to create a DNSKEY. Certain
             algorithms are not supported for particular domains.
+
+            Values:
+                ALGORITHM_UNSPECIFIED (0):
+                    The algorithm is unspecified.
+                RSAMD5 (1):
+                    RSA/MD5. Cannot be used for new deployments.
+                DH (2):
+                    Diffie-Hellman. Cannot be used for new
+                    deployments.
+                DSA (3):
+                    DSA/SHA1. Not recommended for new
+                    deployments.
+                ECC (4):
+                    ECC. Not recommended for new deployments.
+                RSASHA1 (5):
+                    RSA/SHA-1. Not recommended for new
+                    deployments.
+                DSANSEC3SHA1 (6):
+                    DSA-NSEC3-SHA1. Not recommended for new
+                    deployments.
+                RSASHA1NSEC3SHA1 (7):
+                    RSA/SHA1-NSEC3-SHA1. Not recommended for new
+                    deployments.
+                RSASHA256 (8):
+                    RSA/SHA-256.
+                RSASHA512 (10):
+                    RSA/SHA-512.
+                ECCGOST (12):
+                    GOST R 34.10-2001.
+                ECDSAP256SHA256 (13):
+                    ECDSA Curve P-256 with SHA-256.
+                ECDSAP384SHA384 (14):
+                    ECDSA Curve P-384 with SHA-384.
+                ED25519 (15):
+                    Ed25519.
+                ED448 (16):
+                    Ed448.
+                INDIRECT (252):
+                    Reserved for Indirect Keys. Cannot be used
+                    for new deployments.
+                PRIVATEDNS (253):
+                    Private algorithm. Cannot be used for new
+                    deployments.
+                PRIVATEOID (254):
+                    Private algorithm OID. Cannot be used for new
+                    deployments.
             """
             ALGORITHM_UNSPECIFIED = 0
             RSAMD5 = 1
@@ -420,6 +601,18 @@ class DnsSettings(proto.Message):
         class DigestType(proto.Enum):
             r"""List of hash functions that may have been used to generate a
             digest of a DNSKEY.
+
+            Values:
+                DIGEST_TYPE_UNSPECIFIED (0):
+                    The DigestType is unspecified.
+                SHA1 (1):
+                    SHA-1. Not recommended for new deployments.
+                SHA256 (2):
+                    SHA-256.
+                GOST3411 (3):
+                    GOST R 34.11-94.
+                SHA384 (4):
+                    SHA-384.
             """
             DIGEST_TYPE_UNSPECIFIED = 0
             SHA1 = 1
@@ -1156,7 +1349,25 @@ class RegisterParameters(proto.Message):
     """
 
     class Availability(proto.Enum):
-        r"""Possible availability states of a domain name."""
+        r"""Possible availability states of a domain name.
+
+        Values:
+            AVAILABILITY_UNSPECIFIED (0):
+                The availability is unspecified.
+            AVAILABLE (1):
+                The domain is available for registration.
+            UNAVAILABLE (2):
+                The domain is not available for registration.
+                Generally this means it is already registered to
+                another party.
+            UNSUPPORTED (3):
+                The domain is not currently supported by
+                Cloud Domains, but may be available elsewhere.
+            UNKNOWN (4):
+                Cloud Domains is unable to determine domain
+                availability, generally due to system
+                maintenance at the domain name registry.
+        """
         AVAILABILITY_UNSPECIFIED = 0
         AVAILABLE = 1
         UNAVAILABLE = 2
