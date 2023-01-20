@@ -54,6 +54,27 @@ class EncodingType(proto.Enum):
     provides the beginning offsets for various outputs, such as tokens
     and mentions, and languages that natively use different text
     encodings may access offsets differently.
+
+    Values:
+        NONE (0):
+            If ``EncodingType`` is not specified, encoding-dependent
+            information (such as ``begin_offset``) will be set at
+            ``-1``.
+        UTF8 (1):
+            Encoding-dependent information (such as ``begin_offset``) is
+            calculated based on the UTF-8 encoding of the input. C++ and
+            Go are examples of languages that use this encoding
+            natively.
+        UTF16 (2):
+            Encoding-dependent information (such as ``begin_offset``) is
+            calculated based on the UTF-16 encoding of the input. Java
+            and JavaScript are examples of languages that use this
+            encoding natively.
+        UTF32 (3):
+            Encoding-dependent information (such as ``begin_offset``) is
+            calculated based on the UTF-32 encoding of the input. Python
+            is an example of a language that uses this encoding
+            natively.
     """
     NONE = 0
     UTF8 = 1
@@ -101,7 +122,16 @@ class Document(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""The document types enum."""
+        r"""The document types enum.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                The content type is not specified.
+            PLAIN_TEXT (1):
+                Plain text
+            HTML (2):
+                HTML
+        """
         TYPE_UNSPECIFIED = 0
         PLAIN_TEXT = 1
         HTML = 2
@@ -194,6 +224,69 @@ class Entity(proto.Message):
         metadata is a Wikipedia URL (``wikipedia_url``) and Knowledge Graph
         MID (``mid``). The table below lists the associated fields for
         entities that have different metadata.
+
+        Values:
+            UNKNOWN (0):
+                Unknown
+            PERSON (1):
+                Person
+            LOCATION (2):
+                Location
+            ORGANIZATION (3):
+                Organization
+            EVENT (4):
+                Event
+            WORK_OF_ART (5):
+                Artwork
+            CONSUMER_GOOD (6):
+                Consumer product
+            OTHER (7):
+                Other types of entities
+            PHONE_NUMBER (9):
+                Phone number
+
+                The metadata lists the phone number, formatted according to
+                local convention, plus whichever additional elements appear
+                in the text:
+
+                -  ``number`` - the actual number, broken down into sections
+                   as per local convention
+                -  ``national_prefix`` - country code, if detected
+                -  ``area_code`` - region or area code, if detected
+                -  ``extension`` - phone extension (to be dialed after
+                   connection), if detected
+            ADDRESS (10):
+                Address
+
+                The metadata identifies the street number and locality plus
+                whichever additional elements appear in the text:
+
+                -  ``street_number`` - street number
+                -  ``locality`` - city or town
+                -  ``street_name`` - street/route name, if detected
+                -  ``postal_code`` - postal code, if detected
+                -  ``country`` - country, if detected<
+                -  ``broad_region`` - administrative area, such as the
+                   state, if detected
+                -  ``narrow_region`` - smaller administrative area, such as
+                   county, if detected
+                -  ``sublocality`` - used in Asian addresses to demark a
+                   district within a city, if detected
+            DATE (11):
+                Date
+
+                The metadata identifies the components of the date:
+
+                -  ``year`` - four digit year, if detected
+                -  ``month`` - two digit month number, if detected
+                -  ``day`` - two digit day number, if detected
+            NUMBER (12):
+                Number
+                The metadata is the number itself.
+            PRICE (13):
+                Price
+
+                The metadata identifies the ``value`` and ``currency``.
         """
         UNKNOWN = 0
         PERSON = 1
@@ -332,7 +425,38 @@ class PartOfSpeech(proto.Message):
     """
 
     class Tag(proto.Enum):
-        r"""The part of speech tags enum."""
+        r"""The part of speech tags enum.
+
+        Values:
+            UNKNOWN (0):
+                Unknown
+            ADJ (1):
+                Adjective
+            ADP (2):
+                Adposition (preposition and postposition)
+            ADV (3):
+                Adverb
+            CONJ (4):
+                Conjunction
+            DET (5):
+                Determiner
+            NOUN (6):
+                Noun (common and proper)
+            NUM (7):
+                Cardinal number
+            PRON (8):
+                Pronoun
+            PRT (9):
+                Particle or other function word
+            PUNCT (10):
+                Punctuation
+            VERB (11):
+                Verb (all tenses and modes)
+            X (12):
+                Other: foreign words, typos, abbreviations
+            AFFIX (13):
+                Affix
+        """
         UNKNOWN = 0
         ADJ = 1
         ADP = 2
@@ -351,6 +475,17 @@ class PartOfSpeech(proto.Message):
     class Aspect(proto.Enum):
         r"""The characteristic of a verb that expresses time flow during
         an event.
+
+        Values:
+            ASPECT_UNKNOWN (0):
+                Aspect is not applicable in the analyzed
+                language or is not predicted.
+            PERFECTIVE (1):
+                Perfective
+            IMPERFECTIVE (2):
+                Imperfective
+            PROGRESSIVE (3):
+                Progressive
         """
         ASPECT_UNKNOWN = 0
         PERFECTIVE = 1
@@ -362,6 +497,39 @@ class PartOfSpeech(proto.Message):
         phrase, clause, or sentence. In some languages, other parts of
         speech, such as adjective and determiner, take case inflection
         in agreement with the noun.
+
+        Values:
+            CASE_UNKNOWN (0):
+                Case is not applicable in the analyzed
+                language or is not predicted.
+            ACCUSATIVE (1):
+                Accusative
+            ADVERBIAL (2):
+                Adverbial
+            COMPLEMENTIVE (3):
+                Complementive
+            DATIVE (4):
+                Dative
+            GENITIVE (5):
+                Genitive
+            INSTRUMENTAL (6):
+                Instrumental
+            LOCATIVE (7):
+                Locative
+            NOMINATIVE (8):
+                Nominative
+            OBLIQUE (9):
+                Oblique
+            PARTITIVE (10):
+                Partitive
+            PREPOSITIONAL (11):
+                Prepositional
+            REFLEXIVE_CASE (12):
+                Reflexive
+            RELATIVE_CASE (13):
+                Relative
+            VOCATIVE (14):
+                Vocative
         """
         CASE_UNKNOWN = 0
         ACCUSATIVE = 1
@@ -385,6 +553,33 @@ class PartOfSpeech(proto.Message):
         categorizing inflected endings of verbs and adjectives or
         distinguishing between short and long forms of adjectives and
         participles
+
+        Values:
+            FORM_UNKNOWN (0):
+                Form is not applicable in the analyzed
+                language or is not predicted.
+            ADNOMIAL (1):
+                Adnomial
+            AUXILIARY (2):
+                Auxiliary
+            COMPLEMENTIZER (3):
+                Complementizer
+            FINAL_ENDING (4):
+                Final ending
+            GERUND (5):
+                Gerund
+            REALIS (6):
+                Realis
+            IRREALIS (7):
+                Irrealis
+            SHORT (8):
+                Short form
+            LONG (9):
+                Long form
+            ORDER (10):
+                Order form
+            SPECIFIC (11):
+                Specific form
         """
         FORM_UNKNOWN = 0
         ADNOMIAL = 1
@@ -402,6 +597,17 @@ class PartOfSpeech(proto.Message):
     class Gender(proto.Enum):
         r"""Gender classes of nouns reflected in the behaviour of
         associated words.
+
+        Values:
+            GENDER_UNKNOWN (0):
+                Gender is not applicable in the analyzed
+                language or is not predicted.
+            FEMININE (1):
+                Feminine
+            MASCULINE (2):
+                Masculine
+            NEUTER (3):
+                Neuter
         """
         GENDER_UNKNOWN = 0
         FEMININE = 1
@@ -411,6 +617,23 @@ class PartOfSpeech(proto.Message):
     class Mood(proto.Enum):
         r"""The grammatical feature of verbs, used for showing modality
         and attitude.
+
+        Values:
+            MOOD_UNKNOWN (0):
+                Mood is not applicable in the analyzed
+                language or is not predicted.
+            CONDITIONAL_MOOD (1):
+                Conditional
+            IMPERATIVE (2):
+                Imperative
+            INDICATIVE (3):
+                Indicative
+            INTERROGATIVE (4):
+                Interrogative
+            JUSSIVE (5):
+                Jussive
+            SUBJUNCTIVE (6):
+                Subjunctive
         """
         MOOD_UNKNOWN = 0
         CONDITIONAL_MOOD = 1
@@ -421,7 +644,19 @@ class PartOfSpeech(proto.Message):
         SUBJUNCTIVE = 6
 
     class Number(proto.Enum):
-        r"""Count distinctions."""
+        r"""Count distinctions.
+
+        Values:
+            NUMBER_UNKNOWN (0):
+                Number is not applicable in the analyzed
+                language or is not predicted.
+            SINGULAR (1):
+                Singular
+            PLURAL (2):
+                Plural
+            DUAL (3):
+                Dual
+        """
         NUMBER_UNKNOWN = 0
         SINGULAR = 1
         PLURAL = 2
@@ -430,6 +665,19 @@ class PartOfSpeech(proto.Message):
     class Person(proto.Enum):
         r"""The distinction between the speaker, second person, third
         person, etc.
+
+        Values:
+            PERSON_UNKNOWN (0):
+                Person is not applicable in the analyzed
+                language or is not predicted.
+            FIRST (1):
+                First
+            SECOND (2):
+                Second
+            THIRD (3):
+                Third
+            REFLEXIVE_PERSON (4):
+                Reflexive
         """
         PERSON_UNKNOWN = 0
         FIRST = 1
@@ -438,19 +686,57 @@ class PartOfSpeech(proto.Message):
         REFLEXIVE_PERSON = 4
 
     class Proper(proto.Enum):
-        r"""This category shows if the token is part of a proper name."""
+        r"""This category shows if the token is part of a proper name.
+
+        Values:
+            PROPER_UNKNOWN (0):
+                Proper is not applicable in the analyzed
+                language or is not predicted.
+            PROPER (1):
+                Proper
+            NOT_PROPER (2):
+                Not proper
+        """
         PROPER_UNKNOWN = 0
         PROPER = 1
         NOT_PROPER = 2
 
     class Reciprocity(proto.Enum):
-        r"""Reciprocal features of a pronoun."""
+        r"""Reciprocal features of a pronoun.
+
+        Values:
+            RECIPROCITY_UNKNOWN (0):
+                Reciprocity is not applicable in the analyzed
+                language or is not predicted.
+            RECIPROCAL (1):
+                Reciprocal
+            NON_RECIPROCAL (2):
+                Non-reciprocal
+        """
         RECIPROCITY_UNKNOWN = 0
         RECIPROCAL = 1
         NON_RECIPROCAL = 2
 
     class Tense(proto.Enum):
-        r"""Time reference."""
+        r"""Time reference.
+
+        Values:
+            TENSE_UNKNOWN (0):
+                Tense is not applicable in the analyzed
+                language or is not predicted.
+            CONDITIONAL_TENSE (1):
+                Conditional
+            FUTURE (2):
+                Future
+            PAST (3):
+                Past
+            PRESENT (4):
+                Present
+            IMPERFECT (5):
+                Imperfect
+            PLUPERFECT (6):
+                Pluperfect
+        """
         TENSE_UNKNOWN = 0
         CONDITIONAL_TENSE = 1
         FUTURE = 2
@@ -462,6 +748,17 @@ class PartOfSpeech(proto.Message):
     class Voice(proto.Enum):
         r"""The relationship between the action that a verb expresses and
         the participants identified by its arguments.
+
+        Values:
+            VOICE_UNKNOWN (0):
+                Voice is not applicable in the analyzed
+                language or is not predicted.
+            ACTIVE (1):
+                Active
+            CAUSATIVE (2):
+                Causative
+            PASSIVE (3):
+                Passive
         """
         VOICE_UNKNOWN = 0
         ACTIVE = 1
@@ -548,7 +845,181 @@ class DependencyEdge(proto.Message):
     """
 
     class Label(proto.Enum):
-        r"""The parse label enum for the token."""
+        r"""The parse label enum for the token.
+
+        Values:
+            UNKNOWN (0):
+                Unknown
+            ABBREV (1):
+                Abbreviation modifier
+            ACOMP (2):
+                Adjectival complement
+            ADVCL (3):
+                Adverbial clause modifier
+            ADVMOD (4):
+                Adverbial modifier
+            AMOD (5):
+                Adjectival modifier of an NP
+            APPOS (6):
+                Appositional modifier of an NP
+            ATTR (7):
+                Attribute dependent of a copular verb
+            AUX (8):
+                Auxiliary (non-main) verb
+            AUXPASS (9):
+                Passive auxiliary
+            CC (10):
+                Coordinating conjunction
+            CCOMP (11):
+                Clausal complement of a verb or adjective
+            CONJ (12):
+                Conjunct
+            CSUBJ (13):
+                Clausal subject
+            CSUBJPASS (14):
+                Clausal passive subject
+            DEP (15):
+                Dependency (unable to determine)
+            DET (16):
+                Determiner
+            DISCOURSE (17):
+                Discourse
+            DOBJ (18):
+                Direct object
+            EXPL (19):
+                Expletive
+            GOESWITH (20):
+                Goes with (part of a word in a text not well
+                edited)
+            IOBJ (21):
+                Indirect object
+            MARK (22):
+                Marker (word introducing a subordinate
+                clause)
+            MWE (23):
+                Multi-word expression
+            MWV (24):
+                Multi-word verbal expression
+            NEG (25):
+                Negation modifier
+            NN (26):
+                Noun compound modifier
+            NPADVMOD (27):
+                Noun phrase used as an adverbial modifier
+            NSUBJ (28):
+                Nominal subject
+            NSUBJPASS (29):
+                Passive nominal subject
+            NUM (30):
+                Numeric modifier of a noun
+            NUMBER (31):
+                Element of compound number
+            P (32):
+                Punctuation mark
+            PARATAXIS (33):
+                Parataxis relation
+            PARTMOD (34):
+                Participial modifier
+            PCOMP (35):
+                The complement of a preposition is a clause
+            POBJ (36):
+                Object of a preposition
+            POSS (37):
+                Possession modifier
+            POSTNEG (38):
+                Postverbal negative particle
+            PRECOMP (39):
+                Predicate complement
+            PRECONJ (40):
+                Preconjunt
+            PREDET (41):
+                Predeterminer
+            PREF (42):
+                Prefix
+            PREP (43):
+                Prepositional modifier
+            PRONL (44):
+                The relationship between a verb and verbal
+                morpheme
+            PRT (45):
+                Particle
+            PS (46):
+                Associative or possessive marker
+            QUANTMOD (47):
+                Quantifier phrase modifier
+            RCMOD (48):
+                Relative clause modifier
+            RCMODREL (49):
+                Complementizer in relative clause
+            RDROP (50):
+                Ellipsis without a preceding predicate
+            REF (51):
+                Referent
+            REMNANT (52):
+                Remnant
+            REPARANDUM (53):
+                Reparandum
+            ROOT (54):
+                Root
+            SNUM (55):
+                Suffix specifying a unit of number
+            SUFF (56):
+                Suffix
+            TMOD (57):
+                Temporal modifier
+            TOPIC (58):
+                Topic marker
+            VMOD (59):
+                Clause headed by an infinite form of the verb
+                that modifies a noun
+            VOCATIVE (60):
+                Vocative
+            XCOMP (61):
+                Open clausal complement
+            SUFFIX (62):
+                Name suffix
+            TITLE (63):
+                Name title
+            ADVPHMOD (64):
+                Adverbial phrase modifier
+            AUXCAUS (65):
+                Causative auxiliary
+            AUXVV (66):
+                Helper auxiliary
+            DTMOD (67):
+                Rentaishi (Prenominal modifier)
+            FOREIGN (68):
+                Foreign words
+            KW (69):
+                Keyword
+            LIST (70):
+                List for chains of comparable items
+            NOMC (71):
+                Nominalized clause
+            NOMCSUBJ (72):
+                Nominalized clausal subject
+            NOMCSUBJPASS (73):
+                Nominalized clausal passive
+            NUMC (74):
+                Compound of numeric modifier
+            COP (75):
+                Copula
+            DISLOCATED (76):
+                Dislocated relation (for fronted/topicalized
+                elements)
+            ASP (77):
+                Aspect marker
+            GMOD (78):
+                Genitive modifier
+            GOBJ (79):
+                Genitive object
+            INFMOD (80):
+                Infinitival modifier
+            MES (81):
+                Measure
+            NCOMP (82):
+                Nominal complement of a noun
+        """
         UNKNOWN = 0
         ABBREV = 1
         ACOMP = 2
@@ -662,7 +1133,16 @@ class EntityMention(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""The supported types of mentions."""
+        r"""The supported types of mentions.
+
+        Values:
+            TYPE_UNKNOWN (0):
+                Unknown
+            PROPER (1):
+                Proper name
+            COMMON (2):
+                Common noun (or noun compound)
+        """
         TYPE_UNKNOWN = 0
         PROPER = 1
         COMMON = 2
@@ -770,7 +1250,18 @@ class ClassificationModelOptions(proto.Message):
         """
 
         class ContentCategoriesVersion(proto.Enum):
-            r"""The content categories used for classification."""
+            r"""The content categories used for classification.
+
+            Values:
+                CONTENT_CATEGORIES_VERSION_UNSPECIFIED (0):
+                    If ``ContentCategoriesVersion`` is not specified, this
+                    option will default to ``V1``.
+                V1 (1):
+                    Legacy content categories of our initial
+                    launch in 2017.
+                V2 (2):
+                    Updated content categories in 2022.
+            """
             CONTENT_CATEGORIES_VERSION_UNSPECIFIED = 0
             V1 = 1
             V2 = 2
