@@ -209,6 +209,32 @@ class CapacityCommitment(proto.Message):
         r"""Commitment plan defines the current committed period.
         Capacity commitment cannot be deleted during it's committed
         period.
+
+        Values:
+            COMMITMENT_PLAN_UNSPECIFIED (0):
+                Invalid plan value. Requests with this value will be
+                rejected with error code
+                ``google.rpc.Code.INVALID_ARGUMENT``.
+            FLEX (3):
+                Flex commitments have committed period of 1
+                minute after becoming ACTIVE. After that, they
+                are not in a committed period anymore and can be
+                removed any time.
+            TRIAL (5):
+                Trial commitments have a committed period of 182 days after
+                becoming ACTIVE. After that, they are converted to a new
+                commitment based on the ``renewal_plan``. Default
+                ``renewal_plan`` for Trial commitment is Flex so that it can
+                be deleted right after committed period ends.
+            MONTHLY (2):
+                Monthly commitments have a committed period
+                of 30 days after becoming ACTIVE. After that,
+                they are not in a committed period anymore and
+                can be removed any time.
+            ANNUAL (4):
+                Annual commitments have a committed period of 365 days after
+                becoming ACTIVE. After that they are converted to a new
+                commitment based on the renewal_plan.
         """
         COMMITMENT_PLAN_UNSPECIFIED = 0
         FLEX = 3
@@ -219,6 +245,20 @@ class CapacityCommitment(proto.Message):
     class State(proto.Enum):
         r"""Capacity commitment can either become ACTIVE right away or
         transition from PENDING to ACTIVE or FAILED.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Invalid state value.
+            PENDING (1):
+                Capacity commitment is pending provisioning. Pending
+                capacity commitment does not contribute to the project's
+                slot_capacity.
+            ACTIVE (2):
+                Once slots are provisioned, capacity commitment becomes
+                active. slot_count is added to the project's slot_capacity.
+            FAILED (3):
+                Capacity commitment is failed to be activated
+                by the backend.
         """
         STATE_UNSPECIFIED = 0
         PENDING = 1
@@ -683,6 +723,21 @@ class Assignment(proto.Message):
     class JobType(proto.Enum):
         r"""Types of job, which could be specified when using the
         reservation.
+
+        Values:
+            JOB_TYPE_UNSPECIFIED (0):
+                Invalid type. Requests with this value will be rejected with
+                error code ``google.rpc.Code.INVALID_ARGUMENT``.
+            PIPELINE (1):
+                Pipeline (load/export) jobs from the project
+                will use the reservation.
+            QUERY (2):
+                Query jobs from the project will use the
+                reservation.
+            ML_EXTERNAL (3):
+                BigQuery ML jobs that use services external
+                to BigQuery for model training. These jobs will
+                not utilize idle slots from other reservations.
         """
         JOB_TYPE_UNSPECIFIED = 0
         PIPELINE = 1
@@ -693,6 +748,15 @@ class Assignment(proto.Message):
         r"""Assignment will remain in PENDING state if no active capacity
         commitment is present. It will become ACTIVE when some capacity
         commitment becomes active.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Invalid state value.
+            PENDING (1):
+                Queries from assignee will be executed as
+                on-demand, if related assignment is pending.
+            ACTIVE (2):
+                Assignment is ready.
         """
         STATE_UNSPECIFIED = 0
         PENDING = 1
