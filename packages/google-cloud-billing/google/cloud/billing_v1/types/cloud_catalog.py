@@ -364,6 +364,14 @@ class AggregationInfo(proto.Message):
         Example: "ACCOUNT" aggregation level indicates that usage for
         tiered pricing is aggregated across all projects in a single
         account.
+
+        Values:
+            AGGREGATION_LEVEL_UNSPECIFIED (0):
+
+            ACCOUNT (1):
+
+            PROJECT (2):
+
         """
         AGGREGATION_LEVEL_UNSPECIFIED = 0
         ACCOUNT = 1
@@ -373,6 +381,14 @@ class AggregationInfo(proto.Message):
         r"""The interval at which usage is aggregated to compute cost.
         Example: "MONTHLY" aggregation interval indicates that usage for
         tiered pricing is aggregated every month.
+
+        Values:
+            AGGREGATION_INTERVAL_UNSPECIFIED (0):
+
+            DAILY (1):
+
+            MONTHLY (2):
+
         """
         AGGREGATION_INTERVAL_UNSPECIFIED = 0
         DAILY = 1
@@ -408,7 +424,22 @@ class GeoTaxonomy(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""The type of Geo Taxonomy: GLOBAL, REGIONAL, or MULTI_REGIONAL."""
+        r"""The type of Geo Taxonomy: GLOBAL, REGIONAL, or MULTI_REGIONAL.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                The type is not specified.
+            GLOBAL (1):
+                The sku is global in nature, e.g. a license
+                sku. Global skus are available in all regions,
+                and so have an empty region list.
+            REGIONAL (2):
+                The sku is available in a specific region,
+                e.g. "us-west2".
+            MULTI_REGIONAL (3):
+                The sku is associated with multiple regions,
+                e.g. "us-west2" and "us-east1".
+        """
         TYPE_UNSPECIFIED = 0
         GLOBAL = 1
         REGIONAL = 2

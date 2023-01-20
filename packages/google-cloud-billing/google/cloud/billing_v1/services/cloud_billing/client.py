@@ -1701,7 +1701,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "CloudBillingClient":
         return self
 
     def __exit__(self, type, value, traceback):
