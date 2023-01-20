@@ -104,7 +104,22 @@ class Experiment(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The state of the experiment."""
+        r"""The state of the experiment.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                State unspecified.
+            DRAFT (1):
+                The experiment is created but not started
+                yet.
+            RUNNING (2):
+                The experiment is running.
+            DONE (3):
+                The experiment is done.
+            ROLLOUT_FAILED (4):
+                The experiment with auto-rollout enabled has
+                failed.
+        """
         STATE_UNSPECIFIED = 0
         DRAFT = 1
         RUNNING = 2
@@ -155,7 +170,26 @@ class Experiment(proto.Message):
         """
 
         class MetricType(proto.Enum):
-            r"""Types of ratio-based metric for Dialogflow experiment."""
+            r"""Types of ratio-based metric for Dialogflow experiment.
+
+            Values:
+                METRIC_UNSPECIFIED (0):
+                    Metric unspecified.
+                CONTAINED_SESSION_NO_CALLBACK_RATE (1):
+                    Percentage of contained sessions without user
+                    calling back in 24 hours.
+                LIVE_AGENT_HANDOFF_RATE (2):
+                    Percentage of sessions that were handed to a
+                    human agent.
+                CALLBACK_SESSION_RATE (3):
+                    Percentage of sessions with the same user
+                    calling back.
+                ABANDONED_SESSION_RATE (4):
+                    Percentage of sessions where user hung up.
+                SESSION_END_RATE (5):
+                    Percentage of sessions reached Dialogflow 'END_PAGE' or
+                    'END_SESSION'.
+            """
             METRIC_UNSPECIFIED = 0
             CONTAINED_SESSION_NO_CALLBACK_RATE = 1
             LIVE_AGENT_HANDOFF_RATE = 2
@@ -164,7 +198,18 @@ class Experiment(proto.Message):
             SESSION_END_RATE = 5
 
         class CountType(proto.Enum):
-            r"""Types of count-based metric for Dialogflow experiment."""
+            r"""Types of count-based metric for Dialogflow experiment.
+
+            Values:
+                COUNT_TYPE_UNSPECIFIED (0):
+                    Count type unspecified.
+                TOTAL_NO_MATCH_COUNT (1):
+                    Total number of occurrences of a 'NO_MATCH'.
+                TOTAL_TURN_COUNT (2):
+                    Total number of turn counts.
+                AVERAGE_TURN_COUNT (3):
+                    Average turn count in a session.
+            """
             COUNT_TYPE_UNSPECIFIED = 0
             TOTAL_NO_MATCH_COUNT = 1
             TOTAL_TURN_COUNT = 2

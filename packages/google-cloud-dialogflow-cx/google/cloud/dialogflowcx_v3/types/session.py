@@ -143,7 +143,19 @@ class DetectIntentResponse(proto.Message):
     """
 
     class ResponseType(proto.Enum):
-        r"""Represents different DetectIntentResponse types."""
+        r"""Represents different DetectIntentResponse types.
+
+        Values:
+            RESPONSE_TYPE_UNSPECIFIED (0):
+                Not specified. This should never happen.
+            PARTIAL (1):
+                Partial response. e.g. Aggregated responses in a Fulfillment
+                that enables ``return_partial_response`` can be returned as
+                partial response. WARNING: partial response is not eligible
+                for barge-in.
+            FINAL (2):
+                Final response.
+        """
         RESPONSE_TYPE_UNSPECIFIED = 0
         PARTIAL = 1
         FINAL = 2
@@ -424,7 +436,26 @@ class StreamingRecognitionResult(proto.Message):
     """
 
     class MessageType(proto.Enum):
-        r"""Type of the response message."""
+        r"""Type of the response message.
+
+        Values:
+            MESSAGE_TYPE_UNSPECIFIED (0):
+                Not specified. Should never be used.
+            TRANSCRIPT (1):
+                Message contains a (possibly partial)
+                transcript.
+            END_OF_SINGLE_UTTERANCE (2):
+                Event indicates that the server has detected the end of the
+                user's speech utterance and expects no additional speech.
+                Therefore, the server will not process additional audio
+                (although it may subsequently return additional results).
+                The client should stop sending additional audio data,
+                half-close the gRPC connection, and wait for any additional
+                results until the server closes the gRPC connection. This
+                message is only sent if
+                [``single_utterance``][google.cloud.dialogflow.cx.v3.InputAudioConfig.single_utterance]
+                was set to ``true``, and is not used otherwise.
+        """
         MESSAGE_TYPE_UNSPECIFIED = 0
         TRANSCRIPT = 1
         END_OF_SINGLE_UTTERANCE = 2
@@ -1087,7 +1118,24 @@ class Match(proto.Message):
     """
 
     class MatchType(proto.Enum):
-        r"""Type of a Match."""
+        r"""Type of a Match.
+
+        Values:
+            MATCH_TYPE_UNSPECIFIED (0):
+                Not specified. Should never be used.
+            INTENT (1):
+                The query was matched to an intent.
+            DIRECT_INTENT (2):
+                The query directly triggered an intent.
+            PARAMETER_FILLING (3):
+                The query was used for parameter filling.
+            NO_MATCH (4):
+                No match was found for the query.
+            NO_INPUT (5):
+                Indicates an empty query.
+            EVENT (6):
+                The query directly triggered an event.
+        """
         MATCH_TYPE_UNSPECIFIED = 0
         INTENT = 1
         DIRECT_INTENT = 2

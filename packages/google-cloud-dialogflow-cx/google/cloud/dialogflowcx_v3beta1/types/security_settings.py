@@ -287,18 +287,44 @@ class SecuritySettings(proto.Message):
     """
 
     class RedactionStrategy(proto.Enum):
-        r"""Defines how we redact data."""
+        r"""Defines how we redact data.
+
+        Values:
+            REDACTION_STRATEGY_UNSPECIFIED (0):
+                Do not redact.
+            REDACT_WITH_SERVICE (1):
+                Call redaction service to clean up the data
+                to be persisted.
+        """
         REDACTION_STRATEGY_UNSPECIFIED = 0
         REDACT_WITH_SERVICE = 1
 
     class RedactionScope(proto.Enum):
-        r"""Defines what types of data to redact."""
+        r"""Defines what types of data to redact.
+
+        Values:
+            REDACTION_SCOPE_UNSPECIFIED (0):
+                Don't redact any kind of data.
+            REDACT_DISK_STORAGE (2):
+                On data to be written to disk or similar
+                devices that are capable of holding data even if
+                power is disconnected. This includes data that
+                are temporarily saved on disk.
+        """
         REDACTION_SCOPE_UNSPECIFIED = 0
         REDACT_DISK_STORAGE = 2
 
     class PurgeDataType(proto.Enum):
         r"""Type of data we purge after retention settings triggers
         purge.
+
+        Values:
+            PURGE_DATA_TYPE_UNSPECIFIED (0):
+                Unspecified. Do not use.
+            DIALOGFLOW_HISTORY (1):
+                Dialogflow history. This does not include
+                Cloud logging, which is owned by the user - not
+                Dialogflow.
         """
         PURGE_DATA_TYPE_UNSPECIFIED = 0
         DIALOGFLOW_HISTORY = 1
@@ -327,6 +353,16 @@ class SecuritySettings(proto.Message):
         class AudioFormat(proto.Enum):
             r"""File format for exported audio file. Currently only in
             telephony recordings.
+
+            Values:
+                AUDIO_FORMAT_UNSPECIFIED (0):
+                    Unspecified. Do not use.
+                MULAW (1):
+                    G.711 mu-law PCM with 8kHz sample rate.
+                MP3 (2):
+                    MP3 file format.
+                OGG (3):
+                    OGG Vorbis.
             """
             AUDIO_FORMAT_UNSPECIFIED = 0
             MULAW = 1

@@ -418,6 +418,14 @@ class ContinuousTestResult(proto.Message):
     class AggregatedTestResult(proto.Enum):
         r"""The overall result for a continuous test run in an agent
         environment.
+
+        Values:
+            AGGREGATED_TEST_RESULT_UNSPECIFIED (0):
+                Not specified. Should never be used.
+            PASSED (1):
+                All the tests passed.
+            FAILED (2):
+                At least one test did not pass.
         """
         AGGREGATED_TEST_RESULT_UNSPECIFIED = 0
         PASSED = 1

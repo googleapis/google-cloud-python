@@ -85,7 +85,20 @@ class Version(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The state of the version."""
+        r"""The state of the version.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not specified. This value is not used.
+            RUNNING (1):
+                Version is not ready to serve (e.g. training
+                is running).
+            SUCCEEDED (2):
+                Training has succeeded and this version is
+                ready to serve.
+            FAILED (3):
+                Version training failed.
+        """
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2

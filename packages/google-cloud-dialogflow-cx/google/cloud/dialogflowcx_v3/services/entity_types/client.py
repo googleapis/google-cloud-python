@@ -1094,7 +1094,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
             metadata=metadata,
         )
 
-    def __enter__(self):
+    def __enter__(self) -> "EntityTypesClient":
         return self
 
     def __exit__(self, type, value, traceback):

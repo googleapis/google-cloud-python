@@ -648,7 +648,18 @@ class WebhookResponse(proto.Message):
         """
 
         class MergeBehavior(proto.Enum):
-            r"""Defines merge behavior for ``messages``."""
+            r"""Defines merge behavior for ``messages``.
+
+            Values:
+                MERGE_BEHAVIOR_UNSPECIFIED (0):
+                    Not specified. ``APPEND`` will be used.
+                APPEND (1):
+                    ``messages`` will be appended to the list of messages
+                    waiting to be sent to the user.
+                REPLACE (2):
+                    ``messages`` will replace the list of messages waiting to be
+                    sent to the user.
+            """
             MERGE_BEHAVIOR_UNSPECIFIED = 0
             APPEND = 1
             REPLACE = 2
@@ -785,7 +796,23 @@ class PageInfo(proto.Message):
             """
 
             class ParameterState(proto.Enum):
-                r"""Represents the state of a parameter."""
+                r"""Represents the state of a parameter.
+
+                Values:
+                    PARAMETER_STATE_UNSPECIFIED (0):
+                        Not specified. This value should be never
+                        used.
+                    EMPTY (1):
+                        Indicates that the parameter does not have a
+                        value.
+                    INVALID (2):
+                        Indicates that the parameter value is
+                        invalid. This field can be used by the webhook
+                        to invalidate the parameter and ask the server
+                        to collect it from the user again.
+                    FILLED (3):
+                        Indicates that the parameter has a value.
+                """
                 PARAMETER_STATE_UNSPECIFIED = 0
                 EMPTY = 1
                 INVALID = 2

@@ -47,7 +47,38 @@ class ValidationMessage(proto.Message):
     """
 
     class ResourceType(proto.Enum):
-        r"""Resource types."""
+        r"""Resource types.
+
+        Values:
+            RESOURCE_TYPE_UNSPECIFIED (0):
+                Unspecified.
+            AGENT (1):
+                Agent.
+            INTENT (2):
+                Intent.
+            INTENT_TRAINING_PHRASE (8):
+                Intent training phrase.
+            INTENT_PARAMETER (9):
+                Intent parameter.
+            INTENTS (10):
+                Multiple intents.
+            INTENT_TRAINING_PHRASES (11):
+                Multiple training phrases.
+            ENTITY_TYPE (3):
+                Entity type.
+            ENTITY_TYPES (12):
+                Multiple entity types.
+            WEBHOOK (4):
+                Webhook.
+            FLOW (5):
+                Flow.
+            PAGE (6):
+                Page.
+            PAGES (13):
+                Multiple pages.
+            TRANSITION_ROUTE_GROUP (7):
+                Transition route group.
+        """
         RESOURCE_TYPE_UNSPECIFIED = 0
         AGENT = 1
         INTENT = 2
@@ -64,7 +95,19 @@ class ValidationMessage(proto.Message):
         TRANSITION_ROUTE_GROUP = 7
 
     class Severity(proto.Enum):
-        r"""Severity level."""
+        r"""Severity level.
+
+        Values:
+            SEVERITY_UNSPECIFIED (0):
+                Unspecified.
+            INFO (1):
+                The agent doesn't follow Dialogflow best
+                practices.
+            WARNING (2):
+                The agent may not behave as expected.
+            ERROR (3):
+                The agent may experience failures.
+        """
         SEVERITY_UNSPECIFIED = 0
         INFO = 1
         WARNING = 2

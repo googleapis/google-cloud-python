@@ -71,7 +71,16 @@ __protobuf__ = proto.module(
 
 
 class TestResult(proto.Enum):
-    r"""The test result for a test case and an agent environment."""
+    r"""The test result for a test case and an agent environment.
+
+    Values:
+        TEST_RESULT_UNSPECIFIED (0):
+            Not specified. Should never be used.
+        PASSED (1):
+            The test passed.
+        FAILED (2):
+            The test did not pass.
+    """
     TEST_RESULT_UNSPECIFIED = 0
     PASSED = 1
     FAILED = 2
@@ -391,7 +400,20 @@ class TestRunDifference(proto.Message):
     """
 
     class DiffType(proto.Enum):
-        r"""What part of the message replay differs from the test case."""
+        r"""What part of the message replay differs from the test case.
+
+        Values:
+            DIFF_TYPE_UNSPECIFIED (0):
+                Should never be used.
+            INTENT (1):
+                The intent.
+            PAGE (2):
+                The page.
+            PARAMETERS (3):
+                The parameters.
+            UTTERANCE (4):
+                The message utterance.
+        """
         DIFF_TYPE_UNSPECIFIED = 0
         INTENT = 1
         PAGE = 2
@@ -670,7 +692,18 @@ class CalculateCoverageRequest(proto.Message):
     """
 
     class CoverageType(proto.Enum):
-        r"""The type of coverage score requested."""
+        r"""The type of coverage score requested.
+
+        Values:
+            COVERAGE_TYPE_UNSPECIFIED (0):
+                Should never be used.
+            INTENT (1):
+                Intent coverage.
+            PAGE_TRANSITION (2):
+                Page transition coverage.
+            TRANSITION_ROUTE_GROUP (3):
+                Transition route group coverage.
+        """
         COVERAGE_TYPE_UNSPECIFIED = 0
         INTENT = 1
         PAGE_TRANSITION = 2
@@ -766,6 +799,17 @@ class ListTestCasesRequest(proto.Message):
     class TestCaseView(proto.Enum):
         r"""Specifies how much test case information to include in the
         response.
+
+        Values:
+            TEST_CASE_VIEW_UNSPECIFIED (0):
+                The default / unset value.
+                The API will default to the BASIC view.
+            BASIC (1):
+                Include basic metadata about the test case,
+                but not the conversation turns. This is the
+                default value.
+            FULL (2):
+                Include everything.
         """
         TEST_CASE_VIEW_UNSPECIFIED = 0
         BASIC = 1
@@ -1197,7 +1241,16 @@ class ExportTestCasesRequest(proto.Message):
     """
 
     class DataFormat(proto.Enum):
-        r"""Data format of the exported test cases."""
+        r"""Data format of the exported test cases.
+
+        Values:
+            DATA_FORMAT_UNSPECIFIED (0):
+                Unspecified format.
+            BLOB (1):
+                Raw bytes.
+            JSON (2):
+                JSON format.
+        """
         DATA_FORMAT_UNSPECIFIED = 0
         BLOB = 1
         JSON = 2

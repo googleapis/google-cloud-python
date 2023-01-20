@@ -1178,7 +1178,7 @@ class PagesClient(metaclass=PagesClientMeta):
             metadata=metadata,
         )
 
-    def __enter__(self):
+    def __enter__(self) -> "PagesClient":
         return self
 
     def __exit__(self, type, value, traceback):

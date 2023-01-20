@@ -662,7 +662,7 @@ class ChangelogsClient(metaclass=ChangelogsClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "ChangelogsClient":
         return self
 
     def __exit__(self, type, value, traceback):

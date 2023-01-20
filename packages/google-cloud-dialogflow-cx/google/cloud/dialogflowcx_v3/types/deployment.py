@@ -61,7 +61,18 @@ class Deployment(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The state of the deployment."""
+        r"""The state of the deployment.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                State unspecified.
+            RUNNING (1):
+                The deployment is running.
+            SUCCEEDED (2):
+                The deployment succeeded.
+            FAILED (3):
+                The deployment failed.
+        """
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2

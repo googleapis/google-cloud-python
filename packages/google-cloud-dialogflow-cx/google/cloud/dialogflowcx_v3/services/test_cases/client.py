@@ -1934,7 +1934,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "TestCasesClient":
         return self
 
     def __exit__(self, type, value, traceback):

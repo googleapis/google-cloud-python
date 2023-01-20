@@ -67,13 +67,36 @@ class NluSettings(proto.Message):
     """
 
     class ModelType(proto.Enum):
-        r"""NLU model type."""
+        r"""NLU model type.
+
+        Values:
+            MODEL_TYPE_UNSPECIFIED (0):
+                Not specified. ``MODEL_TYPE_STANDARD`` will be used.
+            MODEL_TYPE_STANDARD (1):
+                Use standard NLU model.
+            MODEL_TYPE_ADVANCED (3):
+                Use advanced NLU model.
+        """
         MODEL_TYPE_UNSPECIFIED = 0
         MODEL_TYPE_STANDARD = 1
         MODEL_TYPE_ADVANCED = 3
 
     class ModelTrainingMode(proto.Enum):
-        r"""NLU model training mode."""
+        r"""NLU model training mode.
+
+        Values:
+            MODEL_TRAINING_MODE_UNSPECIFIED (0):
+                Not specified. ``MODEL_TRAINING_MODE_AUTOMATIC`` will be
+                used.
+            MODEL_TRAINING_MODE_AUTOMATIC (1):
+                NLU model training is automatically triggered
+                when a flow gets modified. User can also
+                manually trigger model training in this mode.
+            MODEL_TRAINING_MODE_MANUAL (2):
+                User needs to manually trigger NLU model
+                training. Best for large flows whose models take
+                long time to train.
+        """
         MODEL_TRAINING_MODE_UNSPECIFIED = 0
         MODEL_TRAINING_MODE_AUTOMATIC = 1
         MODEL_TRAINING_MODE_MANUAL = 2
@@ -562,7 +585,22 @@ class ImportFlowRequest(proto.Message):
     """
 
     class ImportOption(proto.Enum):
-        r"""Import option."""
+        r"""Import option.
+
+        Values:
+            IMPORT_OPTION_UNSPECIFIED (0):
+                Unspecified. Treated as ``KEEP``.
+            KEEP (1):
+                Always respect settings in exported flow
+                content. It may cause a import failure if some
+                settings (e.g. custom NLU) are not supported in
+                the agent to import into.
+            FALLBACK (2):
+                Fallback to default settings if some settings
+                are not supported in the agent to import into.
+                E.g. Standard NLU will be used if custom NLU is
+                not available.
+        """
         IMPORT_OPTION_UNSPECIFIED = 0
         KEEP = 1
         FALLBACK = 2

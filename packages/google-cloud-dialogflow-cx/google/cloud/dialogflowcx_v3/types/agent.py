@@ -370,7 +370,14 @@ class ExportAgentRequest(proto.Message):
     """
 
     class DataFormat(proto.Enum):
-        r"""Data format of the exported agent."""
+        r"""Data format of the exported agent.
+
+        Values:
+            DATA_FORMAT_UNSPECIFIED (0):
+                Unspecified format.
+            BLOB (1):
+                Agent content will be exported as raw bytes.
+        """
         DATA_FORMAT_UNSPECIFIED = 0
         BLOB = 1
 
@@ -466,7 +473,20 @@ class RestoreAgentRequest(proto.Message):
     """
 
     class RestoreOption(proto.Enum):
-        r"""Restore option."""
+        r"""Restore option.
+
+        Values:
+            RESTORE_OPTION_UNSPECIFIED (0):
+                Unspecified. Treated as KEEP.
+            KEEP (1):
+                Always respect the settings from the exported
+                agent file. It may cause a restoration failure
+                if some settings (e.g. model type) are not
+                supported in the target agent.
+            FALLBACK (2):
+                Fallback to default settings if some settings
+                are not supported in the target agent.
+        """
         RESTORE_OPTION_UNSPECIFIED = 0
         KEEP = 1
         FALLBACK = 2
