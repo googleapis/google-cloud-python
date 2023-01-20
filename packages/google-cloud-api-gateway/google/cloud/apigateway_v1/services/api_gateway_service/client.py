@@ -2379,7 +2379,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "ApiGatewayServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

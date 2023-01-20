@@ -79,7 +79,22 @@ class Api(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""All the possible API states."""
+        r"""All the possible API states.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                API does not have a state yet.
+            CREATING (1):
+                API is being created.
+            ACTIVE (2):
+                API is active.
+            FAILED (3):
+                API creation failed.
+            DELETING (4):
+                API is being deleted.
+            UPDATING (5):
+                API is being updated.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -179,7 +194,27 @@ class ApiConfig(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""All the possible API Config states."""
+        r"""All the possible API Config states.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                API Config does not have a state yet.
+            CREATING (1):
+                API Config is being created and deployed to
+                the API Controller.
+            ACTIVE (2):
+                API Config is ready for use by Gateways.
+            FAILED (3):
+                API Config creation failed.
+            DELETING (4):
+                API Config is being deleted.
+            UPDATING (5):
+                API Config is being updated.
+            ACTIVATING (6):
+                API Config settings are being activated in
+                downstream systems. API Configs in this state
+                cannot be used by Gateways.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -341,7 +376,22 @@ class Gateway(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""All the possible Gateway states."""
+        r"""All the possible Gateway states.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Gateway does not have a state yet.
+            CREATING (1):
+                Gateway is being created.
+            ACTIVE (2):
+                Gateway is running and ready for requests.
+            FAILED (3):
+                Gateway creation failed.
+            DELETING (4):
+                Gateway is being deleted.
+            UPDATING (5):
+                Gateway is being updated.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -786,6 +836,14 @@ class GetApiConfigRequest(proto.Message):
     class ConfigView(proto.Enum):
         r"""Enum to control which fields should be included in the
         response.
+
+        Values:
+            CONFIG_VIEW_UNSPECIFIED (0):
+
+            BASIC (1):
+                Do not include configuration source files.
+            FULL (2):
+                Include configuration source files.
         """
         CONFIG_VIEW_UNSPECIFIED = 0
         BASIC = 1
