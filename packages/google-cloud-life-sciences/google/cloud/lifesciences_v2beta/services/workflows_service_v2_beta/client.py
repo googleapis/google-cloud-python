@@ -540,7 +540,7 @@ class WorkflowsServiceV2BetaClient(metaclass=WorkflowsServiceV2BetaClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "WorkflowsServiceV2BetaClient":
         return self
 
     def __exit__(self, type, value, traceback):
