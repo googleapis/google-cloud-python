@@ -115,7 +115,22 @@ class RestrictAllowedResourcesRequest(proto.Message):
     """
 
     class RestrictionType(proto.Enum):
-        r"""The type of restriction."""
+        r"""The type of restriction.
+
+        Values:
+            RESTRICTION_TYPE_UNSPECIFIED (0):
+                Unknown restriction type.
+            ALLOW_ALL_GCP_RESOURCES (1):
+                Allow the use all of all gcp products,
+                irrespective of the compliance posture. This
+                effectively removes gcp.restrictServiceUsage
+                OrgPolicy on the AssuredWorkloads Folder.
+            ALLOW_COMPLIANT_RESOURCES (2):
+                Based on Workload's compliance regime,
+                allowed list changes. See -
+                https://cloud.google.com/assured-workloads/docs/supported-products
+                for the list of supported resources.
+        """
         RESTRICTION_TYPE_UNSPECIFIED = 0
         ALLOW_ALL_GCP_RESOURCES = 1
         ALLOW_COMPLIANT_RESOURCES = 2
@@ -430,7 +445,41 @@ class Workload(proto.Message):
     """
 
     class ComplianceRegime(proto.Enum):
-        r"""Supported Compliance Regimes."""
+        r"""Supported Compliance Regimes.
+
+        Values:
+            COMPLIANCE_REGIME_UNSPECIFIED (0):
+                Unknown compliance regime.
+            IL4 (1):
+                Information protection as per DoD IL4
+                requirements.
+            CJIS (2):
+                Criminal Justice Information Services (CJIS)
+                Security policies.
+            FEDRAMP_HIGH (3):
+                FedRAMP High data protection controls
+            FEDRAMP_MODERATE (4):
+                FedRAMP Moderate data protection controls
+            US_REGIONAL_ACCESS (5):
+                Assured Workloads For US Regions data
+                protection controls
+            HIPAA (6):
+                Health Insurance Portability and
+                Accountability Act controls
+            HITRUST (7):
+                Health Information Trust Alliance controls
+            EU_REGIONS_AND_SUPPORT (8):
+                Assured Workloads For EU Regions and Support
+                controls
+            CA_REGIONS_AND_SUPPORT (9):
+                Assured Workloads For Canada Regions and
+                Support controls
+            ITAR (10):
+                International Traffic in Arms Regulations
+            AU_REGIONS_AND_US_SUPPORT (11):
+                Assured Workloads for Australia Regions and
+                Support controls
+        """
         COMPLIANCE_REGIME_UNSPECIFIED = 0
         IL4 = 1
         CJIS = 2
@@ -445,7 +494,16 @@ class Workload(proto.Message):
         AU_REGIONS_AND_US_SUPPORT = 11
 
     class KajEnrollmentState(proto.Enum):
-        r"""Key Access Justifications(KAJ) Enrollment State."""
+        r"""Key Access Justifications(KAJ) Enrollment State.
+
+        Values:
+            KAJ_ENROLLMENT_STATE_UNSPECIFIED (0):
+                Default State for KAJ Enrollment.
+            KAJ_ENROLLMENT_STATE_PENDING (1):
+                Pending State for KAJ Enrollment.
+            KAJ_ENROLLMENT_STATE_COMPLETE (2):
+                Complete State for KAJ Enrollment.
+        """
         KAJ_ENROLLMENT_STATE_UNSPECIFIED = 0
         KAJ_ENROLLMENT_STATE_PENDING = 1
         KAJ_ENROLLMENT_STATE_COMPLETE = 2
@@ -462,7 +520,22 @@ class Workload(proto.Message):
         """
 
         class ResourceType(proto.Enum):
-            r"""The type of resource."""
+            r"""The type of resource.
+
+            Values:
+                RESOURCE_TYPE_UNSPECIFIED (0):
+                    Unknown resource type.
+                CONSUMER_PROJECT (1):
+                    Deprecated. Existing workloads will continue
+                    to support this, but new CreateWorkloadRequests
+                    should not specify this as an input value.
+                CONSUMER_FOLDER (4):
+                    Consumer Folder.
+                ENCRYPTION_KEYS_PROJECT (2):
+                    Consumer project containing encryption keys.
+                KEYRING (3):
+                    Keyring resource that hosts encryption keys.
+            """
             RESOURCE_TYPE_UNSPECIFIED = 0
             CONSUMER_PROJECT = 1
             CONSUMER_FOLDER = 4
@@ -617,13 +690,40 @@ class Workload(proto.Message):
         """
 
         class SetupState(proto.Enum):
-            r"""Setup state of SAA enrollment."""
+            r"""Setup state of SAA enrollment.
+
+            Values:
+                SETUP_STATE_UNSPECIFIED (0):
+                    Unspecified.
+                STATUS_PENDING (1):
+                    SAA enrollment pending.
+                STATUS_COMPLETE (2):
+                    SAA enrollment comopleted.
+            """
             SETUP_STATE_UNSPECIFIED = 0
             STATUS_PENDING = 1
             STATUS_COMPLETE = 2
 
         class SetupError(proto.Enum):
-            r"""Setup error of SAA enrollment."""
+            r"""Setup error of SAA enrollment.
+
+            Values:
+                SETUP_ERROR_UNSPECIFIED (0):
+                    Unspecified.
+                ERROR_INVALID_BASE_SETUP (1):
+                    Invalid states for all customers, to be
+                    redirected to AA UI for additional details.
+                ERROR_MISSING_EXTERNAL_SIGNING_KEY (2):
+                    Returned when there is not an EKM key
+                    configured.
+                ERROR_NOT_ALL_SERVICES_ENROLLED (3):
+                    Returned when there are no enrolled services
+                    or the customer is enrolled in CAA only for a
+                    subset of services.
+                ERROR_SETUP_CHECK_FAILED (4):
+                    Returned when exception was encountered
+                    during evaluation of other criteria.
+            """
             SETUP_ERROR_UNSPECIFIED = 0
             ERROR_INVALID_BASE_SETUP = 1
             ERROR_MISSING_EXTERNAL_SIGNING_KEY = 2

@@ -1211,7 +1211,7 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "AssuredWorkloadsServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):
