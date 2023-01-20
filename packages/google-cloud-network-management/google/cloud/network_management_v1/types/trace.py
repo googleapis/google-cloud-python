@@ -191,6 +191,79 @@ class Step(proto.Message):
     class State(proto.Enum):
         r"""Type of states that are defined in the network state machine.
         Each step in the packet trace is in a specific state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified state.
+            START_FROM_INSTANCE (1):
+                Initial state: packet originating from a
+                Compute Engine instance. An InstanceInfo is
+                populated with starting instance information.
+            START_FROM_INTERNET (2):
+                Initial state: packet originating from the
+                internet. The endpoint information is populated.
+            START_FROM_PRIVATE_NETWORK (3):
+                Initial state: packet originating from a VPC
+                or on-premises network with internal source IP.
+                If the source is a VPC network visible to the
+                user, a NetworkInfo is populated with details of
+                the network.
+            START_FROM_GKE_MASTER (21):
+                Initial state: packet originating from a
+                Google Kubernetes Engine cluster master. A
+                GKEMasterInfo is populated with starting
+                instance information.
+            START_FROM_CLOUD_SQL_INSTANCE (22):
+                Initial state: packet originating from a
+                Cloud SQL instance. A CloudSQLInstanceInfo is
+                populated with starting instance information.
+            APPLY_INGRESS_FIREWALL_RULE (4):
+                Config checking state: verify ingress
+                firewall rule.
+            APPLY_EGRESS_FIREWALL_RULE (5):
+                Config checking state: verify egress firewall
+                rule.
+            APPLY_ROUTE (6):
+                Config checking state: verify route.
+            APPLY_FORWARDING_RULE (7):
+                Config checking state: match forwarding rule.
+            SPOOFING_APPROVED (8):
+                Config checking state: packet sent or
+                received under foreign IP address and allowed.
+            ARRIVE_AT_INSTANCE (9):
+                Forwarding state: arriving at a Compute
+                Engine instance.
+            ARRIVE_AT_INTERNAL_LOAD_BALANCER (10):
+                Forwarding state: arriving at a Compute
+                Engine internal load balancer.
+            ARRIVE_AT_EXTERNAL_LOAD_BALANCER (11):
+                Forwarding state: arriving at a Compute
+                Engine external load balancer.
+            ARRIVE_AT_VPN_GATEWAY (12):
+                Forwarding state: arriving at a Cloud VPN
+                gateway.
+            ARRIVE_AT_VPN_TUNNEL (13):
+                Forwarding state: arriving at a Cloud VPN
+                tunnel.
+            NAT (14):
+                Transition state: packet header translated.
+            PROXY_CONNECTION (15):
+                Transition state: original connection is
+                terminated and a new proxied connection is
+                initiated.
+            DELIVER (16):
+                Final state: packet could be delivered.
+            DROP (17):
+                Final state: packet could be dropped.
+            FORWARD (18):
+                Final state: packet could be forwarded to a
+                network with an unknown configuration.
+            ABORT (19):
+                Final state: analysis is aborted.
+            VIEWER_PERMISSION_MISSING (20):
+                Special state: viewer of the test result does
+                not have permission to see the configuration in
+                this step.
         """
         STATE_UNSPECIFIED = 0
         START_FROM_INSTANCE = 1
@@ -451,7 +524,22 @@ class FirewallInfo(proto.Message):
     """
 
     class FirewallRuleType(proto.Enum):
-        r"""The firewall rule's type."""
+        r"""The firewall rule's type.
+
+        Values:
+            FIREWALL_RULE_TYPE_UNSPECIFIED (0):
+                Unspecified type.
+            HIERARCHICAL_FIREWALL_POLICY_RULE (1):
+                Hierarchical firewall policy rule. For details, see
+                `Hierarchical firewall policies
+                overview <https://cloud.google.com/vpc/docs/firewall-policies>`__.
+            VPC_FIREWALL_RULE (2):
+                VPC firewall rule. For details, see `VPC firewall rules
+                overview <https://cloud.google.com/vpc/docs/firewalls>`__.
+            IMPLIED_VPC_FIREWALL_RULE (3):
+                Implied VPC firewall rule. For details, see `Implied
+                rules <https://cloud.google.com/vpc/docs/firewalls#default_firewall_rules>`__.
+        """
         FIREWALL_RULE_TYPE_UNSPECIFIED = 0
         HIERARCHICAL_FIREWALL_POLICY_RULE = 1
         VPC_FIREWALL_RULE = 2
@@ -529,7 +617,27 @@ class RouteInfo(proto.Message):
     """
 
     class RouteType(proto.Enum):
-        r"""Type of route:"""
+        r"""Type of route:
+
+        Values:
+            ROUTE_TYPE_UNSPECIFIED (0):
+                Unspecified type. Default value.
+            SUBNET (1):
+                Route is a subnet route automatically created
+                by the system.
+            STATIC (2):
+                Static route created by the user, including
+                the default route to the internet.
+            DYNAMIC (3):
+                Dynamic route exchanged between BGP peers.
+            PEERING_SUBNET (4):
+                A subnet route received from peering network.
+            PEERING_STATIC (5):
+                A static route received from peering network.
+            PEERING_DYNAMIC (6):
+                A dynamic route received from peering
+                network.
+        """
         ROUTE_TYPE_UNSPECIFIED = 0
         SUBNET = 1
         STATIC = 2
@@ -539,7 +647,42 @@ class RouteInfo(proto.Message):
         PEERING_DYNAMIC = 6
 
     class NextHopType(proto.Enum):
-        r"""Type of next hop:"""
+        r"""Type of next hop:
+
+        Values:
+            NEXT_HOP_TYPE_UNSPECIFIED (0):
+                Unspecified type. Default value.
+            NEXT_HOP_IP (1):
+                Next hop is an IP address.
+            NEXT_HOP_INSTANCE (2):
+                Next hop is a Compute Engine instance.
+            NEXT_HOP_NETWORK (3):
+                Next hop is a VPC network gateway.
+            NEXT_HOP_PEERING (4):
+                Next hop is a peering VPC.
+            NEXT_HOP_INTERCONNECT (5):
+                Next hop is an interconnect.
+            NEXT_HOP_VPN_TUNNEL (6):
+                Next hop is a VPN tunnel.
+            NEXT_HOP_VPN_GATEWAY (7):
+                Next hop is a VPN gateway. This scenario only
+                happens when tracing connectivity from an
+                on-premises network to Google Cloud through a
+                VPN. The analysis simulates a packet departing
+                from the on-premises network through a VPN
+                tunnel and arriving at a Cloud VPN gateway.
+            NEXT_HOP_INTERNET_GATEWAY (8):
+                Next hop is an internet gateway.
+            NEXT_HOP_BLACKHOLE (9):
+                Next hop is blackhole; that is, the next hop
+                either does not exist or is not running.
+            NEXT_HOP_ILB (10):
+                Next hop is the forwarding rule of an
+                Internal Load Balancer.
+            NEXT_HOP_ROUTER_APPLIANCE (11):
+                Next hop is a `router appliance
+                instance <https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/ra-overview>`__.
+        """
         NEXT_HOP_TYPE_UNSPECIFIED = 0
         NEXT_HOP_IP = 1
         NEXT_HOP_INSTANCE = 2
@@ -666,7 +809,22 @@ class LoadBalancerInfo(proto.Message):
     """
 
     class LoadBalancerType(proto.Enum):
-        r"""The type definition for a load balancer:"""
+        r"""The type definition for a load balancer:
+
+        Values:
+            LOAD_BALANCER_TYPE_UNSPECIFIED (0):
+                Type is unspecified.
+            INTERNAL_TCP_UDP (1):
+                Internal TCP/UDP load balancer.
+            NETWORK_TCP_UDP (2):
+                Network TCP/UDP load balancer.
+            HTTP_PROXY (3):
+                HTTP(S) proxy load balancer.
+            TCP_PROXY (4):
+                TCP proxy load balancer.
+            SSL_PROXY (5):
+                SSL proxy load balancer.
+        """
         LOAD_BALANCER_TYPE_UNSPECIFIED = 0
         INTERNAL_TCP_UDP = 1
         NETWORK_TCP_UDP = 2
@@ -677,6 +835,15 @@ class LoadBalancerInfo(proto.Message):
     class BackendType(proto.Enum):
         r"""The type definition for a load balancer backend
         configuration:
+
+        Values:
+            BACKEND_TYPE_UNSPECIFIED (0):
+                Type is unspecified.
+            BACKEND_SERVICE (1):
+                Backend Service as the load balancer's
+                backend.
+            TARGET_POOL (2):
+                Target Pool as the load balancer's backend.
         """
         BACKEND_TYPE_UNSPECIFIED = 0
         BACKEND_SERVICE = 1
@@ -730,7 +897,24 @@ class LoadBalancerBackend(proto.Message):
     """
 
     class HealthCheckFirewallState(proto.Enum):
-        r"""State of a health check firewall configuration:"""
+        r"""State of a health check firewall configuration:
+
+        Values:
+            HEALTH_CHECK_FIREWALL_STATE_UNSPECIFIED (0):
+                State is unspecified. Default state if not
+                populated.
+            CONFIGURED (1):
+                There are configured firewall rules to allow
+                health check probes to the backend.
+            MISCONFIGURED (2):
+                There are firewall rules configured to allow
+                partial health check ranges or block all health
+                check ranges. If a health check probe is sent
+                from denied IP ranges, the health check to the
+                backend will fail. Then, the backend will be
+                marked unhealthy and will not receive traffic
+                sent to the load balancer.
+        """
         HEALTH_CHECK_FIREWALL_STATE_UNSPECIFIED = 0
         CONFIGURED = 1
         MISCONFIGURED = 2
@@ -841,6 +1025,16 @@ class VpnTunnelInfo(proto.Message):
         r"""Types of VPN routing policy. For details, refer to `Networks and
         Tunnel
         routing <https://cloud.google.com/network-connectivity/docs/vpn/concepts/choosing-networks-routing/>`__.
+
+        Values:
+            ROUTING_TYPE_UNSPECIFIED (0):
+                Unspecified type. Default value.
+            ROUTE_BASED (1):
+                Route based VPN.
+            POLICY_BASED (2):
+                Policy based routing.
+            DYNAMIC (3):
+                Dynamic (BGP) routing.
         """
         ROUTING_TYPE_UNSPECIFIED = 0
         ROUTE_BASED = 1
@@ -955,7 +1149,23 @@ class DeliverInfo(proto.Message):
     """
 
     class Target(proto.Enum):
-        r"""Deliver target types:"""
+        r"""Deliver target types:
+
+        Values:
+            TARGET_UNSPECIFIED (0):
+                Target not specified.
+            INSTANCE (1):
+                Target is a Compute Engine instance.
+            INTERNET (2):
+                Target is the internet.
+            GOOGLE_API (3):
+                Target is a Google API.
+            GKE_MASTER (4):
+                Target is a Google Kubernetes Engine cluster
+                master.
+            CLOUD_SQL_INSTANCE (5):
+                Target is a Cloud SQL instance.
+        """
         TARGET_UNSPECIFIED = 0
         INSTANCE = 1
         INTERNET = 2
@@ -987,7 +1197,26 @@ class ForwardInfo(proto.Message):
     """
 
     class Target(proto.Enum):
-        r"""Forward target types."""
+        r"""Forward target types.
+
+        Values:
+            TARGET_UNSPECIFIED (0):
+                Target not specified.
+            PEERING_VPC (1):
+                Forwarded to a VPC peering network.
+            VPN_GATEWAY (2):
+                Forwarded to a Cloud VPN gateway.
+            INTERCONNECT (3):
+                Forwarded to a Cloud Interconnect connection.
+            GKE_MASTER (4):
+                Forwarded to a Google Kubernetes Engine
+                Container cluster master.
+            IMPORTED_CUSTOM_ROUTE_NEXT_HOP (5):
+                Forwarded to the next hop of a custom route
+                imported from a peering VPC.
+            CLOUD_SQL_INSTANCE (6):
+                Forwarded to a Cloud SQL instance.
+        """
         TARGET_UNSPECIFIED = 0
         PEERING_VPC = 1
         VPN_GATEWAY = 2
@@ -1023,7 +1252,70 @@ class AbortInfo(proto.Message):
     """
 
     class Cause(proto.Enum):
-        r"""Abort cause types:"""
+        r"""Abort cause types:
+
+        Values:
+            CAUSE_UNSPECIFIED (0):
+                Cause is unspecified.
+            UNKNOWN_NETWORK (1):
+                Aborted due to unknown network.
+                The reachability analysis cannot proceed because
+                the user does not have access to the host
+                project's network configurations, including
+                firewall rules and routes. This happens when the
+                project is a service project and the endpoints
+                being traced are in the host project's network.
+            UNKNOWN_IP (2):
+                Aborted because the IP address(es) are
+                unknown.
+            UNKNOWN_PROJECT (3):
+                Aborted because no project information can be
+                derived from the test input.
+            PERMISSION_DENIED (4):
+                Aborted because the user lacks the permission
+                to access all or part of the network
+                configurations required to run the test.
+            NO_SOURCE_LOCATION (5):
+                Aborted because no valid source endpoint is
+                derived from the input test request.
+            INVALID_ARGUMENT (6):
+                Aborted because the source and/or destination
+                endpoint specified in the test are invalid. The
+                possible reasons that an endpoint is invalid
+                include: malformed IP address; nonexistent
+                instance or network URI; IP address not in the
+                range of specified network URI; and instance not
+                owning the network interface in the specified
+                network.
+            NO_EXTERNAL_IP (7):
+                Aborted because traffic is sent from a public
+                IP to an instance without an external IP.
+            UNINTENDED_DESTINATION (8):
+                Aborted because none of the traces matches
+                destination information specified in the input
+                test request.
+            TRACE_TOO_LONG (9):
+                Aborted because the number of steps in the
+                trace exceeding a certain limit which may be
+                caused by routing loop.
+            INTERNAL_ERROR (10):
+                Aborted due to internal server error.
+            SOURCE_ENDPOINT_NOT_FOUND (11):
+                Aborted because the source endpoint could not
+                be found.
+            MISMATCHED_SOURCE_NETWORK (12):
+                Aborted because the source network does not
+                match the source endpoint.
+            DESTINATION_ENDPOINT_NOT_FOUND (13):
+                Aborted because the destination endpoint
+                could not be found.
+            MISMATCHED_DESTINATION_NETWORK (14):
+                Aborted because the destination network does
+                not match the destination endpoint.
+            UNSUPPORTED (15):
+                Aborted because the test scenario is not
+                supported.
+        """
         CAUSE_UNSPECIFIED = 0
         UNKNOWN_NETWORK = 1
         UNKNOWN_IP = 2
@@ -1067,7 +1359,94 @@ class DropInfo(proto.Message):
     """
 
     class Cause(proto.Enum):
-        r"""Drop cause types:"""
+        r"""Drop cause types:
+
+        Values:
+            CAUSE_UNSPECIFIED (0):
+                Cause is unspecified.
+            UNKNOWN_EXTERNAL_ADDRESS (1):
+                Destination external address cannot be
+                resolved to a known target. If the address is
+                used in a Google Cloud project, provide the
+                project ID as test input.
+            FOREIGN_IP_DISALLOWED (2):
+                A Compute Engine instance can only send or receive a packet
+                with a foreign IP address if ip_forward is enabled.
+            FIREWALL_RULE (3):
+                Dropped due to a firewall rule, unless
+                allowed due to connection tracking.
+            NO_ROUTE (4):
+                Dropped due to no routes.
+            ROUTE_BLACKHOLE (5):
+                Dropped due to invalid route. Route's next
+                hop is a blackhole.
+            ROUTE_WRONG_NETWORK (6):
+                Packet is sent to a wrong (unintended)
+                network. Example: you trace a packet from
+                VM1:Network1 to VM2:Network2, however, the route
+                configured in Network1 sends the packet destined
+                for VM2's IP addresss to Network3.
+            PRIVATE_TRAFFIC_TO_INTERNET (7):
+                Packet with internal destination address sent
+                to the internet gateway.
+            PRIVATE_GOOGLE_ACCESS_DISALLOWED (8):
+                Instance with only an internal IP address
+                tries to access Google API and services, but
+                private Google access is not enabled.
+            NO_EXTERNAL_ADDRESS (9):
+                Instance with only an internal IP address
+                tries to access external hosts, but Cloud NAT is
+                not enabled in the subnet, unless special
+                configurations on a VM allow this connection.
+            UNKNOWN_INTERNAL_ADDRESS (10):
+                Destination internal address cannot be
+                resolved to a known target. If this is a shared
+                VPC scenario, verify if the service project ID
+                is provided as test input. Otherwise, verify if
+                the IP address is being used in the project.
+            FORWARDING_RULE_MISMATCH (11):
+                Forwarding rule's protocol and ports do not
+                match the packet header.
+            FORWARDING_RULE_NO_INSTANCES (12):
+                Forwarding rule does not have backends
+                configured.
+            FIREWALL_BLOCKING_LOAD_BALANCER_BACKEND_HEALTH_CHECK (13):
+                Firewalls block the health check probes to the backends and
+                cause the backends to be unavailable for traffic from the
+                load balancer. For more details, see `Health check firewall
+                rules <https://cloud.google.com/load-balancing/docs/health-checks#firewall_rules>`__.
+            INSTANCE_NOT_RUNNING (14):
+                Packet is sent from or to a Compute Engine
+                instance that is not in a running state.
+            TRAFFIC_TYPE_BLOCKED (15):
+                The type of traffic is blocked and the user cannot configure
+                a firewall rule to enable it. See `Always blocked
+                traffic <https://cloud.google.com/vpc/docs/firewalls#blockedtraffic>`__
+                for more details.
+            GKE_MASTER_UNAUTHORIZED_ACCESS (16):
+                Access to Google Kubernetes Engine cluster master's endpoint
+                is not authorized. See `Access to the cluster
+                endpoints <https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters#access_to_the_cluster_endpoints>`__
+                for more details.
+            CLOUD_SQL_INSTANCE_UNAUTHORIZED_ACCESS (17):
+                Access to the Cloud SQL instance endpoint is not authorized.
+                See `Authorizing with authorized
+                networks <https://cloud.google.com/sql/docs/mysql/authorize-networks>`__
+                for more details.
+            DROPPED_INSIDE_GKE_SERVICE (18):
+                Packet was dropped inside Google Kubernetes
+                Engine Service.
+            DROPPED_INSIDE_CLOUD_SQL_SERVICE (19):
+                Packet was dropped inside Cloud SQL Service.
+            GOOGLE_MANAGED_SERVICE_NO_PEERING (20):
+                Packet was dropped because there is no
+                peering between the originating network and the
+                Google Managed Services Network.
+            CLOUD_SQL_INSTANCE_NO_IP_ADDRESS (21):
+                Packet was dropped because the Cloud SQL
+                instance has neither a private nor a public IP
+                address.
+        """
         CAUSE_UNSPECIFIED = 0
         UNKNOWN_EXTERNAL_ADDRESS = 1
         FOREIGN_IP_DISALLOWED = 2

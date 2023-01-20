@@ -215,6 +215,19 @@ class Endpoint(proto.Message):
     class NetworkType(proto.Enum):
         r"""The type definition of an endpoint's network. Use one of the
         following choices:
+
+        Values:
+            NETWORK_TYPE_UNSPECIFIED (0):
+                Default type if unspecified.
+            GCP_NETWORK (1):
+                A network hosted within Google Cloud
+                Platform. To receive more detailed output,
+                specify the URI for the source or destination
+                network.
+            NON_GCP_NETWORK (2):
+                A network hosted outside of Google Cloud
+                Platform. This can be an on-premises network, or
+                a network hosted by another cloud provider.
         """
         NETWORK_TYPE_UNSPECIFIED = 0
         GCP_NETWORK = 1
@@ -276,7 +289,42 @@ class ReachabilityDetails(proto.Message):
     """
 
     class Result(proto.Enum):
-        r"""The overall result of the test's configuration analysis."""
+        r"""The overall result of the test's configuration analysis.
+
+        Values:
+            RESULT_UNSPECIFIED (0):
+                No result was specified.
+            REACHABLE (1):
+                Possible scenarios are:
+
+                -  The configuration analysis determined that a packet
+                   originating from the source is expected to reach the
+                   destination.
+                -  The analysis didn't complete because the user lacks
+                   permission for some of the resources in the trace.
+                   However, at the time the user's permission became
+                   insufficient, the trace had been successful so far.
+            UNREACHABLE (2):
+                A packet originating from the source is
+                expected to be dropped before reaching the
+                destination.
+            AMBIGUOUS (4):
+                The source and destination endpoints do not
+                uniquely identify the test location in the
+                network, and the reachability result contains
+                multiple traces. For some traces, a packet could
+                be delivered, and for others, it would not be.
+            UNDETERMINED (5):
+                The configuration analysis did not complete. Possible
+                reasons are:
+
+                -  A permissions error occurred--for example, the user might
+                   not have read permission for all of the resources named
+                   in the test.
+                -  An internal error occurred.
+                -  The analyzer received an invalid or unsupported argument
+                   or was unable to identify a known endpoint.
+        """
         RESULT_UNSPECIFIED = 0
         REACHABLE = 1
         UNREACHABLE = 2
