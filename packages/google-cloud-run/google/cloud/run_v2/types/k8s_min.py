@@ -49,11 +49,12 @@ class Container(proto.Message):
 
     Attributes:
         name (str):
-            Name of the container specified as a DNS_LABEL.
+            Name of the container specified as a DNS_LABEL (RFC 1123).
         image (str):
-            Required. URL of the Container image in
-            Google Container Registry or Google Artifact
-            Registry. More info:
+            Required. Name of the container image in
+            Dockerhub, Google Artifact Registry, or Google
+            Container Registry. If the host is not provided,
+            Dockerhub is assumed. More info:
             https://kubernetes.io/docs/concepts/containers/images
         command (MutableSequence[str]):
             Entrypoint array. Not executed within a shell. The docker
@@ -494,7 +495,10 @@ class VersionToPath(proto.Message):
 
 
 class CloudSqlInstance(proto.Message):
-    r"""Represents a specific Cloud SQL instance.
+    r"""Represents a set of Cloud SQL instances. Each one will be available
+    under /cloudsql/[instance]. Visit
+    https://cloud.google.com/sql/docs/mysql/connect-run for more
+    information on how to connect Cloud SQL and Cloud Run.
 
     Attributes:
         instances (MutableSequence[str]):

@@ -34,8 +34,22 @@ class ExecutionTemplate(proto.Message):
     Attributes:
         labels (MutableMapping[str, str]):
             KRM-style labels for the resource.
+
+            .. raw:: html
+
+                <p>Cloud Run API v2 does not support labels with `run.googleapis.com`,
+                `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
+                namespaces, and they will be rejected. All system labels in v1 now have a
+                corresponding field in v2 ExecutionTemplate.
         annotations (MutableMapping[str, str]):
             KRM-style annotations for the resource.
+
+            .. raw:: html
+
+                <p>Cloud Run API v2 does not support annotations with `run.googleapis.com`,
+                `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
+                namespaces, and they will be rejected. All system annotations in v1 now
+                have a corresponding field in v2 ExecutionTemplate.
         parallelism (int):
             Specifies the maximum desired number of tasks the execution
             should run at given time. Must be <= task_count. When the

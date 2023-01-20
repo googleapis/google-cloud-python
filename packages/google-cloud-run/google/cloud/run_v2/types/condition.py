@@ -71,7 +71,25 @@ class Condition(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Represents the possible Condition states."""
+        r"""Represents the possible Condition states.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The default value. This value is used if the
+                state is omitted.
+            CONDITION_PENDING (1):
+                Transient state: Reconciliation has not
+                started yet.
+            CONDITION_RECONCILING (2):
+                Transient state: reconciliation is still in
+                progress.
+            CONDITION_FAILED (3):
+                Terminal state: Reconciliation did not
+                succeed.
+            CONDITION_SUCCEEDED (4):
+                Terminal state: Reconciliation completed
+                successfully.
+        """
         STATE_UNSPECIFIED = 0
         CONDITION_PENDING = 1
         CONDITION_RECONCILING = 2
@@ -79,14 +97,63 @@ class Condition(proto.Message):
         CONDITION_SUCCEEDED = 4
 
     class Severity(proto.Enum):
-        r"""Represents the severity of the condition failures."""
+        r"""Represents the severity of the condition failures.
+
+        Values:
+            SEVERITY_UNSPECIFIED (0):
+                Unspecified severity
+            ERROR (1):
+                Error severity.
+            WARNING (2):
+                Warning severity.
+            INFO (3):
+                Info severity.
+        """
         SEVERITY_UNSPECIFIED = 0
         ERROR = 1
         WARNING = 2
         INFO = 3
 
     class CommonReason(proto.Enum):
-        r"""Reasons common to all types of conditions."""
+        r"""Reasons common to all types of conditions.
+
+        Values:
+            COMMON_REASON_UNDEFINED (0):
+                Default value.
+            UNKNOWN (1):
+                Reason unknown. Further details will be in
+                message.
+            REVISION_FAILED (3):
+                Revision creation process failed.
+            PROGRESS_DEADLINE_EXCEEDED (4):
+                Timed out waiting for completion.
+            CONTAINER_MISSING (6):
+                The container image path is incorrect.
+            CONTAINER_PERMISSION_DENIED (7):
+                Insufficient permissions on the container
+                image.
+            CONTAINER_IMAGE_UNAUTHORIZED (8):
+                Container image is not authorized by policy.
+            CONTAINER_IMAGE_AUTHORIZATION_CHECK_FAILED (9):
+                Container image policy authorization check
+                failed.
+            ENCRYPTION_KEY_PERMISSION_DENIED (10):
+                Insufficient permissions on encryption key.
+            ENCRYPTION_KEY_CHECK_FAILED (11):
+                Permission check on encryption key failed.
+            SECRETS_ACCESS_CHECK_FAILED (12):
+                At least one Access check on secrets failed.
+            WAITING_FOR_OPERATION (13):
+                Waiting for operation to complete.
+            IMMEDIATE_RETRY (14):
+                System will retry immediately.
+            POSTPONED_RETRY (15):
+                System will retry later; current attempt
+                failed.
+            INTERNAL (16):
+                An internal error occurred. Further
+                information may be in the message.
+        """
         COMMON_REASON_UNDEFINED = 0
         UNKNOWN = 1
         REVISION_FAILED = 3
@@ -104,7 +171,48 @@ class Condition(proto.Message):
         INTERNAL = 16
 
     class RevisionReason(proto.Enum):
-        r"""Reasons specific to Revision resource."""
+        r"""Reasons specific to Revision resource.
+
+        Values:
+            REVISION_REASON_UNDEFINED (0):
+                Default value.
+            PENDING (1):
+                Revision in Pending state.
+            RESERVE (2):
+                Revision is in Reserve state.
+            RETIRED (3):
+                Revision is Retired.
+            RETIRING (4):
+                Revision is being retired.
+            RECREATING (5):
+                Revision is being recreated.
+            HEALTH_CHECK_CONTAINER_ERROR (6):
+                There was a health check error.
+            CUSTOMIZED_PATH_RESPONSE_PENDING (7):
+                Health check failed due to user error from
+                customized path of the container. System will
+                retry.
+            MIN_INSTANCES_NOT_PROVISIONED (8):
+                A revision with min_instance_count > 0 was created and is
+                reserved, but it was not configured to serve traffic, so
+                it's not live. This can also happen momentarily during
+                traffic migration.
+            ACTIVE_REVISION_LIMIT_REACHED (9):
+                The maximum allowed number of active
+                revisions has been reached.
+            NO_DEPLOYMENT (10):
+                There was no deployment defined.
+                This value is no longer used, but Services
+                created in older versions of the API might
+                contain this value.
+            HEALTH_CHECK_SKIPPED (11):
+                A revision's container has no port specified
+                since the revision is of a manually scaled
+                service with 0 instance count
+            MIN_INSTANCES_WARMING (12):
+                A revision with min_instance_count > 0 was created and is
+                waiting for enough instances to begin a traffic migration.
+        """
         REVISION_REASON_UNDEFINED = 0
         PENDING = 1
         RESERVE = 2
@@ -117,9 +225,24 @@ class Condition(proto.Message):
         ACTIVE_REVISION_LIMIT_REACHED = 9
         NO_DEPLOYMENT = 10
         HEALTH_CHECK_SKIPPED = 11
+        MIN_INSTANCES_WARMING = 12
 
     class ExecutionReason(proto.Enum):
-        r"""Reasons specific to Execution resource."""
+        r"""Reasons specific to Execution resource.
+
+        Values:
+            EXECUTION_REASON_UNDEFINED (0):
+                Default value.
+            JOB_STATUS_SERVICE_POLLING_ERROR (1):
+                Internal system error getting execution
+                status. System will retry.
+            NON_ZERO_EXIT_CODE (2):
+                A task reached its retry limit and the last
+                attempt failed due to the user container exiting
+                with a non-zero exit code.
+            CANCELLED (3):
+                The execution was cancelled by users.
+        """
         EXECUTION_REASON_UNDEFINED = 0
         JOB_STATUS_SERVICE_POLLING_ERROR = 1
         NON_ZERO_EXIT_CODE = 2

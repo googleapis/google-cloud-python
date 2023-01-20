@@ -28,7 +28,17 @@ __protobuf__ = proto.module(
 
 
 class TrafficTargetAllocationType(proto.Enum):
-    r"""The type of instance allocation."""
+    r"""The type of instance allocation.
+
+    Values:
+        TRAFFIC_TARGET_ALLOCATION_TYPE_UNSPECIFIED (0):
+            Unspecified instance allocation type.
+        TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST (1):
+            Allocates instances to the Service's latest
+            ready Revision.
+        TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION (2):
+            Allocates instances to a Revision by name.
+    """
     TRAFFIC_TARGET_ALLOCATION_TYPE_UNSPECIFIED = 0
     TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST = 1
     TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION = 2

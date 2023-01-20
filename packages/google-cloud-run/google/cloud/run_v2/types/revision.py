@@ -178,10 +178,6 @@ class Revision(proto.Message):
             https://cloud.google.com/resource-manager/docs/creating-managing-labels
             or
             https://cloud.google.com/run/docs/configuring/labels
-            Cloud Run will populate some labels with
-            'run.googleapis.com' or 'serving.knative.dev'
-            namespaces. Those labels are read-only, and user
-            changes will not be preserved.
         annotations (MutableMapping[str, str]):
             KRM-style annotations for the resource.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -237,6 +233,13 @@ class Revision(proto.Message):
             key (CMEK) to use to encrypt this container
             image. For more information, go to
             https://cloud.google.com/run/docs/securing/using-cmek
+        encryption_key_revocation_action (google.cloud.run_v2.types.EncryptionKeyRevocationAction):
+            The action to take if the encryption key is
+            revoked.
+        encryption_key_shutdown_duration (google.protobuf.duration_pb2.Duration):
+            If encryption_key_revocation_action is SHUTDOWN, the
+            duration before shutting down all instances. The minimum
+            increment is 1 hour.
         reconciling (bool):
             Output only. Indicates whether the resource's reconciliation
             is still in progress. See comments in
@@ -353,6 +356,18 @@ class Revision(proto.Message):
     encryption_key: str = proto.Field(
         proto.STRING,
         number=21,
+    )
+    encryption_key_revocation_action: vendor_settings.EncryptionKeyRevocationAction = (
+        proto.Field(
+            proto.ENUM,
+            number=23,
+            enum=vendor_settings.EncryptionKeyRevocationAction,
+        )
+    )
+    encryption_key_shutdown_duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        message=duration_pb2.Duration,
     )
     reconciling: bool = proto.Field(
         proto.BOOL,

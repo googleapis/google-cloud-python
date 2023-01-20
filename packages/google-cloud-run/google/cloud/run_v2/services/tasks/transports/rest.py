@@ -196,6 +196,29 @@ class TasksRestInterceptor:
         """
         return response
 
+    def pre_wait_operation(
+        self,
+        request: operations_pb2.WaitOperationRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> operations_pb2.Operation:
+        """Pre-rpc interceptor for wait_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Tasks server.
+        """
+        return request, metadata
+
+    def post_wait_operation(
+        self, response: operations_pb2.WaitOperationRequest
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for wait_operation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Tasks server but before
+        it is returned to user code.
+        """
+        return response
+
 
 @dataclasses.dataclass
 class TasksRestStub:
@@ -680,6 +703,76 @@ class TasksRestTransport(TasksTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(response.content.decode("utf-8"), resp)
             resp = self._interceptor.post_list_operations(resp)
+            return resp
+
+    @property
+    def wait_operation(self):
+        return self._WaitOperation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _WaitOperation(TasksRestStub):
+        def __call__(
+            self,
+            request: operations_pb2.WaitOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+
+            r"""Call the wait operation method over HTTP.
+
+            Args:
+                request (operations_pb2.WaitOperationRequest):
+                    The request object for WaitOperation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                operations_pb2.Operation: Response from WaitOperation method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{name=projects/*/locations/*/operations/*}:wait",
+                    "body": "*",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_wait_operation(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            body = json.loads(json.dumps(transcoded_request["body"]))
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = operations_pb2.Operation()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_wait_operation(resp)
             return resp
 
     @property

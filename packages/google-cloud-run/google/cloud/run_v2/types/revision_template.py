@@ -39,8 +39,22 @@ class RevisionTemplate(proto.Message):
             generated based on the Service name.
         labels (MutableMapping[str, str]):
             KRM-style labels for the resource.
+
+            .. raw:: html
+
+                <p>Cloud Run API v2 does not support labels with `run.googleapis.com`,
+                `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
+                namespaces, and they will be rejected. All system labels in v1 now have a
+                corresponding field in v2 RevisionTemplate.
         annotations (MutableMapping[str, str]):
             KRM-style annotations for the resource.
+
+            .. raw:: html
+
+                <p>Cloud Run API v2 does not support annotations with `run.googleapis.com`,
+                `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
+                namespaces, and they will be rejected. All system annotations in v1 now
+                have a corresponding field in v2 RevisionTemplate.
         scaling (google.cloud.run_v2.types.RevisionScaling):
             Scaling settings for this Revision.
         vpc_access (google.cloud.run_v2.types.VpcAccess):

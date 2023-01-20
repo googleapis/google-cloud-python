@@ -141,10 +141,6 @@ class Task(proto.Message):
             https://cloud.google.com/resource-manager/docs/creating-managing-labels
             or
             https://cloud.google.com/run/docs/configuring/labels
-            Cloud Run will populate some labels with
-            'run.googleapis.com' or 'serving.knative.dev'
-            namespaces. Those labels are read-only, and user
-            changes will not be preserved.
         annotations (MutableMapping[str, str]):
             KRM-style annotations for the resource.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -236,6 +232,9 @@ class Task(proto.Message):
             Output only. VPC Access configuration to use
             for this Task. For more information, visit
             https://cloud.google.com/run/docs/configuring/connecting-vpc.
+        log_uri (str):
+            Output only. URI where logs for this
+            execution can be found in Cloud Console.
         etag (str):
             Output only. A system-generated fingerprint
             for this version of the resource. May be used to
@@ -364,6 +363,10 @@ class Task(proto.Message):
         proto.MESSAGE,
         number=29,
         message=vendor_settings.VpcAccess,
+    )
+    log_uri: str = proto.Field(
+        proto.STRING,
+        number=32,
     )
     etag: str = proto.Field(
         proto.STRING,

@@ -177,10 +177,6 @@ class Execution(proto.Message):
             https://cloud.google.com/resource-manager/docs/creating-managing-labels
             or
             https://cloud.google.com/run/docs/configuring/labels
-            Cloud Run will populate some labels with
-            'run.googleapis.com' or 'serving.knative.dev'
-            namespaces. Those labels are read-only, and user
-            changes will not be preserved.
         annotations (MutableMapping[str, str]):
             KRM-style annotations for the resource.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -258,6 +254,15 @@ class Execution(proto.Message):
         failed_count (int):
             Output only. The number of tasks which
             reached phase Failed.
+        cancelled_count (int):
+            Output only. The number of tasks which
+            reached phase Cancelled.
+        retried_count (int):
+            Output only. The number of tasks which have
+            retried at least once.
+        log_uri (str):
+            Output only. URI where logs for this
+            execution can be found in Cloud Console.
         etag (str):
             Output only. A system-generated fingerprint
             for this version of the resource. May be used to
@@ -362,6 +367,18 @@ class Execution(proto.Message):
     failed_count: int = proto.Field(
         proto.INT32,
         number=21,
+    )
+    cancelled_count: int = proto.Field(
+        proto.INT32,
+        number=24,
+    )
+    retried_count: int = proto.Field(
+        proto.INT32,
+        number=25,
+    )
+    log_uri: str = proto.Field(
+        proto.STRING,
+        number=26,
     )
     etag: str = proto.Field(
         proto.STRING,

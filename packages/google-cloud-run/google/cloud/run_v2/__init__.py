@@ -93,6 +93,7 @@ from .types.traffic_target import (
 )
 from .types.vendor_settings import (
     BinaryAuthorization,
+    EncryptionKeyRevocationAction,
     ExecutionEnvironment,
     IngressTraffic,
     RevisionScaling,
@@ -116,6 +117,7 @@ __all__ = (
     "DeleteJobRequest",
     "DeleteRevisionRequest",
     "DeleteServiceRequest",
+    "EncryptionKeyRevocationAction",
     "EnvVar",
     "EnvVarSource",
     "Execution",

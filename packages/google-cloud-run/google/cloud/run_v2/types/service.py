@@ -122,10 +122,10 @@ class ListServicesRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The location and project to list
-            resources on. Location must be a valid GCP
-            region, and cannot be the "-" wildcard. Format:
-            projects/{project}/locations/{location}, where
-            {project} can be project id or number.
+            resources on. Location must be a valid Google
+            Cloud region, and cannot be the "-" wildcard.
+            Format: projects/{project}/locations/{location},
+            where {project} can be project id or number.
         page_size (int):
             Maximum number of Services to return in this
             call.
@@ -263,30 +263,37 @@ class Service(proto.Message):
             its JSON representation will be a ``string`` instead of an
             ``integer``.
         labels (MutableMapping[str, str]):
-            Map of string keys and values that can be
-            used to organize and categorize objects.
-            User-provided labels are shared with Google's
-            billing system, so they can be used to filter,
-            or break down billing charges by team,
-            component, environment, state, etc. For more
-            information, visit
+            Map of string keys and values that can be used to organize
+            and categorize objects. User-provided labels are shared with
+            Google's billing system, so they can be used to filter, or
+            break down billing charges by team, component, environment,
+            state, etc. For more information, visit
             https://cloud.google.com/resource-manager/docs/creating-managing-labels
-            or
-            https://cloud.google.com/run/docs/configuring/labels
-            Cloud Run will populate some labels with
-            'run.googleapis.com' or 'serving.knative.dev'
-            namespaces. Those labels are read-only, and user
-            changes will not be preserved.
+            or https://cloud.google.com/run/docs/configuring/labels
+
+            .. raw:: html
+
+                <p>Cloud Run API v2 does not support labels with  `run.googleapis.com`,
+                `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
+                namespaces, and they will be rejected. All system labels in v1 now have a
+                corresponding field in v2 Service.
         annotations (MutableMapping[str, str]):
-            Unstructured key value map that may be set by
-            external tools to store and arbitrary metadata.
-            They are not queryable and should be preserved
-            when modifying objects. Cloud Run will populate
-            some annotations using 'run.googleapis.com' or
-            'serving.knative.dev' namespaces. This field
-            follows Kubernetes annotations' namespacing,
-            limits, and rules. More info:
-            https://kubernetes.io/docs/user-guide/annotations
+            Unstructured key value map that may be set by external tools
+            to store and arbitrary metadata. They are not queryable and
+            should be preserved when modifying objects.
+
+            .. raw:: html
+
+                <p>Cloud Run API v2 does not support annotations with `run.googleapis.com`,
+                `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
+                namespaces, and they will be rejected. All system annotations in v1 now
+                have a corresponding field in v2 Service.
+
+            .. raw:: html
+
+                <p>This field follows Kubernetes
+                annotations' namespacing, limits, and rules. More info:
+                https://kubernetes.io/docs/user-guide/annotations
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):

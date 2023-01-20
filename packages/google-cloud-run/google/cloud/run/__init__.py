@@ -98,6 +98,7 @@ from google.cloud.run_v2.types.traffic_target import (
 )
 from google.cloud.run_v2.types.vendor_settings import (
     BinaryAuthorization,
+    EncryptionKeyRevocationAction,
     ExecutionEnvironment,
     IngressTraffic,
     RevisionScaling,
@@ -172,6 +173,7 @@ __all__ = (
     "BinaryAuthorization",
     "RevisionScaling",
     "VpcAccess",
+    "EncryptionKeyRevocationAction",
     "ExecutionEnvironment",
     "IngressTraffic",
 )

@@ -646,9 +646,8 @@ class JobsClient(metaclass=JobsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.run_v2.types.Job` Job represents the configuration of a single job. A job an immutable resource
-                   that references a container image which is run to
-                   completion.
+                The result type for the operation will be :class:`google.cloud.run_v2.types.Job` Job represents the configuration of a single job, which references a
+                   container image that is run to completion.
 
         """
         # Create or coerce a protobuf request object.
@@ -765,9 +764,8 @@ class JobsClient(metaclass=JobsClientMeta):
         Returns:
             google.cloud.run_v2.types.Job:
                 Job represents the configuration of a
-                single job. A job an immutable resource
-                that references a container image which
-                is run to completion.
+                single job, which references a container
+                image that is run to completion.
 
         """
         # Create or coerce a protobuf request object.
@@ -992,9 +990,8 @@ class JobsClient(metaclass=JobsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.run_v2.types.Job` Job represents the configuration of a single job. A job an immutable resource
-                   that references a container image which is run to
-                   completion.
+                The result type for the operation will be :class:`google.cloud.run_v2.types.Job` Job represents the configuration of a single job, which references a
+                   container image that is run to completion.
 
         """
         # Create or coerce a protobuf request object.
@@ -1112,9 +1109,8 @@ class JobsClient(metaclass=JobsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.run_v2.types.Job` Job represents the configuration of a single job. A job an immutable resource
-                   that references a container image which is run to
-                   completion.
+                The result type for the operation will be :class:`google.cloud.run_v2.types.Job` Job represents the configuration of a single job, which references a
+                   container image that is run to completion.
 
         """
         # Create or coerce a protobuf request object.
@@ -1659,7 +1655,7 @@ class JobsClient(metaclass=JobsClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "JobsClient":
         return self
 
     def __exit__(self, type, value, traceback):
@@ -1834,6 +1830,66 @@ class JobsClient(metaclass=JobsClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+    def wait_operation(
+        self,
+        request: Optional[operations_pb2.WaitOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.Operation:
+        r"""Waits until the specified long-running operation is done or reaches at most
+        a specified timeout, returning the latest state.
+
+        If the operation is already done, the latest state is immediately returned.
+        If the timeout specified is greater than the default HTTP/RPC timeout, the HTTP/RPC
+        timeout is used.  If the server does not support this method, it returns
+        `google.rpc.Code.UNIMPLEMENTED`.
+
+        Args:
+            request (:class:`~.operations_pb2.WaitOperationRequest`):
+                The request object. Request message for
+                `WaitOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.Operation:
+                An ``Operation`` object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.WaitOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.wait_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
