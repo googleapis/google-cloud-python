@@ -53,6 +53,44 @@ class RevocationReason(proto.Enum):
     and values in this definition are not the same ASN.1 values defined
     in RFC 5280. These values will be translated to the correct ASN.1
     values when a CRL is created.
+
+    Values:
+        REVOCATION_REASON_UNSPECIFIED (0):
+            Default unspecified value. This value does indicate that a
+            [Certificate][google.cloud.security.privateca.v1beta1.Certificate]
+            has been revoked, but that a reason has not been recorded.
+        KEY_COMPROMISE (1):
+            Key material for this
+            [Certificate][google.cloud.security.privateca.v1beta1.Certificate]
+            may have leaked.
+        CERTIFICATE_AUTHORITY_COMPROMISE (2):
+            The key material for a certificate authority
+            in the issuing path may have leaked.
+        AFFILIATION_CHANGED (3):
+            The subject or other attributes in this
+            [Certificate][google.cloud.security.privateca.v1beta1.Certificate]
+            have changed.
+        SUPERSEDED (4):
+            This
+            [Certificate][google.cloud.security.privateca.v1beta1.Certificate]
+            has been superseded.
+        CESSATION_OF_OPERATION (5):
+            This
+            [Certificate][google.cloud.security.privateca.v1beta1.Certificate]
+            or entities in the issuing path have ceased to operate.
+        CERTIFICATE_HOLD (6):
+            This
+            [Certificate][google.cloud.security.privateca.v1beta1.Certificate]
+            should not be considered valid, it is expected that it may
+            become valid in the future.
+        PRIVILEGE_WITHDRAWN (7):
+            This
+            [Certificate][google.cloud.security.privateca.v1beta1.Certificate]
+            no longer has permission to assert the listed attributes.
+        ATTRIBUTE_AUTHORITY_COMPROMISE (8):
+            The authority which determines appropriate attributes for a
+            [Certificate][google.cloud.security.privateca.v1beta1.Certificate]
+            may have been compromised.
     """
     REVOCATION_REASON_UNSPECIFIED = 0
     KEY_COMPROMISE = 1
@@ -177,6 +215,16 @@ class CertificateAuthority(proto.Message):
         r"""The type of a
         [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority],
         indicating its issuing chain.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Not specified.
+            SELF_SIGNED (1):
+                Self-signed CA.
+            SUBORDINATE (2):
+                Subordinate CA. Could be issued by a Private CA
+                [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
+                or an unmanaged CA.
         """
         TYPE_UNSPECIFIED = 0
         SELF_SIGNED = 1
@@ -186,6 +234,14 @@ class CertificateAuthority(proto.Message):
         r"""The tier of a
         [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority],
         indicating its supported functionality and/or billing SKU.
+
+        Values:
+            TIER_UNSPECIFIED (0):
+                Not specified.
+            ENTERPRISE (1):
+                Enterprise tier.
+            DEVOPS (2):
+                DevOps tier.
         """
         TIER_UNSPECIFIED = 0
         ENTERPRISE = 1
@@ -195,6 +251,22 @@ class CertificateAuthority(proto.Message):
         r"""The state of a
         [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority],
         indicating if it can be used.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not specified.
+            ENABLED (1):
+                Certificates can be issued from this CA. CRLs
+                will be generated for this CA.
+            DISABLED (2):
+                Certificates cannot be issued from this CA.
+                CRLs will still be generated.
+            PENDING_ACTIVATION (3):
+                Certificates cannot be issued from this CA.
+                CRLs will not be generated.
+            PENDING_DELETION (4):
+                Certificates cannot be issued from this CA.
+                CRLs will not be generated.
         """
         STATE_UNSPECIFIED = 0
         ENABLED = 1
@@ -212,6 +284,26 @@ class CertificateAuthority(proto.Message):
         preferred, use PKCS1 algorithms if required for compatibility. For
         further recommandations, see
         https://cloud.google.com/kms/docs/algorithms#algorithm_recommendations.
+
+        Values:
+            SIGN_HASH_ALGORITHM_UNSPECIFIED (0):
+                Not specified.
+            RSA_PSS_2048_SHA256 (1):
+                maps to CryptoKeyVersionAlgorithm.RSA_SIGN_PSS_2048_SHA256
+            RSA_PSS_3072_SHA256 (2):
+                maps to CryptoKeyVersionAlgorithm. RSA_SIGN_PSS_3072_SHA256
+            RSA_PSS_4096_SHA256 (3):
+                maps to CryptoKeyVersionAlgorithm.RSA_SIGN_PSS_4096_SHA256
+            RSA_PKCS1_2048_SHA256 (6):
+                maps to CryptoKeyVersionAlgorithm.RSA_SIGN_PKCS1_2048_SHA256
+            RSA_PKCS1_3072_SHA256 (7):
+                maps to CryptoKeyVersionAlgorithm.RSA_SIGN_PKCS1_3072_SHA256
+            RSA_PKCS1_4096_SHA256 (8):
+                maps to CryptoKeyVersionAlgorithm.RSA_SIGN_PKCS1_4096_SHA256
+            EC_P256_SHA256 (4):
+                maps to CryptoKeyVersionAlgorithm.EC_SIGN_P256_SHA256
+            EC_P384_SHA384 (5):
+                maps to CryptoKeyVersionAlgorithm.EC_SIGN_P384_SHA384
         """
         SIGN_HASH_ALGORITHM_UNSPECIFIED = 0
         RSA_PSS_2048_SHA256 = 1
@@ -699,6 +791,18 @@ class CertificateRevocationList(proto.Message):
         r"""The state of a
         [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList],
         indicating if it is current.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not specified.
+            ACTIVE (1):
+                The
+                [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList]
+                is up to date.
+            SUPERSEDED (2):
+                The
+                [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList]
+                is no longer current.
         """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
@@ -1187,6 +1291,16 @@ class PublicKey(proto.Message):
         r"""Types of public keys that are supported. At a minimum, we support
         RSA and ECDSA, for the key sizes or curves listed:
         https://cloud.google.com/kms/docs/algorithms#asymmetric_signing_algorithms
+
+        Values:
+            KEY_TYPE_UNSPECIFIED (0):
+                Default unspecified value.
+            PEM_RSA_KEY (1):
+                A PEM-encoded PKCS#1/RFC 3447 RSAPrivateKey
+                structure.
+            PEM_EC_KEY (2):
+                A PEM-encoded compressed NIST
+                P-256/secp256r1/prime256v1 or P-384 key.
         """
         KEY_TYPE_UNSPECIFIED = 0
         PEM_RSA_KEY = 1

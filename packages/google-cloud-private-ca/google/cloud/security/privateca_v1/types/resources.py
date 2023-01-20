@@ -56,6 +56,44 @@ class RevocationReason(proto.Enum):
     and values in this definition are not the same ASN.1 values defined
     in RFC 5280. These values will be translated to the correct ASN.1
     values when a CRL is created.
+
+    Values:
+        REVOCATION_REASON_UNSPECIFIED (0):
+            Default unspecified value. This value does indicate that a
+            [Certificate][google.cloud.security.privateca.v1.Certificate]
+            has been revoked, but that a reason has not been recorded.
+        KEY_COMPROMISE (1):
+            Key material for this
+            [Certificate][google.cloud.security.privateca.v1.Certificate]
+            may have leaked.
+        CERTIFICATE_AUTHORITY_COMPROMISE (2):
+            The key material for a certificate authority
+            in the issuing path may have leaked.
+        AFFILIATION_CHANGED (3):
+            The subject or other attributes in this
+            [Certificate][google.cloud.security.privateca.v1.Certificate]
+            have changed.
+        SUPERSEDED (4):
+            This
+            [Certificate][google.cloud.security.privateca.v1.Certificate]
+            has been superseded.
+        CESSATION_OF_OPERATION (5):
+            This
+            [Certificate][google.cloud.security.privateca.v1.Certificate]
+            or entities in the issuing path have ceased to operate.
+        CERTIFICATE_HOLD (6):
+            This
+            [Certificate][google.cloud.security.privateca.v1.Certificate]
+            should not be considered valid, it is expected that it may
+            become valid in the future.
+        PRIVILEGE_WITHDRAWN (7):
+            This
+            [Certificate][google.cloud.security.privateca.v1.Certificate]
+            no longer has permission to assert the listed attributes.
+        ATTRIBUTE_AUTHORITY_COMPROMISE (8):
+            The authority which determines appropriate attributes for a
+            [Certificate][google.cloud.security.privateca.v1.Certificate]
+            may have been compromised.
     """
     REVOCATION_REASON_UNSPECIFIED = 0
     KEY_COMPROMISE = 1
@@ -74,6 +112,29 @@ class SubjectRequestMode(proto.Enum):
     [Subject][google.cloud.security.privateca.v1.Subject] and/or
     [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames]
     will be resolved.
+
+    Values:
+        SUBJECT_REQUEST_MODE_UNSPECIFIED (0):
+            Not specified.
+        DEFAULT (1):
+            The default mode used in most cases. Indicates that the
+            certificate's
+            [Subject][google.cloud.security.privateca.v1.Subject] and/or
+            [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames]
+            are specified in the certificate request. This mode requires
+            the caller to have the ``privateca.certificates.create``
+            permission.
+        REFLECTED_SPIFFE (2):
+            A mode reserved for special cases. Indicates that the
+            certificate should have one or more SPIFFE
+            [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames]
+            set by the service based on the caller's identity. This mode
+            will ignore any explicitly specified
+            [Subject][google.cloud.security.privateca.v1.Subject] and/or
+            [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames]
+            in the certificate request. This mode requires the caller to
+            have the ``privateca.certificates.createForSelf``
+            permission.
     """
     SUBJECT_REQUEST_MODE_UNSPECIFIED = 0
     DEFAULT = 1
@@ -187,6 +248,16 @@ class CertificateAuthority(proto.Message):
         r"""The type of a
         [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority],
         indicating its issuing chain.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Not specified.
+            SELF_SIGNED (1):
+                Self-signed CA.
+            SUBORDINATE (2):
+                Subordinate CA. Could be issued by a Private CA
+                [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+                or an unmanaged CA.
         """
         TYPE_UNSPECIFIED = 0
         SELF_SIGNED = 1
@@ -196,6 +267,44 @@ class CertificateAuthority(proto.Message):
         r"""The state of a
         [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority],
         indicating if it can be used.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not specified.
+            ENABLED (1):
+                Certificates can be issued from this CA. CRLs will be
+                generated for this CA. The CA will be part of the
+                [CaPool][google.cloud.security.privateca.v1.CaPool]'s trust
+                anchor, and will be used to issue certificates from the
+                [CaPool][google.cloud.security.privateca.v1.CaPool].
+            DISABLED (2):
+                Certificates cannot be issued from this CA. CRLs will still
+                be generated. The CA will be part of the
+                [CaPool][google.cloud.security.privateca.v1.CaPool]'s trust
+                anchor, but will not be used to issue certificates from the
+                [CaPool][google.cloud.security.privateca.v1.CaPool].
+            STAGED (3):
+                Certificates can be issued from this CA. CRLs will be
+                generated for this CA. The CA will be part of the
+                [CaPool][google.cloud.security.privateca.v1.CaPool]'s trust
+                anchor, but will not be used to issue certificates from the
+                [CaPool][google.cloud.security.privateca.v1.CaPool].
+            AWAITING_USER_ACTIVATION (4):
+                Certificates cannot be issued from this CA. CRLs will not be
+                generated. The CA will not be part of the
+                [CaPool][google.cloud.security.privateca.v1.CaPool]'s trust
+                anchor, and will not be used to issue certificates from the
+                [CaPool][google.cloud.security.privateca.v1.CaPool].
+            DELETED (5):
+                Certificates cannot be issued from this CA. CRLs will not be
+                generated. The CA may still be recovered by calling
+                [CertificateAuthorityService.UndeleteCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.UndeleteCertificateAuthority]
+                before
+                [expire_time][google.cloud.security.privateca.v1.CertificateAuthority.expire_time].
+                The CA will not be part of the
+                [CaPool][google.cloud.security.privateca.v1.CaPool]'s trust
+                anchor, and will not be used to issue certificates from the
+                [CaPool][google.cloud.security.privateca.v1.CaPool].
         """
         STATE_UNSPECIFIED = 0
         ENABLED = 1
@@ -214,6 +323,26 @@ class CertificateAuthority(proto.Message):
         preferred, use PKCS1 algorithms if required for compatibility. For
         further recommendations, see
         https://cloud.google.com/kms/docs/algorithms#algorithm_recommendations.
+
+        Values:
+            SIGN_HASH_ALGORITHM_UNSPECIFIED (0):
+                Not specified.
+            RSA_PSS_2048_SHA256 (1):
+                maps to CryptoKeyVersionAlgorithm.RSA_SIGN_PSS_2048_SHA256
+            RSA_PSS_3072_SHA256 (2):
+                maps to CryptoKeyVersionAlgorithm. RSA_SIGN_PSS_3072_SHA256
+            RSA_PSS_4096_SHA256 (3):
+                maps to CryptoKeyVersionAlgorithm.RSA_SIGN_PSS_4096_SHA256
+            RSA_PKCS1_2048_SHA256 (6):
+                maps to CryptoKeyVersionAlgorithm.RSA_SIGN_PKCS1_2048_SHA256
+            RSA_PKCS1_3072_SHA256 (7):
+                maps to CryptoKeyVersionAlgorithm.RSA_SIGN_PKCS1_3072_SHA256
+            RSA_PKCS1_4096_SHA256 (8):
+                maps to CryptoKeyVersionAlgorithm.RSA_SIGN_PKCS1_4096_SHA256
+            EC_P256_SHA256 (4):
+                maps to CryptoKeyVersionAlgorithm.EC_SIGN_P256_SHA256
+            EC_P384_SHA384 (5):
+                maps to CryptoKeyVersionAlgorithm.EC_SIGN_P384_SHA384
         """
         SIGN_HASH_ALGORITHM_UNSPECIFIED = 0
         RSA_PSS_2048_SHA256 = 1
@@ -423,6 +552,14 @@ class CaPool(proto.Message):
     class Tier(proto.Enum):
         r"""The tier of a [CaPool][google.cloud.security.privateca.v1.CaPool],
         indicating its supported functionality and/or billing SKU.
+
+        Values:
+            TIER_UNSPECIFIED (0):
+                Not specified.
+            ENTERPRISE (1):
+                Enterprise tier.
+            DEVOPS (2):
+                DevOps tier.
         """
         TIER_UNSPECIFIED = 0
         ENTERPRISE = 1
@@ -609,6 +746,21 @@ class CaPool(proto.Message):
                     used in a
                     [Certificate][google.cloud.security.privateca.v1.Certificate] issued
                     from a [CaPool][google.cloud.security.privateca.v1.CaPool].
+
+                    Values:
+                        EC_SIGNATURE_ALGORITHM_UNSPECIFIED (0):
+                            Not specified. Signifies that any signature
+                            algorithm may be used.
+                        ECDSA_P256 (1):
+                            Refers to the Elliptic Curve Digital
+                            Signature Algorithm over the NIST P-256 curve.
+                        ECDSA_P384 (2):
+                            Refers to the Elliptic Curve Digital
+                            Signature Algorithm over the NIST P-384 curve.
+                        EDDSA_25519 (3):
+                            Refers to the Edwards-curve Digital Signature
+                            Algorithm over curve 25519, as described in RFC
+                            8410.
                     """
                     EC_SIGNATURE_ALGORITHM_UNSPECIFIED = 0
                     ECDSA_P256 = 1
@@ -772,6 +924,18 @@ class CertificateRevocationList(proto.Message):
         r"""The state of a
         [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList],
         indicating if it is current.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not specified.
+            ACTIVE (1):
+                The
+                [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList]
+                is up to date.
+            SUPERSEDED (2):
+                The
+                [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList]
+                is no longer current.
         """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
@@ -1304,6 +1468,26 @@ class PublicKey(proto.Message):
     class KeyFormat(proto.Enum):
         r"""Types of public keys formats that are supported. Currently, only
         ``PEM`` format is supported.
+
+        Values:
+            KEY_FORMAT_UNSPECIFIED (0):
+                Default unspecified value.
+            PEM (1):
+                The key is PEM-encoded as defined in `RFC
+                7468 <https://tools.ietf.org/html/rfc7468>`__. It can be any
+                of the following: a PEM-encoded PKCS#1/RFC 3447 RSAPublicKey
+                structure, an RFC 5280
+                `SubjectPublicKeyInfo <https://tools.ietf.org/html/rfc5280#section-4.1>`__
+                or a PEM-encoded X.509 certificate signing request (CSR). If
+                a
+                `SubjectPublicKeyInfo <https://tools.ietf.org/html/rfc5280#section-4.1>`__
+                is specified, it can contain a A PEM-encoded PKCS#1/RFC 3447
+                RSAPublicKey or a NIST P-256/secp256r1/prime256v1 or P-384
+                key. If a CSR is specified, it will used solely for the
+                purpose of extracting the public key. When generated by the
+                service, it will always be an RFC 5280
+                `SubjectPublicKeyInfo <https://tools.ietf.org/html/rfc5280#section-4.1>`__
+                structure containing an algorithm identifier and a key.
         """
         KEY_FORMAT_UNSPECIFIED = 0
         PEM = 1
@@ -1942,6 +2126,46 @@ class CertificateExtensionConstraints(proto.Message):
         including the
         [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames]
         extension.
+
+        Values:
+            KNOWN_CERTIFICATE_EXTENSION_UNSPECIFIED (0):
+                Not specified.
+            BASE_KEY_USAGE (1):
+                Refers to a certificate's Key Usage extension, as described
+                in `RFC 5280 section
+                4.2.1.3 <https://tools.ietf.org/html/rfc5280#section-4.2.1.3>`__.
+                This corresponds to the
+                [KeyUsage.base_key_usage][google.cloud.security.privateca.v1.KeyUsage.base_key_usage]
+                field.
+            EXTENDED_KEY_USAGE (2):
+                Refers to a certificate's Extended Key Usage extension, as
+                described in `RFC 5280 section
+                4.2.1.12 <https://tools.ietf.org/html/rfc5280#section-4.2.1.12>`__.
+                This corresponds to the
+                [KeyUsage.extended_key_usage][google.cloud.security.privateca.v1.KeyUsage.extended_key_usage]
+                message.
+            CA_OPTIONS (3):
+                Refers to a certificate's Basic Constraints extension, as
+                described in `RFC 5280 section
+                4.2.1.9 <https://tools.ietf.org/html/rfc5280#section-4.2.1.9>`__.
+                This corresponds to the
+                [X509Parameters.ca_options][google.cloud.security.privateca.v1.X509Parameters.ca_options]
+                field.
+            POLICY_IDS (4):
+                Refers to a certificate's Policy object identifiers, as
+                described in `RFC 5280 section
+                4.2.1.4 <https://tools.ietf.org/html/rfc5280#section-4.2.1.4>`__.
+                This corresponds to the
+                [X509Parameters.policy_ids][google.cloud.security.privateca.v1.X509Parameters.policy_ids]
+                field.
+            AIA_OCSP_SERVERS (5):
+                Refers to OCSP servers in a certificate's Authority
+                Information Access extension, as described in `RFC 5280
+                section
+                4.2.2.1 <https://tools.ietf.org/html/rfc5280#section-4.2.2.1>`__,
+                This corresponds to the
+                [X509Parameters.aia_ocsp_servers][google.cloud.security.privateca.v1.X509Parameters.aia_ocsp_servers]
+                field.
         """
         KNOWN_CERTIFICATE_EXTENSION_UNSPECIFIED = 0
         BASE_KEY_USAGE = 1
