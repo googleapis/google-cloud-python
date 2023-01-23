@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-security-private-ca/compare/v1.6.0...v1.6.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([b69bb77](https://github.com/googleapis/python-security-private-ca/commit/b69bb77e7358483205921e072dbff698628faa82))
+
+
+### Documentation
+
+* Add documentation for enums ([b69bb77](https://github.com/googleapis/python-security-private-ca/commit/b69bb77e7358483205921e072dbff698628faa82))
+
 ## [1.6.0](https://github.com/googleapis/python-security-private-ca/compare/v1.5.0...v1.6.0) (2023-01-10)
 
 
