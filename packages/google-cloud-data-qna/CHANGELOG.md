@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.10.1](https://github.com/googleapis/python-data-qna/compare/v0.10.0...v0.10.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([8b4ecf0](https://github.com/googleapis/python-data-qna/commit/8b4ecf00461531c777a52d5630ed7b9ea8a286dd))
+
+
+### Documentation
+
+* Add documentation for enums ([8b4ecf0](https://github.com/googleapis/python-data-qna/commit/8b4ecf00461531c777a52d5630ed7b9ea8a286dd))
+
 ## [0.10.0](https://github.com/googleapis/python-data-qna/compare/v0.9.0...v0.10.0) (2023-01-12)
 
 
