@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.14.1](https://github.com/googleapis/python-texttospeech/compare/v2.14.0...v2.14.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([6415162](https://github.com/googleapis/python-texttospeech/commit/641516224405ac91e08d5fee161a5fcde4ed0ba0))
+
+
+### Documentation
+
+* Add documentation for enums ([6415162](https://github.com/googleapis/python-texttospeech/commit/641516224405ac91e08d5fee161a5fcde4ed0ba0))
+
 ## [2.14.0](https://github.com/googleapis/python-texttospeech/compare/v2.13.0...v2.14.0) (2023-01-10)
 
 
