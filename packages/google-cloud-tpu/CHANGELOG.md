@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/python-tpu/compare/v1.7.0...v1.7.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([3b28ff9](https://github.com/googleapis/python-tpu/commit/3b28ff913817f944e93df3b780e3ba3ba76be14f))
+
+
+### Documentation
+
+* Add documentation for enums ([3b28ff9](https://github.com/googleapis/python-tpu/commit/3b28ff913817f944e93df3b780e3ba3ba76be14f))
+
 ## [1.7.0](https://github.com/googleapis/python-tpu/compare/v1.6.0...v1.7.0) (2023-01-10)
 
 
