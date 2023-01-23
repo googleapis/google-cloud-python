@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.3.0...google-cloud-discoveryengine-v0.3.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([900a608](https://github.com/googleapis/google-cloud-python/commit/900a6083e59bfebf215e4e469bc842d8788bba18))
+
+
+### Documentation
+
+* Add documentation for enums ([900a608](https://github.com/googleapis/google-cloud-python/commit/900a6083e59bfebf215e4e469bc842d8788bba18))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.2.1...google-cloud-discoveryengine-v0.3.0) (2023-01-10)
 
 
