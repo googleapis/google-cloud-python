@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-phishing-protection/#history
 
 
+## [1.8.1](https://github.com/googleapis/python-phishingprotection/compare/v1.8.0...v1.8.1) (2023-01-23)
+
+
+### Bug Fixes
+
+* Add context manager return types ([#234](https://github.com/googleapis/python-phishingprotection/issues/234)) ([0340949](https://github.com/googleapis/python-phishingprotection/commit/034094948f519d1f1d31dd2705a67cc2f9384dc3))
+
 ## [1.8.0](https://github.com/googleapis/python-phishingprotection/compare/v1.7.0...v1.8.0) (2023-01-10)
 
 
