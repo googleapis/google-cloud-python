@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.15.1](https://github.com/googleapis/python-secret-manager/compare/v2.15.0...v2.15.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([2b85fae](https://github.com/googleapis/python-secret-manager/commit/2b85fae2b2a493bdff797164d99d021d8e2e9e4e))
+
+
+### Documentation
+
+* Add documentation for enums ([2b85fae](https://github.com/googleapis/python-secret-manager/commit/2b85fae2b2a493bdff797164d99d021d8e2e9e4e))
+
 ## [2.15.0](https://github.com/googleapis/python-secret-manager/compare/v2.14.0...v2.15.0) (2023-01-10)
 
 
