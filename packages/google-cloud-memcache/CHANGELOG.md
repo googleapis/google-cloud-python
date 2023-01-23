@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-memcache/compare/v1.6.0...v1.6.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([29246d4](https://github.com/googleapis/python-memcache/commit/29246d4f4dc201a3faab34b3cb16f8629289be82))
+
+
+### Documentation
+
+* Add documentation for enums ([29246d4](https://github.com/googleapis/python-memcache/commit/29246d4f4dc201a3faab34b3cb16f8629289be82))
+
 ## [1.6.0](https://github.com/googleapis/python-memcache/compare/v1.5.0...v1.6.0) (2023-01-10)
 
 
