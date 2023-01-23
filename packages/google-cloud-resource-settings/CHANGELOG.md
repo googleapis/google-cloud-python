@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-resource-settings/compare/v1.6.0...v1.6.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([1fa8c69](https://github.com/googleapis/python-resource-settings/commit/1fa8c6972f2e450e6f33d2dfe3114fb8dceca688))
+
+
+### Documentation
+
+* Add documentation for enums ([1fa8c69](https://github.com/googleapis/python-resource-settings/commit/1fa8c6972f2e450e6f33d2dfe3114fb8dceca688))
+
 ## [1.6.0](https://github.com/googleapis/python-resource-settings/compare/v1.5.0...v1.6.0) (2023-01-10)
 
 
