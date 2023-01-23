@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/googleapis/python-api-keys/compare/v0.5.0...v0.5.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([#43](https://github.com/googleapis/python-api-keys/issues/43)) ([9fc82bd](https://github.com/googleapis/python-api-keys/commit/9fc82bd3bd3e5f56ea46178629a58d810494df62))
+
 ## [0.5.0](https://github.com/googleapis/python-api-keys/compare/v0.4.1...v0.5.0) (2023-01-10)
 
 
