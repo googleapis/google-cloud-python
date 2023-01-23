@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/python-storage-transfer/compare/v1.7.0...v1.7.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([9d82949](https://github.com/googleapis/python-storage-transfer/commit/9d829491f92ad177fd93e121a04bc4afe28ebe87))
+
+
+### Documentation
+
+* Add documentation for enums ([9d82949](https://github.com/googleapis/python-storage-transfer/commit/9d829491f92ad177fd93e121a04bc4afe28ebe87))
+
 ## [1.7.0](https://github.com/googleapis/python-storage-transfer/compare/v1.6.0...v1.7.0) (2023-01-10)
 
 
