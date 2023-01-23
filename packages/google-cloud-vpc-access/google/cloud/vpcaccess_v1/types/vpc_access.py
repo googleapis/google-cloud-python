@@ -71,7 +71,26 @@ class Connector(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of a connector."""
+        r"""State of a connector.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Invalid state.
+            READY (1):
+                Connector is deployed and ready to receive
+                traffic.
+            CREATING (2):
+                An Insert operation is in progress. Transient
+                condition.
+            DELETING (3):
+                A Delete operation is in progress. Transient
+                condition.
+            ERROR (4):
+                Connector is in a bad state, manual deletion
+                recommended.
+            UPDATING (5):
+                The connector is being updated.
+        """
         STATE_UNSPECIFIED = 0
         READY = 1
         CREATING = 2
