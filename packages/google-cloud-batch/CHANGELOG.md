@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.8.1](https://github.com/googleapis/python-batch/compare/v0.8.0...v0.8.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([695d075](https://github.com/googleapis/python-batch/commit/695d07584f895318358ff0315be8046d816fc2ef))
+
+
+### Documentation
+
+* Add documentation for enums ([695d075](https://github.com/googleapis/python-batch/commit/695d07584f895318358ff0315be8046d816fc2ef))
+
 ## [0.8.0](https://github.com/googleapis/python-batch/compare/v0.7.0...v0.8.0) (2023-01-10)
 
 
