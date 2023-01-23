@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v0.2.1...google-cloud-vmwareengine-v0.2.2) (2023-01-20)
+## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v0.2.1...google-cloud-vmwareengine-v0.2.2) (2023-01-23)
 
 
 ### Bug Fixes

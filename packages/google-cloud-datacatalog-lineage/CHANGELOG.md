@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-lineage-v0.2.0...google-cloud-datacatalog-lineage-v0.2.1) (2023-01-20)
+## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-lineage-v0.2.0...google-cloud-datacatalog-lineage-v0.2.1) (2023-01-23)
 
 
 ### Bug Fixes

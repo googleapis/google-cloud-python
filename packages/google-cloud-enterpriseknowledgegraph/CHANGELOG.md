@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-enterpriseknowledgegraph-v0.3.0...google-cloud-enterpriseknowledgegraph-v0.3.1) (2023-01-20)
+## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-enterpriseknowledgegraph-v0.3.0...google-cloud-enterpriseknowledgegraph-v0.3.1) (2023-01-23)
 
 
 ### Bug Fixes
