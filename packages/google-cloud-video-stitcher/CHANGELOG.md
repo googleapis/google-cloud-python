@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.1](https://github.com/googleapis/python-video-stitcher/compare/v0.6.0...v0.6.1) (2023-01-23)
+
+
+### Bug Fixes
+
+* Add context manager return types ([6bc0894](https://github.com/googleapis/python-video-stitcher/commit/6bc0894934e1038bca35f4af70279b0f49471b09))
+
+
+### Documentation
+
+* Add documentation for enums ([6bc0894](https://github.com/googleapis/python-video-stitcher/commit/6bc0894934e1038bca35f4af70279b0f49471b09))
+
 ## [0.6.0](https://github.com/googleapis/python-video-stitcher/compare/v0.5.1...v0.6.0) (2023-01-12)
 
 
