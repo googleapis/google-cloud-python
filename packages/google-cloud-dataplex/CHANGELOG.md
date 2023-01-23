@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-dataplex/compare/v1.4.0...v1.4.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([eb88024](https://github.com/googleapis/python-dataplex/commit/eb88024e41d4832ecd0e970ff7a87f57d74bba2a))
+
+
+### Documentation
+
+* Add documentation for enums ([eb88024](https://github.com/googleapis/python-dataplex/commit/eb88024e41d4832ecd0e970ff7a87f57d74bba2a))
+
 ## [1.4.0](https://github.com/googleapis/python-dataplex/compare/v1.3.0...v1.4.0) (2023-01-10)
 
 
