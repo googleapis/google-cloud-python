@@ -33,7 +33,18 @@ __protobuf__ = proto.module(
 
 
 class ExecutionView(proto.Enum):
-    r"""Defines possible views for execution resource."""
+    r"""Defines possible views for execution resource.
+
+    Values:
+        EXECUTION_VIEW_UNSPECIFIED (0):
+            The default / unset value.
+        BASIC (1):
+            Includes only basic metadata about the execution. Following
+            fields are returned: name, start_time, end_time, state and
+            workflow_revision_id.
+        FULL (2):
+            Includes all data.
+    """
     EXECUTION_VIEW_UNSPECIFIED = 0
     BASIC = 1
     FULL = 2
@@ -75,6 +86,18 @@ class Execution(proto.Message):
     class State(proto.Enum):
         r"""Describes the current state of the execution. More states may
         be added in the future.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Invalid state.
+            ACTIVE (1):
+                The execution is in progress.
+            SUCCEEDED (2):
+                The execution finished successfully.
+            FAILED (3):
+                The execution failed with an error.
+            CANCELLED (4):
+                The execution was stopped intentionally.
         """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1

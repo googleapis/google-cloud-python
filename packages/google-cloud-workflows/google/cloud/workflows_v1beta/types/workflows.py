@@ -103,6 +103,13 @@ class Workflow(proto.Message):
     class State(proto.Enum):
         r"""Describes the current state of workflow deployment. More
         states may be added in the future.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Invalid state.
+            ACTIVE (1):
+                The workflow has been deployed successfully
+                and is serving.
         """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1

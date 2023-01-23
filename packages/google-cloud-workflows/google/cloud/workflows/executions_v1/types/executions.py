@@ -33,7 +33,18 @@ __protobuf__ = proto.module(
 
 
 class ExecutionView(proto.Enum):
-    r"""Defines possible views for execution resource."""
+    r"""Defines possible views for execution resource.
+
+    Values:
+        EXECUTION_VIEW_UNSPECIFIED (0):
+            The default / unset value.
+        BASIC (1):
+            Includes only basic metadata about the execution. Following
+            fields are returned: name, start_time, end_time, state and
+            workflow_revision_id.
+        FULL (2):
+            Includes all data.
+    """
     EXECUTION_VIEW_UNSPECIFIED = 0
     BASIC = 1
     FULL = 2
@@ -83,6 +94,18 @@ class Execution(proto.Message):
     class State(proto.Enum):
         r"""Describes the current state of the execution. More states
         might be added in the future.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Invalid state.
+            ACTIVE (1):
+                The execution is in progress.
+            SUCCEEDED (2):
+                The execution finished successfully.
+            FAILED (3):
+                The execution failed with an error.
+            CANCELLED (4):
+                The execution was stopped intentionally.
         """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
@@ -93,6 +116,16 @@ class Execution(proto.Message):
     class CallLogLevel(proto.Enum):
         r"""Describes the level of platform logging to apply to calls and
         call responses during workflow executions.
+
+        Values:
+            CALL_LOG_LEVEL_UNSPECIFIED (0):
+                No call logging specified.
+            LOG_ALL_CALLS (1):
+                Log all call steps within workflows, all call
+                returns, and all exceptions raised.
+            LOG_ERRORS_ONLY (2):
+                Log only exceptions that are raised from call
+                steps within workflows.
         """
         CALL_LOG_LEVEL_UNSPECIFIED = 0
         LOG_ALL_CALLS = 1

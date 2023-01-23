@@ -1091,7 +1091,7 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "WorkflowsClient":
         return self
 
     def __exit__(self, type, value, traceback):
