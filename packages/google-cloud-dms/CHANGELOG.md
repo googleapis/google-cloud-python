@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-dms/compare/v1.6.0...v1.6.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([c92d273](https://github.com/googleapis/python-dms/commit/c92d273be32a4d83899c3c29d1998df4e99e484f))
+
+
+### Documentation
+
+* Add documentation for enums ([c92d273](https://github.com/googleapis/python-dms/commit/c92d273be32a4d83899c3c29d1998df4e99e484f))
+
 ## [1.6.0](https://github.com/googleapis/python-dms/compare/v1.5.0...v1.6.0) (2023-01-10)
 
 
