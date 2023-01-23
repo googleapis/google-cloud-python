@@ -129,7 +129,22 @@ class AliasContext(proto.Message):
     """
 
     class Kind(proto.Enum):
-        r"""The type of an Alias."""
+        r"""The type of an Alias.
+
+        Values:
+            ANY (0):
+                Do not use.
+            FIXED (1):
+                Git tag
+            MOVABLE (2):
+                Git branch
+            OTHER (4):
+                OTHER is used to specify non-standard
+                aliases, those not of the kinds above. For
+                example, if a Git repo has a ref named
+                "refs/foo/bar", it is considered to be of kind
+                OTHER.
+        """
         ANY = 0
         FIXED = 1
         MOVABLE = 2
