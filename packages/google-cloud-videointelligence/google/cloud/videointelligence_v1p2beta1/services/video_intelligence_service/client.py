@@ -557,7 +557,7 @@ class VideoIntelligenceServiceClient(metaclass=VideoIntelligenceServiceClientMet
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "VideoIntelligenceServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

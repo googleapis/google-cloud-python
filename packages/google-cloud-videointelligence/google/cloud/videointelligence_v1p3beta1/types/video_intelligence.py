@@ -87,7 +87,19 @@ __protobuf__ = proto.module(
 
 
 class LabelDetectionMode(proto.Enum):
-    r"""Label detection mode."""
+    r"""Label detection mode.
+
+    Values:
+        LABEL_DETECTION_MODE_UNSPECIFIED (0):
+            Unspecified.
+        SHOT_MODE (1):
+            Detect shot-level labels.
+        FRAME_MODE (2):
+            Detect frame-level labels.
+        SHOT_AND_FRAME_MODE (3):
+            Detect both shot-level and frame-level
+            labels.
+    """
     LABEL_DETECTION_MODE_UNSPECIFIED = 0
     SHOT_MODE = 1
     FRAME_MODE = 2
@@ -95,7 +107,22 @@ class LabelDetectionMode(proto.Enum):
 
 
 class Likelihood(proto.Enum):
-    r"""Bucketized representation of likelihood."""
+    r"""Bucketized representation of likelihood.
+
+    Values:
+        LIKELIHOOD_UNSPECIFIED (0):
+            Unspecified likelihood.
+        VERY_UNLIKELY (1):
+            Very unlikely.
+        UNLIKELY (2):
+            Unlikely.
+        POSSIBLE (3):
+            Possible.
+        LIKELY (4):
+            Likely.
+        VERY_LIKELY (5):
+            Very likely.
+    """
     LIKELIHOOD_UNSPECIFIED = 0
     VERY_UNLIKELY = 1
     UNLIKELY = 2
@@ -105,7 +132,28 @@ class Likelihood(proto.Enum):
 
 
 class StreamingFeature(proto.Enum):
-    r"""Streaming video annotation feature."""
+    r"""Streaming video annotation feature.
+
+    Values:
+        STREAMING_FEATURE_UNSPECIFIED (0):
+            Unspecified.
+        STREAMING_LABEL_DETECTION (1):
+            Label detection. Detect objects, such as dog
+            or flower.
+        STREAMING_SHOT_CHANGE_DETECTION (2):
+            Shot change detection.
+        STREAMING_EXPLICIT_CONTENT_DETECTION (3):
+            Explicit content detection.
+        STREAMING_OBJECT_TRACKING (4):
+            Object detection and tracking.
+        STREAMING_AUTOML_ACTION_RECOGNITION (23):
+            Action recognition based on AutoML model.
+        STREAMING_AUTOML_CLASSIFICATION (21):
+            Video classification based on AutoML model.
+        STREAMING_AUTOML_OBJECT_TRACKING (22):
+            Object detection and tracking based on AutoML
+            model.
+    """
     STREAMING_FEATURE_UNSPECIFIED = 0
     STREAMING_LABEL_DETECTION = 1
     STREAMING_SHOT_CHANGE_DETECTION = 2
@@ -117,7 +165,33 @@ class StreamingFeature(proto.Enum):
 
 
 class Feature(proto.Enum):
-    r"""Video annotation feature."""
+    r"""Video annotation feature.
+
+    Values:
+        FEATURE_UNSPECIFIED (0):
+            Unspecified.
+        LABEL_DETECTION (1):
+            Label detection. Detect objects, such as dog
+            or flower.
+        SHOT_CHANGE_DETECTION (2):
+            Shot change detection.
+        EXPLICIT_CONTENT_DETECTION (3):
+            Explicit content detection.
+        FACE_DETECTION (4):
+            Human face detection.
+        SPEECH_TRANSCRIPTION (6):
+            Speech transcription.
+        TEXT_DETECTION (7):
+            OCR text detection and tracking.
+        OBJECT_TRACKING (9):
+            Object detection and tracking.
+        LOGO_RECOGNITION (12):
+            Logo detection, tracking, and recognition.
+        CELEBRITY_RECOGNITION (13):
+            Celebrity recognition.
+        PERSON_DETECTION (14):
+            Person detection.
+    """
     FEATURE_UNSPECIFIED = 0
     LABEL_DETECTION = 1
     SHOT_CHANGE_DETECTION = 2
