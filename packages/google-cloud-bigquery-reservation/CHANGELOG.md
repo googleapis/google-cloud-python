@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.9.1](https://github.com/googleapis/python-bigquery-reservation/compare/v1.9.0...v1.9.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([3912795](https://github.com/googleapis/python-bigquery-reservation/commit/3912795237f099f8cae2dea647f6e599aa3c4a1b))
+
+
+### Documentation
+
+* Add documentation for enums ([3912795](https://github.com/googleapis/python-bigquery-reservation/commit/3912795237f099f8cae2dea647f6e599aa3c4a1b))
+
 ## [1.9.0](https://github.com/googleapis/python-bigquery-reservation/compare/v1.8.0...v1.9.0) (2023-01-10)
 
 
