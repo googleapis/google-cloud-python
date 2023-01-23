@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.18.1](https://github.com/googleapis/python-bigquery-storage/compare/v2.18.0...v2.18.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([ec04714](https://github.com/googleapis/python-bigquery-storage/commit/ec04714195a1fd13db626631d69124a6415977d3))
+
+
+### Documentation
+
+* Add documentation for enums ([ec04714](https://github.com/googleapis/python-bigquery-storage/commit/ec04714195a1fd13db626631d69124a6415977d3))
+
 ## [2.18.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.17.0...v2.18.0) (2023-01-10)
 
 
