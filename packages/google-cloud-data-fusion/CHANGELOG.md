@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/python-data-fusion/compare/v1.7.0...v1.7.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([bf54384](https://github.com/googleapis/python-data-fusion/commit/bf54384f0fc0bf51c9e61b17e9a0db6a4cd6dcf8))
+
+
+### Documentation
+
+* Add documentation for enums ([bf54384](https://github.com/googleapis/python-data-fusion/commit/bf54384f0fc0bf51c9e61b17e9a0db6a4cd6dcf8))
+
 ## [1.7.0](https://github.com/googleapis/python-data-fusion/compare/v1.6.0...v1.7.0) (2023-01-10)
 
 
