@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+## [2.11.1](https://github.com/googleapis/python-redis/compare/v2.11.0...v2.11.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([650c291](https://github.com/googleapis/python-redis/commit/650c29190fff3e1053328cf38a9a61920dafbc49))
+
+
+### Documentation
+
+* Add documentation for enums ([650c291](https://github.com/googleapis/python-redis/commit/650c29190fff3e1053328cf38a9a61920dafbc49))
+
 ## [2.11.0](https://github.com/googleapis/python-redis/compare/v2.10.0...v2.11.0) (2023-01-10)
 
 
