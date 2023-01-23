@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-deploy/compare/v1.6.0...v1.6.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([24facad](https://github.com/googleapis/python-deploy/commit/24facade12e7fa2fc41bc58ca9570acf3877e3f3))
+
+
+### Documentation
+
+* Add documentation for enums ([24facad](https://github.com/googleapis/python-deploy/commit/24facade12e7fa2fc41bc58ca9570acf3877e3f3))
+
 ## [1.6.0](https://github.com/googleapis/python-deploy/compare/v1.5.0...v1.6.0) (2023-01-10)
 
 
