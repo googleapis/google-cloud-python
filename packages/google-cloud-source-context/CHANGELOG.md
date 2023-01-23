@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-source-context/compare/v1.4.0...v1.4.1) (2023-01-23)
+
+
+### Documentation
+
+* Add documentation for enums ([#131](https://github.com/googleapis/python-source-context/issues/131)) ([702003c](https://github.com/googleapis/python-source-context/commit/702003cf9c4bd58b8b88bca1d40ab81cb5f1ac12))
+
 ## [1.4.0](https://github.com/googleapis/python-source-context/compare/v1.3.0...v1.4.0) (2023-01-10)
 
 
