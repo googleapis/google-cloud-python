@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/python-service-directory/compare/v1.7.0...v1.7.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([#253](https://github.com/googleapis/python-service-directory/issues/253)) ([4e932f5](https://github.com/googleapis/python-service-directory/commit/4e932f5de09a5a73003aa3d76eae525901e573ed))
+
 ## [1.7.0](https://github.com/googleapis/python-service-directory/compare/v1.6.0...v1.7.0) (2023-01-10)
 
 
