@@ -85,7 +85,76 @@ class Finding(proto.Message):
     """
 
     class FindingType(proto.Enum):
-        r"""Types of Findings."""
+        r"""Types of Findings.
+
+        Values:
+            FINDING_TYPE_UNSPECIFIED (0):
+                The invalid finding type.
+            MIXED_CONTENT (1):
+                A page that was served over HTTPS also
+                resources over HTTP. A man-in-the-middle
+                attacker could tamper with the HTTP resource and
+                gain full access to the website that loads the
+                resource or to monitor the actions taken by the
+                user.
+            OUTDATED_LIBRARY (2):
+                The version of an included library is known
+                to contain a security issue. The scanner checks
+                the version of library in use against a known
+                list of vulnerable libraries. False positives
+                are possible if the version detection fails or
+                if the library has been manually patched.
+            ROSETTA_FLASH (5):
+                This type of vulnerability occurs when the
+                value of a request parameter is reflected at the
+                beginning of the response, for example, in
+                requests using JSONP. Under certain
+                circumstances, an attacker may be able to supply
+                an alphanumeric-only Flash file in the
+                vulnerable parameter causing the browser to
+                execute the Flash file as if it originated on
+                the vulnerable server.
+            XSS_CALLBACK (3):
+                A cross-site scripting (XSS) bug is found via
+                JavaScript callback. For detailed explanations
+                on XSS, see
+                https://www.google.com/about/appsecurity/learning/xss/.
+            XSS_ERROR (4):
+                A potential cross-site scripting (XSS) bug
+                due to JavaScript breakage. In some
+                circumstances, the application under test might
+                modify the test string before it is parsed by
+                the browser. When the browser attempts to runs
+                this modified test string, it will likely break
+                and throw a JavaScript execution error, thus an
+                injection issue is occurring. However, it may
+                not be exploitable. Manual verification is
+                needed to see if the test string modifications
+                can be evaded and confirm that the issue is in
+                fact an XSS vulnerability. For detailed
+                explanations on XSS, see
+                https://www.google.com/about/appsecurity/learning/xss/.
+            CLEAR_TEXT_PASSWORD (6):
+                An application appears to be transmitting a
+                password field in clear text. An attacker can
+                eavesdrop network traffic and sniff the password
+                field.
+            INVALID_CONTENT_TYPE (7):
+                An application returns sensitive content with
+                an invalid content type, or without an
+                'X-Content-Type-Options: nosniff' header.
+            XSS_ANGULAR_CALLBACK (8):
+                A cross-site scripting (XSS) vulnerability in
+                AngularJS module that occurs when a
+                user-provided string is interpolated by Angular.
+            INVALID_HEADER (9):
+                A malformed or invalid valued header.
+            MISSPELLED_SECURITY_HEADER_NAME (10):
+                Misspelled security header name.
+            MISMATCHING_SECURITY_HEADER_VALUES (11):
+                Mismatching values in a duplicate security
+                header.
+        """
         FINDING_TYPE_UNSPECIFIED = 0
         MIXED_CONTENT = 1
         OUTDATED_LIBRARY = 2

@@ -73,14 +73,37 @@ class ScanConfig(proto.Message):
     """
 
     class UserAgent(proto.Enum):
-        r"""Type of user agents used for scanning."""
+        r"""Type of user agents used for scanning.
+
+        Values:
+            USER_AGENT_UNSPECIFIED (0):
+                The user agent is unknown. Service will default to
+                CHROME_LINUX.
+            CHROME_LINUX (1):
+                Chrome on Linux. This is the service default
+                if unspecified.
+            CHROME_ANDROID (2):
+                Chrome on Android.
+            SAFARI_IPHONE (3):
+                Safari on IPhone.
+        """
         USER_AGENT_UNSPECIFIED = 0
         CHROME_LINUX = 1
         CHROME_ANDROID = 2
         SAFARI_IPHONE = 3
 
     class TargetPlatform(proto.Enum):
-        r"""Cloud platforms supported by Cloud Web Security Scanner."""
+        r"""Cloud platforms supported by Cloud Web Security Scanner.
+
+        Values:
+            TARGET_PLATFORM_UNSPECIFIED (0):
+                The target platform is unknown. Requests with this enum
+                value will be rejected with INVALID_ARGUMENT error.
+            APP_ENGINE (1):
+                Google App Engine service.
+            COMPUTE (2):
+                Google Compute Engine service.
+        """
         TARGET_PLATFORM_UNSPECIFIED = 0
         APP_ENGINE = 1
         COMPUTE = 2
@@ -90,6 +113,14 @@ class ScanConfig(proto.Message):
         impact scanning will minimize requests with the potential to
         modify data. To achieve the maximum scan coverage, NORMAL risk
         level is recommended.
+
+        Values:
+            RISK_LEVEL_UNSPECIFIED (0):
+                Use default, which is NORMAL.
+            NORMAL (1):
+                Normal scanning (Recommended)
+            LOW (2):
+                Lower impact scanning
         """
         RISK_LEVEL_UNSPECIFIED = 0
         NORMAL = 1
@@ -98,6 +129,16 @@ class ScanConfig(proto.Message):
     class ExportToSecurityCommandCenter(proto.Enum):
         r"""Controls export of scan configurations and results to Cloud
         Security Command Center.
+
+        Values:
+            EXPORT_TO_SECURITY_COMMAND_CENTER_UNSPECIFIED (0):
+                Use default, which is ENABLED.
+            ENABLED (1):
+                Export results of this scan to Cloud Security
+                Command Center.
+            DISABLED (2):
+                Do not export results of this scan to Cloud
+                Security Command Center.
         """
         EXPORT_TO_SECURITY_COMMAND_CENTER_UNSPECIFIED = 0
         ENABLED = 1

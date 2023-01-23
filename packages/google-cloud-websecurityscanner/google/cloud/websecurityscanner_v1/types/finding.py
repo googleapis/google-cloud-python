@@ -101,7 +101,20 @@ class Finding(proto.Message):
     """
 
     class Severity(proto.Enum):
-        r"""The severity level of a vulnerability."""
+        r"""The severity level of a vulnerability.
+
+        Values:
+            SEVERITY_UNSPECIFIED (0):
+                No severity specified. The default value.
+            CRITICAL (1):
+                Critical severity.
+            HIGH (2):
+                High severity.
+            MEDIUM (3):
+                Medium severity.
+            LOW (4):
+                Low severity.
+        """
         SEVERITY_UNSPECIFIED = 0
         CRITICAL = 1
         HIGH = 2

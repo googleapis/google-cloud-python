@@ -175,7 +175,57 @@ class Xss(proto.Message):
     """
 
     class AttackVector(proto.Enum):
-        r"""Types of XSS attack vector."""
+        r"""Types of XSS attack vector.
+
+        Values:
+            ATTACK_VECTOR_UNSPECIFIED (0):
+                Unknown attack vector.
+            LOCAL_STORAGE (1):
+                The attack comes from fuzzing the browser's
+                localStorage.
+            SESSION_STORAGE (2):
+                The attack comes from fuzzing the browser's
+                sessionStorage.
+            WINDOW_NAME (3):
+                The attack comes from fuzzing the window's
+                name property.
+            REFERRER (4):
+                The attack comes from fuzzing the referrer
+                property.
+            FORM_INPUT (5):
+                The attack comes from fuzzing an input
+                element.
+            COOKIE (6):
+                The attack comes from fuzzing the browser's
+                cookies.
+            POST_MESSAGE (7):
+                The attack comes from hijacking the post
+                messaging mechanism.
+            GET_PARAMETERS (8):
+                The attack comes from fuzzing parameters in
+                the url.
+            URL_FRAGMENT (9):
+                The attack comes from fuzzing the fragment in
+                the url.
+            HTML_COMMENT (10):
+                The attack comes from fuzzing the HTML
+                comments.
+            POST_PARAMETERS (11):
+                The attack comes from fuzzing the POST
+                parameters.
+            PROTOCOL (12):
+                The attack comes from fuzzing the protocol.
+            STORED_XSS (13):
+                The attack comes from the server side and is
+                stored.
+            SAME_ORIGIN (14):
+                The attack is a Same-Origin Method Execution
+                attack via a GET parameter.
+            USER_CONTROLLABLE_URL (15):
+                The attack payload is received from a
+                third-party host via a URL that is
+                user-controllable
+        """
         ATTACK_VECTOR_UNSPECIFIED = 0
         LOCAL_STORAGE = 1
         SESSION_STORAGE = 2
@@ -226,7 +276,15 @@ class Xxe(proto.Message):
     """
 
     class Location(proto.Enum):
-        r"""Locations within a request where XML was substituted."""
+        r"""Locations within a request where XML was substituted.
+
+        Values:
+            LOCATION_UNSPECIFIED (0):
+                Unknown Location.
+            COMPLETE_REQUEST_BODY (1):
+                The XML payload replaced the complete request
+                body.
+        """
         LOCATION_UNSPECIFIED = 0
         COMPLETE_REQUEST_BODY = 1
 

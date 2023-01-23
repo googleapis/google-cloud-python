@@ -84,14 +84,40 @@ class ScanRun(proto.Message):
     """
 
     class ExecutionState(proto.Enum):
-        r"""Types of ScanRun execution state."""
+        r"""Types of ScanRun execution state.
+
+        Values:
+            EXECUTION_STATE_UNSPECIFIED (0):
+                Represents an invalid state caused by
+                internal server error. This value should never
+                be returned.
+            QUEUED (1):
+                The scan is waiting in the queue.
+            SCANNING (2):
+                The scan is in progress.
+            FINISHED (3):
+                The scan is either finished or stopped by
+                user.
+        """
         EXECUTION_STATE_UNSPECIFIED = 0
         QUEUED = 1
         SCANNING = 2
         FINISHED = 3
 
     class ResultState(proto.Enum):
-        r"""Types of ScanRun result state."""
+        r"""Types of ScanRun result state.
+
+        Values:
+            RESULT_STATE_UNSPECIFIED (0):
+                Default value. This value is returned when
+                the ScanRun is not yet finished.
+            SUCCESS (1):
+                The scan finished without errors.
+            ERROR (2):
+                The scan finished with errors.
+            KILLED (3):
+                The scan was terminated by user.
+        """
         RESULT_STATE_UNSPECIFIED = 0
         SUCCESS = 1
         ERROR = 2

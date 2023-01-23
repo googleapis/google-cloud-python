@@ -51,6 +51,33 @@ class ScanRunErrorTrace(proto.Message):
         r"""Output only.
         Defines an error reason code.
         Next id: 7
+
+        Values:
+            CODE_UNSPECIFIED (0):
+                Default value is never used.
+            INTERNAL_ERROR (1):
+                Indicates that the scan run failed due to an
+                internal server error.
+            SCAN_CONFIG_ISSUE (2):
+                Indicates a scan configuration error, usually due to
+                outdated ScanConfig settings, such as starting_urls or the
+                DNS configuration.
+            AUTHENTICATION_CONFIG_ISSUE (3):
+                Indicates an authentication error, usually
+                due to outdated ScanConfig authentication
+                settings.
+            TIMED_OUT_WHILE_SCANNING (4):
+                Indicates a scan operation timeout, usually
+                caused by a very large site.
+            TOO_MANY_REDIRECTS (5):
+                Indicates that a scan encountered excessive
+                redirects, either to authentication or some
+                other page outside of the scan scope.
+            TOO_MANY_HTTP_ERRORS (6):
+                Indicates that a scan encountered numerous errors from the
+                web site pages. When available, most_common_http_error_code
+                field indicates the most common HTTP error code encountered
+                during the scan.
         """
         CODE_UNSPECIFIED = 0
         INTERNAL_ERROR = 1

@@ -68,14 +68,37 @@ class ScanConfig(proto.Message):
     """
 
     class UserAgent(proto.Enum):
-        r"""Type of user agents used for scanning."""
+        r"""Type of user agents used for scanning.
+
+        Values:
+            USER_AGENT_UNSPECIFIED (0):
+                The user agent is unknown. Service will default to
+                CHROME_LINUX.
+            CHROME_LINUX (1):
+                Chrome on Linux. This is the service default
+                if unspecified.
+            CHROME_ANDROID (2):
+                Chrome on Android.
+            SAFARI_IPHONE (3):
+                Safari on IPhone.
+        """
         USER_AGENT_UNSPECIFIED = 0
         CHROME_LINUX = 1
         CHROME_ANDROID = 2
         SAFARI_IPHONE = 3
 
     class TargetPlatform(proto.Enum):
-        r"""Cloud platforms supported by Cloud Web Security Scanner."""
+        r"""Cloud platforms supported by Cloud Web Security Scanner.
+
+        Values:
+            TARGET_PLATFORM_UNSPECIFIED (0):
+                The target platform is unknown. Requests with this enum
+                value will be rejected with INVALID_ARGUMENT error.
+            APP_ENGINE (1):
+                Google App Engine service.
+            COMPUTE (2):
+                Google Compute Engine service.
+        """
         TARGET_PLATFORM_UNSPECIFIED = 0
         APP_ENGINE = 1
         COMPUTE = 2

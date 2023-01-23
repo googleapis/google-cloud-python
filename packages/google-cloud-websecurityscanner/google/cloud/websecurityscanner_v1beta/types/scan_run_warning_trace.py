@@ -40,6 +40,26 @@ class ScanRunWarningTrace(proto.Message):
         r"""Output only.
         Defines a warning message code.
         Next id: 6
+
+        Values:
+            CODE_UNSPECIFIED (0):
+                Default value is never used.
+            INSUFFICIENT_CRAWL_RESULTS (1):
+                Indicates that a scan discovered an
+                unexpectedly low number of URLs. This is
+                sometimes caused by complex navigation features
+                or by using a single URL for numerous pages.
+            TOO_MANY_CRAWL_RESULTS (2):
+                Indicates that a scan discovered too many
+                URLs to test, or excessive redundant URLs.
+            TOO_MANY_FUZZ_TASKS (3):
+                Indicates that too many tests have been
+                generated for the scan. Customer should try
+                reducing the number of starting URLs, increasing
+                the QPS rate, or narrowing down the scope of the
+                scan using the excluded patterns.
+            BLOCKED_BY_IAP (4):
+                Indicates that a scan is blocked by IAP.
         """
         CODE_UNSPECIFIED = 0
         INSUFFICIENT_CRAWL_RESULTS = 1
