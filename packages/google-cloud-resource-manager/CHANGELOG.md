@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## [1.8.1](https://github.com/googleapis/python-resource-manager/compare/v1.8.0...v1.8.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([37552c8](https://github.com/googleapis/python-resource-manager/commit/37552c800718429a3db82fe445a93c02ee44c2e8))
+
+
+### Documentation
+
+* Add documentation for enums ([37552c8](https://github.com/googleapis/python-resource-manager/commit/37552c800718429a3db82fe445a93c02ee44c2e8))
+
 ## [1.8.0](https://github.com/googleapis/python-resource-manager/compare/v1.7.0...v1.8.0) (2023-01-10)
 
 
