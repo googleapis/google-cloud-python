@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/python-gke-hub/compare/v1.7.0...v1.7.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([21f3843](https://github.com/googleapis/python-gke-hub/commit/21f3843236e817b40202de71e54efa3c950f2b2c))
+
+
+### Documentation
+
+* Add documentation for enums ([21f3843](https://github.com/googleapis/python-gke-hub/commit/21f3843236e817b40202de71e54efa3c950f2b2c))
+
 ## [1.7.0](https://github.com/googleapis/python-gke-hub/compare/v1.6.0...v1.7.0) (2023-01-10)
 
 
