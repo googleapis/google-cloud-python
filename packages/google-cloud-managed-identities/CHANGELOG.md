@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/python-managed-identities/compare/v1.7.0...v1.7.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([f5187a3](https://github.com/googleapis/python-managed-identities/commit/f5187a30de65424e634db630167d25cd268f1968))
+
+
+### Documentation
+
+* Add documentation for enums ([f5187a3](https://github.com/googleapis/python-managed-identities/commit/f5187a30de65424e634db630167d25cd268f1968))
+
 ## [1.7.0](https://github.com/googleapis/python-managed-identities/compare/v1.6.0...v1.7.0) (2023-01-10)
 
 
