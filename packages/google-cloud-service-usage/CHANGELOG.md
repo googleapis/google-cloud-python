@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-service-usage/compare/v1.6.0...v1.6.1) (2023-01-23)
+
+
+### Bug Fixes
+
+* Add context manager return types ([d7c14ed](https://github.com/googleapis/python-service-usage/commit/d7c14ed360824d12122c00f527453ae564e047de))
+
+
+### Documentation
+
+* Add documentation for enums ([d7c14ed](https://github.com/googleapis/python-service-usage/commit/d7c14ed360824d12122c00f527453ae564e047de))
+
 ## [1.6.0](https://github.com/googleapis/python-service-usage/compare/v1.5.0...v1.6.0) (2023-01-10)
 
 
