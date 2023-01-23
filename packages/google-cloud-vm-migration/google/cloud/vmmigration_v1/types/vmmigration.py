@@ -142,21 +142,58 @@ __protobuf__ = proto.module(
 
 
 class UtilizationReportView(proto.Enum):
-    r"""Controls the level of details of a Utilization Report."""
+    r"""Controls the level of details of a Utilization Report.
+
+    Values:
+        UTILIZATION_REPORT_VIEW_UNSPECIFIED (0):
+            The default / unset value.
+            The API will default to FULL on single report
+            request and BASIC for multiple reports request.
+        BASIC (1):
+            Get the report metadata, without the list of
+            VMs and their utilization info.
+        FULL (2):
+            Include everything.
+    """
     UTILIZATION_REPORT_VIEW_UNSPECIFIED = 0
     BASIC = 1
     FULL = 2
 
 
 class MigratingVmView(proto.Enum):
-    r"""Controls the level of details of a Migrating VM."""
+    r"""Controls the level of details of a Migrating VM.
+
+    Values:
+        MIGRATING_VM_VIEW_UNSPECIFIED (0):
+            View is unspecified. The API will fallback to
+            the default value.
+        MIGRATING_VM_VIEW_BASIC (1):
+            Get the migrating VM basic details.
+            The basic details do not include the recent
+            clone jobs and recent cutover jobs lists.
+        MIGRATING_VM_VIEW_FULL (2):
+            Include everything.
+    """
     MIGRATING_VM_VIEW_UNSPECIFIED = 0
     MIGRATING_VM_VIEW_BASIC = 1
     MIGRATING_VM_VIEW_FULL = 2
 
 
 class ComputeEngineDiskType(proto.Enum):
-    r"""Types of disks supported for Compute Engine VM."""
+    r"""Types of disks supported for Compute Engine VM.
+
+    Values:
+        COMPUTE_ENGINE_DISK_TYPE_UNSPECIFIED (0):
+            An unspecified disk type. Will be used as
+            STANDARD.
+        COMPUTE_ENGINE_DISK_TYPE_STANDARD (1):
+            A Standard disk type.
+        COMPUTE_ENGINE_DISK_TYPE_SSD (2):
+            SSD hard disk type.
+        COMPUTE_ENGINE_DISK_TYPE_BALANCED (3):
+            An alternative to SSD persistent disks that
+            balance performance and cost.
+    """
     COMPUTE_ENGINE_DISK_TYPE_UNSPECIFIED = 0
     COMPUTE_ENGINE_DISK_TYPE_STANDARD = 1
     COMPUTE_ENGINE_DISK_TYPE_SSD = 2
@@ -164,14 +201,34 @@ class ComputeEngineDiskType(proto.Enum):
 
 
 class ComputeEngineLicenseType(proto.Enum):
-    r"""Types of licenses used in OS adaptation."""
+    r"""Types of licenses used in OS adaptation.
+
+    Values:
+        COMPUTE_ENGINE_LICENSE_TYPE_DEFAULT (0):
+            The license type is the default for the OS.
+        COMPUTE_ENGINE_LICENSE_TYPE_PAYG (1):
+            The license type is Pay As You Go license
+            type.
+        COMPUTE_ENGINE_LICENSE_TYPE_BYOL (2):
+            The license type is Bring Your Own License
+            type.
+    """
     COMPUTE_ENGINE_LICENSE_TYPE_DEFAULT = 0
     COMPUTE_ENGINE_LICENSE_TYPE_PAYG = 1
     COMPUTE_ENGINE_LICENSE_TYPE_BYOL = 2
 
 
 class ComputeEngineBootOption(proto.Enum):
-    r"""Possible values for vm boot option."""
+    r"""Possible values for vm boot option.
+
+    Values:
+        COMPUTE_ENGINE_BOOT_OPTION_UNSPECIFIED (0):
+            The boot option is unknown.
+        COMPUTE_ENGINE_BOOT_OPTION_EFI (1):
+            The boot option is EFI.
+        COMPUTE_ENGINE_BOOT_OPTION_BIOS (2):
+            The boot option is BIOS.
+    """
     COMPUTE_ENGINE_BOOT_OPTION_UNSPECIFIED = 0
     COMPUTE_ENGINE_BOOT_OPTION_EFI = 1
     COMPUTE_ENGINE_BOOT_OPTION_BIOS = 2
@@ -209,7 +266,22 @@ class ReplicationCycle(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Possible states of a replication cycle."""
+        r"""Possible states of a replication cycle.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state is unknown. This is used for API
+                compatibility only and is not used by the
+                system.
+            RUNNING (1):
+                The replication cycle is running.
+            PAUSED (2):
+                The replication cycle is paused.
+            FAILED (3):
+                The replication cycle finished with errors.
+            SUCCEEDED (4):
+                The replication cycle finished successfully.
+        """
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         PAUSED = 2
@@ -459,7 +531,46 @@ class MigratingVm(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The possible values of the state/health of source VM."""
+        r"""The possible values of the state/health of source VM.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state was not sampled by the health
+                checks yet.
+            PENDING (1):
+                The VM in the source is being verified.
+            READY (2):
+                The source VM was verified, and it's ready to
+                start replication.
+            FIRST_SYNC (3):
+                Migration is going through the first sync
+                cycle.
+            ACTIVE (4):
+                The replication is active, and it's running
+                or scheduled to run.
+            CUTTING_OVER (7):
+                The source VM is being turned off, and a
+                final replication is currently running.
+            CUTOVER (8):
+                The source VM was stopped and replicated. The
+                replication is currently paused.
+            FINAL_SYNC (9):
+                A cutover job is active and replication cycle
+                is running the final sync.
+            PAUSED (10):
+                The replication was paused by the user and no
+                cycles are scheduled to run.
+            FINALIZING (11):
+                The migrating VM is being finalized and
+                migration resources are being removed.
+            FINALIZED (12):
+                The replication process is done. The
+                migrating VM is finalized and no longer consumes
+                billable resources.
+            ERROR (13):
+                The replication process encountered an
+                unrecoverable error and was aborted.
+        """
         STATE_UNSPECIFIED = 0
         PENDING = 1
         READY = 2
@@ -607,7 +718,29 @@ class CloneJob(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Possible states of the clone job."""
+        r"""Possible states of the clone job.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state is unknown. This is used for API
+                compatibility only and is not used by the
+                system.
+            PENDING (1):
+                The clone job has not yet started.
+            ACTIVE (2):
+                The clone job is active and running.
+            FAILED (3):
+                The clone job finished with errors.
+            SUCCEEDED (4):
+                The clone job finished successfully.
+            CANCELLED (5):
+                The clone job was cancelled.
+            CANCELLING (6):
+                The clone job is being cancelled.
+            ADAPTING_OS (7):
+                OS adaptation is running as part of the clone
+                job to generate license.
+        """
         STATE_UNSPECIFIED = 0
         PENDING = 1
         ACTIVE = 2
@@ -773,7 +906,29 @@ class CutoverJob(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Possible states of the cutover job."""
+        r"""Possible states of the cutover job.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state is unknown. This is used for API
+                compatibility only and is not used by the
+                system.
+            PENDING (1):
+                The cutover job has not yet started.
+            FAILED (2):
+                The cutover job finished with errors.
+            SUCCEEDED (3):
+                The cutover job finished successfully.
+            CANCELLED (4):
+                The cutover job was cancelled.
+            CANCELLING (5):
+                The cutover job is being cancelled.
+            ACTIVE (6):
+                The cutover job is active and running.
+            ADAPTING_OS (7):
+                OS adaptation is running as part of the
+                cutover job to generate license.
+        """
         STATE_UNSPECIFIED = 0
         PENDING = 1
         FAILED = 2
@@ -1227,7 +1382,25 @@ class AwsSourceDetails(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The possible values of the state."""
+        r"""The possible values of the state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state is unknown. This is used for API
+                compatibility only and is not used by the
+                system.
+            PENDING (1):
+                The state was not sampled by the health
+                checks yet.
+            FAILED (2):
+                The source is available but might not be
+                usable yet due to invalid credentials or another
+                reason. The error message will contain further
+                details.
+            ACTIVE (3):
+                The source exists and its credentials were
+                verified.
+        """
         STATE_UNSPECIFIED = 0
         PENDING = 1
         FAILED = 2
@@ -1375,7 +1548,29 @@ class DatacenterConnector(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The possible values of the state."""
+        r"""The possible values of the state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state is unknown. This is used for API
+                compatibility only and is not used by the
+                system.
+            PENDING (1):
+                The state was not sampled by the health
+                checks yet.
+            OFFLINE (2):
+                The source was sampled by health checks and
+                is not available.
+            FAILED (3):
+                The source is available but might not be
+                usable yet due to unvalidated credentials or
+                another reason. The credentials referred to are
+                the ones to the Source. The error message will
+                contain further details.
+            ACTIVE (4):
+                The source exists and its credentials were
+                verified.
+        """
         STATE_UNSPECIFIED = 0
         PENDING = 1
         OFFLINE = 2
@@ -1466,7 +1661,19 @@ class UpgradeStatus(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The possible values of the state."""
+        r"""The possible values of the state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state was not sampled by the health
+                checks yet.
+            RUNNING (1):
+                The upgrade has started.
+            FAILED (2):
+                The upgrade failed.
+            SUCCEEDED (3):
+                The upgrade finished successfully.
+        """
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         FAILED = 2
@@ -1852,14 +2059,35 @@ class VmwareVmDetails(proto.Message):
     """
 
     class PowerState(proto.Enum):
-        r"""Possible values for the power state of the VM."""
+        r"""Possible values for the power state of the VM.
+
+        Values:
+            POWER_STATE_UNSPECIFIED (0):
+                Power state is not specified.
+            ON (1):
+                The VM is turned ON.
+            OFF (2):
+                The VM is turned OFF.
+            SUSPENDED (3):
+                The VM is suspended. This is similar to
+                hibernation or sleep mode.
+        """
         POWER_STATE_UNSPECIFIED = 0
         ON = 1
         OFF = 2
         SUSPENDED = 3
 
     class BootOption(proto.Enum):
-        r"""Possible values for vm boot option."""
+        r"""Possible values for vm boot option.
+
+        Values:
+            BOOT_OPTION_UNSPECIFIED (0):
+                The boot option is unknown.
+            EFI (1):
+                The boot option is EFI.
+            BIOS (2):
+                The boot option is BIOS.
+        """
         BOOT_OPTION_UNSPECIFIED = 0
         EFI = 1
         BIOS = 2
@@ -1964,7 +2192,21 @@ class AwsVmDetails(proto.Message):
     """
 
     class PowerState(proto.Enum):
-        r"""Possible values for the power state of the VM."""
+        r"""Possible values for the power state of the VM.
+
+        Values:
+            POWER_STATE_UNSPECIFIED (0):
+                Power state is not specified.
+            ON (1):
+                The VM is turned on.
+            OFF (2):
+                The VM is turned off.
+            SUSPENDED (3):
+                The VM is suspended. This is similar to
+                hibernation or sleep mode.
+            PENDING (4):
+                The VM is starting.
+        """
         POWER_STATE_UNSPECIFIED = 0
         ON = 1
         OFF = 2
@@ -1972,19 +2214,50 @@ class AwsVmDetails(proto.Message):
         PENDING = 4
 
     class BootOption(proto.Enum):
-        r"""The possible values for the vm boot option."""
+        r"""The possible values for the vm boot option.
+
+        Values:
+            BOOT_OPTION_UNSPECIFIED (0):
+                The boot option is unknown.
+            EFI (1):
+                The boot option is UEFI.
+            BIOS (2):
+                The boot option is LEGACY-BIOS.
+        """
         BOOT_OPTION_UNSPECIFIED = 0
         EFI = 1
         BIOS = 2
 
     class VmVirtualizationType(proto.Enum):
-        r"""Possible values for the virtualization types of the VM."""
+        r"""Possible values for the virtualization types of the VM.
+
+        Values:
+            VM_VIRTUALIZATION_TYPE_UNSPECIFIED (0):
+                The virtualization type is unknown.
+            HVM (1):
+                The virtualziation type is HVM.
+            PARAVIRTUAL (2):
+                The virtualziation type is PARAVIRTUAL.
+        """
         VM_VIRTUALIZATION_TYPE_UNSPECIFIED = 0
         HVM = 1
         PARAVIRTUAL = 2
 
     class VmArchitecture(proto.Enum):
-        r"""Possible values for the architectures of the VM."""
+        r"""Possible values for the architectures of the VM.
+
+        Values:
+            VM_ARCHITECTURE_UNSPECIFIED (0):
+                The architecture is unknown.
+            I386 (1):
+                The architecture is I386.
+            X86_64 (2):
+                The architecture is X86_64.
+            ARM64 (3):
+                The architecture is ARM64.
+            X86_64_MAC (4):
+                The architecture is X86_64_MAC.
+        """
         VM_ARCHITECTURE_UNSPECIFIED = 0
         I386 = 1
         X86_64 = 2
@@ -2208,14 +2481,38 @@ class UtilizationReport(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Utilization report state."""
+        r"""Utilization report state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state is unknown. This value is not in
+                use.
+            CREATING (1):
+                The report is in the making.
+            SUCCEEDED (2):
+                Report creation completed successfully.
+            FAILED (3):
+                Report creation failed.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         SUCCEEDED = 2
         FAILED = 3
 
     class TimeFrame(proto.Enum):
-        r"""Report time frame options."""
+        r"""Report time frame options.
+
+        Values:
+            TIME_FRAME_UNSPECIFIED (0):
+                The time frame was not specified and will
+                default to WEEK.
+            WEEK (1):
+                One week.
+            MONTH (2):
+                One month.
+            YEAR (3):
+                One year.
+        """
         TIME_FRAME_UNSPECIFIED = 0
         WEEK = 1
         MONTH = 2
@@ -3109,7 +3406,20 @@ class AppliedLicense(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""License types used in OS adaptation."""
+        r"""License types used in OS adaptation.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unspecified license for the OS.
+            NONE (1):
+                No license available for the OS.
+            PAYG (2):
+                The license type is Pay As You Go license
+                type.
+            BYOL (3):
+                The license type is Bring Your Own License
+                type.
+        """
         TYPE_UNSPECIFIED = 0
         NONE = 1
         PAYG = 2
@@ -3145,6 +3455,16 @@ class SchedulingNodeAffinity(proto.Message):
     class Operator(proto.Enum):
         r"""Possible types of node selection operators. Valid operators are IN
         for affinity and NOT_IN for anti-affinity.
+
+        Values:
+            OPERATOR_UNSPECIFIED (0):
+                An unknown, unexpected behavior.
+            IN (1):
+                The node resource group should be in these
+                resources affinity.
+            NOT_IN (2):
+                The node resource group should not be in
+                these resources affinity.
         """
         OPERATOR_UNSPECIFIED = 0
         IN = 1
@@ -3192,7 +3512,18 @@ class ComputeScheduling(proto.Message):
     """
 
     class OnHostMaintenance(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            ON_HOST_MAINTENANCE_UNSPECIFIED (0):
+                An unknown, unexpected behavior.
+            TERMINATE (1):
+                Terminate the instance when the host machine
+                undergoes maintenance.
+            MIGRATE (2):
+                Migrate the instance when the host machine
+                undergoes maintenance.
+        """
         ON_HOST_MAINTENANCE_UNSPECIFIED = 0
         TERMINATE = 1
         MIGRATE = 2
@@ -3201,6 +3532,18 @@ class ComputeScheduling(proto.Message):
         r"""Defines whether the Instance should be automatically
         restarted whenever it is terminated by Compute Engine (not
         terminated by user).
+
+        Values:
+            RESTART_TYPE_UNSPECIFIED (0):
+                Unspecified behavior. This will use the
+                default.
+            AUTOMATIC_RESTART (1):
+                The Instance should be automatically
+                restarted whenever it is terminated by Compute
+                Engine.
+            NO_AUTOMATIC_RESTART (2):
+                The Instance isn't automatically restarted
+                whenever it is terminated by Compute Engine.
         """
         RESTART_TYPE_UNSPECIFIED = 0
         AUTOMATIC_RESTART = 1
@@ -4398,7 +4741,39 @@ class MigrationError(proto.Message):
     """
 
     class ErrorCode(proto.Enum):
-        r"""Represents resource error codes."""
+        r"""Represents resource error codes.
+
+        Values:
+            ERROR_CODE_UNSPECIFIED (0):
+                Default value. This value is not used.
+            UNKNOWN_ERROR (1):
+                Migrate for Compute encountered an unknown
+                error.
+            SOURCE_VALIDATION_ERROR (2):
+                Migrate for Compute encountered an error
+                while validating replication source health.
+            SOURCE_REPLICATION_ERROR (3):
+                Migrate for Compute encountered an error
+                during source data operation.
+            TARGET_REPLICATION_ERROR (4):
+                Migrate for Compute encountered an error
+                during target data operation.
+            OS_ADAPTATION_ERROR (5):
+                Migrate for Compute encountered an error
+                during OS adaptation.
+            CLONE_ERROR (6):
+                Migrate for Compute encountered an error in
+                clone operation.
+            CUTOVER_ERROR (7):
+                Migrate for Compute encountered an error in
+                cutover operation.
+            UTILIZATION_REPORT_ERROR (8):
+                Migrate for Compute encountered an error
+                during utilization report creation.
+            APPLIANCE_UPGRADE_ERROR (9):
+                Migrate for Compute encountered an error
+                during appliance upgrade.
+        """
         ERROR_CODE_UNSPECIFIED = 0
         UNKNOWN_ERROR = 1
         SOURCE_VALIDATION_ERROR = 2
@@ -4449,7 +4824,16 @@ class AwsSourceVmDetails(proto.Message):
     """
 
     class Firmware(proto.Enum):
-        r"""Possible values for AWS VM firmware."""
+        r"""Possible values for AWS VM firmware.
+
+        Values:
+            FIRMWARE_UNSPECIFIED (0):
+                The firmware is unknown.
+            EFI (1):
+                The firmware is EFI.
+            BIOS (2):
+                The firmware is BIOS.
+        """
         FIRMWARE_UNSPECIFIED = 0
         EFI = 1
         BIOS = 2
