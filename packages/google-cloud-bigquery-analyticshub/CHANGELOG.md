@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.1](https://github.com/googleapis/python-bigquery-analyticshub/compare/v0.3.0...v0.3.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([14fee28](https://github.com/googleapis/python-bigquery-analyticshub/commit/14fee28c1c34bb90b4877ef1249f41602dd68c85))
+
+
+### Documentation
+
+* Add documentation for enums ([14fee28](https://github.com/googleapis/python-bigquery-analyticshub/commit/14fee28c1c34bb90b4877ef1249f41602dd68c85))
+
 ## [0.3.0](https://github.com/googleapis/python-bigquery-analyticshub/compare/v0.2.0...v0.3.0) (2023-01-10)
 
 
