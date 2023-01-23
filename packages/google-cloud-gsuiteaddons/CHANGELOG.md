@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/python-gsuiteaddons/compare/v0.2.0...v0.2.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([1fc871a](https://github.com/googleapis/python-gsuiteaddons/commit/1fc871ae26d3d1988e0d12063300f1b95c87c1f3))
+
+
+### Documentation
+
+* Add documentation for enums ([1fc871a](https://github.com/googleapis/python-gsuiteaddons/commit/1fc871ae26d3d1988e0d12063300f1b95c87c1f3))
+
 ## [0.2.0](https://github.com/googleapis/python-gsuiteaddons/compare/v0.1.1...v0.2.0) (2023-01-10)
 
 
