@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.9.1](https://github.com/googleapis/python-dataproc-metastore/compare/v1.9.0...v1.9.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([ba28751](https://github.com/googleapis/python-dataproc-metastore/commit/ba28751873a3b24f9a477c28e03bfad442db2cfb))
+
+
+### Documentation
+
+* Add documentation for enums ([ba28751](https://github.com/googleapis/python-dataproc-metastore/commit/ba28751873a3b24f9a477c28e03bfad442db2cfb))
+
 ## [1.9.0](https://github.com/googleapis/python-dataproc-metastore/compare/v1.8.0...v1.9.0) (2023-01-10)
 
 
