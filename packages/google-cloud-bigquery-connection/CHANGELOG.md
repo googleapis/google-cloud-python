@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.9.1](https://github.com/googleapis/python-bigquery-connection/compare/v1.9.0...v1.9.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([a62dada](https://github.com/googleapis/python-bigquery-connection/commit/a62dada3529fe2ef72496e3e35f56c7184cfdef0))
+
+
+### Documentation
+
+* Add documentation for enums ([a62dada](https://github.com/googleapis/python-bigquery-connection/commit/a62dada3529fe2ef72496e3e35f56c7184cfdef0))
+
 ## [1.9.0](https://github.com/googleapis/python-bigquery-connection/compare/v1.8.0...v1.9.0) (2023-01-10)
 
 
