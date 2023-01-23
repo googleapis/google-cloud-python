@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.12.1](https://github.com/googleapis/python-channel/compare/v1.12.0...v1.12.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([47afb33](https://github.com/googleapis/python-channel/commit/47afb33c11627e7f051e672600e336cd844e3425))
+
+
+### Documentation
+
+* Add documentation for enums ([47afb33](https://github.com/googleapis/python-channel/commit/47afb33c11627e7f051e672600e336cd844e3425))
+
 ## [1.12.0](https://github.com/googleapis/python-channel/compare/v1.11.0...v1.12.0) (2023-01-10)
 
 
