@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.9.1](https://github.com/googleapis/python-bigquery-migration/compare/v0.9.0...v0.9.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([970281e](https://github.com/googleapis/python-bigquery-migration/commit/970281ecea66632b651f8346166509e0e7160168))
+
+
+### Documentation
+
+* Add documentation for enums ([970281e](https://github.com/googleapis/python-bigquery-migration/commit/970281ecea66632b651f8346166509e0e7160168))
+
 ## [0.9.0](https://github.com/googleapis/python-bigquery-migration/compare/v0.8.0...v0.9.0) (2023-01-10)
 
 
