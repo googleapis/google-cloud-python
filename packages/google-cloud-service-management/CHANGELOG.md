@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.5.1](https://github.com/googleapis/python-service-management/compare/v1.5.0...v1.5.1) (2023-01-23)
+
+
+### Bug Fixes
+
+* Add context manager return types ([4436870](https://github.com/googleapis/python-service-management/commit/443687007443553e1aa4881d7923f68575626015))
+
+
+### Documentation
+
+* Add documentation for enums ([4436870](https://github.com/googleapis/python-service-management/commit/443687007443553e1aa4881d7923f68575626015))
+
 ## [1.5.0](https://github.com/googleapis/python-service-management/compare/v1.4.0...v1.5.0) (2023-01-10)
 
 
