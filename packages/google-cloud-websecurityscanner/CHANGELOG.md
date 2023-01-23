@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## [1.11.1](https://github.com/googleapis/python-websecurityscanner/compare/v1.11.0...v1.11.1) (2023-01-23)
+
+
+### Bug Fixes
+
+* Add context manager return types ([1994d96](https://github.com/googleapis/python-websecurityscanner/commit/1994d96f1e90374e101e14fb3a1613cb50a0a69f))
+
+
+### Documentation
+
+* Add documentation for enums ([1994d96](https://github.com/googleapis/python-websecurityscanner/commit/1994d96f1e90374e101e14fb3a1613cb50a0a69f))
+
 ## [1.11.0](https://github.com/googleapis/python-websecurityscanner/compare/v1.10.0...v1.11.0) (2023-01-10)
 
 
