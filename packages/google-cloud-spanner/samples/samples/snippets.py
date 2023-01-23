@@ -2314,7 +2314,7 @@ def list_instance_config_operations():
 
 def add_and_drop_database_roles(instance_id, database_id):
     """Showcases how to manage a user defined database role."""
-    # [START spanner_add_and_drop_database_roles]
+    # [START spanner_add_and_drop_database_role]
     # instance_id = "your-spanner-instance"
     # database_id = "your-spanner-db-id"
     spanner_client = spanner.Client()
@@ -2345,7 +2345,7 @@ def add_and_drop_database_roles(instance_id, database_id):
     operation.result(OPERATION_TIMEOUT_SECONDS)
     print("Revoked privileges and dropped role {}".format(role_child))
 
-    # [END spanner_add_and_drop_database_roles]
+    # [END spanner_add_and_drop_database_role]
 
 
 def read_data_with_database_role(instance_id, database_id):
