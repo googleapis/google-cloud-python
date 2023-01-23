@@ -80,13 +80,36 @@ class Input(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""The type of the input."""
+        r"""The type of the input.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Input type is not specified.
+            RTMP_PUSH (1):
+                Input will take an rtmp input stream.
+            SRT_PUSH (2):
+                Input will take an srt (Secure Reliable
+                Transport) input stream.
+        """
         TYPE_UNSPECIFIED = 0
         RTMP_PUSH = 1
         SRT_PUSH = 2
 
     class Tier(proto.Enum):
-        r"""Tier of the input specification."""
+        r"""Tier of the input specification.
+
+        Values:
+            TIER_UNSPECIFIED (0):
+                Tier is not specified.
+            SD (1):
+                Resolution < 1280x720. Bitrate <= 6 Mbps. FPS
+                <= 60.
+            HD (2):
+                Resolution <= 1920x1080. Bitrate <= 25 Mbps.
+                FPS <= 60.
+            UHD (3):
+                Resolution <= 4096x2160. Not supported yet.
+        """
         TIER_UNSPECIFIED = 0
         SD = 1
         HD = 2
@@ -217,7 +240,35 @@ class Channel(proto.Message):
     """
 
     class StreamingState(proto.Enum):
-        r"""State of streaming operation that the channel is running."""
+        r"""State of streaming operation that the channel is running.
+
+        Values:
+            STREAMING_STATE_UNSPECIFIED (0):
+                Streaming state is not specified.
+            STREAMING (1):
+                Channel is getting the input stream,
+                generating the live streams to the specified
+                output location.
+            AWAITING_INPUT (2):
+                Channel is waiting for the input stream
+                through the input.
+            STREAMING_ERROR (4):
+                Channel is running, but has trouble
+                publishing the live streams onto the specified
+                output location (for example, the specified
+                Cloud Storage bucket is not writable).
+            STREAMING_NO_INPUT (5):
+                Channel is generating live streams with no
+                input stream. Live streams are filled out with
+                black screen, while input stream is missing. Not
+                supported yet.
+            STOPPED (6):
+                Channel is stopped, finishing live streams.
+            STARTING (7):
+                Channel is starting.
+            STOPPING (8):
+                Channel is stopping.
+        """
         STREAMING_STATE_UNSPECIFIED = 0
         STREAMING = 1
         AWAITING_INPUT = 2
@@ -331,6 +382,25 @@ class LogConfig(proto.Message):
         < NOTICE < WARNING < ERROR < CRITICAL < ALERT < EMERGENCY. See
         `LogSeverity <https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#logseverity>`__
         for more information.
+
+        Values:
+            LOG_SEVERITY_UNSPECIFIED (0):
+                Log severity is not specified. This is the
+                same as log severity is OFF.
+            OFF (1):
+                Log is turned off.
+            DEBUG (100):
+                Log with severity higher than or equal to
+                DEBUG are logged.
+            INFO (200):
+                Logs with severity higher than or equal to
+                INFO are logged.
+            WARNING (400):
+                Logs with severity higher than or equal to
+                WARNING are logged.
+            ERROR (500):
+                Logs with severity higher than or equal to
+                ERROR are logged.
         """
         LOG_SEVERITY_UNSPECIFIED = 0
         OFF = 1
@@ -566,7 +636,25 @@ class Event(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of the event"""
+        r"""State of the event
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Event state is not specified.
+            SCHEDULED (1):
+                Event is scheduled but not executed yet.
+            RUNNING (2):
+                Event is being executed.
+            SUCCEEDED (3):
+                Event has been successfully executed.
+            FAILED (4):
+                Event fails to be executed.
+            PENDING (5):
+                Event has been created but not scheduled yet.
+            STOPPED (6):
+                Event was stopped before running for its full
+                duration.
+        """
         STATE_UNSPECIFIED = 0
         SCHEDULED = 1
         RUNNING = 2

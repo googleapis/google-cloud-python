@@ -172,7 +172,18 @@ class Manifest(proto.Message):
     """
 
     class ManifestType(proto.Enum):
-        r"""The manifest type can be either ``HLS`` or ``DASH``."""
+        r"""The manifest type can be either ``HLS`` or ``DASH``.
+
+        Values:
+            MANIFEST_TYPE_UNSPECIFIED (0):
+                The manifest type is not specified.
+            HLS (1):
+                Create an ``HLS`` manifest. The corresponding file extension
+                is ``.m3u8``.
+            DASH (2):
+                Create a ``DASH`` manifest. The corresponding file extension
+                is ``.mpd``.
+        """
         MANIFEST_TYPE_UNSPECIFIED = 0
         HLS = 1
         DASH = 2
