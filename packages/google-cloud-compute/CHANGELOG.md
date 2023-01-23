@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/python-compute/compare/v1.9.0...v1.10.0) (2023-01-20)
+
+
+### Features
+
+* Update Compute Engine API to revision 20221224 ([3491868](https://github.com/googleapis/python-compute/commit/3491868969ab7bf063b451bb66055f3f3e85f5ad))
+
+
+### Bug Fixes
+
+* Add context manager return types ([3491868](https://github.com/googleapis/python-compute/commit/3491868969ab7bf063b451bb66055f3f3e85f5ad))
+
+
+### Documentation
+
+* Add documentation for enums ([3491868](https://github.com/googleapis/python-compute/commit/3491868969ab7bf063b451bb66055f3f3e85f5ad))
+
 ## [1.9.0](https://github.com/googleapis/python-compute/compare/v1.8.0...v1.9.0) (2023-01-10)
 
 
