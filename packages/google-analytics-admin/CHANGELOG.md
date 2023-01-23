@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.14.1](https://github.com/googleapis/python-analytics-admin/compare/v0.14.0...v0.14.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([b43c855](https://github.com/googleapis/python-analytics-admin/commit/b43c855e3434f31612e4744559f13508d7f6f071))
+
+
+### Documentation
+
+* Add documentation for enums ([b43c855](https://github.com/googleapis/python-analytics-admin/commit/b43c855e3434f31612e4744559f13508d7f6f071))
+
 ## [0.14.0](https://github.com/googleapis/python-analytics-admin/compare/v0.13.0...v0.14.0) (2023-01-10)
 
 
