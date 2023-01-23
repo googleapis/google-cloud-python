@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-datastream/compare/v1.4.0...v1.4.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([a12a7e7](https://github.com/googleapis/python-datastream/commit/a12a7e7194f9e03e74511f26de6c63c18d920816))
+
+
+### Documentation
+
+* Add documentation for enums ([a12a7e7](https://github.com/googleapis/python-datastream/commit/a12a7e7194f9e03e74511f26de6c63c18d920816))
+
 ## [1.4.0](https://github.com/googleapis/python-datastream/compare/v1.3.0...v1.4.0) (2023-01-10)
 
 
