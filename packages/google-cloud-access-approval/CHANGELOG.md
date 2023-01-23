@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.10.1](https://github.com/googleapis/python-access-approval/compare/v1.10.0...v1.10.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([77e882b](https://github.com/googleapis/python-access-approval/commit/77e882b58edf0f78e39d36a467430f1ce4780f63))
+
+
+### Documentation
+
+* Add documentation for enums ([77e882b](https://github.com/googleapis/python-access-approval/commit/77e882b58edf0f78e39d36a467430f1ce4780f63))
+
 ## [1.10.0](https://github.com/googleapis/python-access-approval/compare/v1.9.1...v1.10.0) (2023-01-10)
 
 
