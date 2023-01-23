@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.9.1](https://github.com/googleapis/python-life-sciences/compare/v0.9.0...v0.9.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([a095249](https://github.com/googleapis/python-life-sciences/commit/a095249745ccdde1cdf0ffdfbbc382e25b9e4364))
+
+
+### Documentation
+
+* Add documentation for enums ([a095249](https://github.com/googleapis/python-life-sciences/commit/a095249745ccdde1cdf0ffdfbbc382e25b9e4364))
+
 ## [0.9.0](https://github.com/googleapis/python-life-sciences/compare/v0.8.0...v0.9.0) (2023-01-10)
 
 
