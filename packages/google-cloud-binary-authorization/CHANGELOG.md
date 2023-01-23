@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.5.1](https://github.com/googleapis/python-binary-authorization/compare/v1.5.0...v1.5.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([27c4e7c](https://github.com/googleapis/python-binary-authorization/commit/27c4e7c30a0d95b9262e2bfb934e940904a131db))
+
+
+### Documentation
+
+* Add documentation for enums ([27c4e7c](https://github.com/googleapis/python-binary-authorization/commit/27c4e7c30a0d95b9262e2bfb934e940904a131db))
+
 ## [1.5.0](https://github.com/googleapis/python-binary-authorization/compare/v1.4.0...v1.5.0) (2023-01-10)
 
 
