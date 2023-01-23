@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-notebooks/compare/v1.6.0...v1.6.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([a1e4ce2](https://github.com/googleapis/python-notebooks/commit/a1e4ce269909f30e8c3acd0e39146edfdc0c510b))
+
+
+### Documentation
+
+* Add documentation for enums ([a1e4ce2](https://github.com/googleapis/python-notebooks/commit/a1e4ce269909f30e8c3acd0e39146edfdc0c510b))
+
 ## [1.6.0](https://github.com/googleapis/python-notebooks/compare/v1.5.1...v1.6.0) (2023-01-10)
 
 
