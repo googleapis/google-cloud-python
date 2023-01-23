@@ -130,7 +130,7 @@ class ConfiguredSnippet:
         if not service_endpoint.host:
             return None
 
-        # GAPIC Python libraries do not require the schema to be specified.
+        schema = service_endpoint.schema
         host = service_endpoint.host
         region = service_endpoint.region
         port = service_endpoint.port
@@ -141,9 +141,18 @@ class ConfiguredSnippet:
             host_maybe_with_port = host
 
         if region:
-            return f"{region}-{host_maybe_with_port}"
+            host_maybe_with_port_and_region = f"{region}-{host_maybe_with_port}"
         else:
-            return host_maybe_with_port
+            host_maybe_with_port_and_region = host_maybe_with_port
+
+        if (
+            schema
+            == snippet_config_language_pb2.Snippet.ClientInitialization.ServiceEndpoint.HTTP
+        ):
+            return f"http://{host_maybe_with_port_and_region}"
+        else:
+            # Either the default or HTTPS, in which case the schema is not needed.
+            return host_maybe_with_port_and_region
 
     def _append_to_sample_function_def_body(
         self, statement: libcst.BaseStatement

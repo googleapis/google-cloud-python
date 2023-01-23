@@ -136,55 +136,68 @@ def test_filename(is_sync, expected):
 
 
 @pytest.mark.parametrize(
-    "snippet_config_dict,expected",
+    "custom_service_endpoint_dict,expected",
     [
-        ({}, None),
         (
             {
-                "snippet": {
-                    "serviceClientInitialization": {
-                        "customServiceEndpoint": {
-                            "host": "speech.googleapis.com",
-                        }
-                    },
-                }
+                "region": "us",
+                "port": 123,
+                "schema": "HTTP",
+            },
+            None,  # host is missing.
+        ),
+        (
+            {
+                "host": "speech.googleapis.com",
             },
             "speech.googleapis.com",
         ),
         (
             {
-                "snippet": {
-                    "serviceClientInitialization": {
-                        "customServiceEndpoint": {
-                            "host": "speech.googleapis.com",
-                            "region": "us",
-                        }
-                    },
-                }
+                "host": "speech.googleapis.com",
+                "region": "us",
             },
             "us-speech.googleapis.com",
         ),
         (
             {
-                "snippet": {
-                    "serviceClientInitialization": {
-                        "customServiceEndpoint": {
-                            "host": "speech.googleapis.com",
-                            "region": "us",
-                            "port": 123,
-                        }
-                    },
-                }
+                "host": "speech.googleapis.com",
+                "region": "us",
+                "port": 123,
             },
             "us-speech.googleapis.com:123",
         ),
+        (
+            {
+                "host": "speech.googleapis.com",
+                "region": "us",
+                "port": 123,
+                "schema": "HTTP",
+            },
+            "http://us-speech.googleapis.com:123",
+        ),
+        (
+            {
+                "host": "speech.googleapis.com",
+                "schema": "HTTPS",
+            },
+            "speech.googleapis.com",
+        ),
     ],
 )
-def test_api_endpoint(snippet_config_dict, expected):
+def test_api_endpoint(custom_service_endpoint_dict, expected):
     # api_schema, api_version, and is_sync do not matter here.
     api_schema = _load_api_schema(SPEECH_V1_REQUEST_PATH)
     api_version = "v1"
     is_sync = True
+
+    snippet_config_dict = {
+        "snippet": {
+            "serviceClientInitialization": {
+                "customServiceEndpoint": custom_service_endpoint_dict
+            },
+        }
+    }
 
     snippet_config = json_format.ParseDict(
         snippet_config_dict, snippet_config_language_pb2.SnippetConfig()
