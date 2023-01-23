@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [2.10.1](https://github.com/googleapis/python-videointelligence/compare/v2.10.0...v2.10.1) (2023-01-23)
+
+
+### Bug Fixes
+
+* Add context manager return types ([0815c39](https://github.com/googleapis/python-videointelligence/commit/0815c399f098cdcfbeeb3a780aed76a9c470cded))
+
+
+### Documentation
+
+* Add documentation for enums ([0815c39](https://github.com/googleapis/python-videointelligence/commit/0815c399f098cdcfbeeb3a780aed76a9c470cded))
+
 ## [2.10.0](https://github.com/googleapis/python-videointelligence/compare/v2.9.0...v2.10.0) (2023-01-10)
 
 
