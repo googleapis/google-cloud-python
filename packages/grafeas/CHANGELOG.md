@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.8.1](https://github.com/googleapis/python-grafeas/compare/v1.8.0...v1.8.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([2b37951](https://github.com/googleapis/python-grafeas/commit/2b3795107feb1832670f3db11418695258d65c53))
+
+
+### Documentation
+
+* Add documentation for enums ([2b37951](https://github.com/googleapis/python-grafeas/commit/2b3795107feb1832670f3db11418695258d65c53))
+
 ## [1.8.0](https://github.com/googleapis/python-grafeas/compare/v1.7.0...v1.8.0) (2023-01-10)
 
 
