@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.17.1](https://github.com/googleapis/python-speech/compare/v2.17.0...v2.17.1) (2023-01-23)
+
+
+### Bug Fixes
+
+* Add context manager return types ([ed80330](https://github.com/googleapis/python-speech/commit/ed80330f0d3427a17bc0c43a9b84a9f535e82d6d))
+
+
+### Documentation
+
+* Add documentation for enums ([ed80330](https://github.com/googleapis/python-speech/commit/ed80330f0d3427a17bc0c43a9b84a9f535e82d6d))
+
 ## [2.17.0](https://github.com/googleapis/python-speech/compare/v2.16.2...v2.17.0) (2023-01-16)
 
 
