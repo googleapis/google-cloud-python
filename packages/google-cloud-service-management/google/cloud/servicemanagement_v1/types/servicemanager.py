@@ -216,7 +216,19 @@ class GetServiceConfigRequest(proto.Message):
     """
 
     class ConfigView(proto.Enum):
-        r""""""
+        r"""
+
+        Values:
+            BASIC (0):
+                Server response includes all fields except
+                SourceInfo.
+            FULL (1):
+                Server response includes all fields including
+                SourceInfo. SourceFiles are of type
+                'google.api.servicemanagement.v1.ConfigFile' and
+                are only available for configs created using the
+                SubmitConfigSource method.
+        """
         BASIC = 0
         FULL = 1
 
