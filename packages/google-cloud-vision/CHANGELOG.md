@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [3.3.1](https://github.com/googleapis/python-vision/compare/v3.3.0...v3.3.1) (2023-01-23)
+
+
+### Bug Fixes
+
+* Add context manager return types ([3e9cde4](https://github.com/googleapis/python-vision/commit/3e9cde4697b5da630347c67cffa37c2561a75f88))
+
+
+### Documentation
+
+* Add documentation for enums ([3e9cde4](https://github.com/googleapis/python-vision/commit/3e9cde4697b5da630347c67cffa37c2561a75f88))
+
 ## [3.3.0](https://github.com/googleapis/python-vision/compare/v3.2.0...v3.3.0) (2023-01-10)
 
 
