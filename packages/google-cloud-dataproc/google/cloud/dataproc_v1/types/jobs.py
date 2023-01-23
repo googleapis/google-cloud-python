@@ -69,6 +69,27 @@ class LoggingConfig(proto.Message):
         r"""The Log4j level for job execution. When running an `Apache
         Hive <https://hive.apache.org/>`__ job, Cloud Dataproc configures
         the Hive client to an equivalent verbosity level.
+
+        Values:
+            LEVEL_UNSPECIFIED (0):
+                Level is unspecified. Use default level for
+                log4j.
+            ALL (1):
+                Use ALL level for log4j.
+            TRACE (2):
+                Use TRACE level for log4j.
+            DEBUG (3):
+                Use DEBUG level for log4j.
+            INFO (4):
+                Use INFO level for log4j.
+            WARN (5):
+                Use WARN level for log4j.
+            ERROR (6):
+                Use ERROR level for log4j.
+            FATAL (7):
+                Use FATAL level for log4j.
+            OFF (8):
+                Turn off log4j.
         """
         LEVEL_UNSPECIFIED = 0
         ALL = 1
@@ -797,7 +818,40 @@ class JobStatus(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The job state."""
+        r"""The job state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The job state is unknown.
+            PENDING (1):
+                The job is pending; it has been submitted,
+                but is not yet running.
+            SETUP_DONE (8):
+                Job has been received by the service and
+                completed initial setup; it will soon be
+                submitted to the cluster.
+            RUNNING (2):
+                The job is running on the cluster.
+            CANCEL_PENDING (3):
+                A CancelJob request has been received, but is
+                pending.
+            CANCEL_STARTED (7):
+                Transient in-flight resources have been
+                canceled, and the request to cancel the running
+                job has been issued to the cluster.
+            CANCELLED (4):
+                The job cancellation was successful.
+            DONE (5):
+                The job has completed successfully.
+            ERROR (6):
+                The job has completed, but encountered an
+                error.
+            ATTEMPT_FAILURE (9):
+                Job attempt has failed. The detail field
+                contains failure details for this attempt.
+
+                Applies to restartable jobs only.
+        """
         STATE_UNSPECIFIED = 0
         PENDING = 1
         SETUP_DONE = 8
@@ -810,7 +864,29 @@ class JobStatus(proto.Message):
         ATTEMPT_FAILURE = 9
 
     class Substate(proto.Enum):
-        r"""The job substate."""
+        r"""The job substate.
+
+        Values:
+            UNSPECIFIED (0):
+                The job substate is unknown.
+            SUBMITTED (1):
+                The Job is submitted to the agent.
+                Applies to RUNNING state.
+            QUEUED (2):
+                The Job has been received and is awaiting
+                execution (it may be waiting for a condition to
+                be met). See the "details" field for the reason
+                for the delay.
+
+                Applies to RUNNING state.
+            STALE_STATUS (3):
+                The agent-reported status is out of date,
+                which may be caused by a loss of communication
+                between the agent and Dataproc. If the agent
+                does not send a timely update, the job will
+                fail.
+                Applies to RUNNING state.
+        """
         UNSPECIFIED = 0
         SUBMITTED = 1
         QUEUED = 2
@@ -895,6 +971,26 @@ class YarnApplication(proto.Message):
     class State(proto.Enum):
         r"""The application state, corresponding to
         <code>YarnProtos.YarnApplicationStateProto</code>.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Status is unspecified.
+            NEW (1):
+                Status is NEW.
+            NEW_SAVING (2):
+                Status is NEW_SAVING.
+            SUBMITTED (3):
+                Status is SUBMITTED.
+            ACCEPTED (4):
+                Status is ACCEPTED.
+            RUNNING (5):
+                Status is RUNNING.
+            FINISHED (6):
+                Status is FINISHED.
+            FAILED (7):
+                Status is FAILED.
+            KILLED (8):
+                Status is KILLED.
         """
         STATE_UNSPECIFIED = 0
         NEW = 1
@@ -1344,7 +1440,18 @@ class ListJobsRequest(proto.Message):
     """
 
     class JobStateMatcher(proto.Enum):
-        r"""A matcher that specifies categories of job states."""
+        r"""A matcher that specifies categories of job states.
+
+        Values:
+            ALL (0):
+                Match all jobs, regardless of state.
+            ACTIVE (1):
+                Only match jobs in non-terminal states: PENDING, RUNNING, or
+                CANCEL_PENDING.
+            NON_ACTIVE (2):
+                Only match jobs in terminal states:
+                CANCELLED, DONE, or ERROR.
+        """
         ALL = 0
         ACTIVE = 1
         NON_ACTIVE = 2

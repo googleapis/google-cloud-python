@@ -577,6 +577,24 @@ class GceClusterConfig(proto.Message):
         IPv6. These values are directly mapped to corresponding values in
         the `Compute Engine Instance
         fields <https://cloud.google.com/compute/docs/reference/rest/v1/instances>`__.
+
+        Values:
+            PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED (0):
+                If unspecified, Compute Engine default behavior will apply,
+                which is the same as
+                [INHERIT_FROM_SUBNETWORK][google.cloud.dataproc.v1.GceClusterConfig.PrivateIpv6GoogleAccess.INHERIT_FROM_SUBNETWORK].
+            INHERIT_FROM_SUBNETWORK (1):
+                Private access to and from Google Services
+                configuration inherited from the subnetwork
+                configuration. This is the default Compute
+                Engine behavior.
+            OUTBOUND (2):
+                Enables outbound private IPv6 access to
+                Google Services from the Dataproc cluster.
+            BIDIRECTIONAL (3):
+                Enables bidirectional private IPv6 access
+                between Google Services and the Dataproc
+                cluster.
         """
         PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED = 0
         INHERIT_FROM_SUBNETWORK = 1
@@ -795,10 +813,39 @@ class InstanceGroupConfig(proto.Message):
     """
 
     class Preemptibility(proto.Enum):
-        r"""Controls the use of preemptible instances within the group."""
+        r"""Controls the use of preemptible instances within the group.
+
+        Values:
+            PREEMPTIBILITY_UNSPECIFIED (0):
+                Preemptibility is unspecified, the system
+                will choose the appropriate setting for each
+                instance group.
+            NON_PREEMPTIBLE (1):
+                Instances are non-preemptible.
+                This option is allowed for all instance groups
+                and is the only valid value for Master and
+                Worker instance groups.
+            PREEMPTIBLE (2):
+                Instances are [preemptible]
+                (https://cloud.google.com/compute/docs/instances/preemptible).
+
+                This option is allowed only for [secondary worker]
+                (https://cloud.google.com/dataproc/docs/concepts/compute/secondary-vms)
+                groups.
+            SPOT (3):
+                Instances are [Spot VMs]
+                (https://cloud.google.com/compute/docs/instances/spot).
+
+                This option is allowed only for [secondary worker]
+                (https://cloud.google.com/dataproc/docs/concepts/compute/secondary-vms)
+                groups. Spot VMs are the latest version of [preemptible VMs]
+                (https://cloud.google.com/compute/docs/instances/preemptible),
+                and provide additional features.
+        """
         PREEMPTIBILITY_UNSPECIFIED = 0
         NON_PREEMPTIBLE = 1
         PREEMPTIBLE = 2
+        SPOT = 3
 
     num_instances: int = proto.Field(
         proto.INT32,
@@ -1007,7 +1054,14 @@ class NodeGroup(proto.Message):
     """
 
     class Role(proto.Enum):
-        r"""Node group roles."""
+        r"""Node group roles.
+
+        Values:
+            ROLE_UNSPECIFIED (0):
+                Required unspecified role.
+            DRIVER (1):
+                Job drivers run on the node group.
+        """
         ROLE_UNSPECIFIED = 0
         DRIVER = 1
 
@@ -1081,7 +1135,45 @@ class ClusterStatus(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The cluster state."""
+        r"""The cluster state.
+
+        Values:
+            UNKNOWN (0):
+                The cluster state is unknown.
+            CREATING (1):
+                The cluster is being created and set up. It
+                is not ready for use.
+            RUNNING (2):
+                The cluster is currently running and healthy. It is ready
+                for use.
+
+                **Note:** The cluster state changes from "creating" to
+                "running" status after the master node(s), first two primary
+                worker nodes (and the last primary worker node if primary
+                workers > 2) are running.
+            ERROR (3):
+                The cluster encountered an error. It is not
+                ready for use.
+            ERROR_DUE_TO_UPDATE (9):
+                The cluster has encountered an error while
+                being updated. Jobs can be submitted to the
+                cluster, but the cluster cannot be updated.
+            DELETING (4):
+                The cluster is being deleted. It cannot be
+                used.
+            UPDATING (5):
+                The cluster is being updated. It continues to
+                accept and process jobs.
+            STOPPING (6):
+                The cluster is being stopped. It cannot be
+                used.
+            STOPPED (7):
+                The cluster is currently stopped. It is not
+                ready for use.
+            STARTING (8):
+                The cluster is being started. It is not ready
+                for use.
+        """
         UNKNOWN = 0
         CREATING = 1
         RUNNING = 2
@@ -1094,7 +1186,23 @@ class ClusterStatus(proto.Message):
         STARTING = 8
 
     class Substate(proto.Enum):
-        r"""The cluster substate."""
+        r"""The cluster substate.
+
+        Values:
+            UNSPECIFIED (0):
+                The cluster substate is unknown.
+            UNHEALTHY (1):
+                The cluster is known to be in an unhealthy
+                state (for example, critical daemons are not
+                running or HDFS capacity is exhausted).
+
+                Applies to RUNNING state.
+            STALE_STATUS (2):
+                The agent-reported status is out of date (may
+                occur if Dataproc loses communication with
+                Agent).
+                Applies to RUNNING state.
+        """
         UNSPECIFIED = 0
         UNHEALTHY = 1
         STALE_STATUS = 2
@@ -1445,6 +1553,25 @@ class DataprocMetricConfig(proto.Message):
         r"""A source for the collection of Dataproc OSS metrics (see [available
         OSS metrics]
         (https://cloud.google.com//dataproc/docs/guides/monitoring#available_oss_metrics)).
+
+        Values:
+            METRIC_SOURCE_UNSPECIFIED (0):
+                Required unspecified metric source.
+            MONITORING_AGENT_DEFAULTS (1):
+                Default monitoring agent metrics. If this source is enabled,
+                Dataproc enables the monitoring agent in Compute Engine, and
+                collects default monitoring agent metrics, which are
+                published with an ``agent.googleapis.com`` prefix.
+            HDFS (2):
+                HDFS metric source.
+            SPARK (3):
+                Spark metric source.
+            YARN (4):
+                YARN metric source.
+            SPARK_HISTORY_SERVER (5):
+                Spark History Server metric source.
+            HIVESERVER2 (6):
+                Hiveserver2 metric source.
         """
         METRIC_SOURCE_UNSPECIFIED = 0
         MONITORING_AGENT_DEFAULTS = 1
@@ -2077,6 +2204,18 @@ class ReservationAffinity(proto.Message):
     class Type(proto.Enum):
         r"""Indicates whether to consume capacity from an reservation or
         not.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+
+            NO_RESERVATION (1):
+                Do not consume from any allocated capacity.
+            ANY_RESERVATION (2):
+                Consume any reservation available.
+            SPECIFIC_RESERVATION (3):
+                Must consume from a specific reservation.
+                Must specify key value fields for specifying the
+                reservations.
         """
         TYPE_UNSPECIFIED = 0
         NO_RESERVATION = 1

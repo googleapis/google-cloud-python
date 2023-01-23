@@ -250,7 +250,25 @@ class Batch(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The batch state."""
+        r"""The batch state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The batch state is unknown.
+            PENDING (1):
+                The batch is created before running.
+            RUNNING (2):
+                The batch is running.
+            CANCELLING (3):
+                The batch is cancelling.
+            CANCELLED (4):
+                The batch cancellation was successful.
+            SUCCEEDED (5):
+                The batch completed successfully.
+            FAILED (6):
+                The batch is no longer running due to an
+                error.
+        """
         STATE_UNSPECIFIED = 0
         PENDING = 1
         RUNNING = 2

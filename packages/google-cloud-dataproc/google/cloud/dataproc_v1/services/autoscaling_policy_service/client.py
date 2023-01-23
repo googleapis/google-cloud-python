@@ -1044,7 +1044,7 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
             metadata=metadata,
         )
 
-    def __enter__(self):
+    def __enter__(self) -> "AutoscalingPolicyServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

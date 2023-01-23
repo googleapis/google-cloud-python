@@ -55,7 +55,14 @@ class BatchOperationMetadata(proto.Message):
     """
 
     class BatchOperationType(proto.Enum):
-        r"""Operation type for Batch resources"""
+        r"""Operation type for Batch resources
+
+        Values:
+            BATCH_OPERATION_TYPE_UNSPECIFIED (0):
+                Batch operation type is unknown.
+            BATCH (1):
+                Batch operation type.
+        """
         BATCH_OPERATION_TYPE_UNSPECIFIED = 0
         BATCH = 1
 
@@ -115,7 +122,19 @@ class ClusterOperationStatus(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The operation state."""
+        r"""The operation state.
+
+        Values:
+            UNKNOWN (0):
+                Unused.
+            PENDING (1):
+                The operation has been created.
+            RUNNING (2):
+                The operation is running.
+            DONE (3):
+                The operation is done; either cancelled or
+                completed.
+        """
         UNKNOWN = 0
         PENDING = 1
         RUNNING = 2
@@ -229,7 +248,20 @@ class NodeGroupOperationMetadata(proto.Message):
     """
 
     class NodeGroupOperationType(proto.Enum):
-        r"""Operation type for node group resources."""
+        r"""Operation type for node group resources.
+
+        Values:
+            NODE_GROUP_OPERATION_TYPE_UNSPECIFIED (0):
+                Node group operation type is unknown.
+            CREATE (1):
+                Create node group operation type.
+            UPDATE (2):
+                Update node group operation type.
+            DELETE (3):
+                Delete node group operation type.
+            RESIZE (4):
+                Resize node group operation type.
+        """
         NODE_GROUP_OPERATION_TYPE_UNSPECIFIED = 0
         CREATE = 1
         UPDATE = 2

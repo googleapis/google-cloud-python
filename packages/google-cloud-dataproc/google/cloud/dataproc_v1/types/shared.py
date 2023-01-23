@@ -39,7 +39,43 @@ __protobuf__ = proto.module(
 
 
 class Component(proto.Enum):
-    r"""Cluster components that can be activated."""
+    r"""Cluster components that can be activated.
+
+    Values:
+        COMPONENT_UNSPECIFIED (0):
+            Unspecified component. Specifying this will
+            cause Cluster creation to fail.
+        ANACONDA (5):
+            The Anaconda python distribution. The
+            Anaconda component is not supported in the
+            Dataproc <a
+            href="/dataproc/docs/concepts/versioning/dataproc-release-2.0">2.0
+            image</a>. The 2.0 image is pre-installed with
+            Miniconda.
+        DOCKER (13):
+            Docker
+        DRUID (9):
+            The Druid query engine. (alpha)
+        FLINK (14):
+            Flink
+        HBASE (11):
+            HBase. (beta)
+        HIVE_WEBHCAT (3):
+            The Hive Web HCatalog (the REST service for
+            accessing HCatalog).
+        JUPYTER (1):
+            The Jupyter Notebook.
+        PRESTO (6):
+            The Presto query engine.
+        RANGER (12):
+            The Ranger service.
+        SOLR (10):
+            The Solr service.
+        ZEPPELIN (4):
+            The Zeppelin notebook.
+        ZOOKEEPER (8):
+            The Zookeeper service.
+    """
     COMPONENT_UNSPECIFIED = 0
     ANACONDA = 5
     DOCKER = 13
@@ -58,6 +94,16 @@ class Component(proto.Enum):
 class FailureAction(proto.Enum):
     r"""Actions in response to failure of a resource associated with
     a cluster.
+
+    Values:
+        FAILURE_ACTION_UNSPECIFIED (0):
+            When FailureAction is unspecified, failure action defaults
+            to NO_ACTION.
+        NO_ACTION (1):
+            Take no action on failure to create a cluster resource.
+            NO_ACTION is the default.
+        DELETE (2):
+            Delete the failed cluster resource.
     """
     FAILURE_ACTION_UNSPECIFIED = 0
     NO_ACTION = 1
@@ -389,6 +435,19 @@ class GkeNodePoolTarget(proto.Message):
         can be specific to workloads. Exactly one GkeNodePoolTarget within
         the VirtualCluster must have 'default' role, which is used to run
         all workloads that are not associated with a NodePool.
+
+        Values:
+            ROLE_UNSPECIFIED (0):
+                Role is unspecified.
+            DEFAULT (1):
+                Any roles that are not directly assigned to a NodePool run
+                on the ``default`` role's NodePool.
+            CONTROLLER (2):
+                Run controllers and webhooks.
+            SPARK_DRIVER (3):
+                Run spark driver.
+            SPARK_EXECUTOR (4):
+                Run spark executors.
         """
         ROLE_UNSPECIFIED = 0
         DEFAULT = 1

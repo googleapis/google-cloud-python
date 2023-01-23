@@ -652,7 +652,19 @@ class WorkflowMetadata(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The operation state."""
+        r"""The operation state.
+
+        Values:
+            UNKNOWN (0):
+                Unused.
+            PENDING (1):
+                The operation has been created.
+            RUNNING (2):
+                The operation is running.
+            DONE (3):
+                The operation is done; either cancelled or
+                completed.
+        """
         UNKNOWN = 0
         PENDING = 1
         RUNNING = 2
@@ -785,7 +797,24 @@ class WorkflowNode(proto.Message):
     """
 
     class NodeState(proto.Enum):
-        r"""The workflow node state."""
+        r"""The workflow node state.
+
+        Values:
+            NODE_STATE_UNSPECIFIED (0):
+                State is unspecified.
+            BLOCKED (1):
+                The node is awaiting prerequisite node to
+                finish.
+            RUNNABLE (2):
+                The node is runnable but not running.
+            RUNNING (3):
+                The node is running.
+            COMPLETED (4):
+                The node completed successfully.
+            FAILED (5):
+                The node failed. A node can be marked FAILED
+                because its ancestor or peer failed.
+        """
         NODE_STATE_UNSPECIFIED = 0
         BLOCKED = 1
         RUNNABLE = 2

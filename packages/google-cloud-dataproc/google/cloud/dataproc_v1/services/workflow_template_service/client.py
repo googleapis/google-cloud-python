@@ -1452,7 +1452,7 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
             metadata=metadata,
         )
 
-    def __enter__(self):
+    def __enter__(self) -> "WorkflowTemplateServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

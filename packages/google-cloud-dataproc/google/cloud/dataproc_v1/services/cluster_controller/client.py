@@ -1654,7 +1654,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "ClusterControllerClient":
         return self
 
     def __exit__(self, type, value, traceback):
