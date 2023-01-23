@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.1](https://github.com/googleapis/python-beyondcorp-clientgateways/compare/v0.3.0...v0.3.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([b0c6c49](https://github.com/googleapis/python-beyondcorp-clientgateways/commit/b0c6c4997e8b2a74fc8094d23604a2a638066b70))
+
+
+### Documentation
+
+* Add documentation for enums ([b0c6c49](https://github.com/googleapis/python-beyondcorp-clientgateways/commit/b0c6c4997e8b2a74fc8094d23604a2a638066b70))
+
 ## [0.3.0](https://github.com/googleapis/python-beyondcorp-clientgateways/compare/v0.2.0...v0.3.0) (2023-01-10)
 
 
