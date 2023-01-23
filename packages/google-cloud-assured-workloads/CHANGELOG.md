@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.9.1](https://github.com/googleapis/python-assured-workloads/compare/v1.9.0...v1.9.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([764fbd9](https://github.com/googleapis/python-assured-workloads/commit/764fbd90e858ca112ed83c0a8f46be5e5327f458))
+
+
+### Documentation
+
+* Add documentation for enums ([764fbd9](https://github.com/googleapis/python-assured-workloads/commit/764fbd90e858ca112ed83c0a8f46be5e5327f458))
+
 ## [1.9.0](https://github.com/googleapis/python-assured-workloads/compare/v1.8.1...v1.9.0) (2023-01-10)
 
 
