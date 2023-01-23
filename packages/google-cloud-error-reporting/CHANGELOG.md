@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## [1.8.1](https://github.com/googleapis/python-error-reporting/compare/v1.8.0...v1.8.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([26a0749](https://github.com/googleapis/python-error-reporting/commit/26a074998b0c0a0697ed03086f7e1f6c4b77e35a))
+
+
+### Documentation
+
+* Add documentation for enums ([26a0749](https://github.com/googleapis/python-error-reporting/commit/26a074998b0c0a0697ed03086f7e1f6c4b77e35a))
+
 ## [1.8.0](https://github.com/googleapis/python-error-reporting/compare/v1.7.0...v1.8.0) (2023-01-10)
 
 
