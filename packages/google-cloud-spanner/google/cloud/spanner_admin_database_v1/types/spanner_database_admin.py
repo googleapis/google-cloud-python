@@ -53,7 +53,15 @@ __protobuf__ = proto.module(
 
 
 class RestoreSourceType(proto.Enum):
-    r"""Indicates the type of the restore source."""
+    r"""Indicates the type of the restore source.
+
+    Values:
+        TYPE_UNSPECIFIED (0):
+            No restore associated.
+        BACKUP (1):
+            A backup was used as the source of the
+            restore.
+    """
     TYPE_UNSPECIFIED = 0
     BACKUP = 1
 
@@ -153,7 +161,29 @@ class Database(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Indicates the current state of the database."""
+        r"""Indicates the current state of the database.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not specified.
+            CREATING (1):
+                The database is still being created. Operations on the
+                database may fail with ``FAILED_PRECONDITION`` in this
+                state.
+            READY (2):
+                The database is fully created and ready for
+                use.
+            READY_OPTIMIZING (3):
+                The database is fully created and ready for use, but is
+                still being optimized for performance and cannot handle full
+                load.
+
+                In this state, the database still references the backup it
+                was restore from, preventing the backup from being deleted.
+                When optimizations are complete, the full performance of the
+                database will be restored, and the database will transition
+                to ``READY`` state.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -723,7 +753,21 @@ class RestoreDatabaseEncryptionConfig(proto.Message):
     """
 
     class EncryptionType(proto.Enum):
-        r"""Encryption types for the database to be restored."""
+        r"""Encryption types for the database to be restored.
+
+        Values:
+            ENCRYPTION_TYPE_UNSPECIFIED (0):
+                Unspecified. Do not use.
+            USE_CONFIG_DEFAULT_OR_BACKUP_ENCRYPTION (1):
+                This is the default option when
+                [encryption_config][google.spanner.admin.database.v1.RestoreDatabaseEncryptionConfig]
+                is not specified.
+            GOOGLE_DEFAULT_ENCRYPTION (2):
+                Use Google default encryption.
+            CUSTOMER_MANAGED_ENCRYPTION (3):
+                Use customer managed encryption. If specified,
+                ``kms_key_name`` must must contain a valid Cloud KMS key.
+        """
         ENCRYPTION_TYPE_UNSPECIFIED = 0
         USE_CONFIG_DEFAULT_OR_BACKUP_ENCRYPTION = 1
         GOOGLE_DEFAULT_ENCRYPTION = 2

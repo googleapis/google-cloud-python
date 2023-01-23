@@ -76,6 +76,21 @@ class PlanNode(proto.Message):
         r"""The kind of [PlanNode][google.spanner.v1.PlanNode]. Distinguishes
         between the two different kinds of nodes that can appear in a query
         plan.
+
+        Values:
+            KIND_UNSPECIFIED (0):
+                Not specified.
+            RELATIONAL (1):
+                Denotes a Relational operator node in the expression tree.
+                Relational operators represent iterative processing of rows
+                during query execution. For example, a ``TableScan``
+                operation that reads rows from a table.
+            SCALAR (2):
+                Denotes a Scalar node in the expression tree.
+                Scalar nodes represent non-iterable entities in
+                the query plan. For example, constants or
+                arithmetic operators appearing inside predicate
+                expressions or references to column names.
         """
         KIND_UNSPECIFIED = 0
         RELATIONAL = 1

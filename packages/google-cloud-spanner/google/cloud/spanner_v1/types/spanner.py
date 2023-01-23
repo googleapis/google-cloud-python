@@ -343,6 +343,19 @@ class RequestOptions(proto.Message):
            priorities, Cloud Spanner does not guarantee to process the
            higher priority operations first. There may be other constraints
            to satisfy, such as order of operations.
+
+        Values:
+            PRIORITY_UNSPECIFIED (0):
+                ``PRIORITY_UNSPECIFIED`` is equivalent to ``PRIORITY_HIGH``.
+            PRIORITY_LOW (1):
+                This specifies that the request is low
+                priority.
+            PRIORITY_MEDIUM (2):
+                This specifies that the request is medium
+                priority.
+            PRIORITY_HIGH (3):
+                This specifies that the request is high
+                priority.
         """
         PRIORITY_UNSPECIFIED = 0
         PRIORITY_LOW = 1
@@ -464,7 +477,20 @@ class ExecuteSqlRequest(proto.Message):
     """
 
     class QueryMode(proto.Enum):
-        r"""Mode in which the statement must be processed."""
+        r"""Mode in which the statement must be processed.
+
+        Values:
+            NORMAL (0):
+                The default mode. Only the statement results
+                are returned.
+            PLAN (1):
+                This mode returns only the query plan,
+                without any results or execution statistics
+                information.
+            PROFILE (2):
+                This mode returns both the query plan and the
+                execution statistics along with the results.
+        """
         NORMAL = 0
         PLAN = 1
         PROFILE = 2

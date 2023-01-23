@@ -33,7 +33,17 @@ __protobuf__ = proto.module(
 
 
 class DatabaseDialect(proto.Enum):
-    r"""Indicates the dialect type of a database."""
+    r"""Indicates the dialect type of a database.
+
+    Values:
+        DATABASE_DIALECT_UNSPECIFIED (0):
+            Default value. This value will create a database with the
+            GOOGLE_STANDARD_SQL dialect.
+        GOOGLE_STANDARD_SQL (1):
+            Google standard SQL.
+        POSTGRESQL (2):
+            PostgreSQL supported SQL.
+    """
     DATABASE_DIALECT_UNSPECIFIED = 0
     GOOGLE_STANDARD_SQL = 1
     POSTGRESQL = 2
@@ -104,7 +114,23 @@ class EncryptionInfo(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Possible encryption types."""
+        r"""Possible encryption types.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Encryption type was not specified, though
+                data at rest remains encrypted.
+            GOOGLE_DEFAULT_ENCRYPTION (1):
+                The data is encrypted at rest with a key that
+                is fully managed by Google. No key version or
+                status will be populated. This is the default
+                state.
+            CUSTOMER_MANAGED_ENCRYPTION (2):
+                The data is encrypted at rest with a key that is managed by
+                the customer. The active version of the key.
+                ``kms_key_version`` will be populated, and
+                ``encryption_status`` may be populated.
+        """
         TYPE_UNSPECIFIED = 0
         GOOGLE_DEFAULT_ENCRYPTION = 1
         CUSTOMER_MANAGED_ENCRYPTION = 2

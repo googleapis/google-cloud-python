@@ -72,6 +72,36 @@ class ReplicaInfo(proto.Message):
         r"""Indicates the type of replica. See the `replica types
         documentation <https://cloud.google.com/spanner/docs/replication#replica_types>`__
         for more details.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Not specified.
+            READ_WRITE (1):
+                Read-write replicas support both reads and writes. These
+                replicas:
+
+                -  Maintain a full copy of your data.
+                -  Serve reads.
+                -  Can vote whether to commit a write.
+                -  Participate in leadership election.
+                -  Are eligible to become a leader.
+            READ_ONLY (2):
+                Read-only replicas only support reads (not writes).
+                Read-only replicas:
+
+                -  Maintain a full copy of your data.
+                -  Serve reads.
+                -  Do not participate in voting to commit writes.
+                -  Are not eligible to become a leader.
+            WITNESS (3):
+                Witness replicas don't support reads but do participate in
+                voting to commit writes. Witness replicas:
+
+                -  Do not maintain a full copy of data.
+                -  Do not serve reads.
+                -  Vote whether to commit writes.
+                -  Participate in leader election but are not eligible to
+                   become leader.
         """
         TYPE_UNSPECIFIED = 0
         READ_WRITE = 1
@@ -184,13 +214,32 @@ class InstanceConfig(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""The type of this configuration."""
+        r"""The type of this configuration.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unspecified.
+            GOOGLE_MANAGED (1):
+                Google managed configuration.
+            USER_MANAGED (2):
+                User managed configuration.
+        """
         TYPE_UNSPECIFIED = 0
         GOOGLE_MANAGED = 1
         USER_MANAGED = 2
 
     class State(proto.Enum):
-        r"""Indicates the current state of the instance config."""
+        r"""Indicates the current state of the instance config.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not specified.
+            CREATING (1):
+                The instance config is still being created.
+            READY (2):
+                The instance config is fully created and
+                ready to be used to create instances.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -335,7 +384,20 @@ class Instance(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Indicates the current state of the instance."""
+        r"""Indicates the current state of the instance.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not specified.
+            CREATING (1):
+                The instance is still being created.
+                Resources may not be available yet, and
+                operations such as database creation may not
+                work.
+            READY (2):
+                The instance is fully created and ready to do
+                work such as creating databases.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2

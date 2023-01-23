@@ -132,7 +132,17 @@ class Backup(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Indicates the current state of the backup."""
+        r"""Indicates the current state of the backup.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not specified.
+            CREATING (1):
+                The pending backup is still being created. Operations on the
+                backup may fail with ``FAILED_PRECONDITION`` in this state.
+            READY (2):
+                The backup is complete and ready for use.
+        """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -810,7 +820,24 @@ class CreateBackupEncryptionConfig(proto.Message):
     """
 
     class EncryptionType(proto.Enum):
-        r"""Encryption types for the backup."""
+        r"""Encryption types for the backup.
+
+        Values:
+            ENCRYPTION_TYPE_UNSPECIFIED (0):
+                Unspecified. Do not use.
+            USE_DATABASE_ENCRYPTION (1):
+                Use the same encryption configuration as the database. This
+                is the default option when
+                [encryption_config][google.spanner.admin.database.v1.CreateBackupEncryptionConfig]
+                is empty. For example, if the database is using
+                ``Customer_Managed_Encryption``, the backup will be using
+                the same Cloud KMS key as the database.
+            GOOGLE_DEFAULT_ENCRYPTION (2):
+                Use Google default encryption.
+            CUSTOMER_MANAGED_ENCRYPTION (3):
+                Use customer managed encryption. If specified,
+                ``kms_key_name`` must contain a valid Cloud KMS key.
+        """
         ENCRYPTION_TYPE_UNSPECIFIED = 0
         USE_DATABASE_ENCRYPTION = 1
         GOOGLE_DEFAULT_ENCRYPTION = 2
@@ -842,7 +869,25 @@ class CopyBackupEncryptionConfig(proto.Message):
     """
 
     class EncryptionType(proto.Enum):
-        r"""Encryption types for the backup."""
+        r"""Encryption types for the backup.
+
+        Values:
+            ENCRYPTION_TYPE_UNSPECIFIED (0):
+                Unspecified. Do not use.
+            USE_CONFIG_DEFAULT_OR_BACKUP_ENCRYPTION (1):
+                This is the default option for
+                [CopyBackup][google.spanner.admin.database.v1.DatabaseAdmin.CopyBackup]
+                when
+                [encryption_config][google.spanner.admin.database.v1.CopyBackupEncryptionConfig]
+                is not specified. For example, if the source backup is using
+                ``Customer_Managed_Encryption``, the backup will be using
+                the same Cloud KMS key as the source backup.
+            GOOGLE_DEFAULT_ENCRYPTION (2):
+                Use Google default encryption.
+            CUSTOMER_MANAGED_ENCRYPTION (3):
+                Use customer managed encryption. If specified,
+                ``kms_key_name`` must contain a valid Cloud KMS key.
+        """
         ENCRYPTION_TYPE_UNSPECIFIED = 0
         USE_CONFIG_DEFAULT_OR_BACKUP_ENCRYPTION = 1
         GOOGLE_DEFAULT_ENCRYPTION = 2
