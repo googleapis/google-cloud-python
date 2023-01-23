@@ -121,6 +121,36 @@ class Span(proto.Message):
     class SpanKind(proto.Enum):
         r"""Type of span. Can be used to specify additional relationships
         between spans in addition to a parent/child relationship.
+
+        Values:
+            SPAN_KIND_UNSPECIFIED (0):
+                Unspecified. Do NOT use as default.
+                Implementations MAY assume SpanKind.INTERNAL to
+                be default.
+            INTERNAL (1):
+                Indicates that the span is used internally.
+                Default value.
+            SERVER (2):
+                Indicates that the span covers server-side
+                handling of an RPC or other remote network
+                request.
+            CLIENT (3):
+                Indicates that the span covers the
+                client-side wrapper around an RPC or other
+                remote request.
+            PRODUCER (4):
+                Indicates that the span describes producer
+                sending a message to a broker. Unlike client and
+                server, there is no direct critical path latency
+                relationship between producer and consumer spans
+                (e.g. publishing a message to a pubsub service).
+            CONSUMER (5):
+                Indicates that the span describes consumer
+                receiving a message from a broker. Unlike client
+                and  server, there is no direct critical path
+                latency relationship between producer and
+                consumer spans (e.g. receiving a message from a
+                pubsub service subscription).
         """
         SPAN_KIND_UNSPECIFIED = 0
         INTERNAL = 1
@@ -234,7 +264,16 @@ class Span(proto.Message):
             """
 
             class Type(proto.Enum):
-                r"""Indicates whether the message was sent or received."""
+                r"""Indicates whether the message was sent or received.
+
+                Values:
+                    TYPE_UNSPECIFIED (0):
+                        Unknown event type.
+                    SENT (1):
+                        Indicates a sent message.
+                    RECEIVED (2):
+                        Indicates a received message.
+                """
                 TYPE_UNSPECIFIED = 0
                 SENT = 1
                 RECEIVED = 2
@@ -330,6 +369,16 @@ class Span(proto.Message):
         class Type(proto.Enum):
             r"""The relationship of the current span relative to the linked
             span: child, parent, or unspecified.
+
+            Values:
+                TYPE_UNSPECIFIED (0):
+                    The relationship of the two spans is unknown.
+                CHILD_LINKED_SPAN (1):
+                    The linked span is a child of the current
+                    span.
+                PARENT_LINKED_SPAN (2):
+                    The linked span is a parent of the current
+                    span.
             """
             TYPE_UNSPECIFIED = 0
             CHILD_LINKED_SPAN = 1

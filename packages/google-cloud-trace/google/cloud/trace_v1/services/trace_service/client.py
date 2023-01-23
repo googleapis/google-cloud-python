@@ -766,7 +766,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
             metadata=metadata,
         )
 
-    def __enter__(self):
+    def __enter__(self) -> "TraceServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

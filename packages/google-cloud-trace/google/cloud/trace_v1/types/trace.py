@@ -157,6 +157,18 @@ class TraceSpan(proto.Message):
     class SpanKind(proto.Enum):
         r"""Type of span. Can be used to specify additional relationships
         between spans in addition to a parent/child relationship.
+
+        Values:
+            SPAN_KIND_UNSPECIFIED (0):
+                Unspecified.
+            RPC_SERVER (1):
+                Indicates that the span covers server-side
+                handling of an RPC or other remote network
+                request.
+            RPC_CLIENT (2):
+                Indicates that the span covers the
+                client-side wrapper around an RPC or other
+                remote request.
         """
         SPAN_KIND_UNSPECIFIED = 0
         RPC_SERVER = 1
@@ -276,7 +288,24 @@ class ListTracesRequest(proto.Message):
     """
 
     class ViewType(proto.Enum):
-        r"""Type of data returned for traces in the list."""
+        r"""Type of data returned for traces in the list.
+
+        Values:
+            VIEW_TYPE_UNSPECIFIED (0):
+                Default is ``MINIMAL`` if unspecified.
+            MINIMAL (1):
+                Minimal view of the trace record that
+                contains only the project and trace IDs.
+            ROOTSPAN (2):
+                Root span view of the trace record that
+                returns the root spans along with the minimal
+                trace data.
+            COMPLETE (3):
+                Complete view of the trace record that contains the actual
+                trace data. This is equivalent to calling the REST ``get``
+                or RPC ``GetTrace`` method using the ID of each listed
+                trace.
+        """
         VIEW_TYPE_UNSPECIFIED = 0
         MINIMAL = 1
         ROOTSPAN = 2
