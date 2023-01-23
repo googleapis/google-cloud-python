@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## [1.9.1](https://github.com/googleapis/python-trace/compare/v1.9.0...v1.9.1) (2023-01-23)
+
+
+### Bug Fixes
+
+* Add context manager return types ([170efe4](https://github.com/googleapis/python-trace/commit/170efe461a6dddb8e4aac8b0797fca234b88a9ba))
+
+
+### Documentation
+
+* Add documentation for enums ([170efe4](https://github.com/googleapis/python-trace/commit/170efe461a6dddb8e4aac8b0797fca234b88a9ba))
+
 ## [1.9.0](https://github.com/googleapis/python-trace/compare/v1.8.0...v1.9.0) (2023-01-10)
 
 
