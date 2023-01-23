@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.1](https://github.com/googleapis/python-bigquery-datapolicies/compare/v0.3.0...v0.3.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([0bd662c](https://github.com/googleapis/python-bigquery-datapolicies/commit/0bd662cacca29c1d1662eeb6aaa0911f44b23afa))
+
+
+### Documentation
+
+* Add documentation for enums ([0bd662c](https://github.com/googleapis/python-bigquery-datapolicies/commit/0bd662cacca29c1d1662eeb6aaa0911f44b23afa))
+
 ## [0.3.0](https://github.com/googleapis/python-bigquery-datapolicies/compare/v0.2.0...v0.3.0) (2023-01-10)
 
 
