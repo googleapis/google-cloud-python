@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.9.1](https://github.com/googleapis/python-firestore/compare/v2.9.0...v2.9.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([5924bdc](https://github.com/googleapis/python-firestore/commit/5924bdc9c51f3d34f7fa6f350d871688601ecad6))
+
+
+### Documentation
+
+* Add documentation for enums ([5924bdc](https://github.com/googleapis/python-firestore/commit/5924bdc9c51f3d34f7fa6f350d871688601ecad6))
+
 ## [2.9.0](https://github.com/googleapis/python-firestore/compare/v2.8.0...v2.9.0) (2023-01-12)
 
 
