@@ -865,7 +865,7 @@ class SpeechClient(metaclass=SpeechClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "SpeechClient":
         return self
 
     def __exit__(self, type, value, traceback):
