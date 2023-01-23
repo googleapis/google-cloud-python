@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.11.1](https://github.com/googleapis/python-containeranalysis/compare/v2.11.0...v2.11.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([#356](https://github.com/googleapis/python-containeranalysis/issues/356)) ([43fade3](https://github.com/googleapis/python-containeranalysis/commit/43fade37f033c85ffa620a6a3de826c89288e998))
+
 ## [2.11.0](https://github.com/googleapis/python-containeranalysis/compare/v2.10.0...v2.11.0) (2023-01-10)
 
 
