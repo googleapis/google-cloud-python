@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/python-org-policy/compare/v1.7.0...v1.7.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([5d0504f](https://github.com/googleapis/python-org-policy/commit/5d0504fd358c27cd092796bafd1a6c0a35c481a4))
+
+
+### Documentation
+
+* Add documentation for enums ([5d0504f](https://github.com/googleapis/python-org-policy/commit/5d0504fd358c27cd092796bafd1a6c0a35c481a4))
+
 ## [1.7.0](https://github.com/googleapis/python-org-policy/compare/v1.6.0...v1.7.0) (2023-01-19)
 
 
