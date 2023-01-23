@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.9.1](https://github.com/googleapis/python-network-security/compare/v0.9.0...v0.9.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([28f193c](https://github.com/googleapis/python-network-security/commit/28f193c46ef2745b826f61f7c8225e5ba2716673))
+
+
+### Documentation
+
+* Add documentation for enums ([28f193c](https://github.com/googleapis/python-network-security/commit/28f193c46ef2745b826f61f7c8225e5ba2716673))
+
 ## [0.9.0](https://github.com/googleapis/python-network-security/compare/v0.8.0...v0.9.0) (2023-01-10)
 
 
