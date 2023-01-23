@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## [2.9.1](https://github.com/googleapis/python-scheduler/compare/v2.9.0...v2.9.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([1ebe016](https://github.com/googleapis/python-scheduler/commit/1ebe016e8c755cd94465090079a98d304ca0e730))
+
+
+### Documentation
+
+* Add documentation for enums ([1ebe016](https://github.com/googleapis/python-scheduler/commit/1ebe016e8c755cd94465090079a98d304ca0e730))
+
 ## [2.9.0](https://github.com/googleapis/python-scheduler/compare/v2.8.0...v2.9.0) (2023-01-10)
 
 
