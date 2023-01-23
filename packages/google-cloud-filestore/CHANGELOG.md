@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-filestore/compare/v1.4.0...v1.4.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([0ac5913](https://github.com/googleapis/python-filestore/commit/0ac5913b8b25f472f503198f6150f58901498461))
+
+
+### Documentation
+
+* Add documentation for enums ([0ac5913](https://github.com/googleapis/python-filestore/commit/0ac5913b8b25f472f503198f6150f58901498461))
+
 ## [1.4.0](https://github.com/googleapis/python-filestore/compare/v1.3.0...v1.4.0) (2023-01-10)
 
 
