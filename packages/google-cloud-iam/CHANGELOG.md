@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [2.11.1](https://github.com/googleapis/python-iam/compare/v2.11.0...v2.11.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([ede0520](https://github.com/googleapis/python-iam/commit/ede05206b7d01887ce4ebb73d135f03eb7c50b66))
+
+
+### Documentation
+
+* Add documentation for enums ([ede0520](https://github.com/googleapis/python-iam/commit/ede05206b7d01887ce4ebb73d135f03eb7c50b66))
+
 ## [2.11.0](https://github.com/googleapis/python-iam/compare/v2.10.0...v2.11.0) (2023-01-10)
 
 
