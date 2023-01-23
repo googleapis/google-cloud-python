@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.17.1](https://github.com/googleapis/python-dialogflow-cx/compare/v1.17.0...v1.17.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([dc4f8e2](https://github.com/googleapis/python-dialogflow-cx/commit/dc4f8e26bd7f38ec3cafe4d358d8852ca8ea8a84))
+
+
+### Documentation
+
+* Add documentation for enums ([dc4f8e2](https://github.com/googleapis/python-dialogflow-cx/commit/dc4f8e26bd7f38ec3cafe4d358d8852ca8ea8a84))
+
 ## [1.17.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.16.0...v1.17.0) (2023-01-14)
 
 
