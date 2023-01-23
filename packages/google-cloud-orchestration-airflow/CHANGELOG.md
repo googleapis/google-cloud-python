@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-orchestration-airflow/compare/v1.6.0...v1.6.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([693d570](https://github.com/googleapis/python-orchestration-airflow/commit/693d570fd0aa7cb1287329fd233e266219302ec3))
+
+
+### Documentation
+
+* Add documentation for enums ([693d570](https://github.com/googleapis/python-orchestration-airflow/commit/693d570fd0aa7cb1287329fd233e266219302ec3))
+
 ## [1.6.0](https://github.com/googleapis/python-orchestration-airflow/compare/v1.5.0...v1.6.0) (2023-01-10)
 
 
