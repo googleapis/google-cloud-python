@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.1](https://github.com/googleapis/python-edgecontainer/compare/v0.4.0...v0.4.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([21e3444](https://github.com/googleapis/python-edgecontainer/commit/21e3444558864335d28a4bb502e7b5a72d0464fa))
+
+
+### Documentation
+
+* Add documentation for enums ([21e3444](https://github.com/googleapis/python-edgecontainer/commit/21e3444558864335d28a4bb502e7b5a72d0464fa))
+
 ## [0.4.0](https://github.com/googleapis/python-edgecontainer/compare/v0.3.0...v0.4.0) (2023-01-10)
 
 
