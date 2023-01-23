@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-network-connectivity/compare/v1.6.0...v1.6.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([e26302e](https://github.com/googleapis/python-network-connectivity/commit/e26302e458a550493f926e211b1eed9574933581))
+
+
+### Documentation
+
+* Add documentation for enums ([e26302e](https://github.com/googleapis/python-network-connectivity/commit/e26302e458a550493f926e211b1eed9574933581))
+
 ## [1.6.0](https://github.com/googleapis/python-network-connectivity/compare/v1.5.0...v1.6.0) (2023-01-10)
 
 
