@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-shell/compare/v1.6.0...v1.6.1) (2023-01-23)
+
+
+### Bug Fixes
+
+* Add context manager return types ([287a2a5](https://github.com/googleapis/python-shell/commit/287a2a568fd1f1e7180afb58b393aa94ef65fe93))
+
+
+### Documentation
+
+* Add documentation for enums ([287a2a5](https://github.com/googleapis/python-shell/commit/287a2a568fd1f1e7180afb58b393aa94ef65fe93))
+
 ## [1.6.0](https://github.com/googleapis/python-shell/compare/v1.5.0...v1.6.0) (2023-01-10)
 
 
