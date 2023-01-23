@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.1](https://github.com/googleapis/python-certificate-manager/compare/v1.3.0...v1.3.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([81cfbf9](https://github.com/googleapis/python-certificate-manager/commit/81cfbf9986c4d48c8859bf4777c8a5ad67420fc3))
+
+
+### Documentation
+
+* Add documentation for enums ([81cfbf9](https://github.com/googleapis/python-certificate-manager/commit/81cfbf9986c4d48c8859bf4777c8a5ad67420fc3))
+
 ## [1.3.0](https://github.com/googleapis/python-certificate-manager/compare/v1.2.0...v1.3.0) (2023-01-10)
 
 
