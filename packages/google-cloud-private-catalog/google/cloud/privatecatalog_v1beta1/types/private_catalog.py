@@ -583,7 +583,20 @@ class AssetReference(proto.Message):
     """
 
     class AssetValidationState(proto.Enum):
-        r"""Possible validation steates of an asset reference."""
+        r"""Possible validation steates of an asset reference.
+
+        Values:
+            ASSET_VALIDATION_STATE_UNSPECIFIED (0):
+                Unknown state.
+            PENDING (1):
+                The validation is still in process.
+            VALID (2):
+                The validation is done and the asset
+                reference is valid.
+            INVALID (3):
+                The validation is done and the asset
+                reference is invalid.
+        """
         ASSET_VALIDATION_STATE_UNSPECIFIED = 0
         PENDING = 1
         VALID = 2
