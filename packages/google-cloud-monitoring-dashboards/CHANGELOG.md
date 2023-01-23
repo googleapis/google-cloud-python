@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.11.1](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.11.0...v2.11.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([7bf3c76](https://github.com/googleapis/python-monitoring-dashboards/commit/7bf3c76209eee2d29b9256d25639239a1256b433))
+
+
+### Documentation
+
+* Add documentation for enums ([7bf3c76](https://github.com/googleapis/python-monitoring-dashboards/commit/7bf3c76209eee2d29b9256d25639239a1256b433))
+
 ## [2.11.0](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.10.0...v2.11.0) (2023-01-12)
 
 
