@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/python-service-control/compare/v1.7.0...v1.7.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([ef5bc1b](https://github.com/googleapis/python-service-control/commit/ef5bc1b64c42e344a9a25f85da655f5533dd0730))
+
+
+### Documentation
+
+* Add documentation for enums ([ef5bc1b](https://github.com/googleapis/python-service-control/commit/ef5bc1b64c42e344a9a25f85da655f5533dd0730))
+
 ## [1.7.0](https://github.com/googleapis/python-service-control/compare/v1.6.0...v1.7.0) (2023-01-10)
 
 
