@@ -94,7 +94,27 @@ class Environment(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Possible execution states for an environment."""
+        r"""Possible execution states for an environment.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The environment's states is unknown.
+            SUSPENDED (1):
+                The environment is not running and can't be
+                connected to. Starting the environment will
+                transition it to the PENDING state.
+            PENDING (2):
+                The environment is being started but is not
+                yet ready to accept connections.
+            RUNNING (3):
+                The environment is running and ready to
+                accept connections. It will automatically
+                transition back to DISABLED after a period of
+                inactivity or if another environment is started.
+            DELETING (4):
+                The environment is being deleted and can't be
+                connected to.
+        """
         STATE_UNSPECIFIED = 0
         SUSPENDED = 1
         PENDING = 2
@@ -277,6 +297,33 @@ class StartEnvironmentMetadata(proto.Message):
         clients, but may be used to show a progress message to the user.
         An environment won't necessarily go through all of these states
         when starting. More states are likely to be added in the future.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The environment's start state is unknown.
+            STARTING (1):
+                The environment is in the process of being
+                started, but no additional details are
+                available.
+            UNARCHIVING_DISK (2):
+                Startup is waiting for the user's disk to be
+                unarchived. This can happen when the user
+                returns to Cloud Shell after not having used it
+                for a while, and suggests that startup will take
+                longer than normal.
+            AWAITING_COMPUTE_RESOURCES (4):
+                Startup is waiting for compute resources to
+                be assigned to the environment. This should
+                normally happen very quickly, but an environment
+                might stay in this state for an extended period
+                of time if the system is experiencing heavy
+                load.
+            FINISHED (3):
+                Startup has completed. If the start operation
+                was successful, the user should be able to
+                establish an SSH connection to their
+                environment. Otherwise, the operation will
+                contain details of the failure.
         """
         STATE_UNSPECIFIED = 0
         STARTING = 1
@@ -406,7 +453,29 @@ class CloudShellErrorDetails(proto.Message):
     """
 
     class CloudShellErrorCode(proto.Enum):
-        r"""Set of possible errors returned from API calls."""
+        r"""Set of possible errors returned from API calls.
+
+        Values:
+            CLOUD_SHELL_ERROR_CODE_UNSPECIFIED (0):
+                An unknown error occurred.
+            IMAGE_UNAVAILABLE (1):
+                The image used by the Cloud Shell environment
+                either does not exist or the user does not have
+                access to it.
+            CLOUD_SHELL_DISABLED (2):
+                Cloud Shell has been disabled by an
+                administrator for the user making the request.
+            TOS_VIOLATION (4):
+                Cloud Shell has been permanently disabled due
+                to a Terms of Service violation by the user.
+            QUOTA_EXCEEDED (5):
+                The user has exhausted their weekly Cloud
+                Shell quota, and Cloud Shell will be disabled
+                until the quota resets.
+            ENVIRONMENT_UNAVAILABLE (6):
+                The Cloud Shell environment is unavailable
+                and cannot be connected to at the moment.
+        """
         CLOUD_SHELL_ERROR_CODE_UNSPECIFIED = 0
         IMAGE_UNAVAILABLE = 1
         CLOUD_SHELL_DISABLED = 2
