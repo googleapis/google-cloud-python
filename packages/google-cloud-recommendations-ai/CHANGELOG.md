@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.10.1](https://github.com/googleapis/python-recommendations-ai/compare/v0.10.0...v0.10.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([51fbfc0](https://github.com/googleapis/python-recommendations-ai/commit/51fbfc0911e31746e44c82c94e497d3362357155))
+
+
+### Documentation
+
+* Add documentation for enums ([51fbfc0](https://github.com/googleapis/python-recommendations-ai/commit/51fbfc0911e31746e44c82c94e497d3362357155))
+
 ## [0.10.0](https://github.com/googleapis/python-recommendations-ai/compare/v0.9.0...v0.10.0) (2023-01-10)
 
 
