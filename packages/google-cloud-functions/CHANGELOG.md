@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.10.1](https://github.com/googleapis/python-functions/compare/v1.10.0...v1.10.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([e50be06](https://github.com/googleapis/python-functions/commit/e50be06af842c476c53d7965a909b28875b23fe4))
+
+
+### Documentation
+
+* Add documentation for enums ([e50be06](https://github.com/googleapis/python-functions/commit/e50be06af842c476c53d7965a909b28875b23fe4))
+
 ## [1.10.0](https://github.com/googleapis/python-functions/compare/v1.9.0...v1.10.0) (2023-01-10)
 
 
