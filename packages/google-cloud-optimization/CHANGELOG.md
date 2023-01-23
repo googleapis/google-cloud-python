@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/googleapis/python-optimization/compare/v1.3.0...v1.3.1) (2023-01-20)
+
+
+### Documentation
+
+* Add documentation for enums ([#103](https://github.com/googleapis/python-optimization/issues/103)) ([1761203](https://github.com/googleapis/python-optimization/commit/176120362d252633be0ed96cc6d1025f908a886c))
+
 ## [1.3.0](https://github.com/googleapis/python-optimization/compare/v1.2.0...v1.3.0) (2023-01-10)
 
 
