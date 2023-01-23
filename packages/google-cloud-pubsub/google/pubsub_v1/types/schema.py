@@ -47,6 +47,16 @@ __protobuf__ = proto.module(
 class SchemaView(proto.Enum):
     r"""View of Schema object fields to be returned by GetSchema and
     ListSchemas.
+
+    Values:
+        SCHEMA_VIEW_UNSPECIFIED (0):
+            The default / unset value.
+            The API will default to the BASIC view.
+        BASIC (1):
+            Include the name and type of the schema, but
+            not the definition.
+        FULL (2):
+            Include all Schema object fields.
     """
     SCHEMA_VIEW_UNSPECIFIED = 0
     BASIC = 1
@@ -54,7 +64,18 @@ class SchemaView(proto.Enum):
 
 
 class Encoding(proto.Enum):
-    r"""Possible encoding types for messages."""
+    r"""Possible encoding types for messages.
+
+    Values:
+        ENCODING_UNSPECIFIED (0):
+            Unspecified
+        JSON (1):
+            JSON encoding
+        BINARY (2):
+            Binary encoding, as defined by the schema
+            type. For some schema types, binary encoding may
+            not be available.
+    """
     ENCODING_UNSPECIFIED = 0
     JSON = 1
     BINARY = 2
@@ -82,7 +103,16 @@ class Schema(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Possible schema definition types."""
+        r"""Possible schema definition types.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            PROTOCOL_BUFFER (1):
+                A Protocol Buffer schema definition.
+            AVRO (2):
+                An Avro schema definition.
+        """
         TYPE_UNSPECIFIED = 0
         PROTOCOL_BUFFER = 1
         AVRO = 2

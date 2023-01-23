@@ -735,7 +735,20 @@ class Subscription(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Possible states for a subscription."""
+        r"""Possible states for a subscription.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            ACTIVE (1):
+                The subscription can actively receive
+                messages
+            RESOURCE_ERROR (2):
+                The subscription cannot receive messages
+                because of an error with the resource to which
+                it pushes messages. See the more detailed error
+                state in the corresponding configuration.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         RESOURCE_ERROR = 2
@@ -1059,7 +1072,24 @@ class BigQueryConfig(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Possible states for a BigQuery subscription."""
+        r"""Possible states for a BigQuery subscription.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            ACTIVE (1):
+                The subscription can actively send messages
+                to BigQuery
+            PERMISSION_DENIED (2):
+                Cannot write to the BigQuery table because of
+                permission denied errors.
+            NOT_FOUND (3):
+                Cannot write to the BigQuery table because it
+                does not exist.
+            SCHEMA_MISMATCH (4):
+                Cannot write to the BigQuery table due to a
+                schema mismatch.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         PERMISSION_DENIED = 2

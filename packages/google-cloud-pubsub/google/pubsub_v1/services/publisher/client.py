@@ -1437,7 +1437,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "PublisherClient":
         return self
 
     def __exit__(self, type, value, traceback):
