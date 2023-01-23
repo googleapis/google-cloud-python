@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.1](https://github.com/googleapis/python-bare-metal-solution/compare/v1.3.0...v1.3.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([cef37bd](https://github.com/googleapis/python-bare-metal-solution/commit/cef37bde9035e01b310cfd75485cb2b793a2b4d9))
+
+
+### Documentation
+
+* Add documentation for enums ([cef37bd](https://github.com/googleapis/python-bare-metal-solution/commit/cef37bde9035e01b310cfd75485cb2b793a2b4d9))
+
 ## [1.3.0](https://github.com/googleapis/python-bare-metal-solution/compare/v1.2.1...v1.3.0) (2023-01-10)
 
 
