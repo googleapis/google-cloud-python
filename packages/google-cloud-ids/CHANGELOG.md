@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-ids/compare/v1.4.0...v1.4.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([b6d8eab](https://github.com/googleapis/python-ids/commit/b6d8eab0d68cbde4eada3140eb07c37a89d09189))
+
+
+### Documentation
+
+* Add documentation for enums ([b6d8eab](https://github.com/googleapis/python-ids/commit/b6d8eab0d68cbde4eada3140eb07c37a89d09189))
+
 ## [1.4.0](https://github.com/googleapis/python-ids/compare/v1.3.0...v1.4.0) (2023-01-10)
 
 
