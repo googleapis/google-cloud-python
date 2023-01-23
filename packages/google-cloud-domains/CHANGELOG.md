@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-domains/compare/v1.4.0...v1.4.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([16f4c42](https://github.com/googleapis/python-domains/commit/16f4c420a15eac5215d559ad054ce3817d7f7819))
+
+
+### Documentation
+
+* Add documentation for enums ([16f4c42](https://github.com/googleapis/python-domains/commit/16f4c420a15eac5215d559ad054ce3817d7f7819))
+
 ## [1.4.0](https://github.com/googleapis/python-domains/compare/v1.3.0...v1.4.0) (2023-01-10)
 
 
