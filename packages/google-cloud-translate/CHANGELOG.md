@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.10.1](https://github.com/googleapis/python-translate/compare/v3.10.0...v3.10.1) (2023-01-23)
+
+
+### Bug Fixes
+
+* Add context manager return types ([e20fa00](https://github.com/googleapis/python-translate/commit/e20fa00103e51e321c0e44317df6765570a20fc8))
+
+
+### Documentation
+
+* Add documentation for enums ([e20fa00](https://github.com/googleapis/python-translate/commit/e20fa00103e51e321c0e44317df6765570a20fc8))
+
 ## [3.10.0](https://github.com/googleapis/python-translate/compare/v3.9.0...v3.10.0) (2023-01-10)
 
 
