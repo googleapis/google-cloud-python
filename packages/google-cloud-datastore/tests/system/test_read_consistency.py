@@ -14,7 +14,7 @@
 
 import time
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from google.cloud import datastore
 
@@ -40,7 +40,7 @@ def test_get_w_read_time(datastore_client, entities_to_delete):
 
     # Add some sleep to accommodate server & client clock discrepancy.
     time.sleep(1)
-    read_time = datetime.now()
+    read_time = datetime.now(tz=timezone.utc)
     time.sleep(1)
 
     entity["field"] = "new_value"
@@ -73,7 +73,7 @@ def test_query_w_read_time(datastore_client, entities_to_delete):
 
     # Add some sleep to accommodate server & client clock discrepancy.
     time.sleep(1)
-    read_time = datetime.now()
+    read_time = datetime.now(tz=timezone.utc)
     time.sleep(1)
 
     entity2["field"] = "new_value"
