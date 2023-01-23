@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.19.1](https://github.com/googleapis/python-dialogflow/compare/v2.19.0...v2.19.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([c5272ff](https://github.com/googleapis/python-dialogflow/commit/c5272ffd954eb42e6ed78cb17300737c36d1e9b1))
+
+
+### Documentation
+
+* Add documentation for enums ([c5272ff](https://github.com/googleapis/python-dialogflow/commit/c5272ffd954eb42e6ed78cb17300737c36d1e9b1))
+
 ## [2.19.0](https://github.com/googleapis/python-dialogflow/compare/v2.18.0...v2.19.0) (2023-01-14)
 
 
