@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.11.1](https://github.com/googleapis/python-datacatalog/compare/v3.11.0...v3.11.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([f9d47e0](https://github.com/googleapis/python-datacatalog/commit/f9d47e00d82bdddc19f35d59b7106e09c58cd9a4))
+
+
+### Documentation
+
+* Add documentation for enums ([f9d47e0](https://github.com/googleapis/python-datacatalog/commit/f9d47e00d82bdddc19f35d59b7106e09c58cd9a4))
+
 ## [3.11.0](https://github.com/googleapis/python-datacatalog/compare/v3.10.0...v3.11.0) (2023-01-10)
 
 
