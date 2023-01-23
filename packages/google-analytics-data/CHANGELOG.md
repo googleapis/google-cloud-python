@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.16.1](https://github.com/googleapis/python-analytics-data/compare/v0.16.0...v0.16.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([1154bd3](https://github.com/googleapis/python-analytics-data/commit/1154bd3213152cc1d74b50be3124584cda6dc0ea))
+
+
+### Documentation
+
+* Add documentation for enums ([1154bd3](https://github.com/googleapis/python-analytics-data/commit/1154bd3213152cc1d74b50be3124584cda6dc0ea))
+
 ## [0.16.0](https://github.com/googleapis/python-analytics-data/compare/v0.15.0...v0.16.0) (2023-01-10)
 
 
