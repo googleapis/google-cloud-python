@@ -693,8 +693,9 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.talent_v4.types.BatchCreateJobsResponse` The result of [JobService.BatchCreateJobs][google.cloud.talent.v4.JobService.BatchCreateJobs]. It's used to
-                   replace
+                The result type for the operation will be :class:`google.cloud.talent_v4.types.BatchCreateJobsResponse` The result of
+                   [JobService.BatchCreateJobs][google.cloud.talent.v4.JobService.BatchCreateJobs].
+                   It's used to replace
                    [google.longrunning.Operation.response][google.longrunning.Operation.response]
                    in case of success.
 
@@ -1068,8 +1069,9 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.talent_v4.types.BatchUpdateJobsResponse` The result of [JobService.BatchUpdateJobs][google.cloud.talent.v4.JobService.BatchUpdateJobs]. It's used to
-                   replace
+                The result type for the operation will be :class:`google.cloud.talent_v4.types.BatchUpdateJobsResponse` The result of
+                   [JobService.BatchUpdateJobs][google.cloud.talent.v4.JobService.BatchUpdateJobs].
+                   It's used to replace
                    [google.longrunning.Operation.response][google.longrunning.Operation.response]
                    in case of success.
 
@@ -1301,8 +1303,9 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.talent_v4.types.BatchDeleteJobsResponse` The result of [JobService.BatchDeleteJobs][google.cloud.talent.v4.JobService.BatchDeleteJobs]. It's used to
-                   replace
+                The result type for the operation will be :class:`google.cloud.talent_v4.types.BatchDeleteJobsResponse` The result of
+                   [JobService.BatchDeleteJobs][google.cloud.talent.v4.JobService.BatchDeleteJobs].
+                   It's used to replace
                    [google.longrunning.Operation.response][google.longrunning.Operation.response]
                    in case of success.
 
@@ -1688,7 +1691,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "JobServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

@@ -579,7 +579,7 @@ class EventServiceClient(metaclass=EventServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "EventServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

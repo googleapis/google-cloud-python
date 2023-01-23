@@ -44,6 +44,7 @@ class Tenant(proto.Message):
         external_id (str):
             Required. Client side tenant identifier, used
             to uniquely identify the tenant.
+
             The maximum number of allowed characters is 255.
         usage_type (google.cloud.talent_v4beta1.types.Tenant.DataUsageType):
             Indicates whether data owned by this tenant may be used to
@@ -66,6 +67,17 @@ class Tenant(proto.Message):
     class DataUsageType(proto.Enum):
         r"""Enum that represents how user data owned by the tenant is
         used.
+
+        Values:
+            DATA_USAGE_TYPE_UNSPECIFIED (0):
+                Default value.
+            AGGREGATED (1):
+                Data owned by this tenant is used to improve
+                search/recommendation quality across tenants.
+            ISOLATED (2):
+                Data owned by this tenant is used to improve
+                search/recommendation quality for this tenant
+                only.
         """
         DATA_USAGE_TYPE_UNSPECIFIED = 0
         AGGREGATED = 1

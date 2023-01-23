@@ -350,7 +350,21 @@ class LocationFilter(proto.Message):
     """
 
     class TelecommutePreference(proto.Enum):
-        r"""Specify whether to include telecommute jobs."""
+        r"""Specify whether to include telecommute jobs.
+
+        Values:
+            TELECOMMUTE_PREFERENCE_UNSPECIFIED (0):
+                Default value if the telecommute preference
+                isn't specified.
+            TELECOMMUTE_EXCLUDED (1):
+                Deprecated: Ignore telecommute status of jobs. Use
+                TELECOMMUTE_JOBS_EXCLUDED if want to exclude telecommute
+                jobs.
+            TELECOMMUTE_ALLOWED (2):
+                Allow telecommute jobs.
+            TELECOMMUTE_JOBS_EXCLUDED (3):
+                Exclude telecommute jobs.
+        """
         TELECOMMUTE_PREFERENCE_UNSPECIFIED = 0
         TELECOMMUTE_EXCLUDED = 1
         TELECOMMUTE_ALLOWED = 2
@@ -401,7 +415,54 @@ class CompensationFilter(proto.Message):
     """
 
     class FilterType(proto.Enum):
-        r"""Specify the type of filtering."""
+        r"""Specify the type of filtering.
+
+        Values:
+            FILTER_TYPE_UNSPECIFIED (0):
+                Filter type unspecified. Position holder,
+                INVALID, should never be used.
+            UNIT_ONLY (1):
+                Filter by ``base compensation entry's`` unit. A job is a
+                match if and only if the job contains a base
+                CompensationEntry and the base CompensationEntry's unit
+                matches provided
+                [units][google.cloud.talent.v4beta1.CompensationFilter.units].
+                Populate one or more
+                [units][google.cloud.talent.v4beta1.CompensationFilter.units].
+
+                See
+                [CompensationInfo.CompensationEntry][google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry]
+                for definition of base compensation entry.
+            UNIT_AND_AMOUNT (2):
+                Filter by ``base compensation entry's`` unit and amount /
+                range. A job is a match if and only if the job contains a
+                base CompensationEntry, and the base entry's unit matches
+                provided
+                [CompensationUnit][google.cloud.talent.v4beta1.CompensationInfo.CompensationUnit]
+                and amount or range overlaps with provided
+                [CompensationRange][google.cloud.talent.v4beta1.CompensationInfo.CompensationRange].
+
+                See
+                [CompensationInfo.CompensationEntry][google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry]
+                for definition of base compensation entry.
+
+                Set exactly one
+                [units][google.cloud.talent.v4beta1.CompensationFilter.units]
+                and populate
+                [range][google.cloud.talent.v4beta1.CompensationFilter.range].
+            ANNUALIZED_BASE_AMOUNT (3):
+                Filter by annualized base compensation amount and
+                ``base compensation entry's`` unit. Populate
+                [range][google.cloud.talent.v4beta1.CompensationFilter.range]
+                and zero or more
+                [units][google.cloud.talent.v4beta1.CompensationFilter.units].
+            ANNUALIZED_TOTAL_AMOUNT (4):
+                Filter by annualized total compensation amount and
+                ``base compensation entry's`` unit . Populate
+                [range][google.cloud.talent.v4beta1.CompensationFilter.range]
+                and zero or more
+                [units][google.cloud.talent.v4beta1.CompensationFilter.units].
+        """
         FILTER_TYPE_UNSPECIFIED = 0
         UNIT_ONLY = 1
         UNIT_AND_AMOUNT = 2
@@ -476,7 +537,18 @@ class CommuteFilter(proto.Message):
     """
 
     class RoadTraffic(proto.Enum):
-        r"""The traffic density to use when calculating commute time."""
+        r"""The traffic density to use when calculating commute time.
+
+        Values:
+            ROAD_TRAFFIC_UNSPECIFIED (0):
+                Road traffic situation isn't specified.
+            TRAFFIC_FREE (1):
+                Optimal commute time without considering any
+                traffic impact.
+            BUSY_HOUR (2):
+                Commute time calculation takes in account the
+                peak traffic impact.
+        """
         ROAD_TRAFFIC_UNSPECIFIED = 0
         TRAFFIC_FREE = 1
         BUSY_HOUR = 2

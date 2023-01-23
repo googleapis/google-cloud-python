@@ -677,7 +677,9 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.talent_v4beta1.types.JobOperationResult` The result of [JobService.BatchCreateJobs][google.cloud.talent.v4beta1.JobService.BatchCreateJobs] or
+                The result type for the operation will be :class:`google.cloud.talent_v4beta1.types.JobOperationResult` The result of
+                   [JobService.BatchCreateJobs][google.cloud.talent.v4beta1.JobService.BatchCreateJobs]
+                   or
                    [JobService.BatchUpdateJobs][google.cloud.talent.v4beta1.JobService.BatchUpdateJobs]
                    APIs. It's used to replace
                    [google.longrunning.Operation.response][google.longrunning.Operation.response]
@@ -1036,7 +1038,9 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.talent_v4beta1.types.JobOperationResult` The result of [JobService.BatchCreateJobs][google.cloud.talent.v4beta1.JobService.BatchCreateJobs] or
+                The result type for the operation will be :class:`google.cloud.talent_v4beta1.types.JobOperationResult` The result of
+                   [JobService.BatchCreateJobs][google.cloud.talent.v4beta1.JobService.BatchCreateJobs]
+                   or
                    [JobService.BatchUpdateJobs][google.cloud.talent.v4beta1.JobService.BatchUpdateJobs]
                    APIs. It's used to replace
                    [google.longrunning.Operation.response][google.longrunning.Operation.response]
@@ -1668,7 +1672,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "JobServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

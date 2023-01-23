@@ -1014,7 +1014,7 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "TenantServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):

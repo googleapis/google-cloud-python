@@ -49,6 +49,37 @@ class JobView(proto.Enum):
     or
     [ListJobsResponse.jobs][google.cloud.talent.v4beta1.ListJobsResponse.jobs]
     fields.
+
+    Values:
+        JOB_VIEW_UNSPECIFIED (0):
+            Default value.
+        JOB_VIEW_ID_ONLY (1):
+            A ID only view of job, with following attributes:
+            [Job.name][google.cloud.talent.v4beta1.Job.name],
+            [Job.requisition_id][google.cloud.talent.v4beta1.Job.requisition_id],
+            [Job.language_code][google.cloud.talent.v4beta1.Job.language_code].
+        JOB_VIEW_MINIMAL (2):
+            A minimal view of the job, with the following attributes:
+            [Job.name][google.cloud.talent.v4beta1.Job.name],
+            [Job.requisition_id][google.cloud.talent.v4beta1.Job.requisition_id],
+            [Job.title][google.cloud.talent.v4beta1.Job.title],
+            [Job.company][google.cloud.talent.v4beta1.Job.company],
+            [Job.DerivedInfo.locations][google.cloud.talent.v4beta1.Job.DerivedInfo.locations],
+            [Job.language_code][google.cloud.talent.v4beta1.Job.language_code].
+        JOB_VIEW_SMALL (3):
+            A small view of the job, with the following attributes in
+            the search results:
+            [Job.name][google.cloud.talent.v4beta1.Job.name],
+            [Job.requisition_id][google.cloud.talent.v4beta1.Job.requisition_id],
+            [Job.title][google.cloud.talent.v4beta1.Job.title],
+            [Job.company][google.cloud.talent.v4beta1.Job.company],
+            [Job.DerivedInfo.locations][google.cloud.talent.v4beta1.Job.DerivedInfo.locations],
+            [Job.visibility][google.cloud.talent.v4beta1.Job.visibility],
+            [Job.language_code][google.cloud.talent.v4beta1.Job.language_code],
+            [Job.description][google.cloud.talent.v4beta1.Job.description].
+        JOB_VIEW_FULL (4):
+            All available attributes are included in the
+            search results.
     """
     JOB_VIEW_UNSPECIFIED = 0
     JOB_VIEW_ID_ONLY = 1
@@ -619,6 +650,24 @@ class SearchJobsRequest(proto.Message):
     class SearchMode(proto.Enum):
         r"""A string-represented enumeration of the job search mode. The
         service operate differently for different modes of service.
+
+        Values:
+            SEARCH_MODE_UNSPECIFIED (0):
+                The mode of the search method isn't specified. The default
+                search behavior is identical to JOB_SEARCH search behavior.
+            JOB_SEARCH (1):
+                The job search matches against all jobs, and
+                featured jobs (jobs with promotionValue > 0) are
+                not specially handled.
+            FEATURED_JOB_SEARCH (2):
+                The job search matches only against featured
+                jobs (jobs with a promotionValue > 0). This
+                method doesn't return any jobs having a
+                promotionValue <= 0. The search results order is
+                determined by the promotionValue (jobs with a
+                higher promotionValue are returned higher up in
+                the search results), with relevance being used
+                as a tiebreaker.
         """
         SEARCH_MODE_UNSPECIFIED = 0
         JOB_SEARCH = 1
@@ -632,6 +681,25 @@ class SearchJobsRequest(proto.Message):
         representative job of the cluster is displayed to the job seeker
         higher up in the results, with the other jobs being displayed
         lower down in the results.
+
+        Values:
+            DIVERSIFICATION_LEVEL_UNSPECIFIED (0):
+                The diversification level isn't specified.
+            DISABLED (1):
+                Disables diversification. Jobs that would
+                normally be pushed to the last page would not
+                have their positions altered. This may result in
+                highly similar jobs appearing in sequence in the
+                search results.
+            SIMPLE (2):
+                Default diversifying behavior. The result
+                list is ordered so that highly similar results
+                are pushed to the end of the last page of search
+                results. If you are using pageToken to page
+                through the result set, latency might be lower
+                but we can't guarantee that all results are
+                returned. If you are using page offset, latency
+                might be higher but all results are returned.
         """
         DIVERSIFICATION_LEVEL_UNSPECIFIED = 0
         DISABLED = 1
@@ -655,6 +723,27 @@ class SearchJobsRequest(proto.Message):
         if company-specific globally matched custom field/attribute string
         values are needed. Enabling keyword match improves recall of
         subsequent search requests.
+
+        Values:
+            KEYWORD_MATCH_MODE_UNSPECIFIED (0):
+                The keyword match option isn't specified. Defaults to
+                [KeywordMatchMode.KEYWORD_MATCH_ALL][google.cloud.talent.v4beta1.SearchJobsRequest.KeywordMatchMode.KEYWORD_MATCH_ALL]
+                behavior.
+            KEYWORD_MATCH_DISABLED (1):
+                Disables keyword matching.
+            KEYWORD_MATCH_ALL (2):
+                Enable keyword matching over
+                [Job.title][google.cloud.talent.v4beta1.Job.title],
+                [Job.description][google.cloud.talent.v4beta1.Job.description],
+                [Job.company_display_name][google.cloud.talent.v4beta1.Job.company_display_name],
+                [Job.addresses][google.cloud.talent.v4beta1.Job.addresses],
+                [Job.qualifications][google.cloud.talent.v4beta1.Job.qualifications],
+                and keyword searchable
+                [Job.custom_attributes][google.cloud.talent.v4beta1.Job.custom_attributes]
+                fields.
+            KEYWORD_MATCH_TITLE_ONLY (3):
+                Only enable keyword matching over
+                [Job.title][google.cloud.talent.v4beta1.Job.title].
         """
         KEYWORD_MATCH_MODE_UNSPECIFIED = 0
         KEYWORD_MATCH_DISABLED = 1
@@ -703,6 +792,41 @@ class SearchJobsRequest(proto.Message):
         class ImportanceLevel(proto.Enum):
             r"""The importance level for
             [CustomRankingInfo.ranking_expression][google.cloud.talent.v4beta1.SearchJobsRequest.CustomRankingInfo.ranking_expression].
+
+            Values:
+                IMPORTANCE_LEVEL_UNSPECIFIED (0):
+                    Default value if the importance level isn't
+                    specified.
+                NONE (1):
+                    The given ranking expression is of None
+                    importance, existing relevance score (determined
+                    by API algorithm) dominates job's final ranking
+                    position.
+                LOW (2):
+                    The given ranking expression is of Low
+                    importance in terms of job's final ranking
+                    position compared to existing relevance score
+                    (determined by API algorithm).
+                MILD (3):
+                    The given ranking expression is of Mild
+                    importance in terms of job's final ranking
+                    position compared to existing relevance score
+                    (determined by API algorithm).
+                MEDIUM (4):
+                    The given ranking expression is of Medium
+                    importance in terms of job's final ranking
+                    position compared to existing relevance score
+                    (determined by API algorithm).
+                HIGH (5):
+                    The given ranking expression is of High
+                    importance in terms of job's final ranking
+                    position compared to existing relevance score
+                    (determined by API algorithm).
+                EXTREME (6):
+                    The given ranking expression is of Extreme
+                    importance, and dominates job's final ranking
+                    position with existing relevance score
+                    (determined by API algorithm) ignored.
             """
             IMPORTANCE_LEVEL_UNSPECIFIED = 0
             NONE = 1
