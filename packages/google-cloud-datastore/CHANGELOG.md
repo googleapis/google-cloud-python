@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.13.2](https://github.com/googleapis/python-datastore/compare/v2.13.1...v2.13.2) (2023-01-23)
+
+
+### Bug Fixes
+
+* Fix system test using utc timezone ([#406](https://github.com/googleapis/python-datastore/issues/406)) ([93537ef](https://github.com/googleapis/python-datastore/commit/93537ef83e9b0b9a2b367b863eb57c22862a9bde))
+
 ## [2.13.1](https://github.com/googleapis/python-datastore/compare/v2.13.0...v2.13.1) (2023-01-20)
 
 
