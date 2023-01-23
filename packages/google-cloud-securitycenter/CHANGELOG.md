@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.18.2](https://github.com/googleapis/python-securitycenter/compare/v1.18.1...v1.18.2) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([367a3bd](https://github.com/googleapis/python-securitycenter/commit/367a3bda34b1d06e1ecbff0db7a4bc8d1dff7436))
+
+
+### Documentation
+
+* Add documentation for enums ([367a3bd](https://github.com/googleapis/python-securitycenter/commit/367a3bda34b1d06e1ecbff0db7a4bc8d1dff7436))
+
 ## [1.18.1](https://github.com/googleapis/python-securitycenter/compare/v1.18.0...v1.18.1) (2023-01-14)
 
 
