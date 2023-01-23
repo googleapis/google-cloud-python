@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/python-iap/compare/v1.8.0...v1.8.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([6d93973](https://github.com/googleapis/python-iap/commit/6d9397372916d91bb156f8995f3741c98729aa84))
+
+
+### Documentation
+
+* Add documentation for enums ([6d93973](https://github.com/googleapis/python-iap/commit/6d9397372916d91bb156f8995f3741c98729aa84))
+
 ## [1.8.0](https://github.com/googleapis/python-iap/compare/v1.7.0...v1.8.0) (2023-01-10)
 
 
