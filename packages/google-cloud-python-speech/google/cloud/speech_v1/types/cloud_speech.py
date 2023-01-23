@@ -466,6 +466,55 @@ class RecognitionConfig(proto.Message):
         in the audio header; otherwise the request returns an
         [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]
         error code.
+
+        Values:
+            ENCODING_UNSPECIFIED (0):
+                Not specified.
+            LINEAR16 (1):
+                Uncompressed 16-bit signed little-endian
+                samples (Linear PCM).
+            FLAC (2):
+                ``FLAC`` (Free Lossless Audio Codec) is the recommended
+                encoding because it is lossless--therefore recognition is
+                not compromised--and requires only about half the bandwidth
+                of ``LINEAR16``. ``FLAC`` stream encoding supports 16-bit
+                and 24-bit samples, however, not all fields in
+                ``STREAMINFO`` are supported.
+            MULAW (3):
+                8-bit samples that compand 14-bit audio
+                samples using G.711 PCMU/mu-law.
+            AMR (4):
+                Adaptive Multi-Rate Narrowband codec. ``sample_rate_hertz``
+                must be 8000.
+            AMR_WB (5):
+                Adaptive Multi-Rate Wideband codec. ``sample_rate_hertz``
+                must be 16000.
+            OGG_OPUS (6):
+                Opus encoded audio frames in Ogg container
+                (`OggOpus <https://wiki.xiph.org/OggOpus>`__).
+                ``sample_rate_hertz`` must be one of 8000, 12000, 16000,
+                24000, or 48000.
+            SPEEX_WITH_HEADER_BYTE (7):
+                Although the use of lossy encodings is not recommended, if a
+                very low bitrate encoding is required, ``OGG_OPUS`` is
+                highly preferred over Speex encoding. The
+                `Speex <https://speex.org/>`__ encoding supported by Cloud
+                Speech API has a header byte in each block, as in MIME type
+                ``audio/x-speex-with-header-byte``. It is a variant of the
+                RTP Speex encoding defined in `RFC
+                5574 <https://tools.ietf.org/html/rfc5574>`__. The stream is
+                a sequence of blocks, one block per RTP packet. Each block
+                starts with a byte containing the length of the block, in
+                bytes, followed by one or more frames of Speex data, padded
+                to an integral number of bytes (octets) as specified in RFC
+                5574. In other words, each RTP header is replaced with a
+                single byte containing the block length. Only Speex wideband
+                is supported. ``sample_rate_hertz`` must be 16000.
+            WEBM_OPUS (9):
+                Opus encoded audio frames in WebM container
+                (`OggOpus <https://wiki.xiph.org/OggOpus>`__).
+                ``sample_rate_hertz`` must be one of 8000, 12000, 16000,
+                24000, or 48000.
         """
         ENCODING_UNSPECIFIED = 0
         LINEAR16 = 1
@@ -646,6 +695,39 @@ class RecognitionMetadata(proto.Message):
     class InteractionType(proto.Enum):
         r"""Use case categories that the audio recognition request can be
         described by.
+
+        Values:
+            INTERACTION_TYPE_UNSPECIFIED (0):
+                Use case is either unknown or is something
+                other than one of the other values below.
+            DISCUSSION (1):
+                Multiple people in a conversation or discussion. For example
+                in a meeting with two or more people actively participating.
+                Typically all the primary people speaking would be in the
+                same room (if not, see PHONE_CALL)
+            PRESENTATION (2):
+                One or more persons lecturing or presenting
+                to others, mostly uninterrupted.
+            PHONE_CALL (3):
+                A phone-call or video-conference in which two
+                or more people, who are not in the same room,
+                are actively participating.
+            VOICEMAIL (4):
+                A recorded message intended for another
+                person to listen to.
+            PROFESSIONALLY_PRODUCED (5):
+                Professionally produced audio (eg. TV Show,
+                Podcast).
+            VOICE_SEARCH (6):
+                Transcribe spoken questions and queries into
+                text.
+            VOICE_COMMAND (7):
+                Transcribe voice commands, such as for
+                controlling a device.
+            DICTATION (8):
+                Transcribe speech to text to create a written
+                document, such as a text-message, email or
+                report.
         """
         INTERACTION_TYPE_UNSPECIFIED = 0
         DISCUSSION = 1
@@ -660,6 +742,21 @@ class RecognitionMetadata(proto.Message):
     class MicrophoneDistance(proto.Enum):
         r"""Enumerates the types of capture settings describing an audio
         file.
+
+        Values:
+            MICROPHONE_DISTANCE_UNSPECIFIED (0):
+                Audio type is not known.
+            NEARFIELD (1):
+                The audio was captured from a closely placed
+                microphone. Eg. phone, dictaphone, or handheld
+                microphone. Generally if there speaker is within
+                1 meter of the microphone.
+            MIDFIELD (2):
+                The speaker if within 3 meters of the
+                microphone.
+            FARFIELD (3):
+                The speaker is more than 3 meters away from
+                the microphone.
         """
         MICROPHONE_DISTANCE_UNSPECIFIED = 0
         NEARFIELD = 1
@@ -667,13 +764,41 @@ class RecognitionMetadata(proto.Message):
         FARFIELD = 3
 
     class OriginalMediaType(proto.Enum):
-        r"""The original media the speech was recorded on."""
+        r"""The original media the speech was recorded on.
+
+        Values:
+            ORIGINAL_MEDIA_TYPE_UNSPECIFIED (0):
+                Unknown original media type.
+            AUDIO (1):
+                The speech data is an audio recording.
+            VIDEO (2):
+                The speech data originally recorded on a
+                video.
+        """
         ORIGINAL_MEDIA_TYPE_UNSPECIFIED = 0
         AUDIO = 1
         VIDEO = 2
 
     class RecordingDeviceType(proto.Enum):
-        r"""The type of device the speech was recorded with."""
+        r"""The type of device the speech was recorded with.
+
+        Values:
+            RECORDING_DEVICE_TYPE_UNSPECIFIED (0):
+                The recording device is unknown.
+            SMARTPHONE (1):
+                Speech was recorded on a smartphone.
+            PC (2):
+                Speech was recorded using a personal computer
+                or tablet.
+            PHONE_LINE (3):
+                Speech was recorded over a phone line.
+            VEHICLE (4):
+                Speech was recorded in a vehicle.
+            OTHER_OUTDOOR_DEVICE (5):
+                Speech was recorded outdoors.
+            OTHER_INDOOR_DEVICE (6):
+                Speech was recorded indoors.
+        """
         RECORDING_DEVICE_TYPE_UNSPECIFIED = 0
         SMARTPHONE = 1
         PC = 2
@@ -1034,7 +1159,22 @@ class StreamingRecognizeResponse(proto.Message):
     """
 
     class SpeechEventType(proto.Enum):
-        r"""Indicates the type of speech event."""
+        r"""Indicates the type of speech event.
+
+        Values:
+            SPEECH_EVENT_UNSPECIFIED (0):
+                No speech event specified.
+            END_OF_SINGLE_UTTERANCE (1):
+                This event indicates that the server has detected the end of
+                the user's speech utterance and expects no additional
+                speech. Therefore, the server will not process additional
+                audio (although it may subsequently return additional
+                results). The client should stop sending additional audio
+                data, half-close the gRPC connection, and wait for any
+                additional results until the server closes the gRPC
+                connection. This event is only sent if ``single_utterance``
+                was set to ``true``, and is not used otherwise.
+        """
         SPEECH_EVENT_UNSPECIFIED = 0
         END_OF_SINGLE_UTTERANCE = 1
 

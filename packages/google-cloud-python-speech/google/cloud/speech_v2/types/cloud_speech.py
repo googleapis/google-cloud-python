@@ -672,7 +672,17 @@ class Recognizer(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Set of states that define the lifecycle of a Recognizer."""
+        r"""Set of states that define the lifecycle of a Recognizer.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The default value. This value is used if the
+                state is omitted.
+            ACTIVE (2):
+                The Recognizer is active and ready for use.
+            DELETED (4):
+                This Recognizer has been deleted.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 2
         DELETED = 4
@@ -798,7 +808,19 @@ class ExplicitDecodingConfig(proto.Message):
     """
 
     class AudioEncoding(proto.Enum):
-        r"""Supported audio data encodings."""
+        r"""Supported audio data encodings.
+
+        Values:
+            AUDIO_ENCODING_UNSPECIFIED (0):
+                Default value. This value is unused.
+            LINEAR16 (1):
+                Headerless 16-bit signed little-endian PCM
+                samples.
+            MULAW (2):
+                Headerless 8-bit companded mulaw samples.
+            ALAW (3):
+                Headerless 8-bit companded alaw samples.
+        """
         AUDIO_ENCODING_UNSPECIFIED = 0
         LINEAR16 = 1
         MULAW = 2
@@ -910,7 +932,20 @@ class RecognitionFeatures(proto.Message):
     """
 
     class MultiChannelMode(proto.Enum):
-        r"""Options for how to recognize multi-channel audio."""
+        r"""Options for how to recognize multi-channel audio.
+
+        Values:
+            MULTI_CHANNEL_MODE_UNSPECIFIED (0):
+                Default value for the multi-channel mode. If
+                the audio contains multiple channels, only the
+                first channel will be transcribed; other
+                channels will be ignored.
+            SEPARATE_RECOGNITION_PER_CHANNEL (1):
+                If selected, each channel in the provided audio is
+                transcribed independently. This cannot be selected if the
+                selected [model][google.cloud.speech.v2.Recognizer.model] is
+                ``latest_short``.
+        """
         MULTI_CHANNEL_MODE_UNSPECIFIED = 0
         SEPARATE_RECOGNITION_PER_CHANNEL = 1
 
@@ -1880,7 +1915,33 @@ class StreamingRecognizeResponse(proto.Message):
     """
 
     class SpeechEventType(proto.Enum):
-        r"""Indicates the type of speech event."""
+        r"""Indicates the type of speech event.
+
+        Values:
+            SPEECH_EVENT_TYPE_UNSPECIFIED (0):
+                No speech event specified.
+            END_OF_SINGLE_UTTERANCE (1):
+                This event indicates that the server has detected the end of
+                the user's speech utterance and expects no additional
+                speech. Therefore, the server will not process additional
+                audio and will close the gRPC bidirectional stream. This
+                event is only sent if there was a force cutoff due to
+                silence being detected early. This event is only available
+                through the ``latest_short``
+                [model][google.cloud.speech.v2.Recognizer.model].
+            SPEECH_ACTIVITY_BEGIN (2):
+                This event indicates that the server has detected the
+                beginning of human voice activity in the stream. This event
+                can be returned multiple times if speech starts and stops
+                repeatedly throughout the stream. This event is only sent if
+                ``voice_activity_events`` is set to true.
+            SPEECH_ACTIVITY_END (3):
+                This event indicates that the server has detected the end of
+                human voice activity in the stream. This event can be
+                returned multiple times if speech starts and stops
+                repeatedly throughout the stream. This event is only sent if
+                ``voice_activity_events`` is set to true.
+        """
         SPEECH_EVENT_TYPE_UNSPECIFIED = 0
         END_OF_SINGLE_UTTERANCE = 1
         SPEECH_ACTIVITY_BEGIN = 2
@@ -2053,7 +2114,17 @@ class CustomClass(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Set of states that define the lifecycle of a CustomClass."""
+        r"""Set of states that define the lifecycle of a CustomClass.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified state.  This is only used/useful
+                for distinguishing unset values.
+            ACTIVE (2):
+                The normal and active state.
+            DELETED (4):
+                This CustomClass has been deleted.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 2
         DELETED = 4
@@ -2203,7 +2274,17 @@ class PhraseSet(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Set of states that define the lifecycle of a PhraseSet."""
+        r"""Set of states that define the lifecycle of a PhraseSet.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified state.  This is only used/useful
+                for distinguishing unset values.
+            ACTIVE (2):
+                The normal and active state.
+            DELETED (4):
+                This PhraseSet has been deleted.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 2
         DELETED = 4
