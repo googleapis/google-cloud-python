@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/googleapis/python-security-public-ca/compare/v0.3.0...v0.3.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([#19](https://github.com/googleapis/python-security-public-ca/issues/19)) ([00131f4](https://github.com/googleapis/python-security-public-ca/commit/00131f4b91e7acd85132868fcdcfb0ed66b073b5))
+
 ## [0.3.0](https://github.com/googleapis/python-security-public-ca/compare/v0.2.0...v0.3.0) (2023-01-10)
 
 
