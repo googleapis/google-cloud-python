@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-video-transcoder/compare/v1.6.0...v1.6.1) (2023-01-23)
+
+
+### Bug Fixes
+
+* Add context manager return types ([37abda1](https://github.com/googleapis/python-video-transcoder/commit/37abda184aea0d52b710469af59f77405bd7904a))
+
+
+### Documentation
+
+* Add documentation for enums ([37abda1](https://github.com/googleapis/python-video-transcoder/commit/37abda184aea0d52b710469af59f77405bd7904a))
+
 ## [1.6.0](https://github.com/googleapis/python-video-transcoder/compare/v1.5.0...v1.6.0) (2023-01-10)
 
 
