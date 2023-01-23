@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.1](https://github.com/googleapis/python-dataform/compare/v0.4.0...v0.4.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([c546812](https://github.com/googleapis/python-dataform/commit/c5468129ce7301e1d22943b63b9fd3eb22682cd0))
+
+
+### Documentation
+
+* Add documentation for enums ([c546812](https://github.com/googleapis/python-dataform/commit/c5468129ce7301e1d22943b63b9fd3eb22682cd0))
+
 ## [0.4.0](https://github.com/googleapis/python-dataform/compare/v0.3.0...v0.4.0) (2023-01-10)
 
 
