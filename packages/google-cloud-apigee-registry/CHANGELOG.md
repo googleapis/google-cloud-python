@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.1](https://github.com/googleapis/python-apigee-registry/compare/v0.6.0...v0.6.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([7cad108](https://github.com/googleapis/python-apigee-registry/commit/7cad1083fa938ef0f4ab3fc75bd7a4e99fb572b3))
+
+
+### Documentation
+
+* Add documentation for enums ([7cad108](https://github.com/googleapis/python-apigee-registry/commit/7cad1083fa938ef0f4ab3fc75bd7a4e99fb572b3))
+
 ## [0.6.0](https://github.com/googleapis/python-apigee-registry/compare/v0.5.1...v0.6.0) (2023-01-10)
 
 
