@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-monitoring-metrics-scopes/compare/v1.4.0...v1.4.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([9ab51d9](https://github.com/googleapis/python-monitoring-metrics-scopes/commit/9ab51d99fe6cc3148a47ea5ae60ffa450f32dfe3))
+
+
+### Documentation
+
+* Add documentation for enums ([9ab51d9](https://github.com/googleapis/python-monitoring-metrics-scopes/commit/9ab51d99fe6cc3148a47ea5ae60ffa450f32dfe3))
+
 ## [1.4.0](https://github.com/googleapis/python-monitoring-metrics-scopes/compare/v1.3.0...v1.4.0) (2023-01-10)
 
 
