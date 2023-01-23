@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [2.9.1](https://github.com/googleapis/python-talent/compare/v2.9.0...v2.9.1) (2023-01-23)
+
+
+### Bug Fixes
+
+* Add context manager return types ([6cdd484](https://github.com/googleapis/python-talent/commit/6cdd4842ce25bea440b4baa5eda5d15449625e2f))
+
+
+### Documentation
+
+* Add documentation for enums ([6cdd484](https://github.com/googleapis/python-talent/commit/6cdd4842ce25bea440b4baa5eda5d15449625e2f))
+
 ## [2.9.0](https://github.com/googleapis/python-talent/compare/v2.8.0...v2.9.0) (2023-01-10)
 
 
