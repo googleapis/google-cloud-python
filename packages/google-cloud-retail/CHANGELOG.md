@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.14.1](https://github.com/googleapis/python-retail/compare/v1.14.0...v1.14.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([f27cab3](https://github.com/googleapis/python-retail/commit/f27cab32eebe0d694d98bfa2d2ec75402ddbbf0a))
+
+
+### Documentation
+
+* Add documentation for enums ([f27cab3](https://github.com/googleapis/python-retail/commit/f27cab32eebe0d694d98bfa2d2ec75402ddbbf0a))
+
 ## [1.14.0](https://github.com/googleapis/python-retail/compare/v1.13.0...v1.14.0) (2023-01-10)
 
 
