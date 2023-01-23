@@ -1143,7 +1143,30 @@ class BatchTranslateMetadata(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of the job."""
+        r"""State of the job.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Invalid.
+            RUNNING (1):
+                Request is being processed.
+            SUCCEEDED (2):
+                The batch is processed, and at least one item
+                was successfully processed.
+            FAILED (3):
+                The batch is done and no item was
+                successfully processed.
+            CANCELLING (4):
+                Request is in the process of being canceled
+                after caller invoked
+                longrunning.Operations.CancelOperation on the
+                request id.
+            CANCELLED (5):
+                The batch is done after the user has called
+                the longrunning.Operations.CancelOperation. Any
+                records processed before the cancel command are
+                output as specified in the request.
+        """
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2
@@ -1540,6 +1563,24 @@ class CreateGlossaryMetadata(proto.Message):
     class State(proto.Enum):
         r"""Enumerates the possible states that the creation request can
         be in.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Invalid.
+            RUNNING (1):
+                Request is being processed.
+            SUCCEEDED (2):
+                The glossary was successfully created.
+            FAILED (3):
+                Failed to create the glossary.
+            CANCELLING (4):
+                Request is in the process of being canceled
+                after caller invoked
+                longrunning.Operations.CancelOperation on the
+                request id.
+            CANCELLED (5):
+                The glossary creation request was
+                successfully canceled.
         """
         STATE_UNSPECIFIED = 0
         RUNNING = 1
@@ -1584,6 +1625,24 @@ class DeleteGlossaryMetadata(proto.Message):
     class State(proto.Enum):
         r"""Enumerates the possible states that the creation request can
         be in.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Invalid.
+            RUNNING (1):
+                Request is being processed.
+            SUCCEEDED (2):
+                The glossary was successfully deleted.
+            FAILED (3):
+                Failed to delete the glossary.
+            CANCELLING (4):
+                Request is in the process of being canceled
+                after caller invoked
+                longrunning.Operations.CancelOperation on the
+                request id.
+            CANCELLED (5):
+                The glossary deletion request was
+                successfully canceled.
         """
         STATE_UNSPECIFIED = 0
         RUNNING = 1
@@ -1989,7 +2048,30 @@ class BatchTranslateDocumentMetadata(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of the job."""
+        r"""State of the job.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Invalid.
+            RUNNING (1):
+                Request is being processed.
+            SUCCEEDED (2):
+                The batch is processed, and at least one item
+                was successfully processed.
+            FAILED (3):
+                The batch is done and no item was
+                successfully processed.
+            CANCELLING (4):
+                Request is in the process of being canceled
+                after caller invoked
+                longrunning.Operations.CancelOperation on the
+                request id.
+            CANCELLED (5):
+                The batch is done after the user has called
+                the longrunning.Operations.CancelOperation. Any
+                records processed before the cancel command are
+                output as specified in the request.
+        """
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2
