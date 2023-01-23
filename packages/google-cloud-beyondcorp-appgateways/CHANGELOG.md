@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.1](https://github.com/googleapis/python-beyondcorp-appgateways/compare/v0.4.0...v0.4.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([dc161fb](https://github.com/googleapis/python-beyondcorp-appgateways/commit/dc161fbee6d979d97a94d9c4348c26e7d4d6e267))
+
+
+### Documentation
+
+* Add documentation for enums ([dc161fb](https://github.com/googleapis/python-beyondcorp-appgateways/commit/dc161fbee6d979d97a94d9c4348c26e7d4d6e267))
+
 ## [0.4.0](https://github.com/googleapis/python-beyondcorp-appgateways/compare/v0.3.0...v0.4.0) (2023-01-10)
 
 
