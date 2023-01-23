@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-essential-contacts/compare/v1.4.0...v1.4.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([a7d37c6](https://github.com/googleapis/python-essential-contacts/commit/a7d37c62b7dca7e06074e32135883aebfa8cb67a))
+
+
+### Documentation
+
+* Add documentation for enums ([a7d37c6](https://github.com/googleapis/python-essential-contacts/commit/a7d37c62b7dca7e06074e32135883aebfa8cb67a))
+
 ## [1.4.0](https://github.com/googleapis/python-essential-contacts/compare/v1.3.0...v1.4.0) (2023-01-10)
 
 
