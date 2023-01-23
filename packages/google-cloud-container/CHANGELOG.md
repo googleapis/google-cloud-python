@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.17.1](https://github.com/googleapis/python-container/compare/v2.17.0...v2.17.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([cc5ebab](https://github.com/googleapis/python-container/commit/cc5ebabb1d584b137c42f45f55e6b803db72bf6d))
+
+
+### Documentation
+
+* Add documentation for enums ([cc5ebab](https://github.com/googleapis/python-container/commit/cc5ebabb1d584b137c42f45f55e6b803db72bf6d))
+
 ## [2.17.0](https://github.com/googleapis/python-container/compare/v2.16.0...v2.17.0) (2023-01-17)
 
 
