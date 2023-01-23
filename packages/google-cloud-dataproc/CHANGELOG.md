@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.3.0](https://github.com/googleapis/python-dataproc/compare/v5.2.0...v5.3.0) (2023-01-23)
+
+
+### Features
+
+* Add SPOT to Preemptibility enum ([8d5e6d8](https://github.com/googleapis/python-dataproc/commit/8d5e6d8b756bffa44227bdf5dd27223e45facd57))
+
+
+### Bug Fixes
+
+* Add context manager return types ([8d5e6d8](https://github.com/googleapis/python-dataproc/commit/8d5e6d8b756bffa44227bdf5dd27223e45facd57))
+
+
+### Documentation
+
+* Add documentation for enums ([8d5e6d8](https://github.com/googleapis/python-dataproc/commit/8d5e6d8b756bffa44227bdf5dd27223e45facd57))
+
 ## [5.2.0](https://github.com/googleapis/python-dataproc/compare/v5.1.0...v5.2.0) (2023-01-10)
 
 
