@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.11.1](https://github.com/googleapis/python-recaptcha-enterprise/compare/v1.11.0...v1.11.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([54613d7](https://github.com/googleapis/python-recaptcha-enterprise/commit/54613d74af6c1cc95cad33465309fc0ef66402b8))
+
+
+### Documentation
+
+* Add documentation for enums ([54613d7](https://github.com/googleapis/python-recaptcha-enterprise/commit/54613d74af6c1cc95cad33465309fc0ef66402b8))
+
 ## [1.11.0](https://github.com/googleapis/python-recaptcha-enterprise/compare/v1.10.0...v1.11.0) (2023-01-10)
 
 
