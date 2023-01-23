@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/python-apigee-connect/compare/v1.7.0...v1.7.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([514bdf3](https://github.com/googleapis/python-apigee-connect/commit/514bdf3795b7bba012236d357155b5d798f60df0))
+
+
+### Documentation
+
+* Add documentation for enums ([514bdf3](https://github.com/googleapis/python-apigee-connect/commit/514bdf3795b7bba012236d357155b5d798f60df0))
+
 ## [1.7.0](https://github.com/googleapis/python-apigee-connect/compare/v1.6.1...v1.7.0) (2023-01-10)
 
 
