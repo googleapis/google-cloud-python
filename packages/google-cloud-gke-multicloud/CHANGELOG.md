@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.1](https://github.com/googleapis/python-gke-multicloud/compare/v0.5.0...v0.5.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([970b8d3](https://github.com/googleapis/python-gke-multicloud/commit/970b8d3a969d936e617d911de276816ec90a278a))
+
+
+### Documentation
+
+* Add documentation for enums ([970b8d3](https://github.com/googleapis/python-gke-multicloud/commit/970b8d3a969d936e617d911de276816ec90a278a))
+
 ## [0.5.0](https://github.com/googleapis/python-gke-multicloud/compare/v0.4.0...v0.5.0) (2023-01-12)
 
 
