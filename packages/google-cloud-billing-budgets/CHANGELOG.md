@@ -1,4 +1,16 @@
 # Changelog
+## [1.9.1](https://github.com/googleapis/python-billingbudgets/compare/v1.9.0...v1.9.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([d71d558](https://github.com/googleapis/python-billingbudgets/commit/d71d5584d252d2804e12d0b951bf0ec8207dde0d))
+
+
+### Documentation
+
+* Add documentation for enums ([d71d558](https://github.com/googleapis/python-billingbudgets/commit/d71d5584d252d2804e12d0b951bf0ec8207dde0d))
+
 ## [1.9.0](https://github.com/googleapis/python-billingbudgets/compare/v1.8.0...v1.9.0) (2023-01-10)
 
 
