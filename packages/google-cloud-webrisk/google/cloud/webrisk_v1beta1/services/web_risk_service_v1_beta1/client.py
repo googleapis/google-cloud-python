@@ -752,7 +752,7 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "WebRiskServiceV1Beta1Client":
         return self
 
     def __exit__(self, type, value, traceback):

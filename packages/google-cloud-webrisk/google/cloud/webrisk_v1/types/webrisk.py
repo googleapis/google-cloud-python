@@ -43,6 +43,20 @@ __protobuf__ = proto.module(
 class ThreatType(proto.Enum):
     r"""The type of threat. This maps directly to the threat list a
     threat may belong to.
+
+    Values:
+        THREAT_TYPE_UNSPECIFIED (0):
+            No entries should match this threat type.
+            This threat type is unused.
+        MALWARE (1):
+            Malware targeting any platform.
+        SOCIAL_ENGINEERING (2):
+            Social engineering targeting any platform.
+        UNWANTED_SOFTWARE (3):
+            Unwanted software targeting any platform.
+        SOCIAL_ENGINEERING_EXTENDED_COVERAGE (4):
+            A list of extended coverage social
+            engineering URIs targeting any platform.
     """
     THREAT_TYPE_UNSPECIFIED = 0
     MALWARE = 1
@@ -52,7 +66,16 @@ class ThreatType(proto.Enum):
 
 
 class CompressionType(proto.Enum):
-    r"""The ways in which threat entry sets can be compressed."""
+    r"""The ways in which threat entry sets can be compressed.
+
+    Values:
+        COMPRESSION_TYPE_UNSPECIFIED (0):
+            Unknown.
+        RAW (1):
+            Raw, uncompressed data.
+        RICE (2):
+            Rice-Golomb encoded data.
+    """
     COMPRESSION_TYPE_UNSPECIFIED = 0
     RAW = 1
     RICE = 2
@@ -168,7 +191,20 @@ class ComputeThreatListDiffResponse(proto.Message):
     """
 
     class ResponseType(proto.Enum):
-        r"""The type of response sent to the client."""
+        r"""The type of response sent to the client.
+
+        Values:
+            RESPONSE_TYPE_UNSPECIFIED (0):
+                Unknown.
+            DIFF (1):
+                Partial updates are applied to the client's
+                existing local database.
+            RESET (2):
+                Full updates resets the client's entire local
+                database. This means that either the client had
+                no state, was seriously out-of-date, or the
+                client is believed to be corrupt.
+        """
         RESPONSE_TYPE_UNSPECIFIED = 0
         DIFF = 1
         RESET = 2

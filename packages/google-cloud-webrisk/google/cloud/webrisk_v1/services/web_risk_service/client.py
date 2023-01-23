@@ -904,7 +904,7 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "WebRiskServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):
