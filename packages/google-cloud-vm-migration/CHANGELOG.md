@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.5.1](https://github.com/googleapis/python-vm-migration/compare/v1.5.0...v1.5.1) (2023-01-23)
+
+
+### Bug Fixes
+
+* Add context manager return types ([a25c621](https://github.com/googleapis/python-vm-migration/commit/a25c621955f2b293a7020b9413f393959d69b344))
+
+
+### Documentation
+
+* Add documentation for enums ([a25c621](https://github.com/googleapis/python-vm-migration/commit/a25c621955f2b293a7020b9413f393959d69b344))
+
 ## [1.5.0](https://github.com/googleapis/python-vm-migration/compare/v1.4.0...v1.5.0) (2023-01-10)
 
 
