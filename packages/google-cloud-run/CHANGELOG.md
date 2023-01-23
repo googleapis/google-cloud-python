@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.7.0](https://github.com/googleapis/python-run/compare/v0.6.0...v0.7.0) (2023-01-20)
+
+
+### Features
+
+* Adding support for encryption_key_revocation_action and encryption_key_shutdown_duration for RevisionTemplate and ExecutionTemplate  ([bdb8baf](https://github.com/googleapis/python-run/commit/bdb8bafc7884624dea93082f1ef764768c9c13b6))
+
+
+### Bug Fixes
+
+* Add context manager return types ([bdb8baf](https://github.com/googleapis/python-run/commit/bdb8bafc7884624dea93082f1ef764768c9c13b6))
+
+
+### Documentation
+
+* Add documentation for enums ([bdb8baf](https://github.com/googleapis/python-run/commit/bdb8bafc7884624dea93082f1ef764768c9c13b6))
+* Documentation improvements, including clarification that v1 labels/annotations are rejected in v2 API ([bdb8baf](https://github.com/googleapis/python-run/commit/bdb8bafc7884624dea93082f1ef764768c9c13b6))
+
 ## [0.6.0](https://github.com/googleapis/python-run/compare/v0.5.0...v0.6.0) (2023-01-10)
 
 
