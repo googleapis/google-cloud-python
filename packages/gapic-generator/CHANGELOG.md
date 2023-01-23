@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.8.2](https://github.com/googleapis/gapic-generator-python/compare/v1.8.1...v1.8.2) (2023-01-23)
+
+
+### Bug Fixes
+
+* Use gapic_version from versioned module ([#1573](https://github.com/googleapis/gapic-generator-python/issues/1573)) ([dfba51a](https://github.com/googleapis/gapic-generator-python/commit/dfba51a587072a6624496d93e8ff2b5e105284f9))
+
 ## [1.8.1](https://github.com/googleapis/gapic-generator-python/compare/v1.8.0...v1.8.1) (2023-01-19)
 
 
