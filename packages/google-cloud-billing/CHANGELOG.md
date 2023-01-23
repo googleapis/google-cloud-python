@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.9.1](https://github.com/googleapis/python-billing/compare/v1.9.0...v1.9.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([7923a86](https://github.com/googleapis/python-billing/commit/7923a861af0a0e671701f3a2d99224e7de7a92a7))
+
+
+### Documentation
+
+* Add documentation for enums ([7923a86](https://github.com/googleapis/python-billing/commit/7923a861af0a0e671701f3a2d99224e7de7a92a7))
+
 ## [1.9.0](https://github.com/googleapis/python-billing/compare/v1.8.0...v1.9.0) (2023-01-10)
 
 
