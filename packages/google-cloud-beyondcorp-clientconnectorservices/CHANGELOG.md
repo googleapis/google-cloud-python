@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.1](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/compare/v0.4.0...v0.4.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([8f3da00](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/commit/8f3da0061a5c1b23bf5a2c0f1d723cf51fb67ba0))
+
+
+### Documentation
+
+* Add documentation for enums ([8f3da00](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/commit/8f3da0061a5c1b23bf5a2c0f1d723cf51fb67ba0))
+
 ## [0.4.0](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/compare/v0.3.0...v0.4.0) (2023-01-10)
 
 
