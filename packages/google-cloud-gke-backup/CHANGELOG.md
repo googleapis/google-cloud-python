@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.1](https://github.com/googleapis/python-gke-backup/compare/v0.4.0...v0.4.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([5ef7c49](https://github.com/googleapis/python-gke-backup/commit/5ef7c4953fdfe4381aed572c7ed4d9cac8d83553))
+
+
+### Documentation
+
+* Add documentation for enums ([5ef7c49](https://github.com/googleapis/python-gke-backup/commit/5ef7c4953fdfe4381aed572c7ed4d9cac8d83553))
+
 ## [0.4.0](https://github.com/googleapis/python-gke-backup/compare/v0.3.0...v0.4.0) (2023-01-10)
 
 
