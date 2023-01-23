@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+## [1.8.1](https://github.com/googleapis/python-datalabeling/compare/v1.8.0...v1.8.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([edecde0](https://github.com/googleapis/python-datalabeling/commit/edecde0ef569831ea613c611be93e265f258f8f8))
+
+
+### Documentation
+
+* Add documentation for enums ([edecde0](https://github.com/googleapis/python-datalabeling/commit/edecde0ef569831ea613c611be93e265f258f8f8))
+
 ## [1.8.0](https://github.com/googleapis/python-datalabeling/compare/v1.7.0...v1.8.0) (2023-01-10)
 
 
