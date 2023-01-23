@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/python-policy-troubleshooter/compare/v1.7.0...v1.7.1) (2023-01-23)
+
+
+### Bug Fixes
+
+* Add context manager return types ([02612d0](https://github.com/googleapis/python-policy-troubleshooter/commit/02612d074b8124102207da9dda4ea1e2245d9518))
+
+
+### Documentation
+
+* Add documentation for enums ([02612d0](https://github.com/googleapis/python-policy-troubleshooter/commit/02612d074b8124102207da9dda4ea1e2245d9518))
+
 ## [1.7.0](https://github.com/googleapis/python-policy-troubleshooter/compare/v1.6.0...v1.7.0) (2023-01-10)
 
 
