@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.9.1](https://github.com/googleapis/python-workflows/compare/v1.9.0...v1.9.1) (2023-01-23)
+
+
+### Bug Fixes
+
+* Add context manager return types ([4424b89](https://github.com/googleapis/python-workflows/commit/4424b89c0af06db8f367a2eafae76939efd729e9))
+
+
+### Documentation
+
+* Add documentation for enums ([4424b89](https://github.com/googleapis/python-workflows/commit/4424b89c0af06db8f367a2eafae76939efd729e9))
+
 ## [1.9.0](https://github.com/googleapis/python-workflows/compare/v1.8.0...v1.9.0) (2023-01-10)
 
 
