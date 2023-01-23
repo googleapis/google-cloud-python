@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.14.1](https://github.com/googleapis/python-kms/compare/v2.14.0...v2.14.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([8137467](https://github.com/googleapis/python-kms/commit/81374671d9cf5b88c35555b089b2abd8d2e613a0))
+
+
+### Documentation
+
+* Add documentation for enums ([8137467](https://github.com/googleapis/python-kms/commit/81374671d9cf5b88c35555b089b2abd8d2e613a0))
+
 ## [2.14.0](https://github.com/googleapis/python-kms/compare/v2.13.0...v2.14.0) (2023-01-10)
 
 
