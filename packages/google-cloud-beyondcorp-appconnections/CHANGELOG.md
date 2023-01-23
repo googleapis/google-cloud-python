@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.1](https://github.com/googleapis/python-beyondcorp-appconnections/compare/v0.4.0...v0.4.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([0058c52](https://github.com/googleapis/python-beyondcorp-appconnections/commit/0058c52a741e7cbe498ba95c332af827c6d9d146))
+
+
+### Documentation
+
+* Add documentation for enums ([0058c52](https://github.com/googleapis/python-beyondcorp-appconnections/commit/0058c52a741e7cbe498ba95c332af827c6d9d146))
+
 ## [0.4.0](https://github.com/googleapis/python-beyondcorp-appconnections/compare/v0.3.0...v0.4.0) (2023-01-10)
 
 
