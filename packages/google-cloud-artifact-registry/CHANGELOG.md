@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-artifact-registry/compare/v1.6.0...v1.6.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([62d61be](https://github.com/googleapis/python-artifact-registry/commit/62d61be47caa52f7d96ccc054010aef6ff43d5bc))
+
+
+### Documentation
+
+* Add documentation for enums ([62d61be](https://github.com/googleapis/python-artifact-registry/commit/62d61be47caa52f7d96ccc054010aef6ff43d5bc))
+
 ## [1.6.0](https://github.com/googleapis/python-artifact-registry/compare/v1.5.0...v1.6.0) (2023-01-10)
 
 
