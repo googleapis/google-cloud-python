@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.10.1](https://github.com/googleapis/python-automl/compare/v2.10.0...v2.10.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([c81ac42](https://github.com/googleapis/python-automl/commit/c81ac42954b261e92996556f2e0a50c9954bb99f))
+
+
+### Documentation
+
+* Add documentation for enums ([c81ac42](https://github.com/googleapis/python-automl/commit/c81ac42954b261e92996556f2e0a50c9954bb99f))
+
 ## [2.10.0](https://github.com/googleapis/python-automl/compare/v2.9.0...v2.10.0) (2023-01-10)
 
 
