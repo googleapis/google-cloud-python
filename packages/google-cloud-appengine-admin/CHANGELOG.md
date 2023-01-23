@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/python-appengine-admin/compare/v1.8.0...v1.8.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([846b2e1](https://github.com/googleapis/python-appengine-admin/commit/846b2e19462cbe1a0b2e201b95eee65deb3dbd5b))
+
+
+### Documentation
+
+* Add documentation for enums ([846b2e1](https://github.com/googleapis/python-appengine-admin/commit/846b2e19462cbe1a0b2e201b95eee65deb3dbd5b))
+
 ## [1.8.0](https://github.com/googleapis/python-appengine-admin/compare/v1.7.1...v1.8.0) (2023-01-10)
 
 
