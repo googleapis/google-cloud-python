@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.11.1](https://github.com/googleapis/python-cloudbuild/compare/v3.11.0...v3.11.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([51b64ba](https://github.com/googleapis/python-cloudbuild/commit/51b64baa1d53e83a1fbe77c6c127c81c0c3fa75e))
+
+
+### Documentation
+
+* Add documentation for enums ([51b64ba](https://github.com/googleapis/python-cloudbuild/commit/51b64baa1d53e83a1fbe77c6c127c81c0c3fa75e))
+
 ## [3.11.0](https://github.com/googleapis/python-cloudbuild/compare/v3.10.0...v3.11.0) (2023-01-10)
 
 
