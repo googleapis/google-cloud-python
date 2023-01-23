@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.13.1](https://github.com/googleapis/python-datastore/compare/v2.13.0...v2.13.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([9cec031](https://github.com/googleapis/python-datastore/commit/9cec031e7da6c97853e13c72f2e434f924e59743))
+
+
+### Documentation
+
+* Add documentation for enums ([9cec031](https://github.com/googleapis/python-datastore/commit/9cec031e7da6c97853e13c72f2e434f924e59743))
+
 ## [2.13.0](https://github.com/googleapis/python-datastore/compare/v2.12.0...v2.13.0) (2023-01-14)
 
 
