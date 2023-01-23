@@ -115,7 +115,22 @@ class Job(proto.Message):
     """
 
     class ProcessingState(proto.Enum):
-        r"""The current state of the job."""
+        r"""The current state of the job.
+
+        Values:
+            PROCESSING_STATE_UNSPECIFIED (0):
+                The processing state is not specified.
+            PENDING (1):
+                The job is enqueued and will be picked up for
+                processing soon.
+            RUNNING (2):
+                The job is being processed.
+            SUCCEEDED (3):
+                The job has been completed successfully.
+            FAILED (4):
+                The job has failed. For additional information, see
+                ``failure_reason`` and ``failure_details``
+        """
         PROCESSING_STATE_UNSPECIFIED = 0
         PENDING = 1
         RUNNING = 2
@@ -536,7 +551,18 @@ class Manifest(proto.Message):
     """
 
     class ManifestType(proto.Enum):
-        r"""The manifest type can be either ``HLS`` or ``DASH``."""
+        r"""The manifest type can be either ``HLS`` or ``DASH``.
+
+        Values:
+            MANIFEST_TYPE_UNSPECIFIED (0):
+                The manifest type is not specified.
+            HLS (1):
+                Create ``HLS`` manifest. The corresponding file extension is
+                ``.m3u8``.
+            DASH (2):
+                Create ``DASH`` manifest. The corresponding file extension
+                is ``.mpd``.
+        """
         MANIFEST_TYPE_UNSPECIFIED = 0
         HLS = 1
         DASH = 2
@@ -723,7 +749,16 @@ class Overlay(proto.Message):
     """
 
     class FadeType(proto.Enum):
-        r"""Fade type for the overlay: ``FADE_IN`` or ``FADE_OUT``."""
+        r"""Fade type for the overlay: ``FADE_IN`` or ``FADE_OUT``.
+
+        Values:
+            FADE_TYPE_UNSPECIFIED (0):
+                The fade type is not specified.
+            FADE_IN (1):
+                Fade the overlay object into view.
+            FADE_OUT (2):
+                Fade the overlay object out of view.
+        """
         FADE_TYPE_UNSPECIFIED = 0
         FADE_IN = 1
         FADE_OUT = 2
