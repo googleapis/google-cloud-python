@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.14.1](https://github.com/googleapis/python-os-config/compare/v1.14.0...v1.14.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([97b46fa](https://github.com/googleapis/python-os-config/commit/97b46fa4d0bb76692202b9645d6489cc5e97b6b8))
+
+
+### Documentation
+
+* Add documentation for enums ([97b46fa](https://github.com/googleapis/python-os-config/commit/97b46fa4d0bb76692202b9645d6489cc5e97b6b8))
+
 ## [1.14.0](https://github.com/googleapis/python-os-config/compare/v1.13.0...v1.14.0) (2023-01-10)
 
 
