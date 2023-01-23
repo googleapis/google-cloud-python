@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/googleapis/python-eventarc-publishing/compare/v0.6.0...v0.6.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([#89](https://github.com/googleapis/python-eventarc-publishing/issues/89)) ([08102eb](https://github.com/googleapis/python-eventarc-publishing/commit/08102eb547a18d8efd055404248d9691e5bba78c))
+
 ## [0.6.0](https://github.com/googleapis/python-eventarc-publishing/compare/v0.5.0...v0.6.0) (2023-01-10)
 
 
