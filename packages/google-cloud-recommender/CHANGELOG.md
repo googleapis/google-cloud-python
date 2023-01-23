@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [2.10.1](https://github.com/googleapis/python-recommender/compare/v2.10.0...v2.10.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([0b364be](https://github.com/googleapis/python-recommender/commit/0b364be25633e3854e7653dda8b18dab330ad218))
+
+
+### Documentation
+
+* Add documentation for enums ([0b364be](https://github.com/googleapis/python-recommender/commit/0b364be25633e3854e7653dda8b18dab330ad218))
+
 ## [2.10.0](https://github.com/googleapis/python-recommender/compare/v2.9.0...v2.10.0) (2023-01-10)
 
 
