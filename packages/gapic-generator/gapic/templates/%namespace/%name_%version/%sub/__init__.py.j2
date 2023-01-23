@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.module_name %}
+{% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
 from {{package_path}} import gapic_version as package_version
 
 __version__ = package_version.__version__

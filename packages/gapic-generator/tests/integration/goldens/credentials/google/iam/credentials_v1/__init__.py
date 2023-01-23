@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.iam.credentials import gapic_version as package_version
+from google.iam.credentials_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
