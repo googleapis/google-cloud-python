@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.12.1](https://github.com/googleapis/python-tasks/compare/v2.12.0...v2.12.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([248ab5b](https://github.com/googleapis/python-tasks/commit/248ab5b10b40c4fc1dbe846dd5788bce696b4dc5))
+
+
+### Documentation
+
+* Add documentation for enums ([248ab5b](https://github.com/googleapis/python-tasks/commit/248ab5b10b40c4fc1dbe846dd5788bce696b4dc5))
+
 ## [2.12.0](https://github.com/googleapis/python-tasks/compare/v2.11.0...v2.12.0) (2023-01-10)
 
 
