@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.11.1](https://github.com/googleapis/python-area120-tables/compare/v0.11.0...v0.11.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([a9d18ca](https://github.com/googleapis/python-area120-tables/commit/a9d18cac29a6607520ba25e6d8ad2ad862f4710c))
+
+
+### Documentation
+
+* Add documentation for enums ([a9d18ca](https://github.com/googleapis/python-area120-tables/commit/a9d18cac29a6607520ba25e6d8ad2ad862f4710c))
+
 ## [0.11.0](https://github.com/googleapis/python-area120-tables/compare/v0.10.1...v0.11.0) (2023-01-10)
 
 
