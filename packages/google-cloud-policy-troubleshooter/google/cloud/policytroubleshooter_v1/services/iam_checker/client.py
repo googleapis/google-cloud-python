@@ -495,7 +495,7 @@ class IamCheckerClient(metaclass=IamCheckerClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "IamCheckerClient":
         return self
 
     def __exit__(self, type, value, traceback):

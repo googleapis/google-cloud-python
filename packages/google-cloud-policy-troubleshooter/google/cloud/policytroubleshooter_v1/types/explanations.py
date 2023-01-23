@@ -32,7 +32,23 @@ __protobuf__ = proto.module(
 
 
 class AccessState(proto.Enum):
-    r"""Whether a member has a permission for a resource."""
+    r"""Whether a member has a permission for a resource.
+
+    Values:
+        ACCESS_STATE_UNSPECIFIED (0):
+            Reserved for future use.
+        GRANTED (1):
+            The member has the permission.
+        NOT_GRANTED (2):
+            The member does not have the permission.
+        UNKNOWN_CONDITIONAL (3):
+            The member has the permission only if a condition expression
+            evaluates to ``true``.
+        UNKNOWN_INFO_DENIED (4):
+            The sender of the request does not have
+            access to all of the policies that Policy
+            Troubleshooter needs to evaluate.
+    """
     ACCESS_STATE_UNSPECIFIED = 0
     GRANTED = 1
     NOT_GRANTED = 2
@@ -43,6 +59,18 @@ class AccessState(proto.Enum):
 class HeuristicRelevance(proto.Enum):
     r"""The extent to which a single data point contributes to an
     overall determination.
+
+    Values:
+        HEURISTIC_RELEVANCE_UNSPECIFIED (0):
+            Reserved for future use.
+        NORMAL (1):
+            The data point has a limited effect on the
+            result. Changing the data point is unlikely to
+            affect the overall determination.
+        HIGH (2):
+            The data point has a strong effect on the
+            result. Changing the data point is likely to
+            affect the overall determination.
     """
     HEURISTIC_RELEVANCE_UNSPECIFIED = 0
     NORMAL = 1
@@ -232,14 +260,49 @@ class BindingExplanation(proto.Message):
     """
 
     class RolePermission(proto.Enum):
-        r"""Whether a role includes a specific permission."""
+        r"""Whether a role includes a specific permission.
+
+        Values:
+            ROLE_PERMISSION_UNSPECIFIED (0):
+                Reserved for future use.
+            ROLE_PERMISSION_INCLUDED (1):
+                The permission is included in the role.
+            ROLE_PERMISSION_NOT_INCLUDED (2):
+                The permission is not included in the role.
+            ROLE_PERMISSION_UNKNOWN_INFO_DENIED (3):
+                The sender of the request is not allowed to
+                access the binding.
+        """
         ROLE_PERMISSION_UNSPECIFIED = 0
         ROLE_PERMISSION_INCLUDED = 1
         ROLE_PERMISSION_NOT_INCLUDED = 2
         ROLE_PERMISSION_UNKNOWN_INFO_DENIED = 3
 
     class Membership(proto.Enum):
-        r"""Whether the binding includes the member."""
+        r"""Whether the binding includes the member.
+
+        Values:
+            MEMBERSHIP_UNSPECIFIED (0):
+                Reserved for future use.
+            MEMBERSHIP_INCLUDED (1):
+                The binding includes the member. The member can be included
+                directly or indirectly. For example:
+
+                -  A member is included directly if that member is listed in
+                   the binding.
+                -  A member is included indirectly if that member is in a
+                   Google group or G Suite domain that is listed in the
+                   binding.
+            MEMBERSHIP_NOT_INCLUDED (2):
+                The binding does not include the member.
+            MEMBERSHIP_UNKNOWN_INFO_DENIED (3):
+                The sender of the request is not allowed to
+                access the binding.
+            MEMBERSHIP_UNKNOWN_UNSUPPORTED (4):
+                The member is an unsupported type. Only
+                Google Accounts and service accounts are
+                supported.
+        """
         MEMBERSHIP_UNSPECIFIED = 0
         MEMBERSHIP_INCLUDED = 1
         MEMBERSHIP_NOT_INCLUDED = 2
