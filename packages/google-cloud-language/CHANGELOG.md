@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## [2.8.1](https://github.com/googleapis/python-language/compare/v2.8.0...v2.8.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([a26c418](https://github.com/googleapis/python-language/commit/a26c418a54cb26825c9c539282ed37cb9d9eac0c))
+
+
+### Documentation
+
+* Add documentation for enums ([a26c418](https://github.com/googleapis/python-language/commit/a26c418a54cb26825c9c539282ed37cb9d9eac0c))
+
 ## [2.8.0](https://github.com/googleapis/python-language/compare/v2.7.0...v2.8.0) (2023-01-10)
 
 
