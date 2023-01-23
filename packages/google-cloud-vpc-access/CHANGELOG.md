@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/python-vpc-access/compare/v1.7.0...v1.7.1) (2023-01-23)
+
+
+### Bug Fixes
+
+* Add context manager return types ([a5c0a5e](https://github.com/googleapis/python-vpc-access/commit/a5c0a5e2ebc367d021f45960b46897eb28b55a04))
+
+
+### Documentation
+
+* Add documentation for enums ([a5c0a5e](https://github.com/googleapis/python-vpc-access/commit/a5c0a5e2ebc367d021f45960b46897eb28b55a04))
+
 ## [1.7.0](https://github.com/googleapis/python-vpc-access/compare/v1.6.0...v1.7.0) (2023-01-10)
 
 
