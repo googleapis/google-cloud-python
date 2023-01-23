@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/python-eventarc/compare/v1.8.0...v1.8.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([2c7b15b](https://github.com/googleapis/python-eventarc/commit/2c7b15b9368dab65cd33fd20011d63df5cf0b032))
+
+
+### Documentation
+
+* Add documentation for enums ([2c7b15b](https://github.com/googleapis/python-eventarc/commit/2c7b15b9368dab65cd33fd20011d63df5cf0b032))
+
 ## [1.8.0](https://github.com/googleapis/python-eventarc/compare/v1.7.0...v1.8.0) (2023-01-10)
 
 
