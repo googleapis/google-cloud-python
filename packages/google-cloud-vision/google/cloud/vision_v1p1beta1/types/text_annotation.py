@@ -82,7 +82,24 @@ class TextAnnotation(proto.Message):
         """
 
         class BreakType(proto.Enum):
-            r"""Enum to denote the type of break found. New line, space etc."""
+            r"""Enum to denote the type of break found. New line, space etc.
+
+            Values:
+                UNKNOWN (0):
+                    Unknown break label type.
+                SPACE (1):
+                    Regular space.
+                SURE_SPACE (2):
+                    Sure space (very wide).
+                EOL_SURE_SPACE (3):
+                    Line-wrapping break.
+                HYPHEN (4):
+                    End-line hyphen that is not present in text; does not
+                    co-occur with ``SPACE``, ``LEADER_SPACE``, or
+                    ``LINE_BREAK``.
+                LINE_BREAK (5):
+                    Line break that ends a paragraph.
+            """
             UNKNOWN = 0
             SPACE = 1
             SURE_SPACE = 2
@@ -206,7 +223,22 @@ class Block(proto.Message):
     """
 
     class BlockType(proto.Enum):
-        r"""Type of a block (text, image etc) as identified by OCR."""
+        r"""Type of a block (text, image etc) as identified by OCR.
+
+        Values:
+            UNKNOWN (0):
+                Unknown block type.
+            TEXT (1):
+                Regular text block.
+            TABLE (2):
+                Table block.
+            PICTURE (3):
+                Image block.
+            RULER (4):
+                Horizontal/vertical line box.
+            BARCODE (5):
+                Barcode block.
+        """
         UNKNOWN = 0
         TEXT = 1
         TABLE = 2

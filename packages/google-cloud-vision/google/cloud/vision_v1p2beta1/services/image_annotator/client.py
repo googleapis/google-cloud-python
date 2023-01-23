@@ -651,7 +651,7 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "ImageAnnotatorClient":
         return self
 
     def __exit__(self, type, value, traceback):

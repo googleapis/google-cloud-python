@@ -2867,7 +2867,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "ProductSearchClient":
         return self
 
     def __exit__(self, type, value, traceback):

@@ -997,6 +997,24 @@ class BatchOperationMetadata(proto.Message):
     class State(proto.Enum):
         r"""Enumerates the possible states that the batch request can be
         in.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Invalid.
+            PROCESSING (1):
+                Request is actively being processed.
+            SUCCESSFUL (2):
+                The request is done and at least one item has
+                been successfully processed.
+            FAILED (3):
+                The request is done and no item has been
+                successfully processed.
+            CANCELLED (4):
+                The request is done after the
+                longrunning.Operations.CancelOperation has been
+                called by the user.  Any records that were
+                processed before the cancel command are output
+                as specified in the request.
         """
         STATE_UNSPECIFIED = 0
         PROCESSING = 1

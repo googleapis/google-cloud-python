@@ -70,6 +70,25 @@ __protobuf__ = proto.module(
 class Likelihood(proto.Enum):
     r"""A bucketized representation of likelihood, which is intended
     to give clients highly stable results across model upgrades.
+
+    Values:
+        UNKNOWN (0):
+            Unknown likelihood.
+        VERY_UNLIKELY (1):
+            It is very unlikely that the image belongs to
+            the specified vertical.
+        UNLIKELY (2):
+            It is unlikely that the image belongs to the
+            specified vertical.
+        POSSIBLE (3):
+            It is possible that the image belongs to the
+            specified vertical.
+        LIKELY (4):
+            It is likely that the image belongs to the
+            specified vertical.
+        VERY_LIKELY (5):
+            It is very likely that the image belongs to
+            the specified vertical.
     """
     UNKNOWN = 0
     VERY_UNLIKELY = 1
@@ -100,7 +119,39 @@ class Feature(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Type of Google Cloud Vision API feature to be extracted."""
+        r"""Type of Google Cloud Vision API feature to be extracted.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unspecified feature type.
+            FACE_DETECTION (1):
+                Run face detection.
+            LANDMARK_DETECTION (2):
+                Run landmark detection.
+            LOGO_DETECTION (3):
+                Run logo detection.
+            LABEL_DETECTION (4):
+                Run label detection.
+            TEXT_DETECTION (5):
+                Run text detection / optical character recognition (OCR).
+                Text detection is optimized for areas of text within a
+                larger image; if the image is a document, use
+                ``DOCUMENT_TEXT_DETECTION`` instead.
+            DOCUMENT_TEXT_DETECTION (11):
+                Run dense text document OCR. Takes precedence when both
+                ``DOCUMENT_TEXT_DETECTION`` and ``TEXT_DETECTION`` are
+                present.
+            SAFE_SEARCH_DETECTION (6):
+                Run Safe Search to detect potentially unsafe
+                or undesirable content.
+            IMAGE_PROPERTIES (7):
+                Compute a set of image properties, such as
+                the image's dominant colors.
+            CROP_HINTS (9):
+                Run crop hints.
+            WEB_DETECTION (10):
+                Run web detection.
+        """
         TYPE_UNSPECIFIED = 0
         FACE_DETECTION = 1
         LANDMARK_DETECTION = 2
@@ -271,6 +322,79 @@ class FaceAnnotation(proto.Message):
             vantage of the viewer of the image without considering mirror
             projections typical of photos. So, ``LEFT_EYE``, typically, is the
             person's right eye.
+
+            Values:
+                UNKNOWN_LANDMARK (0):
+                    Unknown face landmark detected. Should not be
+                    filled.
+                LEFT_EYE (1):
+                    Left eye.
+                RIGHT_EYE (2):
+                    Right eye.
+                LEFT_OF_LEFT_EYEBROW (3):
+                    Left of left eyebrow.
+                RIGHT_OF_LEFT_EYEBROW (4):
+                    Right of left eyebrow.
+                LEFT_OF_RIGHT_EYEBROW (5):
+                    Left of right eyebrow.
+                RIGHT_OF_RIGHT_EYEBROW (6):
+                    Right of right eyebrow.
+                MIDPOINT_BETWEEN_EYES (7):
+                    Midpoint between eyes.
+                NOSE_TIP (8):
+                    Nose tip.
+                UPPER_LIP (9):
+                    Upper lip.
+                LOWER_LIP (10):
+                    Lower lip.
+                MOUTH_LEFT (11):
+                    Mouth left.
+                MOUTH_RIGHT (12):
+                    Mouth right.
+                MOUTH_CENTER (13):
+                    Mouth center.
+                NOSE_BOTTOM_RIGHT (14):
+                    Nose, bottom right.
+                NOSE_BOTTOM_LEFT (15):
+                    Nose, bottom left.
+                NOSE_BOTTOM_CENTER (16):
+                    Nose, bottom center.
+                LEFT_EYE_TOP_BOUNDARY (17):
+                    Left eye, top boundary.
+                LEFT_EYE_RIGHT_CORNER (18):
+                    Left eye, right corner.
+                LEFT_EYE_BOTTOM_BOUNDARY (19):
+                    Left eye, bottom boundary.
+                LEFT_EYE_LEFT_CORNER (20):
+                    Left eye, left corner.
+                RIGHT_EYE_TOP_BOUNDARY (21):
+                    Right eye, top boundary.
+                RIGHT_EYE_RIGHT_CORNER (22):
+                    Right eye, right corner.
+                RIGHT_EYE_BOTTOM_BOUNDARY (23):
+                    Right eye, bottom boundary.
+                RIGHT_EYE_LEFT_CORNER (24):
+                    Right eye, left corner.
+                LEFT_EYEBROW_UPPER_MIDPOINT (25):
+                    Left eyebrow, upper midpoint.
+                RIGHT_EYEBROW_UPPER_MIDPOINT (26):
+                    Right eyebrow, upper midpoint.
+                LEFT_EAR_TRAGION (27):
+                    Left ear tragion.
+                RIGHT_EAR_TRAGION (28):
+                    Right ear tragion.
+                LEFT_EYE_PUPIL (29):
+                    Left eye pupil.
+                RIGHT_EYE_PUPIL (30):
+                    Right eye pupil.
+                FOREHEAD_GLABELLA (31):
+                    Forehead glabella.
+                CHIN_GNATHION (32):
+                    Chin gnathion.
+                CHIN_LEFT_GONION (33):
+                    Chin left gonion.
+                CHIN_RIGHT_GONION (34):
+                    Chin right gonion.
             """
             UNKNOWN_LANDMARK = 0
             LEFT_EYE = 1
@@ -1243,7 +1367,20 @@ class OperationMetadata(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Batch operation states."""
+        r"""Batch operation states.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Invalid.
+            CREATED (1):
+                Request is received.
+            RUNNING (2):
+                Request is actively being processed.
+            DONE (3):
+                The batch processing is done.
+            CANCELLED (4):
+                The batch processing was cancelled.
+        """
         STATE_UNSPECIFIED = 0
         CREATED = 1
         RUNNING = 2
