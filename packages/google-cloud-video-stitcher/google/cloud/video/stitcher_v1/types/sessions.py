@@ -305,6 +305,16 @@ class LiveSession(proto.Message):
         r"""Defines the stitcher behavior in case an ad does not align exactly
         with the ad break boundaries. If not specified, the default is
         COMPLETE_AD.
+
+        Values:
+            STITCHING_POLICY_UNSPECIFIED (0):
+                Stitching policy is not specified.
+            COMPLETE_AD (1):
+                Finishes stitching the current ad before
+                returning to content.
+            CUT_CURRENT (3):
+                Cuts an ad short and returns to content in
+                the middle of the ad.
         """
         STITCHING_POLICY_UNSPECIFIED = 0
         COMPLETE_AD = 1
@@ -390,7 +400,16 @@ class ManifestOptions(proto.Message):
     """
 
     class OrderPolicy(proto.Enum):
-        r"""Defines the ordering policy during manifest generation."""
+        r"""Defines the ordering policy during manifest generation.
+
+        Values:
+            ORDER_POLICY_UNSPECIFIED (0):
+                Ordering policy is not specified.
+            ASCENDING (1):
+                Order by ascending.
+            DESCENDING (2):
+                Order by descending.
+        """
         ORDER_POLICY_UNSPECIFIED = 0
         ASCENDING = 1
         DESCENDING = 2

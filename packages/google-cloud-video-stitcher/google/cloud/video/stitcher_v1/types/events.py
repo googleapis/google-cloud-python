@@ -42,7 +42,60 @@ class Event(proto.Message):
     """
 
     class EventType(proto.Enum):
-        r"""Describes the event that occurred."""
+        r"""Describes the event that occurred.
+
+        Values:
+            EVENT_TYPE_UNSPECIFIED (0):
+                The event type is unspecified.
+            CREATIVE_VIEW (1):
+                First frame of creative ad viewed.
+            START (2):
+                Creative ad started.
+            BREAK_START (3):
+                Start of an ad break.
+            BREAK_END (4):
+                End of an ad break.
+            IMPRESSION (5):
+                Impression.
+            FIRST_QUARTILE (6):
+                First quartile progress.
+            MIDPOINT (7):
+                Midpoint progress.
+            THIRD_QUARTILE (8):
+                Third quartile progress.
+            COMPLETE (9):
+                Ad progress completed.
+            PROGRESS (10):
+                Specific progress event with an offset.
+            MUTE (11):
+                Player muted.
+            UNMUTE (12):
+                Player unmuted.
+            PAUSE (13):
+                Player paused.
+            CLICK (14):
+                Click event.
+            CLICK_THROUGH (15):
+                Click-through event.
+            REWIND (16):
+                Player rewinding.
+            RESUME (17):
+                Player resumed.
+            ERROR (18):
+                Error event.
+            EXPAND (21):
+                Ad expanded to a larger size.
+            COLLAPSE (22):
+                Ad collapsed to a smaller size.
+            CLOSE (24):
+                Non-linear ad closed.
+            CLOSE_LINEAR (25):
+                Linear ad closed.
+            SKIP (26):
+                Ad skipped.
+            ACCEPT_INVITATION (27):
+                Accept invitation event.
+        """
         EVENT_TYPE_UNSPECIFIED = 0
         CREATIVE_VIEW = 1
         START = 2

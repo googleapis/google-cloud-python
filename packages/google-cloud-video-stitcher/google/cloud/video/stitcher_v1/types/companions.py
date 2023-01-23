@@ -45,6 +45,18 @@ class CompanionAds(proto.Message):
     class DisplayRequirement(proto.Enum):
         r"""Indicates how many of the companions should be displayed with
         the ad.
+
+        Values:
+            DISPLAY_REQUIREMENT_UNSPECIFIED (0):
+                Required companions are not specified. The
+                default is ALL.
+            ALL (1):
+                All companions are required to be displayed.
+            ANY (2):
+                At least one of companions needs to be
+                displayed.
+            NONE (3):
+                All companions are optional for display.
         """
         DISPLAY_REQUIREMENT_UNSPECIFIED = 0
         ALL = 1
