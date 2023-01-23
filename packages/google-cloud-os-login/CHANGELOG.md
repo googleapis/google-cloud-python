@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [2.9.1](https://github.com/googleapis/python-oslogin/compare/v2.9.0...v2.9.1) (2023-01-23)
+
+
+### Bug Fixes
+
+* Add context manager return types ([#242](https://github.com/googleapis/python-oslogin/issues/242)) ([0bc1e97](https://github.com/googleapis/python-oslogin/commit/0bc1e97da3be8b466cac01953c450c95eb2aed9a))
+
 ## [2.9.0](https://github.com/googleapis/python-oslogin/compare/v2.8.0...v2.9.0) (2023-01-10)
 
 
