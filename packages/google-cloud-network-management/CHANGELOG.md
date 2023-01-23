@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/python-network-management/compare/v1.7.0...v1.7.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([ba8b58b](https://github.com/googleapis/python-network-management/commit/ba8b58be6dec6e317477bb266ddc07d1b6636a9b))
+
+
+### Documentation
+
+* Add documentation for enums ([ba8b58b](https://github.com/googleapis/python-network-management/commit/ba8b58be6dec6e317477bb266ddc07d1b6636a9b))
+
 ## [1.7.0](https://github.com/googleapis/python-network-management/compare/v1.6.0...v1.7.0) (2023-01-10)
 
 
