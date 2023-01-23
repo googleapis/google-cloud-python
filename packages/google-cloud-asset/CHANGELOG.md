@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.17.1](https://github.com/googleapis/python-asset/compare/v3.17.0...v3.17.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([e5e63a9](https://github.com/googleapis/python-asset/commit/e5e63a9a9894b5c5594d25b57c05e06f41c5d49d))
+
+
+### Documentation
+
+* Add documentation for enums ([e5e63a9](https://github.com/googleapis/python-asset/commit/e5e63a9a9894b5c5594d25b57c05e06f41c5d49d))
+
 ## [3.17.0](https://github.com/googleapis/python-asset/compare/v3.16.0...v3.17.0) (2023-01-14)
 
 
