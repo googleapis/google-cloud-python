@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.1](https://github.com/googleapis/python-bigquery-data-exchange/compare/v0.5.0...v0.5.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([cbd289d](https://github.com/googleapis/python-bigquery-data-exchange/commit/cbd289d84c7b09a5d607b643cd0d09545fd98e81))
+
+
+### Documentation
+
+* Add documentation for enums ([cbd289d](https://github.com/googleapis/python-bigquery-data-exchange/commit/cbd289d84c7b09a5d607b643cd0d09545fd98e81))
+
 ## [0.5.0](https://github.com/googleapis/python-bigquery-data-exchange/compare/v0.4.0...v0.5.0) (2023-01-10)
 
 
