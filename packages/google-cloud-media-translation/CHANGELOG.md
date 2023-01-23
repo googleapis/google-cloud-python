@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.11.1](https://github.com/googleapis/python-media-translation/compare/v0.11.0...v0.11.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([ef48274](https://github.com/googleapis/python-media-translation/commit/ef482742dad1b3a74bbf8a498e88263b577161c1))
+
+
+### Documentation
+
+* Add documentation for enums ([ef48274](https://github.com/googleapis/python-media-translation/commit/ef482742dad1b3a74bbf8a498e88263b577161c1))
+
 ## [0.11.0](https://github.com/googleapis/python-media-translation/compare/v0.10.0...v0.11.0) (2023-01-10)
 
 
