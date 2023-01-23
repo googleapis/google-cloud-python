@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.10.1](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.10.0...v3.10.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([a10a470](https://github.com/googleapis/python-bigquery-datatransfer/commit/a10a470dc53947e35202c0b296fe74e519c0abe2))
+
+
+### Documentation
+
+* Add documentation for enums ([a10a470](https://github.com/googleapis/python-bigquery-datatransfer/commit/a10a470dc53947e35202c0b296fe74e519c0abe2))
+
 ## [3.10.0](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.9.0...v3.10.0) (2023-01-10)
 
 
