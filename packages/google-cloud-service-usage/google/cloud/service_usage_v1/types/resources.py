@@ -39,6 +39,21 @@ __protobuf__ = proto.module(
 class State(proto.Enum):
     r"""Whether or not a service has been enabled for use by a
     consumer.
+
+    Values:
+        STATE_UNSPECIFIED (0):
+            The default value, which indicates that the
+            enabled state of the service is unspecified or
+            not meaningful. Currently, all consumers other
+            than projects (such as folders and
+            organizations) are always in this state.
+        DISABLED (1):
+            The service cannot be used by this consumer.
+            It has either been explicitly disabled, or has
+            never been enabled.
+        ENABLED (2):
+            The service has been explicitly enabled for
+            use by this consumer.
     """
     STATE_UNSPECIFIED = 0
     DISABLED = 1

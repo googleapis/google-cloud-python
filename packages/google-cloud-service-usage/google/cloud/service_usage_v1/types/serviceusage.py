@@ -107,6 +107,18 @@ class DisableServiceRequest(proto.Message):
     class CheckIfServiceHasUsage(proto.Enum):
         r"""Enum to determine if service usage should be checked when
         disabling a service.
+
+        Values:
+            CHECK_IF_SERVICE_HAS_USAGE_UNSPECIFIED (0):
+                When unset, the default behavior is used,
+                which is SKIP.
+            SKIP (1):
+                If set, skip checking service usage when
+                disabling a service.
+            CHECK (2):
+                If set, service usage is checked when disabling the service.
+                If a service, or its dependents, has usage in the last 30
+                days, the request returns a FAILED_PRECONDITION error.
         """
         CHECK_IF_SERVICE_HAS_USAGE_UNSPECIFIED = 0
         SKIP = 1
