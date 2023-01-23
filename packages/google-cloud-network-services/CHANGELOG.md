@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.1](https://github.com/googleapis/python-network-services/compare/v0.4.0...v0.4.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([2e8534f](https://github.com/googleapis/python-network-services/commit/2e8534f860d789225a27497223f0edf17befc5dd))
+
+
+### Documentation
+
+* Add documentation for enums ([2e8534f](https://github.com/googleapis/python-network-services/commit/2e8534f860d789225a27497223f0edf17befc5dd))
+
 ## [0.4.0](https://github.com/googleapis/python-network-services/compare/v0.3.0...v0.4.0) (2023-01-10)
 
 
