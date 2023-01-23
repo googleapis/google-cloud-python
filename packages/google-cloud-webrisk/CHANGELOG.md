@@ -3,6 +3,18 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+## [1.10.1](https://github.com/googleapis/python-webrisk/compare/v1.10.0...v1.10.1) (2023-01-23)
+
+
+### Bug Fixes
+
+* Add context manager return types ([29c79dc](https://github.com/googleapis/python-webrisk/commit/29c79dc6446df1b727601a1697c127c74c792c59))
+
+
+### Documentation
+
+* Add documentation for enums ([29c79dc](https://github.com/googleapis/python-webrisk/commit/29c79dc6446df1b727601a1697c127c74c792c59))
+
 ## [1.10.0](https://github.com/googleapis/python-webrisk/compare/v1.9.0...v1.10.0) (2023-01-10)
 
 
