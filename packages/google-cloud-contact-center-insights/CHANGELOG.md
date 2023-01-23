@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-contact-center-insights/compare/v1.6.0...v1.6.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([a95c535](https://github.com/googleapis/python-contact-center-insights/commit/a95c535ff45e5a564dda10c2e6d8151bf3c3fca3))
+
+
+### Documentation
+
+* Add documentation for enums ([a95c535](https://github.com/googleapis/python-contact-center-insights/commit/a95c535ff45e5a564dda10c2e6d8151bf3c3fca3))
+
 ## [1.6.0](https://github.com/googleapis/python-contact-center-insights/compare/v1.5.0...v1.6.0) (2023-01-10)
 
 
