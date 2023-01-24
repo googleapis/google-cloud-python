@@ -1,2 +1,2 @@
-google-cloud-pubsub==2.13.12
-google-cloud-securitycenter==1.18.1
+google-cloud-pubsub==2.14.0
+google-cloud-securitycenter==1.18.2
