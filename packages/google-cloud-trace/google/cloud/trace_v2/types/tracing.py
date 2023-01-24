@@ -36,8 +36,8 @@ class BatchWriteSpansRequest(proto.Message):
             The format is ``projects/[PROJECT_ID]``.
         spans (MutableSequence[google.cloud.trace_v2.types.Span]):
             Required. A list of new spans. The span names
-            must not match existing spans, or the results
-            are undefined.
+            must not match existing spans, otherwise the
+            results are undefined.
     """
 
     name: str = proto.Field(

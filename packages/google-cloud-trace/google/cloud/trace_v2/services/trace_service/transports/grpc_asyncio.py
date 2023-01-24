@@ -32,12 +32,13 @@ from .grpc import TraceServiceGrpcTransport
 class TraceServiceGrpcAsyncIOTransport(TraceServiceTransport):
     """gRPC AsyncIO backend transport for TraceService.
 
-    This file describes an API for collecting and viewing traces
-    and spans within a trace.  A Trace is a collection of spans
-    corresponding to a single operation or set of operations for an
-    application. A span is an individual timed event which forms a
-    node of the trace tree. A single trace may contain span(s) from
-    multiple services.
+    Service for collecting and viewing traces and spans within a
+    trace.
+    A trace is a collection of spans corresponding to a single
+    operation or a set of operations in an application.
+    A span is an individual timed event which forms a node of the
+    trace tree. A single trace can contain spans from multiple
+    services.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -243,8 +244,8 @@ class TraceServiceGrpcAsyncIOTransport(TraceServiceTransport):
     ) -> Callable[[tracing.BatchWriteSpansRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the batch write spans method over gRPC.
 
-        Sends new spans to new or existing traces. You cannot
-        update existing spans.
+        Batch writes new spans to new or existing traces. You
+        cannot update existing spans.
 
         Returns:
             Callable[[~.BatchWriteSpansRequest],

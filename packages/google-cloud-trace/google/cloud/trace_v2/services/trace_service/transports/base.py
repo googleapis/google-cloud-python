@@ -128,6 +128,16 @@ class TraceServiceTransport(abc.ABC):
         self._wrapped_methods = {
             self.batch_write_spans: gapic_v1.method.wrap_method(
                 self.batch_write_spans,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=30.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
                 default_timeout=120.0,
                 client_info=client_info,
             ),

@@ -36,37 +36,36 @@ class Span(proto.Message):
     r"""A span represents a single operation within a trace. Spans
     can be nested to form a trace tree. Often, a trace contains a
     root span that describes the end-to-end latency, and one or more
-    subspans for its sub-operations. A trace can also contain
-    multiple root spans, or none at all. Spans do not need to be
-    contiguous&mdash;there may be gaps or overlaps between spans in
-    a trace.
+    subspans for its sub-operations.
+
+    A trace can also contain multiple root spans, or none at all.
+    Spans do not need to be contiguous&mdash;there might be gaps or
+    overlaps between spans in a trace.
 
     Attributes:
         name (str):
             Required. The resource name of the span in the following
             format:
 
-            ::
+            -  ``projects/[PROJECT_ID]/traces/[TRACE_ID]/spans/[SPAN_ID]``
 
-                projects/[PROJECT_ID]/traces/[TRACE_ID]/spans/[SPAN_ID]
-
-            [TRACE_ID] is a unique identifier for a trace within a
+            ``[TRACE_ID]`` is a unique identifier for a trace within a
             project; it is a 32-character hexadecimal encoding of a
-            16-byte array.
+            16-byte array. It should not be zero.
 
-            [SPAN_ID] is a unique identifier for a span within a trace;
-            it is a 16-character hexadecimal encoding of an 8-byte
-            array.
+            ``[SPAN_ID]`` is a unique identifier for a span within a
+            trace; it is a 16-character hexadecimal encoding of an
+            8-byte array. It should not be zero. .
         span_id (str):
-            Required. The [SPAN_ID] portion of the span's resource name.
+            Required. The ``[SPAN_ID]`` portion of the span's resource
+            name.
         parent_span_id (str):
-            The [SPAN_ID] of this span's parent span. If this is a root
-            span, then this field must be empty.
+            The ``[SPAN_ID]`` of this span's parent span. If this is a
+            root span, then this field must be empty.
         display_name (google.cloud.trace_v2.types.TruncatableString):
             Required. A description of the span's
-            operation (up to 128 bytes). Stackdriver Trace
-            displays the description in the Google Cloud
-            Platform Console.
+            operation (up to 128 bytes). Cloud Trace
+            displays the description in the Cloud console.
             For example, the display name can be a qualified
             method name or a file name and a line number
             where the operation is called. A best practice
@@ -103,9 +102,9 @@ class Span(proto.Message):
         same_process_as_parent_span (google.protobuf.wrappers_pb2.BoolValue):
             Optional. Set this parameter to indicate
             whether this span is in the same process as its
-            parent. If you do not set this parameter,
-            Stackdriver Trace is unable to take advantage of
-            this helpful information.
+            parent. If you do not set this parameter, Trace
+            is unable to take advantage of this helpful
+            information.
         child_span_count (google.protobuf.wrappers_pb2.Int32Value):
             Optional. The number of child spans that were
             generated while this span was active. If set,
@@ -160,13 +159,13 @@ class Span(proto.Message):
         CONSUMER = 5
 
     class Attributes(proto.Message):
-        r"""A set of attributes, each in the format ``[KEY]:[VALUE]``.
+        r"""A set of attributes as key-value pairs.
 
         Attributes:
             attribute_map (MutableMapping[str, google.cloud.trace_v2.types.AttributeValue]):
-                The set of attributes. Each attribute's key can be up to 128
+                A set of attributes. Each attribute's key can be up to 128
                 bytes long. The value can be a string up to 256 bytes, a
-                signed 64-bit integer, or the Boolean values ``true`` and
+                signed 64-bit integer, or the boolean values ``true`` or
                 ``false``. For example:
 
                 ::
@@ -250,17 +249,16 @@ class Span(proto.Message):
                     Type of MessageEvent. Indicates whether the
                     message was sent or received.
                 id (int):
-                    An identifier for the MessageEvent's message
-                    that can be used to match SENT and RECEIVED
-                    MessageEvents. It is recommended to be unique
-                    within a Span.
+                    An identifier for the MessageEvent's message that can be
+                    used to match ``SENT`` and ``RECEIVED`` MessageEvents.
                 uncompressed_size_bytes (int):
                     The number of uncompressed bytes sent or
                     received.
                 compressed_size_bytes (int):
                     The number of compressed bytes sent or
-                    received. If missing assumed to be the same size
-                    as uncompressed.
+                    received. If missing, the compressed size is
+                    assumed to be the same size as the uncompressed
+                    size.
             """
 
             class Type(proto.Enum):
@@ -355,15 +353,15 @@ class Span(proto.Message):
 
         Attributes:
             trace_id (str):
-                The [TRACE_ID] for a trace within a project.
+                The ``[TRACE_ID]`` for a trace within a project.
             span_id (str):
-                The [SPAN_ID] for a span within a trace.
+                The ``[SPAN_ID]`` for a span within a trace.
             type (google.cloud.trace_v2.types.Span.Link.Type):
                 The relationship of the current span relative
                 to the linked span.
             attributes (google.cloud.trace_v2.types.Span.Attributes):
-                A set of attributes on the link. You have
-                have up to  32 attributes per link.
+                A set of attributes on the link. Up to 32
+                attributes can be specified per link.
         """
 
         class Type(proto.Enum):
@@ -496,7 +494,7 @@ class Span(proto.Message):
 
 
 class AttributeValue(proto.Message):
-    r"""The allowed types for [VALUE] in a ``[KEY]:[VALUE]`` attribute.
+    r"""The allowed types for ``[VALUE]`` in a ``[KEY]:[VALUE]`` attribute.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -567,7 +565,8 @@ class StackTrace(proto.Message):
                 in this frame (up to 1024 bytes).
             original_function_name (google.cloud.trace_v2.types.TruncatableString):
                 An un-mangled function name, if ``function_name`` is
-                `mangled <http://www.avabodh.com/cxxin/namemangling.html>`__.
+                mangled. To get information about name mangling, run `this
+                search <https://www.google.com/search?q=cxx+name+mangling>`__.
                 The name can be fully-qualified (up to 1024 bytes).
             file_name (google.cloud.trace_v2.types.TruncatableString):
                 The name of the source file where the

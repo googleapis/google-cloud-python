@@ -92,12 +92,13 @@ class TraceServiceClientMeta(type):
 
 
 class TraceServiceClient(metaclass=TraceServiceClientMeta):
-    """This file describes an API for collecting and viewing traces
-    and spans within a trace.  A Trace is a collection of spans
-    corresponding to a single operation or set of operations for an
-    application. A span is an individual timed event which forms a
-    node of the trace tree. A single trace may contain span(s) from
-    multiple services.
+    """Service for collecting and viewing traces and spans within a
+    trace.
+    A trace is a collection of spans corresponding to a single
+    operation or a set of operations in an application.
+    A span is an individual timed event which forms a node of the
+    trace tree. A single trace can contain spans from multiple
+    services.
     """
 
     @staticmethod
@@ -458,8 +459,8 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Sends new spans to new or existing traces. You cannot
-        update existing spans.
+        r"""Batch writes new spans to new or existing traces. You
+        cannot update existing spans.
 
         .. code-block:: python
 
@@ -503,7 +504,8 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
             spans (MutableSequence[google.cloud.trace_v2.types.Span]):
                 Required. A list of new spans. The
                 span names must not match existing
-                spans, or the results are undefined.
+                spans, otherwise the results are
+                undefined.
 
                 This corresponds to the ``spans`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -598,10 +600,11 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
                 within a trace. Spans can be nested to form a trace
                 tree. Often, a trace contains a root span that describes
                 the end-to-end latency, and one or more subspans for its
-                sub-operations. A trace can also contain multiple root
-                spans, or none at all. Spans do not need to be
-                contiguous&mdash;there may be gaps or overlaps between
-                spans in a trace.
+                sub-operations.
+
+                A trace can also contain multiple root spans, or none at
+                all. Spans do not need to be contiguous&mdash;there
+                might be gaps or overlaps between spans in a trace.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -615,11 +618,13 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
                 form a trace tree. Often, a trace
                 contains a root span that describes the
                 end-to-end latency, and one or more
-                subspans for its sub-operations. A trace
-                can also contain multiple root spans, or
-                none at all. Spans do not need to be
-                contiguous&mdash;there may be gaps or
-                overlaps between spans in a trace.
+                subspans for its sub-operations.
+
+                A trace can also contain multiple root
+                spans, or none at all. Spans do not need
+                to be contiguous&mdash;there might be
+                gaps or overlaps between spans in a
+                trace.
 
         """
         # Create or coerce a protobuf request object.
