@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.5.0](https://github.com/googleapis/python-logging/compare/v3.4.0...v3.5.0) (2023-01-24)
+
+
+### Features
+
+* Add support for Python 3.11 ([412d481](https://github.com/googleapis/python-logging/commit/412d481701a62dcdeaa728414dbc82a6edb72c31))
+
+
+### Bug Fixes
+
+* Add context manager return types ([e2278c1](https://github.com/googleapis/python-logging/commit/e2278c11fba3d489efad1d42d09d5f05783f2a46))
+* Instrumentation entries should not contain user labels ([#703](https://github.com/googleapis/python-logging/issues/703)) ([e05d132](https://github.com/googleapis/python-logging/commit/e05d132437739e61983bbda4742d5f4587eecdf2))
+* Require proto-plus 1.22.2 for Python 3.11 ([412d481](https://github.com/googleapis/python-logging/commit/412d481701a62dcdeaa728414dbc82a6edb72c31))
+* Send StructuredLogHandler instrumentation log using an explicit logger ([#705](https://github.com/googleapis/python-logging/issues/705)) ([ac6a2c6](https://github.com/googleapis/python-logging/commit/ac6a2c6742b9a620599fa0f4707badf138689645))
+
+
+### Documentation
+
+* Add documentation for enums ([e2278c1](https://github.com/googleapis/python-logging/commit/e2278c11fba3d489efad1d42d09d5f05783f2a46))
+
 ## [3.4.0](https://github.com/googleapis/python-logging/compare/v3.3.1...v3.4.0) (2022-12-15)
 
 
