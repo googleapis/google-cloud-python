@@ -81,19 +81,20 @@ def _get_storage_client():
     return storage.Client(client_info=info)
 
 
-def _get_bytes(output_bucket: str, output_prefix: str) -> List[bytes]:
+def _get_bytes(gcs_bucket_name: str, gcs_prefix: str) -> List[bytes]:
     r"""Returns the list of bytes of json files on Cloud Storage.
 
-    If the filepaths are gs://abc/def/gh/{1,2,3}.json, then output_bucket should be "abc",
-    and output_prefix should be "def/gh".
-
     Args:
-        output_bucket (str):
-            Required. The name of the output_bucket.
+        gcs_bucket_name (str):
+            Required. The name of the gcs bucket.
 
-        output_prefix (str):
-            Required. The prefix of the folder where files are excluding the bucket name.
+            Format: `gs://{bucket}/{optional_folder}/{target_folder}/`
+                    where gcs_bucket_name=`{bucket}`.
+        gcs_prefix (str):
+            Required. The prefix of the json files in the target_folder
 
+            Format: `gs://{bucket}/{optional_folder}/{target_folder}/`
+                    where gcs_prefix=`{optional_folder}/{target_folder}/`.
     Returns:
         List[bytes]:
             A list of bytes.
@@ -102,7 +103,7 @@ def _get_bytes(output_bucket: str, output_prefix: str) -> List[bytes]:
     result = []
 
     storage_client = _get_storage_client()
-    blob_list = storage_client.list_blobs(output_bucket, prefix=output_prefix)
+    blob_list = storage_client.list_blobs(gcs_bucket_name, prefix=gcs_prefix)
 
     for blob in blob_list:
         if blob.name.endswith(".json"):
@@ -112,15 +113,20 @@ def _get_bytes(output_bucket: str, output_prefix: str) -> List[bytes]:
     return result
 
 
-def _get_shards(gcs_prefix: str) -> List[documentai.Document]:
+def _get_shards(gcs_bucket_name: str, gcs_prefix: str) -> List[documentai.Document]:
     r"""Returns the list of documentai.Documents with the given gcs_prefix.
 
-    If the filepaths are gs://abc/def/gh/{1,2,3}.json, then gcs_prefix should be "gs://abc/def/gh".
-
     Args:
-        gcs_prefix (str):
-            Required. The gcs path to a single processed document.
+        gcs_bucket_name (str):
+            Required. The name of the gcs bucket.
 
+            Format: `gs://{bucket}/{optional_folder}/{target_folder}/`
+                    where gcs_bucket_name=`{bucket}`.
+        gcs_prefix (str):
+            Required. The prefix of the json files in the target_folder.
+
+            Format: `gs://{bucket}/{optional_folder}/{target_folder}/`
+                    where gcs_prefix=`{optional_folder}/{target_folder}/`.
     Returns:
         List[google.cloud.documentai.Document]:
             A list of documentai.Documents.
@@ -128,19 +134,12 @@ def _get_shards(gcs_prefix: str) -> List[documentai.Document]:
     """
     shards = []
 
-    match = re.match(r"gs://(.*?)/(.*)", gcs_prefix)
-
-    if match is None:
-        raise ValueError("gcs_prefix does not match accepted format")
-
-    output_bucket, output_prefix = match.groups()
-
-    file_check = re.match(r"(.*[.].*$)", output_prefix)
+    file_check = re.match(r"(.*[.].*$)", gcs_prefix)
 
     if file_check is not None:
         raise ValueError("gcs_prefix cannot contain file types")
 
-    byte_array = _get_bytes(output_bucket, output_prefix)
+    byte_array = _get_bytes(gcs_bucket_name, gcs_prefix)
 
     for byte in byte_array:
         shards.append(documentai.Document.from_json(byte))
@@ -148,16 +147,20 @@ def _get_shards(gcs_prefix: str) -> List[documentai.Document]:
     return shards
 
 
-def print_gcs_document_tree(gcs_prefix: str) -> None:
+def print_gcs_document_tree(gcs_bucket_name: str, gcs_prefix: str) -> None:
     r"""Prints a tree of filenames in gcs_prefix location.
 
     Args:
+        gcs_bucket_name (str):
+            Required. The name of the gcs bucket.
+
+            Format: `gs://{bucket}/{optional_folder}/{target_folder}/`
+                    where gcs_bucket_name=`{bucket}`.
         gcs_prefix (str):
-            Required. The gcs path to the folder containing all processed documents.
+            Required. The prefix of the json files in the target_folder.
 
-            Format: `gs://{bucket}/{optional_folder}/{operation_id}`
-                    where `{operation-id}` is the operation-id given from BatchProcessDocument.
-
+            Format: `gs://{bucket}/{optional_folder}/{target_folder}/`
+                    where gcs_prefix=`{optional_folder}/{target_folder}/`.
     Returns:
         None.
 
@@ -165,20 +168,13 @@ def print_gcs_document_tree(gcs_prefix: str) -> None:
     display_filename_prefix_middle = "├──"
     display_filename_prefix_last = "└──"
 
-    match = re.match(r"gs://(.*?)/(.*)", gcs_prefix)
-
-    if match is None:
-        raise ValueError("gcs_prefix does not match accepted format")
-
-    output_bucket, output_prefix = match.groups()
-
-    file_check = re.match(r"(.*[.].*$)", output_prefix)
+    file_check = re.match(r"(.*[.].*$)", gcs_prefix)
 
     if file_check is not None:
         raise ValueError("gcs_prefix cannot contain file types")
 
     storage_client = _get_storage_client()
-    blob_list = storage_client.list_blobs(output_bucket, prefix=output_prefix)
+    blob_list = storage_client.list_blobs(gcs_bucket_name, prefix=gcs_prefix)
 
     path_list = {}
 
@@ -223,12 +219,18 @@ class Document:
         shards: (List[google.cloud.documentai.Document]):
             The list of documentai.Document shards of the same Document.  Each shard
             consists of a number of pages in the Document.
-        gcs_prefix (Optional[str]):
-            The gcs path to a single processed document.
+        gcs_bucket_name (Optional[str]):
+            Optional. The name of the gcs bucket.
 
-            Format: `gs://{bucket}/{optional_folder}/{operation_id}/{folder_id}`
-                    where `{operation_id}` is the operation-id given from BatchProcessDocument
-                    and `{folder_id}` is the number corresponding to the target document.
+            Format: `gs://{bucket}/{optional_folder}/{target_folder}/`
+                    where gcs_bucket_name=`{bucket}`.
+        gcs_prefix (Optional[str]):
+            Optional. The prefix of the json files in the target_folder.
+
+            Format: `gs://{bucket}/{optional_folder}/{target_folder}/`
+                    where gcs_prefix=`{optional_folder}/{target_folder}/`.
+
+            For more information please take a look at https://cloud.google.com/storage/docs/json_api/v1/objects/list
         pages: (List[Page]):
             The list of Pages in the Document.
         entities: (List[Entity]):
@@ -236,6 +238,7 @@ class Document:
     """
 
     shards: List[documentai.Document] = dataclasses.field(repr=False)
+    gcs_bucket_name: Optional[str] = dataclasses.field(default=None, repr=False)
     gcs_prefix: Optional[str] = dataclasses.field(default=None, repr=False)
 
     pages: List[Page] = dataclasses.field(init=False, repr=False)
@@ -247,12 +250,31 @@ class Document:
 
     @classmethod
     def from_documentai_document(cls, documentai_document: documentai.Document):
-        return Document(shards=[documentai_document])
+        return cls(shards=[documentai_document])
 
     @classmethod
-    def from_gcs_prefix(cls, gcs_prefix: str):
-        shards = _get_shards(gcs_prefix=gcs_prefix)
-        return Document(shards=shards, gcs_prefix=gcs_prefix)
+    def from_gcs(cls, gcs_bucket_name: str, gcs_prefix: str):
+        r"""Loads Document from gcs.
+
+        Args:
+            gcs_bucket_name (str):
+                Required. The gcs bucket.
+
+                Format: Given `gs://{bucket_name}/{optional_folder}/{operation_id}/`
+                        gcs_bucket_name="{bucket_name}".
+            gcs_prefix (str):
+                Required. The prefix to the location of the target folder.
+
+                Format: Given `gs://{bucket_name}/{optional_folder}/{target_folder}/`
+                        gcs_prefix="{optional_folder}/{target_folder}".
+        Returns:
+            Document:
+                A document from gcs.
+        """
+        shards = _get_shards(gcs_bucket_name=gcs_bucket_name, gcs_prefix=gcs_prefix)
+        return cls(
+            shards=shards, gcs_prefix=gcs_prefix, gcs_bucket_name=gcs_bucket_name
+        )
 
     def search_pages(
         self, target_string: Optional[str] = None, pattern: Optional[str] = None
