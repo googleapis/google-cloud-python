@@ -509,7 +509,7 @@ class ParticipantsAsyncClient:
         Returns:
             google.cloud.dialogflow_v2beta1.services.participants.pagers.ListParticipantsAsyncPager:
                 The response message for
-                [Participants.ListParticipants][google.cloud.dialogflow.v2beta1.Participants.ListParticipants].
+                   [Participants.ListParticipants][google.cloud.dialogflow.v2beta1.Participants.ListParticipants].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -762,7 +762,7 @@ class ParticipantsAsyncClient:
         Returns:
             google.cloud.dialogflow_v2beta1.types.AnalyzeContentResponse:
                 The response message for
-                [Participants.AnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.AnalyzeContent].
+                   [Participants.AnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.AnalyzeContent].
 
         """
         # Create or coerce a protobuf request object.
@@ -894,6 +894,7 @@ class ParticipantsAsyncClient:
                 client to the
                 [Participants.StreamingAnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.StreamingAnalyzeContent]
                 method.
+
                 Multiple request messages should be sent in order:
 
                 1.  The first message must contain
@@ -901,21 +902,21 @@ class ParticipantsAsyncClient:
                 [config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.config]
                 and optionally
                 [query_params][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.query_params].
-                If you want     to receive an audio response, it should
-                also contain
+                If you want to receive an audio response, it should also
+                contain
                 [reply_audio_config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.reply_audio_config].
                 The message must not contain
                 [input][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.input].
                 2.  If
                 [config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.config]
-                in the first message     was set to
+                in the first message
+                    was set to
                 [audio_config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.audio_config],
                 all subsequent messages must contain
                 [input_audio][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.input_audio]
-                to continue     with Speech recognition.
-                    If you decide to rather analyze text input after you
-                already started     Speech recognition, please send a
-                message with
+                to continue with Speech recognition. If you decide to
+                rather analyze text     input after you already started
+                Speech recognition, please send a message     with
                 [StreamingAnalyzeContentRequest.input_text][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.input_text].
                     However, note that:
 
@@ -925,9 +926,10 @@ class ParticipantsAsyncClient:
 
                  3. If
                 [StreamingAnalyzeContentRequest.config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.config]
-                in the first message was set    to
+                in the first message was set
+                   to
                 [StreamingAnalyzeContentRequest.text_config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.text_config],
-                then the second message    must contain only
+                then the second message must contain only
                 [input_text][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.input_text].
                 Moreover, you must not send more than two messages.
                  After you sent all input, you must half-close or abort
@@ -1054,7 +1056,7 @@ class ParticipantsAsyncClient:
         Returns:
             google.cloud.dialogflow_v2beta1.types.SuggestArticlesResponse:
                 The response message for
-                [Participants.SuggestArticles][google.cloud.dialogflow.v2beta1.Participants.SuggestArticles].
+                   [Participants.SuggestArticles][google.cloud.dialogflow.v2beta1.Participants.SuggestArticles].
 
         """
         # Create or coerce a protobuf request object.
@@ -1158,7 +1160,7 @@ class ParticipantsAsyncClient:
         Returns:
             google.cloud.dialogflow_v2beta1.types.SuggestFaqAnswersResponse:
                 The request message for
-                [Participants.SuggestFaqAnswers][google.cloud.dialogflow.v2beta1.Participants.SuggestFaqAnswers].
+                   [Participants.SuggestFaqAnswers][google.cloud.dialogflow.v2beta1.Participants.SuggestFaqAnswers].
 
         """
         # Create or coerce a protobuf request object.
@@ -1262,7 +1264,7 @@ class ParticipantsAsyncClient:
         Returns:
             google.cloud.dialogflow_v2beta1.types.SuggestSmartRepliesResponse:
                 The response message for
-                [Participants.SuggestSmartReplies][google.cloud.dialogflow.v2beta1.Participants.SuggestSmartReplies].
+                   [Participants.SuggestSmartReplies][google.cloud.dialogflow.v2beta1.Participants.SuggestSmartReplies].
 
         """
         # Create or coerce a protobuf request object.
@@ -1375,7 +1377,7 @@ class ParticipantsAsyncClient:
         Returns:
             google.cloud.dialogflow_v2beta1.services.participants.pagers.ListSuggestionsAsyncPager:
                 The response message for
-                [Participants.ListSuggestions][google.cloud.dialogflow.v2beta1.Participants.ListSuggestions].
+                   [Participants.ListSuggestions][google.cloud.dialogflow.v2beta1.Participants.ListSuggestions].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1484,7 +1486,7 @@ class ParticipantsAsyncClient:
         Returns:
             google.cloud.dialogflow_v2beta1.types.CompileSuggestionResponse:
                 The response message for
-                [Participants.CompileSuggestion][google.cloud.dialogflow.v2beta1.Participants.CompileSuggestion].
+                   [Participants.CompileSuggestion][google.cloud.dialogflow.v2beta1.Participants.CompileSuggestion].
 
         """
         warnings.warn(

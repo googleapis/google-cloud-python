@@ -600,7 +600,7 @@ class AgentsAsyncClient:
         Returns:
             google.cloud.dialogflow_v2beta1.services.agents.pagers.SearchAgentsAsyncPager:
                 The response message for
-                [Agents.SearchAgents][google.cloud.dialogflow.v2beta1.Agents.SearchAgents].
+                   [Agents.SearchAgents][google.cloud.dialogflow.v2beta1.Agents.SearchAgents].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -869,10 +869,8 @@ class AgentsAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflow_v2beta1.types.ExportAgentResponse`
-                The response message for
-                [Agents.ExportAgent][google.cloud.dialogflow.v2beta1.Agents.ExportAgent].
+                The result type for the operation will be :class:`google.cloud.dialogflow_v2beta1.types.ExportAgentResponse` The response message for
+                   [Agents.ExportAgent][google.cloud.dialogflow.v2beta1.Agents.ExportAgent].
 
         """
         # Create or coerce a protobuf request object.

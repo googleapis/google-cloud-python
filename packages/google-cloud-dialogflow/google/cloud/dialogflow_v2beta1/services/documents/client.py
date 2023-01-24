@@ -512,7 +512,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         Returns:
             google.cloud.dialogflow_v2beta1.services.documents.pagers.ListDocumentsPager:
                 Response message for
-                [Documents.ListDocuments][google.cloud.dialogflow.v2beta1.Documents.ListDocuments].
+                   [Documents.ListDocuments][google.cloud.dialogflow.v2beta1.Documents.ListDocuments].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -629,7 +629,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         Returns:
             google.cloud.dialogflow_v2beta1.types.Document:
                 A knowledge document to be used by a
-                [KnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBase].
+                   [KnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBase].
 
                    For more information, see the [knowledge base
                    guide](\ https://cloud.google.com/dialogflow/docs/how/knowledge-bases).
@@ -770,10 +770,8 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflow_v2beta1.types.Document`
-                A knowledge document to be used by a
-                [KnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBase].
+                The result type for the operation will be :class:`google.cloud.dialogflow_v2beta1.types.Document` A knowledge document to be used by a
+                   [KnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBase].
 
                    For more information, see the [knowledge base
                    guide](\ https://cloud.google.com/dialogflow/docs/how/knowledge-bases).
@@ -910,10 +908,8 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflow_v2beta1.types.ImportDocumentsResponse`
-                Response message for
-                [Documents.ImportDocuments][google.cloud.dialogflow.v2beta1.Documents.ImportDocuments].
+                The result type for the operation will be :class:`google.cloud.dialogflow_v2beta1.types.ImportDocumentsResponse` Response message for
+                   [Documents.ImportDocuments][google.cloud.dialogflow.v2beta1.Documents.ImportDocuments].
 
         """
         # Create or coerce a protobuf request object.
@@ -1178,10 +1174,8 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflow_v2beta1.types.Document`
-                A knowledge document to be used by a
-                [KnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBase].
+                The result type for the operation will be :class:`google.cloud.dialogflow_v2beta1.types.Document` A knowledge document to be used by a
+                   [KnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBase].
 
                    For more information, see the [knowledge base
                    guide](\ https://cloud.google.com/dialogflow/docs/how/knowledge-bases).
@@ -1338,10 +1332,8 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflow_v2beta1.types.Document`
-                A knowledge document to be used by a
-                [KnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBase].
+                The result type for the operation will be :class:`google.cloud.dialogflow_v2beta1.types.Document` A knowledge document to be used by a
+                   [KnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBase].
 
                    For more information, see the [knowledge base
                    guide](\ https://cloud.google.com/dialogflow/docs/how/knowledge-bases).

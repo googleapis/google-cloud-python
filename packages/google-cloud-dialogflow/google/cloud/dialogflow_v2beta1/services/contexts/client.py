@@ -516,7 +516,7 @@ class ContextsClient(metaclass=ContextsClientMeta):
         Returns:
             google.cloud.dialogflow_v2beta1.services.contexts.pagers.ListContextsPager:
                 The response message for
-                [Contexts.ListContexts][google.cloud.dialogflow.v2beta1.Contexts.ListContexts].
+                   [Contexts.ListContexts][google.cloud.dialogflow.v2beta1.Contexts.ListContexts].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

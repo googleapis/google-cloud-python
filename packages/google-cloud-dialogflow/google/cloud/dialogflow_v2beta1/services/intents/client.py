@@ -547,7 +547,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
         Returns:
             google.cloud.dialogflow_v2beta1.services.intents.pagers.ListIntentsPager:
                 The response message for
-                [Intents.ListIntents][google.cloud.dialogflow.v2beta1.Intents.ListIntents].
+                   [Intents.ListIntents][google.cloud.dialogflow.v2beta1.Intents.ListIntents].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1217,10 +1217,8 @@ class IntentsClient(metaclass=IntentsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.dialogflow_v2beta1.types.BatchUpdateIntentsResponse`
-                The response message for
-                [Intents.BatchUpdateIntents][google.cloud.dialogflow.v2beta1.Intents.BatchUpdateIntents].
+                The result type for the operation will be :class:`google.cloud.dialogflow_v2beta1.types.BatchUpdateIntentsResponse` The response message for
+                   [Intents.BatchUpdateIntents][google.cloud.dialogflow.v2beta1.Intents.BatchUpdateIntents].
 
         """
         # Create or coerce a protobuf request object.

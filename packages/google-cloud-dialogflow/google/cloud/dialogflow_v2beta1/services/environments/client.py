@@ -538,7 +538,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         Returns:
             google.cloud.dialogflow_v2beta1.services.environments.pagers.ListEnvironmentsPager:
                 The response message for
-                [Environments.ListEnvironments][google.cloud.dialogflow.v2beta1.Environments.ListEnvironments].
+                   [Environments.ListEnvironments][google.cloud.dialogflow.v2beta1.Environments.ListEnvironments].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1028,7 +1028,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         Returns:
             google.cloud.dialogflow_v2beta1.services.environments.pagers.GetEnvironmentHistoryPager:
                 The response message for
-                [Environments.GetEnvironmentHistory][google.cloud.dialogflow.v2beta1.Environments.GetEnvironmentHistory].
+                   [Environments.GetEnvironmentHistory][google.cloud.dialogflow.v2beta1.Environments.GetEnvironmentHistory].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

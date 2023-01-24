@@ -507,7 +507,7 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         Returns:
             google.cloud.dialogflow_v2beta1.services.knowledge_bases.pagers.ListKnowledgeBasesPager:
                 Response message for
-                [KnowledgeBases.ListKnowledgeBases][google.cloud.dialogflow.v2beta1.KnowledgeBases.ListKnowledgeBases].
+                   [KnowledgeBases.ListKnowledgeBases][google.cloud.dialogflow.v2beta1.KnowledgeBases.ListKnowledgeBases].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
