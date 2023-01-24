@@ -377,9 +377,13 @@ class ExportAgentRequest(proto.Message):
                 Unspecified format.
             BLOB (1):
                 Agent content will be exported as raw bytes.
+            JSON_PACKAGE (4):
+                Agent content will be exported in JSON
+                Package format.
         """
         DATA_FORMAT_UNSPECIFIED = 0
         BLOB = 1
+        JSON_PACKAGE = 4
 
     name: str = proto.Field(
         proto.STRING,
