@@ -19,7 +19,7 @@ import inspect
 import google.cloud.logging
 
 from ..common.common import Common
-from ..common.python import CommonPython
+from .python import CommonPython
 
 
 class TestCloudFunctions(Common, CommonPython, unittest.TestCase):

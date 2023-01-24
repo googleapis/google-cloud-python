@@ -21,7 +21,10 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
+	"reflect"
+	"strconv"
 	"strings"
 	"time"
 
@@ -116,9 +119,22 @@ func pullMsgsSync(sub *pubsub.Subscription) error {
 // Initializations for all GCP services
 var ctx context.Context
 
+// global project id
+var projectID string
+
 // init executes for all environments, regardless if its a program or package
 func init() {
 	ctx = context.Background()
+	// populate projectId
+	var found bool
+	projectID, found = os.LookupEnv("PROJECT_ID")
+	if !found {
+		var err error
+		projectID, err = metadata.ProjectID()
+		if err != nil {
+			log.Fatalf("metadata.ProjectID: %v", err)
+		}
+	}
 }
 
 // main runs for all environments except GCF
@@ -126,10 +142,7 @@ func main() {
 	// ****************** GAE, GKE, GCE ******************
 	// Enable app subscriber for all environments except GCR
 	if os.Getenv("ENABLE_SUBSCRIBER") == "true" {
-		projectID, err := metadata.ProjectID()
-		if err != nil {
-			log.Fatalf("metadata.ProjectID: %v", err)
-		}
+		// first look for project id in env var, then check the metadata
 		topicID := os.Getenv("PUBSUB_TOPIC")
 		if topicID == "" {
 			topicID = "logging-test"
@@ -153,6 +166,7 @@ func main() {
 		}
 
 		// Blocking call, pulls messages from pubsub until context is cancelled or test ends
+		log.Printf("Waiting for pubsub messages...")
 		err = pullMsgsSync(sub)
 		if err != nil {
 			log.Fatalf("pullMsgsSync failed: %v", err)
@@ -185,13 +199,12 @@ func main() {
 }
 
 // ****************** Test Cases ******************
+
+type Snippets struct{}
+
 // [Optional] envctl go <env> trigger simplelog log_name=foo,log_text=bar
-func simplelog(args map[string]string) {
+func (s Snippets) Simplelog(args map[string]string) {
 	ctx := context.Background()
-	projectID, err := metadata.ProjectID()
-	if err != nil {
-		log.Fatalf("metadata.ProjectID: %v", err)
-	}
 	client, err := logging.NewClient(ctx, projectID)
 	if err != nil {
 		log.Fatalf("Failed to create client: %v", err)
@@ -208,44 +221,220 @@ func simplelog(args map[string]string) {
 		logtext = val
 	}
 
-	logseverity := logging.Info
-	if val, ok := args["severity"]; ok {
-		switch strings.ToUpper(val) {
-		case "DEFAULT":
-			logseverity = logging.Default
-		case "DEBUG":
-			logseverity = logging.Debug
-		case "INFO":
-			logseverity = logging.Info
-		case "NOTICE":
-			logseverity = logging.Notice
-		case "WARNING":
-			logseverity = logging.Warning
-		case "ERROR":
-			logseverity = logging.Error
-		case "CRITICAL":
-			logseverity = logging.Critical
-		case "ALERT":
-			logseverity = logging.Alert
-		case "EMERGENCY":
-			logseverity = logging.Emergency
-		default:
-			break
+	logseverity := s._parseSeverity(args["severity"])
+
+	entry := logging.Entry{
+		Payload:  logtext,
+		Severity: logseverity,
+	}
+	// attach http request object if passed in
+	if input_url, ok := args["http_request_url"]; ok {
+		if parsed_url, err := url.Parse(input_url); err == nil {
+			entry.HTTPRequest = &logging.HTTPRequest{
+				Request: &http.Request{
+					URL:    parsed_url,
+					Method: "POST",
+				},
+			}
 		}
 	}
+	client.Logger(logname).Log(entry)
+}
 
-	logger := client.Logger(logname).StandardLogger(logseverity)
-	logger.Println(logtext)
+// [Optional] envctl go <env> trigger jsonlog log_name=foo,log_text=bar
+func (s Snippets) Jsonlog(args map[string]string) {
+	ctx := context.Background()
+	client, err := logging.NewClient(ctx, projectID)
+	if err != nil {
+		log.Fatalf("Failed to create client: %v", err)
+	}
+	defer client.Close()
+
+	logname := "my-log"
+	if val, ok := args["log_name"]; ok {
+		logname = val
+	}
+
+	logtext := "hello world"
+	if val, ok := args["log_text"]; ok {
+		logtext = val
+	}
+
+	logseverity := s._parseSeverity(args["severity"])
+
+	payload := make(map[string]interface{})
+	for k, v := range args {
+		if k != "log_name" && k != "log_text" && k != "severity" {
+			// convert int inputs when possible
+			if intVal, err := strconv.Atoi(v); err == nil {
+				payload[k] = intVal
+			} else {
+				payload[k] = v
+			}
+		}
+	}
+	payload["message"] = logtext
+	entry := logging.Entry{
+		Payload:  payload,
+		Severity: logseverity,
+	}
+	client.Logger(logname).Log(entry)
+}
+
+// https://pkg.go.dev/cloud.google.com/go/logging#hdr-The_Standard_Logger
+// [Optional] envctl go <env> trigger standardlogger log_name=foo,log_text=bar
+func (s Snippets) Standardlogger(args map[string]string) {
+	ctx := context.Background()
+	client, err := logging.NewClient(ctx, projectID)
+	if err != nil {
+		log.Fatalf("Failed to create client: %v", err)
+	}
+	defer client.Close()
+
+	logname := "my-log"
+	if val, ok := args["log_name"]; ok {
+		logname = val
+	}
+
+	logtext := "hello world"
+	if val, ok := args["log_text"]; ok {
+		logtext = val
+	}
+
+	logseverity := s._parseSeverity(args["severity"])
+
+	lg := client.Logger(logname)
+	stdlg := lg.StandardLogger(logseverity)
+	stdlg.Println(logtext)
+}
+
+// https://pkg.go.dev/cloud.google.com/go/logging#hdr-Synchronous_Logging
+// [Optional] envctl go <env> trigger synclog log_name=foo,log_text=bar
+func (s Snippets) Synclog(args map[string]string) {
+	ctx := context.Background()
+	client, err := logging.NewClient(ctx, projectID)
+	if err != nil {
+		log.Fatalf("Failed to create client: %v", err)
+	}
+	defer client.Close()
+
+	logname := "my-log"
+	if val, ok := args["log_name"]; ok {
+		logname = val
+	}
+
+	logtext := "hello world"
+	if val, ok := args["log_text"]; ok {
+		logtext = val
+	}
+
+	logseverity := s._parseSeverity(args["severity"])
+
+	lg := client.Logger(logname)
+	entry := logging.Entry{
+		Payload:  logtext,
+		Severity: logseverity,
+	}
+	// attach http request object if passed in
+	if input_url, ok := args["http_request_url"]; ok {
+		if parsed_url, err := url.Parse(input_url); err == nil {
+			entry.HTTPRequest = &logging.HTTPRequest{
+				Request: &http.Request{
+					URL:    parsed_url,
+					Method: "POST",
+				},
+			}
+			entry.HTTPRequest.Latency = 100000
+		}
+	}
+	lg.LogSync(ctx, entry)
+}
+
+// https://pkg.go.dev/cloud.google.com/go/logging#hdr-Redirecting_log_ingestion
+// [Optional] envctl go <env> trigger stdoutlog log_name=foo,log_text=bar
+func (s Snippets) Stdoutlog(args map[string]string) {
+	ctx := context.Background()
+	client, err := logging.NewClient(ctx, projectID)
+	if err != nil {
+		log.Fatalf("Failed to create client: %v", err)
+	}
+	defer client.Close()
+
+	logname := "my-log"
+	if val, ok := args["log_name"]; ok {
+		logname = val
+	}
+
+	logtext := "hello world"
+	if val, ok := args["log_text"]; ok {
+		logtext = val
+	}
+
+	logseverity := s._parseSeverity(args["severity"])
+
+	lg := client.Logger(logname, logging.RedirectAsJSON(os.Stdout))
+	entry := logging.Entry{
+		Payload:  logtext,
+		Severity: logseverity,
+	}
+	// attach http request object if passed in
+	if input_url, ok := args["http_request_url"]; ok {
+		if parsed_url, err := url.Parse(input_url); err == nil {
+			entry.HTTPRequest = &logging.HTTPRequest{
+				Request: &http.Request{
+					URL:    parsed_url,
+					Method: "POST",
+				},
+			}
+			entry.HTTPRequest.Latency = 100000
+		}
+	}
+	lg.LogSync(ctx, entry)
+}
+
+func (s Snippets) _parseSeverity(val string) logging.Severity {
+	logseverity := logging.Info
+	switch strings.ToUpper(val) {
+	case "DEFAULT":
+		logseverity = logging.Default
+	case "DEBUG":
+		logseverity = logging.Debug
+	case "INFO":
+		logseverity = logging.Info
+	case "NOTICE":
+		logseverity = logging.Notice
+	case "WARNING":
+		logseverity = logging.Warning
+	case "ERROR":
+		logseverity = logging.Error
+	case "CRITICAL":
+		logseverity = logging.Critical
+	case "ALERT":
+		logseverity = logging.Alert
+	case "EMERGENCY":
+		logseverity = logging.Emergency
+	default:
+		break
+	}
+	return logseverity
+}
+
+func (s Snippets) Test() {
+	log.Printf("Test")
 }
 
 // testLog is a helper function which invokes the correct test functions
 func testLog(message string, attrs map[string]string) {
-	switch message {
-	case "simplelog":
-		simplelog(attrs)
-	case "stdlog":
-		break
-	default:
-		break
+	// call the requested snippet using reflection
+	snippets := Snippets{}
+	// only exported methods can be called through reflection
+	// capitalize input to match method signature
+	methodName := strings.Title(message)
+	method := reflect.ValueOf(snippets).MethodByName(methodName)
+	if method.IsValid() {
+		in := []reflect.Value{reflect.ValueOf(attrs)}
+		method.Call(in)
+	} else {
+		log.Printf("invalid snippet")
 	}
 }

@@ -14,21 +14,18 @@
 
 import logging
 import unittest
+import inspect
 
 import google.cloud.logging
 
 from ..common.common import Common
-from .go import CommonGolang
-from .stdout import CommonStdout
+from ..common.python import CommonPython
 
-class TestCloudFunctions(Common, CommonGolang, CommonStdout, unittest.TestCase):
 
-    environment = "functions"
-    language = "go"
+class TestLocal(Common, CommonPython, unittest.TestCase):
 
-    monitored_resource_name = "cloud_function"
-    monitored_resource_labels = [
-        "region",
-        "function_name",
-        "project_id",
-    ]
+    environment = "local"
+    language = "python"
+
+    monitored_resource_name = "global"
+    monitored_resource_labels = []

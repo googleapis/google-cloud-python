@@ -17,25 +17,23 @@ set -e # exit on any failure
 set -o pipefail # any step in pipe caused failure
 set -u # undefined variables cause exit
 
-SERVICE_NAME="logging-go-gce-$(echo $ENVCTL_ID | head -c 8)"
-ZONE="us-west2-a"
+
+SERVICE_NAME="log-go-local-$(echo $ENVCTL_ID | head -c 10)"
+SA_NAME=$SERVICE_NAME-invoker
 
 destroy() {
   set +e
   # delete pubsub resources
   gcloud pubsub topics delete $SERVICE_NAME -q 2> /dev/null
   gcloud pubsub subscriptions delete $SERVICE_NAME-subscriber -q 2> /dev/null
-  # delete container images
-  export GCR_PATH=gcr.io/$PROJECT_ID/logging:$SERVICE_NAME
-  gcloud container images delete $GCR_PATH -q --force-delete-tags 2> /dev/null
-  # delete service
-  gcloud compute instances delete $SERVICE_NAME -q
+  # stop container
+  docker stop $SERVICE_NAME 2> /dev/null
   set -e
 }
 
 verify() {
   set +e
-  gcloud compute instances describe $SERVICE_NAME > /dev/null 2> /dev/null
+  docker container inspect -f '{{.State.Running}}' $SERVICE_NAME > /dev/null 2> /dev/null
   if [[ $? == 0 ]]; then
      echo "TRUE"
      exit 0
@@ -46,7 +44,7 @@ verify() {
   set -e
 }
 
-build_go_container(){
+build_go_container() {
   export GCR_PATH=gcr.io/$PROJECT_ID/logging:$SERVICE_NAME
   # copy super-repo into deployable dir
   _env_tests_relative_path=${REPO_ROOT#"$SUPERREPO_ROOT/"}
@@ -54,35 +52,37 @@ build_go_container(){
 
   # copy over local copy of library
   pushd $SUPERREPO_ROOT/logging
-    tar -cvf $_deployable_dir/lib.tar --exclude env-tests-logging --exclude internal/env-tests-logging --exclude .nox --exclude docs --exclude __pycache__ .
+    tar -cvf $_deployable_dir/lib.tar --exclude internal/env-tests-logging --exclude env-tests-logging --exclude .nox --exclude docs --exclude __pycache__ .
   popd
   mkdir -p $_deployable_dir/logging
   tar -xvf $_deployable_dir/lib.tar --directory $_deployable_dir/logging
   # build container
   docker build -t $GCR_PATH $_deployable_dir
-  docker push $GCR_PATH
 }
 
 deploy() {
-  build_go_container
-  gcloud config set compute/zone $ZONE
-  gcloud compute instances create-with-container \
-    $SERVICE_NAME \
-    --container-image $GCR_PATH \
-    --container-env PUBSUB_TOPIC="$SERVICE_NAME",ENABLE_SUBSCRIBER="true"
-  # wait for the pub/sub subscriber to start
-  NUM_SUBSCRIBERS=0
-  TRIES=0
-  while [[ "${NUM_SUBSCRIBERS}" -lt 1 && "${TRIES}" -lt 10 ]]; do
-    sleep 30
-    NUM_SUBSCRIBERS=$(gcloud pubsub topics list-subscriptions $SERVICE_NAME 2> /dev/null | wc -l)
-    TRIES=$((TRIES + 1))
-  done
+  ARG=${1:-none}
+  if [[ -z "${GOOGLE_APPLICATION_CREDENTIALS}" ]]; then
+    echo "GOOGLE_APPLICATION_CREDENTIALS not set"
+    echo "should point to a valid service account to mount into container"
+    exit 1
+  fi
+  if [[ "$ARG" == "-i" ]]; then
+    FLAG="-i"
+  else
+    FLAG="-d"
+  fi
+  build_go_container nopush
+  docker run --rm \
+    --name $SERVICE_NAME \
+    -v $GOOGLE_APPLICATION_CREDENTIALS:/service-account.json \
+    -e GOOGLE_APPLICATION_CREDENTIALS=/service-account.json \
+    -e ENABLE_SUBSCRIBER=true -e PUBSUB_TOPIC="$SERVICE_NAME" \
+    -e PROJECT_ID=$(gcloud config get-value project) \
+    $FLAG -t $GCR_PATH
 }
 
 filter-string() {
-  #INSTANCE_ID=$(gcloud compute instances list --filter="name~^$SERVICE_NAME$" --format="value(ID)")
-  #echo "resource.type=\"gce_instance\" AND resource.labels.instance_id=\"$INSTANCE_ID\""
-  echo "resource.type=\"global\""
+  echo "unimplemented"
 }
 

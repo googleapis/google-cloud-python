@@ -55,6 +55,31 @@ def jsonlog(log_name=None, log_text=None, severity="DEFAULT", **kwargs):
     logger.log_struct(message, severity=severity)
 
 
+def large_log(log_name=None, log_text="simple_log", severity="DEFAULT", buffer_chars=270000, **kwargs):
+    # allowed severity: default, debug, info, notice, warning, error, critical, alert, emergency
+    severity = severity.upper()
+    client = google.cloud.logging.Client()
+    logger = client.logger(log_name)
+    logger.log({"message": log_text, "buffer":"0"*int(float(buffer_chars))}, severity=severity)
+
+def pylogging_large_log(log_name=None, log_text="simple_log", buffer_chars=270000, **kwargs):
+    # allowed severity: default, debug, info, notice, warning, error, critical, alert, emergency
+    client = google.cloud.logging.Client()
+    logger = client.logger(log_name)
+    logging.error(log_text, extra={"json_fields":{"buffer":"0"*int(float(buffer_chars))}})
+
+def batch_large_log(log_name=None, log_text="simple_log", severity="DEFAULT", batch_size=10, large_idx=4, buffer_chars=270000, **kwargs):
+    # allowed severity: default, debug, info, notice, warning, error, critical, alert, emergency
+    from google.api_core.exceptions import InvalidArgument
+    client = google.cloud.logging.Client()
+    logger = client.logger(log_name)
+    batch = logger.batch()
+    for i in range(int(batch_size)):
+        if i == int(large_idx):
+            batch.log({"message": log_text, "buffer":"0"*int(float(buffer_chars))}, severity=severity)
+        batch.log(log_text)
+    batch.commit()
+
 def pylogging_json(log_text=None, severity="WARNING", string_encode=False, **kwargs):
     # allowed severity: debug, info, warning, error, critical
 

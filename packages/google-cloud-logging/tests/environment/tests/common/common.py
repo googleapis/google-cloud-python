@@ -217,7 +217,7 @@ class Common:
         self.assertIsNotNone(found_log, "expected unicode log not found")
 
     def test_json_log(self):
-        if self.language not in ["python"]:
+        if self.language not in ["python", "go"]:
             # TODO: other languages to also support this test
             return True
         log_text = f"{inspect.currentframe().f_code.co_name} {uuid.uuid1()}"

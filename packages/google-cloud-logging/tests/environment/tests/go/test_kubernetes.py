@@ -18,9 +18,10 @@ import unittest
 import google.cloud.logging
 
 from ..common.common import Common
+from .go import CommonGolang
+from .stdout import CommonStdout
 
-
-class TestKubernetesEngine(Common, unittest.TestCase):
+class TestKubernetesEngine(Common, CommonGolang, CommonStdout, unittest.TestCase):
 
     environment = "kubernetes"
     language = "go"
