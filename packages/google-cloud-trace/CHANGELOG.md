@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## [1.10.0](https://github.com/googleapis/python-trace/compare/v1.9.1...v1.10.0) (2023-01-24)
+
+
+### Features
+
+* Add Cloud Trace v2 retry defaults for BatchWriteSpans ([#294](https://github.com/googleapis/python-trace/issues/294)) ([92cb4fa](https://github.com/googleapis/python-trace/commit/92cb4fa2c1e68d717bad90eb1ae313cfa3146d30))
+
 ## [1.9.1](https://github.com/googleapis/python-trace/compare/v1.9.0...v1.9.1) (2023-01-23)
 
 
