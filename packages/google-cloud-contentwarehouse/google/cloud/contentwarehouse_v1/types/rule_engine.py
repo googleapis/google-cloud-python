@@ -106,7 +106,7 @@ class Rule(proto.Message):
 
         Values:
             UNKNOWN (0):
-
+                No description available.
             ON_CREATE (1):
                 Trigger for create document action.
             ON_UPDATE (4):
@@ -252,7 +252,7 @@ class AccessControlAction(proto.Message):
 
         Values:
             UNKNOWN (0):
-
+                No description available.
             ADD_POLICY_BINDING (1):
                 Adds newly given policy bindings in the
                 existing bindings list.
@@ -542,7 +542,7 @@ class ActionOutput(proto.Message):
 
         Values:
             UNKNOWN (0):
-
+                No description available.
             ACTION_SUCCEEDED (1):
                 State indicating action executed
                 successfully.
