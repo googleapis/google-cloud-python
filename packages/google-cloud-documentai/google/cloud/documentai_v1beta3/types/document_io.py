@@ -227,11 +227,18 @@ class OcrConfig(proto.Message):
             Enables special handling for PDFs with
             existing text information. Results in better
             text extraction quality in such PDF inputs.
+        advanced_ocr_options (MutableSequence[str]):
+            A list of advanced OCR options to further
+            fine-tune OCR behavior.
     """
 
     enable_native_pdf_parsing: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+    advanced_ocr_options: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
     )
 
 
