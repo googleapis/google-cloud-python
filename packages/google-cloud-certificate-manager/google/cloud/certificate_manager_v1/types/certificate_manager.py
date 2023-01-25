@@ -930,7 +930,7 @@ class Certificate(proto.Message):
                 Immutable. Authorizations that will be used
                 for performing domain authorization.
             issuance_config (str):
-                The resource name for a
+                Immutable. The resource name for a
                 [CertificateIssuanceConfig][google.cloud.certificatemanager.v1.CertificateIssuanceConfig]
                 used to configure private PKI certificates in the format
                 ``projects/*/locations/*/certificateIssuanceConfigs/*``. If
@@ -950,11 +950,11 @@ class Certificate(proto.Message):
         """
 
         class State(proto.Enum):
-            r"""
+            r"""State of the managed certificate resource.
 
             Values:
                 STATE_UNSPECIFIED (0):
-
+                    State is unspecified.
                 PROVISIONING (1):
                     Certificate Manager attempts to provision or renew the
                     certificate. If the process takes longer than expected,
@@ -989,11 +989,11 @@ class Certificate(proto.Message):
             """
 
             class Reason(proto.Enum):
-                r"""
+                r"""Reason for provisioning failures.
 
                 Values:
                     REASON_UNSPECIFIED (0):
-
+                        Reason is unspecified.
                     AUTHORIZATION_ISSUE (1):
                         Certificate provisioning failed due to an issue with one or
                         more of the domains on the certificate. For details of which
@@ -1042,11 +1042,11 @@ class Certificate(proto.Message):
             """
 
             class State(proto.Enum):
-                r"""
+                r"""State of the domain for managed certificate issuance.
 
                 Values:
                     STATE_UNSPECIFIED (0):
-
+                        State is unspecified.
                     AUTHORIZING (1):
                         Certificate provisioning for this domain is
                         under way. GCP will attempt to authorize the
@@ -1066,11 +1066,12 @@ class Certificate(proto.Message):
                 FAILED = 7
 
             class FailureReason(proto.Enum):
-                r"""
+                r"""Reason for failure of the authorization attempt for the
+                domain.
 
                 Values:
                     FAILURE_REASON_UNSPECIFIED (0):
-
+                        FailureReason is unspecified.
                     CONFIG (1):
                         There was a problem with the user's DNS or
                         load balancer configuration for this domain.
@@ -1215,14 +1216,14 @@ class CertificateMap(proto.Message):
             Set of labels associated with a Certificate
             Map.
         gclb_targets (MutableSequence[google.cloud.certificate_manager_v1.types.CertificateMap.GclbTarget]):
-            Output only. A list of GCLB targets which use
+            Output only. A list of GCLB targets that use
             this Certificate Map. A Target Proxy is only
             present on this list if it's attached to a
             Forwarding Rule.
     """
 
     class GclbTarget(proto.Message):
-        r"""Describes a Target Proxy which uses this Certificate Map.
+        r"""Describes a Target Proxy that uses this Certificate Map.
 
         This message has `oneof`_ fields (mutually exclusive fields).
         For each oneof, at most one member field can be set at the same time.
@@ -1450,7 +1451,7 @@ class DnsAuthorization(proto.Message):
             One or more paragraphs of text description of
             a DnsAuthorization.
         domain (str):
-            Required. Immutable. A domain which is being authorized. A
+            Required. Immutable. A domain that is being authorized. A
             DnsAuthorization resource covers a single domain and its
             wildcard, e.g. authorization for ``example.com`` can be used
             to issue certificates for ``example.com`` and
