@@ -200,7 +200,7 @@ class TransformationResultStatusType(proto.Enum):
 
     Values:
         STATE_TYPE_UNSPECIFIED (0):
-
+            No description available.
         INVALID_TRANSFORM (1):
             This will be set when a finding could not be
             transformed (i.e. outside user set bucket
@@ -232,13 +232,13 @@ class TransformationContainerType(proto.Enum):
 
     Values:
         TRANSFORM_UNKNOWN_CONTAINER (0):
-
+            No description available.
         TRANSFORM_BODY (1):
-
+            No description available.
         TRANSFORM_METADATA (2):
-
+            No description available.
         TRANSFORM_TABLE (3):
-
+            No description available.
     """
     TRANSFORM_UNKNOWN_CONTAINER = 0
     TRANSFORM_BODY = 1

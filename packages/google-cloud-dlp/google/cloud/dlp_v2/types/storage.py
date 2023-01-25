@@ -57,17 +57,17 @@ class Likelihood(proto.Enum):
 
     Values:
         LIKELIHOOD_UNSPECIFIED (0):
-
+            Default value; same as POSSIBLE.
         VERY_UNLIKELY (1):
-
+            Few matching elements.
         UNLIKELY (2):
-
+            No description available.
         POSSIBLE (3):
-
+            Some matching elements.
         LIKELY (4):
-
+            No description available.
         VERY_LIKELY (5):
-
+            Many matching elements.
     """
     LIKELIHOOD_UNSPECIFIED = 0
     VERY_UNLIKELY = 1
@@ -806,7 +806,7 @@ class CloudStorageOptions(proto.Message):
 
         Values:
             SAMPLE_METHOD_UNSPECIFIED (0):
-
+                No description available.
             TOP (1):
                 Scan from the top (default).
             RANDOM_START (2):
@@ -952,7 +952,7 @@ class BigQueryOptions(proto.Message):
 
         Values:
             SAMPLE_METHOD_UNSPECIFIED (0):
-
+                No description available.
             TOP (1):
                 Scan groups of rows in the order BigQuery
                 provides (default). Multiple groups of rows may
