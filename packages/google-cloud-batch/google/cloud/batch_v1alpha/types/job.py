@@ -275,7 +275,7 @@ class JobStatus(proto.Message):
 
         Values:
             STATE_UNSPECIFIED (0):
-
+                No description available.
             QUEUED (1):
                 Job is admitted (validated and persisted) and
                 waiting for resources.
