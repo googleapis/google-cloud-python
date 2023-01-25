@@ -43,7 +43,7 @@ class CalendarPeriod(proto.Enum):
 
     Values:
         CALENDAR_PERIOD_UNSPECIFIED (0):
-
+            No description available.
         MONTH (1):
             A month. Month starts on the first day of
             each month, such as January 1, February 1, March
@@ -393,7 +393,7 @@ class Filter(proto.Message):
 
         Values:
             CREDIT_TYPES_TREATMENT_UNSPECIFIED (0):
-
+                No description available.
             INCLUDE_ALL_CREDITS (1):
                 All types of credit are subtracted from the
                 gross cost to determine the spend for threshold

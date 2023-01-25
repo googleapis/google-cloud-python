@@ -413,7 +413,7 @@ class Filter(proto.Message):
 
         Values:
             CREDIT_TYPES_TREATMENT_UNSPECIFIED (0):
-
+                No description available.
             INCLUDE_ALL_CREDITS (1):
                 All types of credit are subtracted from the
                 gross cost to determine the spend for threshold
