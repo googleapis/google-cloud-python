@@ -140,7 +140,7 @@ def cover(session):
     session.run("coverage", "report", "--show-missing", "--fail-under=100")
 
 
-@nox.session(python="3.8")
+@nox.session(python="3.9")
 def docs(session):
     """Build the docs for this library."""
 
