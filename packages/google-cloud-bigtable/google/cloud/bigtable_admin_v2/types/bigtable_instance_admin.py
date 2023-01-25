@@ -448,7 +448,7 @@ class CreateClusterMetadata(proto.Message):
 
             Values:
                 STATE_UNSPECIFIED (0):
-
+                    No description available.
                 PENDING (1):
                     The table has not yet begun copying to the
                     new cluster.
