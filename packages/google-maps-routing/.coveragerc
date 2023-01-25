@@ -5,6 +5,7 @@ branch = True
 show_missing = True
 omit =
     google/maps/routing/__init__.py
+    google/maps/routing/gapic_version.py
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER

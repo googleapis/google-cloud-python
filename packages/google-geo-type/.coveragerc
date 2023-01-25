@@ -5,6 +5,7 @@ branch = True
 show_missing = True
 omit =
     google/geo/type/__init__.py
+    google/geo/type/gapic_version.py
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER
