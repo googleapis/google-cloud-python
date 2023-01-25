@@ -311,7 +311,7 @@ class PrivateConnection(proto.Message):
 
         Values:
             STATE_UNSPECIFIED (0):
-
+                No description available.
             CREATING (1):
                 The private connection is in creation state -
                 creating resources.
