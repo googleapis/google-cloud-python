@@ -2207,7 +2207,7 @@ class ReservationAffinity(proto.Message):
 
         Values:
             TYPE_UNSPECIFIED (0):
-
+                No description available.
             NO_RESERVATION (1):
                 Do not consume from any allocated capacity.
             ANY_RESERVATION (2):
