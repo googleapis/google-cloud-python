@@ -716,34 +716,10 @@ class TpuRestTransport(TpuTransport):
                 "google.longrunning.Operations.CancelOperation": [
                     {
                         "method": "post",
-                        "uri": "/v1alpha1/{name=projects/*/locations/*/operations/*}:cancel",
-                    },
-                    {
-                        "method": "post",
-                        "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
-                    },
-                    {
-                        "method": "post",
-                        "uri": "/v2alpha1/{name=projects/*/locations/*/operations/*}:cancel",
-                    },
-                    {
-                        "method": "post",
                         "uri": "/v2/{name=projects/*/locations/*/operations/*}:cancel",
                     },
                 ],
                 "google.longrunning.Operations.DeleteOperation": [
-                    {
-                        "method": "delete",
-                        "uri": "/v1alpha1/{name=projects/*/locations/*/operations/*}",
-                    },
-                    {
-                        "method": "delete",
-                        "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                    },
-                    {
-                        "method": "delete",
-                        "uri": "/v2alpha1/{name=projects/*/locations/*/operations/*}",
-                    },
                     {
                         "method": "delete",
                         "uri": "/v2/{name=projects/*/locations/*/operations/*}",
@@ -752,34 +728,10 @@ class TpuRestTransport(TpuTransport):
                 "google.longrunning.Operations.GetOperation": [
                     {
                         "method": "get",
-                        "uri": "/v1alpha1/{name=projects/*/locations/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v2alpha1/{name=projects/*/locations/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
                         "uri": "/v2/{name=projects/*/locations/*/operations/*}",
                     },
                 ],
                 "google.longrunning.Operations.ListOperations": [
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha1/{name=projects/*/locations/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v2alpha1/{name=projects/*/locations/*}/operations",
-                    },
                     {
                         "method": "get",
                         "uri": "/v2/{name=projects/*/locations/*}/operations",
@@ -2175,18 +2127,6 @@ class TpuRestTransport(TpuTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2alpha1/{name=projects/*/locations/*}",
-                },
-                {
-                    "method": "get",
                     "uri": "/v2/{name=projects/*/locations/*}",
                 },
             ]
@@ -2254,18 +2194,6 @@ class TpuRestTransport(TpuTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1alpha1/{name=projects/*}/locations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*}/locations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2alpha1/{name=projects/*}/locations",
-                },
-                {
-                    "method": "get",
                     "uri": "/v2/{name=projects/*}/locations",
                 },
             ]
@@ -2330,18 +2258,6 @@ class TpuRestTransport(TpuTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/operations/*}:cancel",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2alpha1/{name=projects/*/locations/*/operations/*}:cancel",
-                },
-                {
-                    "method": "post",
                     "uri": "/v2/{name=projects/*/locations/*/operations/*}:cancel",
                 },
             ]
@@ -2403,18 +2319,6 @@ class TpuRestTransport(TpuTransport):
             """
 
             http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/operations/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v2alpha1/{name=projects/*/locations/*/operations/*}",
-                },
                 {
                     "method": "delete",
                     "uri": "/v2/{name=projects/*/locations/*/operations/*}",
@@ -2483,18 +2387,6 @@ class TpuRestTransport(TpuTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2alpha1/{name=projects/*/locations/*/operations/*}",
-                },
-                {
-                    "method": "get",
                     "uri": "/v2/{name=projects/*/locations/*/operations/*}",
                 },
             ]
@@ -2560,18 +2452,6 @@ class TpuRestTransport(TpuTransport):
             """
 
             http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2alpha1/{name=projects/*/locations/*}/operations",
-                },
                 {
                     "method": "get",
                     "uri": "/v2/{name=projects/*/locations/*}/operations",
