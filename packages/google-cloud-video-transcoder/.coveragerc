@@ -5,6 +5,7 @@ branch = True
 show_missing = True
 omit =
     google/cloud/video/transcoder/__init__.py
+    google/cloud/video/transcoder/gapic_version.py
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER
