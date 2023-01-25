@@ -677,7 +677,6 @@ class EnvironmentConfig(proto.Message):
             undergo maintenance. It is defined so that
             maintenance is not executed during peak hours or
             critical time periods.
-
             The system will not be under maintenance for
             every occurrence of this window, but when
             maintenance is planned, it will be scheduled

@@ -5,6 +5,7 @@ branch = True
 show_missing = True
 omit =
     google/cloud/orchestration/airflow/service/__init__.py
+    google/cloud/orchestration/airflow/service/gapic_version.py
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER
