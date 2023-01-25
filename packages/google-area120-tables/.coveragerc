@@ -5,6 +5,7 @@ branch = True
 show_missing = True
 omit =
     google/area120/tables/__init__.py
+    google/area120/tables/gapic_version.py
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER

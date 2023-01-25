@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.area120.tables import gapic_version as package_version
+from google.area120.tables_v1alpha1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
