@@ -43,7 +43,7 @@ class StringAggregationType(proto.Enum):
 
     Values:
         STRING_AGGREGATION_TYPE_UNSPECIFIED (0):
-
+            No description available.
         MAJORITY_VOTE (1):
             Majority vote to aggregate answers.
         UNANIMOUS_VOTE (2):

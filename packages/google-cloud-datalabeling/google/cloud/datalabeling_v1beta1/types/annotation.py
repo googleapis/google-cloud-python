@@ -58,7 +58,7 @@ class AnnotationSource(proto.Enum):
 
     Values:
         ANNOTATION_SOURCE_UNSPECIFIED (0):
-
+            No description available.
         OPERATOR (3):
             Answer is provided by a human contributor.
     """
@@ -71,7 +71,7 @@ class AnnotationSentiment(proto.Enum):
 
     Values:
         ANNOTATION_SENTIMENT_UNSPECIFIED (0):
-
+            No description available.
         NEGATIVE (1):
             This annotation describes negatively about
             the data.
@@ -89,7 +89,7 @@ class AnnotationType(proto.Enum):
 
     Values:
         ANNOTATION_TYPE_UNSPECIFIED (0):
-
+            No description available.
         IMAGE_CLASSIFICATION_ANNOTATION (1):
             Classification annotations in an image.
             Allowed for continuous evaluation.

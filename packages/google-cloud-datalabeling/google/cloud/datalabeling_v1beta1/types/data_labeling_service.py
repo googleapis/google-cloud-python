@@ -500,7 +500,7 @@ class LabelImageRequest(proto.Message):
 
         Values:
             FEATURE_UNSPECIFIED (0):
-
+                No description available.
             CLASSIFICATION (1):
                 Label whole image with one or more of labels.
             BOUNDING_BOX (2):
@@ -621,7 +621,7 @@ class LabelVideoRequest(proto.Message):
 
         Values:
             FEATURE_UNSPECIFIED (0):
-
+                No description available.
             CLASSIFICATION (1):
                 Label whole video or video segment with one
                 or more labels.
@@ -721,7 +721,7 @@ class LabelTextRequest(proto.Message):
 
         Values:
             FEATURE_UNSPECIFIED (0):
-
+                No description available.
             TEXT_CLASSIFICATION (1):
                 Label text content to one of more labels.
             TEXT_ENTITY_EXTRACTION (2):

@@ -110,7 +110,7 @@ class EvaluationJob(proto.Message):
 
         Values:
             STATE_UNSPECIFIED (0):
-
+                No description available.
             SCHEDULED (1):
                 The job is scheduled to run at the [configured
                 interval][google.cloud.datalabeling.v1beta1.EvaluationJob.schedule].
