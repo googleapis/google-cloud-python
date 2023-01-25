@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.beyondcorp_clientconnectorservices import (
+from google.cloud.beyondcorp_clientconnectorservices_v1 import (
     gapic_version as package_version,
 )
 
