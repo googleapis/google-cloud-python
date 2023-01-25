@@ -56,9 +56,9 @@ class BundledQuery(proto.Message):
 
         Values:
             FIRST (0):
-
+                No description available.
             LAST (1):
-
+                No description available.
         """
         FIRST = 0
         LAST = 1
