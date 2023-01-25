@@ -96,11 +96,11 @@ class Instance(proto.Message):
 
         Values:
             UNSPECIFIED (0):
-
+                No description available.
             RESIDENT (1):
-
+                No description available.
             DYNAMIC (2):
-
+                No description available.
         """
         UNSPECIFIED = 0
         RESIDENT = 1

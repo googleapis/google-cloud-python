@@ -1036,7 +1036,7 @@ class VpcAccessConnector(proto.Message):
 
         Values:
             EGRESS_SETTING_UNSPECIFIED (0):
-
+                No description available.
             ALL_TRAFFIC (1):
                 Force the use of VPC Access for all egress
                 traffic from the function.

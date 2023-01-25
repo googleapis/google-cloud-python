@@ -65,7 +65,7 @@ class FirewallRule(proto.Message):
 
         Values:
             UNSPECIFIED_ACTION (0):
-
+                No description available.
             ALLOW (1):
                 Matching requests are allowed.
             DENY (2):

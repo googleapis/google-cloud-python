@@ -35,7 +35,7 @@ class ManagementStatus(proto.Enum):
 
     Values:
         MANAGEMENT_STATUS_UNSPECIFIED (0):
-
+            No description available.
         OK (1):
             Certificate was successfully obtained and
             inserted into the serving system.
