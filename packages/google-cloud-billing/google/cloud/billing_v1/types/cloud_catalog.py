@@ -367,11 +367,11 @@ class AggregationInfo(proto.Message):
 
         Values:
             AGGREGATION_LEVEL_UNSPECIFIED (0):
-
+                No description available.
             ACCOUNT (1):
-
+                No description available.
             PROJECT (2):
-
+                No description available.
         """
         AGGREGATION_LEVEL_UNSPECIFIED = 0
         ACCOUNT = 1
@@ -384,11 +384,11 @@ class AggregationInfo(proto.Message):
 
         Values:
             AGGREGATION_INTERVAL_UNSPECIFIED (0):
-
+                No description available.
             DAILY (1):
-
+                No description available.
             MONTHLY (2):
-
+                No description available.
         """
         AGGREGATION_INTERVAL_UNSPECIFIED = 0
         DAILY = 1
