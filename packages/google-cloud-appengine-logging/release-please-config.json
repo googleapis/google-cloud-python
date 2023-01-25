@@ -4,7 +4,8 @@
       ".": {
         "release-type": "python",
         "extra-files": [
-          "google/cloud/appengine_logging/gapic_version.py"
+          "google/cloud/appengine_logging/gapic_version.py",
+          "google/cloud/appengine_logging_v1/gapic_version.py"
         ]
       }
     },
