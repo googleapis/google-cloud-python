@@ -5,6 +5,7 @@ branch = True
 show_missing = True
 omit =
     google/cloud/gke_multicloud/__init__.py
+    google/cloud/gke_multicloud/gapic_version.py
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER
