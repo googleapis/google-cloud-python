@@ -5,6 +5,7 @@ branch = True
 show_missing = True
 omit =
     google/cloud/common/__init__.py
+    google/cloud/common/gapic_version.py
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER
