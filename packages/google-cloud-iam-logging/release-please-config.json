@@ -4,7 +4,8 @@
       ".": {
         "release-type": "python",
         "extra-files": [
-          "google/cloud/iam_logging/gapic_version.py"
+          "google/cloud/iam_logging/gapic_version.py",
+          "google/cloud/iam_logging_v1/gapic_version.py"
         ]
       }
     },

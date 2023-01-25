@@ -13,11 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.iam_logging_v1 import gapic_version as package_version
-
-__version__ = package_version.__version__
-
-
-from .types.audit_data import AuditData
-
-__all__ = ("AuditData",)
+__version__ = "1.2.0"  # {x-release-please-version}
