@@ -5,6 +5,7 @@ branch = True
 show_missing = True
 omit =
     google/cloud/security/privateca/__init__.py
+    google/cloud/security/privateca/gapic_version.py
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER
