@@ -53,7 +53,7 @@ class MemcacheVersion(proto.Enum):
 
     Values:
         MEMCACHE_VERSION_UNSPECIFIED (0):
-
+            No description available.
         MEMCACHE_1_5 (1):
             Memcached 1.5 version.
     """
