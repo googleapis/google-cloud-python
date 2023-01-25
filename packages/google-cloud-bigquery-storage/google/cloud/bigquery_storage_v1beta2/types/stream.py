@@ -39,7 +39,7 @@ class DataFormat(proto.Enum):
 
     Values:
         DATA_FORMAT_UNSPECIFIED (0):
-
+            No description available.
         AVRO (1):
             Avro is a standard open source row based file
             format. See https://avro.apache.org/ for more

@@ -124,13 +124,13 @@ class TableFieldSchema(proto.Message):
 
         Values:
             MODE_UNSPECIFIED (0):
-
+                Illegal value
             NULLABLE (1):
-
+                No description available.
             REQUIRED (2):
-
+                No description available.
             REPEATED (3):
-
+                No description available.
         """
         MODE_UNSPECIFIED = 0
         NULLABLE = 1
