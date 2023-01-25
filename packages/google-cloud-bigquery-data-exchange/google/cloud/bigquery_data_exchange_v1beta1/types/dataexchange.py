@@ -326,45 +326,45 @@ class Listing(proto.Message):
 
         Values:
             CATEGORY_UNSPECIFIED (0):
-
+                No description available.
             CATEGORY_OTHERS (1):
-
+                No description available.
             CATEGORY_ADVERTISING_AND_MARKETING (2):
-
+                No description available.
             CATEGORY_COMMERCE (3):
-
+                No description available.
             CATEGORY_CLIMATE_AND_ENVIRONMENT (4):
-
+                No description available.
             CATEGORY_DEMOGRAPHICS (5):
-
+                No description available.
             CATEGORY_ECONOMICS (6):
-
+                No description available.
             CATEGORY_EDUCATION (7):
-
+                No description available.
             CATEGORY_ENERGY (8):
-
+                No description available.
             CATEGORY_FINANCIAL (9):
-
+                No description available.
             CATEGORY_GAMING (10):
-
+                No description available.
             CATEGORY_GEOSPATIAL (11):
-
+                No description available.
             CATEGORY_HEALTHCARE_AND_LIFE_SCIENCE (12):
-
+                No description available.
             CATEGORY_MEDIA (13):
-
+                No description available.
             CATEGORY_PUBLIC_SECTOR (14):
-
+                No description available.
             CATEGORY_RETAIL (15):
-
+                No description available.
             CATEGORY_SPORTS (16):
-
+                No description available.
             CATEGORY_SCIENCE_AND_RESEARCH (17):
-
+                No description available.
             CATEGORY_TRANSPORTATION_AND_LOGISTICS (18):
-
+                No description available.
             CATEGORY_TRAVEL_AND_TOURISM (19):
-
+                No description available.
         """
         CATEGORY_UNSPECIFIED = 0
         CATEGORY_OTHERS = 1
