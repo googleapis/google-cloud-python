@@ -39,8 +39,8 @@ class Span(proto.Message):
     subspans for its sub-operations.
 
     A trace can also contain multiple root spans, or none at all.
-    Spans do not need to be contiguous&mdash;there might be gaps or
-    overlaps between spans in a trace.
+    Spans do not need to be contiguous. There might be
+    gaps or overlaps between spans in a trace.
 
     Attributes:
         name (str):

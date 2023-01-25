@@ -603,8 +603,8 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
                 sub-operations.
 
                 A trace can also contain multiple root spans, or none at
-                all. Spans do not need to be contiguous&mdash;there
-                might be gaps or overlaps between spans in a trace.
+                all. Spans do not need to be contiguous. There might be
+                gaps or overlaps between spans in a trace.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -622,9 +622,8 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
 
                 A trace can also contain multiple root
                 spans, or none at all. Spans do not need
-                to be contiguous&mdash;there might be
-                gaps or overlaps between spans in a
-                trace.
+                to be contiguous. There might be gaps or
+                overlaps between spans in a trace.
 
         """
         # Create or coerce a protobuf request object.
