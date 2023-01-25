@@ -839,7 +839,7 @@ class GetApiConfigRequest(proto.Message):
 
         Values:
             CONFIG_VIEW_UNSPECIFIED (0):
-
+                No description available.
             BASIC (1):
                 Do not include configuration source files.
             FULL (2):
