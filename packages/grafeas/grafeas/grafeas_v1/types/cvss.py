@@ -33,11 +33,11 @@ class CVSSVersion(proto.Enum):
 
     Values:
         CVSS_VERSION_UNSPECIFIED (0):
-
+            No description available.
         CVSS_VERSION_2 (1):
-
+            No description available.
         CVSS_VERSION_3 (2):
-
+            No description available.
     """
     CVSS_VERSION_UNSPECIFIED = 0
     CVSS_VERSION_2 = 1
@@ -83,15 +83,15 @@ class CVSSv3(proto.Message):
 
         Values:
             ATTACK_VECTOR_UNSPECIFIED (0):
-
+                No description available.
             ATTACK_VECTOR_NETWORK (1):
-
+                No description available.
             ATTACK_VECTOR_ADJACENT (2):
-
+                No description available.
             ATTACK_VECTOR_LOCAL (3):
-
+                No description available.
             ATTACK_VECTOR_PHYSICAL (4):
-
+                No description available.
         """
         ATTACK_VECTOR_UNSPECIFIED = 0
         ATTACK_VECTOR_NETWORK = 1
@@ -104,11 +104,11 @@ class CVSSv3(proto.Message):
 
         Values:
             ATTACK_COMPLEXITY_UNSPECIFIED (0):
-
+                No description available.
             ATTACK_COMPLEXITY_LOW (1):
-
+                No description available.
             ATTACK_COMPLEXITY_HIGH (2):
-
+                No description available.
         """
         ATTACK_COMPLEXITY_UNSPECIFIED = 0
         ATTACK_COMPLEXITY_LOW = 1
@@ -119,13 +119,13 @@ class CVSSv3(proto.Message):
 
         Values:
             PRIVILEGES_REQUIRED_UNSPECIFIED (0):
-
+                No description available.
             PRIVILEGES_REQUIRED_NONE (1):
-
+                No description available.
             PRIVILEGES_REQUIRED_LOW (2):
-
+                No description available.
             PRIVILEGES_REQUIRED_HIGH (3):
-
+                No description available.
         """
         PRIVILEGES_REQUIRED_UNSPECIFIED = 0
         PRIVILEGES_REQUIRED_NONE = 1
@@ -137,11 +137,11 @@ class CVSSv3(proto.Message):
 
         Values:
             USER_INTERACTION_UNSPECIFIED (0):
-
+                No description available.
             USER_INTERACTION_NONE (1):
-
+                No description available.
             USER_INTERACTION_REQUIRED (2):
-
+                No description available.
         """
         USER_INTERACTION_UNSPECIFIED = 0
         USER_INTERACTION_NONE = 1
@@ -152,11 +152,11 @@ class CVSSv3(proto.Message):
 
         Values:
             SCOPE_UNSPECIFIED (0):
-
+                No description available.
             SCOPE_UNCHANGED (1):
-
+                No description available.
             SCOPE_CHANGED (2):
-
+                No description available.
         """
         SCOPE_UNSPECIFIED = 0
         SCOPE_UNCHANGED = 1
@@ -167,13 +167,13 @@ class CVSSv3(proto.Message):
 
         Values:
             IMPACT_UNSPECIFIED (0):
-
+                No description available.
             IMPACT_HIGH (1):
-
+                No description available.
             IMPACT_LOW (2):
-
+                No description available.
             IMPACT_NONE (3):
-
+                No description available.
         """
         IMPACT_UNSPECIFIED = 0
         IMPACT_HIGH = 1
@@ -278,15 +278,15 @@ class CVSS(proto.Message):
 
         Values:
             ATTACK_VECTOR_UNSPECIFIED (0):
-
+                No description available.
             ATTACK_VECTOR_NETWORK (1):
-
+                No description available.
             ATTACK_VECTOR_ADJACENT (2):
-
+                No description available.
             ATTACK_VECTOR_LOCAL (3):
-
+                No description available.
             ATTACK_VECTOR_PHYSICAL (4):
-
+                No description available.
         """
         ATTACK_VECTOR_UNSPECIFIED = 0
         ATTACK_VECTOR_NETWORK = 1
@@ -299,11 +299,11 @@ class CVSS(proto.Message):
 
         Values:
             ATTACK_COMPLEXITY_UNSPECIFIED (0):
-
+                No description available.
             ATTACK_COMPLEXITY_LOW (1):
-
+                No description available.
             ATTACK_COMPLEXITY_HIGH (2):
-
+                No description available.
         """
         ATTACK_COMPLEXITY_UNSPECIFIED = 0
         ATTACK_COMPLEXITY_LOW = 1
@@ -314,13 +314,13 @@ class CVSS(proto.Message):
 
         Values:
             AUTHENTICATION_UNSPECIFIED (0):
-
+                No description available.
             AUTHENTICATION_MULTIPLE (1):
-
+                No description available.
             AUTHENTICATION_SINGLE (2):
-
+                No description available.
             AUTHENTICATION_NONE (3):
-
+                No description available.
         """
         AUTHENTICATION_UNSPECIFIED = 0
         AUTHENTICATION_MULTIPLE = 1
@@ -332,13 +332,13 @@ class CVSS(proto.Message):
 
         Values:
             PRIVILEGES_REQUIRED_UNSPECIFIED (0):
-
+                No description available.
             PRIVILEGES_REQUIRED_NONE (1):
-
+                No description available.
             PRIVILEGES_REQUIRED_LOW (2):
-
+                No description available.
             PRIVILEGES_REQUIRED_HIGH (3):
-
+                No description available.
         """
         PRIVILEGES_REQUIRED_UNSPECIFIED = 0
         PRIVILEGES_REQUIRED_NONE = 1
@@ -350,11 +350,11 @@ class CVSS(proto.Message):
 
         Values:
             USER_INTERACTION_UNSPECIFIED (0):
-
+                No description available.
             USER_INTERACTION_NONE (1):
-
+                No description available.
             USER_INTERACTION_REQUIRED (2):
-
+                No description available.
         """
         USER_INTERACTION_UNSPECIFIED = 0
         USER_INTERACTION_NONE = 1
@@ -365,11 +365,11 @@ class CVSS(proto.Message):
 
         Values:
             SCOPE_UNSPECIFIED (0):
-
+                No description available.
             SCOPE_UNCHANGED (1):
-
+                No description available.
             SCOPE_CHANGED (2):
-
+                No description available.
         """
         SCOPE_UNSPECIFIED = 0
         SCOPE_UNCHANGED = 1
@@ -380,13 +380,13 @@ class CVSS(proto.Message):
 
         Values:
             IMPACT_UNSPECIFIED (0):
-
+                No description available.
             IMPACT_HIGH (1):
-
+                No description available.
             IMPACT_LOW (2):
-
+                No description available.
             IMPACT_NONE (3):
-
+                No description available.
         """
         IMPACT_UNSPECIFIED = 0
         IMPACT_HIGH = 1

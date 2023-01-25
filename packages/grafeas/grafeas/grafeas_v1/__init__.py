@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from grafeas.grafeas import gapic_version as package_version
+from grafeas.grafeas_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
