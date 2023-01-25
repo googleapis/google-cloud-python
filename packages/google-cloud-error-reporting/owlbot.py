@@ -35,12 +35,6 @@ for library in s.get_staging_dirs(default_version):
         shutil.rmtree("samples/generated_samples", ignore_errors=True)
         clean_up_generated_samples = False
 
-    # work around issue where google.cloud.errorreporting is not present
-    s.replace(library / "google/cloud/errorreporting_v1beta1/__init__.py",
-        "from google.cloud.errorreporting",
-        "from google.cloud.errorreporting_v1beta1"
-    )
-
     s.move(
         [library],
         excludes=[
