@@ -5,6 +5,7 @@ branch = True
 show_missing = True
 omit =
     google/analytics/admin/__init__.py
+    google/analytics/admin/gapic_version.py
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER
