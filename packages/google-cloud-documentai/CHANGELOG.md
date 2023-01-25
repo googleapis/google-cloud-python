@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.10.0](https://github.com/googleapis/python-documentai/compare/v2.9.1...v2.10.0) (2023-01-25)
+
+
+### Features
+
+* Added advanced_ocr_options field in OcrConfig ([#451](https://github.com/googleapis/python-documentai/issues/451)) ([5e1bb96](https://github.com/googleapis/python-documentai/commit/5e1bb96b685981cba2e3e4fc319efb0eac757fbf))
+
 ## [2.9.1](https://github.com/googleapis/python-documentai/compare/v2.9.0...v2.9.1) (2023-01-20)
 
 
