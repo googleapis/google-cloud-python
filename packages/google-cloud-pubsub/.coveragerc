@@ -6,6 +6,7 @@ show_missing = True
 omit =
     google/cloud/__init__.py
     google/pubsub/__init__.py
+    google/pubsub/gapic_version.py
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER
