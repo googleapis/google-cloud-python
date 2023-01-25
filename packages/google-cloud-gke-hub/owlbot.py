@@ -83,28 +83,18 @@ for library in s.get_staging_dirs(default_version):
         "`projects/{p}/locations/{l}/memberships/{m}`"
     )
 
-    # Work around gapic generator bug
-    s.replace(
-      library / "google/cloud/**/types/configmanagement.py",
-      """Configuration for Policy Controller\n
-    Attributes""",
-      """Configuration for Policy Controller\n
-    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields\n
-    Attributes"""
-    )
-
     # workaround bug in the generator
     s.replace(
       library / "google/cloud/gkehub_v1/configmanagement_v1/__init__.py",
-      "from google.cloud.gkehub.configmanagement import gapic_version as package_version",
-      "from google.cloud.gkehub import gapic_version as package_version"
+      "from google.cloud.gkehub.configmanagement_v1 import gapic_version as package_version",
+      "from google.cloud.gkehub_v1 import gapic_version as package_version"
     )
 
     # workaround bug in the generator
     s.replace(
       library / "google/cloud/gkehub_v1/multiclusteringress_v1/__init__.py",
-      "from google.cloud.gkehub.multiclusteringress import gapic_version as package_version",
-      "from google.cloud.gkehub import gapic_version as package_version"
+      "from google.cloud.gkehub.multiclusteringress_v1 import gapic_version as package_version",
+      "from google.cloud.gkehub_v1 import gapic_version as package_version"
     )
 
     excludes=[
