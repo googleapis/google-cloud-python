@@ -58,20 +58,6 @@ class TestFlow(object):
             == mock.sentinel.redirect_uri
         )
 
-    def test_from_client_secrets_file_with_oob_redirect_uri(self):
-        with pytest.deprecated_call():
-            instance = flow.Flow.from_client_secrets_file(
-                CLIENT_SECRETS_FILE,
-                scopes=mock.sentinel.scopes,
-                redirect_uri="urn:ietf:wg:oauth:2.0:oob",
-            )
-
-        assert (
-            instance.redirect_uri
-            == instance.oauth2session.redirect_uri
-            == "urn:ietf:wg:oauth:2.0:oob"
-        )
-
     def test_from_client_config_installed(self):
         client_config = {"installed": CLIENT_SECRETS_INFO["web"]}
         instance = flow.Flow.from_client_config(
@@ -295,25 +281,6 @@ class TestInstalledAppFlow(object):
 
         with fetch_token_patch as fetch_token_mock:
             yield fetch_token_mock
-
-    @mock.patch("builtins.input", autospec=True)
-    def test_run_console(self, input_mock, instance, mock_fetch_token):
-        input_mock.return_value = mock.sentinel.code
-        instance.code_verifier = "amanaplanacanalpanama"
-
-        with pytest.deprecated_call():
-            credentials = instance.run_console()
-
-        assert credentials.token == mock.sentinel.access_token
-        assert credentials._refresh_token == mock.sentinel.refresh_token
-        assert credentials.id_token == mock.sentinel.id_token
-
-        mock_fetch_token.assert_called_with(
-            CLIENT_SECRETS_INFO["web"]["token_uri"],
-            client_secret=CLIENT_SECRETS_INFO["web"]["client_secret"],
-            code=mock.sentinel.code,
-            code_verifier="amanaplanacanalpanama",
-        )
 
     @pytest.mark.webtest
     @mock.patch("google_auth_oauthlib.flow.webbrowser", autospec=True)

@@ -57,16 +57,6 @@ class TestMain(object):
             flow.return_value = dummy_credentials
             yield flow
 
-    @pytest.fixture
-    def console_mock(self, dummy_credentials):
-        run_console_patch = mock.patch.object(
-            google_auth_oauthlib.flow.InstalledAppFlow, "run_console", autospec=True
-        )
-
-        with run_console_patch as flow:
-            flow.return_value = dummy_credentials
-            yield flow
-
     def test_help(self, runner):
         result = runner.invoke(cli.main, ["--help"])
         assert not result.exception
@@ -90,22 +80,6 @@ class TestMain(object):
         assert creds.client_id == dummy_credentials.client_id
         assert creds.client_secret == dummy_credentials.client_secret
         assert creds.scopes == dummy_credentials.scopes
-
-    def test_headless(self, runner, dummy_credentials, console_mock):
-        result = runner.invoke(
-            cli.main,
-            [
-                "--client-secrets",
-                CLIENT_SECRETS_FILE,
-                "--scope",
-                "somescope",
-                "--headless",
-            ],
-        )
-        console_mock.assert_called_with(mock.ANY)
-        assert not result.exception
-        assert dummy_credentials.refresh_token in result.output
-        assert result.exit_code == 0
 
     def test_save_new_dir(self, runner, dummy_credentials, local_server_mock):
         credentials_tmpdir = tempfile.mkdtemp()

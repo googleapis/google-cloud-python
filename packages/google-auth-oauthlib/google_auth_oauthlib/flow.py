@@ -52,7 +52,6 @@ from base64 import urlsafe_b64encode
 import hashlib
 import json
 import logging
-import warnings
 
 try:
     from secrets import SystemRandom
@@ -70,11 +69,6 @@ import google_auth_oauthlib.helpers
 
 
 _LOGGER = logging.getLogger(__name__)
-_OOB_REDIRECT_URIS = [
-    "urn:ietf:wg:oauth:2.0:oob",
-    "urn:ietf:wg:oauth:2.0:oob:auto",
-    "oob",
-]
 
 
 class Flow(object):
@@ -214,17 +208,8 @@ class Flow(object):
 
     @redirect_uri.setter
     def redirect_uri(self, value):
-        if value in _OOB_REDIRECT_URIS:
-            warnings.warn(
-                "'{}' is an OOB redirect URI. The OAuth out-of-band (OOB) flow is deprecated. "
-                "New clients will be unable to use this flow starting on Feb 28, 2022. "
-                "This flow will be deprecated for all clients on Oct 3, 2022. "
-                "Migrate to an alternative flow. "
-                "See https://developers.googleblog.com/2022/02/making-oauth-flows-safer.html?m=1#disallowed-oob".format(
-                    value
-                ),
-                DeprecationWarning,
-            )
+        """The OAuth 2.0 redirect URI. Pass-through to
+        ``self.oauth2session.redirect_uri``."""
         self.oauth2session.redirect_uri = value
 
     def authorization_url(self, **kwargs):
@@ -370,8 +355,6 @@ class InstalledAppFlow(Flow):
         https://github.com/googleapis/google-api-python-client/blob/main/docs/oauth-installed.md
     """
 
-    _OOB_REDIRECT_URI = "urn:ietf:wg:oauth:2.0:oob"
-
     _DEFAULT_AUTH_PROMPT_MESSAGE = (
         "Please visit this URL to authorize this application: {url}"
     )
@@ -384,63 +367,6 @@ class InstalledAppFlow(Flow):
     _DEFAULT_WEB_SUCCESS_MESSAGE = (
         "The authentication flow has completed. You may close this window."
     )
-
-    def run_console(
-        self,
-        authorization_prompt_message=_DEFAULT_AUTH_PROMPT_MESSAGE,
-        authorization_code_message=_DEFAULT_AUTH_CODE_MESSAGE,
-        **kwargs
-    ):
-        """Run the flow using the console strategy.
-
-        .. deprecated:: 0.5.0
-          Use :meth:`run_local_server` instead.
-
-          The OAuth out-of-band (OOB) flow is deprecated. New clients will be unable to
-          use this flow starting on Feb 28, 2022. This flow will be deprecated
-          for all clients on Oct 3, 2022. Migrate to an alternative flow.
-
-          See https://developers.googleblog.com/2022/02/making-oauth-flows-safer.html?m=1#disallowed-oob"
-
-        The console strategy instructs the user to open the authorization URL
-        in their browser. Once the authorization is complete the authorization
-        server will give the user a code. The user then must copy & paste this
-        code into the application. The code is then exchanged for a token.
-
-        Args:
-            authorization_prompt_message (str | None): The message to display to tell
-                the user to navigate to the authorization URL. If None or empty,
-                don't display anything.
-            authorization_code_message (str): The message to display when
-                prompting the user for the authorization code.
-            kwargs: Additional keyword arguments passed through to
-                :meth:`authorization_url`.
-
-        Returns:
-            google.oauth2.credentials.Credentials: The OAuth 2.0 credentials
-                for the user.
-        """
-        kwargs.setdefault("prompt", "consent")
-        warnings.warn(
-            "New clients will be unable to use `InstalledAppFlow.run_console` "
-            "starting on Feb 28, 2022. All clients will be unable to use this method starting on Oct 3, 2022. "
-            "Use `InstalledAppFlow.run_local_server` instead. For details on the OOB flow deprecation, "
-            "see https://developers.googleblog.com/2022/02/making-oauth-flows-safer.html?m=1#disallowed-oob",
-            DeprecationWarning,
-        )
-
-        self.redirect_uri = self._OOB_REDIRECT_URI
-
-        auth_url, _ = self.authorization_url(**kwargs)
-
-        if authorization_prompt_message:
-            print(authorization_prompt_message.format(url=auth_url))
-
-        code = input(authorization_code_message)
-
-        self.fetch_token(code=code)
-
-        return self.credentials
 
     def run_local_server(
         self,

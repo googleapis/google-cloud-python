@@ -156,7 +156,6 @@ def get_user_credentials(
         "installed": {
             "client_id": client_id,
             "client_secret": client_secret,
-            "redirect_uris": ["urn:ietf:wg:oauth:2.0:oob"],
             "auth_uri": "https://accounts.google.com/o/oauth2/auth",
             "token_uri": "https://oauth2.googleapis.com/token",
         }

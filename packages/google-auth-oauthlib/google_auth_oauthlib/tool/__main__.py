@@ -72,15 +72,7 @@ DEFAULT_CREDENTIALS_FILENAME = "credentials.json"
     default=os.path.join(click.get_app_dir(APP_NAME), DEFAULT_CREDENTIALS_FILENAME),
     help="Path to store OAuth2 credentials.",
 )
-@click.option(
-    "--headless",
-    is_flag=True,
-    metavar="<headless_mode>",
-    show_default=True,
-    default=False,
-    help="Run a console based flow.",
-)
-def main(client_secrets, scope, save, credentials, headless):
+def main(client_secrets, scope, save, credentials):
     """Command-line tool for obtaining authorization and credentials from a user.
 
     This tool uses the OAuth 2.0 Authorization Code grant as described
@@ -88,9 +80,7 @@ def main(client_secrets, scope, save, credentials, headless):
     https://tools.ietf.org/html/rfc6749#section-1.3.1
 
     This tool is intended for assist developers in obtaining credentials
-    for testing applications where it may not be possible or easy to run a
-    complete OAuth 2.0 authorization flow, especially in the case of code
-    samples or embedded devices without input / display capabilities.
+    for testing applications or samples.
 
     This is not intended for production use where a combination of
     companion and on-device applications should complete the OAuth 2.0
@@ -102,10 +92,7 @@ def main(client_secrets, scope, save, credentials, headless):
         client_secrets, scopes=scope
     )
 
-    if not headless:
-        creds = flow.run_local_server()
-    else:
-        creds = flow.run_console()
+    creds = flow.run_local_server()
 
     creds_data = {
         "token": creds.token,
