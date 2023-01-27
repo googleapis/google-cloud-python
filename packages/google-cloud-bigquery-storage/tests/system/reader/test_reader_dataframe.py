@@ -27,10 +27,10 @@ def test_read_rows_to_arrow(client_and_types, project_id):
         "bigquery-public-data", "new_york_citibike", "citibike_stations"
     )
 
-    read_session.read_options.selected_fields.append("station_id")
     read_session.read_options.selected_fields.append("latitude")
     read_session.read_options.selected_fields.append("longitude")
     read_session.read_options.selected_fields.append("name")
+    read_session.read_options.selected_fields.append("num_bikes_available")
     read_session.data_format = types.DataFormat.ARROW
 
     session = client.create_read_session(
@@ -51,10 +51,10 @@ def test_read_rows_to_arrow(client_and_types, project_id):
     schema = tbl.schema
     # Use field with a name specifier as there may be ordering differences
     # when selected_fields is used
-    assert pyarrow.types.is_int64(schema.field("station_id").type)
     assert pyarrow.types.is_float64(schema.field("latitude").type)
     assert pyarrow.types.is_float64(schema.field("longitude").type)
     assert pyarrow.types.is_string(schema.field("name").type)
+    assert pyarrow.types.is_int64(schema.field("num_bikes_available").type)
 
 
 @pytest.mark.parametrize(
@@ -87,9 +87,7 @@ def test_read_rows_to_dataframe(
         session, dtypes={"latitude": numpy.float16}
     )
 
-    # Station ID is a required field (no nulls), so the datatype should always
-    # be integer.
-    assert frame.station_id.dtype.name == "int64"
     assert frame.latitude.dtype.name == "float16"
     assert frame.longitude.dtype.name == "float64"
     assert frame["name"].str.startswith("Central Park").any()
+    assert frame.num_bikes_available.dtype.name == "int64"
