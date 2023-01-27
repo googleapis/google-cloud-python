@@ -29,7 +29,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.vmwareengine_v1 import gapic_version as package_version
-from google.cloud.vmwareengine_v1.types import vmwareengine
+from google.cloud.vmwareengine_v1.types import vmwareengine, vmwareengine_resources
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -449,7 +449,10 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.GetPrivateCloudRequest],
-        Union[vmwareengine.PrivateCloud, Awaitable[vmwareengine.PrivateCloud]],
+        Union[
+            vmwareengine_resources.PrivateCloud,
+            Awaitable[vmwareengine_resources.PrivateCloud],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -506,7 +509,9 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.GetClusterRequest],
-        Union[vmwareengine.Cluster, Awaitable[vmwareengine.Cluster]],
+        Union[
+            vmwareengine_resources.Cluster, Awaitable[vmwareengine_resources.Cluster]
+        ],
     ]:
         raise NotImplementedError()
 
@@ -566,7 +571,9 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.GetNodeTypeRequest],
-        Union[vmwareengine.NodeType, Awaitable[vmwareengine.NodeType]],
+        Union[
+            vmwareengine_resources.NodeType, Awaitable[vmwareengine_resources.NodeType]
+        ],
     ]:
         raise NotImplementedError()
 
@@ -575,7 +582,10 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.ShowNsxCredentialsRequest],
-        Union[vmwareengine.Credentials, Awaitable[vmwareengine.Credentials]],
+        Union[
+            vmwareengine_resources.Credentials,
+            Awaitable[vmwareengine_resources.Credentials],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -584,7 +594,10 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.ShowVcenterCredentialsRequest],
-        Union[vmwareengine.Credentials, Awaitable[vmwareengine.Credentials]],
+        Union[
+            vmwareengine_resources.Credentials,
+            Awaitable[vmwareengine_resources.Credentials],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -632,7 +645,10 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.GetHcxActivationKeyRequest],
-        Union[vmwareengine.HcxActivationKey, Awaitable[vmwareengine.HcxActivationKey]],
+        Union[
+            vmwareengine_resources.HcxActivationKey,
+            Awaitable[vmwareengine_resources.HcxActivationKey],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -641,7 +657,10 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.GetNetworkPolicyRequest],
-        Union[vmwareengine.NetworkPolicy, Awaitable[vmwareengine.NetworkPolicy]],
+        Union[
+            vmwareengine_resources.NetworkPolicy,
+            Awaitable[vmwareengine_resources.NetworkPolicy],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -717,8 +736,8 @@ class VmwareEngineTransport(abc.ABC):
     ) -> Callable[
         [vmwareengine.GetVmwareEngineNetworkRequest],
         Union[
-            vmwareengine.VmwareEngineNetwork,
-            Awaitable[vmwareengine.VmwareEngineNetwork],
+            vmwareengine_resources.VmwareEngineNetwork,
+            Awaitable[vmwareengine_resources.VmwareEngineNetwork],
         ],
     ]:
         raise NotImplementedError()

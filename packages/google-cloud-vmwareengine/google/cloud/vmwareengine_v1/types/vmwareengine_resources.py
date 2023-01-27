@@ -15,27 +15,25 @@
 #
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.protobuf import timestamp_pb2  # type: ignore
-
-
 __protobuf__ = proto.module(
-    package='google.cloud.vmwareengine.v1',
+    package="google.cloud.vmwareengine.v1",
     manifest={
-        'NetworkConfig',
-        'NodeTypeConfig',
-        'PrivateCloud',
-        'Cluster',
-        'Subnet',
-        'NodeType',
-        'Credentials',
-        'HcxActivationKey',
-        'Hcx',
-        'Nsx',
-        'Vcenter',
-        'NetworkPolicy',
-        'VmwareEngineNetwork',
+        "NetworkConfig",
+        "NodeTypeConfig",
+        "PrivateCloud",
+        "Cluster",
+        "Subnet",
+        "NodeType",
+        "Credentials",
+        "HcxActivationKey",
+        "Hcx",
+        "Nsx",
+        "Vcenter",
+        "NetworkPolicy",
+        "VmwareEngineNetwork",
     },
 )
 
@@ -168,6 +166,7 @@ class PrivateCloud(proto.Message):
             Output only. System-generated unique
             identifier for the resource.
     """
+
     class State(proto.Enum):
         r"""Enum State defines possible states of private clouds.
 
@@ -225,11 +224,11 @@ class PrivateCloud(proto.Message):
             proto.STRING,
             number=1,
         )
-        node_type_configs: MutableMapping[str, 'NodeTypeConfig'] = proto.MapField(
+        node_type_configs: MutableMapping[str, "NodeTypeConfig"] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=7,
-            message='NodeTypeConfig',
+            message="NodeTypeConfig",
         )
 
     name: str = proto.Field(
@@ -261,10 +260,10 @@ class PrivateCloud(proto.Message):
         number=8,
         enum=State,
     )
-    network_config: 'NetworkConfig' = proto.Field(
+    network_config: "NetworkConfig" = proto.Field(
         proto.MESSAGE,
         number=9,
-        message='NetworkConfig',
+        message="NetworkConfig",
     )
     management_cluster: ManagementCluster = proto.Field(
         proto.MESSAGE,
@@ -275,20 +274,20 @@ class PrivateCloud(proto.Message):
         proto.STRING,
         number=11,
     )
-    hcx: 'Hcx' = proto.Field(
+    hcx: "Hcx" = proto.Field(
         proto.MESSAGE,
         number=17,
-        message='Hcx',
+        message="Hcx",
     )
-    nsx: 'Nsx' = proto.Field(
+    nsx: "Nsx" = proto.Field(
         proto.MESSAGE,
         number=18,
-        message='Nsx',
+        message="Nsx",
     )
-    vcenter: 'Vcenter' = proto.Field(
+    vcenter: "Vcenter" = proto.Field(
         proto.MESSAGE,
         number=19,
-        message='Vcenter',
+        message="Vcenter",
     )
     uid: str = proto.Field(
         proto.STRING,
@@ -326,6 +325,7 @@ class Cluster(proto.Message):
             where the key is canonical identifier of the node type
             (corresponds to the ``NodeType``).
     """
+
     class State(proto.Enum):
         r"""Enum State defines possible states of private cloud clusters.
 
@@ -381,11 +381,11 @@ class Cluster(proto.Message):
         proto.STRING,
         number=14,
     )
-    node_type_configs: MutableMapping[str, 'NodeTypeConfig'] = proto.MapField(
+    node_type_configs: MutableMapping[str, "NodeTypeConfig"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=16,
-        message='NodeTypeConfig',
+        message="NodeTypeConfig",
     )
 
 
@@ -413,6 +413,7 @@ class Subnet(proto.Message):
         state (google.cloud.vmwareengine_v1.types.Subnet.State):
             Output only. The state of the resource.
     """
+
     class State(proto.Enum):
         r"""Defines possible states of subnets.
 
@@ -573,6 +574,7 @@ class HcxActivationKey(proto.Message):
             Output only. System-generated unique
             identifier for the resource.
     """
+
     class State(proto.Enum):
         r"""State of HCX activation key
 
@@ -629,6 +631,7 @@ class Hcx(proto.Message):
         fqdn (str):
             Fully qualified domain name of the appliance.
     """
+
     class State(proto.Enum):
         r"""State of the appliance
 
@@ -677,6 +680,7 @@ class Nsx(proto.Message):
         fqdn (str):
             Fully qualified domain name of the appliance.
     """
+
     class State(proto.Enum):
         r"""State of the appliance
 
@@ -725,6 +729,7 @@ class Vcenter(proto.Message):
         fqdn (str):
             Fully qualified domain name of the appliance.
     """
+
     class State(proto.Enum):
         r"""State of the appliance
 
@@ -830,6 +835,7 @@ class NetworkPolicy(proto.Message):
                 Output only. State of the service. New values
                 may be added to this enum when appropriate.
         """
+
         class State(proto.Enum):
             r"""Enum State defines possible states of a network policy
             controlled service.
@@ -855,10 +861,10 @@ class NetworkPolicy(proto.Message):
             proto.BOOL,
             number=1,
         )
-        state: 'NetworkPolicy.NetworkService.State' = proto.Field(
+        state: "NetworkPolicy.NetworkService.State" = proto.Field(
             proto.ENUM,
             number=2,
-            enum='NetworkPolicy.NetworkService.State',
+            enum="NetworkPolicy.NetworkService.State",
         )
 
     name: str = proto.Field(
@@ -947,6 +953,7 @@ class VmwareEngineNetwork(proto.Message):
             a request. The server computes checksums based
             on the value of other fields in the request.
     """
+
     class State(proto.Enum):
         r"""Enum State defines possible states of VMware Engine network.
 
@@ -998,6 +1005,7 @@ class VmwareEngineNetwork(proto.Message):
                 network this VMware Engine network is attached to. For
                 example: ``projects/123123/global/networks/my-network``
         """
+
         class Type(proto.Enum):
             r"""Enum Type defines possible types of a VMware Engine network
             controlled service.
@@ -1025,10 +1033,10 @@ class VmwareEngineNetwork(proto.Message):
             INTERNET = 2
             GOOGLE_CLOUD = 3
 
-        type_: 'VmwareEngineNetwork.VpcNetwork.Type' = proto.Field(
+        type_: "VmwareEngineNetwork.VpcNetwork.Type" = proto.Field(
             proto.ENUM,
             number=1,
-            enum='VmwareEngineNetwork.VpcNetwork.Type',
+            enum="VmwareEngineNetwork.VpcNetwork.Type",
         )
         network: str = proto.Field(
             proto.STRING,

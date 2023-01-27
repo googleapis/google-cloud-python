@@ -48,7 +48,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.cloud.vmwareengine_v1.types import vmwareengine
+from google.cloud.vmwareengine_v1.types import vmwareengine, vmwareengine_resources
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .base import VmwareEngineTransport
@@ -552,7 +552,9 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_get_cluster(self, response: vmwareengine.Cluster) -> vmwareengine.Cluster:
+    def post_get_cluster(
+        self, response: vmwareengine_resources.Cluster
+    ) -> vmwareengine_resources.Cluster:
         """Post-rpc interceptor for get_cluster
 
         Override in a subclass to manipulate the response
@@ -574,8 +576,8 @@ class VmwareEngineRestInterceptor:
         return request, metadata
 
     def post_get_hcx_activation_key(
-        self, response: vmwareengine.HcxActivationKey
-    ) -> vmwareengine.HcxActivationKey:
+        self, response: vmwareengine_resources.HcxActivationKey
+    ) -> vmwareengine_resources.HcxActivationKey:
         """Post-rpc interceptor for get_hcx_activation_key
 
         Override in a subclass to manipulate the response
@@ -597,8 +599,8 @@ class VmwareEngineRestInterceptor:
         return request, metadata
 
     def post_get_network_policy(
-        self, response: vmwareengine.NetworkPolicy
-    ) -> vmwareengine.NetworkPolicy:
+        self, response: vmwareengine_resources.NetworkPolicy
+    ) -> vmwareengine_resources.NetworkPolicy:
         """Post-rpc interceptor for get_network_policy
 
         Override in a subclass to manipulate the response
@@ -620,8 +622,8 @@ class VmwareEngineRestInterceptor:
         return request, metadata
 
     def post_get_node_type(
-        self, response: vmwareengine.NodeType
-    ) -> vmwareengine.NodeType:
+        self, response: vmwareengine_resources.NodeType
+    ) -> vmwareengine_resources.NodeType:
         """Post-rpc interceptor for get_node_type
 
         Override in a subclass to manipulate the response
@@ -643,8 +645,8 @@ class VmwareEngineRestInterceptor:
         return request, metadata
 
     def post_get_private_cloud(
-        self, response: vmwareengine.PrivateCloud
-    ) -> vmwareengine.PrivateCloud:
+        self, response: vmwareengine_resources.PrivateCloud
+    ) -> vmwareengine_resources.PrivateCloud:
         """Post-rpc interceptor for get_private_cloud
 
         Override in a subclass to manipulate the response
@@ -666,8 +668,8 @@ class VmwareEngineRestInterceptor:
         return request, metadata
 
     def post_get_vmware_engine_network(
-        self, response: vmwareengine.VmwareEngineNetwork
-    ) -> vmwareengine.VmwareEngineNetwork:
+        self, response: vmwareengine_resources.VmwareEngineNetwork
+    ) -> vmwareengine_resources.VmwareEngineNetwork:
         """Post-rpc interceptor for get_vmware_engine_network
 
         Override in a subclass to manipulate the response
@@ -896,8 +898,8 @@ class VmwareEngineRestInterceptor:
         return request, metadata
 
     def post_show_nsx_credentials(
-        self, response: vmwareengine.Credentials
-    ) -> vmwareengine.Credentials:
+        self, response: vmwareengine_resources.Credentials
+    ) -> vmwareengine_resources.Credentials:
         """Post-rpc interceptor for show_nsx_credentials
 
         Override in a subclass to manipulate the response
@@ -919,8 +921,8 @@ class VmwareEngineRestInterceptor:
         return request, metadata
 
     def post_show_vcenter_credentials(
-        self, response: vmwareengine.Credentials
-    ) -> vmwareengine.Credentials:
+        self, response: vmwareengine_resources.Credentials
+    ) -> vmwareengine_resources.Credentials:
         """Post-rpc interceptor for show_vcenter_credentials
 
         Override in a subclass to manipulate the response
@@ -2267,7 +2269,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> vmwareengine.Cluster:
+        ) -> vmwareengine_resources.Cluster:
             r"""Call the get cluster method over HTTP.
 
             Args:
@@ -2282,7 +2284,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.vmwareengine.Cluster:
+                ~.vmwareengine_resources.Cluster:
                     A cluster in a private cloud.
             """
 
@@ -2327,8 +2329,8 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = vmwareengine.Cluster()
-            pb_resp = vmwareengine.Cluster.pb(resp)
+            resp = vmwareengine_resources.Cluster()
+            pb_resp = vmwareengine_resources.Cluster.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_cluster(resp)
@@ -2355,7 +2357,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> vmwareengine.HcxActivationKey:
+        ) -> vmwareengine_resources.HcxActivationKey:
             r"""Call the get hcx activation key method over HTTP.
 
             Args:
@@ -2370,7 +2372,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.vmwareengine.HcxActivationKey:
+                ~.vmwareengine_resources.HcxActivationKey:
                     HCX activation key. A default key is created during
                 private cloud provisioning, but this behavior is subject
                 to change and you should always verify active keys. Use
@@ -2424,8 +2426,8 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = vmwareengine.HcxActivationKey()
-            pb_resp = vmwareengine.HcxActivationKey.pb(resp)
+            resp = vmwareengine_resources.HcxActivationKey()
+            pb_resp = vmwareengine_resources.HcxActivationKey.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_hcx_activation_key(resp)
@@ -2452,7 +2454,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> vmwareengine.NetworkPolicy:
+        ) -> vmwareengine_resources.NetworkPolicy:
             r"""Call the get network policy method over HTTP.
 
             Args:
@@ -2467,7 +2469,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.vmwareengine.NetworkPolicy:
+                ~.vmwareengine_resources.NetworkPolicy:
                     Represents a network policy resource.
                 Network policies are regional resources.
                 You can use a network policy to enable
@@ -2525,8 +2527,8 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = vmwareengine.NetworkPolicy()
-            pb_resp = vmwareengine.NetworkPolicy.pb(resp)
+            resp = vmwareengine_resources.NetworkPolicy()
+            pb_resp = vmwareengine_resources.NetworkPolicy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_network_policy(resp)
@@ -2553,7 +2555,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> vmwareengine.NodeType:
+        ) -> vmwareengine_resources.NodeType:
             r"""Call the get node type method over HTTP.
 
             Args:
@@ -2568,7 +2570,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.vmwareengine.NodeType:
+                ~.vmwareengine_resources.NodeType:
                     Describes node type.
             """
 
@@ -2613,8 +2615,8 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = vmwareengine.NodeType()
-            pb_resp = vmwareengine.NodeType.pb(resp)
+            resp = vmwareengine_resources.NodeType()
+            pb_resp = vmwareengine_resources.NodeType.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_node_type(resp)
@@ -2641,7 +2643,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> vmwareengine.PrivateCloud:
+        ) -> vmwareengine_resources.PrivateCloud:
             r"""Call the get private cloud method over HTTP.
 
             Args:
@@ -2656,7 +2658,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.vmwareengine.PrivateCloud:
+                ~.vmwareengine_resources.PrivateCloud:
                     Represents a private cloud resource.
                 Private clouds are zonal resources.
 
@@ -2705,8 +2707,8 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = vmwareengine.PrivateCloud()
-            pb_resp = vmwareengine.PrivateCloud.pb(resp)
+            resp = vmwareengine_resources.PrivateCloud()
+            pb_resp = vmwareengine_resources.PrivateCloud.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_private_cloud(resp)
@@ -2733,7 +2735,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> vmwareengine.VmwareEngineNetwork:
+        ) -> vmwareengine_resources.VmwareEngineNetwork:
             r"""Call the get vmware engine network method over HTTP.
 
             Args:
@@ -2748,7 +2750,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.vmwareengine.VmwareEngineNetwork:
+                ~.vmwareengine_resources.VmwareEngineNetwork:
                     VMware Engine network resource that
                 provides connectivity for VMware Engine
                 private clouds.
@@ -2798,8 +2800,8 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = vmwareengine.VmwareEngineNetwork()
-            pb_resp = vmwareengine.VmwareEngineNetwork.pb(resp)
+            resp = vmwareengine_resources.VmwareEngineNetwork()
+            pb_resp = vmwareengine_resources.VmwareEngineNetwork.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_vmware_engine_network(resp)
@@ -3665,7 +3667,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> vmwareengine.Credentials:
+        ) -> vmwareengine_resources.Credentials:
             r"""Call the show nsx credentials method over HTTP.
 
             Args:
@@ -3680,7 +3682,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.vmwareengine.Credentials:
+                ~.vmwareengine_resources.Credentials:
                     Credentials for a private cloud.
             """
 
@@ -3727,8 +3729,8 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = vmwareengine.Credentials()
-            pb_resp = vmwareengine.Credentials.pb(resp)
+            resp = vmwareengine_resources.Credentials()
+            pb_resp = vmwareengine_resources.Credentials.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_show_nsx_credentials(resp)
@@ -3755,7 +3757,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> vmwareengine.Credentials:
+        ) -> vmwareengine_resources.Credentials:
             r"""Call the show vcenter credentials method over HTTP.
 
             Args:
@@ -3770,7 +3772,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.vmwareengine.Credentials:
+                ~.vmwareengine_resources.Credentials:
                     Credentials for a private cloud.
             """
 
@@ -3817,8 +3819,8 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = vmwareengine.Credentials()
-            pb_resp = vmwareengine.Credentials.pb(resp)
+            resp = vmwareengine_resources.Credentials()
+            pb_resp = vmwareengine_resources.Credentials.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_show_vcenter_credentials(resp)
@@ -4412,7 +4414,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
     @property
     def get_cluster(
         self,
-    ) -> Callable[[vmwareengine.GetClusterRequest], vmwareengine.Cluster]:
+    ) -> Callable[[vmwareengine.GetClusterRequest], vmwareengine_resources.Cluster]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCluster(self._session, self._host, self._interceptor)  # type: ignore
@@ -4421,7 +4423,8 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
     def get_hcx_activation_key(
         self,
     ) -> Callable[
-        [vmwareengine.GetHcxActivationKeyRequest], vmwareengine.HcxActivationKey
+        [vmwareengine.GetHcxActivationKeyRequest],
+        vmwareengine_resources.HcxActivationKey,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -4430,7 +4433,9 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
     @property
     def get_network_policy(
         self,
-    ) -> Callable[[vmwareengine.GetNetworkPolicyRequest], vmwareengine.NetworkPolicy]:
+    ) -> Callable[
+        [vmwareengine.GetNetworkPolicyRequest], vmwareengine_resources.NetworkPolicy
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetNetworkPolicy(self._session, self._host, self._interceptor)  # type: ignore
@@ -4438,7 +4443,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
     @property
     def get_node_type(
         self,
-    ) -> Callable[[vmwareengine.GetNodeTypeRequest], vmwareengine.NodeType]:
+    ) -> Callable[[vmwareengine.GetNodeTypeRequest], vmwareengine_resources.NodeType]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetNodeType(self._session, self._host, self._interceptor)  # type: ignore
@@ -4446,7 +4451,9 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
     @property
     def get_private_cloud(
         self,
-    ) -> Callable[[vmwareengine.GetPrivateCloudRequest], vmwareengine.PrivateCloud]:
+    ) -> Callable[
+        [vmwareengine.GetPrivateCloudRequest], vmwareengine_resources.PrivateCloud
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPrivateCloud(self._session, self._host, self._interceptor)  # type: ignore
@@ -4455,7 +4462,8 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
     def get_vmware_engine_network(
         self,
     ) -> Callable[
-        [vmwareengine.GetVmwareEngineNetworkRequest], vmwareengine.VmwareEngineNetwork
+        [vmwareengine.GetVmwareEngineNetworkRequest],
+        vmwareengine_resources.VmwareEngineNetwork,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -4553,7 +4561,9 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
     @property
     def show_nsx_credentials(
         self,
-    ) -> Callable[[vmwareengine.ShowNsxCredentialsRequest], vmwareengine.Credentials]:
+    ) -> Callable[
+        [vmwareengine.ShowNsxCredentialsRequest], vmwareengine_resources.Credentials
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ShowNsxCredentials(self._session, self._host, self._interceptor)  # type: ignore
@@ -4562,7 +4572,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
     def show_vcenter_credentials(
         self,
     ) -> Callable[
-        [vmwareengine.ShowVcenterCredentialsRequest], vmwareengine.Credentials
+        [vmwareengine.ShowVcenterCredentialsRequest], vmwareengine_resources.Credentials
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
