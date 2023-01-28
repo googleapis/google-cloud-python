@@ -1,10 +1,50 @@
 {
     "packages": {
+        "packages/google-apps-script-type": {
+            "component": "google-apps-script-type",
+            "release-type": "python",
+            "extra-files": [
+                "google/apps/script/type/drive/gapic_version.py",
+                "google/apps/script/type/slides/gapic_version.py",
+                "google/apps/script/type/docs/gapic_version.py",
+                "google/apps/script/type/gmail/gapic_version.py",
+                "google/apps/script/type/sheets/gapic_version.py",
+                "google/apps/script/type/gapic_version.py",
+                "google/apps/script/type/calendar/gapic_version.py"
+            ]
+        },
+        "packages/google-cloud-contentwarehouse": {
+            "component": "google-cloud-contentwarehouse",
+            "release-type": "python",
+            "extra-files": [
+                "google/cloud/contentwarehouse/gapic_version.py",
+                "google/cloud/contentwarehouse_v1/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.contentwarehouse.v1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
+            ]
+        },
+        "packages/google-cloud-datacatalog-lineage": {
+            "component": "google-cloud-datacatalog-lineage",
+            "release-type": "python",
+            "extra-files": [
+                "google/cloud/datacatalog/lineage_v1/gapic_version.py",
+                "google/cloud/datacatalog/lineage/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.datacatalog.lineage.v1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
+            ]
+        },
         "packages/google-cloud-discoveryengine": {
             "component": "google-cloud-discoveryengine",
             "release-type": "python",
             "extra-files": [
                 "google/cloud/discoveryengine/gapic_version.py",
+                "google/cloud/discoveryengine_v1beta/gapic_version.py",
                 {
                     "type": "json",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.discoveryengine.v1beta.json",
@@ -17,6 +57,7 @@
             "release-type": "python",
             "extra-files": [
                 "google/cloud/enterpriseknowledgegraph/gapic_version.py",
+                "google/cloud/enterpriseknowledgegraph_v1/gapic_version.py",
                 {
                     "type": "json",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.enterpriseknowledgegraph.v1.json",
@@ -24,14 +65,15 @@
                 }
             ]
         },
-        "packages/google-cloud-contentwarehouse": {
-            "component": "google-cloud-contentwarehouse",
+        "packages/google-cloud-vmwareengine": {
+            "component": "google-cloud-vmwareengine",
             "release-type": "python",
             "extra-files": [
-                "google/cloud/contentwarehouse/gapic_version.py",
+                "google/cloud/vmwareengine_v1/gapic_version.py",
+                "google/cloud/vmwareengine/gapic_version.py",
                 {
                     "type": "json",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.contentwarehouse.v1.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.vmwareengine.v1.json",
                     "jsonpath": "$.clientLibrary.version"
                 }
             ]
@@ -48,9 +90,23 @@
             "release-type": "python",
             "extra-files": [
                 "google/maps/addressvalidation/gapic_version.py",
+                "google/maps/addressvalidation_v1/gapic_version.py",
                 {
                     "type": "json",
                     "path": "samples/generated_samples/snippet_metadata_google.maps.addressvalidation.v1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
+            ]
+        },
+        "packages/google-maps-mapsplatformdatasets": {
+            "component": "google-maps-mapsplatformdatasets",
+            "release-type": "python",
+            "extra-files": [
+                "google/maps/mapsplatformdatasets_v1alpha/gapic_version.py",
+                "google/maps/mapsplatformdatasets/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.maps.mapsplatformdatasets.v1alpha.json",
                     "jsonpath": "$.clientLibrary.version"
                 }
             ]
@@ -60,52 +116,10 @@
             "release-type": "python",
             "extra-files": [
                 "google/maps/routing/gapic_version.py",
+                "google/maps/routing_v2/gapic_version.py",
                 {
                     "type": "json",
                     "path": "samples/generated_samples/snippet_metadata_google.maps.routing.v2.json",
-                    "jsonpath": "$.clientLibrary.version"
-                }
-            ]
-        },
-        "packages/google-apps-script-type": {
-            "component": "google-apps-script-type",
-            "release-type": "python",
-            "extra-files": [
-                "google/apps/script/type/gapic_version.py"
-            ]
-        },
-        "packages/google-cloud-vmwareengine": {
-            "component": "google-cloud-vmwareengine",
-            "release-type": "python",
-            "extra-files": [
-                "google/cloud/vmwareengine/gapic_version.py",
-                {
-                    "type": "json",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.vmwareengine.v1.json",
-                    "jsonpath": "$.clientLibrary.version"
-                }
-            ]
-        },
-        "packages/google-cloud-datacatalog-lineage": {
-            "component": "google-cloud-datacatalog-lineage",
-            "release-type": "python",
-            "extra-files": [
-                "google/cloud/datacatalog/lineage/gapic_version.py",
-                {
-                    "type": "json",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.datacatalog.lineage.v1.json",
-                    "jsonpath": "$.clientLibrary.version"
-                }
-            ]
-        },
-        "packages/google-maps-mapsplatformdatasets": {
-            "component": "google-maps-mapsplatformdatasets",
-            "release-type": "python",
-            "extra-files": [
-                "google/maps/mapsplatformdatasets/gapic_version.py",
-                {
-                    "type": "json",
-                    "path": "samples/generated_samples/snippet_metadata_google.maps.mapsplatformdatasets.v1alpha.json",
                     "jsonpath": "$.clientLibrary.version"
                 }
             ]
