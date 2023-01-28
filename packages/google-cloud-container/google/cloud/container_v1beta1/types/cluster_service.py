@@ -233,7 +233,9 @@ class NodePoolUpdateStrategy(proto.Enum):
 
     Values:
         NODE_POOL_UPDATE_STRATEGY_UNSPECIFIED (0):
-            Default value.
+            Default value if unset. GKE internally
+            defaults the update strategy to SURGE for
+            unspecified strategies.
         BLUE_GREEN (2):
             blue-green upgrade.
         SURGE (3):
@@ -520,7 +522,9 @@ class NodeConfig(proto.Message):
         image_type (str):
             The image type to use for this node. Note
             that for a given image type, the latest version
-            of it will be used.
+            of it will be used. Please see
+            https://cloud.google.com/kubernetes-engine/docs/concepts/node-images
+            for available image types.
         labels (MutableMapping[str, str]):
             The map of Kubernetes labels (key/value
             pairs) to be applied to each node. These will
@@ -4083,7 +4087,9 @@ class UpdateNodePoolRequest(proto.Message):
             master version
         image_type (str):
             Required. The desired image type for the node
-            pool.
+            pool. Please see
+            https://cloud.google.com/kubernetes-engine/docs/concepts/node-images
+            for available image types.
         locations (MutableSequence[str]):
             The desired list of Google Compute Engine
             `zones <https://cloud.google.com/compute/docs/zones#available>`__
@@ -6468,6 +6474,9 @@ class AutoprovisioningNodePoolDefaults(proto.Message):
             https://cloud.google.com/compute/docs/disks/customer-managed-encryption
         image_type (str):
             The image type to use for NAP created node.
+            Please see
+            https://cloud.google.com/kubernetes-engine/docs/concepts/node-images
+            for available image types.
     """
 
     oauth_scopes: MutableSequence[str] = proto.RepeatedField(
