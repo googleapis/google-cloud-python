@@ -102,7 +102,12 @@
             "component": "google-maps-mapsplatformdatasets",
             "release-type": "python",
             "extra-files": [
-                "google/maps/mapsplatformdatasets/gapic_version.py"
+                "google/maps/mapsplatformdatasets/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.maps.mapsplatformdatasets.v1alpha.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
             ]
         }
     }
